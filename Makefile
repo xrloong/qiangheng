@@ -149,7 +149,7 @@ pre-tarballs:
 
 tarball-src:
 	mkdir -p tmp
-	svn ls -R > tmp/files.list
+	git ls-files > tmp/files.list
 	echo tex/qiangheng.pdf >> tmp/files.list
 	tar cjf $(TARBALLS_PATH)/qiangheng-src-$(VERSION).tar.bz2 --exclude-vcs --no-recursion $(XFORM) -T tmp/files.list
 
