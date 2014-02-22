@@ -53,6 +53,26 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsGoose(self, codeInfoList):
 		"""運算 "鴻" """
+		firstCodeInfo=codeInfoList[0]
+		lastCodeInfo=codeInfoList[-1]
+
+		if firstCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_丿 and lastCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_乚:
+			newCodeInfo=self.generateDefaultCodeInfo([[BSCodeInfo.RADIX_儿]], "l")
+			codeInfo=self.encodeAsGoose([newCodeInfo]+codeInfoList[1:-1])
+			return codeInfo
+		if firstCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_丨 and lastCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_丨:
+			newCodeInfo=self.generateDefaultCodeInfo([[BSCodeInfo.RADIX_丨丨]], "i")
+			codeInfo=self.encodeAsGoose([newCodeInfo]+codeInfoList[1:-1])
+			return codeInfo
+		if firstCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_丨 and lastCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_丿:
+			newCodeInfo=self.generateDefaultCodeInfo([[BSCodeInfo.RADIX_丨丿]], "i")
+			codeInfo=self.encodeAsGoose([newCodeInfo]+codeInfoList[1:-1])
+			return codeInfo
+		if firstCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_丿 and lastCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_丨:
+			newCodeInfo=self.generateDefaultCodeInfo([[BSCodeInfo.RADIX_丿丨]], "i")
+			codeInfo=self.encodeAsGoose([newCodeInfo]+codeInfoList[1:-1])
+			return codeInfo
+
 		bsCodeList=list(map(lambda c: c.getBSCodeList(), codeInfoList))
 		tmpBsCodeList=BSCodeInfoEncoder.mergeRadixAsGoose(bsCodeList)
 

@@ -33,17 +33,8 @@ class CJRadixManager(RadixManager):
 		rtlist=[]
 		description=infoDict.get('資訊表示式')
 
-		if description==CJCodeInfo.RADIX_儿:
-			codeInfo=self.codeInfoEncoder.encodeAsGoose(
-				[CJCodeInfo.CODE_INFO_丿, CJCodeInfo.CODE_INFO_乚])
-			codeInfo.setSpecialRadix(CJCodeInfo.RADIX_儿)
-		elif description==CJCodeInfo.RADIX_丨丨:
-			codeInfo=self.codeInfoEncoder.encodeAsGoose(
-				[CJCodeInfo.CODE_INFO_丨, CJCodeInfo.CODE_INFO_丨])
-			codeInfo.setSpecialRadix(CJCodeInfo.RADIX_丨丨)
-		else:
-			cjLumpList=self.parseCJLumpList(description)
-			codeInfo=CJCodeInfo(singleCode, direction, cjLumpList)
+		cjLumpList=self.parseCJLumpList(description)
+		codeInfo=CJCodeInfo(singleCode, direction, cjLumpList)
 
 		return codeInfo
 

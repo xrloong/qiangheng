@@ -242,20 +242,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
 		return codeInfo
 
-	def encodeAsYin(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[-1]
-
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(3, 3)
-
-		newStrokeList=[]
-		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 0, 2, 0, 2))
-		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 0, 2, 0, 2))
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
-		return codeInfo
-
 class DCGridHelper:
 	WIDTH=256
 	HEIGHT=256

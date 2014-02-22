@@ -7,11 +7,25 @@ class ZMCodeInfo(CodeInfo):
 	RADIX_彳='$彳'
 	RADIX_亍='$亍'
 	RADIX_行='$行'
+	RADIX_丨='$丨'
+	RADIX_丿='$丿'
+	RADIX_乚='$乚'
+	RADIX_儿='$儿'
+	RADIX_丨丨='$丨丨'
+	RADIX_丨丿='$丨丿'
+	RADIX_丿丨='$丿丨'
 
 	radixToCodeDict={
 		RADIX_彳:["oi"],
 		RADIX_亍:["bd","i"],
 		RADIX_行:["oi"],
+		RADIX_丨:["i"],
+		RADIX_丿:["m"],
+		RADIX_乚:["z"],
+		RADIX_儿:["rd"],
+		RADIX_丨丨:["kd"],
+		RADIX_丨丿:["kd"],
+		RADIX_丿丨:["nd"],
 	}
 
 	def __init__(self, singleCode, rtList, extraCode):

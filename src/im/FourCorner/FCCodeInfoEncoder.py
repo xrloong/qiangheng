@@ -175,16 +175,6 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsYin(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-		grid=FCGrid()
-		grid.setAsOut_In(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
-
 class FCBrick:
 	TYPE_INVALIDATE=0
 	TYPE_STROKE=1
@@ -192,6 +182,16 @@ class FCBrick:
 	def __init__(self):
 		self.setAsInvalidate()
 		self._usedByCorner=None
+
+	def __str__(self):
+		if self.isStroke():
+			return "(1, %s)"%self.stroke
+		elif self.isReference():
+			return "(2, %s)"%self.wrapperBrick.getStroke()
+		elif self.isInvalidate():
+			return ""%FCCodeInfo.STROKE_NONE
+		else:
+			return ""%FCCodeInfo.STROKE_NONE
 
 	def setAsInvalidate(self):
 		self._type=FCBrick.TYPE_INVALIDATE
@@ -214,9 +214,14 @@ class FCBrick:
 		return self._type==FCBrick.TYPE_REFERENCE
 
 	def setUsedByCorner(self, corner):
+		if self.isReference():
+			self.wrapperBrick.setUsedByCorner(corner)
+			return
 		self._usedByCorner=corner
 
 	def isUsed(self):
+		if self.isReference():
+			return self.wrapperBrick.isUsed()
 		return self.getUsedCorner()!=FCCodeInfo.CORNER_NONE
 
 	def getUsedCorner(self):

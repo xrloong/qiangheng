@@ -57,6 +57,18 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_彳 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_亍:
 			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_行]])
 			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
+		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丿 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_乚:
+			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_儿]])
+			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
+		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丨 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丨:
+			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_丨丨]])
+			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
+		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丨 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丿:
+			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_丨丿]])
+			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
+		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丿 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丨:
+			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_丿丨]])
+			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 

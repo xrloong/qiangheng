@@ -50,10 +50,23 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsGoose(self, codeInfoList):
 		"""運算 "鴻" """
+
+		firstCodeInfo=codeInfoList[0]
+		lastCodeInfo=codeInfoList[-1]
+
+		if len(codeInfoList)>2 and firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_丿 and lastCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_乚:
+			codeInfo_丨=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
+			codeInfo_乚=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_乚]])
+			codeInfo=self.encodeAsGoose([codeInfo_丨]+codeInfoList[1:-1]+[codeInfo_乚])
+			return codeInfo
+		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_丿 and lastCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_丨:
+			codeInfo_丨=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
+			newCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丿丨]])
+			codeInfo=self.encodeAsGoose([codeInfo_丨]+codeInfoList[1:-1]+[codeInfo_丨])
+			return codeInfo
 		newCodeInfoList=self.getMergedCodeInfoListAsGoose(codeInfoList)
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
-
 
 	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """
@@ -111,23 +124,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.encodeAsLoong([firstCodeInfo, secondCodeInfo, secondCodeInfo])
 		return codeInfo
 
-
-	def encodeAsYin(self, codeInfoList):
-		"""運算 "胤" """
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-
-		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_儿:
-			radix_丨=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
-			radix_乚=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_乚]])
-			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_乚])
-			return codeInfo
-		elif firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_丨丨:
-			radix_丨=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
-			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_丨])
-			return codeInfo
-		else:
-			return self.encodeAsInvalidate()
 
 	@staticmethod
 	def computeArrayCodeByCodeList(arCodeList):
@@ -216,6 +212,10 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 		mergeCodeInfoList=[
 			[ARCodeInfo.RADIX_彳, ARCodeInfo.RADIX_山一, ARCodeInfo.RADIX_彳山一],
+			[ARCodeInfo.RADIX_丿, ARCodeInfo.RADIX_乚, ARCodeInfo.RADIX_儿],
+			[ARCodeInfo.RADIX_丿, ARCodeInfo.RADIX_丨, ARCodeInfo.RADIX_丿丨],
+			[ARCodeInfo.RADIX_丨, ARCodeInfo.RADIX_丿, ARCodeInfo.RADIX_丨丿],
+			[ARCodeInfo.RADIX_丨, ARCodeInfo.RADIX_丨, ARCodeInfo.RADIX_丨丨],
 		]
 
 		return self.getMergedCodeInfoList(codeInfoList, mergeCodeInfoList)

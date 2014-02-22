@@ -50,6 +50,13 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		lastCodeInfo=codeInfoList[-1]
+
+		if len(codeInfoList)> 2 and firstCodeInfo.toCode()=="h" and lastCodeInfo.toCode()=="u":
+			codeInfo=self.encodeAsGoose([CJCodeInfo.CODE_INFO_丨]+codeInfoList[1:-1]+[CJCodeInfo.CODE_INFO_乚])
+			return codeInfo
+
 		direction='-'
 		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
 		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
@@ -114,19 +121,4 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 				tmpCJLump=CJLump.generateBody(tmpCodeInfo.getLumpList())
 				ansLumpList.append(tmpCJLump)
 		return ansLumpList
-
-	def encodeAsYin(self, codeInfoList):
-		"""運算 "胤" """
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-
-		if firstCodeInfo.getSpecialRadix()==CJCodeInfo.RADIX_儿:
-			codeInfo=self.encodeAsGoose([CJCodeInfo.CODE_INFO_丨, secondCodeInfo, CJCodeInfo.CODE_INFO_乚])
-			return codeInfo
-		elif firstCodeInfo.getSpecialRadix()==CJCodeInfo.RADIX_丨丨:
-			codeInfo=self.encodeAsGoose([CJCodeInfo.CODE_INFO_丨, secondCodeInfo, CJCodeInfo.CODE_INFO_丨])
-			return codeInfo
-		else:
-			return self.encodeAsInvalidate(codeInfoList)
-
 

@@ -42,7 +42,7 @@ class CodeInfo:
 		self._isSupportRadixCode=isSupportRadixCode
 
 	def __str__(self):
-		return "{{{0}}}".format(self.getCode())
+		return "{{{0}}}".format(self.toCode())
 
 	def __repr__(self):
 		return str(self)
