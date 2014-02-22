@@ -8,7 +8,6 @@
 
 		<範本 檔案="template/cj.xml" />
 
-		<部件 檔案="style/cj.xml" />
 		<部件 檔案="component/CJK/cj.xml" />
 		<部件 檔案="component/CJK-A/cj.xml" />
 

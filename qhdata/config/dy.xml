@@ -8,7 +8,6 @@
 
 		<範本 檔案="template/dy.xml" />
 
-		<部件 檔案="style/dy.xml" />
 		<部件 檔案="component/CJK/dy.xml" />
 		<部件 檔案="component/CJK-A/dy.xml" />
 
