@@ -28,4 +28,5 @@ tarball: all tex/principle.pdf
 
 clean:
 	rm -f *.pyc *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log
+	rm -f charinfo/*/*.bak.txt charinfo/*/*.rst.txt
 
