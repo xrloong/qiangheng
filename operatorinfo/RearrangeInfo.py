@@ -137,46 +137,6 @@ class RearrangeInfoSquare:
 		charDesc.setCompList([tmpDesc, tmpDesc,])
 		charDesc.setOperatorAndDirection('志', ansDirection)
 
-class RearrangeInfoGo:
-	def __init__(self, descMgr, emptyCharDescGenerator):
-		self.descMgr=descMgr
-		self.emptyCharDescGenerator=emptyCharDescGenerator
-
-	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldCompList=charDesc.getCompList()
-
-		if oldOperator=='衍':
-			ansDirection='-'
-			x=oldCompList[0]
-			y=oldCompList[1]
-
-			leftDesc=self.descMgr.getExpandDescriptionByNameInNetwork('彳')
-			rightDesc=self.descMgr.getExpandDescriptionByNameInNetwork('亍')
-			if x.getName()=='行':
-				charDesc.setCompList([leftDesc, y, rightDesc])
-				charDesc.setOperatorAndDirection('湘', '-')
-
-class RearrangeInfoHeart:
-	def __init__(self, descMgr, emptyCharDescGenerator):
-		self.descMgr=descMgr
-		self.emptyCharDescGenerator=emptyCharDescGenerator
-
-	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldCompList=charDesc.getCompList()
-
-		if oldOperator=='衷':
-			ansDirection='|'
-			x=oldCompList[0]
-			y=oldCompList[1]
-
-			upDesc=self.descMgr.getExpandDescriptionByNameInNetwork('亠')
-			downDesc=self.descMgr.getExpandDescriptionByNameInNetwork('[衣下]')
-			if x.getName()=='衣':
-				charDesc.setCompList([upDesc, y, downDesc])
-				charDesc.setOperatorAndDirection('志', '|')
-
 class RearrangeInfoSpecial:
 	def __init__(self):
 		pass

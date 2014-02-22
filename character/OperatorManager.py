@@ -41,8 +41,6 @@ class OperatorManager:
 			'龜':RearrangeInfoSame(),
 			'水':RearrangeInfoSame(),
 			'錯':RearrangeInfoSame(),
-#			'衍':RearrangeInfoGo(self.descMgr, self.emptyCharDescGenerator),
-			'衷':RearrangeInfoHeart(self.descMgr, self.emptyCharDescGenerator),
 			'起':RearrangeInfoSame(),
 			'廖':RearrangeInfoSame(),
 			'載':RearrangeInfoSame(),
@@ -95,25 +93,21 @@ class OperatorManager:
 class OperatorManager_AR(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
-		self.rearrangeInfoDict['衍']=RearrangeInfoGo(self.descMgr, self.emptyCharDescGenerator)
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical()
 
 class OperatorManager_BS(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
-		self.rearrangeInfoDict['衍']=RearrangeInfoGo(self.descMgr, self.emptyCharDescGenerator)
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp()
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical()
 
 class OperatorManager_CJ(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
-		self.rearrangeInfoDict['衍']=RearrangeInfoGo(self.descMgr, self.emptyCharDescGenerator)
 
 class OperatorManager_DY(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
-		self.rearrangeInfoDict['衍']=RearrangeInfoGo(self.descMgr, self.emptyCharDescGenerator)
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp()
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical()
 
