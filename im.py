@@ -490,28 +490,53 @@ class ZhengMa(NoneIM):
 	class ZMCharInfo(NoneIM.CharInfo):
 		def __init__(self, charname, prop):
 			NoneIM.CharInfo.__init__(self, charname, prop)
+			self._zm_rtlist=[]
 			self._zm_incode=None
 			self._zm_tpcode=None
 			if len(prop)>=2:
-				self.setZMProp(prop[1], prop[2])
+				str_rtlist=prop[1]
+				if str_rtlist=='XXXX':
+					self.setZMProp([])
+				else:
+					self.setZMProp(str_rtlist.split(','))
 
-		def setZMProp(self, zm_incode, zm_tpcode):
-			if zm_incode=='XXXX' or zm_tpcode=='XXXX':
-				self._zm_incode=None
-				self._zm_tpcode=None
-			else:
-				self._zm_incode=zm_incode
-				self._zm_tpcode=zm_tpcode
+		def setZMProp(self, zm_rtlist):
+			self._zm_rtlist=zm_rtlist
 
 		def getZMProp(self):
-			return [self._zm_incode, self._zm_tpcode]
+			return self._zm_rtlist
 
 		@property
 		def zm(self):
-			if self._zm_incode==None:
+			ans=''
+			tmp_rtlist=self._zm_rtlist
+			if len(tmp_rtlist)==0:
 				return None
+			elif len(tmp_rtlist)==1:
+				ans=self._zm_rtlist[0]
+			elif len(tmp_rtlist)==2:
+				if len(tmp_rtlist[0])==1 and len(tmp_rtlist[1])==1:
+					ans=''.join(self._zm_rtlist[0:2])
+					ans=self._zm_rtlist[0][0]+self._zm_rtlist[-1][0]+'vv'
+				else:
+					ans=(self._zm_rtlist[0]+self._zm_rtlist[-1])[:4]
+			elif len(tmp_rtlist)==3:
+				if len(tmp_rtlist[0])==1:
+					ans=self._zm_rtlist[0][0]+self._zm_rtlist[1][0]+self._zm_rtlist[-1][0:2]
+				elif len(tmp_rtlist[0])==2:
+					ans=self._zm_rtlist[0][0:2]+self._zm_rtlist[-2][0]+self._zm_rtlist[-1][0]
+				elif len(tmp_rtlist[0])==3:
+					ans=self._zm_rtlist[0][0:3]+self._zm_rtlist[-1][0]
+			elif len(tmp_rtlist)==4:
+				if len(tmp_rtlist[0])==1:
+					ans=self._zm_rtlist[0][0]+self._zm_rtlist[1][0]+self._zm_rtlist[-2][0]+self._zm_rtlist[-1][0]
+				elif len(tmp_rtlist[0])==2:
+					ans=self._zm_rtlist[0][0:2]+self._zm_rtlist[-2][0]+self._zm_rtlist[-1][0]
+				elif len(tmp_rtlist[0])==3:
+					ans=self._zm_rtlist[0][0:3]+self._zm_rtlist[-1][0]
 			else:
-				return self._zm_incode
+				ans=''
+			return ans
 
 	def __init__(self):
 		self.keyMaps=[
@@ -549,7 +574,7 @@ class ZhengMa(NoneIM):
 			return ch.zm
 
 	def setCharTree(self, ch):
-		if ch.getZMProp()[0]:
+		if ch.getZMProp():
 			return
 
 		complist=self.getAllComp(ch)
@@ -557,82 +582,11 @@ class ZhengMa(NoneIM):
 		for tmpch in complist:
 			self.setCharTree(tmpch)
 
-		def codeToList(code, type):
-			if not code or not type:
-				return None
-			if type[0]=='1':
-				return [[code, type]]
-			elif type[0]=='2':
-				if type[1]=='1':
-					return [[code[0], '11'], [code[1:], '1%d'%len(code[1:])]]
-				elif type[1]=='2':
-					return [[code[0:2], '12'], [code[2:], '1%d'%len(code[2:])]]
-				elif type[1]=='3':
-					return [[code[0:3], '13'], [code[3:], '11']]
-			elif type[0]=='3':
-				if type[1]=='1':
-					return [[code[0], '11'], [code[1], '11'], [code[2:], '1%d'%len(code[2:])]]
-				elif type[1]=='2':
-					return [[code[0:2], '12'], [code[2], '11'], [code[3], '11']]
-				elif type[1]=='3':
-					return [[code[0:3], '13'], [code[3], '11']]
-			elif type[0]=='4':
-				if type[1]=='1':
-					return [[code[0], '11'], [code[1], '11'], [code[2], '11'], [code[3], '11']]
-				elif type[1]=='2':
-					return [[code[0:2], '12'], [code[2], '11'], [code[3], '11']]
-				elif type[1]=='3':
-					return [[code[0:3], '13'], [code[3], '11']]
-
-		def listToCode(l):
-			nmCompList=sum(map(lambda x: int(x[1][0]), l))
-			if nmCompList==1:
-				# 如果部件數為 1
-				# 鄭碼為首部件的全碼
-				return [l[0][0], '1'+l[0][1][1]]
-			elif nmCompList==2:
-				# 如果部件數為 2
-				# 鄭碼為首部件及尾部件的全碼
-				if l[0][1][1]=='1':
-					return [l[0][0][0:2]+l[-1][0][0:3], '21']
-				elif l[0][1][1]=='2':
-					return [l[0][0][0:2]+l[-1][0][0:2], '22']
-				elif l[0][1][1]=='3':
-					return [l[0][0][0:3]+l[-1][0][0:1], '23']
-#				return [l[0][0]+l[1][0], '2'+l[0][1][1]]
-			elif nmCompList==3:
-				# 如果部件數為 3
-				if l[0][1][1]=='1':
-					# 如果首部件為單碼
-					# 鄭碼為首部件的首碼，次末部件的首碼及尾部件的雙碼
-					return [l[0][0][0]+l[-2][0][0]+l[-1][0][0:2], '31']
-				elif l[0][1][1]=='2':
-					# 如果首部件為雙碼
-					# 鄭碼為首部件的雙碼，次末部件的首碼及尾部件的首碼
-					return [l[0][0][0:2]+l[-2][0][0]+l[-1][0][0], '32']
-				elif l[0][1][1]=='3':
-					# 如果首部件為三碼
-					# 鄭碼為首部件的雙碼，次末部件的首碼及尾部件的首碼
-					return [l[0][0][0:3]+l[-1][0][0], '33']
-			elif nmCompList>=4:
-				# 如果部件數超過 4
-				if l[0][1][1]=='1':
-					# 如果首部件為單碼
-					# 鄭碼為首部件的首碼、次首部件的首碼、次末部件的首碼及尾部件的雙碼
-					return [l[0][0][0]+l[1][0][0]+l[-2][0][0]+l[-1][0][0], '41']
-				elif l[0][1][1]=='2':
-					# 如果首部件為雙碼
-					# 鄭碼為首部件的雙碼，次末部件的首碼及尾部件的首碼
-					return [l[0][0][0:2]+l[-2][0][0]+l[-1][0][0], '42']
-				else:
-					# 如果首部件為三碼
-					return [l[0][0][0:3]+l[-1][0][0], '43']
-
 		if all(complist):
-			ctlist=list(map(lambda c: codeToList(*c.getZMProp()), complist))
-			if complist and all(ctlist):
-				code, type=listToCode(sum(ctlist, []))
-				ch.setZMProp(code, type)
+			rtlist=sum(map(lambda c: c.getZMProp(), complist), [])
+			if complist and all(rtlist):
+				rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
+				ch.setZMProp(rtlist)
 
 if __name__=='__main__':
 	pass
