@@ -46,6 +46,13 @@ class OperatorManager:
 			'圭':RearrangeInfoV4(operatorV4),
 			'燚':RearrangeInfoSquare(self.emptyCharDescGenerator, operatorH2, operatorV2),
 		}
+		def operatorGenerator(operatorName):
+			return Operator.Operator(operatorName)
+
+		self.operatorGenerator=operatorGenerator
+
+	def getOperatorGenerator(self):
+		return self.operatorGenerator
 
 	@staticmethod
 	def getOperatorByName(operatorName):

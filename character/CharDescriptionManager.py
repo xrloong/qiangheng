@@ -20,17 +20,17 @@ class CharDescriptionManager:
 
 		def CharDescGenerator(charName, structInfo=['龜', []]):
 			operatorName, CompList=structInfo
+			operator=self.operatorGenerator(operatorName)
+
 			if len(operatorName)>1:
 				# 暫時以運算名稱的字數來區分是否為範本
-				charDesc=TemplateCharDesc(charName, operatorName, CompList)
+				charDesc=TemplateCharDesc(charName, operator, CompList)
 				return charDesc
-
-			operator=OperatorManager.getOperatorByName(operatorName)
-			if not operator.isAvailableOperation():
-				print("<!-- 錯誤；不合法的運算 %s -->"%operatorName)
-				return None
-
-			charDesc=CharDesc(charName, operator, CompList)
+			else:
+				if operator.isAvailableOperation():
+					charDesc=CharDesc(charName, operator, CompList)
+				else:
+					charDesc=None
 			return charDesc
 
 		def emptyCharInfoGenerator():
@@ -65,6 +65,8 @@ class CharDescriptionManager:
 		self.emptyCharDescGenerator=emptyCharDescGenerator
 		self.charDescQueryer=charDescQueryer
 		self.charDescRearranger=charDescRearranger
+
+		self.operatorGenerator=self.operationMgr.getOperatorGenerator()
 
 	def keys(self):
 		return self.characterDB.keys()
@@ -217,6 +219,8 @@ class CharDescriptionManager:
 	def rearrangeRecursively(self, charDesc):
 		self.charDescRearranger(charDesc)
 		for childDesc in charDesc.getCompList():
+			if childDesc.isTemplate():
+				childDesc=self.getCharDescFromTemplate(childDesc)
 			self.rearrangeRecursively(childDesc)
 
 if __name__=='__main__':

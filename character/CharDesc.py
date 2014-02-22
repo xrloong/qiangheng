@@ -81,10 +81,11 @@ class CharDesc:
 		return self.chInfo.isToShow()
 
 class TemplateCharDesc(CharDesc):
-	def __init__(self, name, templateName, argumentList):
-		CharDesc.__init__(self, name, templateName, argumentList)
+	def __init__(self, name, operator, argumentList):
+		CharDesc.__init__(self, name, operator, argumentList)
 
-		self.templateName=templateName
+		self.operator=operator
+		self.templateName=operator.getName()
 		self.templateDesc=None
 		self.argumentList=argumentList
 		self.anonymous=True
@@ -116,7 +117,7 @@ class TemplateCharDesc(CharDesc):
 		return self.getCharDesc().getCompList()
 
 	def copyDescription(self):
-		templateDesc=TemplateCharDesc(self.getName(), self.getTemplateName(), self.templateDesc)
+		templateDesc=TemplateCharDesc(self.getName(), self.operator, self.templateDesc)
 		return templateDesc
 
 if __name__=='__main__':
