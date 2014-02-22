@@ -117,7 +117,7 @@
 行列與大易，除了它們所選用的字根集是不同的，大致上是很相像的。
 兩者的規則皆為前三後一，即首碼、次碼、三碼和末碼。
 
-同樣也是以``曉''為例。
+同樣也是以``曉''為例。\\
 \begin{tabular}{llll}
 字  & 行列碼 & 大易碼\\
 日  & P(0\tac) & D\\
@@ -128,20 +128,26 @@
 曉  & PRRS(0\tac4\tac4\tac2-) & DFFQ\\
 \end{tabular}
 
-使用``$\mbox{字}_{\mbox{行列碼}}$''來表示一個字的行列碼。
-如$\mbox{``曉''}_{\mbox{行列碼}}$=``PRRS''。
-使用``$\mbox{字}_{\mbox{大易碼}}$''來表示一個字的大易碼。
-如$\mbox{``曉''}_{\mbox{大易碼}}$=``DFFQ''。
-若$(\mbox{丙}=\mbox{甲}+\mbox{乙})$
-
 \subsection{遞迴式}
+分別使用``$\mbox{字}_{\mbox{行}}$''和``$\mbox{字}_{\mbox{易}}$''來表示一個字的行列碼與大易碼。\\
+如$\mbox{``曉''}_{\mbox{行}}$=``PRRS''、$\mbox{``曉''}_{\mbox{易}}$=``DFFQ''。
+\begin{subequations}
+  \begin{align}
+  \mbox{字}_{\mbox{行}} &= 行列碼\\
+  \mbox{字}_{\mbox{易}} &= 大易碼\\
+  甲 \oplus 乙 &= 取(甲+乙)的前三後一碼
+  \end{align}
+\end{subequations}
+
+若$(\mbox{丙}=\mbox{甲}+\mbox{乙})$
 其遞迴算式為：
 \begin{subequations}
   \begin{align}
-  \mbox{丙}_{\mbox{行列碼}}&=\mbox{取}_{\mbox{前三後一}}(\mbox{甲}_{\mbox{行列碼}}+\mbox{乙}_{\mbox{行列碼}})\\
-  \mbox{丙}_{\mbox{大易碼}}&=\mbox{取}_{\mbox{前三後一}}(\mbox{甲}_{\mbox{大易碼}}+\mbox{乙}_{\mbox{大易碼}})
+  \mbox{丙}_{\mbox{行}}&=\mbox{取}_{\mbox{前三後一}}(\mbox{甲}_{\mbox{行}} \oplus \mbox{乙}_{\mbox{行}})\\
+  \mbox{丙}_{\mbox{易}}&=\mbox{取}_{\mbox{前三後一}}(\mbox{甲}_{\mbox{易}} \oplus \mbox{乙}_{\mbox{易}})
   \end{align}
 \end{subequations}
+
 \subsection{資料格式說明}
 
 \section{嘸蝦米輸入法}
@@ -150,70 +156,42 @@
 特別的是，嘸蝦米多了一個補碼規定－－若取碼不足兩碼，則要根據最後一筆劃添加補碼。
 為此，為嘸蝦米添加一個屬性：
 用``嘸''、``.嘸補'' 表示一個字的嘸蝦米碼和補碼，\\
-使用``$\mbox{字}_{\mbox{嘸蝦米補碼}}$''來表示一個字的嘸蝦米補碼。
-使用``$\mbox{字}_{\mbox{嘸蝦米碼}}$''來表示一個字的嘸蝦米碼。
+\subsection{遞迴式}
+使用``$\mbox{字}_{\mbox{嘸補}}$''來表示一個字的嘸蝦米補碼。
+使用``$\mbox{字}_{\mbox{嘸}}$''來表示一個字的嘸蝦米碼。
 $\mbox{``垚''}_{\mbox{嘸}}=YYY$\\
 $\mbox{``兀''}_{\mbox{嘸補}}=L$\\
-函數``\mbox{補}(X, Y)'' 則會根據 $X$ 的長度是否小於等於二碼來決定是否附加 $Y$
 則
 \begin{subequations}
   \begin{align}
-  \mbox{丙}_{\mbox{嘸蝦米補碼}}&=\mbox{乙}_{\mbox{嘸蝦米補碼}}\\
-  \mbox{暫}_{\mbox{嘸蝦米碼}}&=\mbox{取}_{\mbox{前三後一}}(\mbox{甲}_{\mbox{嘸蝦米碼}}+\mbox{乙}_{\mbox{嘸蝦米碼}})\\
-  \mbox{丙}_{\mbox{嘸蝦米碼}}&= \left\{\begin{array}{ll}
-%        1 & 1\\
-%        2 & 1
-        \mbox{暫}_{\mbox{嘸蝦米碼}} & \mbox{若$\mbox{暫}_{\mbox{嘸蝦米碼}} \geq $三碼}\\
-        \mbox{暫}_{\mbox{嘸蝦米碼}}+\mbox{丙}_{\mbox{嘸蝦米補碼}} & \mbox{若$\mbox{暫}_{\mbox{嘸蝦米碼}} \leq $二碼}
-      \end{array}\right.
+  \mbox{字}_{\mbox{嘸}} &= 嘸蝦米碼\\
+  \mbox{字}_{\mbox{嘸補}} &= 嘸蝦米補碼\\
+  \mbox{字}_{\mbox{嘸暫}} &= 嘸蝦米暫時碼，即沒有補碼\\
+  \mbox{字}_{\mbox{嘸}} &=
+      \left\{\begin{array}{ll}
+        \mbox{字}_{\mbox{嘸暫}}
+           & \mbox{若$\mbox{字}_{\mbox{嘸暫}} \geq $三碼}\\
+        \mbox{字}_{\mbox{嘸暫}}+\mbox{字}_{\mbox{嘸補}}
+           & \mbox{若$\mbox{丙}_{\mbox{嘸暫}} \leq $二碼}
+      \end{array}\right.\\
+  甲 \oplus 乙 &= 取(甲+乙)的前三後一碼\\
   \end{align}
 \end{subequations}
 
-\subsection{資料格式說明}
-
-\section{倉頡輸入法}
-\subsection{輸入法說明}
-
-倉頡的規則分為整體字和組合字。
-整體字若不足四碼則全取，否則取首、二、三、末碼。
-若為組合字，
-``倉本''表示當成本字的倉頡碼。
-``倉部''表示當成部件的倉頡碼。\\
-$\mbox{``垚''}_{\mbox{倉本}}=GGG$\\
-$\mbox{``八''}_{\mbox{倉部}}=HO$\\
-
+若$(\mbox{丙}=\mbox{甲}+\mbox{乙})$
+其遞迴算式為：
 \begin{subequations}
   \begin{align}
-  \mbox{丙}_{\mbox{倉本}}&=\mbox{首尾}(\mbox{甲}_{\mbox{倉部}})
-      + \mbox{首二尾}({\mbox{乙}_{\mbox{倉部}}})\\
-  \mbox{丙}_{\mbox{倉部}}&= \mbox{首二尾}(
-      \mbox{首尾}(\mbox{甲}_{\mbox{倉部}})
-      + \mbox{首尾}(\mbox{甲}_{\mbox{倉部}})
-      )
+  \mbox{丙}_{\mbox{嘸補}}&=\mbox{乙}_{\mbox{嘸補}}\\
+  \mbox{丙}_{\mbox{嘸暫}}&=\mbox{甲}_{\mbox{嘸暫}} \oplus \mbox{乙}_{\mbox{嘸暫}}\\
   \end{align}
 \end{subequations}
 
-倉頡對於字根的取碼有特殊規定。
-若字本身為輔助字根，則不能直接取碼。
-
-如氵為水的輔助字根。在江時，氵取碼為``水''
-但若當獨立字時，則要取碼``卜一''
-工為一的輔助字助，
-若當獨立字時，則要取碼``一中一''
-於是，每一個字根就有可能有另一種``獨體字編碼''的值。
-
-另，以足來說，當個別取字時，為 "口卜人"
-但當偏旁時，取'口卜中一'
-不過這會有問是在於；蹙促
-
 \subsection{資料格式說明}
-%倉頡對獨體字和組合字的規則不太一樣。
-%於是，
 \subsection{注意事項}
-{\LARGE
-注意：這裡使用的方法是有問題的，須對一些字做例外處理：如毈、
-主因是：倉頡分割部件的方式，及取碼方式。
-}\\
+嘸蝦米的數字一到十分別為：e,r,s,f,w,l,c,b,k,j。
+不用補碼。
+目前尚未實做。
 
 \section{鄭碼輸入法}
 \subsection{輸入法說明}
@@ -224,13 +202,23 @@ $\mbox{``八''}_{\mbox{倉部}}=HO$\\
 鄭碼會依不同的情況，可以省略一些部件或位碼。
 須要計算部件數，並依其個數，來決定規則。
 不過，鄭碼會用到的字根最多只有頭兩個和尾兩個，總共最多四個。
-使用``$\mbox{字}_{\mbox{鄭碼字根串列}}$''來表示一個字的字根串列。
-如$\mbox{``曉''}_{\mbox{鄭碼字根串列}}=[\mbox{``日''}, \mbox{``土''}, \mbox{``土''}, \mbox{兀}]$\\
 
-因此，有以下特性：
+\subsection{遞迴式}
+使用``$\mbox{字}_{\mbox{鄭串}}$''來表示一個字的字根串列。
+如$\mbox{``曉''}_{\mbox{鄭串}}=[\mbox{``日''}, \mbox{``土''}, \mbox{``土''}, \mbox{兀}]$\\
+
 \begin{subequations}
   \begin{align}
-  \mbox{丙}_{\mbox{鄭碼字根串列}} &= \mbox{甲}_{\mbox{鄭碼字根串列}} + \mbox{乙}_{\mbox{鄭碼字根串列}} \\
+    \mbox{字}_{\mbox{鄭串}} &= 表示一個字的鄭碼字根串列。\\
+    甲 \oplus 乙 &= 取(甲+乙)的鄭碼字根串列的前二後二。
+  \end{align}
+\end{subequations}
+
+若$(\mbox{丙}=\mbox{甲}+\mbox{乙})$
+其遞迴算式為：
+\begin{subequations}
+  \begin{align}
+  \mbox{丙}_{\mbox{鄭串}} &= \mbox{甲}_{\mbox{鄭串}} \oplus \mbox{乙}_{\mbox{鄭串}} \\
   \end{align}
 \end{subequations}
 
@@ -252,6 +240,62 @@ $\mbox{``八''}_{\mbox{倉部}}=HO$\\
   & 2 & 首根二碼+次末根一碼+末根一碼\\
   & 3 & 首根三碼+末根一碼\\
 \end{tabular}
+
+\section{倉頡輸入法}
+\subsection{輸入法說明}
+倉頡為一複雜的輸入法。會考慮字的結構。
+
+倉頡的規則分為整體字和組合字。
+整體字若不足四碼則全取，否則取首、次、三、尾碼。
+若為組合字，字首取首、尾兩碼，字身取首、次、尾三碼。
+
+若字身為組合字，當次字首為一碼時，取次字首和次字身取首、尾兩碼。
+否則取次字身取首、尾兩碼和次字身取尾碼。
+
+倉頡的分割，是以視覺上的分割，而非邏輯上的分割，如``順''。
+對於熟悉中文字的人，會很直覺地分成``川''和``頁''。
+但倉頡則是分成``丨''及剩下的部分（即`丨丨頁'）。
+
+此外，還要考慮字身的方向性。可分水平、垂直，其它。
+如``卲''不分為``召''和``叩''，而是分為``召''和``阝''。
+因為``召''的分向為垂直方向，但``卲''的方向為水平。
+
+\subsection{遞迴式}
+\begin{subequations}
+  \begin{align}
+    \mbox{字}_{\mbox{倉串}} &= 表示一個字的倉頡碼字根串列。\\
+    \mbox{字}_{\mbox{倉向}} &= 表示一個字的字根組成方向。\\
+    \mbox{字}_{\mbox{倉身}} &= 表示一個字當另一個字的字身時的倉頡碼。\\
+  \end{align}
+\end{subequations}
+
+如$\mbox{``曉''}_{\mbox{倉串}}=[\mbox{``日''}, \mbox{``土''}, \mbox{``土''}, \mbox{``山''}]$\\
+如$\mbox{``曉''}_{\mbox{倉向}}=`-'$\\
+如$\mbox{``曉''}_{\mbox{倉身}}=[\mbox{``日''}, \mbox{``土''}, \mbox{``山''}]$\\
+\begin{subequations}
+  \begin{align}
+    \oplus_{\mbox{字}}(甲) &=
+      \left\{\begin{array}{ll}
+        \mbox{甲}_{\mbox{倉串}}
+           & \mbox{若$\mbox{甲}_{\mbox{倉向}} = \mbox{字}_{\mbox{倉向}}$}\\
+        $[$ \mbox{甲}_{\mbox{倉身}} $]$
+           & \mbox{若$\mbox{甲}_{\mbox{倉向}} \neq \mbox{字}_{\mbox{倉向}}$}
+      \end{array}\right.\\
+  \mbox{丙}_{\mbox{倉串}} &= \oplus_{\mbox{丙}}(甲) + \oplus_{\mbox{丙}}(乙)\\
+  \end{align}
+\end{subequations}
+
+\subsection{資料格式說明}
+倉頡對於字根的取碼有特殊規定。
+若字本身為輔助字根，則不能直接取碼。
+
+如``氵''為``水''的輔助字根，``工''為``一''的輔助字助。
+在``江''時，其倉頡碼為``水一''
+但若``氵''當獨立字時，則要取碼``卜一''
+若``工''當獨立字時，則要取碼``一中一''
+
+\subsection{注意事項}
+注意：實作時，有些字的特徵碼未處理上確，造成錯誤，有待解決。如``贕''。
 
 \subsection{資料格式說明}
 \end{document}
