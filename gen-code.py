@@ -1,4 +1,7 @@
 
+import char
+import im
+
 filename='U4E00-U9FA6.txt'
 fileencoding='utf-8'
 f=open(filename, encoding=fileencoding)
@@ -39,22 +42,25 @@ for line in f.readlines():
 			print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
 		else:
 			chlist.append(ll[1])
-			chdict[ll[1]]=ll[2:]
-
-import im
+			chdict[ll[1]]=char.Char(ll[1], ll[2:])
 
 imchoices=['倉', '行', '易', '無', '鄭']
 choice=imchoices[1]
 
 codelist=[]
 if choice=='倉':
+	print(chdict['王'].cj)
 	im.CangJie()
 elif choice=='行':
+	print(chdict['王'].ar)
 	im.Array()
 elif choice=='易':
+	print(chdict['王'].dy)
 	im.DaYi()
 elif choice=='無':
+	print(chdict['王'].bs)
 	im.Boshiamy()
 elif choice=='鄭':
+	print(chdict['王'].zm)
 	im.ZhengMa()
 
