@@ -65,7 +65,8 @@ for filename in filenamelist:
 				chlist.append(ll[1])
 				chdict[ll[1]]=char.Char(ll[1], ll[2:])
 
-def genTable(chdict, options):
+def genFile(chdict, options):
+	style=options.style
 	choice=options.imname
 
 	if choice in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
@@ -80,26 +81,27 @@ def genTable(chdict, options):
 		z=im.ZhengMa()
 	else:
 		z=im.NoneIM()
-	table=z.genTable(chdict)
-	for x in sorted(table): print(*x, sep='\t')
 
-def genFile(chdict, options):
-	style=options.style
+	if style in ['scim']:
+		p=platform.ScimPlatform(z)
+	elif style in ['gcin']:
+		p=platform.GcinPlatform(z)
+	elif style in ['msim']:
+		p=platform.MSimPlatform(z)
+	else:
+		p=platform.NonePlatform(z)
 
 	# 產生檔頭
-	if style in ['scim']:
-		p=platform.ScimPlatform()
-	elif style in ['gcin']:
-		p=platform.GcinPlatform()
-	elif style in ['msim']:
-		p=platform.MSimPlatform()
-	else:
-		p=platform.NonePlatform()
+	header=p.genHeader()
 
-	print(p.genHeader())
-	print(p.strBeginTable)
-	genTable(chdict, options)
-	print(p.strEndTable)
+	if header: print(header)
+	if p.strBeginTable: print(p.strBeginTable)
+
+	table=p.genCodeMappingsTable(z.genIMMapping(chdict))
+	if table: print(table)
+#	for x in sorted(table): print(*x, sep='\t')
+
+	if p.strEndTable: print(p.strEndTable)
 
 
 genFile(chdict, options)

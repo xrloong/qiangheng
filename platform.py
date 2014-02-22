@@ -1,16 +1,44 @@
 
 class NonePlatform:
-    def __init__(self):
+
+    def __init__(self, im):
+        self.im=im
+        self.cmfmt='{0}\t{1}'
+        self.fmt='{0} {1}'
+
         self.strBeginTable=""
         self.strEndTable=""
+
+    def keyMappings(self):
+	    # 要求 self.im.keyMaps 的格式為
+	    # [  [按鍵一, 提示一],
+	    #    [按鍵二, 提示二],
+	    #    [按鍵三, 提示三],
+	    # ]
+	    return map(lambda x: self.fmt.format(*x), self.im.keyMaps)
+
+    def genCodeMappingsTable(self, cm):
+	    return "\n".join(map(lambda x : self.cmfmt.format(*x), cm))
+
+    def genKeyMappings(self):
+	    return "\n".join(self.keyMappings())
 
     def genHeader(self):
 	    return ""
 
 class ScimPlatform(NonePlatform):
-    def __init__(self):
+    def __init__(self, im):
+        self.im=im
+        self.cmfmt='{0}\t{1}'
+        self.fmt='{0} {1}'
+
         self.strBeginTable="BEGIN_TABLE"
         self.strEndTable="END_TABLE"
+
+    def genKeyMappings(self):
+        return 'BEGIN_CHAR_PROMPTS_DEFINITION\n' + \
+            '\n'.join(self.keyMappings()) + \
+            '\nEND_CHAR_PROMPTS_DEFINITION\n'
 
     def genHeader(self):
 	    return """SCIM_Generic_Table_Phrase_Library_TEXT
@@ -72,40 +100,21 @@ PAGE_UP_KEYS = Page_Up,comma,minus
 
 PAGE_DOWN_KEYS = Page_Down,period,equal
 
-BEGIN_CHAR_PROMPTS_DEFINITION
-a 日
-b 月
-c 金
-d 木
-e 水
-f 火
-g 土
-h 竹
-i 戈
-j 十
-k 大
-l 中
-m 一
-n 弓
-o 人
-p 心
-q 手
-r 口
-s 尸
-t 廿
-u 山
-v 女
-w 田
-x 難
-y 卜
-z 符
-END_CHAR_PROMPTS_DEFINITION
-END_DEFINITION"""
+"""+self.genKeyMappings()+"END_DEFINITION\n"
 
 class GcinPlatform(NonePlatform):
-    def __init__(self):
+    def __init__(self, im):
+        self.im=im
+        self.cmfmt='{0}\t{1}'
+        self.fmt='{0} {1}'
+
         self.strBeginTable="%chardef begin"
         self.strEndTable="%chardef end"
+
+    def genKeyMappings(self):
+        return '%keyname begin\n' + \
+            '\n'.join(self.keyMappings()) + \
+            '\n%keyname end\n'
 
     def genHeader(self):
 	    return """# 瑲珩
@@ -114,68 +123,22 @@ class GcinPlatform(NonePlatform):
 %cname {{ SRF.name_tw }}
 %selkey 1234567890
 %space_style 4
-%keyname begin
-a 日
-b 月
-c 金
-d 木
-e 水
-f 火
-g 土
-h 竹
-i 戈
-j 十
-k 大
-l 中
-m 一
-n 弓
-o 人
-p 心
-q 手
-r 口
-s 尸
-t 廿
-u 山
-v 女
-w 田
-x 難
-y 卜
-z 符
-%keyname end
-"""
+"""+self.genKeyMappings()
 
 class MSimPlatform(NonePlatform):
-    def __init__(self):
+    def __init__(self, im):
+        self.im=im
+        self.cmfmt='{0} {1}'
+        self.fmt='/S {0}{1}'
+
         self.strBeginTable=""
         self.strEndTable=""
 
+    def genKeyMappings(self):
+        return '\n'.join(self.keyMappings())
+
     def genHeader(self):
-	    return """/S A日
-/S B月
-/S C金
-/S D木
-/S E水
-/S F火
-/S G土
-/S H竹
-/S I戈
-/S J十
-/S K大
-/S L中
-/S M一
-/S N弓
-/S O人
-/S P心
-/S Q手
-/S R口
-/S S尸
-/S T廿
-/S U山
-/S V女
-/S W田
-/S X難
-/S Y卜
-/S Z符"""
+        return self.genKeyMappings()
 
 if __name__=='__main__':
     pass
