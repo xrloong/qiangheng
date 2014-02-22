@@ -19,9 +19,12 @@ class QiangHeng:
 		[imProp, toTemplateList, toComponentList, toCodeList]=configList
 		imModule=IMMgr.IMMgr.getIMModule(imProp)
 
-		self.initManager(imModule)
+		StateManager.setIMModule(imModule)
 
+		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(imModule)
 		self.descMgr.loadData(toTemplateList, toComponentList, toCodeList)
+
+		StateManager.setRadixManager(self.descMgr.radixManager)
 
 		self.hanziNetwork=HanZiNetwork.HanZiNetwork.construct(self.descMgr)
 
@@ -31,11 +34,6 @@ class QiangHeng:
 			self.toXML(imInfo, codeMappingInfoList)
 		else:
 			self.toTXT(codeMappingInfoList)
-
-	def initManager(self, imModule):
-		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(imModule)
-
-		StateManager.setIMModule(imModule)
 
 	def readConfig(self, configFileName):
 		f=open(configFileName, encoding='utf-8-sig')

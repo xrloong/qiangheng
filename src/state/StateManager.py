@@ -4,6 +4,7 @@
 __state_IMModule=None
 codeInfoEncoder=None
 characterDescriptionRearrangerGenerator=None
+radixManager=None
 
 def __init__(self):
 	pass
@@ -16,7 +17,13 @@ def setIMModule(imModule):
 	__state_IMModule=imModule
 	codeInfoEncoder=imModule.codeInfoEncoder
 	characterDescriptionRearrangerGenerator=imModule.CharacterDescriptionRearrangerGenerator
+	radixManager=imModule.CharacterDescriptionRearrangerGenerator
 
 def getIMModule():
 	return __state_IMModule
+
+
+def setRadixManager(radixMgr):
+	global radixManager
+	radixManager=radixMgr
 

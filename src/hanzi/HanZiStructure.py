@@ -31,13 +31,9 @@ class HanZiStructure:
 			pass
 
 class HanZiUnitStructure(HanZiStructure):
-	def __init__(self, codeVariance, codeInfoProperties):
+	def __init__(self, radixCodeInfo):
 		HanZiStructure.__init__(self)
-
-		codeInfo=StateManager.codeInfoEncoder.generateCodeInfo(codeInfoProperties)
-		codeInfo.multiplyCodeVarianceType(codeVariance)
-
-		self.codeInfoList=[codeInfo]
+		self.codeInfoList=[radixCodeInfo]
 
 	def getCodeInfoList(self):
 		return self.codeInfoList

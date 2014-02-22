@@ -4,6 +4,7 @@ import copy
 from util.topsort import topsort
 from util.topsort import CycleError
 from gear import Operator
+from state import StateManager
 
 from . import HanZiStructure
 from . import HanZiNode
@@ -30,6 +31,13 @@ class DescriptionManagerToHanZiNetworkConverter:
 			for structDesc in structDescList:
 				structDesc.setRootName(charName)
 				self.recursivelyAddStructure(structDesc)
+
+		for charName in sortedNameList:
+			radixManager=StateManager.radixManager
+			if radixManager.hasRadix(charName):
+				radixInfoList=radixManager.getRadixCodeInfoList(charName)
+				for radixCodeInfo in radixInfoList:
+					self.hanziNetwork.addRadixStructure(charName, radixCodeInfo)
 
 		self.hanziNetwork.setNodeTreeByOrder(sortedNameList)
 		return self.hanziNetwork
@@ -117,8 +125,7 @@ class HanZiNetwork:
 		if structDesc.isLeaf():
 			structure=self.addReferenceLink(structDesc)
 		elif structDesc.isTurtle():
-			structure=self.addUnitLink(structDesc)
-			self.addStructureIntoNode(structure, structDesc.getRootName())
+			pass
 		elif structDesc.isRoot():
 			structure=self.addLink(structDesc)
 			self.addStructureIntoNode(structure, structDesc.getRootName())
@@ -127,6 +134,12 @@ class HanZiNetwork:
 
 		structureName=structDesc.getUniqueName()
 		self.structureDict[structureName]=structure
+
+	def addRadixStructure(self, radixName, radixCodeInfo):
+		structure=self.addUnitLink(radixCodeInfo)
+		self.addStructureIntoNode(structure, radixName)
+#		structureName=radixName
+#		self.structureDict[structureName]=structure
 
 	def addStructureIntoNode(self, structure, nodeName):
 		dstNode=self.findNode(nodeName)
@@ -141,11 +154,8 @@ class HanZiNetwork:
 
 		return structure
 
-	def addUnitLink(self, structDesc):
-		codeVariance=structDesc.getCodeVarianceType()
-		codeInfoProperties=structDesc.getCodeInfoDict()
-		structure=HanZiStructure.HanZiUnitStructure(codeVariance, codeInfoProperties)
-
+	def addUnitLink(self, radixCodeInfo):
+		structure=HanZiStructure.HanZiUnitStructure(radixCodeInfo)
 		return structure
 
 	def addLink(self, structDesc):

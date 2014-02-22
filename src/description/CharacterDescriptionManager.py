@@ -79,15 +79,7 @@ class CharDescriptionManager:
 		rootNode=xmlNode.getroot()
 
 		turtleInfoList=self.parser.loadCodeInfoByParsingXML(rootNode)
-		for charDesc in turtleInfoList:
-			charName=charDesc.getName()
-			origCharDesc=self.characterDB.get(charName, None)
-			if origCharDesc==None:
-				origCharDesc=charDesc
-				self.characterDB[charName]=charDesc
-			origCharDesc.extendStructureList(charDesc.getStructureList())
-
-			self.radixManager.addRadixInfo(charName, charDesc)
+		self.radixManager.setTurtleInfoList(turtleInfoList)
 
 	def adjustData(self):
 		charDescRearranger=StateManager.characterDescriptionRearrangerGenerator(self.operationMgr)
