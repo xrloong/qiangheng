@@ -27,11 +27,34 @@ def checkgrammar(g):
 		return False
 	return True
 
+chlist=[]
+chdict={}
 for line in f.readlines():
 	l=line.strip()
 	if not l: continue
 	elif l[0]=='#': continue
 	ll=l.split('\t')
-	if len(ll)>=3 and not checkgrammar(ll[2]):
-		print(ll)
+	if len(ll)>=3:
+		if not checkgrammar(ll[2]):
+			print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
+		else:
+			chlist.append(ll[1])
+			chdict[ll[1]]=ll[2:]
+
+import im
+
+imchoices=['倉', '行', '易', '無', '鄭']
+choice=imchoices[1]
+
+codelist=[]
+if choice=='倉':
+	im.CangJie()
+elif choice=='行':
+	im.Array()
+elif choice=='易':
+	im.DaYi()
+elif choice=='無':
+	im.Boshiamy()
+elif choice=='鄭':
+	im.ZhengMa()
 
