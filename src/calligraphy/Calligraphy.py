@@ -27,12 +27,8 @@ class StrokeDrawing:
 			)
 
 class StrokeInfo:
-	def __init__(self, name, parameterList):
-		self.name = name
+	def __init__(self, parameterList):
 		self.parameterList=parameterList
-
-	def getName(self):
-		return self.name
 
 	def isValid(self):
 		return false
@@ -1427,8 +1423,6 @@ class Pane:
 		self.right=right
 		self.bottom=bottom
 
-		self.name="預設範圍"
-
 		self.setup()
 
 	def clone(self):
@@ -1445,12 +1439,6 @@ class Pane:
 	@property
 	def height(self):
 		return self.bottom-self.top+1
-
-	def setName(self, name):
-		self.name=name
-
-	def getName(self):
-		return self.name
 
 	def getAsList(self):
 		return [self.left, self.top, self.right, self.bottom]
@@ -1532,31 +1520,15 @@ class StrokeState:
 		return self.targetPane
 
 class Stroke(Writing):
-	def __init__(self, scope, startPoint, strokeInfo, state=StrokeState()):
+	def __init__(self, startPoint, strokeInfo, state=StrokeState()):
 		super().__init__(Pane())
 
-		self.scope=scope
 		self.startPoint=startPoint
 		self.strokeInfo=strokeInfo
 		self.state=state
 
-		self.scopeWidth = scope[2]-scope[0]
-		self.scopeHeight = scope[3]-scope[1]
-		self.width = self.scopeWidth-2
-		self.height = self.scopeHeight-2
-
-		self.left = self.scope[0]
-		self.top = self.scope[1]
-		self.right = self.scope[2]
-		self.bottom = self.scope[3]
-		self.centerX = self.left + self.width//2
-		self.centerY = self.top + self.height//2
-
 	def clone(self):
-		return Stroke(self.scope, self.startPoint, self.strokeInfo, self.state.clone())
-
-	def getTypeName(self):
-		return self.strokeInfo.getTypeName()
+		return Stroke(self.startPoint, self.strokeInfo, self.state.clone())
 
 	def getState(self):
 		return self.state

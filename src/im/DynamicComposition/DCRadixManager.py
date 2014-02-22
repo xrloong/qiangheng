@@ -109,19 +109,12 @@ class DCRadixParser(RadixParser):
 	def fromStrokeExpression(contourPane, strokeExpression):
 		l=strokeExpression.split(';')
 		name=l[0]
-		scopeDesc=l[1]
 
-		left=int(scopeDesc[0:2], 16)
-		top=int(scopeDesc[2:4], 16)
-		right=int(scopeDesc[4:6], 16)
-		bottom=int(scopeDesc[6:8], 16)
-		scope=(left, top, right, bottom)
-
-		startPointDesc=l[2]
+		startPointDesc=l[1]
 		startX, startY=int(startPointDesc.split(',')[0]), int(startPointDesc.split(',')[1])
 		startPoint=(startX, startY)
 
-		strokeDesc=l[3]
+		strokeDesc=l[2]
 		parameterExpression = strokeDesc[1:-1]
 		parameterExpressionList = parameterExpression.split(',')
 
@@ -129,9 +122,9 @@ class DCRadixParser(RadixParser):
 		assert clsStrokeInfo!=None
 
 		parameterList = clsStrokeInfo.parseExpression(parameterExpressionList)
-		strokeInfo = clsStrokeInfo(name, parameterList)
+		strokeInfo = clsStrokeInfo(parameterList)
 
-		return Stroke(scope, startPoint, strokeInfo)
+		return Stroke(startPoint, strokeInfo)
 
 	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)
