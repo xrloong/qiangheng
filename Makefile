@@ -93,6 +93,12 @@ compare: testing
 tex/principle.pdf: tex/principle.tex
 	cd tex; xelatex principle.tex; rm principle.aux  principle.log
 
+old-format:
+	for i in ar bs cj dy zm main;\
+	do\
+		xsltproc xslt/xml2txt.xslt charinfo/$$i/CJK.xml > charinfo/$$i/CJK.old.txt;\
+	done
+
 pixmaps:
 	mkdir -p pixmaps
 	for im in $(IMLIST);\
@@ -128,6 +134,7 @@ tarball-all:
 
 clean:
 	rm -rf tables/ tmp/ tarballs/ pixmaps
+	rm -f charinfo/*/CJK.old.txt
 	rm -f *.pyc im/*.pyc character/*.pyc
 	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log
 	rm -f charinfo/*/*.bak.txt charinfo/*/*.rst.txt

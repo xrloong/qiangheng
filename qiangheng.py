@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from im.IMMgr import IMMgr
-from xml.dom import minidom
-
 import platform
+from im.IMMgr import IMMgr
 from character.CharDescriptionManager import CharDescriptionManager
-import qhparser
 
 from optparse import OptionParser
 oparser = OptionParser()
@@ -18,132 +15,11 @@ filenamelist=[
 #		'CJK.txt',
 		'CJK.xml',
 ]
-fileencoding='utf-8-sig'
-
-def parsestructure(g):
-	stacklist=[]
-	operandlist=[]
-	operator=None
-	if g[0]=='(' and g[-1]==')':
-		operator=g[1]
-		for i in g[2:]:
-			if i=='(':
-				pass
-			elif i==')':
-				pass
-			elif i=='[':
-				pass
-			elif i==']':
-				pass
-			elif i==' ':
-				continue
-			else:
-				operandlist.append(i)
-		return [operator, operandlist]
-	else:
-		return None
-
-def parsestructure(g):
-	stacklist=[]
-	operandlist=[]
-	operator=None
-	if g[0]=='(' and g[-1]==')':
-		operator=g[1]
-		i=3
-		while i<len(g):
-			if g[i]=='(':
-				i+=1
-			elif g[i]==')':
-				i+=1
-			elif g[i]=='[':
-				j=i+1
-				flag=True
-				while j<len(g) and g[j]!=']':
-					j+=1
-				if j<len(g) and g[j]==']':
-					operandlist.append(g[i:j+1])
-					i=j+1
-				else:
-					return None
-			elif g[i]==']':
-				i+=1
-			elif g[i]==' ':
-				i+=1
-			else:
-				operandlist.append(g[i])
-				i+=1
-		return [operator, operandlist]
-	else:
-		return None
-
-def getDescDBFromFile(filenamelist, descMgr):
-	charInfoGenerator=descMgr.getCharInfoGenerator()
-	emptyCharInfoGenerator=descMgr.getEmptyCharInfoGenerator()
-	charDescGenerator=descMgr.getCharDescGenerator()
-	emptyCharDescGenerator=descMgr.getEmptyCharDescGenerator()
-
-	for filename in filenamelist:
-		f=open(filename, encoding=fileencoding)
-		for line in f.readlines():
-			l=line.strip()
-			if not l: continue
-			elif l[0]=='#': continue
-			ll=l.split('\t')
-			if len(ll)>=3:
-				parseans=parsestructure(ll[2])
-				if not parseans:
-					print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
-				else:
-					operator, operandlist=parseans
-					chInfo=charInfoGenerator(ll[1], ll[3:])
-					comp=qhparser.Parser.parse(ll[2], ll[1], charDescGenerator)
-					comp.setChInfo(chInfo)
-					descMgr[ll[1]]=comp
 
 def getDescDBFromXML(filenamelist, descMgr):
 	for filename in filenamelist:
-		f=open(filename, encoding=fileencoding)
-		xmlNode=minidom.parse(f)
-		rootNode=xmlNode.documentElement
-		version=rootNode.getAttribute('版本號')
-		if version=='0.1':
-			getDescDBbyParsingXML__0_1(rootNode, descMgr)
-
-def getDescDBbyParsingXML__0_1(rootNode, descMgr):
-	# 用於 0.1 版
-	charInfoGenerator=descMgr.getCharInfoGenerator()
-	emptyCharInfoGenerator=descMgr.getEmptyCharInfoGenerator()
-	charDescGenerator=descMgr.getCharDescGenerator()
-	emptyCharDescGenerator=descMgr.getEmptyCharDescGenerator()
-
-
-	charGroupNode=rootNode.getElementsByTagName("字符集")[0]
-	charNodeList=charGroupNode.getElementsByTagName("字符")
-
-	for node in charNodeList:
-		charName=node.getAttribute('名稱')
-		combInfo=node.getElementsByTagName("組字資訊")[0]
-		charExpr=combInfo.getAttribute('表示式')
-
-		parseans=parsestructure(charExpr)
-		if not parseans:
-			print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
-		else:
-			operator, operandlist=parseans
-			infoList=[]
-			charInfoList=node.getElementsByTagName("編碼資訊")
-			if charInfoList:
-				charInfo=charInfoList[0]
-				infoExpr=charInfo.getAttribute('資訊表示式')
-				infoExtra=charInfo.getAttribute('補充資訊')
-				if infoExpr: infoList.append(infoExpr)
-				if infoExtra: infoList.append(infoExtra)
-				
-			chInfo=charInfoGenerator(charName, infoList)
-			comp=qhparser.Parser.parse(charExpr, charName, charDescGenerator)
-			comp.setChInfo(chInfo)
-			descMgr[charName]=comp
-	pass
+#		getDescDBbyParsingXML(descMgr, filename, fileencoding='utf-8-sig')
+		descMgr.loadFromXML(filename, fileencoding='utf-8-sig')
 
 def genIMMapping(descMgr, targetCharList):
 	table=[]
@@ -201,7 +77,6 @@ def genFile(options):
 	ciGenerator=imModule.CharInfoGenerator
 	descMgr=CharDescriptionManager(ciGenerator)
 
-#	getDescDBFromFile(pathlist, descMgr)
 	getDescDBFromXML(pathlist, descMgr)
 	descMgr.ConstructDescriptionNetwork()
 

@@ -36,6 +36,9 @@ for line in f:
 	if not l:
 		continue
 	if l[0]=='#':
+		if len(l.split())>1:
+			comment=xmlNode.createComment(l.split()[1])
+			charGroup.appendChild(comment)
 		continue
 	ll=l.split('\t')
 	char=xmlNode.createElement("字符")

@@ -525,7 +525,7 @@ U+5B22	嬢	(龜)	zm,s,o,eb,rh
 U+5B34	嬴	(龜)	sh,j,q,zm,qya
 U+5B3D	嬽	(龜)	zm,lk,i,a,i,lk,gd
 U+5B50	子	(龜)	ya
-U+5B51	孑	(龜)	y,a	
+U+5B51	孑	(龜)	y,a
 U+5B52	孒	(龜)	y,a
 U+5B53	孓	(龜)	y,s
 U+5B58	存	(龜)	gd,i,ya

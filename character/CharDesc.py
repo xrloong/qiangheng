@@ -32,6 +32,9 @@ class CharDesc:
 	def setName(self, name):
 		self.name=name
 
+	def getName(self):
+		return self.name
+
 	def setOperatorAndDirection(self, op, direction):
 		self.direction=direction
 		self.op=op
