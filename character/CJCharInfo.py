@@ -17,22 +17,16 @@ class CJCharInfo(CharInfo):
 		self._cj_single=propDict.get('獨體編碼')
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
-			self.setCJProp(str_rtlist)
+			self.setCJProp('*',str_rtlist)
 
-	def setCJProp(self, cj_info_code):
-		dir_code='*'
+	def setCJProp(self, dir_code, cj_info_code):
 		radix_list=[]
 
 		codeList=cj_info_code.split('=')
 
 		if len(codeList)>0:
 			x_code=codeList[0]
-			if len(x_code)>0:
-				dir_code=x_code[0]
-				if dir_code not in ['|', '-', '*', '@', '$']:
-					dir_code='*'
-
-				radix_list=x_code[1:].split(',')
+			radix_list=x_code.split(',')
 
 		self._cj_radix_list=radix_list
 		self._cj_direction=dir_code
@@ -62,7 +56,7 @@ class CJCharInfo(CharInfo):
 				# 不同向
 				ansRadixList.append(tmpchinfo._cj_body)
 
-		self.setCJProp(direction+','.join(ansRadixList))
+		self.setCJProp(direction,','.join(ansRadixList))
 
 	@property
 	def cj(self):
