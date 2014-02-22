@@ -3,7 +3,7 @@
 from .CharDesc import CharDesc
 from .CharInfo import CharInfo
 from .RearrangementManager import RearrangementManager
-from xml.dom import minidom
+from xml.etree import ElementTree
 
 class CharDescriptionManager:
 	NoneInfo=CharInfo('[瑲珩預設]', [])
@@ -71,11 +71,12 @@ class CharDescriptionManager:
 
 	def loadFromXML(self, filename, fileencoding='utf-8-sig'):
 		f=open(filename, encoding=fileencoding)
-		xmlNode=minidom.parse(f)
-		rootNode=xmlNode.documentElement
-		version=rootNode.getAttribute('版本號')
+		xmlNode=ElementTree.parse(f)
+		rootNode=xmlNode.getroot()
+		version=rootNode.get('版本號')
 		if version=='0.1':
 			self.loadByParsingXML__0_1(rootNode)
+
 
 	def loadByParsingXML__0_1(self, rootNode):
 		# 用於 0.1 版
@@ -86,14 +87,14 @@ class CharDescriptionManager:
 
 		def getDesc_AssembleChar(assembleChar):
 			l=[]
-			operator=assembleChar.getAttribute("運算")
-			filter_lambda=lambda x: x.nodeType==x.ELEMENT_NODE and x.tagName in ["字根", "組字"]
-			targetChildNodes=filter(filter_lambda , assembleChar.childNodes)
+			operator=assembleChar.get("運算")
+			filter_lambda=lambda x: x.tag in ["字根", "組字"]
+			targetChildNodes=filter(filter_lambda , assembleChar.getchildren())
 			for node in targetChildNodes:
-				if node.tagName=="字根":
-					name=node.getAttribute("名稱")
+				if node.tag=="字根":
+					name=node.get("名稱")
 					l.append(charDescGenerator(name))
-				elif node.tagName=="組字":
+				elif node.tag=="組字":
 					l.append(getDesc_AssembleChar(node))
 				else:
 					pass
@@ -103,15 +104,14 @@ class CharDescriptionManager:
 			return comp
 
 		def getDesc_Character(nodeCharacter):
-			charName=nodeCharacter.getAttribute('名稱')
-			assembleChar=nodeCharacter.getElementsByTagName("組字")[0]
+			charName=nodeCharacter.get('名稱')
+			assembleChar=nodeCharacter.find("組字")
 
 			infoList=[]
-			charInfoList=nodeCharacter.getElementsByTagName("編碼資訊")
-			if charInfoList:
-				charInfo=charInfoList[0]
-				infoExpr=charInfo.getAttribute('資訊表示式')
-				infoExtra=charInfo.getAttribute('補充資訊')
+			charInfo=nodeCharacter.find("編碼資訊")
+			if charInfo is not None:
+				infoExpr=charInfo.get('資訊表示式')
+				infoExtra=charInfo.get('補充資訊')
 				if infoExpr: infoList.append(infoExpr)
 				if infoExtra: infoList.append(infoExtra)
 				
@@ -124,14 +124,12 @@ class CharDescriptionManager:
 			return comp
 
 
-		charGroupNode=rootNode.getElementsByTagName("字符集")[0]
+		charGroupNode=rootNode.find("字符集")
 
-		filter_lambda=lambda x: x.nodeType==x.ELEMENT_NODE and x.tagName in ["字符",]
-		targetChildNodes=filter(filter_lambda , charGroupNode.childNodes)
+		targetChildNodes=charGroupNode.findall("字符")
 		for node in targetChildNodes:
 			comp=getDesc_Character(node)
 			self[comp.getName()]=comp
-
 
 	def ConstructDescriptionNetwork(self):
 		for charName in self.descDB.keys():

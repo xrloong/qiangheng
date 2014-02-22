@@ -5,6 +5,7 @@ TEST_IMLIST	=	cj ar dy bs zm
 PLATFORM_LIST	=	puretable scim gcin msim
 TABLES_PATH	=	tables
 PURETABLE_PATH	=	$(TABLES_PATH)/puretable
+XML_PATH	=	$(TABLES_PATH)/xml
 SCIM_PATH	=	$(TABLES_PATH)/scim
 IBUS_PATH	=	$(TABLES_PATH)/ibus
 GCIN_PATH	=	$(TABLES_PATH)/gcin
@@ -22,28 +23,36 @@ all: puretable
 $(PURETABLE_PATH):
 puretable:
 	mkdir -p $(PURETABLE_PATH)
-	touch $(PURETABLE_PATH)
 	for im in $(IMLIST);\
 	do\
-		time ./qiangheng.py -i $$im > $(PURETABLE_PATH)/qh$$im.txt;\
+		time ./qiangheng.py -i $$im --text > $(PURETABLE_PATH)/qh$$im.txt;\
 	done
+	touch $(PURETABLE_PATH)
+
+xml:
+	mkdir -p $(XML_PATH)
+	for im in $(IMLIST);\
+	do\
+		time ./qiangheng.py -i $$im --xml |\
+			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml;\
+	done
+	touch $(XML_PATH)
 
 imtables: scim ibus gcin ovim msim
 
 scim: $(SCIM_PATH)
 $(SCIM_PATH): $(PURETABLE_PATH)
 	mkdir -p $(SCIM_PATH)
-	touch $(SCIM_PATH)
 	for im in $(IMLIST);\
 	do\
 		./convertTable.py -i $$im -p scim -t $(PURETABLE_PATH)/qh$$im.txt > $(SCIM_PATH)/qh$$im.scim;\
 		scim-make-table $(SCIM_PATH)/qh$$im.scim -b -o $(SCIM_PATH)/qh$$im.bin;\
 	done
+	touch $(SCIM_PATH)
 
 ibus: $(IBUS_PATH)
 $(IBUS_PATH): $(PURETABLE_PATH)
 	mkdir -p $(IBUS_PATH)
-	touch $(IBUS_PATH)
 	mkdir -p tmp
 	for im in $(IMLIST);\
 	do\
@@ -51,36 +60,37 @@ $(IBUS_PATH): $(PURETABLE_PATH)
 		bash -c "cd tmp; ibus-table-createdb -s ../$(IBUS_PATH)/qh$$im.ibus";\
 	done
 	cp tmp/*.db $(IBUS_PATH)
+	touch $(IBUS_PATH)
 
 gcin: $(GCIN_PATH)
 $(GCIN_PATH): $(PURETABLE_PATH)
 	mkdir -p $(GCIN_PATH)
-	touch $(GCIN_PATH)
 	for im in $(IMLIST);\
 	do\
 		./convertTable.py -i $$im -p gcin -t $(PURETABLE_PATH)/qh$$im.txt > $(GCIN_PATH)/qh$$im.cin;\
 		gcin2tab $(GCIN_PATH)/qh$$im.cin;\
 	done
+	touch $(GCIN_PATH)
 
 ovim: $(OVIM_PATH)
 $(OVIM_PATH): $(PURETABLE_PATH)
 	mkdir -p $(OVIM_PATH)
-	touch $(OVIM_PATH)
 	for im in $(IMLIST);\
 	do\
 		./convertTable.py -i $$im -p ovim -t $(PURETABLE_PATH)/qh$$im.txt > $(OVIM_PATH)/qh$$im.cin;\
 	done
+	touch $(OVIM_PATH)
 
 msim: $(MSIM_PATH)
 $(MSIM_PATH): $(PURETABLE_PATH)
 	mkdir -p $(MSIM_PATH)
-	touch $(MSIM_PATH)
 	for im in $(IMLIST);\
 	do\
 		./convertTable.py -i $$im -p msim -t $(PURETABLE_PATH)/qh$$im.txt > $(MSIM_PATH)/qh$$im.msim;\
 		sed 's/$$'"/`echo \\\r`/" $(MSIM_PATH)/qh$$im.msim > tmp/qh$$im.msim.dos;\
 		iconv -f utf-8 -t utf-16le tmp/qh$$im.msim.dos > $(MSIM_PATH)/qh$$im.msim.txt;\
 	done
+	touch $(MSIM_PATH)
 
 testing:
 	for im in $(TEST_IMLIST);\
@@ -96,7 +106,7 @@ tex/principle.pdf: tex/principle.tex
 old-format:
 	for i in ar bs cj dy zm main;\
 	do\
-		xsltproc xslt/xml2txt.xslt charinfo/$$i/CJK.xml > charinfo/$$i/CJK.old.txt;\
+		xalan -xsl xslt/xml2txt.xslt -in charinfo/$$i/CJK.xml -out charinfo/$$i/CJK.old.txt;\
 	done
 
 pixmaps:
