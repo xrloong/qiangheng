@@ -28,7 +28,8 @@ class XmlWriter:
 		# 按鍵與顯示的對照表
 		keyMapsNode=ET.SubElement(rootNode, "按鍵對應集")
 		for key, disp in keyMaps:
-			ET.SubElement(keyMapsNode, "按鍵對應", attrib={"按鍵":key, "顯示":disp})
+			attrib={"按鍵":key, "顯示":disp}
+			ET.SubElement(keyMapsNode, "按鍵對應", attrib)
 
 		# 對照表
 		charGroup=ET.SubElement(rootNode, "對應集")
