@@ -96,27 +96,14 @@ class DYCodeInfo(CodeInfo):
 		RADIX_厂一:'h',
 	}
 
-	def __init__(self, codeList, isSupportCharacterCode=True, isSupportRadixCode=True):
-		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
+	def __init__(self, codeList):
+		CodeInfo.__init__(self)
 
 		self._codeList=codeList
 
 	@staticmethod
 	def generateDefaultCodeInfo(codeList):
 		codeInfo=DYCodeInfo(codeList)
-		return codeInfo
-
-	@staticmethod
-	def generateCodeInfo(propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
-		strCodeList=propDict.get('資訊表示式')
-
-		codeList=None
-		if strCodeList!=None:
-			codeList=strCodeList.split(DYCodeInfo.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(DYCodeInfo.RADIX_SEPERATOR), codeList))
-
-		codeInfo=DYCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def toCode(self):

@@ -9,11 +9,6 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, characterCode):
 		return GXCodeInfo.generateDefaultCodeInfo(characterCode)
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=GXCodeInfo.generateCodeInfo(propDict)
-		codeInfo.multiplyCodeVarianceType(codeVariance)
-		return codeInfo
-
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getCharacterCode(), codeInfoList))
 		return isAllWithCode

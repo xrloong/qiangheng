@@ -1,6 +1,5 @@
 import sys
 from ..CodeInfo.DCCodeInfo import DCCodeInfo
-from ..CodeInfo.DCCodeInfo import Stroke
 from gear.CodeInfoEncoder import CodeInfoEncoder
 from gear.CodeInfo import CodeInfo
 from gear import Operator
@@ -14,11 +13,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	def generateDefaultCodeInfo(self, strokeList):
 		return DCCodeInfo.generateDefaultCodeInfo(strokeList)
-
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=DCCodeInfo.generateCodeInfo(propDict)
-		codeInfo.multiplyCodeVarianceType(codeVariance)
-		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getStrokeList())>0, codeInfoList))

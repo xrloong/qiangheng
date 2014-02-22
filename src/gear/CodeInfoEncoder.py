@@ -13,12 +13,6 @@ class CodeInfoEncoder:
 	def computeSupporting(hasCharacter, hasRadix):
 		return CodeInfo.computeSupporting(hasCharacter, hasRadix)
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		codeInfo=CodeInfo(isSupportCharacterCode, isSupportRadixCode)
-		codeInfo.multiplyCodeVarianceType(codeVariance)
-		return codeInfo
-
 	def generateDefaultCodeInfo(self):
 		codeInfo=CodeInfo(isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo

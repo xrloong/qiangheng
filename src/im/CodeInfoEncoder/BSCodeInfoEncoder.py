@@ -12,11 +12,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, codeList, supplementCode):
 		return BSCodeInfo.generateDefaultCodeInfo(codeList, supplementCode)
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=BSCodeInfo.generateCodeInfo(propDict)
-		codeInfo.multiplyCodeVarianceType(codeVariance)
-		return codeInfo
-
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getBSCodeList(), codeInfoList))
 		return isAllWithCode

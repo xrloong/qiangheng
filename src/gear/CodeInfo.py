@@ -1,7 +1,7 @@
 from .CodeVarianceType import CodeVarianceType
 
 class CodeInfo:
-	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+	def __init__(self):
 		self.codeVariance=CodeVarianceType()
 		self._isSupportCharacterCode=True
 		self._isSupportRadixCode=True

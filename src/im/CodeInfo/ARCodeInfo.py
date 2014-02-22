@@ -116,7 +116,7 @@ class ARCodeInfo(CodeInfo):
 	}
 
 	def __init__(self, codeList=[]):
-		CodeInfo.__init__(self, True, True)
+		CodeInfo.__init__(self)
 
 		self._codeList=codeList
 

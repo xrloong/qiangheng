@@ -10,11 +10,6 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, rtlist):
 		return ZMCodeInfo.generateDefaultCodeInfo(rtlist)
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=ZMCodeInfo.generateCodeInfo(propDict)
-		codeInfo.multiplyCodeVarianceType(codeVariance)
-		return codeInfo
-
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=codeInfoList and all(map(lambda x: x.getRtList(), codeInfoList))
 		return isAllWithCode

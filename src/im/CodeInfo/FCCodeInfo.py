@@ -39,32 +39,13 @@ class FCCodeInfo(CodeInfo):
 		CORNER_BOTTOM_RIGHT,
 	]
 
-	def __init__(self, corners, isSupportCharacterCode=True, isSupportRadixCode=True):
-		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
+	def __init__(self, corners):
+		CodeInfo.__init__(self)
 		[self._top_left, self._top_right, self._bottom_left, self._bottom_right]=corners
 
 	@staticmethod
 	def generateDefaultCodeInfo(corners):
 		codeInfo=FCCodeInfo(corners)
-		return codeInfo
-
-	@staticmethod
-	def generateCodeInfo(propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
-		top_left=''
-		top_right=''
-		bottom_left=''
-		bottom_right=''
-
-		characterCode=propDict.get('資訊表示式', '')
-		if len(characterCode)==4:
-			top_left=characterCode[0]
-			top_right=characterCode[1]
-			bottom_left=characterCode[2]
-			bottom_right=characterCode[3]
-
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=FCCodeInfo(corners, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def toCode(self):

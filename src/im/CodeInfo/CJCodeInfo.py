@@ -16,8 +16,8 @@ class CJCodeInfo(CodeInfo):
 		RADIX_儿:['-', ['h', 'u']],
 	}
 
-	def __init__(self, singleCode, direction, radixList, cjBody, isSupportCharacterCode=True, isSupportRadixCode=True):
-		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
+	def __init__(self, singleCode, direction, radixList, cjBody):
+		CodeInfo.__init__(self)
 		self._cj_single=singleCode
 
 
@@ -29,22 +29,6 @@ class CJCodeInfo(CodeInfo):
 	def generateDefaultCodeInfo(direction, ansRadixList):
 		cjBody=CJCodeInfo.computeBodyCode(ansRadixList, direction)
 		codeInfo=CJCodeInfo(None, direction, ansRadixList, cjBody)
-
-		return codeInfo
-
-	@staticmethod
-	def generateCodeInfo(propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
-
-		direction='*'
-		singleCode=propDict.get('獨體編碼')
-		rtlist=[]
-		str_rtlist=propDict.get('資訊表示式')
-		if str_rtlist!=None:
-			rtlist=str_rtlist.split(CJCodeInfo.RADIX_SEPERATOR)
-
-		cjBody=CJCodeInfo.computeBodyCode(rtlist, direction)
-		codeInfo=CJCodeInfo(singleCode, direction, rtlist, cjBody, isSupportCharacterCode, isSupportRadixCode)
 
 		return codeInfo
 

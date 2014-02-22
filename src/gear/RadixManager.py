@@ -25,7 +25,7 @@ class RadixManager:
 		if elementCodeInfo is not None:
 			infoDict=elementCodeInfo.attrib
 
-		codeInfo=self.codeInfoEncoder.generateCodeInfo(infoDict, codeVariance)
+		codeInfo=CodeInfo()
 
 		self.setCodeInfoAttribute(codeInfo, radixDesc)
 		return codeInfo

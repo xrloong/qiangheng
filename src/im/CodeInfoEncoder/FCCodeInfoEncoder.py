@@ -11,11 +11,6 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, corners):
 		return FCCodeInfo.generateDefaultCodeInfo(corners)
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=FCCodeInfo.generateCodeInfo(propDict)
-		codeInfo.multiplyCodeVarianceType(codeVariance)
-		return codeInfo
-
 	def isAvailableOperation(self, codeInfoList):
 		return True
 

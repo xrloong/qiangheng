@@ -84,8 +84,8 @@ class BSCodeInfo(CodeInfo):
 		RADIX_丿丿_山一:'m',
 	}
 
-	def __init__(self, singletonCode, codeList, supplementCode, isSupportCharacterCode=True, isSupportRadixCode=True):
-		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
+	def __init__(self, singletonCode, codeList, supplementCode):
+		CodeInfo.__init__(self)
 
 		self._bs_spcode=supplementCode
 
@@ -95,21 +95,6 @@ class BSCodeInfo(CodeInfo):
 	@staticmethod
 	def generateDefaultCodeInfo(codeList, supplementCode):
 		codeInfo=BSCodeInfo(None, codeList, supplementCode)
-		return codeInfo
-
-	@staticmethod
-	def generateCodeInfo(propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
-		singletonCode=propDict.get('獨體編碼')
-		strCodeList=propDict.get('資訊表示式')
-		supplementCode=propDict.get('嘸蝦米補碼')
-
-		codeList=None
-		if strCodeList!=None:
-			codeList=strCodeList.split(BSCodeInfo.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(BSCodeInfo.RADIX_SEPERATOR), codeList))
-
-		codeInfo=BSCodeInfo(singletonCode, codeList, supplementCode, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def toCode(self):
