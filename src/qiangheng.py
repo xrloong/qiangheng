@@ -23,10 +23,9 @@ class QiangHeng:
 
 		self.descMgr.loadData(toTemplateList, toComponentList, toCodeList)
 
-		targetCharacterList=self.descMgr.getAllCharacters()
-		self.hanziNetwork.construct(self.descMgr, targetCharacterList)
+		self.hanziNetwork=HanZiNetwork.HanZiNetwork.construct(self.descMgr)
 
-		characterMapping=self.genIMMapping(targetCharacterList)
+		characterMapping=self.genIMMapping()
 		if xml_format:
 			imInfo=imModule.IMInfo()
 			self.toXML(imInfo, characterMapping)
@@ -35,8 +34,6 @@ class QiangHeng:
 
 	def initManager(self, imModule):
 		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(imModule)
-
-		self.hanziNetwork=HanZiNetwork.HanZiNetwork()
 
 		StateManager.setIMModule(imModule)
 
@@ -103,17 +100,17 @@ class QiangHeng:
 		table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x), characterMapping)))
 		print(table)
 
-	def genIMMapping(self, targetCharList):
+	def genIMMapping(self):
 
+		characterFilter=lambda charName: (len(charName)==1)
+		targetCharacterList=filter(characterFilter, self.descMgr.getAllCharacters())
 		table=[]
-		for charName in sorted(targetCharList):
+		for charName in sorted(targetCharacterList):
 #			print("<-- %s -->"%charName)
-			isCharacter=(len(charName)==1)
-			if isCharacter:
-				codePropList=self.hanziNetwork.getCodePropertiesList(charName)
-				freq=self.descMgr.queryCharacterFrequency(charName)
-				for code, type in codePropList:
-					table.append([code, charName, freq, type])
+			codePropList=self.hanziNetwork.getCodePropertiesList(charName)
+			freq=self.descMgr.queryCharacterFrequency(charName)
+			for code, type in codePropList:
+				table.append([code, charName, freq, type])
 		return table
 
 oparser = OptionParser()

@@ -148,17 +148,12 @@ class HanZiNode:
 			structure.setCompositions()
 
 class DescriptionManagerToHanZiNetworkConverter:
-	def __init__(self, descriptionManager, hanziNetwork, targetCharacterList):
+	def __init__(self, descriptionManager):
 		self.descriptionManager=descriptionManager
-		self.hanziNetwork=hanziNetwork
-		self.targetCharacterList=targetCharacterList
+		self.hanziNetwork=HanZiNetwork()
 
-	def run(self):
-		self.constructDescriptionNetwork(self.targetCharacterList)
-
-	def constructDescriptionNetwork(self, targetCharacterList):
-		charNameList=targetCharacterList
-		hanziNetwork=self.hanziNetwork
+	def constructDescriptionNetwork(self):
+		charNameList=self.descriptionManager.getAllCharacters()
 		sortedNameList=sorted(charNameList)
 
 		for charName in sortedNameList:
@@ -166,6 +161,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
 				self.recursivelyAddStructure(structDesc)
+		return self.hanziNetwork
 
 	def recursivelyAddStructure(self, structDesc):
 		hanziNetwork=self.hanziNetwork
@@ -193,9 +189,10 @@ class HanZiNetwork:
 
 		self.structDescNameToNodeDict={}
 
-	def construct(self, descriptionManager, targetCharacterList):
-		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager, self, targetCharacterList)
-		toHanZiNetworkConverter.run()
+	@staticmethod
+	def construct(descriptionManager):
+		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager)
+		return toHanZiNetworkConverter.constructDescriptionNetwork()
 
 	def addNode(self, nodeName):
 		if nodeName not in self.structDescNameToNodeDict:
