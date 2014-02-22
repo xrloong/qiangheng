@@ -38,7 +38,6 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-
 	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(codeInfoList)
@@ -62,6 +61,15 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(newCodeInfoList)
 		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setCodeList([dyCode])
+		return codeInfo
+
+
+	def encodeAsZhe(self, codeInfoList):
+		"""運算 "這" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+
+		codeInfo=self.encodeAsLoong([secondCodeInfo, firstCodeInfo])
 		return codeInfo
 
 	def encodeAsZai(self, codeInfoList):

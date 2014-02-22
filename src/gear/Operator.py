@@ -61,6 +61,7 @@ OperatorGoose=BuiltinOperator('鴻', RearrangeInfo.RearrangeInfoSame())
 OperatorLoop=BuiltinOperator('回', RearrangeInfo.RearrangeInfoSame())
 
 OperatorQi=BuiltinOperator('起', RearrangeInfo.RearrangeInfoSame())
+OperatorZhe=BuiltinOperator('這', RearrangeInfo.RearrangeInfoSame())
 OperatorLiao=BuiltinOperator('廖', RearrangeInfo.RearrangeInfoSame())
 OperatorZai=BuiltinOperator('載', RearrangeInfo.RearrangeInfoSame())
 OperatorDou=BuiltinOperator('斗', RearrangeInfo.RearrangeInfoSame())

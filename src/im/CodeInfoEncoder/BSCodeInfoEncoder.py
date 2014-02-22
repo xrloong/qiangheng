@@ -42,7 +42,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-
 	def encodeAsHan(self, codeInfoList):
 		"""運算 "函" """
 		firstCodeInfo=codeInfoList[0]
@@ -50,6 +49,15 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		return codeInfo
+
+
+	def encodeAsZhe(self, codeInfoList):
+		"""運算 "這" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+
+		codeInfo=self.encodeAsLoong([secondCodeInfo, firstCodeInfo])
 		return codeInfo
 
 	def encodeAsYou(self, codeInfoList):

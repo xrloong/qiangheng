@@ -38,6 +38,8 @@ class CodeInfoEncoder:
 
 			elif Operator.OperatorQi.equals(operator):
 				codeInfo=self.encodeAsQi(codeInfoList)
+			elif Operator.OperatorZhe.equals(operator):
+				codeInfo=self.encodeAsZhe(codeInfoList)
 			elif Operator.OperatorLiao.equals(operator):
 				codeInfo=self.encodeAsLiao(codeInfoList)
 			elif Operator.OperatorZai.equals(operator):
@@ -128,6 +130,11 @@ class CodeInfoEncoder:
 	def encodeAsQi(self, codeInfoList):
 		"""運算 "起" """
 		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
+
+	def encodeAsZhe(self, codeInfoList):
+		"""運算 "這" """
+		codeInfo=self.encodeAsQi(codeInfoList)
 		return codeInfo
 
 	def encodeAsLiao(self, codeInfoList):

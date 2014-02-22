@@ -85,19 +85,12 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 
-	def encodeAsQi(self, codeInfoList):
-		"""運算 "起" """
+	def encodeAsZhe(self, codeInfoList):
+		"""運算 "這" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
-		firstMainCodeList=firstCodeInfo.getMainCodeList()
-		if len(firstMainCodeList)==1 and (firstMainCodeList[0]==ARCodeInfo.RADIX_EXTEND_5_BOTTOM or firstMainCodeList[0]==ARCodeInfo.RADIX_EXTEND_6_BOTTOM or firstMainCodeList[0]==ARCodeInfo.RADIX_EXTEND_2_CENTER):
-			arCode=ARCodeInfoEncoder.computeArrayCodeForGe([secondCodeInfo, firstCodeInfo])
-		else:
-			arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
-
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setCodeList([arCode])
+		codeInfo=self.encodeAsLoong([secondCodeInfo, firstCodeInfo])
 		return codeInfo
 
 	def encodeAsZai(self, codeInfoList):
