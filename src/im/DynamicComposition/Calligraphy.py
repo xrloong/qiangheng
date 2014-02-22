@@ -2,18 +2,20 @@ import re
 import sys
 import copy
 
-class StrokeAction:
-	def __init__(self, action, x, y):
-		self.action=action
+class Point:
+	def __init__(self, x, y):
 		self.x=x
 		self.y=y
 
 	def __deepcopy__(self, memo):
-		action=copy.deepcopy(self.action, memo)
-		return StrokeAction(action, self.x, self.y)
+		copy.deepcopy(None, memo)
+		return Point(self.x, self.y)
 
-	def getCode(self):
-		return "%04X%02X%02X"%(self.action, self.x, self.y)
+	def getX(self):
+		return self.x
+
+	def getY(self):
+		return self.y
 
 	def scale(self, xScale, yScale):
 		self.x=int(self.x*xScale)
@@ -133,26 +135,21 @@ class Stroke(Writing):
 
 	DEFAULT_INSTANCE_NAME='瑲珩預設筆劃名'
 
-	def __init__(self, pane, description):
-		Writing.__init__(self, pane)
+	def __init__(self, contourPane, strokeName, actionList, pointList):
+		Writing.__init__(self, contourPane)
 
-		matchResult=re.match("\((.*)\)(.*)", description)
+		assert (strokeName in Stroke.STROKE_NAMES), "不認得的筆畫名稱: %s"%strokeName
 
 		self.setInstanceName(Stroke.DEFAULT_INSTANCE_NAME)
 
-		groups=matchResult.groups()
-		strokeName=groups[0]
 		self.typeName=strokeName
-		if strokeName not in Stroke.STROKE_NAMES:
-			print("不認得的筆畫名稱: %s"%strokeName, file=sys.stderr)
 
-		strokeDescription=groups[1]
+		self.actionList=actionList
+		self.pointList=pointList
 
-		descriptionList=strokeDescription.split(',')
-		self.actionList=[StrokeAction(*self.convertActionDescriptionToList(d)) for d in descriptionList]
-
-	def convertActionDescriptionToList(self, description):
-		return [int(description[0:4]), int(description[4:6], 16), int(description[6:8], 16)]
+	def __deepcopy__(self, memo):
+		pointList=copy.deepcopy(self.pointList, memo)
+		return Stroke(self.contourPane, self.typeName, self.actionList, pointList)
 
 	def getInstanceName(self):
 		return self.name
@@ -164,21 +161,13 @@ class Stroke(Writing):
 		return self.typeName
 
 	def getCode(self):
-		codeList=[x.getCode() for x in self.actionList]
+		codeList=["%4s%02X%02X"%(action, point.getX(), point.getY()) for [action, point] in zip(self.actionList, self.pointList)]
 		return ','.join(codeList)
-
-	def scale(self, xScale, yScale):
-		for action in self.actionList:
-			action.scale(xScale, yScale)
-
-	def translate(self, xOffset, yOffset):
-		for action in self.actionList:
-			action.translate(xOffset, yOffset)
 
 	# 多型
 	def transform(self, pane):
-		for action in self.actionList:
-			action.transform(pane)
+		for point in self.pointList:
+			point.transform(pane)
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
