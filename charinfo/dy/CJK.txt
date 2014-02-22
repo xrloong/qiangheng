@@ -1,11 +1,11 @@
 ﻿# 4E00
 U+4E00	一	(龜)	e
 U+4E01	丁	(龜)	ej
-U+4E02	丂	(龜)	XXXX
+U+4E02	丂	(龜)	eb
 U+4E03	七	(龜)	c
 U+4E04	丄	(龜)	1e
 U+4E05	丅	(龜)	e1
-U+4E06	丆	(龜)	XXXX
+U+4E06	丆	(龜)	h
 U+4E07	万	(龜)	hb
 U+4E08	丈	(龜)	s0
 U+4E09	三	(龜)	eee
@@ -242,10 +242,10 @@ U+51FE	凾	(龜)	XXXX
 # 5200
 U+5200	刀	(龜)	n
 U+5201	刁	(龜)	be
-U+5202	刂	(龜)	XXXX
-U+5203	刃	(龜)	XXXX
-U+5204	刄	(龜)	XXXX
-U+5205	刅	(龜)	XXXX
+U+5202	刂	(龜)	n
+U+5203	刃	(龜)	n.
+U+5204	刄	(龜)	n0
+U+5205	刅	(龜)	n.
 U+520D	刍	(龜)	XXXX
 U+5225	別	(龜)	XXXX
 U+5236	制	(龜)	XXXX
@@ -261,11 +261,11 @@ U+52B3	劳	(龜)	XXXX
 U+52B4	労	(龜)	XXXX
 U+52B5	劵	(龜)	XXXX
 U+52E7	勧	(龜)	XXXX
-U+52F9	勹	(龜)	XXXX
+U+52F9	勹	(龜)	b
 U+52FF	勿	(龜)	b/
 # 5300
 U+5301	匁	(龜)	XXXX
-U+5305	包	(龜)	XXXX
+U+5305	包	(龜)	brc
 U+5306	匆	(龜)	XXXX
 U+5313	匓	(龜)	XXXX
 U+5315	匕	(龜)	XXXX
@@ -276,10 +276,10 @@ U+5332	匲	(龜)	XXXX
 U+5338	匸	(龜)	XXXX
 U+5341	十	(龜)	s
 U+5342	卂	(龜)	XXXX
-U+5343	千	(龜)	XXXX
-U+5344	卄	(龜)	XXXX
-U+5345	卅	(龜)	XXXX
-U+5347	升	(龜)	XXXX
+U+5343	千	(龜)	v1
+U+5344	卄	(龜)	=2
+U+5345	卅	(龜)	u1
+U+5347	升	(龜)	as
 U+5348	午	(龜)	XXXX
 U+534A	半	(龜)	XXXX
 U+534C	卌	(龜)	XXXX
@@ -299,15 +299,15 @@ U+5362	卢	(龜)	XXXX
 U+5363	卣	(龜)	XXXX
 U+5364	卤	(龜)	XXXX
 U+5365	卥	(龜)	XXXX
-U+5368	卨	(龜)	XXXX
-U+5369	卩	(龜)	XXXX
-U+536A	卪	(龜)	XXXX
-U+536B	卫	(龜)	XXXX
-U+536C	卬	(龜)	XXXX
+U+5368	卨	(龜)	9mo
+U+5369	卩	(龜)	p
+U+536A	卪	(龜)	p.
+U+536B	卫	(龜)	pe
+U+536C	卬	(龜)	rp
 U+536F	卯	(龜)	XXXX
 U+5370	印	(龜)	XXXX
 U+5373	即	(龜)	XXXX
-U+5375	卵	(龜)	XXXX
+U+5375	卵	(龜)	r.1.
 U+5377	卷	(龜)	XXXX
 U+5378	卸	(龜)	XXXX
 U+537F	卿	(龜)	XXXX
@@ -342,7 +342,7 @@ U+53DA	叚	(龜)	XXXX
 U+53DE	叞	(龜)	XXXX
 U+53DF	叟	(龜)	XXXX
 U+53E2	叢	(龜)	XXXX
-U+53E3	口	(龜)	XXXX
+U+53E3	口	(龜)	o
 U+53F2	史	(龜)	XXXX
 U+53F3	右	(龜)	XXXX
 U+53F8	司	(龜)	XXXX
@@ -401,7 +401,7 @@ U+5705	圅	(龜)	XXXX
 U+5710	圐	(龜)	XXXX
 U+5717	圗	(龜)	XXXX
 U+5719	圙	(龜)	XXXX
-U+571F	土	(龜)	XXXX
+U+571F	土	(龜)	f
 U+5721	圡	(龜)	XXXX
 U+5728	在	(龜)	XXXX
 U+5750	坐	(龜)	XXXX
@@ -425,9 +425,9 @@ U+58CA	壊	(龜)	XXXX
 U+58CC	壌	(龜)	XXXX
 U+58D1	壑	(龜)	XXXX
 U+58E5	壥	(龜)	XXXX
-U+58EB	士	(龜)	XXXX
-U+58EC	壬	(龜)	XXXX
-U+58ED	壭	(龜)	XXXX
+U+58EB	士	(龜)	f
+U+58EC	壬	(龜)	5
+U+58ED	壭	(龜)	fp
 U+58F0	声	(龜)	XXXX
 U+58F1	壱	(龜)	XXXX
 U+58F2	売	(龜)	XXXX
@@ -452,7 +452,7 @@ U+5911	夑	(龜)	XXXX
 U+5912	夒	(龜)	XXXX
 U+5913	夓	(龜)	XXXX
 U+5914	夔	(龜)	XXXX
-U+5915	夕	(龜)	XXXX
+U+5915	夕	(龜)	n
 U+5919	夙	(龜)	XXXX
 U+591B	夛	(龜)	XXXX
 U+591C	夜	(龜)	XXXX
@@ -502,7 +502,7 @@ U+5B0D	嬍	(龜)	XXXX
 U+5B22	嬢	(龜)	XXXX
 U+5B34	嬴	(龜)	XXXX
 U+5B3D	嬽	(龜)	XXXX
-U+5B50	子	(龜)	XXXX
+U+5B50	子	(龜)	bg
 U+5B51	孑	(龜)	XXXX
 U+5B52	孒	(龜)	XXXX
 U+5B53	孓	(龜)	XXXX
@@ -584,7 +584,7 @@ U+5DDE	州	(龜)	XXXX
 U+5DDF	巟	(龜)	XXXX
 U+5DE3	巣	(龜)	XXXX
 U+5DE4	巤	(龜)	XXXX
-U+5DE5	工	(龜)	XXXX
+U+5DE5	工	(龜)	r
 U+5DE6	左	(龜)	XXXX
 U+5DE8	巨	(龜)	XXXX
 U+5DEA	巪	(龜)	XXXX
@@ -680,10 +680,10 @@ U+5FB7	德	(龜)	XXXX
 U+5FBD	徽	(龜)	XXXX
 U+5FBE	徾	(龜)	XXXX
 U+5FC1	忁	(龜)	XXXX
-U+5FC3	心	(龜)	XXXX
-U+5FC4	忄	(龜)	XXXX
-U+5FC5	必	(龜)	XXXX
-U+5FDD	忝	(龜)	XXXX
+U+5FC3	心	(龜)	z
+U+5FC4	忄	(龜)	z
+U+5FC5	必	(龜)	z/
+U+5FDD	忝	(龜)	vaz
 # 6000
 U+603B	总	(龜)	XXXX
 U+6059	恙	(龜)	XXXX
@@ -749,15 +749,15 @@ U+64E5	擥	(龜)	XXXX
 U+6528	攨	(龜)	XXXX
 U+652F	支	(龜)	XXXX
 U+6534	攴	(龜)	XXXX
-U+6535	攵	(龜)	XXXX
+U+6535	攵	(龜)	x
 U+654E	敎	(龜)	XXXX
 U+655D	敝	(龜)	XXXX
 U+6562	敢	(龜)	XXXX
-U+6563	散	(龜)	XXXX
+U+6563	散	(龜)	sjx
 U+6579	敹	(龜)	XXXX
 U+657B	敻	(龜)	XXXX
 U+6584	斄	(龜)	XXXX
-U+6587	文	(龜)	XXXX
+U+6587	文	(龜)	kx
 U+6589	斉	(龜)	XXXX
 U+6597	斗	(龜)	XXXX
 U+65A4	斤	(龜)	XXXX
@@ -842,7 +842,7 @@ U+679C	果	(龜)	di
 U+67AD	枭	(龜)	XXXX
 U+67BE	枾	(龜)	XXXX
 U+67D7	柗	(龜)	XXXX
-U+67EC	柬	(龜)	XXXX
+U+67EC	柬	(龜)	i4
 # 6800
 U+6804	栄	(龜)	XXXX
 U+6806	栆	(龜)	XXXX
@@ -902,7 +902,7 @@ U+6B7A	歺	(龜)	XXXX
 U+6B7F	歿	(龜)	XXXX
 U+6B87	殇	(龜)	XXXX
 U+6BB3	殳	(龜)	qx
-U+6BB5	段	(龜)	XXXX
+U+6BB5	段	(龜)	hxqx
 U+6BB7	殷	(龜)	XXXX
 U+6BBC	殼	(龜)	XXXX
 U+6BBF	殿	(龜)	XXXX
@@ -924,11 +924,11 @@ U+6C11	民	(龜)	XXXX
 U+6C14	气	(龜)	XXXX
 U+6C18	氘	(龜)	XXXX
 U+6C34	水	(龜)	x
-U+6C35	氵	(龜)	XXXX
-U+6C36	氶	(龜)	XXXX
-U+6C37	氷	(龜)	XXXX
-U+6C38	永	(龜)	XXXX
-U+6C3A	氺	(龜)	XXXX
+U+6C35	氵	(龜)	x
+U+6C36	氶	(龜)	bx
+U+6C37	氷	(龜)	x.
+U+6C38	永	(龜)	bx
+U+6C3A	氺	(龜)	x
 U+6C42	求	(龜)	XXXX
 U+6C92	沒	(龜)	XXXX
 U+6CBF	沿	(龜)	XXXX
@@ -998,8 +998,8 @@ U+71DF	營	(龜)	XXXX
 U+71E2	燢	(龜)	XXXX
 # 7200
 U+7202	爂	(龜)	XXXX
-U+722A	爪	(龜)	XXXX
-U+722B	爫	(龜)	XXXX
+U+722A	爪	(龜)	h10
+U+722B	爫	(龜)	j
 U+722D	爭	(龜)	XXXX
 U+7231	爱	(龜)	XXXX
 U+7232	爲	(龜)	XXXX
@@ -1011,8 +1011,8 @@ U+723F	爿	(龜)	XXXX
 U+7247	片	(龜)	XXXX
 U+7256	牖	(龜)	XXXX
 U+7259	牙	(龜)	XXXX
-U+725B	牛	(龜)	XXXX
-U+725C	牜	(龜)	XXXX
+U+725B	牛	(龜)	2
+U+725C	牜	(龜)	2
 U+7275	牵	(龜)	XXXX
 U+7276	牶	(龜)	XXXX
 U+727D	牽	(龜)	XXXX
@@ -1442,7 +1442,7 @@ U+89BD	覽	(龜)	XXXX
 U+89C1	见	(龜)	XXXX
 U+89C8	览	(龜)	XXXX
 U+89C9	觉	(龜)	XXXX
-U+89D2	角	(龜)	XXXX
+U+89D2	角	(龜)	n
 U+89DE	觞	(龜)	XXXX
 U+89E0	觠	(龜)	XXXX
 U+89F2	觲	(龜)	XXXX
@@ -1613,7 +1613,7 @@ U+9580	門	(龜)	XXXX
 U+95C5	闅	(龜)	XXXX
 U+95E8	门	(龜)	XXXX
 # 9600
-U+961C	阜	(龜)	XXXX
+U+961C	阜	(龜)	hrs
 U+961D	阝	(龜)	p
 U+964B	陋	(龜)	XXXX
 U+965D	陝	(龜)	XXXX

@@ -838,7 +838,7 @@ U+673F	朿	(龜)	db	db
 U+675F	束	(龜)	dl	dl
 U+6765	来	(龜)	dt	dt
 U+6771	東	(龜)	dw	dw
-U+679C	果	(龜)	wt	wt
+U+679C	果	(龜)	wd	wd
 U+67AD	枭	(龜)	pysd	pyd
 U+67BE	枾	(龜)	dqll	dql
 U+67D7	柗	(龜)	dcr	dcr

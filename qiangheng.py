@@ -11,6 +11,7 @@ oparser.add_option("-t", "--pure-table-file", dest="ptfile", help="表格名稱"
 oparser.add_option("-i", "--im", dest="imname", help="輸入法名稱", default="倉頡")
 oparser.add_option("-m", "--method", dest="method", help="産生的方式", default="動態")
 oparser.add_option("-p", "--platform", dest="platform", help="目標平台", default="puretable")
+oparser.add_option("--dir-charinfo", dest="dir_charinfo", help="結構所在的目錄", default="charinfo")
 (options, args) = oparser.parse_args()
 
 filenamelist=[
@@ -122,40 +123,42 @@ def genFile(options):
 	choice=options.imname
 	method=options.method
 
+	dirchar=options.dir_charinfo + "/"
+
 	tmpfname=filenamelist[0]
 	if choice in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
 		constructor=im.CangJie.CJCharInfo
 		pathlist=[
-				'charinfo/main/'+tmpfname,
-				'charinfo/cj/'+tmpfname,
+				dirchar+'main/'+tmpfname,
+				dirchar+'cj/'+tmpfname,
 				]
 		z=im.CangJie()
 	elif choice in ['行', '行列', '行列輸入法', 'array', 'ar',]:
 		constructor=im.Array.ARCharInfo
 		pathlist=[
-				'charinfo/main/'+tmpfname,
-				'charinfo/ar/'+tmpfname,
+				dirchar+'main/'+tmpfname,
+				dirchar+'ar/'+tmpfname,
 				]
 		z=im.Array()
 	elif choice in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
 		constructor=im.DaYi.DYCharInfo
 		pathlist=[
-				'charinfo/main/'+tmpfname,
-				'charinfo/dy/'+tmpfname,
+				dirchar+'main/'+tmpfname,
+				dirchar+'dy/'+tmpfname,
 				]
 		z=im.DaYi()
 	elif choice in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
 		constructor=im.Boshiamy.BSCharInfo
 		pathlist=[
-				'charinfo/main/'+tmpfname,
-				'charinfo/bs/'+tmpfname,
+				dirchar+'main/'+tmpfname,
+				dirchar+'bs/'+tmpfname,
 				]
 		z=im.Boshiamy()
 	elif choice in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
 		constructor=im.ZhengMa.ZMCharInfo
 		pathlist=[
-				'charinfo/main/'+tmpfname,
-				'charinfo/zm/'+tmpfname,
+				dirchar+'main/'+tmpfname,
+				dirchar+'zm/'+tmpfname,
 				]
 		z=im.ZhengMa()
 	else:
