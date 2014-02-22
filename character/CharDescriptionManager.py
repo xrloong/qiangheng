@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from .CharDesc import CharDesc
+from .CharDesc import EmptyCharDesc
 from .TemplateDesc import TemplateDesc
 from .OperatorManager import OperatorManager
 from xml.etree import ElementTree
@@ -12,6 +13,25 @@ class CharDescriptionManager:
 		self.characterDB={}
 
 		def CharDescGenerator(charName, structInfo=['龜', []]):
+			operatorName, CompList=structInfo
+			operator=self.operatorGenerator(operatorName)
+
+			if len(operatorName)>1:
+				# 暫時以運算名稱的字數來區分是否為範本
+				charDesc=CharDesc(charName, operator, CompList)
+				return charDesc
+			else:
+				if operator.isAvailableOperation():
+					charDesc=CharDesc(charName, operator, CompList)
+				else:
+					charDesc=None
+			return charDesc
+
+		def CharDescGenerator(charName, structInfo=['龜', []]):
+#			if structInfo==None:
+#				charDesc=EmptyCharDesc()
+#				return charDesc
+
 			operatorName, CompList=structInfo
 			operator=self.operatorGenerator(operatorName)
 

@@ -15,8 +15,6 @@ class CharDesc:
 		# 字符的資訊，如在某種輸入法下如何拆碼
 		self.propDict=None
 
-		self.showFlag=False if len(self.name)>1 else True
-
 	def __str__(self):
 #		return '<{0}={1}>'.format(self.name, self.operator.getName())
 		return '<{0}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)))
@@ -35,8 +33,6 @@ class CharDesc:
 
 	def setName(self, name):
 		self.name=name
-		self.showFlag=False if len(self.name)>1 else True
-#		self.anonymous=self.name.count("瑲珩匿名")>0
 
 	def getName(self):
 		return self.name
@@ -62,8 +58,17 @@ class CharDesc:
 		CharDesc.countAnonymousName+=1
 		return name
 
-	def isToShow(self):
-		return self.showFlag
+class EmptyCharDesc(CharDesc):
+#	def __init__(self, name, operator, compList):
+#		CharDesc.__init__(self, name, operator, compList)
+	def __init__(self):
+		self.propDict=None
+
+	def setPropDict(self, propDict):
+		self.propDict=propDict
+
+	def getPropDict(self):
+		return self.propDict
 
 if __name__=='__main__':
 	print(CharDesc('王', '(龜)', None))

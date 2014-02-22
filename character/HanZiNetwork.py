@@ -37,18 +37,14 @@ class HanZiStructure:
 		chInfo.setByComps(self.getOperator(), infoList)
 
 class HanZiNode:
-	def __init__(self, charDesc, chInfo):
-		self.structureX=HanZiStructure(charDesc.getOperator(), [], chInfo)
-		self.structureList=[self.structureX]
+	def __init__(self, charName):
+		self.structureList=[]
+		self.charName=charName
 
-		self.isToShow=charDesc.isToShow()
+		self.isToShow=len(charName)==1
 
-
-	def setStructure(self, operator, nodeList):
-		self.getStructure().setStructure(operator, nodeList)
-
-	def getStructure(self):
-		return self.structureList[0]
+	def addStructure(self, structure):
+		self.structureList.append(structure)
 
 	def getStructureListWithCondition(self):
 #		return self.structureList[:1]
@@ -99,30 +95,27 @@ class HanZiNetwork:
 		return srcName in self.srcDescNameToNodeDict.keys()
 
 	def addNode(self, charName, charDesc):
-		dstDesc=charDesc.copyDescription()
-
-		chInfo=self.emptyCharInfoGenerator()
+		ansNode=HanZiNode(charName)
 
 		srcPropDict=charDesc.getPropDict()
 		if srcPropDict:
+			chInfo=self.emptyCharInfoGenerator()
 			chInfo.setPropDict(srcPropDict)
-
-		ansNode=HanZiNode(dstDesc, chInfo)
+			structure=HanZiStructure(None, [], chInfo)
+			ansNode.addStructure(structure)
 
 		self.srcDescNameToNodeDict[charName]=ansNode
 
 		return ansNode
 
-	def addLink(self, charDesc, operator, childNodeList):
-		if len(childNodeList)>0:
-			dstNode=self.findNodeByCharDesc(charDesc)
-			dstNode.setStructure(operator, childNodeList)
-
 	def addLink(self, charDesc, operator, childDescList):
 		if len(childDescList)>0:
 			childNodeList=[self.findNodeByCharDesc(childDesc) for childDesc in childDescList]
 			dstNode=self.findNodeByCharDesc(charDesc)
-			dstNode.setStructure(operator, childNodeList)
+
+			chInfo=self.emptyCharInfoGenerator()
+			structure=HanZiStructure(operator, childNodeList, chInfo)
+			dstNode.addStructure(structure)
 
 	def findNodeByName(self, charName):
 		return self.srcDescNameToNodeDict.get(charName)
