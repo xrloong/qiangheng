@@ -25,7 +25,7 @@ Options:
   -c CONFIG_FILE, --config=CONFIG_FILE
                         輸入法設定檔
   --format=OUTPUT_FORMAT
-                        輸出格式，可能的選項有：xml、text、quiet
+                        輸出格式，可能的選項有：xml、yaml、text、quiet
   -q, --quiet
 
 
