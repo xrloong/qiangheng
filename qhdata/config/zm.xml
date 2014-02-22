@@ -6,7 +6,9 @@
 	<設定檔 資料目錄="qhdata/">
 		<匯入 檔案="config/simplified.east.xml" />
 
+<!--
 		<範本 檔案="template/zm.xml" />
+-->
 
 		<部件 檔案="component/CJK/zm.xml" />
 		<部件 檔案="component/CJK-A/zm.xml" />
