@@ -998,6 +998,7 @@ U+71DF	營	(龜)	ffno	o
 U+71E2	燢	(龜)	snf	n
 # 7200
 U+7202	爂	(龜)	snf	n
+U+7228	爨	(龜)	sntf	n
 U+722A	爪	(龜)	e	i
 U+722B	爫	(龜)	e	a
 U+722D	爭	(龜)	ee	j
@@ -1724,6 +1725,7 @@ U+9E75	鹵	(龜)	zoxf	a
 U+9E7D	鹽	(龜)	rvzf	e
 U+9E7F	鹿	(龜)	lb	l
 U+9E81	麁	(龜)	nlb	l
+U+9E97	麗	(龜)	llb	l
 U+9EA5	麥	(龜)	gca	a
 U+9EA6	麦	(龜)	fu	x
 U+9EC3	黃	(龜)	k	a

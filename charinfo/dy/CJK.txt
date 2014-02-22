@@ -998,6 +998,7 @@ U+71DF	營	(龜)	yymo
 U+71E2	燢	(龜)	wmy
 # 7200
 U+7202	爂	(龜)	wmy
+U+7228	爨	(龜)	wmiy
 U+722A	爪	(龜)	h10
 U+722B	爫	(龜)	j
 U+722D	爭	(龜)	jrj
@@ -1724,6 +1725,7 @@ U+9E75	鹵	(龜)	97xy
 U+9E7D	鹽	(龜)	r1ru
 U+9E7F	鹿	(龜)	c
 U+9E81	麁	(龜)	nc
+U+9E97	麗	(龜)	em.c
 U+9EA5	麥	(龜)	saan
 U+9EA6	麦	(龜)	fx
 U+9EC3	黃	(龜)	se78

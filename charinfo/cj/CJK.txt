@@ -190,7 +190,7 @@ U+516B	八	(龜)	ho	c	+c
 U+516D	六	(龜)	yc	yc	+yc
 U+516F	兯	(龜)	csl	csl	|c,sl
 U+5170	兰	(龜)	cmm	cmm	|u,m,m
-U+5171	共	(龜)	tc	tc	|t,c
+U+5171	共	(龜)	tc	tc	+tc
 U+5173	关	(龜)	tk	tk	+tk
 U+5174	兴	(龜)	fmc	fmc	+fmc
 U+5176	其	(龜)	tmmc	tmc	+tmc
@@ -489,7 +489,7 @@ U+59F5	姵	(龜)	bhnb	bhn	-v,hNb
 # 5A00
 U+5A41	婁	(龜)	llv	llv	|lwl,v
 U+5A6C	婬	(龜)	vbhg	vbg	-b,bhg
-U+5A74	婴	(龜)	bov	bov	-bo,v
+U+5A74	婴	(龜)	bov	bov	|bo,v
 U+5AAB	媫	(龜)	vyso	vyo	-v,yso
 U+5AB5	媵	(龜)	bfqv	bfv	-b,fqv
 U+5ABA	媺	(龜)	vuuk	vuk	-v,umn,ok
@@ -929,7 +929,6 @@ U+6C36	氶	(龜)	ne	ne	+ne
 U+6C37	氷	(龜)	ie	ie	+ie
 U+6C38	永	(龜)	ine	ine	+ine
 U+6C3A	氺	(龜)	ff	e	+e
-U+722B	爫	(龜)	hf	b	+b
 U+6C42	求	(龜)	ije	ije	+ije
 U+6C92	沒	(龜)	ehne	ehe	-e,hne
 U+6CBF	沿	(龜)	ehnr	ehr	-e,hnr
@@ -999,6 +998,7 @@ U+71DF	營	(龜)	ffbrr	ffr	|ff,b,rhr
 U+71E2	燢	(龜)	hbf	hbf	|hb,f
 # 7200
 U+7202	爂	(龜)	hbf	hbf	|hb,f
+U+7228	爨	(龜)	hbddf	hbf	|hb,dd,k,f
 U+722A	爪	(龜)	hlo	hlo	+hlo
 U+722B	爫	(龜)	hf	b	+b
 U+722D	爭	(龜)	bsd	bsd	|b,sd
@@ -1285,7 +1285,7 @@ U+81FD	臽	(龜)	nhx	nhx	|n,hx
 U+81FE	臾	(龜)	hxo	hxo	+hxo
 U+81FF	臿	(龜)	hjhx	hjx	+hjhx
 # 8200
-U+8202	舂	(龜)	qkhu	qku	|qk,hu
+U+8202	舂	(龜)	qkhx	qkx	|qk,hx
 U+8203	舃	(龜)	hxysf	hxf	|hx,ysf
 U+8204	舄	(龜)	hxpf	hxf	|hx,pf
 U+8206	舆	(龜)	hxkc	hxc	+hxkc
@@ -1393,7 +1393,7 @@ U+8858	衘	(龜)	hoomn	hon	-ho,omym,mmn
 U+885E	衞	(龜)	hodbn	hon	-ho,dmrmb,mmn
 U+885F	衟	(龜)	hovun	hon	-ho,vvmbu,mmn
 U+8861	衡	(龜)	honkn	hon	-ho,nwk,mmn
-U+8863	衣	(龜)	yhv	yhv	|y,hv
+U+8863	衣	(龜)	yhv	yhv	+y,hv
 U+8864	衤	(龜)	inlo	l	+l
 U+8868	表	(龜)	qmv	qmv	+qmv
 U+886E	衮	(龜)	ycihv	ycv	|yc,i,hv
@@ -1689,7 +1689,7 @@ U+9B31	鬱	(龜)	ddbuh	ddh	|doud,b,uph
 U+9B32	鬲	(龜)	mrbtl	mrb	|m,r,Btl
 U+9B35	鬵	(龜)	mumrb	mub	|mumvu,m,r,Btl
 U+9B3C	鬼	(龜)	hui	hui	+hui
-U+9B5A	魚	(龜)	nwf	nwf	|nw,f
+U+9B5A	魚	(龜)	nwf	nwf	+nwf
 U+9B9D	鮝	(龜)	fqnwf	fqf	|fq,nw,f
 U+9BBA	鮺	(龜)	tqnwf	tqf	|tq,nwf
 U+9BC8	鯈	(龜)	olof	olf	-o,l,oknwf
@@ -1725,6 +1725,7 @@ U+9E75	鹵	(龜)	ywii	ywi	+yWii
 U+9E7D	鹽	(龜)	swbt	swt	|sloyw,bt
 U+9E7F	鹿	(龜)	ixp	ixp	+ixp
 U+9E81	麁	(龜)	nixp	nip	|n,ixp
+U+9E97	麗	(龜)	mmbbp	mmp	|mm,BiBi,ixp
 U+9EA5	麥	(龜)	joni	jon	|jo,Ni
 U+9EA6	麦	(龜)	qmhe	qme	|qm,he
 U+9EC3	黃	(龜)	tmlc	tmc	|t,mlw,c

@@ -60,82 +60,63 @@ class CJCharInfo(CharInfo):
 		super().__init__(charname, parseans, prop)
 		self._cj_incode=None	# 當獨體使用
 		self._cj_rtcode=None	# 當部件使用
-		self._X_dir_code=None
+
+		self._cj_direction=None	# 組件的方向
+		self._cj_single=None	# 當此字為獨體時的碼。
+		self._cj_body=None	# 當此字為字身時的碼。
+		self._cj_radix_list=[]	# 組件
 		if len(prop)>=2:
-			self.setCJProp(prop[0], prop[1])
-			self.XsetCJProp(prop[0], prop[2])
+#			self.setCJProp(prop[0], prop[1])
+			self.setCJProp(prop[0], prop[2])
 		self.noneFlag=False
 
-		self._X_body_code=''
-
-	def getDirCode(self):
-		return self._X_dir_code
-
-	def XsetCJProp(self, a, b):
-		self._X_single_code=a
-
-		if len(b)>0:
-			dir_code=b[0]
+	def setCJProp(self, cj_single, cj_info_code):
+		if len(cj_info_code)>0:
+			dir_code=cj_info_code[0]
 			if dir_code not in ['|', '-', '+']:
 				dir_code='+'
 
-			self._X_radix_list=b[1:].split(',')
+			self._cj_radix_list=cj_info_code[1:].split(',')
 		else:
 			dir_code='+'
-			self._X_radix_list=[]
+			self._cj_radix_list=[]
 
-		self._X_dir_code=dir_code
-		self._X_body_code=''
-
-	def setCJProp(self, cj_incode, cj_rtcode):
-		if cj_incode=='XXXX':
+		if cj_single=='XXXX':
 			self._cj_incode=None
 		else:
-			self._cj_incode=cj_incode
+			self._cj_incode=cj_single
 
-		if cj_rtcode=='XXXX':
-#			self._cj_rtcode=None
-			# 目前先假設跟 _cj_incode 一樣
-			if cj_incode=='XXXX':
-				self._cj_rtcode=None
-			else:
-				self._cj_rtcode=cj_incode
-		else:
-			self._cj_rtcode=cj_rtcode
+		self._cj_single=cj_single
+		self._cj_direction=dir_code
+		self._cj_body=self.computeBodyCode(self._cj_radix_list)
 
 	def getCJProp(self):
-		return [self._cj_incode, self._cj_rtcode]
+		return [self._cj_direction, self._cj_radix_list]
 
-	def setCJByComps(self, prelist, postlist):
-		def CJCombideCode(first, second):
-			tmpfirst=first if len(first)<=2 else first[0]+first[-1]
-			tmpsecond=second if len(second)<=2 else second[0]+second[-1]
-			anscode=tmpfirst+tmpsecond
-			anscode=anscode if len(anscode)<=3 else anscode[0:2]+anscode[-1]
-			return anscode
+	def setByComps(self, complist):
+		dir_code=self._cj_direction
 
-		def getCJRootCodeAsBody(rtcodelist):
-			tmpcode=rtcodelist[0]
-			tmpcode=tmpcode if len(tmpcode)<=3 else tmpcode[0:2]+tmpcode[-1]
-			for rtcode in rtcodelist[1:]:
-				tmpcode=CJCombideCode(tmpcode, rtcode)
-			return tmpcode
+		ansRadixList=[]
+		for tmpchinfo in complist:
+			tmpDirCode, tmpRadixList=tmpchinfo.getCJProp()
+			if tmpDirCode=='+':
+				ansRadixList.append(tmpchinfo._cj_body)
+			elif tmpDirCode==dir_code:
+				# 同向
+				ansRadixList.extend(tmpRadixList)
+			else:
+				# 不同向
+				ansRadixList.append(tmpchinfo._cj_body)
 
-		cjlist=[list(map(lambda c: c.getCJProp()[1], prelist)),
-				list(map(lambda c: c.getCJProp()[1], postlist))]
-		if cjlist[0] and cjlist[1] and all(cjlist[0]) and all(cjlist[1]):
-			headcode=getCJRootCodeAsBody(cjlist[0])
-			headcode=headcode if len(headcode)<=2 else headcode[0]+headcode[-1]
-			bodycode=getCJRootCodeAsBody(cjlist[1])
-			cjcode=headcode+bodycode
-			cjbodycode=CJCombideCode(headcode, bodycode)
-			self.setCJProp(cjcode, cjbodycode)
-
-	def XsetCJByComps(self, dirCode, compList):
-		pass
+		self._cj_radix_list=ansRadixList
+		self._cj_body=self.computeBodyCode(self._cj_radix_list)
 
 	@property
 	def cj(self):
+		if self._cj_single:
+			return self._cj_single
+		else:
+			return self.computeTotalCode(self._cj_radix_list).lower()
 		return self._cj_incode.lower()
 
 	@property
@@ -205,36 +186,12 @@ class CJCharInfo(CharInfo):
 		return totalCode
 
 	def updateIMCode(self, chdesc):
-		prelist, postlist=chdesc.getCJPrePostList()
+		# 計算倉頡碼時，需要知道此字部件的組成方向
+		self._cj_direction=chdesc.getDir()
 
-		pre_chinfo_list=map(lambda x:x.getChInfo(), prelist)
-		post_chinfo_list=map(lambda x:x.getChInfo(), postlist)
-
-		self.setCJByComps(pre_chinfo_list, post_chinfo_list)
-
-	def updateIMCode(self, chdesc):
 		descList=chdesc.getCompList()
-
-		ansRadixList=[]
-
-		if self.getDirCode():
-			dir_code=self.getDirCode()
-		else:
-			dir_code=chdesc.getDir()
-
-		for x in descList:
-			tmpchinfo=x.getChInfo()
-			tmpRadixList=tmpchinfo._X_radix_list
-			if x.getDir()=='+':
-				ansRadixList.append(tmpchinfo.computeBodyCode(tmpRadixList))
-			elif x.getDir()==dir_code:
-				# 同向
-				ansRadixList.extend(tmpRadixList)
-			else:
-				# 不同向
-				ansRadixList.append(tmpchinfo.computeBodyCode(tmpRadixList))
-		self._X_radix_list=ansRadixList
-		self._cj_incode=self.computeTotalCode(ansRadixList)
+		compList=[x.getChInfo() for x in descList]
+		self.setByComps(compList)
 
 	def normalizationToLinear(self, chdesc):
 		"""將樹狀結構轉為線性結構"""
