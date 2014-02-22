@@ -7,6 +7,11 @@ class CharInfo:
 	def __init__(self, propDict={}):
 		self.setFlag=False
 
+		self.setPropDict(propDict)
+
+	def setPropDict(self, propDict):
+		pass
+
 	def __str__(self):
 #		return "{{{0}}}".format(self.charname)
 		return "{{{0}}}".format(self.getCode())

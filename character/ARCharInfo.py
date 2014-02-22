@@ -5,9 +5,11 @@ class ARCharInfo(CharInfo):
 		super().__init__(propDict)
 
 		self.setFlag=False
-
 		self._ar_incode=None
 
+		self.setPropDict(propDict)
+
+	def setPropDict(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
 			self.setARProp(str_rtlist)

@@ -2,13 +2,12 @@
 
 from .CharDesc import CharDesc
 from .TemplateDesc import TemplateDesc
-from .CharInfo import CharInfo
 from .OperatorManager import OperatorManager
 from xml.etree import ElementTree
 from character import Operator
 
 class CharDescriptionManager:
-	def __init__(self, imModule, CharInfoGenerator):
+	def __init__(self, imModule):
 		self.templateDB={}
 		self.characterDB={}
 
@@ -27,9 +26,6 @@ class CharDescriptionManager:
 					charDesc=None
 			return charDesc
 
-		def emptyCharInfoGenerator():
-			return CharInfoGenerator({})
-
 		def emptyCharDescGenerator():
 			anonymousName=CharDesc.generateNewAnonymousName()
 			return CharDescGenerator(anonymousName)
@@ -45,9 +41,7 @@ class CharDescriptionManager:
 		imName=imModule.IMInfo.IMName
 		self.operationMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
 
-		self.charInfoGenerator=CharInfoGenerator
 		self.charDescGenerator=CharDescGenerator
-		self.emptyCharInfoGenerator=emptyCharInfoGenerator
 		self.emptyCharDescGenerator=emptyCharDescGenerator
 		self.charDescQueryer=charDescQueryer
 		self.charDescRearranger=charDescRearranger
@@ -57,14 +51,8 @@ class CharDescriptionManager:
 	def keys(self):
 		return self.characterDB.keys()
 
-	def getCharInfoGenerator(self):
-		return self.charInfoGenerator
-
 	def getCharDescGenerator(self):
 		return self.charDescGenerator
-
-	def getEmptyCharInfoGenerator(self):
-		return self.emptyCharInfoGenerator
 
 	def getEmptyCharDescGenerator(self):
 		return self.emptyCharDescGenerator
@@ -83,8 +71,6 @@ class CharDescriptionManager:
 
 	def loadByParsingXML__0_1(self, rootNode):
 		# 用於 0.1 版
-		charInfoGenerator=self.getCharInfoGenerator()
-		emptyCharInfoGenerator=self.getEmptyCharInfoGenerator()
 		charDescGenerator=self.getCharDescGenerator()
 		emptyCharDescGenerator=self.getEmptyCharDescGenerator()
 
@@ -102,21 +88,16 @@ class CharDescriptionManager:
 				else:
 					pass
 
-			infoList=[]
-			infoDict={}
-			charInfo=assembleChar.find("編碼資訊")
-			if charInfo is not None:
-				infoDict=charInfo.attrib
-				
-			chInfo=charInfoGenerator(infoDict)
-
 			anonymousName=CharDesc.generateNewAnonymousName()
 			if operatorName:
 				comp=charDescGenerator(anonymousName, [operatorName, l])
 			else:
 				comp=charDescGenerator(anonymousName)
 
-			comp.setChInfo(chInfo)
+			codeInfo=assembleChar.find("編碼資訊")
+			if codeInfo is not None:
+				infoDict=codeInfo.attrib
+				comp.setPropDict(infoDict)
 
 			return comp
 
@@ -156,7 +137,6 @@ class CharDescriptionManager:
 
 			parameterNameList=getDesc_ParameterList(parameterNodeList)
 
-			chInfo=emptyCharInfoGenerator()
 			comp=getDesc_AssembleChar(assembleChar)
 			comp.setName(templateName)
 			return TemplateDesc(templateName, comp, parameterNameList)

@@ -11,6 +11,9 @@ class CJCharInfo(CharInfo):
 		self._cj_body=None	# 當此字為字身時的碼。
 		self._cj_radix_list=[]	# 組件
 
+		self.setPropDict(propDict)
+
+	def setPropDict(self, propDict):
 		self._cj_single=propDict.get('獨體編碼')
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:

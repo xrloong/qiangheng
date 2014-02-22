@@ -8,6 +8,9 @@ class ZMCharInfo(CharInfo):
 
 		self._zm_rtlist=[]
 
+		self.setPropDict(propDict)
+
+	def setPropDict(self, propDict):
 		extra_code=propDict.get('補充資訊')
 		str_rtlist=propDict.get('資訊表示式')
 

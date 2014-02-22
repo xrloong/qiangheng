@@ -31,11 +31,10 @@ class QiangHeng:
 
 	def initManager(self, imModule):
 		ciGenerator=imModule.CharInfoGenerator
-		self.descMgr=CharDescriptionManager(imModule, ciGenerator)
+		self.descMgr=CharDescriptionManager(imModule)
 
-		emptyCharInfoGenerator=self.descMgr.getEmptyCharInfoGenerator()
 		charDescQueryer=self.descMgr.getCharDescQueryer()
-		self.hanziNetwork=HanZiNetwork(emptyCharInfoGenerator, charDescQueryer)
+		self.hanziNetwork=HanZiNetwork(charDescQueryer, ciGenerator)
 
 #		self.operationMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
 
@@ -108,11 +107,9 @@ class QiangHeng:
 	def genIMMapping(self, targetCharList):
 		table=[]
 		for charName in targetCharList:
-			code=self.hanziNetwork.getCode(charName)
-			if code:
+			codeList=self.hanziNetwork.getCodeList(charName)
+			for code in codeList:
 				table.append([code, charName])
-			else:
-				pass
 		return table
 
 	def getIMInfo(self, imName):

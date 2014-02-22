@@ -9,6 +9,9 @@ class BSCharInfo(CharInfo):
 		self._bs_incode=None
 		self._bs_spcode=None
 
+		self.setPropDict(propDict)
+
+	def setPropDict(self, propDict):
 		self._bs_single=propDict.get('獨體編碼')
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:

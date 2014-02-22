@@ -9,6 +9,9 @@ class DYCharInfo(CharInfo):
 		self._dy_incode=None
 		self._flag_seted=False
 
+		self.setPropDict(propDict)
+
+	def setPropDict(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
 			self.setDYProp(str_rtlist)

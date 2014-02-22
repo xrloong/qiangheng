@@ -13,20 +13,22 @@ class CharDesc:
 		self.compList=compList
 
 		# 字符的資訊，如在某種輸入法下如何拆碼
-		self.chInfo=None
+		self.propDict=None
 
 		self.showFlag=False if len(self.name)>1 else True
 
 	def __str__(self):
 #		return '<{0}={1}>'.format(self.name, self.operator.getName())
-		chInfo=self.getChInfo()
-		if chInfo!=None:
-			return '<{0},{3}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)), chInfo)
-		else:
-			return '<{0}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)))
+		return '<{0}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)))
 
 	def __repr__(self):
 		return str(self)
+
+	def setPropDict(self, propDict):
+		self.propDict=propDict
+
+	def getPropDict(self):
+		return self.propDict
 
 	def copyDescription(self):
 		return CharDesc(self.getName(), self.getOperator(), [])
@@ -51,12 +53,6 @@ class CharDesc:
 	def getCompList(self):
 		return self.compList
 
-	def setChInfo(self, chInfo):
-		self.chInfo=chInfo
-
-	def getChInfo(self):
-		return self.chInfo
-
 	# 匿名結構是指沒有對應到名字的部分。
 	# 若定義 夠=(好 (爻 夕)句) ，則 (爻 夕) 的部分為匿名
 	# 若定義 夠=(好 多句) ，則沒有匿名結構
@@ -68,7 +64,6 @@ class CharDesc:
 
 	def isToShow(self):
 		return self.showFlag
-		return self.chInfo.isToShow()
 
 if __name__=='__main__':
 	print(CharDesc('王', '(龜)', None))

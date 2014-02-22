@@ -30,6 +30,15 @@ class HanZiStructure:
 		self.operator=operator
 		self.nodeList=nodeList
 
+	def setByComps(self):
+		chInfo=self.getCharInfo()
+		charDescList=self.nodeList
+		if not chInfo.isToSetTree():
+			return
+
+		infoList=[x.getChInfo() for x in charDescList]
+		chInfo.setByComps(self.getOperator(), infoList)
+
 class HanZiNode:
 	def __init__(self, charDesc, chInfo):
 #		self.charDesc=charDesc
@@ -58,34 +67,41 @@ class HanZiNode:
 	def getStructure(self):
 		return self.structureList[0]
 
-	def getNodeList(self):
-		return self.getStructure().getNodeList()
+	def getStructureListWithCondition(self):
+#		return self.structureList[:1]
+		return self.structureList
 
-	def getOperator(self):
-		return self.getStructure().getOperator()
+	def getCodeList(self):
+		codeList=[]
+		if self.isToShow:
+			structureList=self.getStructureListWithCondition()
+			for struct in structureList:
+				chinfo=struct.getCharInfo()
+				code=chinfo.getCode()
+				if code:
+					codeList.append(code)
+		return codeList
 
-	def getCode(self):
-		chinfo=self.getChInfo()
-		code=chinfo.getCode()
-		if self.isToShow and code:
-			return code
-		else:
-			return None
+	def setNodeTree(self):
+		"""設定某一個字符所包含的部件的碼"""
 
-	def setByComps(self, charDescList):
-		chInfo=self.getChInfo()
-		if not chInfo.isToSetTree():
-			return
+		structureList=self.getStructureListWithCondition()
+		for structure in structureList:
+			radixList=structure.getNodeList()
+			for childNode in radixList:
+				childNode.setNodeTree()
 
-		infoList=[x.getChInfo() for x in charDescList]
-		chInfo.setByComps(self.getOperator(), infoList)
+			structure.setByComps()
 
 class HanZiNetwork:
-	def __init__(self, emptyCharInfoGenerator, charDescQueryer):
+	def __init__(self, charDescQueryer, charInfoGenerator):
 		self.nodeList=[]
 
 		self.descNetwork={}
 		self.srcDescNameToNodeDict={}
+
+		def emptyCharInfoGenerator():
+			return charInfoGenerator({})
 
 		self.emptyCharInfoGenerator=emptyCharInfoGenerator
 		self.charDescQueryer=charDescQueryer
@@ -103,12 +119,11 @@ class HanZiNetwork:
 
 		for charName in sortedNameList:
 			srcDesc=self.charDescQueryer(charName)
-			dstNode=self.addOrFindNodeByCharDesc(srcDesc)
+			dstNode=self.findNodeByCharDesc(srcDesc)
 
-			chInfo=srcDesc.getChInfo()
-			if chInfo==None:
-				chInfo=self.emptyCharInfoGenerator()
-			dstNode.setChInfo(chInfo)
+			srcPropDict=srcDesc.getPropDict()
+			if srcPropDict:
+				dstNode.getChInfo().setPropDict(srcPropDict)
 
 	def recursivelyAddNode(self, srcDesc):
 		dstNode=self.addOrFindNodeByCharDesc(srcDesc)
@@ -116,16 +131,12 @@ class HanZiNetwork:
 		for childSrcDesc in srcDesc.getCompList():
 			self.recursivelyAddNode(childSrcDesc)
 
-		dstCharInfo=self.emptyCharInfoGenerator()
-		dstNode.setChInfo(dstCharInfo)
-
-
 	def recursivelyAddLink(self, srcDesc):
-		dstNode=self.addOrFindNodeByCharDesc(srcDesc)
+		dstNode=self.findNodeByCharDesc(srcDesc)
 
 		childNodeList=[]
 		for childSrcDesc in srcDesc.getCompList():
-			childNode=self.addOrFindNodeByCharDesc(childSrcDesc)
+			childNode=self.findNodeByCharDesc(childSrcDesc)
 			childNodeList.append(childNode)
 
 		if len(childNodeList)>0:
@@ -151,9 +162,7 @@ class HanZiNetwork:
 	def addNode(self, charName, charDesc):
 		dstDesc=charDesc.copyDescription()
 
-		chInfo=charDesc.getChInfo()
-		if chInfo==None:
-			chInfo=self.emptyCharInfoGenerator()
+		chInfo=self.emptyCharInfoGenerator()
 
 		ansNode=HanZiNode(dstDesc, chInfo)
 
@@ -167,17 +176,9 @@ class HanZiNetwork:
 	def findNodeByCharDesc(self, charDesc):
 		return self.findNodeByName(charDesc.getName())
 
-	def setNodeTree(self, targetNode):
-		"""設定某一個字符所包含的部件的碼"""
-
-		radixList=targetNode.getNodeList()
-		for childNode in radixList:
-			self.setNodeTree(childNode)
-
-		targetNode.setByComps(radixList)
-
-	def getCode(self, charName):
+	def getCodeList(self, charName):
 		charNode=self.findNodeByName(charName)
-		self.setNodeTree(charNode)
-		return charNode.getCode()
+		charNode.setNodeTree()
+
+		return charNode.getCodeList()
 
