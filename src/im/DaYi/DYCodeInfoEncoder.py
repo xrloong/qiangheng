@@ -124,41 +124,6 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 			newSecondCodeInfo=secondCodeInfo
 		return [newFirstCodeInfo, targetCodeInfo, newSecondCodeInfo]
 
-	def getMergedCodeInfoList(self, codeInfoList, mergeCodeInfoList):
-		firstCodeInfo=None
-		secondCodeInfo=None
-
-		newCodeInfoList=[]
-		for xCodeInfo in codeInfoList:
-			firstCodeInfo=secondCodeInfo
-			secondCodeInfo=xCodeInfo
-
-			if firstCodeInfo==None:
-				continue
-
-			for [firstRadix, secondRadix, targetRadix] in mergeCodeInfoList:
-				[newFirstCodeInfo, targetCodeInfo, newSecondCodeInfo,]=self.convertMergedCode(firstCodeInfo, secondCodeInfo, firstRadix, secondRadix, targetRadix)
-				if targetCodeInfo:
-					if newFirstCodeInfo:
-						newCodeInfoList.append(newFirstCodeInfo)
-					newCodeInfoList.append(targetCodeInfo)
-					secondCodeInfo=newSecondCodeInfo
-					break;
-			else:
-				newCodeInfoList.append(firstCodeInfo)
-
-		if secondCodeInfo!=None:
-			newCodeInfoList.append(secondCodeInfo)
-
-		return newCodeInfoList
-
-	def getMergedCodeInfoListAsSilkworm(self, codeInfoList):
-		mergeCodeInfoList=[
-			[DYCodeInfo.RADIX_厂, DYCodeInfo.RADIX_一, DYCodeInfo.RADIX_厂一],
-		]
-
-		return self.getMergedCodeInfoList(codeInfoList, mergeCodeInfoList)
-
 	def getMergedCodeInfoListAsForGe(self, codeInfoList):
 		# 如 咸、戎
 		if len(codeInfoList)<=1:
@@ -172,6 +137,6 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 
 				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
 				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
-				return self.getMergedCodeInfoListAsSilkworm([frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo])
+				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
 			else:
 				return codeInfoList

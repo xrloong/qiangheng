@@ -7,6 +7,32 @@ class DYStructureRearranger(StructureRearranger):
 		operator=structDesc.getOperator()
 		compList=structDesc.getCompList()
 		lenCompList=len(compList)
+
+		if operator.getName()=='範同' and lenCompList>=2:
+			firstChilStructDesc=compList[0]
+			secondChilStructDesc=compList[1]
+
+			firstName=firstChilStructDesc.getReferenceName()
+			secondName=secondChilStructDesc.getReferenceName()
+
+			secondeCompList=secondChilStructDesc.getCompList()
+			if firstName=='戊' and len(secondeCompList)>=2:
+				secondFirstChilStructDesc=secondeCompList[0]
+				secondSecondChilStructDesc=secondeCompList[1]
+
+				secondFirstName=secondFirstChilStructDesc.getReferenceName()
+
+				isMatch=(secondFirstName=='一')
+
+				if isMatch:
+					newStructDesc=self.generateStructureDescriptionWithName('[厂一]')
+					newStructDesc_特戈=self.generateStructureDescriptionWithName('[特戈]')
+					structDescList=[newStructDesc]+secondeCompList[1:]+[newStructDesc_特戈]
+					structDesc.setCompList(structDescList)
+					structDesc.setOperator(Operator.OperatorGoose)
+		if operator.getName()=='範同' and lenCompList>=2:
+			pass
+
 		if operator.getName()=='範湘' and lenCompList>=2:
 			self.rearrangeForFanYan(structDesc)
 

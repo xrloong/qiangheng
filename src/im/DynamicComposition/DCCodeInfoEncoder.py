@@ -135,20 +135,14 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		extraPane=firstCodeInfo.getExtraPane()
 		assert extraPane!=None, "extraPane 不應為 None %s %s"%(str(firstCodeInfo), str(secondCodeInfo))
-		if extraPane!=None:
-			newStrokeGroupList=[]
-			firstStrokeGroup=copy.deepcopy(firstCodeInfo.getStrokeGroup())
-			newStrokeGroupList.append(firstStrokeGroup)
-			secondStrokeGroup=copy.deepcopy(secondCodeInfo.getStrokeGroup())
-			secondStrokeGroup.transform(extraPane)
-			newStrokeGroupList.append(secondStrokeGroup)
-		else:
-			nCount=len(codeInfoList)
-			helper=DCGridHelper(2, 2)
 
-			newStrokeGroupList=[]
-			newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 1, 0, 1))
-			newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 1, 1, 1, 1))
+		newStrokeGroupList=[]
+		firstStrokeGroup=copy.deepcopy(firstCodeInfo.getStrokeGroup())
+		newStrokeGroupList.append(firstStrokeGroup)
+		secondStrokeGroup=copy.deepcopy(secondCodeInfo.getStrokeGroup())
+		secondStrokeGroup.transform(extraPane)
+		newStrokeGroupList.append(secondStrokeGroup)
+
 		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
 
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)

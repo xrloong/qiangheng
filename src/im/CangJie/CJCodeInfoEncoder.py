@@ -50,13 +50,6 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-
-		if len(codeInfoList)> 2 and firstCodeInfo.toCode()=="h" and lastCodeInfo.toCode()=="u":
-			codeInfo=self.encodeAsGoose([CJCodeInfo.CODE_INFO_丨]+codeInfoList[1:-1]+[CJCodeInfo.CODE_INFO_乚])
-			return codeInfo
-
 		direction='-'
 		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
 		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)

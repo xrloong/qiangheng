@@ -28,14 +28,6 @@ class BSCodeInfo(CodeInfo):
 	RADIX_Y='y'
 	RADIX_Z='z'
 
-	RADIX_一='$一'
-	RADIX_山='$山'
-	RADIX_山一='$山$一'
-	RADIX_丿丿='$丿丿'
-	RADIX_丿丿_山一='$丿丿$山$一'
-	RADIX_厂='$厂'
-	RADIX_厂一='$厂一'
-
 	COMPLEMENTARY_A='a'
 	COMPLEMENTARY_E='e'
 	COMPLEMENTARY_I='i'
@@ -75,14 +67,6 @@ class BSCodeInfo(CodeInfo):
 		RADIX_X:'x',
 		RADIX_Y:'y',
 		RADIX_Z:'z',
-
-		RADIX_一:'e',
-		RADIX_山:'e',
-		RADIX_山一:'ee',
-		RADIX_丿丿:'m',
-		RADIX_丿丿_山一:'m',
-		RADIX_厂:'l',
-		RADIX_厂一:'f',
 	}
 
 	def __init__(self, singletonCode, codeList, supplementCode):

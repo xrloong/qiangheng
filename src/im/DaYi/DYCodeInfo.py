@@ -42,17 +42,6 @@ class DYCodeInfo(CodeInfo):
 	RADIX_SEMICOLON=';'
 	RADIX_SLASH='/'
 
-	RADIX_一='$一'
-	RADIX_厂='$厂'
-	RADIX_厂一='$厂一'
-	RADIX_丨='$丨'
-	RADIX_丿='$丿'
-	RADIX_乚='$乚'
-	RADIX_丨丨='$丨丨'
-	RADIX_丨丿='$丨丿'
-	RADIX_丿丨='$丿丨'
-	RADIX_儿='$儿'
-
 	radixToCodeDict={
 		RADIX_A:'a',
 		RADIX_B:'b',
@@ -94,10 +83,6 @@ class DYCodeInfo(CodeInfo):
 		RADIX_COMMA:',',
 		RADIX_SEMICOLON:';',
 		RADIX_SLASH:'/',
-
-		RADIX_一:'e',
-		RADIX_厂:'h',
-		RADIX_厂一:'h',
 	}
 
 	def __init__(self, codeList):

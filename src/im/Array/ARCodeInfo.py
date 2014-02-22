@@ -3,9 +3,6 @@ from ..base.CodeInfo import CodeInfo
 import sys
 
 class ARCodeInfo(CodeInfo):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	RADIX_1_UP='1^'
 	RADIX_2_UP='2^'
 	RADIX_3_UP='3^'
@@ -38,21 +35,6 @@ class ARCodeInfo(CodeInfo):
 	RADIX_8_BOTTOM='8v'
 	RADIX_9_BOTTOM='9v'
 	RADIX_0_BOTTOM='0v'
-
-	RADIX_一口='$一口'
-	RADIX_一='$一'
-	RADIX_口='$口'
-	RADIX_士冖='$士冖'
-	RADIX_士='$士'
-	RADIX_冖='$冖'
-	RADIX_彳山一='$彳山一'
-	RADIX_彳='$彳'
-	RADIX_山='$山'
-	RADIX_山一='$山一'
-
-	RADIX_文='$文'
-	RADIX_厂='$厂'
-	RADIX_文厂='$文厂'
 
 	radixToCodeDict={
 		RADIX_1_UP:'q',
@@ -87,23 +69,6 @@ class ARCodeInfo(CodeInfo):
 		RADIX_8_BOTTOM:',',
 		RADIX_9_BOTTOM:'.',
 		RADIX_0_BOTTOM:'/',
-
-		RADIX_一口:'q',
-		RADIX_一:'a',
-		RADIX_口:';',
-
-		RADIX_士冖:'v',
-		RADIX_士:'r',
-		RADIX_冖:'j',
-
-		RADIX_彳山一:'o',
-		RADIX_彳:'.',
-		RADIX_山:'d',
-		RADIX_山一:'da',
-
-		RADIX_文:'y.',
-		RADIX_厂:'z',
-		RADIX_文厂:'n',
 	}
 
 	def __init__(self, codeList=[]):

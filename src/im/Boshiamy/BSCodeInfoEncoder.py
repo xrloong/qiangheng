@@ -43,31 +43,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsSilkworm(self, codeInfoList):
-		"""運算 "蚕" """
-		bsCodeList=list(map(lambda c: c.getBSCodeList(), codeInfoList))
-		tmpBsCodeList=BSCodeInfoEncoder.mergeRadixAsSilkworm(bsCodeList)
-
-		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(tmpBsCodeList)
-		bs_spcode=codeInfoList[-1].getBSSupplement()
-
-		codeInfo=self.generateDefaultCodeInfo([bs_code_list], bs_spcode)
-		return codeInfo
-
-	def encodeAsGoose(self, codeInfoList):
-		"""運算 "鴻" """
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-
-		bsCodeList=list(map(lambda c: c.getBSCodeList(), codeInfoList))
-		tmpBsCodeList=BSCodeInfoEncoder.mergeRadixAsGoose(bsCodeList)
-
-		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(tmpBsCodeList)
-		bs_spcode=codeInfoList[-1].getBSSupplement()
-
-		codeInfo=self.generateDefaultCodeInfo([bs_code_list], bs_spcode)
-		return codeInfo
-
 	def encodeAsHan(self, codeInfoList):
 		"""運算 "函" """
 		firstCodeInfo=codeInfoList[0]
@@ -83,20 +58,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-
-	def encodeAsLiao(self, codeInfoList):
-		"""運算 "廖" """
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-
-		if firstCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_厂 and secondCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_一:
-			newCodeInfo=self.generateDefaultCodeInfo([[BSCodeInfo.RADIX_厂一]], "a")
-			tmpCodeInfo=self.generateDefaultCodeInfo([secondCodeInfo.getMainCodeList()[1:]], secondCodeInfo.getBSSupplement())
-			codeInfo=self.encodeAsLiao([newCodeInfo, tmpCodeInfo])
-			return codeInfo
-
-		codeInfo=self.encodeAsLoong([firstCodeInfo, secondCodeInfo])
-		return codeInfo
 
 	def encodeAsZhe(self, codeInfoList):
 		"""運算 "這" """
@@ -142,40 +103,4 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		bslist=list(sum(bsCodeList, []))
 		bs_code_list=(bslist[:3]+bslist[-1:]) if len(bslist)>4 else bslist
 		return bs_code_list
-
-	@staticmethod
-	def mergeRadixAsSilkworm(bsCodeList):
-		tmpBsCodeList=copy.copy(bsCodeList)
-
-		numBsCode=len(tmpBsCodeList)
-		for i in range(numBsCode-1):
-			bsCodePrev=tmpBsCodeList[i]
-			bsCodeNext=tmpBsCodeList[i+1]
-			if len(bsCodePrev)>0 and len(bsCodeNext)>0:
-				if bsCodePrev[-1]==BSCodeInfo.RADIX_山 and bsCodeNext[0]==BSCodeInfo.RADIX_一:
-					tmpBsCodeList[i]=bsCodePrev[:-1]+[BSCodeInfo.RADIX_山一]
-					tmpBsCodeList[i+1]=bsCodeNext[1:]
-
-		# 合併字根後，有些字根列可能為空，如：戓
-		tmpBsCodeList=filter(lambda x: len(x)>0, tmpBsCodeList)
-
-		return tmpBsCodeList
-
-	@staticmethod
-	def mergeRadixAsGoose(bsCodeList):
-		tmpBsCodeList=copy.copy(bsCodeList)
-
-		numBsCode=len(tmpBsCodeList)
-		for i in range(numBsCode-1):
-			bsCodePrev=tmpBsCodeList[i]
-			bsCodeNext=tmpBsCodeList[i+1]
-			if len(bsCodePrev)>0 and len(bsCodeNext)>0:
-				if bsCodePrev[0]==BSCodeInfo.RADIX_丿丿 and bsCodeNext[0]==BSCodeInfo.RADIX_山一:
-					tmpBsCodeList[i]=[BSCodeInfo.RADIX_丿丿_山一]+bsCodePrev[1:]
-					tmpBsCodeList[i+1]=bsCodeNext[1:]
-
-		# 合併字根後，有些字根列可能為空，如：戓
-		tmpBsCodeList=filter(lambda x: len(x)>0, tmpBsCodeList)
-
-		return tmpBsCodeList
 

@@ -42,28 +42,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 
-	def encodeAsSilkworm(self, codeInfoList):
-		"""運算 "蚕" """
-		newCodeInfoList=self.getMergedCodeInfoListAsSilkworm(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
-	def encodeAsGoose(self, codeInfoList):
-		"""運算 "鴻" """
-
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-
-		newCodeInfoList=self.getMergedCodeInfoListAsGoose(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
-	def encodeAsLoop(self, codeInfoList):
-		"""運算 "回" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
 	def encodeAsTong(self, codeInfoList):
 		"""運算 "同" """
 		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
@@ -76,7 +54,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(newCodeInfoList)
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
@@ -183,29 +160,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 		return newCodeInfoList
 
-	def getMergedCodeInfoListAsSilkworm(self, codeInfoList):
-		firstCodeInfo=None
-		secondCodeInfo=None
-
-		mergeCodeInfoList=[
-			[ARCodeInfo.RADIX_一, ARCodeInfo.RADIX_口, ARCodeInfo.RADIX_一口],
-			[ARCodeInfo.RADIX_士, ARCodeInfo.RADIX_冖, ARCodeInfo.RADIX_士冖],
-			[ARCodeInfo.RADIX_山, ARCodeInfo.RADIX_一, ARCodeInfo.RADIX_山一],
-			[ARCodeInfo.RADIX_文, ARCodeInfo.RADIX_厂, ARCodeInfo.RADIX_文厂],
-		]
-
-		return self.getMergedCodeInfoList(codeInfoList, mergeCodeInfoList)
-
-	def getMergedCodeInfoListAsGoose(self, codeInfoList):
-		firstCodeInfo=None
-		secondCodeInfo=None
-
-		mergeCodeInfoList=[
-			[ARCodeInfo.RADIX_彳, ARCodeInfo.RADIX_山一, ARCodeInfo.RADIX_彳山一],
-		]
-
-		return self.getMergedCodeInfoList(codeInfoList, mergeCodeInfoList)
-
 	def getMergedCodeInfoListAsForGe(self, codeInfoList):
 		# 如 咸、戎
 		if len(codeInfoList)<=1:
@@ -219,7 +173,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
 				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
-				return self.getMergedCodeInfoListAsSilkworm([frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo])
+				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
 			else:
 				return codeInfoList
 

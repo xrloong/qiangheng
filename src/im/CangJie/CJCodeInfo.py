@@ -40,6 +40,3 @@ class CJCodeInfo(CodeInfo):
 	def getLumpList(self):
 		return self.cjLumpList
 
-CJCodeInfo.CODE_INFO_乚=CJCodeInfo('', '*', [CJLump.generate("u", "", "")])
-CJCodeInfo.CODE_INFO_丨=CJCodeInfo('', '*', [CJLump.generate("l", "", "")])
-

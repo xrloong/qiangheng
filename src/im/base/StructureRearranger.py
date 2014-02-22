@@ -55,6 +55,22 @@ class StructureRearranger:
 		return structDesc
 
 
+	def getRearrangeListSilkworm(self):
+		# 蚕
+		rearrangeList=[
+			# 範例
+#			['一', '口', ['[一口]']],
+			]
+		return rearrangeList
+
+	def getRearrangeListZai(self):
+		# 載
+		rearrangeList=[
+			# 範例
+#			['戈', '口', ['[一口]', '[特戈]']],
+			]
+		return rearrangeList
+
 	def getRearrangeListFanFu(self):
 		# 範焤
 		rearrangeList=[
@@ -72,8 +88,66 @@ class StructureRearranger:
 		return rearrangeList
 
 
-	def rearrangeForFanFu(self, structDesc):
-		pass
+	def rearrangeForSilkworm(self, structDesc):
+		compList=structDesc.getCompList()
+
+		rearrangeList=self.getRearrangeListSilkworm()
+
+		newCompList=compList
+		for [firstName, secondName, resultList] in rearrangeList:
+			compList=newCompList
+			newCompList=[]
+
+			firstChildStructDesc=None
+			secondChildStructDesc=compList[0]
+			for idx in range(1, len(compList)):
+				firstChildStructDesc=secondChildStructDesc
+				secondChildStructDesc=compList[idx]
+
+				if firstChildStructDesc==None or secondChildStructDesc==None:
+					continue
+
+				isMatch= firstChildStructDesc.getReferenceExpression()==firstName \
+					and secondChildStructDesc.getReferenceExpression()==secondName
+				if isMatch:
+					for resultName in resultList:
+						newStructDesc=self.generateStructureDescriptionWithName(resultName)
+						newCompList.append(newStructDesc)
+					firstChildStructDesc=None
+					secondChildStructDesc=None
+				else:
+					newCompList.append(firstChildStructDesc)
+			if secondChildStructDesc!=None:
+				newCompList.append(secondChildStructDesc)
+
+				structDescList=newCompList
+				structDesc.setCompList(structDescList)
+				structDesc.setOperator(Operator.OperatorSilkworm)
+
+	def rearrangeForZai(self, structDesc):
+		compList=structDesc.getCompList()
+
+		rearrangeList=self.getRearrangeListZai()
+
+		newCompList=compList
+		for [firstName, secondName, resultList] in rearrangeList:
+			firstChildStructDesc=compList[0]
+			secondChildStructDesc=compList[1]
+			isMatch= firstChildStructDesc.getReferenceExpression()==firstName \
+				and secondChildStructDesc.getReferenceExpression()==secondName
+			if isMatch:
+				rearName=resultList[-1]
+				newCompList=[]
+				for frontName in resultList[:-1]:
+					newFrontStructDesc=self.generateStructureDescriptionWithName(frontName)
+					newCompList.append(newFrontStructDesc)
+				newRearStructDesc=self.generateStructureDescriptionWithName(rearName)
+				newCompList.extend(compList[1:-1])
+				newCompList.append(newRearStructDesc)
+
+				structDescList=newCompList
+				structDesc.setCompList(structDescList)
+				structDesc.setOperator(Operator.OperatorLoong)
 
 	def rearrangeForFanFu(self, structDesc):
 		compList=structDesc.getCompList()
