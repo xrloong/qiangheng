@@ -223,16 +223,16 @@ U+51E0	几	(龜)	hn	+hn
 U+51E1	凡	(龜)	hni	+hNi
 U+51E2	凢	(龜)	hhn	+hhn
 U+51E3	凣	(龜)	lhn	+lhn
-U+51E4	凤	(龜)	hne	+hNe
-U+51E7	凧	(龜)	hnlb	+hNlb
-U+51E8	凨	(龜)	hneei	+hNeei
-U+51E9	凩	(龜)	hnd	+hNd
-U+51EA	凪	(龜)	hnylm	+hNylm
+U+51E4	凤	(龜)	hne	+hN,e
+U+51E7	凧	(龜)	hnlb	+hN,lb
+U+51E8	凨	(龜)	hneei	+hN,eei
+U+51E9	凩	(龜)	hnd	+hN,d
+U+51EA	凪	(龜)	hnylm	+hN,ylm
 U+51EB	凫	(龜)	pysn	+pysn
-U+51EC	凬	(龜)	hnma	+hNma
-U+51EE	凮	(龜)	hnma	+hNma
-U+51F0	凰	(龜)	hnhag	+hNhag
-U+51F2	凲	(龜)	hntxc	+hNtxc
+U+51EC	凬	(龜)	hnma	+hN,ma
+U+51EE	凮	(龜)	hnma	+hN,ma
+U+51F0	凰	(龜)	hnhag	+hN,hag
+U+51F2	凲	(龜)	hntxc	+hN,txc
 U+51F5	凵	(龜)	vl	+vl
 U+51F8	凸	(龜)	bss	+bss
 U+51F9	凹	(龜)	ssu	+ssu
@@ -315,7 +315,7 @@ U+5382	厂	(龜)	mh	+m
 U+5383	厃	(龜)	nm	+nm
 U+539A	厚	(龜)	mand	+mand
 U+53AF	厯	(龜)	mddi	+mddi
-U+53B3	厳	(龜)	fmmjk	+fmmjk
+U+53B3	厳	(龜)	fmmjk	+fm,mjk
 U+53B6	厶	(龜)	vi	+i
 U+53B7	厷	(龜)	ki	+ki
 U+53BB	去	(龜)	gi	+gi
@@ -377,7 +377,7 @@ U+55E3	嗣	(龜)	rbsmr	-rBt,smr
 U+5602	嘂	(龜)	rrvlr	-rr,vl,rr
 U+563C	嘼	(龜)	rrwmr	|rr,w,m,r
 U+565F	噟	(龜)	iogr	+iogr
-U+5669	噩	(龜)	mgrrr	+mgrrr
+U+5669	噩	(龜)	mgrrr	+mg,rrr
 U+5694	嚔	(龜)	rjbo	-r,jbo
 U+56A2	嚢	(龜)	jcttv	|jc,ttv
 U+56B3	嚳	(龜)	hbhgr	|hb,hg,r
@@ -453,7 +453,7 @@ U+5912	夒	(龜)	mche	|mc,he
 U+5913	夓	(龜)	hche	|hc,he
 U+5914	夔	(龜)	tche	|tc,he
 U+5915	夕	(龜)	ni	+Ni
-U+5919	夙	(龜)	hnmni	+hNmni
+U+5919	夙	(龜)	hnmni	+hN,mNi
 U+591B	夛	(龜)	nmmn	+nmmN
 U+591C	夜	(龜)	yonk	|y,onk
 U+5922	夢	(龜)	twln	|t,wl,b,Ni
@@ -639,7 +639,7 @@ U+5EC4	廄	(龜)	iaie	+iaie
 U+5ECC	廌	(龜)	ixf	+ixf
 U+5ECF	廏	(龜)	ihpe	+ihpe
 U+5EF4	廴	(龜)	nk	+nk
-U+5EF6	延	(龜)	nkhym	+nkhym
+U+5EF6	延	(龜)	nkhym	+nk,hym
 U+5EFE	廾	(龜)	jj	+t
 U+5EFF	廿	(龜)	t	+t
 # 5F00
@@ -666,8 +666,8 @@ U+5F58	彘	(龜)	vmpop	|vnm,pop
 U+5F5D	彝	(龜)	vmfft	|vnm,fdf,t
 U+5F5E	彞	(龜)	nmfft	|nmm,fdf,t
 U+5F61	彡	(龜)	hhh	+hhh
-U+5F65	彥	(龜)	ykmhh	+ykh
-U+5F66	彦	(龜)	yhhhh	+yhh
+U+5F65	彥	(龜)	ykmhh	+yk,mhh
+U+5F66	彦	(龜)	yhhhh	+yh,hhh
 U+5F67	彧	(龜)	ikrm	+ikrm
 U+5F73	彳	(龜)	ho	+ho
 U+5F93	従	(龜)	hotyo	-ho,tyo
@@ -713,9 +713,9 @@ U+6211	我	(龜)	hqi	+hqi
 U+6216	或	(龜)	irm	+irm
 U+621E	戞	(龜)	mbi	|mb,i
 U+6220	戠	(龜)	yai	+yia
-U+622A	截	(龜)	jiog	+jiog
+U+622A	截	(龜)	jiog	+ji,og
 U+6232	戲	(龜)	yti	-ypmrt,i
-U+6234	戴	(龜)	jiwtc	+jiwtc
+U+6234	戴	(龜)	jiwtc	+ji,wtc
 U+6236	戶	(龜)	hs	+hs
 U+6237	户	(龜)	is	+is
 U+6238	戸	(龜)	ms	+ms
@@ -888,7 +888,7 @@ U+6B53	歓	(龜)	ogno	-okg,no
 U+6B62	止	(龜)	ylm	+ylm
 U+6B63	正	(龜)	mylm	+mylm
 U+6B65	步	(龜)	ylmh	+ylmh
-U+6B66	武	(龜)	mpylm	+mpylm
+U+6B66	武	(龜)	mpylm	+mp,ylm
 U+6B68	歨	(龜)	ylmo	+ylmo
 U+6B69	歩	(龜)	ylmh	+ylmh
 U+6B6F	歯	(龜)	ymufd	|ylm,ufd
@@ -1086,16 +1086,16 @@ U+758F	疏	(龜)	nmyiu	-nylm,yihlu
 U+7590	疐	(龜)	jbwno	|jb,w,nyo
 U+7591	疑	(龜)	pknio	-pok,niyo
 U+7592	疒	(龜)	iim	+k
-U+759F	疟	(龜)	ksm	+ksm
-U+75E9	痩	(龜)	khxe	+khxe
-U+75F2	痲	(龜)	kjcc	+kjc
+U+759F	疟	(龜)	ksm	+k,sm
+U+75E9	痩	(龜)	khxe	+k,hxe
+U+75F2	痲	(龜)	kjcc	+k,jcc
 # 7600
-U+7617	瘗	(龜)	kktg	+kktg
-U+761D	瘝	(龜)	kwle	+kwl1
-U+761E	瘞	(龜)	kkog	+kkog
-U+762A	瘪	(龜)	khap	+khap
-U+7631	瘱	(龜)	kkop	+kkop
-U+765F	癟	(龜)	khub	+khub
+U+7617	瘗	(龜)	kktg	+k,ktg
+U+761D	瘝	(龜)	kwle	+k,wll,e
+U+761E	瘞	(龜)	kkog	+k,kog
+U+762A	瘪	(龜)	khap	+k,hap
+U+7631	瘱	(龜)	kkop	+k,kop
+U+765F	癟	(龜)	khub	+k,hub
 U+7676	癶	(龜)	niyo	+nio
 U+767A	発	(龜)	nomkp	|nio,mkp
 U+767D	白	(龜)	ha	+ha
@@ -1109,7 +1109,7 @@ U+76D6	盖	(龜)	tgbt	|tg,bt
 U+76E1	盡	(龜)	lmfbt	|lm,f,bt
 U+76E3	監	(龜)	sibt	|sli,bt
 U+76E5	盥	(龜)	hxbt	|hx,bt
-U+76E7	盧	(龜)	ypwbt	+ypwbt
+U+76E7	盧	(龜)	ypwbt	+yp,wbt
 U+76EC	盬	(龜)	srbt	|slr,bt
 U+76ED	盭	(龜)	vkbt	|vjok,bt
 U+76EE	目	(龜)	bu	+bu
@@ -1125,7 +1125,7 @@ U+771F	真	(龜)	jbmc	+jbmc
 U+7737	眷	(龜)	fqbu	|fq,bu
 U+773E	眾	(龜)	wlooo	|wll,ooo
 U+7740	着	(龜)	tqbu	+tqbu
-U+7742	睂	(龜)	olmbu	+olmbu
+U+7742	睂	(龜)	olmbu	+ol,mbu
 U+7758	睘	(龜)	wlmrv	|wll,m,r,v
 U+777F	睿	(龜)	ybmcu	|yb,m,c,c,bu
 U+7789	瞉	(龜)	guhne	-gbmu,hne
@@ -1262,7 +1262,7 @@ U+80BB	肻	(龜)	ybb	|yb,b
 U+80BE	肾	(龜)	leb	|lle,b
 U+80E4	胤	(龜)	lvbu	-l,vib,u
 U+80FD	能	(龜)	ibpp	-ib,pp
-U+80FE	胾	(龜)	jiobo	+jioBo
+U+80FE	胾	(龜)	jiobo	+ji,oBo
 # 8100
 U+810A	脊	(龜)	fcb	|fc,b
 U+8129	脩	(龜)	olob	-o,l,okb
@@ -1273,12 +1273,12 @@ U+81BA	膺	(龜)	iogb	+iogb
 U+81DD	臝	(龜)	ynwd	+ynwd
 U+81E3	臣	(龜)	slsl	+slsl
 U+81E6	臦	(龜)	slsll	-slsl,slsl
-U+81E7	臧	(龜)	imsll	+imsll
+U+81E7	臧	(龜)	imsll	+im,sll
 U+81E8	臨	(龜)	slorr	-slsl,orrr
 U+81EA	自	(龜)	hbu	+hbu
 U+81EF	臯	(龜)	huej	+hbu,ej
 U+81F3	至	(龜)	mig	+mig
-U+81F7	臷	(龜)	jimig	+jimig
+U+81F7	臷	(龜)	jimig	+ji,mig
 U+81FA	臺	(龜)	grbg	|g,r,b,mig
 U+81FC	臼	(龜)	hx	+hx
 U+81FD	臽	(龜)	nhx	|n,hx
@@ -1352,11 +1352,11 @@ U+85AB	薫	(龜)	thgf	|t,hjwg,f
 U+8609	蘉	(龜)	twle	|t,Wll,b,osme
 U+8644	虄	(龜)	tlim	|t,lihem
 U+864D	虍	(龜)	yp	+yp
-U+8650	虐	(龜)	ypsm	+ypsm
-U+8652	虒	(龜)	hypu	+hypu
-U+865B	虛	(龜)	yptm	+yptm
-U+865C	虜	(龜)	ypwks	+ypwks
-U+8661	虡	(龜)	yptc	+yptc
+U+8650	虐	(龜)	ypsm	+yp,sm
+U+8652	虒	(龜)	hypu	+h,ypu
+U+865B	虛	(龜)	yptm	+yp,tm
+U+865C	虜	(龜)	ypwks	+yp,wks
+U+8661	虡	(龜)	yptc	+yp,tc
 U+8667	虧	(龜)	ygmms	-ypog,mmvs
 U+8668	虨	(龜)	ydhhh	-ypdd,hhh
 U+8669	虩	(龜)	ffypu	-faf,yphu
@@ -1365,7 +1365,7 @@ U+8671	虱	(龜)	nhli	+nhli
 U+86A4	蚤	(龜)	eilmi	|eii,lmi
 U+86A9	蚩	(龜)	umlmi	|um,lmi
 U+86CD	蛍	(龜)	fblmi	|fb,lmi
-U+86D3	蛓	(龜)	jilmi	+jilmi
+U+86D3	蛓	(龜)	jilmi	+ji,lmi
 U+86D7	蛗	(龜)	hrlmi	|hrr,lmi
 # 8700
 U+8700	蜀	(龜)	wlpli	|wll,plmi
@@ -1379,7 +1379,7 @@ U+87A4	螤	(龜)	yihxo	-yklmi,hxo
 U+87D7	蟗	(龜)	jbuui	|jlb,uu,lmi
 U+87FF	蟿	(龜)	jelmi	|juhne,lmi
 # 8800
-U+8803	蠃	(龜)	ynlmi	+ynlmi
+U+8803	蠃	(龜)	ynlmi	+yn,lmi
 U+8827	蠧	(龜)	gbmi	|g,b,mr,lilmi
 U+882B	蠫	(龜)	bnlii	|bhln,lilmi
 U+882F	蠯	(龜)	ihji	+ihji
@@ -1407,7 +1407,7 @@ U+889E	袞	(龜)	ycrhv	|yc,r,hv
 U+88A4	袤	(龜)	ynhv	|y,ninh,hv
 U+88AC	袬	(龜)	yirv	|y,i,r,hv
 U+88B2	袲	(龜)	yniv	|y,Ni,Ni,hv
-U+88C1	裁	(龜)	jiyhv	+jiyhv
+U+88C1	裁	(龜)	jiyhv	+ji,yhv
 U+88CA	裊	(龜)	hayv	+hayv
 U+88CF	裏	(龜)	ywgv	|y,wg,hv
 U+88D2	裒	(龜)	yhxv	|y,hx,hv
@@ -1455,7 +1455,7 @@ U+8A01	訁	(龜)	ymmr	|y,m,m,r
 U+8A5C	詜	(龜)	yrue	-yr,ue
 U+8A64	詤	(龜)	yrovu	-yr,ovhlu
 U+8A67	詧	(龜)	boymr	|bno,y,m,m,r
-U+8A79	詹	(龜)	ncymr	+ncymr
+U+8A79	詹	(龜)	ncymr	+nc,ymr
 U+8A8A	誊	(龜)	fqymr	|fq,y,m,m,r
 U+8AE1	諡	(龜)	yrcmt	-yr,cmst
 U+8AEC	諬	(龜)	huymr	|hdiku,y,m,m,r
@@ -1485,8 +1485,8 @@ U+8C9D	貝	(龜)	buc	+buc
 U+8C9E	貞	(龜)	ybuc	+ybuc
 U+8CA0	負	(龜)	nbuc	+nbuc
 U+8CAC	責	(龜)	qmbuc	|qm,buc
-U+8CAD	貭	(龜)	hjbuc	+hjbuc
-U+8CAE	貮	(龜)	mpbuc	+mpbuc
+U+8CAD	貭	(龜)	hjbuc	+hj,buc
+U+8CAE	貮	(龜)	mpbuc	+mp,buc
 U+8CB4	貴	(龜)	lmbuc	|lm,buc
 U+8CB5	貵	(龜)	ikbuc	|ik,buc
 U+8CBF	貿	(龜)	hhbuc	|hish,buc
@@ -1501,7 +1501,7 @@ U+8CF8	賸	(龜)	bfqc	-b,fqbuc
 U+8CFD	賽	(龜)	jtcc	|j,ttc,buc
 # 8D00
 U+8D01	贁	(龜)	bcok	-bcbuc,ok
-U+8D0F	贏	(龜)	ynbuc	+ynbuc
+U+8D0F	贏	(龜)	ynbuc	+yn,buc
 U+8D1B	贛	(龜)	yjhec	-ytaj,hembc
 U+8D1D	贝	(龜)	bo	+bo
 U+8D1E	贞	(龜)	ybo	+ybo
@@ -1531,7 +1531,7 @@ U+8ECD	軍	(龜)	bjwj	|b,jwj
 U+8EE3	軣	(龜)	jjimo	|jwj,imo
 U+8EEC	軬	(龜)	ikjwj	|ik,jwj
 # 8F00
-U+8F09	載	(龜)	jijwj	+jijwj
+U+8F09	載	(龜)	jijwj	+ji,jwj
 U+8F26	輦	(龜)	qojwj	+qo,jwj
 U+8F3F	輿	(龜)	hxjc	+hxjc
 U+8F42	轂	(龜)	gjhne	-gbmj,hne
@@ -1572,7 +1572,7 @@ U+90FB	郻	(龜)	bvnl	-buvv,nl
 U+9109	鄉	(龜)	vhiil	-vvh,iavi,nl
 U+9149	酉	(龜)	mcwm	+mcWm
 U+914B	酋	(龜)	tcwm	|tcWm
-U+9168	酨	(龜)	jimcw	+jimcw
+U+9168	酨	(龜)	jimcw	+ji,mcw
 U+919F	醟	(龜)	ffbmw	|ff,b,mcWm
 U+91B8	醸	(龜)	mwycv	-mcWm,ycthv
 U+91C1	釁	(龜)	hbmch	|hb,mcwc,sh
@@ -1582,7 +1582,7 @@ U+91CD	重	(龜)	hjwg	+hjwg
 U+91D0	釐	(龜)	jkmwg	|jdk,mwg
 U+91D1	金	(龜)	c	+c
 U+91D2	釒	(龜)	c	+c
-U+91DC	釜	(龜)	ckmgc	+ckmgc
+U+91DC	釜	(龜)	ckmgc	+ck,mgc
 U+91E1	釡	(龜)	cc	|c,c
 # 9200
 U+9253	鉓	(龜)	colb	-c,olb
@@ -1611,7 +1611,7 @@ U+9577	長	(龜)	smv	+smv
 U+9578	镸	(龜)	smi	+smi
 U+957F	长	(龜)	po	+po
 U+9580	門	(龜)	an	+an
-U+95C5	闅	(龜)	anbue	+anbue
+U+95C5	闅	(龜)	anbue	+an,bue
 U+95E8	门	(龜)	ls	+ls
 # 9600
 U+961C	阜	(龜)	hrj	|hrr,j
@@ -1641,18 +1641,18 @@ U+9769	革	(龜)	tlj	+tlj
 U+97CB	韋	(龜)	dmrq	|dm,r,q
 U+97CF	韏	(龜)	fqdmq	|fq,dm,r,q
 U+97E6	韦	(龜)	qs	+qs
-U+97EF	韯	(龜)	jilsm	+jilsm
-U+97F1	韱	(龜)	oilsm	+oilsm
+U+97EF	韯	(龜)	jilsm	+ji,lsm
+U+97F1	韱	(龜)	oilsm	+oi,lsm
 U+97F2	韲	(龜)	yxlsm	|yx,lsm
 # 9800
 U+9801	頁	(龜)	mbuc	+mbuc
 U+9827	頧	(龜)	hrmbc	-hrlr,mbuc
 U+982F	頯	(龜)	btmbc	-bt,mbuc
 U+9875	页	(龜)	mbo	+mbo
-U+98A8	風	(龜)	hnhli	+hNhli
-U+98B4	颴	(龜)	hnono	+hnono
-U+98CE	风	(龜)	hnk	+hNk
-U+98DB	飛	(龜)	nohto	+nohto
+U+98A8	風	(龜)	hnhli	+hN,hli
+U+98B4	颴	(龜)	hnono	+hNhli,ono
+U+98CE	风	(龜)	hnk	+hN,k
+U+98DB	飛	(龜)	nohto	+no,hto
 U+98DE	飞	(龜)	no	+no
 U+98DF	食	(龜)	oiav	|o,i,av
 U+98E0	飠	(龜)	oiai	|o,i,avi
@@ -1673,7 +1673,7 @@ U+99E6	駦	(龜)	fqsqf	|fq,sqf
 # 9A00
 U+9A2B	騫	(龜)	jtcf	|j,ttc,sqsf
 U+9A56	驖	(龜)	sfjig	-sqsf,jirhg
-U+9A58	驘	(龜)	ynsqf	+ynsqf
+U+9A58	驘	(龜)	ynsqf	+yn,sqf
 U+9A6C	马	(龜)	nvsm	+nvsm
 U+9A9E	骞	(龜)	jtcm	|j,ttc,nvsm
 U+9AA8	骨	(龜)	bbb	|bb,b
@@ -1682,7 +1682,7 @@ U+9AD9	髙	(龜)	yslb	|yslB
 # 9B00
 U+9B1B	鬛	(龜)	shwkv	|sihhh,Wk,vyv
 U+9B25	鬥	(龜)	ln	+ln
-U+9B2C	鬬	(龜)	lnrml	+lnrml
+U+9B2C	鬬	(龜)	lnrml	+ln,rml
 U+9B2F	鬯	(龜)	uip	|uki,p
 U+9B30	鬰	(龜)	ddbuh	|dkkd,b,uph
 U+9B31	鬱	(龜)	ddbuh	|doud,b,uph
@@ -1703,8 +1703,8 @@ U+9C9D	鲝	(龜)	tqnwm	|tq,nwm
 U+9C9E	鲞	(龜)	fqnwm	|fq,nwm
 U+9CE5	鳥	(龜)	hayf	+hayf
 U+9CEC	鳬	(龜)	hayn	+hayn
-U+9CEF	鳯	(龜)	hnhaf	+hNhaf
-U+9CF3	鳳	(龜)	hnmaf	+hNmaf
+U+9CEF	鳯	(龜)	hnhaf	+hN,haf
+U+9CF3	鳳	(龜)	hnmaf	+hN,maf
 # 9D00
 U+9D08	鴈	(龜)	mohf	+mohf
 U+9D2C	鴬	(龜)	fbhaf	|fb,hayf
@@ -1717,7 +1717,7 @@ U+9DF0	鷰	(龜)	tlpf	|t,lmrp,hayf
 U+9DF9	鷹	(龜)	iogf	+iogf
 U+9DFD	鷽	(龜)	hbhaf	|hb,hayf
 # 9E00
-U+9E01	鸁	(龜)	ynhaf	+ynhaf
+U+9E01	鸁	(龜)	ynhaf	+yn,haf
 U+9E1F	鸟	(龜)	pysm	+pysm
 U+9E34	鸴	(龜)	fbpym	+fb,pym
 U+9E70	鹰	(龜)	iogm	+iogm
