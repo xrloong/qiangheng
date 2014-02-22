@@ -97,13 +97,6 @@ class HanZiNetwork:
 	def addNode(self, charName, charDesc):
 		ansNode=HanZiNode(charName)
 
-		srcPropDict=charDesc.getPropDict()
-		if srcPropDict:
-			chInfo=self.emptyCharInfoGenerator()
-			chInfo.setPropDict(srcPropDict)
-			structure=HanZiStructure(None, [], chInfo)
-			ansNode.addStructure(structure)
-
 		self.srcDescNameToNodeDict[charName]=ansNode
 
 		return ansNode
@@ -116,6 +109,13 @@ class HanZiNetwork:
 			chInfo=self.emptyCharInfoGenerator()
 			structure=HanZiStructure(operator, childNodeList, chInfo)
 			dstNode.addStructure(structure)
+
+	def appendNodeInfo(self, charDesc, propDict):
+		dstNode=self.findNodeByCharDesc(charDesc)
+		chInfo=self.emptyCharInfoGenerator()
+		chInfo.setPropDict(propDict)
+		structure=HanZiStructure(None, [], chInfo)
+		dstNode.addStructure(structure)
 
 	def findNodeByCharDesc(self, charDesc):
 

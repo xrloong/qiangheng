@@ -40,18 +40,23 @@ class QiangHeng:
 				'CJK.xml',
 		]
 
-		radixDir="radix"+"/"+dirIM
 		componentDir="component"+"/"+dirIM
 
 		dirCharInfo=dirCharInfoRoot + "/"
 		tmpfname=filenamelist[0]
-		pathlist=[
+		radixDir="radix"+"/"+dirIM
+		toComponentList=[
 				dirCharInfo+'main/'+tmpfname,
 				dirCharInfo+componentDir+tmpfname,
+#				dirCharInfo+radixDir+tmpfname,
+				]
+
+		radixDir="radix"+"/"+dirIM
+		toCodeList=[
 				dirCharInfo+radixDir+tmpfname,
 				]
 
-		self.getDescDBFromXML(pathlist)
+		self.getDescDBFromXML(toComponentList, toCodeList)
 
 	def constructDescriptionNetwork(self):
 		charNameList=self.descMgr.keys()
@@ -70,6 +75,13 @@ class QiangHeng:
 		for charName in sortedNameList:
 			srcDesc=charDescQueryer(charName)
 			self.recursivelyAddLink(srcDesc)
+
+		charPropQueryer=self.descMgr.getCharPropQueryer()
+		for charName in sortedNameList:
+			srcDesc=charDescQueryer(charName)
+			srcProp=charPropQueryer(charName)
+			if srcProp:
+				hanziNetwork.appendNodeInfo(srcDesc, srcProp)
 
 	def recursivelyAddNode(self, srcDesc):
 		self.hanziNetwork.addOrFindNodeByCharDesc(srcDesc)
@@ -128,11 +140,13 @@ class QiangHeng:
 		table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x), cm)))
 		print(table)
 
-	def getDescDBFromXML(self, filenamelist):
-		for filename in filenamelist:
+	def getDescDBFromXML(self, toComponentList, toCodeList):
+		for filename in toComponentList:
 			self.descMgr.loadFromXML(filename, fileencoding='utf-8-sig')
-
 		self.descMgr.adjustData()
+
+		for filename in toCodeList:
+			self.descMgr.loadCodeInfoFromXML(filename, fileencoding='utf-8-sig')
 
 	def genIMMapping(self, targetCharList):
 		charDescQueryer=self.descMgr.getCharDescQueryer()

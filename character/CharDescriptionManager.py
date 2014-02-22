@@ -12,6 +12,7 @@ class CharDescriptionManager:
 	def __init__(self, imModule):
 		self.templateDB={}
 		self.characterDB={}
+		self.propertyDB={}
 
 		def CharDescGenerator(structInfo=['龜', []]):
 			operatorName, CompList=structInfo
@@ -28,12 +29,17 @@ class CharDescriptionManager:
 			charDesc=charDescList[0]
 			return charDesc
 
+		def charPropQueryer(charName):
+			charDescList=self.propertyDB.get(charName)
+			return charDescList
+
 		imName=imModule.IMInfo.IMName
 		self.operationMgr=imModule.OperatorManager(self)
 
 		self.charDescGenerator=CharDescGenerator
 		self.charDescQueryer=charDescQueryer
 		self.charDescRearranger=charDescRearranger
+		self.charPropQueryer=charPropQueryer
 
 		self.operatorGenerator=self.operationMgr.getOperatorGenerator()
 
@@ -46,16 +52,33 @@ class CharDescriptionManager:
 	def getCharDescQueryer(self):
 		return self.charDescQueryer
 
+	def getCharPropQueryer(self):
+		return self.charPropQueryer
+
 	def loadFromXML(self, filename, fileencoding='utf-8-sig'):
 		f=open(filename, encoding=fileencoding)
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
 		version=rootNode.get('版本號')
 		if version=='0.1':
-			self.loadByParsingXML__0_1(rootNode)
+#			self.loadByParsingXML__0_1(rootNode)
+			self.loadCharDescriptionByParsingXML__0_1(rootNode)
+
+	def loadCodeInfoFromXML(self, filename, fileencoding='utf-8-sig'):
+		f=open(filename, encoding=fileencoding)
+		xmlNode=ElementTree.parse(f)
+		rootNode=xmlNode.getroot()
+		version=rootNode.get('版本號')
+		if version=='0.1':
+#			self.loadByParsingXML__0_1(rootNode)
+			self.loadCodeInfoByParsingXML__0_1(rootNode)
 
 
 	def loadByParsingXML__0_1(self, rootNode):
+		self.loadCharDescriptionByParsingXML__0_1(rootNode)
+		self.loadCodeInfoByParsingXML__0_1(rootNode)
+
+	def loadCharDescriptionByParsingXML__0_1(self, rootNode):
 		# 用於 0.1 版
 		charDescGenerator=self.getCharDescGenerator()
 
@@ -79,11 +102,6 @@ class CharDescriptionManager:
 				comp=charDescGenerator([operatorName, l])
 			else:
 				comp=charDescGenerator()
-
-			codeInfo=assembleChar.find("編碼資訊")
-			if codeInfo is not None:
-				infoDict=codeInfo.attrib
-				comp.setPropDict(infoDict)
 
 			return comp
 
@@ -144,12 +162,6 @@ class CharDescriptionManager:
 				replaceInfoList.append(replaceInfo)
 			[condition, comp]=replaceInfoList[0]
 
-#			structureChar=nodeTemplate.find("組字結構")
-#			[condition, comp]=getDesc_Template_Structure(structureChar)
-
-#			assembleChar=nodeTemplate.find("組字")
-#			comp=getDesc_AssembleChar(assembleChar)
-
 			return TemplateDesc(templateName, replaceInfoList, parameterNameList)
 
 		templateGroupNode=rootNode.find("範本集")
@@ -169,6 +181,32 @@ class CharDescriptionManager:
 			charName=node.get('名稱')
 			comp.setExpandName(charName)
 			self.characterDB[charName]=compList
+
+	def loadCodeInfoByParsingXML__0_1(self, rootNode):
+		# 用於 0.1 版
+		charDescGenerator=self.getCharDescGenerator()
+
+		def getDesc_CodeInfoList(nodeCharacter):
+			assembleCharList=nodeCharacter.findall("組字")
+			infoDictList=[]
+			for assembleChar in assembleCharList:
+				infoDict=None
+				codeInfo=assembleChar.find("編碼資訊")
+				if codeInfo is not None:
+					infoDict=codeInfo.attrib
+
+				infoDictList.append(infoDict)
+			return infoDictList
+
+		charGroupNode=rootNode.find("字符集")
+		targetChildNodes=charGroupNode.findall("字符")
+		for node in targetChildNodes:
+			codeInfoDictList=getDesc_CodeInfoList(node)
+			charName=node.get('名稱')
+			codeInfoDict=codeInfoDictList[0]
+
+			if codeInfoDict:
+				self.propertyDB[charName]=codeInfoDict
 
 	def adjustData(self):
 		self.operationMgr.adjustTemplate()
