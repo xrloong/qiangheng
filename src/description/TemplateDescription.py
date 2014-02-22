@@ -23,7 +23,7 @@ class TemplateDescription:
 		self.parameterList=parameterList
 
 	def __str__(self):
-		return '{0}({2})={1}'.format(self.name, self.charDesc, self.parameterList)
+		return '{0}({1})={2}'.format(self.name, self.parameterList, self.substitutionList)
 
 	def __repr__(self):
 		return str(self)

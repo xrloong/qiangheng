@@ -6,8 +6,6 @@ class OperatorManager:
 	# 使用享元模式
 
 	def __init__(self, imPackage):
-		self.templateDB={}
-
 		self.builtinOperatorDict={
 			'龜':Operator.OperatorTurtle,
 			'爲':Operator.OperatorEqual,
@@ -66,7 +64,6 @@ class OperatorManager:
 		return templateOperator
 
 	def setTemplateDB(self, templateDB):
-		self.templateDB=templateDB
 		for templateName, templateDesc in templateDB.items():
 			rearrangeInfoTemplate=RearrangeInfo.RearrangeInfoTemplate(templateDesc)
 
@@ -79,4 +76,7 @@ class OperatorManager:
 
 	def getStructureRearranger(self):
 		return self.structureRearranger
+
+	def rearrangeStructure(self, structDesc):
+		self.structureRearranger.rearrangeOn(structDesc)
 

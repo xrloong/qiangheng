@@ -32,20 +32,23 @@ class CharacterDescriptionManager:
 
 
 	def loadData(self, toTemplateList, toComponentList):
+		self.loadTemplate(toTemplateList)
+		self.loadComponent(toComponentList)
+		self.adjustData()
+
+	def loadComponent(self, toComponentList):
+		for filename in toComponentList:
+			charDescList=self.parser.loadCharacters(filename)
+			for charDesc in charDescList:
+				self.saveChar(charDesc)
+
+	def loadTemplate(self, toTemplateList):
 		templateDB={}
 		for filename in toTemplateList:
 			tmpTemplateDB=self.parser.loadTemplates(filename)
 			templateDB.update(tmpTemplateDB)
 
 		self.operationManager.setTemplateDB(templateDB)
-
-		for filename in toComponentList:
-			charDescList=self.parser.loadCharacters(filename)
-			for charDesc in charDescList:
-				self.saveChar(charDesc)
-
-		structureRearranger=self.operationManager.getStructureRearranger()
-		self.adjustData(structureRearranger)
 
 	def saveChar(self, charDesc):
 		charName=charDesc.getName()
@@ -64,14 +67,15 @@ class CharacterDescriptionManager:
 	def queryStructureList(self, charDesc):
 		return charDesc.getStructureList()
 
-	def adjustData(self, structureRearranger):
+	def adjustData(self):
+		operationManager=self.operationManager
 		for charName in self.characterDB.keys():
 #			print("name: %s"%charName, file=sys.stderr);
 			charDesc=self.characterDB.get(charName)
 
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
-				structureRearranger.rearrangeOn(structDesc)
+				operationManager.rearrangeStructure(structDesc)
 #				print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 if __name__=='__main__':
