@@ -12,7 +12,7 @@ bll	亾
 bn	人
 ca	夕
 cca	多
-cl	七
+c	七
 ccno	夠
 ccp	卶
 ccyo	夡
