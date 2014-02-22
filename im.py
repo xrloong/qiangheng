@@ -2,6 +2,17 @@
 class NoneIM:
 	"輸入法"
 
+	class CharInfo:
+		def __init__(self, charname, prop):
+			self.charname=charname
+			self.structure=prop[0]
+
+		def __str__(self):
+			return self.charname
+
+		def __repr__(self):
+			return str(self)
+
 	def __init__(self):
 		self.keyMaps=[]
 
@@ -75,6 +86,26 @@ class NoneIM:
 
 class CangJie(NoneIM):
 	"倉頡輸入法"
+
+	class CJCharInfo(NoneIM.CharInfo):
+		def __init__(self, charname, prop):
+			NoneIM.CharInfo.__init__(self, charname, prop)
+			self._cj_incode=None
+			if len(prop)>=2:
+				self.setCJProp(prop[1])
+
+		def setCJProp(self, cj_incode):
+			if cj_incode=='XXXX':
+				self._cj_incode=None
+			else:
+				self._cj_incode=cj_incode
+
+		def getCJProp(self):
+			return self._cj_incode
+
+		@property
+		def cj(self):
+			return self._cj_incode
 
 	def __init__(self):
 		self.keyMaps=[
@@ -214,6 +245,26 @@ class CangJie(NoneIM):
 class Array(NoneIM):
 	"行列輸入法"
 
+	class ARCharInfo(NoneIM.CharInfo):
+		def __init__(self, charname, prop):
+			NoneIM.CharInfo.__init__(self, charname, prop)
+			self._ar_incode=None
+			if len(prop)>=2:
+				self.setARProp(prop[1])
+
+		def setARProp(self, ar_incode):
+			if ar_incode=='XXXX':
+				self._ar_incode=None
+			else:
+				self._ar_incode=ar_incode
+
+		def getARProp(self):
+			return self._ar_incode
+
+		@property
+		def ar(self):
+			return self._ar_incode
+
 	def __init__(self):
 		self.keyMaps=[
 			['a', '1-',],
@@ -279,6 +330,26 @@ class Array(NoneIM):
 
 class DaYi(NoneIM):
 	"大易輸入法"
+
+	class DYCharInfo(NoneIM.CharInfo):
+		def __init__(self, charname, prop):
+			NoneIM.CharInfo.__init__(self, charname, prop)
+			self._dy_incode=None
+			if len(prop)>=2:
+				self.setDYProp(prop[1])
+
+		def setDYProp(self, dy_incode):
+			if dy_incode=='XXXX':
+				self._dy_incode=None
+			else:
+				self._dy_incode=dy_incode
+
+		def getDYProp(self):
+			return self._dy_incode
+
+		@property
+		def dy(self):
+			return self._dy_incode
 
 	def __init__(self):
 		self.keyMaps=[
@@ -346,6 +417,34 @@ class DaYi(NoneIM):
 class Boshiamy(NoneIM):
 	"嘸蝦米輸入法"
 
+	class BSCharInfo(NoneIM.CharInfo):
+		def __init__(self, charname, prop):
+			NoneIM.CharInfo.__init__(self, charname, prop)
+			self._bs_incode=None
+			self._bs_spcode=None
+			if len(prop)>=3:
+				self.setBSProp(prop[1], prop[2])
+
+		def setBSProp(self, bs_incode, bs_spcode):
+			if bs_incode=='XXXX' or bs_spcode=='XXXX':
+				self._bs_incode=None
+				self._bs_spcode=None
+			else:
+				self._bs_incode=bs_incode
+				self._bs_spcode=bs_spcode
+
+		def getBSProp(self):
+			return [self._bs_incode, self._bs_spcode]
+
+		@property
+		def bs(self):
+			if self._bs_incode==None or self._bs_spcode==None:
+				return None
+			if len(self._bs_incode)<3:
+				return self._bs_incode+self._bs_spcode
+			else:
+				return self._bs_incode
+
 	def __init__(self):
 		self.keyMaps=[
 			['a', 'Ａ',],
@@ -398,6 +497,32 @@ class Boshiamy(NoneIM):
 
 class ZhengMa(NoneIM):
 	"鄭碼輸入法"
+
+	class ZMCharInfo(NoneIM.CharInfo):
+		def __init__(self, charname, prop):
+			NoneIM.CharInfo.__init__(self, charname, prop)
+			self._zm_incode=None
+			self._zm_tpcode=None
+			if len(prop)>=2:
+				self.setZMProp(prop[1], prop[2])
+
+		def setZMProp(self, zm_incode, zm_tpcode):
+			if zm_incode=='XXXX' or zm_tpcode=='XXXX':
+				self._zm_incode=None
+				self._zm_tpcode=None
+			else:
+				self._zm_incode=zm_incode
+				self._zm_tpcode=zm_tpcode
+
+		def getZMProp(self):
+			return [self._zm_incode, self._zm_tpcode]
+
+		@property
+		def zm(self):
+			if self._zm_incode==None:
+				return None
+			else:
+				return self._zm_incode
 
 	def __init__(self):
 		self.keyMaps=[

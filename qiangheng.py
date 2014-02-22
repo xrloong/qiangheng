@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import char
 import im
 import platform
 
@@ -87,42 +86,42 @@ def genFile(options):
 
 	tmpfname=filenamelist[0]
 	if choice in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
-		constructor=char.CJChar
+		constructor=im.CangJie.CJCharInfo
 		pathlist=[
 				'charinfo/main/'+tmpfname,
 				'charinfo/cj/'+tmpfname,
 				]
 		z=im.CangJie()
 	elif choice in ['行', '行列', '行列輸入法', 'array', 'ar',]:
-		constructor=char.ARChar
+		constructor=im.Array.ARCharInfo
 		pathlist=[
 				'charinfo/main/'+tmpfname,
 				'charinfo/ar/'+tmpfname,
 				]
 		z=im.Array()
 	elif choice in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
-		constructor=char.DYChar
+		constructor=im.DaYi.DYCharInfo
 		pathlist=[
 				'charinfo/main/'+tmpfname,
 				'charinfo/dy/'+tmpfname,
 				]
 		z=im.DaYi()
 	elif choice in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
-		constructor=char.BSChar
+		constructor=im.Boshiamy.BSCharInfo
 		pathlist=[
 				'charinfo/main/'+tmpfname,
 				'charinfo/bs/'+tmpfname,
 				]
 		z=im.Boshiamy()
 	elif choice in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
-		constructor=char.ZMChar
+		constructor=im.ZhengMa.ZMCharInfo
 		pathlist=[
 				'charinfo/main/'+tmpfname,
 				'charinfo/zm/'+tmpfname,
 				]
 		z=im.ZhengMa()
 	else:
-		constructor=char.Char
+		constructor=im.NoneIM.CharInfo
 		pathlist=[]
 		z=im.NoneIM()
 
