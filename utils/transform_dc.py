@@ -82,55 +82,6 @@ class BaseCurveComputer:
 				]
 		self.startEnd = startEnd
 
-	def findLeft(self):
-		def solve(x0, x1, x2, x):
-			a=x0-2*x1+x2	# y0-2y1+y2
-			b=-2*(x1-x0)			# -2(y1-y0)
-			c=x0-x			# -2(y0-y)
-			solutions=[]
-			if a!=0:
-				b2_4ac=b**2-4*a*c
-				if b2_4ac>=0:
-					tmp=b2_4ac**0.5
-					solutions=[(-b+tmp)/(2*a), (-b-tmp)/(2*a)]
-				else:
-					solutions=[]
-			else:
-				t=c/(-2*b)
-				solutions=[t]
-			return solutions
-		for x in range(0xFF+1):
-			preP = self.pointList[0]
-			midP = None
-			for p in self.pointList[1:]:
-				prePoint = self.getPos(preP)
-				currPoint = self.getPos(p)
-
-				if p[0:4]=='0001':
-					withSolution=False
-					if midP:
-						midPoint=self.getPos(midP)
-						solution=solve(prePoint[0], midPoint[0], currPoint[0], x)
-						withSolution=any(filter(lambda t: 0<=t<=1, solution))
-					else:
-						# line
-						withSolution=min(prePoint[0], currPoint[0]) <= x <= max(prePoint[0], currPoint[0])
-					if withSolution: return x;
-
-					preP = p
-					midP=None
-				elif p[0:4]=='0002':
-					midP=p
-
-	def findTop(self):
-		pass
-
-	def findRight(self):
-		pass
-
-	def findBottom(self):
-		pass
-
 	def genScope(self):
 		def solve(x0, x1, x2, x):
 			a=x0-2*x1+x2		# y0-2y1+y2
@@ -260,8 +211,29 @@ class BaseCurveComputer:
 			findBottom(self),
 			]
 
+		self.scopeWidth = self.scope[2] - self.scope[0]
+		self.scopeHeight = self.scope[3] - self.scope[1]
+		self.strokeWidth = self.scopeWidth - 2
+		self.strokeHeight = self.scopeHeight - 2
+
 	def getStartPoint(self):
 		return self.getStartEnd()[:2]
+
+	def getStartPointAtTopLeft(self):
+		left, top, right, bottom = self.getScope()
+		return [left + 1, top + 1]
+
+	def getStartPointAtTopRight(self):
+		left, top, right, bottom = self.getScope()
+		return [right - 1, top + 1]
+
+	def getStartPointAtBottomLeft(self):
+		left, top, right, bottom = self.getScope()
+		return [left + 1, bottom - 1]
+
+	def getStartPointAtBottomRight(self):
+		left, top, right, bottom = self.getScope()
+		return [right - 1, bottom - 1]
 
 	def genStrokeString(self, pointInfoList):
 		startPoint = pointInfoList[0]
@@ -287,6 +259,18 @@ class BaseCurveComputer:
 	def getStartEnd(self):
 		return self.startEnd
 
+	def getScopeWidth(self):
+		return self.scopeWidth
+
+	def getScopeHeight(self):
+		return self.scopeHeight
+
+	def getStrokeWidth(self):
+		return self.strokeWidth
+
+	def getStrokeHeight(self):
+		return self.strokeHeight
+
 	def getScope(self):
 		return self.scope
 
@@ -305,7 +289,6 @@ class BaseCurveComputer:
 		CX = startPoint[0]
 		CY = startPoint[1] + b
 
-		startEnd = self.getStartEnd()
 		topLeftPoint = [CX - a, CY - b]
 		topPoint = [CX, CY - b]
 		topRightPoint = [CX + a, CY - b]
@@ -378,8 +361,7 @@ class BaseCurveComputer:
 		r = h // w // 2
 		tmph = h - w * r
 
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
+		startPoint = self.getStartPoint()
 		midPoint1 = [startPoint[0], startPoint[1] + tmph]
 		midPoint2 = [startPoint[0], startPoint[1] + h]
 		endPoint = [startPoint[0] - w, startPoint[1] + h]
@@ -470,9 +452,16 @@ class CurveComputer_橫(BaseCurveComputer):
 		assert startY==endY, "Error: {0}".format(self.getErrorInfo())
 
 	def genInfo(self):
+		left, top, right, bottom = self.getScope()
+
 		startX, startY = self.getPos(self.pointList[0])
 		endX, endY = self.getPos(self.pointList[1])
-		self.info = [endX - startX]
+		w = min(endX - startX, self.getStrokeWidth())
+
+		self.info = [w]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
 		l = self.getInfo()[0]
@@ -494,10 +483,19 @@ class CurveComputer_橫鉤(BaseCurveComputer):
 		assert midX>endX, "Error: {0}".format(self.getErrorInfo())
 
 	def genInfo(self):
+		left, top, right, bottom = self.getScope()
+
 		startX, startY = self.getPos(self.pointList[0])
 		midX, midY = self.getPos(self.pointList[1])
 		endX, endY = self.getPos(self.pointList[2])
-		self.info = [midX - startX, midX - endX, endY - midY]
+
+		w = min(midX - startX, self.getStrokeWidth())
+		wg = midX - endX
+		hg = min(endY - midY, self.getStrokeHeight())
+		self.info = [w, wg, hg]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
 		w = self.getInfo()[0]
@@ -522,10 +520,18 @@ class CurveComputer_橫折(BaseCurveComputer):
 		assert midX==endX, "Error: {0}".format(self.getErrorInfo())
 
 	def genInfo(self):
+		left, top, right, bottom = self.getScope()
+
 		startX, startY = self.getPos(self.pointList[0])
 		midX, midY = self.getPos(self.pointList[1])
 		endX, endY = self.getPos(self.pointList[2])
-		self.info = [midX - startX, endY - midY]
+
+		w = min(midX - startX, self.getStrokeWidth())
+		h = min(endY - midY, self.getStrokeHeight())
+		self.info = [w, h]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
 		hl = self.getInfo()[0]
@@ -551,15 +557,22 @@ class CurveComputer_橫折橫(BaseCurveComputer):
 		assert mid2Y==endY, "Error: {0}".format(self.getErrorInfo())
 
 	def genInfo(self):
+		left, top, right, bottom = self.getScope()
+
 		startX, startY = self.getPos(self.pointList[0])
 		mid1X, mid1Y = self.getPos(self.pointList[1])
 		mid2X, mid2Y = self.getPos(self.pointList[2])
 		endX, endY = self.getPos(self.pointList[3])
-		self.info = [mid1X - startX, mid2Y - mid1Y, endX - mid2X]
+
+		w2 = endX - mid2X
+		w = min(mid1X - startX, self.getStrokeWidth() - w2)
+		h = min(mid2Y - mid1Y, self.getStrokeHeight())
+		self.info = [w, h, w2]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w1l = self.getInfo()[0]
 		hl = self.getInfo()[1]
 		w2l = self.getInfo()[2]
@@ -589,13 +602,17 @@ class CurveComputer_橫折提(BaseCurveComputer):
 		mid1X, mid1Y = self.getPos(self.pointList[1])
 		mid2X, mid2Y = self.getPos(self.pointList[2])
 		endX, endY = self.getPos(self.pointList[3])
+
 		wt = endX - mid2X
 		ht = mid2Y - endY
-		self.info = [mid1X - startX, mid2Y - mid1Y, wt, ht]
+		w = min(mid1X - startX, self.getStrokeWidth() - wt)
+		h = min(mid2Y - mid1Y, self.getStrokeHeight())
+		self.info = [w, h, wt, ht]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w = self.getInfo()[0]
 		h = self.getInfo()[1]
 		wt = self.getInfo()[2]
@@ -635,8 +652,6 @@ class CurveComputer_橫折鉤(BaseCurveComputer):
 		self.info = [w, h, wg, hg]
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w = self.getInfo()[0]
 		h = self.getInfo()[1]
 		wg = self.getInfo()[2]
@@ -671,8 +686,6 @@ class CurveComputer_橫折彎鉤(BaseCurveComputer):
 		self.info = [w, hl, wl, cr, tl]
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w = self.getInfo()[0]
 		hl = self.getInfo()[1]
 		wl = self.getInfo()[2]
@@ -774,8 +787,6 @@ class CurveComputer_橫撇橫折鉤(BaseCurveComputer):
 		self.info = [w, w2, h2, w3, hh, wg, hg]
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w = self.getInfo()[0]
 		w2 = self.getInfo()[1]
 		h2 = self.getInfo()[2]
@@ -812,8 +823,6 @@ class CurveComputer_橫斜鉤(BaseCurveComputer):
 		self.info = [w, w2, h2, hg]
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w = self.getInfo()[0]
 		w2 = self.getInfo()[1]
 		h2 = self.getInfo()[2]
@@ -847,7 +856,15 @@ class CurveComputer_橫折橫折(BaseCurveComputer):
 		mid2X, mid2Y = self.getPos(self.pointList[2])
 		mid3X, mid3Y = self.getPos(self.pointList[3])
 		endX, endY = self.getPos(self.pointList[4])
+
+		w2 = mid3X - mid2X
+		h2 = endY - mid3Y
+		w1 = min(mid1X - startX, self.getStrokeWidth() - w2)
+		h1 = min(mid2Y - mid1Y, self.getStrokeHeight() - h2)
 		self.info = [mid1X - startX, mid2Y - mid1Y, mid3X - mid2X, endY-mid3Y]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
 		w1l = self.getInfo()[0]
@@ -875,7 +892,12 @@ class CurveComputer_豎(BaseCurveComputer):
 	def genInfo(self):
 		startX, startY = self.getPos(self.pointList[0])
 		endX, endY = self.getPos(self.pointList[1])
-		self.info = [endY - startY]
+
+		h = min(endY - startY, self.getStrokeHeight())
+		self.info = [h]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
 		l = self.getInfo()[0]
@@ -901,7 +923,13 @@ class CurveComputer_豎折(BaseCurveComputer):
 		startX, startY = self.getPos(self.pointList[0])
 		midX, midY = self.getPos(self.pointList[1])
 		endX, endY = self.getPos(self.pointList[2])
-		self.info = [midY - startY, endX - midX]
+
+		h = min(midY - startY, self.getStrokeHeight())
+		w = min(endX - midX, self.getStrokeWidth())
+		self.info = [h, w]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
 		hl = self.getInfo()[0]
@@ -928,7 +956,14 @@ class CurveComputer_豎挑(BaseCurveComputer):
 		startX, startY = self.getPos(self.pointList[0])
 		midX, midY = self.getPos(self.pointList[1])
 		endX, endY = self.getPos(self.pointList[2])
-		self.info = [midY - startY, endX - midX, midY - endY]
+
+		h = min(midY - startY, self.getStrokeHeight())
+		wt = min(endX - midX, self.getStrokeWidth())
+		ht = midY - endY
+		self.info = [h, wt, ht]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
 		h = self.getInfo()[0]
@@ -959,7 +994,14 @@ class CurveComputer_豎橫折(BaseCurveComputer):
 		mid1X, mid1Y = self.getPos(self.pointList[1])
 		mid2X, mid2Y = self.getPos(self.pointList[2])
 		endX, endY = self.getPos(self.pointList[3])
-		self.info = [mid1Y - startY, mid2X - mid1X, endY-mid2Y]
+
+		h2 = endY - mid2Y
+		h = min(mid1Y - startY, self.getStrokeHeight() - h2)
+		w = min(mid2X - mid1X, self.getStrokeWidth())
+		self.info = [h, w, h2]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
 		h1l = self.getInfo()[0]
@@ -1004,8 +1046,6 @@ class CurveComputer_豎橫折鉤(BaseCurveComputer):
 		self.info = [wp, hp, w, h, wg, hg]
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		wp = self.getInfo()[0]
 		hp = self.getInfo()[1]
 		w = self.getInfo()[2]
@@ -1049,11 +1089,15 @@ class CurveComputer_豎曲鉤(BaseCurveComputer):
 		wl = endX - curveX
 		cr = min(curveY - curveStartY, curveEndX - curveX)
 		tl = preEndY - endY
-		self.info = [hl, wl, cr, tl]
+
+		w = min(preEndX - startX, self.getStrokeWidth()) - cr
+		h = min(preEndY - startY, self.getStrokeHeight()) - cr
+		self.info = [h, w, cr, tl]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		hl = self.getInfo()[0]
 		wl = self.getInfo()[1]
 		cr = self.getInfo()[2]
@@ -1080,13 +1124,14 @@ class CurveComputer_豎曲(BaseCurveComputer):
 		endX, endY = self.getPos(self.pointList[-1])
 
 		cr = min((endX - startX)//3, (endY - startY)//3, 0x20)
-		w = endX - startX - cr
-		h = endY - startY - cr
+		w = min(endX - startX, self.getStrokeWidth()) - cr
+		h = min(endY - startY, self.getStrokeHeight()) - cr
 		self.info = [w, h, cr]
 
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
+
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w = self.getInfo()[0]
 		h = self.getInfo()[1]
 		cr = self.getInfo()[2]
@@ -1118,8 +1163,6 @@ class CurveComputer_豎鉤(BaseCurveComputer):
 		self.info = [h1, h2, w]
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		h1 = self.getInfo()[0]
 		h2 = self.getInfo()[1]
 		w = self.getInfo()[2]
@@ -1147,14 +1190,17 @@ class CurveComputer_斜鉤(BaseCurveComputer):
 		mid1X, mid1Y = self.getPos(self.pointList[1])
 		mid2X, mid2Y = self.getPos(self.pointList[2])
 		endX, endY = self.getPos(self.pointList[3])
-		w=mid2X-startX
-		h=mid2Y-startY
+
+		cr = min((endX - startX)//3, (endY - startY)//3, 0x20)
+		w = min(mid2X - startX, self.getStrokeWidth())
+		h = min(mid2Y - startY, self.getStrokeHeight())
 		ht=mid2Y-endY
 		self.info = [w, h, ht]
 
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
+
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w = self.getInfo()[0]
 		h = self.getInfo()[1]
 		ht = self.getInfo()[2]
@@ -1187,8 +1233,6 @@ class CurveComputer_彎鉤(BaseCurveComputer):
 		self.info = [w1, h1, wg, hg]
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w1 = self.getInfo()[0]
 		h1 = self.getInfo()[1]
 		wg = self.getInfo()[2]
@@ -1215,8 +1259,6 @@ class CurveComputer_撇鉤(BaseCurveComputer):
 		self.info = [wp, hp, wg, hg]
 
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		wp = self.getInfo()[0]
 		hp = self.getInfo()[1]
 		wg = self.getInfo()[2]
@@ -1239,9 +1281,14 @@ class CurveComputer_捺(BaseCurveComputer):
 		h=endY-startY
 		self.info = [w, h]
 
+		w = min(endX - startX, self.getStrokeWidth())
+		h = min(endY - startY, self.getStrokeHeight())
+		self.info = [w, h]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
+
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w = self.getInfo()[0]
 		h = self.getInfo()[1]
 
@@ -1257,13 +1304,14 @@ class CurveComputer_撇(BaseCurveComputer):
 	def genInfo(self):
 		startX, startY = self.getPos(self.pointList[0])
 		endX, endY = self.getPos(self.pointList[-1])
-		w=startX-endX
-		h=endY-startY
+		w = min(startX - endX, self.getStrokeWidth())
+		h = min(endY - startY, self.getStrokeHeight())
 		self.info = [w, h]
 
+	def getStartPoint(self):
+		return self.getStartPointAtTopRight()
+
 	def genNewExp(self):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
 		w = self.getInfo()[0]
 		h = self.getInfo()[1]
 
@@ -1374,9 +1422,12 @@ class CurveComputer_豎撇(BaseCurveComputer):
 	def genInfo(self):
 		startX, startY = self.getPos(self.pointList[0])
 		endX, endY = self.getPos(self.pointList[-1])
-		w = startX - endX
-		h = endY - startY
+		w = min(startX - endX, self.getStrokeWidth())
+		h = min(endY - startY, self.getStrokeHeight())
 		self.info = [w, h]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopRight()
 
 	def genNewExp(self):
 		w = self.getInfo()[0]
@@ -1400,7 +1451,12 @@ class CurveComputer_挑(BaseCurveComputer):
 	def genInfo(self):
 		startX, startY = self.getPos(self.pointList[0])
 		endX, endY = self.getPos(self.pointList[1])
-		self.info = [endX - startX, startY - endY]
+		w = min(endX - startX, self.getStrokeWidth())
+		h = min(startY - endY, self.getStrokeHeight())
+		self.info = [w, h]
+
+	def getStartPoint(self):
+		return self.getStartPointAtBottomLeft()
 
 	def genNewExp(self):
 		w = self.getInfo()[0]
@@ -1421,10 +1477,13 @@ class CurveComputer_橫捺(BaseCurveComputer):
 		mid1X, mid1Y = self.getPos(self.pointList[1])
 		mid2X, mid2Y = self.getPos(self.pointList[2])
 		endX, endY = self.getPos(self.pointList[-1])
-		w = mid1X - startX
 		wn = endX - mid1X
 		hn = endY - mid1Y
+		w = min(mid1X - startX, self.getStrokeWidth() - wn)
 		self.info = [w, wn, hn]
+
+	def getStartPoint(self):
+		return self.getStartPointAtTopLeft()
 
 	def genNewExp(self):
 		w = self.getInfo()[0]
@@ -1494,15 +1553,23 @@ class CurveComputer_圈(BaseCurveComputer):
 		left, top, right, bottom = scope
 		self.info = [(right - left - 2)//2, (bottom - top - 2)//2]
 
-	def genNewExp(self):
+	def getStartPoint(self):
 		scope = self.getScope()
 		left, top, right, bottom = scope
-		CX = left + (right-left)//2
-		CY = top + (bottom-top)//2
+		CX = (left + 1) + (right-left)//2
+		CY = (top + 1) + (bottom-top)//2
 
 		a = self.getInfo()[0]
 		b = self.getInfo()[1]
+
 		startPoint = [CX, CY - b]
+		return startPoint
+
+	def genNewExp(self):
+		a = self.getInfo()[0]
+		b = self.getInfo()[1]
+
+		startPoint = self.getStartPoint()
 		pointInfoList = self.get_圓(startPoint, a, b)
 		self.newExp = self.genStrokeString(pointInfoList)
 
