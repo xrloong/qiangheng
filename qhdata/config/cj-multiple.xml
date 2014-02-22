@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<瑲珩 版本號="0.2">
+	<設定>
+		<輸入法 名稱="倉頡" 版本="五" 標準="瑲珩" />
+		<拆碼方式 數量="多" />
+	</設定>
+	<設定檔 資料目錄="qhdata/">
+		<範本 檔案="template/main.xml" />
+		<範本 檔案="template/cj.xml" />
+
+		<部件 檔案="main/CJK.xml" />
+		<部件 檔案="component/CJK/main.xml" />
+
+		<部件 檔案="style/standard.xml" />
+		<部件 檔案="style/traditional.xml" />
+		<部件 檔案="style/cj.xml" />
+
+		<部件 檔案="component/CJK/cj.xml" />
+
+		<字根 檔案="radix/CJK/cj.xml" />
+	</設定檔>
+</瑲珩>
+
