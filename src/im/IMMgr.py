@@ -33,7 +33,7 @@ class IMMgr:
 			imName='四角'
 		elif imName in ['庋', '庋㩪', '中國字庋㩪', 'guixie', 'gx',]:
 			imName='庋㩪'
-		elif imName in ['例', '範例', '範例輸入法', 'sample', 'sp',]:
+		elif imName in ['例', '範例', '範例輸入法', 'sample', 'sample',]:
 			imName='範例'
 		else:
 			imName='空'

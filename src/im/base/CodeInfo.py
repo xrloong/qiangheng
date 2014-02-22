@@ -11,6 +11,9 @@ class CodeInfo:
 		codeInfo=CodeInfo()
 		return codeInfo
 
+	def toCode(self):
+		return ""
+
 	@staticmethod
 	def computeSupportingFromProperty(propDict):
 		hasCharacter=bool("字符碼" in propDict)

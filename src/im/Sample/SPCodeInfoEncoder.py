@@ -10,7 +10,7 @@ class SPCodeInfoEncoder(CodeInfoEncoder):
 		return SPCodeInfo.generateDefaultCodeInfo(characterCode)
 
 	def isAvailableOperation(self, codeInfoList):
-		isAllWithCode=all(map(lambda x: x.getCharacterCode(), codeInfoList))
+		isAllWithCode=all(map(lambda x: x.toCode(), codeInfoList))
 		return isAllWithCode
 
 	def encodeAsTurtle(self, codeInfoList):
