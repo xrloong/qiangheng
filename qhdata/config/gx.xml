@@ -8,7 +8,6 @@
 
 <!--
 		<範本 檔案="template/gx.xml" />
-		<部件 檔案="style/gx.xml" />
 -->
 
 		<部件 檔案="component/CJK/gx.xml" />

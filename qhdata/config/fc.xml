@@ -8,7 +8,6 @@
 
 <!--
 		<範本 檔案="template/fc.xml" />
-		<部件 檔案="style/fc.xml" />
 -->
 
 		<部件 檔案="component/CJK/fc.xml" />
