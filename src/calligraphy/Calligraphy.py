@@ -377,6 +377,87 @@ class StrokeInfo_橫折提(StrokeInfo):
 		points.extend(self.compute_提(points[-1][1], w3, h3))
 		return points
 
+class StrokeInfo_橫折折撇(StrokeInfo):
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
+		assert len(l)==4
+		assert int(l[0])>0
+		assert int(l[1])>0
+		assert int(l[2])>0
+		assert int(l[3])>0
+		assert int(l[4])>0
+		assert int(l[5])>0
+		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		w3=paramList[3]
+		w4=paramList[4]
+		h4=paramList[5]
+		return w1>0 and w2>0 and h2>0 and w3>0 and w4>0 and h4>0
+
+	def computePoints(self, startPoint):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		w3=paramList[3]
+		w4=paramList[4]
+		h4=paramList[5]
+
+		points=[(False, startPoint), ]
+		points.extend(self.compute_橫(points[-1][1], w1))
+		points.extend(self.compute_撇(points[-1][1], w2, h2))
+		points.extend(self.compute_橫(points[-1][1], w3))
+		points.extend(self.compute_撇(points[-1][1], w4, h4))
+		return points
+
+class StrokeInfo_橫撇彎鉤(StrokeInfo):
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
+		assert len(l)==4
+		assert int(l[0])>0
+		assert int(l[1])>0
+		assert int(l[2])>0
+		assert int(l[3])>0
+		assert int(l[4])>0
+		assert int(l[5])>0
+		assert int(l[6])>0
+		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), int(l[6]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		w3=paramList[3]
+		h3=paramList[4]
+		w4=paramList[5]
+		h4=paramList[6]
+		return w1>0 and w2>0 and h2>0 and w3>0 and h3>0 and w4>0 and h4>0
+
+	def computePoints(self, startPoint):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		w3=paramList[3]
+		h3=paramList[4]
+		w4=paramList[5]
+		h4=paramList[6]
+
+		points=[(False, startPoint), ]
+		points.extend(self.compute_橫(points[-1][1], w1))
+		points.extend(self.compute_撇(points[-1][1], w2, h2))
+		points.extend(self.compute_彎鉤之彎(points[-1][1], w3, h3))
+		points.extend(self.compute_鉤(points[-1][1], w4, h4))
+		return points
+
 class StrokeInfo_橫折鉤(StrokeInfo):
 	@classmethod
 	def parseExpression(cls, parameterExpressionList):
@@ -666,6 +747,31 @@ class StrokeInfo_豎折(StrokeInfo):
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎(points[-1][1], h1))
 		points.extend(self.compute_橫(points[-1][1], w2))
+		return points
+
+class StrokeInfo_豎彎左(StrokeInfo):
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
+		assert len(l)==2
+		assert int(l[0])>0
+		assert int(l[1])>0
+		return [int(l[0]), int(l[1]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		h1=paramList[0]
+		w2=paramList[1]
+		return h1>0 and w2>0
+
+	def computePoints(self, startPoint):
+		paramList=self.parameterList
+		h1=paramList[0]
+		w2=paramList[1]
+
+		points=[(False, startPoint), ]
+		points.extend(self.compute_豎(points[-1][1], h1))
+		points.extend(self.compute_左(points[-1][1], w2))
 		return points
 
 class StrokeInfo_豎提(StrokeInfo):
@@ -1263,6 +1369,8 @@ StrokeInfoMap = {
 	"橫折": StrokeInfo_橫折,
 	"橫折折": StrokeInfo_橫折折,
 	"橫折提": StrokeInfo_橫折提,
+	"橫折折撇": StrokeInfo_橫折折撇,
+	"橫撇彎鉤": StrokeInfo_橫撇彎鉤,
 	"橫折鉤": StrokeInfo_橫折鉤,
 	"橫折彎": StrokeInfo_橫折彎,
 	"橫撇": StrokeInfo_橫撇,
@@ -1272,6 +1380,7 @@ StrokeInfoMap = {
 	"橫折折折": StrokeInfo_橫折折折,
 	"豎": StrokeInfo_豎,
 	"豎折": StrokeInfo_豎折,
+	"豎彎左": StrokeInfo_豎彎左,
 	"豎提": StrokeInfo_豎提,
 	"豎折折": StrokeInfo_豎折折,
 	"豎折彎鉤": StrokeInfo_豎折彎鉤,
