@@ -327,7 +327,7 @@ class StrokeObject_橫折(StrokeObject):
 		points.extend(self.compute_豎(points[-1][1], h2))
 		return points
 
-class StrokeObject_橫折橫(StrokeObject):
+class StrokeObject_橫折折(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==3
@@ -475,7 +475,7 @@ class StrokeObject_橫撇(StrokeObject):
 		points.extend(self.compute_撇(points[-1][1], w2, h2))
 		return points
 
-class StrokeObject_橫撇彎鉤(StrokeObject):
+class StrokeObject_橫斜彎鉤(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==6
@@ -512,7 +512,7 @@ class StrokeObject_橫撇彎鉤(StrokeObject):
 		points.extend(self.compute_上(points[-1][1], h3))
 		return points
 
-class StrokeObject_橫撇橫折鉤(StrokeObject):
+class StrokeObject_橫折折折鉤(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==8
@@ -576,7 +576,7 @@ class StrokeObject_橫斜鉤(StrokeObject):
 		points.extend(self.compute_上(points[-1][1], h3))
 		return points
 
-class StrokeObject_橫折橫折(StrokeObject):
+class StrokeObject_橫折折折(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert int(l[0])>0
@@ -1200,20 +1200,20 @@ class StrokeObject_橫捺(StrokeObject):
 
 StrokeObjectMap = {
 	"點": StrokeObject_點,
-	"長頓點": StrokeObject_點,
+#	"長頓點": StrokeObject_點,
 	"圈": StrokeObject_圈,
 	"橫": StrokeObject_橫,
 	"橫鉤": StrokeObject_橫鉤,
 	"橫折": StrokeObject_橫折,
-	"橫折橫": StrokeObject_橫折橫,
+	"橫折折": StrokeObject_橫折折,
 	"橫折提": StrokeObject_橫折提,
 	"橫折鉤": StrokeObject_橫折鉤,
 	"橫折彎鉤": StrokeObject_橫折彎鉤,
 	"橫撇": StrokeObject_橫撇,
-	"橫曲鉤": StrokeObject_橫撇彎鉤,
-	"橫撇橫折鉤": StrokeObject_橫撇橫折鉤,
+	"橫斜彎鉤": StrokeObject_橫斜彎鉤,
+	"橫折折折鉤": StrokeObject_橫折折折鉤,
 	"橫斜鉤": StrokeObject_橫斜鉤,
-	"橫折橫折": StrokeObject_橫折橫折,
+	"橫折折折": StrokeObject_橫折折折,
 	"豎": StrokeObject_豎,
 	"豎折": StrokeObject_豎折,
 	"豎挑": StrokeObject_豎挑,
