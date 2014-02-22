@@ -98,18 +98,8 @@ class DYCodeInfo(CodeInfo):
 
 		self._codeList=codeList
 
-	@property
-	def characterCode(self):
-		mainRadixList=self.getMainCodeList()
-		mainCodeList=list(map(lambda x: DYCodeInfo.radixToCodeDict[x], mainRadixList))
-		code="".join(mainCodeList)
-		return (code[:3]+code[-1:] if len(code)>4 else code)
-
 	def isInstallmentEncoded(self):
 		return len(self._codeList)>1
-
-	def setCodeList(self, codeList):
-		self._codeList=codeList
 
 	def getMainCodeList(self):
 		if self._codeList != None:

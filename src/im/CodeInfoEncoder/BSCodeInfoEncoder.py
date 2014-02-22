@@ -5,20 +5,44 @@ from ..CodeInfo.BSCodeInfo import BSCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
 
 class BSCodeInfoEncoder(CodeInfoEncoder):
+	RADIX_SEPERATOR=','
+
 	def __init__(self):
 		pass
 
+	def generateDefaultCodeInfo(self, codeList, supplementCode):
+		codeInfo=BSCodeInfo(None, codeList, supplementCode)
+		return codeInfo
+
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		_bs_single=propDict.get('獨體編碼')
-		str_incode=propDict.get('資訊表示式')
-		str_spcode=propDict.get('嘸蝦米補碼')
-		_code_list=None
-		if str_incode!=None and str_spcode!=None:
-			_code_list=str_incode.split(',')
+		singletonCode=propDict.get('獨體編碼')
+		strCodeList=propDict.get('資訊表示式')
+		supplementCode=propDict.get('嘸蝦米補碼')
 
-		codeInfo=BSCodeInfo(_bs_single, _code_list, str_spcode, isSupportCharacterCode, isSupportRadixCode)
+		codeList=None
+		if strCodeList!=None:
+			codeList=strCodeList.split(BSCodeInfoEncoder.RADIX_SEPERATOR)
+
+		codeInfo=BSCodeInfo(singletonCode, codeList, supplementCode, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
+
+	def interprettCharacterCode(self, codeInfo):
+		singletonCode=codeInfo.getSingletonCode()
+		[codeList, supplementCode]=codeInfo.getBSProp()
+
+		if singletonCode:
+			return singletonCode
+		if codeList==None or supplementCode==None:
+			return None
+		else:
+			code="".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], codeList))
+			if len(code)<3:
+				return code+supplementCode
+			elif len(code)>4:
+				return code[:3]+code[-1:]
+			else:
+				return code
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getBSProp()[0], codeInfoList))
@@ -36,8 +60,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(bslist)
 		bs_spcode=codeInfoList[-1].getBSProp()[1]
 
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setBSProp(bs_code_list, bs_spcode)
+		codeInfo=self.generateDefaultCodeInfo(bs_code_list, bs_spcode)
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
@@ -58,8 +81,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(tmpBsCodeList)
 		bs_spcode=codeInfoList[-1].getBSProp()[1]
 
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setBSProp(bs_code_list, bs_spcode)
+		codeInfo=self.generateDefaultCodeInfo(bs_code_list, bs_spcode)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
@@ -70,8 +92,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(tmpBsCodeList)
 		bs_spcode=codeInfoList[-1].getBSProp()[1]
 
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setBSProp(bs_code_list, bs_spcode)
+		codeInfo=self.generateDefaultCodeInfo(bs_code_list, bs_spcode)
 		return codeInfo
 
 	def encodeAsHan(self, codeInfoList):

@@ -5,22 +5,38 @@ from ..CodeInfo.ARCodeInfo import ARCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
 
 class ARCodeInfoEncoder(CodeInfoEncoder):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	def __init__(self):
 		pass
+
+	def generateDefaultCodeInfo(self, codeList):
+		codeInfo=ARCodeInfo(codeList)
+		return codeInfo
 
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
 		codeList=None
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
-			codeList=str_rtlist.split('|')
-			codeList=list(map(lambda x: x.split(','), codeList))
+			codeList=str_rtlist.split(ARCodeInfoEncoder.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(ARCodeInfoEncoder.RADIX_SEPERATOR), codeList))
+
 		codeInfo=ARCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
+
+	def interprettCharacterCode(self, codeInfo):
+		mainRadixList=codeInfo.getMainCodeList()
+		mainCodeList=list(map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList))
+		code="".join(mainCodeList)
+		return (code[:3]+code[-1] if len(code)>4 else code)
+
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getMainCodeList(), codeInfoList))
 		return isAllWithCode
+
 
 	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
@@ -31,8 +47,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		"""運算 "龍" """
 
 		arCode=ARCodeInfoEncoder.computeArrayCodeForGenerality(codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setCodeList([arCode])
+		codeInfo=self.generateDefaultCodeInfo([arCode])
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
@@ -51,8 +66,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
 		tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsSilkworm(arCodeList)
 		arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setCodeList([arCode])
+		codeInfo=self.generateDefaultCodeInfo([arCode])
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
@@ -60,23 +74,20 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
 		tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsGoose(arCodeList)
 		arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setCodeList([arCode])
+		codeInfo=self.generateDefaultCodeInfo([arCode])
 		return codeInfo
 
 
 	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """
 		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setCodeList([arCode])
+		codeInfo=self.generateDefaultCodeInfo([arCode])
 		return codeInfo
 
 	def encodeAsTong(self, codeInfoList):
 		"""運算 "同" """
 		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setCodeList([arCode])
+		codeInfo=self.generateDefaultCodeInfo([arCode])
 		return codeInfo
 
 	def encodeAsHan(self, codeInfoList):
@@ -86,8 +97,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
 		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(newCodeInfoList)
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setCodeList([arCode])
+		codeInfo=self.generateDefaultCodeInfo([arCode])
 		return codeInfo
 
 
@@ -102,8 +112,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsZai(self, codeInfoList):
 		"""運算 "載" """
 		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setCodeList([arCode])
+		codeInfo=self.generateDefaultCodeInfo([arCode])
 		return codeInfo
 
 	def encodeAsYou(self, codeInfoList):

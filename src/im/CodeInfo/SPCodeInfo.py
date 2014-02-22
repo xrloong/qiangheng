@@ -11,6 +11,3 @@ class SPCodeInfo(CodeInfo):
 	def getCharacterCode(self):
 		return self._characterCode
 
-	def setCharacterCode(self, characterCode):
-		self._characterCode=characterCode
-

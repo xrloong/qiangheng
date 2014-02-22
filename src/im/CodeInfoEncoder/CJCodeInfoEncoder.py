@@ -5,6 +5,11 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
+	def generateDefaultCodeInfo(self, direction, codeInfoList):
+		codeInfo=CJCodeInfo(None, direction, [])
+		self.encodeInternal(codeInfo, direction, codeInfoList)
+		return codeInfo
+
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
 
@@ -24,6 +29,13 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo.setCharacter(cjTotal, cjBody)
 
 		return codeInfo
+
+	def interprettCharacterCode(self, codeInfo):
+		singletonCode=codeInfo.getSingletonCode()
+		if singletonCode:
+			return singletonCode
+		else:
+			return codeInfo.getTotalCode()
 
 	def isAvailableOperation(self, codeInfoList):
 		return True
@@ -53,58 +65,48 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '*', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('*', codeInfoList)
 		return codeInfo
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '*', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('*', codeInfoList)
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
 		"""運算 "東" """
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '$', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('$', codeInfoList)
 		return codeInfo
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '*', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('*', codeInfoList)
 		return codeInfo
 
 
 	def encodeAsSilkworm(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '|', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('|', codeInfoList)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '-', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('-', codeInfoList)
 		return codeInfo
 
 	def encodeAsLoop(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '@', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('@', codeInfoList)
 		return codeInfo
 
 
 	def encodeAsMu(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '$', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('$', codeInfoList)
 		return codeInfo
 
 	def encodeAsZuo(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '$', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('$', codeInfoList)
 		return codeInfo
 
 	def encodeAsJia(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo()
-		self.encodeInternal(codeInfo, '$', codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo('$', codeInfoList)
 		return codeInfo
 
 

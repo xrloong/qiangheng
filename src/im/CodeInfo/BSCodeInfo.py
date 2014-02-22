@@ -84,33 +84,16 @@ class BSCodeInfo(CodeInfo):
 		RADIX_M1_E2_E1:'m',
 	}
 
-	def __init__(self, singleCode, codeList, spcode, isSupportCharacterCode=True, isSupportRadixCode=True):
+	def __init__(self, singletonCode, codeList, supplementCode, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 		self._bs_code_list=codeList
-		self._bs_spcode=spcode
+		self._bs_spcode=supplementCode
 
-		self._bs_single=singleCode
+		self._bs_singleton=singletonCode
 
-	@property
-	def characterCode(self):
-		if self._bs_single:
-			return self._bs_single
-		if self._bs_code_list==None or self._bs_spcode==None:
-			return None
-		else:
-			code="".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], self._bs_code_list))
-			if len(code)<3:
-				return code+self._bs_spcode
-			elif len(code)>4:
-				return code[:3]+code[-1:]
-			else:
-				return code
-
-	def setBSProp(self, bs_code_list, bs_spcode):
-		if bs_code_list!=None and bs_spcode!=None:
-			self._bs_code_list=bs_code_list
-			self._bs_spcode=bs_spcode
+	def getSingletonCode(self):
+		return self._bs_singleton
 
 	def getBSProp(self):
 		return [self._bs_code_list, self._bs_spcode]

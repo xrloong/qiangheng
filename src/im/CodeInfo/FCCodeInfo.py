@@ -43,20 +43,6 @@ class FCCodeInfo(CodeInfo):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 		[self._top_left, self._top_right, self._bottom_left, self._bottom_right]=corners
 
-	@property
-	def characterCode(self):
-		return self.getCharacterCode()
-
-	def getCharacterCode(self):
-		return "%s%s%s%s"%(self._top_left, self._top_right, self._bottom_left, self._bottom_right)
-#		return self._characterCode
-
-	def setCode(self, topLeft, topRight, bottomLeft, bottomRight):
-		self._top_left=topLeft
-		self._top_right=topRight
-		self._bottom_left=bottomLeft
-		self._bottom_right=bottomRight
-
 	def getTopLeft(self):
 		return self._top_left
 
@@ -68,7 +54,4 @@ class FCCodeInfo(CodeInfo):
 
 	def getBottomRight(self):
 		return self._bottom_right
-
-#	def setCharacterCode(self, characterCode):
-#		self._characterCode=characterCode
 

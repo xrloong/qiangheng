@@ -6,6 +6,14 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
+	def generateDefaultCodeInfo(self, rtlist):
+		codeInfo=ZMCodeInfo(None, rtlist, None)
+
+		rtlist=codeInfo.getRtList()
+		zmCode=self.computeCharacterCode(rtlist)
+		codeInfo.setCharacterCode(zmCode)
+		return codeInfo
+
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
 		extra_code=propDict.get('補充資訊')
@@ -25,6 +33,17 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo.setCharacterCode(zmCode)
 		return codeInfo
 
+	def interprettCharacterCode(self, codeInfo):
+		singletonCode=codeInfo.getSingletonCode()
+		if singletonCode:
+			return singletonCode
+
+		ans=codeInfo.getCharacterCode()
+		extraCode=codeInfo.getExtraCode()
+		if extraCode:
+			ans+=extraCode
+		return ans
+
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=codeInfoList and all(map(lambda x: x.getZMProp(), codeInfoList))
 		return isAllWithCode
@@ -40,10 +59,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		zmCode=self.computeCharacterCode(rtlist)
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setZMProp(rtlist)
-		codeInfo.setCharacterCode(zmCode)
+		codeInfo=self.generateDefaultCodeInfo(rtlist)
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
@@ -83,10 +99,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		zmCode=self.computeCharacterCode(rtlist)
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setZMProp(rtlist[:1])
-		codeInfo.setCharacterCode(zmCode)
+		codeInfo=self.generateDefaultCodeInfo(rtlist[:1])
 		return codeInfo
 
 	def computeCharacterCode(self, rtlist):

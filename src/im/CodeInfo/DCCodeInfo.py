@@ -6,19 +6,8 @@ class DCCodeInfo(CodeInfo):
 
 		self.actionList=actionList
 
-	@property
-	def characterCode(self):
-		return self.getCharacterCode()
-
-	def getCharacterCode(self):
-		descriptionList=[a.getCode() for a in self.actionList]
-		return ','.join(descriptionList)
-
 	def getActionList(self):
 		return self.actionList
-
-	def setActionList(self, actionList):
-		self.actionList=actionList
 
 class StrokeAction:
 	def __init__(self, description):

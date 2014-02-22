@@ -10,22 +10,17 @@ class ZMCodeInfo(CodeInfo):
 		self._zm_extra=extraCode
 		self._zm_single=singleCode
 
-	@property
-	def characterCode(self):
-		if self._zm_single:
-			return self._zm_single
-
-		ans=self._zm_code
-		if self._zm_extra:
-			ans+=self._zm_extra
-		return ans
-
 	def setCharacterCode(self, zmCode):
 		self._zm_code=zmCode
 
-	def setZMProp(self, zm_rtlist):
-		if zm_rtlist!=None:
-			self._zm_rtlist=zm_rtlist
+	def getSingletonCode(self):
+		return self._zm_single
+
+	def getCharacterCode(self):
+		return self._zm_code
+
+	def getExtraCode(self):
+		return self._zm_extra
 
 	def getZMProp(self):
 		return self._zm_rtlist

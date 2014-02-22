@@ -15,12 +15,11 @@ class CJCodeInfo(CodeInfo):
 #		cjTotal=CJCodeInfoEncoder.computeTotalCode(rtlist, direction).lower()
 #		self.setCharacter(cjTotal, cjBody)
 
-	@property
-	def characterCode(self):
-		if self._cj_single:
-			return self._cj_single
-		else:
-			return self._cj_total
+	def getSingletonCode(self):
+		return self._cj_single
+
+	def getTotalCode(self):
+		return self._cj_total
 
 	def setCJProp(self, dir_code, codeList):
 		if dir_code!=None and codeList!=None:

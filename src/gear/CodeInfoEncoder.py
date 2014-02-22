@@ -33,7 +33,8 @@ class CodeInfoEncoder:
 		return codeInfo
 
 	def generateDefaultCodeInfo(self):
-		return self.generateCodeInfo({})
+		codeInfo=CodeInfo(isSupportCharacterCode, isSupportRadixCode)
+		return codeInfo
 
 	def interprettCharacterCode(self, codeInfo):
 		return codeInfo.characterCode

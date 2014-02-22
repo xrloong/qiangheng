@@ -5,11 +5,20 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
+	def generateDefaultCodeInfo(self, characterCode):
+		codeInfo=GXCodeInfo(characterCode)
+		return codeInfo
+
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
 		characterCode=propDict.get('資訊表示式', '')
-		codeInfo=GXCodeInfo(isSupportCharacterCode, isSupportRadixCode)
+
+		codeInfo=GXCodeInfo(characterCode, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
+
+	def interprettCharacterCode(self, codeInfo):
+		return codeInfo.getCharacterCode()
+
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getCharacterCode(), codeInfoList))
@@ -22,8 +31,7 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
-		codeInfo=self.generateDefaultCodeInfo()
-		codeInfo.setCharacterCode('GGGG')
+		codeInfo=self.generateDefaultCodeInfo('GGGG')
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
