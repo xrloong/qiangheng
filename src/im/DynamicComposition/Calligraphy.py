@@ -1,41 +1,6 @@
 import re
 import sys
 
-class StrokeAction:
-	ACTION_START="0000"
-	ACTION_END="0001"
-	ACTION_CURVE="0002"
-
-	ActionStrToNumDict={
-		ACTION_START : 0,
-		ACTION_END : 1,
-		ACTION_CURVE : 2,
-	}
-
-	ActionNumToStrDict={
-		0: ACTION_START,
-		1: ACTION_END,
-		2: ACTION_CURVE,
-	}
-
-	def __init__(self, action, point):
-		self.action=action
-		self.point=point
-
-	@staticmethod
-	def fromDescription(description):
-		actionStr=description[0:4]
-		action=StrokeAction.ActionStrToNumDict[actionStr]
-		x=int(description[4:6], 16)
-		y=int(description[6:8], 16)
-		point=(x, y)
-		return StrokeAction(action, point)
-
-	def getCode(self, pane):
-		(x, y)=pane.transformPoint(self.point)
-		code="%02X%02X"%(x, y)
-		return StrokeAction.ActionNumToStrDict[self.action]+code
-
 class Pane:
 	WIDTH=0x100
 	HEIGHT=0x100
@@ -128,6 +93,42 @@ class Pane:
 		pane.setup()
 
 Pane.DEFAULT_PANE=Pane()
+
+
+class StrokeAction:
+	ACTION_START="0000"
+	ACTION_END="0001"
+	ACTION_CURVE="0002"
+
+	ActionStrToNumDict={
+		ACTION_START : 0,
+		ACTION_END : 1,
+		ACTION_CURVE : 2,
+	}
+
+	ActionNumToStrDict={
+		0: ACTION_START,
+		1: ACTION_END,
+		2: ACTION_CURVE,
+	}
+
+	def __init__(self, action, point):
+		self.action=action
+		self.point=point
+
+	@staticmethod
+	def fromDescription(description):
+		actionStr=description[0:4]
+		action=StrokeAction.ActionStrToNumDict[actionStr]
+		x=int(description[4:6], 16)
+		y=int(description[6:8], 16)
+		point=(x, y)
+		return StrokeAction(action, point)
+
+	def getCode(self, pane):
+		(x, y)=pane.transformPoint(self.point)
+		code="%02X%02X"%(x, y)
+		return StrokeAction.ActionNumToStrDict[self.action]+code
 
 class Writing:
 	def __init__(self, contourPane):
