@@ -1,6 +1,6 @@
 ﻿== 2010/3/6 ==
 版本：0.07
-SVN: http://svn.openfoundry.org/qiangheng	121
+SVN: http://svn.openfoundry.org/qiangheng	122
 
 所有的輸入法皆實作完。
 所有輸入法的基本字根都已拆碼完畢。
