@@ -4115,8 +4115,8 @@ U+5DF3	巳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yyb	12
 U+5DF4	巴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yi	12
 U+5DF5	巵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pday	32
 U+5DF6	巶	(好 召巳)
-U+5DF7	巷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eaoy	XXXX
-U+5DF8	巸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hyy	XXXX
+U+5DF7	巷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eaoy	32
+U+5DF8	巸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hyy	21
 U+5DF9	巹	(志 丞己)
 U+5DFA	巺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yybo	23
 U+5DFB	巻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ubyy	22
@@ -4133,8 +4133,8 @@ U+5E03	布	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	gdli	22
 U+5E04	帄	(好 巾丁)
 U+5E05	帅	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kdli	22
 U+5E06	帆	(好 巾凡)
-U+5E07	帇	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5E08	师	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E07	帇	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xbli	22
+U+5E08	师	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kdal	32
 U+5E09	帉	(好 巾分)
 U+5E0A	帊	(好 巾巴)
 U+5E0B	帋	(志 氏巾)
@@ -4152,10 +4152,10 @@ U+5E16	帖	(好 巾占)
 U+5E17	帗	(好 巾犮)
 U+5E18	帘	(志 穴巾)
 U+5E19	帙	(好 巾失)
-U+5E1A	帚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E1A	帚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xbwl	32
 U+5E1B	帛	(志 白巾)
 U+5E1C	帜	(好 巾只)
-U+5E1D	帝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E1D	帝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	suwl	41
 U+5E1E	帞	(好 巾百)
 U+5E1F	帟	(志 亦巾)
 U+5E20	帠	(志 臼巾)
@@ -20797,8 +20797,8 @@ U+9EA1	麡	(廖 鹿齊)
 U+9EA2	麢	(廖 鹿霝)
 U+9EA3	麣	(廖 鹿嚴)
 U+9EA4	麤	(鑫 鹿)
-U+9EA5	麥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+9EA6	麦	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9EA5	麥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	foor	41
+U+9EA6	麦	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	cirs	22
 U+9EA7	麧	(好 麥乞)
 U+9EA8	麨	(好 麥少)
 U+9EA9	麩	(好 麥夫)
@@ -20827,29 +20827,29 @@ U+9EBF	麿	(廖 麻呂)
 U+9EC0	黀	(廖 麻取)
 U+9EC1	黁	(廖 麻香)
 U+9EC2	黂	(廖 麻賁)
-U+9EC3	黃	(龜)	tmlc	XXXX	XXXX	k	a	eako	XXXX
-U+9EC4	黄	(龜)	tlwc	XXXX	XXXX	rqb	a	eako	XXXX
+U+9EC3	黃	(龜)	tmlc	XXXX	XXXX	k	a	eako	42
+U+9EC4	黄	(龜)	tlwc	XXXX	XXXX	rqb	a	eako	32
 U+9EC5	黅	(好 黃今)
 U+9EC6	黆	(好 黃冘)
 U+9EC7	黇	(好 黃占)
 U+9EC8	黈	(好 黃主)
-U+9EC9	黉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9EC9	黉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	vdko	42
 U+9ECA	黊	(好 黃圭)
 U+9ECB	黋	(起 光黃)
-U+9ECC	黌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9ECC	黌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	nbko	42
 U+9ECD	黍	(龜)	hdoe	lvkc	vax	hbw	a	mfok	32
-U+9ECE	黎	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9ECE	黎	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	mfok	32
 U+9ECF	黏	(好 黍占)
 U+9ED0	黐	(好 黍离)
-U+9ED1	黑	(龜)	wgf	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+9ED2	黒	(龜)	wgf	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9ED1	黑	(龜)	wgf	XXXX	XXXX	XXXX	XXXX	lkbu	32
+U+9ED2	黒	(龜)	wgf	XXXX	XXXX	XXXX	XXXX	kbuo	31
 U+9ED3	黓	(好 黑弋)
 U+9ED4	黔	(好 黑今)
 U+9ED5	黕	(好 黑冘)
 U+9ED6	黖	(好 黑旡)
 U+9ED7	黗	(好 黑屯)
 U+9ED8	默	(好 黑犬)
-U+9ED9	黙	(龜)	wkf	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9ED9	黙	(龜)	wkf	XXXX	XXXX	XXXX	XXXX	kbsu	41
 U+9EDA	黚	(好 黑甘)
 U+9EDB	黛	(志 代黑)
 U+9EDC	黜	(好 黑出)
@@ -20863,7 +20863,7 @@ U+9EE3	黣	(好 黑每)
 U+9EE4	黤	(好 黑奄)
 U+9EE5	黥	(好 黑京)
 U+9EE6	黦	(好 黑宛)
-U+9EE7	黧	(龜)	hhwgf	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9EE7	黧	(龜)	hhwgf	XXXX	XXXX	XXXX	XXXX	mfbu	42
 U+9EE8	黨	(好 尚黑)
 U+9EE9	黩	(好 黑卖)
 U+9EEA	黪	(好 黑参)
