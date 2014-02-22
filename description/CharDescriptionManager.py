@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-from .CharDesc import CharDesc
-from .CharDesc import HangerCharDesc
+from .CharacterDescription import CharacterDescription
+from .StructureDescription import StructureDescription
+from .StructureDescription import HangerStructureDescription
 from .TemplateDesc import TemplateDesc
 from .TemplateDesc import TemplateCondition
 from .operator import OperatorManager
@@ -13,20 +14,25 @@ class CharDescriptionManager:
 		self.characterDB={}
 		self.propertyDB={}
 
-		def CharDescGenerator(structInfo=['龜', []]):
+		def structDescGenerator(structInfo=['龜', []]):
 			operatorName, CompList=structInfo
 			operator=self.operatorGenerator(operatorName)
 
-			charDesc=HangerCharDesc(operator, CompList)
-			return charDesc
+			structDesc=HangerStructureDescription(operator, CompList)
+			return structDesc
 
 		def charDescRearranger(charDesc):
 			return self.operationMgr.rearrangeDesc(charDesc)
 
 		def charDescQueryer(charName):
-			charDescList=self.characterDB.get(charName, [])
-			charDesc=charDescList[0]
+			charDesc=self.characterDB.get(charName, [])
 			return charDesc
+
+		def structDescQueryer(charName):
+			charDesc=self.charDescQueryer(charName)
+			structDescList=charDesc.getStructureList()
+			structDesc=structDescList[0]
+			return structDescList
 
 		def charPropQueryer(charName):
 			codeInfoDictList=self.propertyDB.get(charName, [])
@@ -35,7 +41,8 @@ class CharDescriptionManager:
 		imName=imModule.IMInfo.IMName
 		self.operationMgr=OperatorManager.OperatorManager(self)
 
-		self.charDescGenerator=CharDescGenerator
+		self.structDescGenerator=structDescGenerator
+		self.structDescQueryer=structDescQueryer
 		self.charDescQueryer=charDescQueryer
 		self.charDescRearranger=charDescRearranger
 		self.charPropQueryer=charPropQueryer
@@ -45,11 +52,11 @@ class CharDescriptionManager:
 	def keys(self):
 		return self.characterDB.keys()
 
-	def getCharDescGenerator(self):
-		return self.charDescGenerator
+	def getStructDescGenerator(self):
+		return self.structDescGenerator
 
-	def getCharDescQueryer(self):
-		return self.charDescQueryer
+	def getStructDescQueryer(self):
+		return self.structDescQueryer
 
 	def getCharPropQueryer(self):
 		return self.charPropQueryer
@@ -86,7 +93,7 @@ class CharDescriptionManager:
 
 	def loadCharDescriptionByParsingXML__0_2(self, rootNode):
 		# 用於 0.2 版
-		charDescGenerator=self.getCharDescGenerator()
+		structDescGenerator=self.getStructDescGenerator()
 
 		def getDesc_AssembleChar(assembleChar):
 			l=[]
@@ -96,18 +103,18 @@ class CharDescriptionManager:
 			for node in targetChildNodes:
 				if node.tag=="字根":
 					name=node.get("置換")
-					charDesc=charDescGenerator()
-					charDesc.setExpandName(name)
-					l.append(charDesc)
+					structDesc=structDescGenerator()
+					structDesc.setExpandName(name)
+					l.append(structDesc)
 				elif node.tag=="組字":
 					l.append(getDesc_AssembleChar(node))
 				else:
 					pass
 
 			if operatorName:
-				comp=charDescGenerator([operatorName, l])
+				comp=structDescGenerator([operatorName, l])
 			else:
-				comp=charDescGenerator()
+				comp=structDescGenerator()
 
 			return comp
 
@@ -130,11 +137,12 @@ class CharDescriptionManager:
 			charName=node.get('名稱')
 			for comp in compList:
 				comp.setExpandName(charName)
-			self.characterDB[charName]=compList
+#			self.characterDB[charName]=compList
+			self.characterDB[charName]=CharacterDescription(charName, compList)
 
 	def loadTemplateByParsingXML__0_2(self, rootNode):
 		# 用於 0.2 版
-		charDescGenerator=self.getCharDescGenerator()
+		structDescGenerator=self.getStructDescGenerator()
 
 		def getDesc_AssembleChar(assembleChar):
 			l=[]
@@ -144,18 +152,18 @@ class CharDescriptionManager:
 			for node in targetChildNodes:
 				if node.tag=="字根":
 					name=node.get("置換")
-					charDesc=charDescGenerator()
-					charDesc.setExpandName(name)
-					l.append(charDesc)
+					structDesc=structDescGenerator()
+					structDesc.setExpandName(name)
+					l.append(structDesc)
 				elif node.tag=="組字":
 					l.append(getDesc_AssembleChar(node))
 				else:
 					pass
 
 			if operatorName:
-				comp=charDescGenerator([operatorName, l])
+				comp=structDescGenerator([operatorName, l])
 			else:
-				comp=charDescGenerator()
+				comp=structDescGenerator()
 
 			return comp
 
@@ -217,8 +225,6 @@ class CharDescriptionManager:
 
 	def loadCodeInfoByParsingXML__0_2(self, rootNode):
 		# 用於 0.2 版
-		charDescGenerator=self.getCharDescGenerator()
-
 		def getDesc_CodeInfoList(nodeCharacter):
 			assembleCharList=nodeCharacter.findall("組字")
 			infoDictList=[]
@@ -241,10 +247,12 @@ class CharDescriptionManager:
 	def adjustData(self):
 		self.operationMgr.adjustTemplate()
 
+#		charDescQueryer=self.getCharDescQueryer()
 		for charName in self.characterDB.keys():
-			srcDescList=self.characterDB.get(charName)
-			for srcDesc in srcDescList:
-				self.operationMgr.rearrangeRecursively(srcDesc)
+			charDesc=self.characterDB.get(charName)
+			structDescList=charDesc.getStructureList()
+			for structDesc in structDescList:
+				self.operationMgr.rearrangeRecursively(structDesc)
 
 if __name__=='__main__':
 	pass

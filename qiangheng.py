@@ -98,29 +98,29 @@ class QiangHeng:
 	def constructDescriptionNetwork(self):
 		charNameList=self.descMgr.keys()
 		hanziNetwork=self.hanziNetwork
-		charDescQueryer=self.descMgr.getCharDescQueryer()
+		structDescQueryer=self.descMgr.getStructDescQueryer()
 		sortedNameList=sorted(charNameList)
 
 		for charName in sortedNameList:
-			srcDesc=charDescQueryer(charName)
-			hanziNetwork.addNode(charName, srcDesc)
+			hanziNetwork.addNode(charName)
 
 		for charName in sortedNameList:
-			srcDesc=charDescQueryer(charName)
-			self.recursivelyAddNode(srcDesc)
+			structDescList=structDescQueryer(charName)
+			for structDesc in structDescList:
+				self.recursivelyAddNode(structDesc)
 
 		for charName in sortedNameList:
-			srcDesc=charDescQueryer(charName)
-			self.recursivelyAddLink(srcDesc)
+			structDescList=structDescQueryer(charName)
+			for structDesc in structDescList:
+				self.recursivelyAddLink(structDesc)
 
 		charPropQueryer=self.descMgr.getCharPropQueryer()
 		for charName in sortedNameList:
-			srcDesc=charDescQueryer(charName)
+			structDescList=structDescQueryer(charName)
 			srcPropList=charPropQueryer(charName)
-			for srcProp in srcPropList:
-				hanziNetwork.appendNodeInfo(srcDesc, srcProp)
-#			if srcProp:
-#				hanziNetwork.appendNodeInfo(srcDesc, srcProp)
+			for structDesc in structDescList:
+				for srcProp in srcPropList:
+					hanziNetwork.appendNodeInfo(structDesc, srcProp)
 
 	def recursivelyAddNode(self, srcDesc):
 		self.hanziNetwork.addOrFindNodeByCharDesc(srcDesc)
@@ -191,12 +191,10 @@ class QiangHeng:
 			self.descMgr.loadCodeInfoFromXML(filename, fileencoding='utf-8-sig')
 
 	def genIMMapping(self, targetCharList):
-		charDescQueryer=self.descMgr.getCharDescQueryer()
 		table=[]
 		for charName in sorted(targetCharList):
 #			print("<-- %s -->"%charName)
-			charDesc=charDescQueryer(charName)
-			codeList=self.hanziNetwork.getCodeList(charDesc)
+			codeList=self.hanziNetwork.getCodeList(charName)
 			for code in codeList:
 				table.append([code, charName])
 		return table

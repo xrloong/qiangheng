@@ -2,11 +2,11 @@
 
 import copy
 
-class CharDesc:
+class StructureDescription:
 	"""字符描述"""
 	countAnonymousName=0
 	def __init__(self, operator, compList):
-		self.name=CharDesc.generateNewAnonymousName()
+		self.name=StructureDescription.generateNewAnonymousName()
 		self.expandName=None
 
 		self.operator=operator
@@ -28,9 +28,9 @@ class CharDesc:
 		return self.target.propDict
 
 	def copyDescription(self):
-		copyCharDesc=CharDesc(self.getOperator(), [])
-		copyCharDesc.setExpandName(self.getExpandName())
-		return copyCharDesc
+		copyStructureDescription=StructureDescription(self.getOperator(), [])
+		copyStructureDescription.setExpandName(self.getExpandName())
+		return copyStructureDescription
 
 	def copyDeeply(self):
 		ansChildList=[]
@@ -41,7 +41,7 @@ class CharDesc:
 		if self.getOperator().getName()=='龜':
 			ansDesc=self.copyDescription()
 		else:
-			ansDesc=CharDesc(self.getOperator(), ansChildList)
+			ansDesc=StructureDescription(self.getOperator(), ansChildList)
 
 #		if isWithSameExpandName:
 #			ansDesc.setExpandName(self.getExpandName())
@@ -86,30 +86,30 @@ class CharDesc:
 	# 若定義 夠=(好 多句) ，則沒有匿名結構
 	@staticmethod
 	def generateNewAnonymousName():
-		name="[瑲珩匿名-{0}]".format(CharDesc.countAnonymousName)
-		CharDesc.countAnonymousName+=1
+		name="[瑲珩匿名-{0}]".format(StructureDescription.countAnonymousName)
+		StructureDescription.countAnonymousName+=1
 		return name
 
-class HangerCharDesc(CharDesc):
+class HangerStructureDescription(StructureDescription):
 	def __init__(self, operator, compList):
-		self.hangerCharDesc=CharDesc(operator, compList)
+		self.hangerStructureDescription=StructureDescription(operator, compList)
 
 	@property
 	def target(self):
-		return self.hangerCharDesc
+		return self.hangerStructureDescription
 
-	def replacedBy(self, newCharDesc):
-		self.hangerCharDesc=newCharDesc.target
+	def replacedBy(self, newStructureDescription):
+		self.hangerStructureDescription=newStructureDescription.target
 
 	def copyDescription(self):
-		return HangerCharDesc(self.getOperator(), [])
+		return HangerStructureDescription(self.getOperator(), [])
 
 	def copyDeeply(self):
 		newTarget=self.target.copyDeeply()
-		hangerCharDesc=HangerCharDesc(self.getOperator(), self.getCompList())
-		hangerCharDesc.replacedBy(newTarget)
-		return hangerCharDesc
+		hangerStructureDescription=HangerStructureDescription(self.getOperator(), self.getCompList())
+		hangerStructureDescription.replacedBy(newTarget)
+		return hangerStructureDescription
 
 if __name__=='__main__':
-	print(CharDesc('王', '(龜)', None))
+	print(StructureDescription('王', '(龜)', None))
 

@@ -144,7 +144,7 @@ tarball-all:
 
 clean:
 	rm -rf tables/ tmp/ tarballs/ pixmaps
-	rm -f *.pyc im/*.pyc character/*.pyc operatorinfo/*.pyc
+	rm `find . -name "*.pyc"`
 	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log tex/*.pdf
 	rm -f test/puretable/*
 

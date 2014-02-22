@@ -57,7 +57,9 @@ class HanZiStructure:
 	def getAllCodeInfoList(self, nodeList):
 		def combineList(infoListList, infoListOfNode):
 			if len(infoListList)==0:
-				ansListList=[infoListOfNode]
+				ansListList=[]
+				for codeInfo in infoListOfNode:
+					ansListList.append([codeInfo])
 			else:
 				ansListList=[]
 				for infoList in infoListList:
@@ -106,6 +108,16 @@ class HanZiNode:
 		"""設定某一個字符所包含的部件的碼"""
 
 		structureList=self.getStructureListWithCondition()
+
+		quantity=StateManager.getQuantity()
+
+		if quantity==StateManager.STATE_QUANTITY_NONE:
+			structureList=[]
+		elif quantity==StateManager.STATE_QUANTITY_FIRST:
+			structureList=structureList[:1]
+		elif quantity==StateManager.STATE_QUANTITY_ALL:
+			structureList=structureList
+
 		for structure in structureList:
 			radixList=structure.getNodeList()
 			for childNode in radixList:
@@ -124,7 +136,7 @@ class HanZiNetwork:
 		srcName=srcDesc.getHybridName()
 		return srcName in self.srcDescNameToNodeDict.keys()
 
-	def addNode(self, charName, charDesc):
+	def addNode(self, charName):
 		ansNode=HanZiNode(charName)
 
 		self.srcDescNameToNodeDict[charName]=ansNode
@@ -160,7 +172,7 @@ class HanZiNetwork:
 		ansNode=None
 		charName=charDesc.getHybridName()
 		if not self.isInNetwork(charDesc):
-			self.addNode(charName, charDesc)
+			self.addNode(charName)
 
 		ansNode=self.findNodeByCharDesc(charDesc)
 		return ansNode
@@ -168,3 +180,9 @@ class HanZiNetwork:
 	def getCodeList(self, charDesc):
 		charNode=self.findNodeByCharDesc(charDesc)
 		return charNode.getCodeList()
+
+	def getCodeList(self, charName):
+		charNode=self.srcDescNameToNodeDict.get(charName)
+#		charNode=self.findNodeByCharDesc(charDesc)
+		return charNode.getCodeList()
+
