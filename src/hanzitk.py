@@ -76,7 +76,7 @@ class ShowHanziWidget():
 		canvas=TkHanZiCanvas.TkHanZiCanvas(self.canvasHanzi, self.canvasW, self.canvasH)
 		self.dh=HanZiDrawingSystem(canvas)
 
-		self.byKnownChar()
+#		self.byKnownChar()
 
 	def genTTF(self):
 		filename=self.ttfFilename.get()
@@ -88,8 +88,10 @@ class ShowHanziWidget():
 
 
 	def byKnownChar(self):
+#		string=self.entryInput.get()
+#		def_list=self.rm.getFont(string)
 		string=self.entryInput.get()
-		def_list=self.rm.getFont(string)
+		def_list=string.split(",")
 		self.dh.draw(def_list)
 
 class RadicalManager:
