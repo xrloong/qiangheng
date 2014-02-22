@@ -25,6 +25,15 @@ class CharDesc:
 	def getChInfo(self):
 		return self.chInfo
 
+	def __str__(self):
+		if self.name=="":
+			return '<None>'
+		else:
+			return '<{0}={1}|({2})>'.format(self.name, self.op, ",".join(map(str, self.compList)))
+
+CharDesc.NoneDesc=CharDesc("", '', None)
+
 if __name__=='__main__':
-	pass
+	print(CharDesc.NoneDesc)
+	print(CharDesc('王', '(龜)', None))
 
