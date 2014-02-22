@@ -94,6 +94,13 @@ $(PURETABLE_PATH): $(XML_PATH)
 	done
 	touch $(PURETABLE_PATH)
 
+testdata:
+	for i in main ar bs cj dy zm;\
+	do\
+		time xalan -xsl xslt/selectTestData.xslt -in charinfo/$$i/CJK.xml \
+			| xalan -xsl xslt/formatOutput.xslt -out test/charinfo/$$i/CJK.xml -indent 4;\
+	done
+
 testing:
 	for im in $(TEST_IMLIST);\
 	do ./qiangheng.py --dir-charinfo test/charinfo -i $$im > test/puretable/$$im.puretable.txt;\
