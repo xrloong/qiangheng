@@ -40,6 +40,9 @@ class TemplateDesc:
 		self.replaceCharDesc(tempDesc, mappingDict)
 		return tempDesc
 
+	# 需要先替換兒子，才可以進行自己的替換。
+	# 否則，如：條=(範翛 木)=(範湘 亻丨(志 夂木))
+	# 而 '木' 會被誤判為湘的參數。
 	def replaceCharDesc(self, charDesc, mappingDict):
 		for comp in charDesc.getCompList():
 			self.replaceCharDesc(comp, mappingDict)

@@ -36,6 +36,15 @@ class RearrangeInfoLShapeSimpleRadical:
 			charDesc.setCompList([y, x])
 			charDesc.setOperator(ansOperator)
 
+class RearrangeInfoTemplate:
+	def __init__(self, operatorManager):
+		self.operatorManager=operatorManager
+		self.templateDB=operatorManager.templateDB
+
+	def rearrange(self, charDesc):
+		self.operatorManager.getCharDescFromTemplate(charDesc)
+		self.operatorManager.rearrangeRecursively(charDesc)
+
 class OperatorManager:
 	def __init__(self, descMgr):
 		self.descMgr=descMgr
@@ -66,11 +75,9 @@ class OperatorManager:
 
 		self.operatorGenerator=operatorGenerator
 
-	def isTemplateName(self, operatorName):
-		return (operatorName in self.templateDB.keys())
-
 	def setTemplateDB(self, templateDB):
 		self.templateDB=templateDB
+		self.templateRearrangeInfo=RearrangeInfoTemplate(self)
 
 	def getCharDescFromTemplate(self, charDesc):
 		operator=charDesc.getOperator()
@@ -81,22 +88,19 @@ class OperatorManager:
 
 		resultDesc=templateDesc.getReplacedCharDesc(compList)
 		resultDesc.setExpandName(charDesc.getExpandName())
-		return resultDesc
+
+		charDesc.setHanger(resultDesc.getHanger())
 
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
 
 	def isTemplateOperator(self, operator):
-		return len(operator.getName())>1
+		return (operator.getName() in self.templateDB.keys())
 
 	def rearrangeRecursively(self, charDesc):
-		if self.isTemplateOperator(charDesc.getOperator()):
-			charDesc=self.getCharDescFromTemplate(charDesc)
-			charDesc=self.rearrangeRecursively(charDesc)
-		for childDesc in charDesc.getCompList():
-			newChildDesc=self.rearrangeRecursively(childDesc)
-			childDesc.setHanger(newChildDesc.getHanger())
 		self.rearrangeDesc(charDesc)
+		for childDesc in charDesc.getCompList():
+			self.rearrangeRecursively(childDesc)
 		return charDesc
 
 	def getOperatorByName(self, operatorName):
@@ -104,11 +108,18 @@ class OperatorManager:
 
 	def rearrangeDesc(self, charDesc):
 		operator=charDesc.getOperator()
-		operatorName=operator.getName()
-		rearrangeInfo=self.rearrangeInfoDict.get(operatorName)
+		rearrangeInfo=self.getRearrangeInfoByOperator(operator)
 
 		if rearrangeInfo!=None:
 			rearrangeInfo.rearrange(charDesc)
+
+	def getRearrangeInfoByOperator(self, operator):
+		if self.isTemplateOperator(operator):
+			return self.templateRearrangeInfo
+		else:
+			operatorName=operator.getName()
+			rearrangeInfo=self.rearrangeInfoDict.get(operatorName)
+		return rearrangeInfo
 
 	def adjustTemplate(self):
 		pass
