@@ -16,7 +16,6 @@ class CharDesc:
 		self.chInfo=None
 
 		self.showFlag=False if len(self.name)>1 else True
-		self.anonymous=self.name.count("瑲珩匿名")>0
 
 	def __str__(self):
 #		return '<{0}={1}>'.format(self.name, self.operator.getName())
@@ -35,7 +34,7 @@ class CharDesc:
 	def setName(self, name):
 		self.name=name
 		self.showFlag=False if len(self.name)>1 else True
-		self.anonymous=self.name.count("瑲珩匿名")>0
+#		self.anonymous=self.name.count("瑲珩匿名")>0
 
 	def getName(self):
 		return self.name
@@ -66,15 +65,6 @@ class CharDesc:
 		name="[瑲珩匿名-{0}]".format(CharDesc.countAnonymousName)
 		CharDesc.countAnonymousName+=1
 		return name
-
-	def isAnonymous(self):
-		return self.anonymous
-
-	def setAnonymous(self, anonymous):
-		self.anonymous=anonymous
-
-#	def isTemplate(self):
-#		return False
 
 	def isToShow(self):
 		return self.showFlag

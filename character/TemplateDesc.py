@@ -49,18 +49,6 @@ class TemplateDesc:
 		for comp in charDesc.getCompList():
 			self.replaceCharDesc(comp, mappingDict)
 
-	# 匿名結構是指沒有對應到名字的部分。
-	# 若定義 夠=(好 (爻 夕)句) ，則 (爻 夕) 的部分為匿名
-	# 若定義 夠=(好 多句) ，則沒有匿名結構
-	@staticmethod
-	def generateNewAnonymousName():
-		name="[瑲珩匿名-{0}]".format(TemplateDesc.countAnonymousName)
-		TemplateDesc.countAnonymousName+=1
-		return name
-
-	def isAnonymous(self):
-		return self.name.count("瑲珩匿名")>0
-
 if __name__=='__main__':
 	print(TemplateDesc('王', '(龜)', None))
 

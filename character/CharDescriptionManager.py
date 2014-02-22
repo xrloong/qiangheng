@@ -176,7 +176,6 @@ class CharDescriptionManager:
 			comp=getDesc_CompleteCharacter(node)
 			charName=node.get('名稱')
 			comp.setName(charName)
-			comp.setAnonymous(charName.count("瑲珩匿名")>0)
 			self.characterDB[charName]=comp
 
 	def adjustData(self):

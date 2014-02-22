@@ -80,6 +80,7 @@ class OperatorManager:
 	def rearrangeRecursively(self, charDesc):
 		if self.isTemplateOperator(charDesc.getOperator()):
 			charDesc=self.getCharDescFromTemplate(charDesc)
+			charDesc=self.rearrangeRecursively(charDesc)
 		l=[]
 		for childDesc in charDesc.getCompList():
 			newChildDesc=self.rearrangeRecursively(childDesc)
