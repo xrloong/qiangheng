@@ -1,4 +1,5 @@
 import sys
+import copy
 
 from ..CodeInfo.BSCodeInfo import BSCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
@@ -24,8 +25,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		"""運算 "龍" """
 
 		bslist=list(map(lambda c: c.getBSProp()[0], codeInfoList))
-		bslist=list(sum(bslist, []))
-		bs_code_list=(bslist[:3]+bslist[-1:]) if len(bslist)>4 else bslist
+		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(bslist)
 		bs_spcode=codeInfoList[-1].getBSProp()[1]
 
 		codeInfo=self.generateDefaultCodeInfo()
@@ -40,6 +40,30 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
 		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
+
+	def encodeAsSilkworm(self, codeInfoList):
+		"""運算 "蚕" """
+		bsCodeList=list(map(lambda c: c.getBSProp()[0], codeInfoList))
+		tmpBsCodeList=BSCodeInfoEncoder.mergeRadixAsSilkworm(bsCodeList)
+
+		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(tmpBsCodeList)
+		bs_spcode=codeInfoList[-1].getBSProp()[1]
+
+		codeInfo=self.generateDefaultCodeInfo()
+		codeInfo.setBSProp(bs_code_list, bs_spcode)
+		return codeInfo
+
+	def encodeAsGoose(self, codeInfoList):
+		"""運算 "蚕" """
+		bsCodeList=list(map(lambda c: c.getBSProp()[0], codeInfoList))
+		tmpBsCodeList=BSCodeInfoEncoder.mergeRadixAsGoose(bsCodeList)
+
+		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(tmpBsCodeList)
+		bs_spcode=codeInfoList[-1].getBSProp()[1]
+
+		codeInfo=self.generateDefaultCodeInfo()
+		codeInfo.setBSProp(bs_code_list, bs_spcode)
 		return codeInfo
 
 	def encodeAsHan(self, codeInfoList):
@@ -70,4 +94,46 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
+
+	@staticmethod
+	def computeBoshiamyCode(bsCodeList):
+		bslist=list(sum(bsCodeList, []))
+		bs_code_list=(bslist[:3]+bslist[-1:]) if len(bslist)>4 else bslist
+		return bs_code_list
+
+	@staticmethod
+	def mergeRadixAsSilkworm(bsCodeList):
+		tmpBsCodeList=copy.copy(bsCodeList)
+
+		numBsCode=len(tmpBsCodeList)
+		for i in range(numBsCode-1):
+			bsCodePrev=tmpBsCodeList[i]
+			bsCodeNext=tmpBsCodeList[i+1]
+			if len(bsCodePrev)>0 and len(bsCodeNext)>0:
+				if bsCodePrev[-1]==BSCodeInfo.RADIX_E2 and bsCodeNext[0]==BSCodeInfo.RADIX_E1:
+					tmpBsCodeList[i]=bsCodePrev[:-1]+[BSCodeInfo.RADIX_E2_E1]
+					tmpBsCodeList[i+1]=bsCodeNext[1:]
+
+		# 合併字根後，有些字根列可能為空，如：戓
+		tmpBsCodeList=filter(lambda x: len(x)>0, tmpBsCodeList)
+
+		return tmpBsCodeList
+
+	@staticmethod
+	def mergeRadixAsGoose(bsCodeList):
+		tmpBsCodeList=copy.copy(bsCodeList)
+
+		numBsCode=len(tmpBsCodeList)
+		for i in range(numBsCode-1):
+			bsCodePrev=tmpBsCodeList[i]
+			bsCodeNext=tmpBsCodeList[i+1]
+			if len(bsCodePrev)>0 and len(bsCodeNext)>0:
+				if bsCodePrev[0]==BSCodeInfo.RADIX_M1 and bsCodeNext[0]==BSCodeInfo.RADIX_E2_E1:
+					tmpBsCodeList[i]=[BSCodeInfo.RADIX_M1_E2_E1]+bsCodePrev[1:]
+					tmpBsCodeList[i+1]=bsCodeNext[1:]
+
+		# 合併字根後，有些字根列可能為空，如：戓
+		tmpBsCodeList=filter(lambda x: len(x)>0, tmpBsCodeList)
+
+		return tmpBsCodeList
 

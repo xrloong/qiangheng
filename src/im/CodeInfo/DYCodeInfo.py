@@ -42,9 +42,9 @@ class DYCodeInfo(CodeInfo):
 	RADIX_SEMICOLON=';'
 	RADIX_SLASH='/'
 
-	RADIX_EXTEND_E1='e1'
-	RADIX_EXTEND_H1='h1'
-	RADIX_EXTEND_H2='h2'
+	RADIX_EXTEND_E1='e1'	# 即一
+	RADIX_EXTEND_H1='h1'	# 即厂
+	RADIX_EXTEND_H2='h2'	# 威的前三筆
 
 	radixToCodeDict={
 		RADIX_A:'a',

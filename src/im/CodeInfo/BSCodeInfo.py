@@ -30,9 +30,12 @@ class BSCodeInfo(CodeInfo):
 
 	RADIX_E1='e1'	# 即一
 	RADIX_E2='e2'	# 即山
-	RADIX_E1_E2='e1:e2'	# 即[山一]
-	RADIX_W1='w1'	# 即辶
-	RADIX_W2='w2'	# 即廴
+	RADIX_E2_E1='e2:e1'	# 即[山一]
+	RADIX_M1='m1'	# 即彳的前兩筆
+	RADIX_M1_E2_E1='m1:e2:e1'	# 即[特微]
+
+#	RADIX_W1='w1'	# 即辶
+#	RADIX_W2='w2'	# 即廴
 
 	COMPLEMENTARY_A='a'
 	COMPLEMENTARY_E='e'
@@ -73,6 +76,12 @@ class BSCodeInfo(CodeInfo):
 		RADIX_X:'x',
 		RADIX_Y:'y',
 		RADIX_Z:'z',
+
+		RADIX_E1:'e',
+		RADIX_E2:'e',
+		RADIX_E2_E1:'ee',
+		RADIX_M1:'m',
+		RADIX_M1_E2_E1:'m',
 	}
 
 	def setRadixCodeProperties(self, propDict):
@@ -89,12 +98,14 @@ class BSCodeInfo(CodeInfo):
 			return self._bs_single
 		if self._bs_code_list==None or self._bs_spcode==None:
 			return None
-		elif len(self._bs_code_list)<3:
-			return "".join(self._bs_code_list)+self._bs_spcode
-		elif len(self._bs_code_list)>4:
-			return "".join(self._bs_code_list[:3]+self._bs_code_list[-1:])
 		else:
-			return "".join(self._bs_code_list)
+			code="".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], self._bs_code_list))
+			if len(code)<3:
+				return code+self._bs_spcode
+			elif len(code)>4:
+				return code[:3]+code[-1:]
+			else:
+				return code
 
 	def setDataEmpty(self):
 		self._bs_code_list=None
