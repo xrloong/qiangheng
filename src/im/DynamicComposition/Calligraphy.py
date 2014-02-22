@@ -392,19 +392,19 @@ class StrokeObject_橫折提(StrokeObject):
 class StrokeObject_橫折鉤(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
-		assert len(l)==4
+		assert len(l)==5
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
 		assert int(l[3])>0
-		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
+		assert int(l[4])>0
+		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), ]
 
 	def getStartPoint(self):
 		paramList=self.parseExpression()
 		w1=paramList[0]
-		w2w3=paramList[2]
-		w2=w2w3//2
-		w3=w2w3//2
+		w2=paramList[1]
+		w3=paramList[3]
 
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+max(0, (w2+w3)-w1), topLeft[1])
@@ -412,11 +412,10 @@ class StrokeObject_橫折鉤(StrokeObject):
 	def getPoints(self):
 		paramList=self.parseExpression()
 		w1=paramList[0]
-		h2=paramList[1]
-		w2w3=paramList[2]
-		h3=paramList[3]
-		w2=w2w3//2
-		w3=w2w3//2
+		w2=paramList[1]
+		h2=paramList[2]
+		w3=paramList[3]
+		h3=paramList[4]
 
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
@@ -526,7 +525,7 @@ class StrokeObject_橫撇彎鉤(StrokeObject):
 class StrokeObject_橫撇橫折鉤(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
-		assert len(l)==7
+		assert len(l)==8
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -534,7 +533,8 @@ class StrokeObject_橫撇橫折鉤(StrokeObject):
 		assert int(l[4])>0
 		assert int(l[5])>0
 		assert int(l[6])>0
-		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), int(l[6]), ]
+		assert int(l[7])>0
+		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), int(l[6]), int(l[7]), ]
 
 	def getStartPoint(self):
 		return self.getTopLeft()
@@ -545,17 +545,18 @@ class StrokeObject_橫撇橫折鉤(StrokeObject):
 		w2=paramList[1]
 		h2=paramList[2]
 		w3=paramList[3]
-		h4=paramList[4]
-		w5=paramList[5]
-		h5=paramList[6]
+		w4=paramList[4]
+		h4=paramList[5]
+		w5=paramList[6]
+		h5=paramList[7]
 
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_撇(points[-1][1], w2, h2))
 		points.extend(self.compute_橫(points[-1][1], w3))
-		points.extend(self.compute_撇鉤之撇(points[-1][1], w5//2, h4))
-		points.extend(self.compute_趯(points[-1][1], w5//2, h5))
+		points.extend(self.compute_撇鉤之撇(points[-1][1], w4, h4))
+		points.extend(self.compute_趯(points[-1][1], w5, h5))
 		return points
 
 class StrokeObject_橫斜鉤(StrokeObject):
@@ -706,14 +707,15 @@ class StrokeObject_豎橫折(StrokeObject):
 class StrokeObject_豎橫折鉤(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
-		assert len(l)==6
+		assert len(l)==7
 		assert int(l[0])>=0
 		assert int(l[1])>0
 		assert int(l[2])>0
 		assert int(l[3])>0
 		assert int(l[4])>0
 		assert int(l[5])>0
-		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), ]
+		assert int(l[6])>0
+		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), int(l[6]), ]
 
 	def getStartPoint(self):
 		paramList=self.parseExpression()
@@ -727,9 +729,10 @@ class StrokeObject_豎橫折鉤(StrokeObject):
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
-		h3=paramList[3]
-		w4=paramList[4]
-		h4=paramList[5]
+		w3=paramList[3]
+		h3=paramList[4]
+		w4=paramList[5]
+		h4=paramList[6]
 
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
@@ -740,8 +743,8 @@ class StrokeObject_豎橫折鉤(StrokeObject):
 		else:
 			points.extend(self.compute_豎(points[-1][1], h1))
 		points.extend(self.compute_橫(points[-1][1], w2))
-		points.extend(self.compute_撇鉤之撇(points[-1][1], w4//2, h3))
-		points.extend(self.compute_趯(points[-1][1], w4//2, h4))
+		points.extend(self.compute_撇鉤之撇(points[-1][1], w3, h3))
+		points.extend(self.compute_趯(points[-1][1], w4, h4))
 		return points
 
 class StrokeObject_豎曲鉤(StrokeObject):
