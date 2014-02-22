@@ -645,7 +645,7 @@ class StrokeObject_豎折(StrokeObject):
 		points.extend(self.compute_橫(points[-1][1], w2))
 		return points
 
-class StrokeObject_豎挑(StrokeObject):
+class StrokeObject_豎提(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==3
@@ -669,7 +669,7 @@ class StrokeObject_豎挑(StrokeObject):
 		points.extend(self.compute_提(points[-1][1], w2, h2))
 		return points
 
-class StrokeObject_豎橫折(StrokeObject):
+class StrokeObject_豎折折(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==3
@@ -694,7 +694,7 @@ class StrokeObject_豎橫折(StrokeObject):
 		points.extend(self.compute_豎(points[-1][1], h3))
 		return points
 
-class StrokeObject_豎橫折鉤(StrokeObject):
+class StrokeObject_豎折彎鉤(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==7
@@ -737,7 +737,7 @@ class StrokeObject_豎橫折鉤(StrokeObject):
 		points.extend(self.compute_鉤(points[-1][1], w4, h4))
 		return points
 
-class StrokeObject_豎曲鉤(StrokeObject):
+class StrokeObject_豎彎鉤(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==4
@@ -772,7 +772,7 @@ class StrokeObject_豎曲鉤(StrokeObject):
 		points.extend(self.compute_上(points[-1][1], h2))
 		return points
 
-class StrokeObject_豎曲(StrokeObject):
+class StrokeObject_豎彎(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==3
@@ -1216,13 +1216,13 @@ StrokeObjectMap = {
 	"橫折折折": StrokeObject_橫折折折,
 	"豎": StrokeObject_豎,
 	"豎折": StrokeObject_豎折,
-	"豎挑": StrokeObject_豎挑,
-	"豎橫折": StrokeObject_豎橫折,
-	"豎橫折鉤": StrokeObject_豎橫折鉤,
-	"豎曲鉤": StrokeObject_豎曲鉤,
-	"豎曲": StrokeObject_豎曲,
+	"豎提": StrokeObject_豎提,
+	"豎折折": StrokeObject_豎折折,
+	"豎折彎鉤": StrokeObject_豎折彎鉤,
+	"豎彎鉤": StrokeObject_豎彎鉤,
+	"豎彎": StrokeObject_豎彎,
 	"豎鉤": StrokeObject_豎鉤,
-	"臥鉤": StrokeObject_豎曲鉤,
+	"扁斜鉤": StrokeObject_豎彎鉤,
 	"斜鉤": StrokeObject_斜鉤,
 	"彎鉤": StrokeObject_彎鉤,
 	"撇鉤": StrokeObject_撇鉤,
