@@ -16,7 +16,7 @@ class CJCharInfo(CharInfo):
 
 	def setCJProp(self, cj_info_code):
 		single_code=None
-		dir_code='+'
+		dir_code='*'
 		radix_list=[]
 
 		codeList=cj_info_code.split('=')
@@ -25,8 +25,8 @@ class CJCharInfo(CharInfo):
 			x_code=codeList[0]
 			if len(x_code)>0:
 				dir_code=x_code[0]
-				if dir_code not in ['|', '-', '+', '@']:
-					dir_code='+'
+				if dir_code not in ['|', '-', '*', '@']:
+					dir_code='*'
 
 				radix_list=x_code[1:].split(',')
 
@@ -54,8 +54,8 @@ class CJCharInfo(CharInfo):
 		ansRadixList=[]
 		for tmpchinfo in complist:
 			tmpDirCode, tmpRadixList=tmpchinfo.getCJProp()
-#			if tmpDirCode=='+':
-			if tmpDirCode in ['+', '@']:
+#			if tmpDirCode=='*':
+			if tmpDirCode in ['*', '@']:
 				ansRadixList.append(tmpchinfo._cj_body)
 			elif tmpDirCode==direction:
 				# 同向
@@ -99,7 +99,7 @@ class CJCharInfo(CharInfo):
 		return headCode
 
 	@staticmethod
-	def computeBodyCode(codeList, direction='+'):
+	def computeBodyCode(codeList, direction='*'):
 		def convertAllToHeadTail(l):
 			pass
 
@@ -141,7 +141,7 @@ class CJCharInfo(CharInfo):
 		return bodyCode
 
 	@staticmethod
-	def computeTotalCode(codeList, direction='+'):
+	def computeTotalCode(codeList, direction='*'):
 		if len(codeList)==1:
 			totalCode=CJCharInfo.computeHeadTailCode(codeList[0], 3)
 		elif len(codeList)>1:

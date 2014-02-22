@@ -8,7 +8,7 @@ from character.RearrangementManager import *
 
 class CharDescriptionManager:
 	NoneInfo=CharInfo('[瑲珩預設]', [])
-	NoneDesc=CharDesc("", '龜', [], '+', '(龜)', NoneInfo)
+	NoneDesc=CharDesc("", '龜', [], '*', '(龜)', NoneInfo)
 
 	def __init__(self, imModule, CharInfoGenerator):
 		# descDB 放最原始、沒有擴展過的 CharDesc ，也就是從檔案讀出來的資料。

@@ -198,13 +198,13 @@ class RearrangeInfoSpecial:
 		oldOperator=charDesc.getOperator()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='+'
+		ansDirection='*'
 		x=oldCompList[0]
 		y=oldCompList[1]
 
 		if x.getName() in ['辶', '廴']:
 			charDesc.setCompList([y, x])
-			charDesc.setOperatorAndDirection('龍', '+')
+			charDesc.setOperatorAndDirection('龍', '*')
 
 class RearrangeInfoFrost:
 	def __init__(self):
@@ -329,15 +329,15 @@ class RearrangeInfoLShapeSimpleRadical:
 		oldOperator=charDesc.getOperator()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='+'
+		ansDirection='*'
 		if oldOperator=='起':
-			ansDirection='+'
+			ansDirection='*'
 			x=oldCompList[0]
 			y=oldCompList[1]
 
 			if x.getName() in ['辶', '廴']:
 				charDesc.setCompList([y, x])
-				charDesc.setOperatorAndDirection('龍', '+')
+				charDesc.setOperatorAndDirection('龍', '*')
 
 RearrangeInfo.Order_01=RearrangeInfo([0, 1,])
 RearrangeInfo.Order_10=RearrangeInfo([1, 0,])
