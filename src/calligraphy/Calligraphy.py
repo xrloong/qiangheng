@@ -1224,7 +1224,7 @@ class Stroke(Writing):
 		return newPoints
 
 	def computeScope(self):
-		return StrokeDrawing(self.strokeInfo.getPoints()).computeScope()
+		return StrokeDrawing(self.getPoints()).computeScope()
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
