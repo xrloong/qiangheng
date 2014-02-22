@@ -34,7 +34,7 @@ class HanZiUnitStructure(HanZiStructure):
 	def __init__(self, codeVariance, codeInfoProperties):
 		HanZiStructure.__init__(self)
 
-		codeInfo=StateManager.codeInfoGenerator(codeInfoProperties, codeVariance)
+		codeInfo=StateManager.codeInfoEncoder.generateCodeInfo(codeInfoProperties, codeVariance)
 		self.codeInfoList=[codeInfo]
 
 	def getCodeInfoList(self):
@@ -94,8 +94,7 @@ class HanZiAssemblageStructure(HanZiStructure):
 		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(structureList)
 
 		for infoList in infoListList:
-			codeInfo=StateManager.codeInfoGenerator({}, self.codeVariance)
-#			codeInfo.encode(self.operator, infoList)
+			codeInfo=StateManager.codeInfoEncoder.generateCodeInfo({}, self.codeVariance)
 			StateManager.codeInfoEncoder.encode(codeInfo, self.operator, infoList)
 
 			self.codeInfoList.append(codeInfo)

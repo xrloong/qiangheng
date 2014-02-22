@@ -1,8 +1,13 @@
+from ..CodeInfo.DYCodeInfo import DYCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
 
 class DYCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
+
+	def generateCodeInfo(self, propDict, codeVariance):
+		codeInfo=DYCodeInfo(propDict, codeVariance)
+		return codeInfo
 
 	def setByComps(self, codeInfo, operator, codeInfoList):
 		dylist=list(map(lambda c: c.getDYProp(), codeInfoList))

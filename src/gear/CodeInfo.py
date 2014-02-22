@@ -39,16 +39,6 @@ class CodeInfo:
 	def setRadixCodeProperties(self, propDict):
 		pass
 
-	def encode(self, operator, complist):
-		for codeInfo in complist:
-			codeVariance=codeInfo.getCodeVarianceType()
-			self.codeVariance.multi(codeVariance)
-
-		self.setByComps(operator, complist)
-
-	def setByComps(self, operator, complist):
-		pass
-
 	def getCodeVarianceType(self):
 		return self.codeVariance
 
