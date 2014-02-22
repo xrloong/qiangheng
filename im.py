@@ -150,8 +150,14 @@ class NoneIM:
 		l=[]
 		for tc in anscomp.compList:
 			x=self.expandCharTree(tc)
-			l.append(self.expandCharTree(tc))
-		anscomp.setCompList(l)
+			l.append(x)
+
+#		anscomp.setCompList(l)
+
+		[newOp, newCompList]=self.getRearrangedOpAndCompList(anscomp)
+		anscomp.setOp(newOp)
+		anscomp.setCompList(newCompList)
+
 		return anscomp
 
 	def normalizationToLinear(self, comp):
@@ -162,7 +168,7 @@ class NoneIM:
 			l.extend(self.normalizationToLinear(tc))
 		return l
 
-	def getAllComp(self, ch):
+	def getRearrangedOpAndCompList(self, chdesc):
 #		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
 #		['好', '志',
 #		'回', '同', '函', '區', '左',
@@ -170,37 +176,72 @@ class NoneIM:
 #		'夾', '衍', '衷',]
 #		['纂', '膷',]
 		descDB=self.descDB
+		ch=chdesc.getChInfo()
+
+		newOperator='龜'
+		newCompList=[]
 		if ch.operator in ['龜']:
-			return []
+			newOperator=ch.operator
+			newCompList=[]
 		elif ch.operator in ['水']:
-			x=descDB.get(ch.operandlist[0], None).getChInfor()
-			return [x]
+			x=descDB.get(ch.operandlist[0], None)
+
+			newOperator=ch.operator
+			newCompList=[x]
 		elif ch.operator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			y=descDB.get(ch.operandlist[1], None).getChInfo()
-			return [x, y]
+			x=descDB.get(ch.operandlist[0], None)
+			y=descDB.get(ch.operandlist[1], None)
+
+			newOperator=ch.operator
+			newCompList=[x, y]
 		elif ch.operator in ['算', '湘', '霜', '想', '怡', '穎',]:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			y=descDB.get(ch.operandlist[1], None).getChInfo()
-			z=descDB.get(ch.operandlist[2], None).getChInfo()
-			return [x, y, z]
+			x=descDB.get(ch.operandlist[0], None)
+			y=descDB.get(ch.operandlist[1], None)
+			z=descDB.get(ch.operandlist[2], None)
+
+			newOperator=ch.operator
+			newCompList=[x, y, z]
 		elif ch.operator in ['纂',]:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			y=descDB.get(ch.operandlist[1], None).getChInfo()
-			z=descDB.get(ch.operandlist[2], None).getChInfo()
-			w=descDB.get(ch.operandlist[3], None).getChInfo()
-			return [x, y, z, w]
+			x=descDB.get(ch.operandlist[0], None)
+			y=descDB.get(ch.operandlist[1], None)
+			z=descDB.get(ch.operandlist[2], None)
+			w=descDB.get(ch.operandlist[3], None)
+
+			newOperator=ch.operator
+			newCompList=[x, y, z, w]
 		elif ch.operator in ['林', '爻']:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			return [x, x]
+			x=descDB.get(ch.operandlist[0], None)
+
+			if ch.operator=='林':
+				newOperator='好'
+			elif ch.operator=='林':
+				newOperator='志'
+			else:
+				newOperator='錯'
+			newCompList=[x, x]
 		elif ch.operator in ['卅', '鑫']:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			return [x, x, x]
+			x=descDB.get(ch.operandlist[0], None)
+
+			if ch.operator=='卅':
+				newOperator='好'
+			elif ch.operator=='鑫':
+				# 暫不處理
+				newOperator='鑫'
+			else:
+				newOperator='錯'
+			newCompList=[x, x, x]
 		elif ch.operator in ['燚',]:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			return [x, x, x, x]
+			# 暫不處理
+			x=descDB.get(ch.operandlist[0], None)
+
+			newOperator=ch.operator
+			newCompList=[x, x, x, x]
 		else:
-			return []
+			newOperator='龜'
+			newCompList=[]
+#		chdesc.setOp(newOperator)
+#		chdesc.setCompList(newCompList)
+		return [newOperator, newCompList]
 
 class CangJie(NoneIM):
 	"倉頡輸入法"

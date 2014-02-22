@@ -15,8 +15,8 @@ cca	多
 cl	七
 ccno	夠
 ccp	卶
-csa	东
 ccyo	夡
+csa	东
 dae	丒
 dapa	卵
 dapu	毈
