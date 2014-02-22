@@ -42,6 +42,111 @@ class CharDesc:
 	def __repr__(self):
 		return str(self)
 
+	def expandCharTree(self, descDB):
+
+		if len(self.getCompList())==0:
+			chdesc=descDB.get(self.name, None)
+			if len(chdesc.getCompList())==0:
+				return chdesc
+			else:
+				# 現有的資料已見底，但從 DB 中查到者仍可擴展
+				return chdesc.expandCharTree(descDB)
+
+		l=[]
+		for tc in self.getCompList():
+			x=tc.expandCharTree(descDB)
+			l.append(x)
+
+		anscomp=self.getRearrangedDesc(descDB)
+
+		return anscomp
+
+	def getRearrangedDesc(self, descDB):
+		[newOp, newCompList]=self.getRearrangedOpAndCompList(descDB)
+		self.setOp(newOp)
+		self.setCompList(newCompList)
+		return self
+
+	def getRearrangedOpAndCompList(self, descDB):
+#		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
+#		['好', '志',
+#		'回', '同', '函', '區', '左',
+#		'起', '廖', '載', '聖', '句',
+#		'夾', '衍', '衷',]
+#		['纂', '膷',]
+#		descDB=self.descDB
+		ch=self.getChInfo()
+
+		newOperator='龜'
+		newCompList=[]
+
+		oldOperator=ch.operator
+		oldCompList=[x for x in map(lambda x: x.name, self.getCompList())]
+
+		if oldOperator in ['龜']:
+			newOperator=oldOperator
+			newCompList=[]
+		elif oldOperator in ['水']:
+			x=descDB.get(oldCompList, None)
+			x=oldCompList[0]
+
+			newOperator=oldOperator
+			newCompList=[x]
+		elif oldOperator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
+			x=descDB.get(oldCompList[0], None)
+			y=descDB.get(oldCompList[1], None)
+
+			newOperator=oldOperator
+			newCompList=[x, y]
+		elif oldOperator in ['算', '湘', '霜', '想', '怡', '穎',]:
+			x=descDB.get(oldCompList[0], None)
+			y=descDB.get(oldCompList[1], None)
+			z=descDB.get(oldCompList[2], None)
+
+			newOperator=oldOperator
+			newCompList=[x, y, z]
+		elif oldOperator in ['纂',]:
+			x=descDB.get(oldCompList[0], None)
+			y=descDB.get(oldCompList[1], None)
+			z=descDB.get(oldCompList[2], None)
+			w=descDB.get(oldCompList[3], None)
+
+			newOperator=oldOperator
+			newCompList=[x, y, z, w]
+		elif oldOperator in ['林', '爻']:
+			x=descDB.get(oldCompList[0], None)
+
+			if oldOperator=='林':
+				newOperator='好'
+			elif oldOperator=='爻':
+				newOperator='志'
+			else:
+				newOperator='錯'
+			newCompList=[x, x]
+		elif oldOperator in ['卅', '鑫']:
+			x=descDB.get(oldCompList[0], None)
+
+			if oldOperator=='卅':
+				newOperator='湘'
+			elif oldOperator=='鑫':
+				# 暫不處理
+				newOperator='算'
+			else:
+				newOperator='錯'
+			newCompList=[x, x, x]
+		elif oldOperator in ['燚',]:
+			# 暫不處理
+			x=descDB.get(oldCompList[0], None)
+
+			newOperator=oldOperator
+			newCompList=[x, x, x, x]
+		else:
+			newOperator='龜'
+			newCompList=[]
+#		chdesc.setOp(newOperator)
+#		chdesc.setCompList(newCompList)
+		return [newOperator, newCompList]
+
 CharDesc.NoneDesc=CharDesc("", '', charinfo.CharInfo.NoneChar)
 
 if __name__=='__main__':

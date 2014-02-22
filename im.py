@@ -63,7 +63,7 @@ class NoneIM:
 				self.setCharTree(chdesc)
 
 				ch=chdesc.getChInfo()
-				code=self.getCode(ch)
+				code=ch.getCode()
 				if ch.isToShow() and code:
 					table.append([code, chname])
 				else:
@@ -75,140 +75,33 @@ class NoneIM:
 			table=[]
 		return table
 
-	def getCode(self, ch):
-		ch=chdesc.getChInfo()
-
-	def getCorespondingChInfo(self, charname, parseans, prop):
-		return CharInfo(charname, parseans, prop)
-
-	def setCharTree(self, chdesc):
-		if not chdesc.getChInfo().isToSetTree():
-			return
-
-		expand_chdesc=self.expandCharTree(chdesc)
-		descList=self.normalizationToLinear(expand_chdesc)
-		for tmpdesc in descList:
-			self.setCharTree(tmpdesc)
-
+	def setCharInfoOfCharDesc(self, chdesc):
+		# 多型
+		descList=self.normalizationToLinear(chdesc)
 		complist=[x.getChInfo() for x in descList]
 
 		charinfo=chdesc.getChInfo()
 		charinfo.setByComps(complist)
 
-	def expandCharTree(self, comp):
+	def setCharTree(self, chdesc):
+		"""設定某一個字符所包含的部件的碼"""
 
-		if len(comp.getCompList())==0:
-			chdesc=self.descDB.get(comp.name, None)
-			if len(chdesc.getCompList())==0:
-				return chdesc
-			else:
-				# 現有的資料已見底，但從 DB 中查到者仍可擴展
-				return self.expandCharTree(chdesc)
+		if not chdesc.getChInfo().isToSetTree():
+			return
 
-		l=[]
-		for tc in comp.getCompList():
-			x=self.expandCharTree(tc)
-			l.append(x)
+		expand_chdesc=chdesc.expandCharTree(self.descDB)
+		descList=self.normalizationToLinear(expand_chdesc)
+		for tmpdesc in descList:
+			self.setCharTree(tmpdesc)
 
-		anscomp=self.getRearrangedDesc(comp)
-
-		return anscomp
+		self.setCharInfoOfCharDesc(expand_chdesc)
 
 	def normalizationToLinear(self, comp):
 		"""將樹狀結構轉為線性結構"""
+		# 多型
 		if len(comp.getCompList())==0:
 			return [comp]
 		return sum(map(lambda x: self.normalizationToLinear(x), comp.getCompList()), [])
-
-	def normalizationToTree(self, comp):
-		"""將樹狀結構轉為樹狀結構，目前即為不處理，提供一個介面。"""
-		return comp
-
-	def getRearrangedDesc(self, chdesc):
-		[newOp, newCompList]=self.getRearrangedOpAndCompList(chdesc)
-		chdesc.setOp(newOp)
-		chdesc.setCompList(newCompList)
-		return chdesc
-
-	def getRearrangedOpAndCompList(self, chdesc):
-#		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
-#		['好', '志',
-#		'回', '同', '函', '區', '左',
-#		'起', '廖', '載', '聖', '句',
-#		'夾', '衍', '衷',]
-#		['纂', '膷',]
-		descDB=self.descDB
-		ch=chdesc.getChInfo()
-
-		newOperator='龜'
-		newCompList=[]
-
-		oldOperator=ch.operator
-		oldCompList=[x for x in map(lambda x: x.name, chdesc.getCompList())]
-
-		if oldOperator in ['龜']:
-			newOperator=oldOperator
-			newCompList=[]
-		elif oldOperator in ['水']:
-			x=descDB.get(oldCompList, None)
-			x=oldCompList[0]
-
-			newOperator=oldOperator
-			newCompList=[x]
-		elif oldOperator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=descDB.get(oldCompList[0], None)
-			y=descDB.get(oldCompList[1], None)
-
-			newOperator=oldOperator
-			newCompList=[x, y]
-		elif oldOperator in ['算', '湘', '霜', '想', '怡', '穎',]:
-			x=descDB.get(oldCompList[0], None)
-			y=descDB.get(oldCompList[1], None)
-			z=descDB.get(oldCompList[2], None)
-
-			newOperator=oldOperator
-			newCompList=[x, y, z]
-		elif oldOperator in ['纂',]:
-			x=descDB.get(oldCompList[0], None)
-			y=descDB.get(oldCompList[1], None)
-			z=descDB.get(oldCompList[2], None)
-			w=descDB.get(oldCompList[3], None)
-
-			newOperator=oldOperator
-			newCompList=[x, y, z, w]
-		elif oldOperator in ['林', '爻']:
-			x=descDB.get(oldCompList[0], None)
-
-			if oldOperator=='林':
-				newOperator='好'
-			elif oldOperator=='爻':
-				newOperator='志'
-			else:
-				newOperator='錯'
-			newCompList=[x, x]
-		elif oldOperator in ['卅', '鑫']:
-			x=descDB.get(oldCompList[0], None)
-
-			if oldOperator=='卅':
-				newOperator='湘'
-			elif oldOperator=='鑫':
-				# 暫不處理
-				newOperator='算'
-			else:
-				newOperator='錯'
-			newCompList=[x, x, x]
-		elif oldOperator in ['燚',]:
-			# 暫不處理
-			x=descDB.get(oldCompList[0], None)
-
-			newOperator=oldOperator
-			newCompList=[x, x, x, x]
-		else:
-			newOperator='龜'
-			newCompList=[]
-#		chdesc.setOp(newOperator)
-#		chdesc.setCompList(newCompList)
-		return [newOperator, newCompList]
 
 class CangJie(NoneIM):
 	"倉頡輸入法"
@@ -250,13 +143,6 @@ class CangJie(NoneIM):
 				}
 		self.iconfile="CangJie.png"
 		self.maxkeylength=5
-
-	def getCode(self, ch):
-		if ch.cj:
-			return ch.cj
-
-	def getCorespondingChInfo(self, charname, parseans, prop):
-		return CJCharInfo(charname, parseans, prop)
 
 	def getCJPrePostList(self, chdesc):
 		"""傳回倉頡的字首及字尾的部件串列"""
@@ -315,28 +201,18 @@ class CangJie(NoneIM):
 			postlist=[]
 		return [prelist, postlist]
 
-	def setCharTree(self, chdesc):
-		"""設定某一個字符所包含的部件的碼"""
-
-		if not chdesc.getChInfo().isToSetTree():
-			# 如果有值，代表事先指定或之前設定過。
-			return
-
-		expand_chdesc=self.expandCharTree(chdesc)
-		descList=self.normalizationToLinear(expand_chdesc)
-#		descList=self.normalizationToLinear(self.expandCharTree(chdesc))
-		for tmpdesc in descList:
-			self.setCharTree(tmpdesc)
-
-		prelist, postlist=self.getCJPrePostList(expand_chdesc)
-		for tmpchdesc in prelist+postlist:
-			self.setCharTree(tmpchdesc)
+	def setCharInfoOfCharDesc(self, chdesc):
+		prelist, postlist=self.getCJPrePostList(chdesc)
 
 		pre_chinfo_list=map(lambda x:x.getChInfo(), prelist)
 		post_chinfo_list=map(lambda x:x.getChInfo(), postlist)
 
 		charinfo=chdesc.getChInfo()
 		charinfo.setCJByComps(pre_chinfo_list, post_chinfo_list)
+
+	def normalizationToLinear(self, chdesc):
+		"""將樹狀結構轉為線性結構"""
+		return chdesc.getCompList()
 
 class Array(NoneIM):
 	"行列輸入法"
@@ -382,13 +258,6 @@ class Array(NoneIM):
 				}
 		self.iconfile="Array.png"
 		self.maxkeylength=4
-
-	def getCode(self, ch):
-		if ch.ar:
-			return ch.ar
-
-	def getCorespondingChInfo(self, charname, parseans, prop):
-		return ARCharInfo(charname, parseans, prop)
 
 class DaYi(NoneIM):
 	"大易輸入法"
@@ -445,13 +314,6 @@ class DaYi(NoneIM):
 		self.iconfile="DaYi.png"
 		self.maxkeylength=4
 
-	def getCode(self, ch):
-		if ch.dy:
-			return ch.dy
-
-	def getCorespondingChInfo(self, charname, parseans, prop):
-		return DYCharInfo(charname, parseans, prop)
-
 class Boshiamy(NoneIM):
 	"嘸蝦米輸入法"
 
@@ -493,13 +355,6 @@ class Boshiamy(NoneIM):
 		self.iconfile="Boshiamy.png"
 		self.maxkeylength=4
 
-	def getCode(self, ch):
-		if ch.bs:
-			return ch.bs
-
-	def getCorespondingChInfo(self, charname, parseans, prop):
-		return BSCharInfo(charname, parseans, prop)
-
 class ZhengMa(NoneIM):
 	"鄭碼輸入法"
 
@@ -540,13 +395,6 @@ class ZhengMa(NoneIM):
 				}
 		self.iconfile="ZhengMa.png"
 		self.maxkeylength=4
-
-	def getCode(self, ch):
-		if ch.zm:
-			return ch.zm
-
-	def getCorespondingChInfo(self, charname, parseans, prop):
-		return ZMCharInfo(charname, parseans, prop)
 
 if __name__=='__main__':
 	pass

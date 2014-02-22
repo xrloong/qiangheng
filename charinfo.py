@@ -34,6 +34,11 @@ class CharInfo:
 	def isSeted(self):
 		# 是否之前設過值，會被覆蓋
 		return False
+
+	def getCode(self):
+		#多型
+		return ""
+
 CharInfo.NoneChar=CharInfo('[瑲珩預設空字符]', ['龜', []], [])
 CharInfo.NoneChar.noneFlag=True
 
@@ -98,6 +103,9 @@ class CJCharInfo(CharInfo):
 	def isSeted(self):
 		return bool(self._cj_incode)
 
+	def getCode(self):
+		if self.cj: return self.cj
+
 class ARCharInfo(CharInfo):
 	def __init__(self, charname, parseans, prop):
 		super().__init__(charname, parseans, prop)
@@ -129,6 +137,9 @@ class ARCharInfo(CharInfo):
 	@property
 	def isSeted(self):
 		return bool(self._ar_incode)
+
+	def getCode(self):
+		if self.ar: return self.ar
 
 class DYCharInfo(CharInfo):
 	def __init__(self, charname, parseans, prop):
@@ -164,6 +175,9 @@ class DYCharInfo(CharInfo):
 	def isSeted(self):
 		return self._flag_seted
 		return bool(self._dy_incode)
+
+	def getCode(self):
+		if self.dy: return self.dy
 
 class BSCharInfo(CharInfo):
 	def __init__(self, charname, parseans, prop):
@@ -205,6 +219,9 @@ class BSCharInfo(CharInfo):
 	@property
 	def isSeted(self):
 		return bool(self._bs_incode)
+
+	def getCode(self):
+		if self.bs: return self.bs
 
 class ZMCharInfo(CharInfo):
 	def __init__(self, charname, parseans, prop):
@@ -268,4 +285,7 @@ class ZMCharInfo(CharInfo):
 	@property
 	def isSeted(self):
 		return bool(self._zm_rtlist)
+
+	def getCode(self):
+		if self.zm: return self.zm
 
