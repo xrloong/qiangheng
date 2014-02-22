@@ -15,9 +15,7 @@ class CharDesc:
 		self.description=description
 
 		# 字符的資訊，如在某種輸入法下如何拆碼
-#		self.chInfo=charinfo.CharInfo.NoneChar
-		self.chInfo=copy.copy(charinfo.CharInfo.NoneChar)
-		self.chInfo.charname+=" abc "+name+" def"
+		self.chInfo=charinfo.CharInfo.NoneChar
 
 	def copyInfoFrom(self, srcDesc):
 		self.name=srcDesc.name
@@ -177,7 +175,9 @@ class CharDescriptionManager:
 			pass
 #			ansDir='+'
 #			ansDir=self.getCompList()[0].getDirection()
-		elif oldOperator in ['回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
+		elif oldOperator in ['回', '同', '函', '區', ]:
+			ansDir='@'
+		elif oldOperator in ['載', '廖', '起', '句', '夾']:
 			ansDir='+'
 		elif oldOperator in ['纂', '算', '志', '霜', '想', '爻', '卅', ]:
 			ansDir='|'

@@ -65,7 +65,7 @@ class CJCharInfo(CharInfo):
 			x_code=codeList[0]
 			if len(x_code)>0:
 				dir_code=x_code[0]
-				if dir_code not in ['|', '-', '+']:
+				if dir_code not in ['|', '-', '+', '@']:
 					dir_code='+'
 
 				radix_list=x_code[1:].split(',')
@@ -76,7 +76,8 @@ class CJCharInfo(CharInfo):
 		self._cj_radix_list=radix_list
 		self._cj_single=single_code
 		self._cj_direction=dir_code
-		self._cj_body=self.computeBodyCode(self._cj_radix_list)
+		self._cj_body=self.computeBodyCode(self._cj_radix_list, dir_code)
+#		print(self, self._cj_direction, self._cj_body)
 
 #		# 以下用來看哪些字的獨體碼無法自動產生
 #		totalCode=self.computeTotalCode(self._cj_radix_list)
@@ -92,7 +93,8 @@ class CJCharInfo(CharInfo):
 		ansRadixList=[]
 		for tmpchinfo in complist:
 			tmpDirCode, tmpRadixList=tmpchinfo.getCJProp()
-			if tmpDirCode=='+':
+#			if tmpDirCode=='+':
+			if tmpDirCode in ['+', '@']:
 				ansRadixList.append(tmpchinfo._cj_body)
 			elif tmpDirCode==direction:
 				# 同向
@@ -108,7 +110,7 @@ class CJCharInfo(CharInfo):
 		if self._cj_single:
 			return self._cj_single
 		else:
-			return self.computeTotalCode(self._cj_radix_list).lower()
+			return self.computeTotalCode(self._cj_radix_list, self._cj_direction).lower()
 
 	@property
 	def isSeted(self):
@@ -141,7 +143,10 @@ class CJCharInfo(CharInfo):
 		return headCode
 
 	@staticmethod
-	def computeBodyCode(codeList):
+	def computeBodyCode(codeList, direction='+'):
+		def convertAllToHeadTail(l):
+			pass
+
 		bodyCode=''
 		if len(codeList)==0:
 			bodyCode=''
@@ -149,6 +154,12 @@ class CJCharInfo(CharInfo):
 			bodyCode=CJCharInfo.computeHeadTailCode(codeList[0], 2)
 		else:
 			tmpCodeList=codeList
+
+			# 調整特徵碼
+			if direction=='@':
+				tmpCodeList=codeList[:1]+[CJCharInfo.computeHeadCode(x).lower() for x in codeList[1:]]
+			else:
+				tmpCodeList=[CJCharInfo.computeHeadCode(x).lower() for x in codeList[:-1]]+codeList[-1:]
 
 			tmpHeadCode=CJCharInfo.computeHeadCode(tmpCodeList[0])
 			tmpCodeList=tmpCodeList[1:]
@@ -174,11 +185,11 @@ class CJCharInfo(CharInfo):
 		return bodyCode
 
 	@staticmethod
-	def computeTotalCode(codeList):
+	def computeTotalCode(codeList, direction='+'):
 		if len(codeList)==1:
 			totalCode=CJCharInfo.computeHeadTailCode(codeList[0], 3)
 		elif len(codeList)>1:
-			totalCode=CJCharInfo.computeHeadCode(codeList[0])+CJCharInfo.computeBodyCode(codeList[1:])
+			totalCode=CJCharInfo.computeHeadCode(codeList[0])+CJCharInfo.computeBodyCode(codeList[1:], direction)
 		else:
 			totalCode=''
 		return totalCode
