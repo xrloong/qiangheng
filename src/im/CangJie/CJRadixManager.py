@@ -2,12 +2,14 @@ from .CJCodeInfo import CJCodeInfo
 from .CJCodeInfoEncoder import CJCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 from .CJLump import CJLump
-import Constant
 
 import re
 import sys
 
 class CJRadixParser(RadixParser):
+	ATTRIB_CODE_EXPRESSION='資訊表示式'
+	ATTRIB_SINGLE_CODE='獨體編碼'
+
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
@@ -21,9 +23,9 @@ class CJRadixParser(RadixParser):
 			infoDict=elementCodeInfo.attrib
 
 		direction='*'
-		singleCode=infoDict.get('獨體編碼')
+		singleCode=infoDict.get(CJRadixParser.ATTRIB_SINGLE_CODE)
 		rtlist=[]
-		description=infoDict.get('資訊表示式')
+		description=infoDict.get(CJRadixParser.ATTRIB_CODE_EXPRESSION)
 
 		cjLumpList=self.parseCJLumpList(description)
 		codeInfo=CJCodeInfo(singleCode, direction, cjLumpList)

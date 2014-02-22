@@ -3,8 +3,6 @@ from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 from .Stroke import Stroke
 from .Stroke import StrokeGroup
-import Constant
-import sys
 import copy
 
 class DCRadixParser(RadixParser):
@@ -13,6 +11,7 @@ class DCRadixParser(RadixParser):
 	TAG_STROKE_GROUP='筆劃組'
 	TAG_SCOPE='範圍'
 	TAG_STROKE='筆劃'
+	TAG_NAME='名稱'
 
 	TAG_CODE_INFORMATION='編碼資訊'
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
@@ -69,7 +68,7 @@ class DCRadixParser(RadixParser):
 		if radixSetNode is not None:
 			radixNodeList=radixSetNode.findall(DCRadixParser.TAG_RADIX)
 			for radixNode in radixNodeList:
-				radixName=radixNode.get(Constant.TAG_NAME)
+				radixName=radixNode.get(DCRadixParser.TAG_NAME)
 				strokeGroupNodeList=radixNode.findall(DCRadixParser.TAG_STROKE_GROUP)
 				for strokeGroupNode in strokeGroupNodeList:
 					strokeGroup=self.parseStrokeGroup(strokeGroupNode)
@@ -77,13 +76,13 @@ class DCRadixParser(RadixParser):
 		characterSetNode=rootNode.find(DCRadixParser.TAG_CHARACTER_SET)
 		characterNodeList=characterSetNode.findall(DCRadixParser.TAG_CHARACTER)
 		for characterNode in characterNodeList:
-			charName=characterNode.get(Constant.TAG_NAME)
+			charName=characterNode.get(DCRadixParser.TAG_NAME)
 			radixDescription=self.parseRadixDescription(characterNode)
 
 			self.radixDescriptionManager.addDescription(charName, radixDescription)
 
 	def parseStrokeGroup(self, strokeGroupNode):
-		strokeGroupName=strokeGroupNode.get(Constant.TAG_NAME)
+		strokeGroupName=strokeGroupNode.get(DCRadixParser.TAG_NAME)
 
 		descriptionRegion=strokeGroupNode.get(DCRadixParser.TAG_SCOPE)
 		region=self.parseRegion(descriptionRegion)
@@ -99,7 +98,7 @@ class DCRadixParser(RadixParser):
 			codeExpression=strokeNode.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
 			stroke=Stroke(codeExpression, region)
 
-			strokeName=strokeNode.get(Constant.TAG_NAME)
+			strokeName=strokeNode.get(DCRadixParser.TAG_NAME)
 			stroke.setInstanceName(strokeName)
 
 			strokeList.append(stroke)

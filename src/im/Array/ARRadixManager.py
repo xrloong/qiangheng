@@ -2,9 +2,12 @@ from .ARCodeInfo import ARCodeInfo
 from .ARCodeInfoEncoder import ARCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 from ..base.RadixManager import RadixCodeInfoDescription
-import Constant
 
 class ARRadixParser(RadixParser):
+	ATTRIB_CODE_EXPRESSION='資訊表示式'
+	TAG_SUB_RADIX='子字根'
+	ATTRIB_USE_RADIX='使用'
+
 	# 多型
 	def convertElementToRadixInfo(self, elementCodeInfo):
 		radixInfoDescription=ARRadixCodeInfoDescription(elementCodeInfo)
@@ -27,7 +30,7 @@ class ARRadixParser(RadixParser):
 
 		codeList=None
 
-		str_rtlist=infoDict.get(Constant.ATTRIB_CODE_EXPRESSION)
+		str_rtlist=infoDict.get(ARRadixParser.ATTRIB_CODE_EXPRESSION)
 		if str_rtlist!=None:
 			codeList=str_rtlist.split(ARCodeInfo.INSTALLMENT_SEPERATOR)
 			codeList=list(map(lambda x: x.split(ARCodeInfo.RADIX_SEPERATOR), codeList))
@@ -55,9 +58,9 @@ class ARRadixCodeInfoDescription(RadixCodeInfoDescription):
 		RadixCodeInfoDescription.__init__(self, elementCodeInfo)
 
 		radixNameList=[]
-		subRadixNodeList=elementCodeInfo.findall(Constant.TAG_SUB_RADIX)
+		subRadixNodeList=elementCodeInfo.findall(ARRadixParser.TAG_SUB_RADIX)
 		for subRadixNode in subRadixNodeList:
-			radixName=subRadixNode.attrib.get(Constant.ATTRIB_USE_RADIX)
+			radixName=subRadixNode.attrib.get(ARRadixParser.ATTRIB_USE_RADIX)
 			radixNameList.append(radixName)
 
 		self.radixNameList=radixNameList

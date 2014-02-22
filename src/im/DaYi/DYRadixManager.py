@@ -1,9 +1,10 @@
 from .DYCodeInfo import DYCodeInfo
 from .DYCodeInfoEncoder import DYCodeInfoEncoder
 from ..base.RadixManager import RadixParser
-import Constant
 
 class DYRadixParser(RadixParser):
+	ATTRIB_CODE_EXPRESSION='資訊表示式'
+
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
@@ -16,7 +17,7 @@ class DYRadixParser(RadixParser):
 		if elementCodeInfo is not None:
 			infoDict=elementCodeInfo.attrib
 
-		strCodeList=infoDict.get(Constant.ATTRIB_CODE_EXPRESSION)
+		strCodeList=infoDict.get(DYRadixParser.ATTRIB_CODE_EXPRESSION)
 
 		codeList=None
 		if strCodeList!=None:

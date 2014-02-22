@@ -152,13 +152,12 @@ class RadixDescriptionManager:
 class RadixCodeInfoDescription:
 	def __init__(self, elementCodeInfo):
 		self.codeVariance=CodeVarianceType()
-		self.elementCodeInfo=elementCodeInfo
+#		self.elementCodeInfo=elementCodeInfo
+		self.codeElementCodeInfo=elementCodeInfo.find(RadixParser.TAG_CODE)
 
-		self.setupCodeAttribute()
+		self.setupCodeAttribute(elementCodeInfo)
 
-	def setupCodeAttribute(self):
-		elementCodeInfo=self.getElement()
-
+	def setupCodeAttribute(self, elementCodeInfo):
 		infoDict={}
 		if elementCodeInfo is not None:
 			infoDict=elementCodeInfo.attrib
@@ -186,10 +185,7 @@ class RadixCodeInfoDescription:
 		return self._isSupportRadixCode
 
 	def getCodeElement(self):
-		return self.elementCodeInfo.find(RadixParser.TAG_CODE)
-
-	def getElement(self):
-		return self.elementCodeInfo
+		return self.codeElementCodeInfo
 
 class RadixDescription:
 	def __init__(self, radixCodeInfoList):

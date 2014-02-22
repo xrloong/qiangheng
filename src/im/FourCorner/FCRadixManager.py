@@ -2,9 +2,10 @@ from .FCCodeInfo import FCCodeInfo
 from .FCCodeInfoEncoder import FCCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 
-import Constant
 
 class FCRadixParser(RadixParser):
+	ATTRIB_CODE_EXPRESSION='資訊表示式'
+
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
@@ -22,7 +23,7 @@ class FCRadixParser(RadixParser):
 		bottom_left=''
 		bottom_right=''
 
-		characterCode=infoDict.get('資訊表示式', '')
+		characterCode=infoDict.get(FCRadixParser.ATTRIB_CODE_EXPRESSION)
 		if len(characterCode)==4:
 			top_left=characterCode[0]
 			top_right=characterCode[1]
