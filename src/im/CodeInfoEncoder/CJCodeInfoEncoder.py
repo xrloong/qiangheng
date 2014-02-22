@@ -121,9 +121,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 			radix_乚=self.generateDefaultCodeInfo('*', [CJCodeInfo.RADIX_乚])
 			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_乚])
 			return codeInfo
-#		elif firstCodeInfo.getRtList()[0]==CJCodeInfo.RADIX_丨 and firstCodeInfo.getRtList()[1]==CJCodeInfo.RADIX_丨:
-#		elif firstCodeInfo.getRtList()[0]==CJCodeInfo.RADIX_丨丨:
-		elif firstCodeInfo.getRtList()[0]=="l" and firstCodeInfo.getRtList()[1]=="l":
+		elif firstCodeInfo.getRtList()[0]==CJCodeInfo.RADIX_丨丨:
 			# work around
 			radix_丨=self.generateDefaultCodeInfo('*', [CJCodeInfo.RADIX_丨])
 			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_丨])

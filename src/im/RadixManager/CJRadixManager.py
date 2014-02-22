@@ -28,6 +28,10 @@ class CJRadixManager(RadixManager):
 		if str_rtlist!=None:
 			rtlist=str_rtlist.split(CJCodeInfo.RADIX_SEPERATOR)
 
+		if str_rtlist in CJCodeInfo.radixToCodeDict:
+			# work around
+			direction=CJCodeInfo.radixToCodeDict[str_rtlist][0]
+
 		cjBody=CJCodeInfo.computeBodyCode(rtlist, direction)
 		codeInfo=CJCodeInfo(singleCode, direction, rtlist, cjBody)
 
