@@ -180,6 +180,9 @@ class NoneIM:
 
 		newOperator='龜'
 		newCompList=[]
+		if ch==None:
+			return [newOperator, newCompList]
+
 		if ch.operator in ['龜']:
 			newOperator=ch.operator
 			newCompList=[]
