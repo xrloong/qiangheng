@@ -47,70 +47,68 @@ class HanZiStructure:
 		self.codeInfoList=[]
 		self.codeType=codeType
 
-		self.flagIsSet=True
-
-	def setToRadix(self):
 		self.flagIsSet=False
-
-	def setToComponent(self):
-		pass
-
-	def getOperator(self):
-		return self.operator
 
 	def getNodeList(self):
 		return self.nodeList
 
-	def appendCodeInfo(self, codeInfo):
-		self.codeInfoList.append(codeInfo)
+	def getCodeInfoList(self):
+		return self.codeInfoList
+
+	def setCompositions(self):
+		def getAllCodeInfoList(nodeList):
+			def combineList(infoListList, infoListOfNode):
+				if len(infoListList)==0:
+					ansListList=[]
+					for codeInfo in infoListOfNode:
+						ansListList.append([codeInfo])
+				else:
+					ansListList=[]
+					for infoList in infoListList:
+						for codeInfo in infoListOfNode:
+							ansListList.append(infoList+[codeInfo])
+
+				return ansListList
+
+			infoListList=[]
+
+			for node in nodeList:
+				tmpCodeInfoList=node.getCodeInfoList()
+				codeInfoList=filter(lambda x: x.isSupportRadixCode(), tmpCodeInfoList)
+				infoListList=combineList(infoListList, codeInfoList)
+
+			return infoListList
+
+
+		if self.flagIsSet:
+			return
+
+		self.flagIsSet=True
+
+		nodeList=self.nodeList
+		infoListList=getAllCodeInfoList(nodeList)
+
+		for infoList in infoListList:
+			codeInfo=HanZiCodeInfo({}, self.codeType)
+			codeInfo.setCompositions(self.operator, infoList)
+
+			self.codeInfoList.append(codeInfo)
+
+class HanZiTurtleStructure:
+	def __init__(self, codeType, codeInfoProperties):
+		codeInfo=HanZiCodeInfo(codeInfoProperties, codeType)
+
+		self.codeInfoList=[codeInfo]
+		self.codeType=codeType
+
+	def getNodeList(self):
+		return []
 
 	def getCodeInfoList(self):
 		return self.codeInfoList
 
-	def setStructure(self, operator, nodeList):
-		self.operator=operator
-		self.nodeList=nodeList
-
 	def setCompositions(self):
-		if self.flagIsSet:
-			return
-		self.flagIsSet=True
-
-		nodeList=self.nodeList
-		infoListList=self.getAllCodeInfoList(nodeList)
-
-		for infoList in infoListList:
-			codeInfo=HanZiCodeInfo({}, self.codeType)
-			codeInfo.setCompositions(self.getOperator(), infoList)
-
-			self.appendCodeInfo(codeInfo)
-
-	def getAllCodeInfoList(self, nodeList):
-		def combineList(infoListList, infoListOfNode):
-			if len(infoListList)==0:
-				ansListList=[]
-				for codeInfo in infoListOfNode:
-					ansListList.append([codeInfo])
-			else:
-				ansListList=[]
-				for infoList in infoListList:
-					for codeInfo in infoListOfNode:
-						ansListList.append(infoList+[codeInfo])
-
-			return ansListList
-
-		infoListList=[]
-
-		for node in nodeList:
-			tmpCodeInfoList=node.getCodeInfoList()
-			codeInfoList=filter(lambda x: x.isSupportRadixCode(), tmpCodeInfoList)
-			infoListList=combineList(infoListList, codeInfoList)
-
-		return infoListList
-
-	def printAllCodeInfo(self):
-		for codeInfo in self.getCodeInfoList():
-			pass
+		pass
 
 class HanZiWrapperStructure:
 	def __init__(self, targetNode, expression):
@@ -135,9 +133,6 @@ class HanZiWrapperStructure:
 
 	def getNodeList(self):
 		return [self.targetNode]
-
-	def setNodeTree(self):
-		return self.getTargetNode().setNodeTree()
 
 	def setCompositions(self):
 		structList=self.targetNode.getStructureListWithCondition()

@@ -87,31 +87,21 @@ class HanZiNetwork:
 	def addTurtleStruct(self, structDesc):
 		self.addNode(structDesc)
 
-		dstNode=self.findNode(structDesc)
-
 		codeType=structDesc.getCodeType()
-
 		codeInfoProperties=structDesc.getCodeInfoDict()
+		structure=HanZiNode.HanZiTurtleStructure(codeType, codeInfoProperties)
 
-		codeType=structDesc.getCodeType()
-		structure=HanZiNode.HanZiStructure(codeType, None, [])
-
-		codeInfo=HanZiNode.HanZiCodeInfo(codeInfoProperties, codeType)
-		structure.appendCodeInfo(codeInfo)
-
-		structure.setToComponent()
-
+		dstNode=self.findNode(structDesc)
 		dstNode.addStructure(structure)
 
 	def addLink(self, structDesc, operator, childDescList):
 		if len(childDescList)>0:
 			childNodeList=[self.findNode(childDesc) for childDesc in childDescList]
-			dstNode=self.findNode(structDesc)
 
 			codeType=structDesc.getCodeType()
 			structure=HanZiNode.HanZiStructure(codeType, operator, childNodeList)
-			structure.setToRadix()
 
+			dstNode=self.findNode(structDesc)
 			dstNode.addStructure(structure)
 
 	def findNode(self, structDesc):
