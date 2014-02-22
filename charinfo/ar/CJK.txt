@@ -1465,7 +1465,6 @@ U+7DF5	緵	(龜)	xem
 U+7E01	縁	(龜)	xt.
 U+7E08	縈	(龜)	,,jx
 U+7E20	縠	(龜)	vaxb
-U+7E22	縢	(龜)	ukzx
 U+7E47	繇	(龜)	mofx
 U+7E4C	繌	(龜)	xlp.
 U+7E6B	繫	(龜)	zsbx
@@ -1551,13 +1550,11 @@ U+8129	脩	(龜)	kd.u
 U+8133	脳	(龜)	un.d
 U+814E	腎	(龜)	qdtu
 U+8166	腦	(龜)	uwyd
-U+8178	腸	(龜)	upa.
 U+817E	腾	(龜)	ukza
 U+818B	膋	(龜)	,,ju
 U+818D	膍	(龜)	ulpq
 U+8193	膓	(龜)	uop.
 U+81B1	膱	(龜)	uypx
-U+81B9	膹	(龜)	uffm
 U+81BA	膺	(龜)	nkku
 U+81DD	臝	(龜)	yupz
 U+81E0	臠	(龜)	yxxk
@@ -1635,7 +1632,6 @@ U+847C	葼	(龜)	f.d.
 U+8486	蒆	(龜)	fqsw
 U+8487	蒇	(龜)	fzmx
 U+848F	蒏	(龜)	fjap
-U+849C	蒜	(龜)	faac
 U+84A7	蒧	(龜)	fzex
 U+84CF	蓏	(龜)	f.xk
 U+84D6	蓖	(龜)	flpq
@@ -2113,7 +2109,6 @@ U+99F8	駸	(龜)	g,tb
 U+9A13	験	(龜)	g,ik
 U+9A23	騣	(龜)	g,..
 U+9A2B	騫	(龜)	nrk,
-U+9A30	騰	(龜)	ukz,
 U+9A56	驖	(龜)	g,rx
 U+9A58	驘	(龜)	yugz
 U+9A6C	马	(龜)	ga

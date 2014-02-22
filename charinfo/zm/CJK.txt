@@ -1465,7 +1465,6 @@ U+7DF5	緵	(龜)	z,o,o,r
 U+7E01	縁	(龜)	z,x,gq
 U+7E08	縈	(龜)	uo,w,z
 U+7E20	縠	(龜)	b,w,z,q
-U+7E22	縢	(龜)	q,u,z
 U+7E47	繇	(龜)	pv,m,z
 U+7E4C	繌	(龜)	z,n,o,r
 U+7E6B	繫	(龜)	fk,q,z
@@ -1551,13 +1550,11 @@ U+8129	脩	(龜)	n,i,r,q
 U+8133	脳	(龜)	q,v,o,z
 U+814E	腎	(龜)	h,x,q
 U+8166	腦	(龜)	q,z,n,o
-U+8178	腸	(龜)	q,k,r,o
 U+817E	腾	(龜)	q,u,x
 U+818B	膋	(龜)	uo,w,q
 U+818D	膍	(龜)	q,n,r,r
 U+8193	膓	(龜)	q,m,r,o
 U+81B1	膱	(龜)	q,s,k,h
-U+81B9	膹	(龜)	q,e,e,l
 U+81BA	膺	(龜)	tg,n,q
 U+81DD	臝	(龜)	sh,f,q
 U+81E0	臠	(龜)	zs,o,o
@@ -1635,7 +1632,6 @@ U+847C	葼	(龜)	e,o,o,r
 U+8486	蒆	(龜)	e,b,q,z
 U+8487	蒇	(龜)	e,h,lo
 U+848F	蒏	(龜)	e,w,fd
-U+849C	蒜	(龜)	e,b,bk
 U+84A7	蒧	(龜)	e,h,i,j
 U+84CF	蓏	(龜)	e,p,ps
 U+84D6	蓖	(龜)	e,n,r,r
@@ -2113,7 +2109,6 @@ U+99F8	駸	(龜)	cu,w,x
 U+9A13	験	(龜)	cu,j,b
 U+9A23	騣	(龜)	cu,o,r
 U+9A2B	騫	(龜)	wd,o,c
-U+9A30	騰	(龜)	q,u,cu
 U+9A56	驖	(龜)	cu,j,c
 U+9A58	驘	(龜)	sh,c,q
 U+9A6C	马	(龜)	x
