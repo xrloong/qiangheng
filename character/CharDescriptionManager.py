@@ -21,14 +21,17 @@ class CharDescriptionManager:
 
 		def CharDescGenerator(charName, structInfo=['龜', []]):
 			operatorName, CompList=structInfo
+			if len(operatorName)>1:
+				# 暫時以運算名稱的字數來區分是否為範本
+				charDesc=TemplateCharDesc(charName, operatorName, CompList)
+				return charDesc
+
 			operator=OperatorManager.getOperatorByName(operatorName)
 			if not operator.isAvailableOperation():
 				print("<!-- 錯誤；不合法的運算 %s -->"%operatorName)
 				return None
 
-			tmpCharInfo=CharInfoGenerator([])
 			charDesc=CharDesc(charName, operator, CompList)
-			charDesc.setChInfo(tmpCharInfo)
 			return charDesc
 
 		def emptyCharInfoGenerator():
@@ -46,6 +49,7 @@ class CharDescriptionManager:
 			charDesc=self.characterDB.get(charName)
 			if charDesc.isTemplate():
 				charDesc=self.getCharDescFromTemplate(charDesc)
+				charDesc=self.copyCharDesc(charDesc)
 				charDesc.setName(charName)
 			elif not charDesc.getOperator().isAvailableOperation():
 				print("<!-- 錯誤；不合法的運算 %s -->"%charDesc.getOperator())
@@ -60,8 +64,10 @@ class CharDescriptionManager:
 		self.charDescGenerator=CharDescGenerator
 		self.emptyCharInfoGenerator=emptyCharInfoGenerator
 		self.emptyCharDescGenerator=emptyCharDescGenerator
+		self.charDescQueryer=charDescQueryer
+		self.charDescRearranger=charDescRearranger
 
-		self.hanziNetwork=HanZiNetwork(self.emptyCharInfoGenerator, self.charDescGenerator, charDescRearranger, charDescQueryer)
+		self.hanziNetwork=HanZiNetwork(self.emptyCharInfoGenerator, charDescQueryer)
 
 	def keys(self):
 		return self.characterDB.keys()
@@ -96,7 +102,7 @@ class CharDescriptionManager:
 
 		def getDesc_AssembleChar(assembleChar):
 			l=[]
-			operator=assembleChar.get("運算")
+			operatorName=assembleChar.get("運算")
 			filter_lambda=lambda x: x.tag in ["字根", "組字", "套用範本"]
 			targetChildNodes=filter(filter_lambda , list(assembleChar))
 			for node in targetChildNodes:
@@ -108,13 +114,9 @@ class CharDescriptionManager:
 				else:
 					pass
 
-			if assembleChar.get("範本")=='是':
-				argumentNameList=[charDesc.getName() for charDesc in l]
-				templateCharDesc=TemplateCharDesc(operator, argumentNameList)
-				comp=templateCharDesc
-			else:
-				anonymousName=CharDesc.generateNewAnonymousName()
-				comp=charDescGenerator(anonymousName, [operator, l])
+			anonymousName=CharDesc.generateNewAnonymousName()
+			comp=charDescGenerator(anonymousName, [operatorName, l])
+
 			return comp
 
 		def getDesc_SubCharacter(nodeCharacter):
@@ -192,12 +194,35 @@ class CharDescriptionManager:
 		charDesc.setTemplateDesc(templateDesc)
 
 		resultDesc=charDesc.getCharDesc()
+		resultDesc.setName(charDesc.getName())
 
 		return resultDesc
 
+	def copyCharDesc(self, charDesc):
+		if charDesc.getOperator().getName()=='龜':
+			ansDesc=charDesc.copyDescription()
+			ansDesc.setOperator(charDesc.getOperator())
+			return ansDesc
+		ansDesc=self.emptyCharDescGenerator()
+		ansChildList=[]
+		for childDesc in charDesc.getCompList():
+			ansChilDesc=self.copyCharDesc(childDesc)
+			ansChildList.append(ansChilDesc)
+		ansDesc.setCompList(ansChildList)
+		ansDesc.setOperator(charDesc.getOperator())
+		return ansDesc
 
 	def constructDescriptionNetwork(self):
+		for charName in self.characterDB.keys():
+			srcDesc=self.charDescQueryer(charName)
+			self.rearrangeRecursively(srcDesc)
+
 		self.hanziNetwork.constructHanZiNetwork(self.characterDB.keys())
+
+	def rearrangeRecursively(self, charDesc):
+		self.charDescRearranger(charDesc)
+		for childDesc in charDesc.getCompList():
+			self.rearrangeRecursively(childDesc)
 
 	def getCode(self, charName):
 		return self.hanziNetwork.getCode(charName)

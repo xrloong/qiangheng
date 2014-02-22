@@ -13,21 +13,24 @@ class CharDesc:
 		self.compList=compList
 
 		# 字符的資訊，如在某種輸入法下如何拆碼
-#		self.chInfo=chInfo
 		self.chInfo=None
 
 		self.showFlag=False if len(self.name)>1 else True
 		self.anonymous=self.name.count("瑲珩匿名")>0
 
 	def __str__(self):
-		return '<{0}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)))
+#		return '<{0}={1}>'.format(self.name, self.operator.getName())
+		chInfo=self.getChInfo()
+		if chInfo!=None:
+			return '<{0},{3}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)), chInfo)
+		else:
+			return '<{0}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)))
 
 	def __repr__(self):
 		return str(self)
 
 	def copyDescription(self):
 		return CharDesc(self.getName(), self.getOperator(), [])
-#		return CharDesc(self.getName(), self.getOperator(), [], None)
 
 	def setName(self, name):
 		self.name=name
@@ -77,27 +80,13 @@ class CharDesc:
 		return self.showFlag
 		return self.chInfo.isToShow()
 
-	def getCode(self):
-		chinfo=self.getChInfo()
-		code=chinfo.getCode()
-		if self.isToShow() and code:
-			return code
-		else:
-			return None
-
-	def setByComps(self, charDescList):
-		chInfo=self.getChInfo()
-		if not chInfo.isToSetTree():
-			return
-
-		infoList=[x.getChInfo() for x in charDescList]
-		chInfo.setByComps(self.getOperator(), infoList)
-
 class TemplateCharDesc(CharDesc):
-	def __init__(self, templateName, argumentNameList):
+	def __init__(self, name, templateName, argumentList):
+		CharDesc.__init__(self, name, templateName, argumentList)
+
 		self.templateName=templateName
 		self.templateDesc=None
-		self.argumentNameList=argumentNameList
+		self.argumentList=argumentList
 		self.anonymous=True
 		self.chInfo=None
 
@@ -115,15 +104,19 @@ class TemplateCharDesc(CharDesc):
 
 	def setTemplateDesc(self, templateDesc):
 		self.templateDesc=templateDesc
-		self.targetCharDesc=self.templateDesc.getReplacedCharDesc(self.argumentNameList)
+		self.targetCharDesc=self.templateDesc.getReplacedCharDesc(self.argumentList)
+
+	def getTemplateDesc(self):
+		return self.templateDesc
 
 	def getCharDesc(self):
 		return self.targetCharDesc
-#		return self.charDesc
-#		return self.templateDesc.getReplacedCharDesc(self.argumentNameList)
+
+	def getCompList(self):
+		return self.getCharDesc().getCompList()
 
 	def copyDescription(self):
-		templateDesc=TemplateCharDesc(self.getTemplateName(), self.templateDesc)
+		templateDesc=TemplateCharDesc(self.getName(), self.getTemplateName(), self.templateDesc)
 		return templateDesc
 
 if __name__=='__main__':

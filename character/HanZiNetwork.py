@@ -1,92 +1,155 @@
 
 import copy
 from .CharDesc import CharDesc
+class HanZiNode:
+	def __init__(self, charDesc, chInfo):
+#		self.charDesc=charDesc
+		self.flagExpanded=False
+		self.nodeList=[]
+		self.operator=charDesc.getOperator()
+		self.chInfo=chInfo
+
+		self.isToShow=charDesc.isToShow()
+
+	def isExpanded(self):
+		return self.flagExpanded
+
+	def setExpanded(self, flag):
+		self.flagExpanded=flag
+
+	def setChInfo(self, charInfo):
+		self.chInfo=charInfo
+
+	def getChInfo(self):
+		return self.chInfo
+
+	def setStructure(self, operator, nodeList):
+		self.operator=operator
+		self.nodeList=nodeList
+
+	def getNodeList(self):
+		return self.nodeList
+
+	def getOperator(self):
+		return self.operator
+
+#	def isToShow(self):
+#		return self.isToShow()
+
+	def getCode(self):
+		chinfo=self.getChInfo()
+		code=chinfo.getCode()
+		if self.isToShow and code:
+			return code
+		else:
+			return None
+
+	def setByComps(self, charDescList):
+		chInfo=self.getChInfo()
+		if not chInfo.isToSetTree():
+			return
+
+		infoList=[x.getChInfo() for x in charDescList]
+		chInfo.setByComps(self.getOperator(), infoList)
+
 class HanZiNetwork:
-	def __init__(self, emptyCharInfoGenerator, charDescGenerator, charDescRearranger, charDescQueryer):
+	def __init__(self, emptyCharInfoGenerator, charDescQueryer):
+		self.nodeList=[]
+
 		self.descNetwork={}
+		self.srcDescNameToNodeDict={}
+
 		self.emptyCharInfoGenerator=emptyCharInfoGenerator
-		self.charDescGenerator=charDescGenerator
-		self.charDescRearranger=charDescRearranger
 		self.charDescQueryer=charDescQueryer
 
-	def get(self, key, defaultValue=None):
-		return self.descNetwork.get(key, defaultValue)
-
 	def constructHanZiNetwork(self, charNameList):
-		for charName in charNameList:
-			self.addCharDesc(charName)
+		sortedNameList=sorted(charNameList)
 
-	def getAllNode(self):
-		# 目前未實作
-		return None
+		for charName in sortedNameList:
+			srcDesc=self.charDescQueryer(charName)
+			self.recursivelyAddNode(srcDesc)
 
-	def findNodeByDescription(self, charDesc):
-		# 目前即為傳入值
-		return charDesc
+		for charName in sortedNameList:
+			srcDesc=self.charDescQueryer(charName)
+			self.recursivelyAddLink(srcDesc)
 
-	def addCharDesc(self, charName):
-		srcDesc=self.charDescQueryer(charName)
+		for charName in sortedNameList:
+			srcDesc=self.charDescQueryer(charName)
+			dstNode=self.addOrFindNodeByCharDesc(srcDesc)
 
-#		self.rearrangeRecursively(srcDesc)
-		dstDesc=self.expandCharDescInNetwork(srcDesc)
-		self.rearrangeRecursively(dstDesc)
+			chInfo=srcDesc.getChInfo()
+			if chInfo==None:
+				chInfo=self.emptyCharInfoGenerator()
+			dstNode.setChInfo(chInfo)
 
-		self.descNetwork[charName]=dstDesc
+	def recursivelyAddNode(self, srcDesc):
+		dstNode=self.addOrFindNodeByCharDesc(srcDesc)
 
-	def rearrangeRecursively(self, charDesc):
-		self.charDescRearranger(charDesc)
-		for childDesc in charDesc.getCompList():
-			self.rearrangeRecursively(childDesc)
-
-	def expandCharDescInNetwork(self, srcDesc):
-		# 擴展 dstDesc
-		# dstDesc 會被改變，而非產生新的 CharDesc
-
-		dstDesc=srcDesc.copyDescription()
-
-		srcCharInfo=srcDesc.getChInfo()
-		if srcCharInfo==None:
-			dstDesc.setChInfo(self.emptyCharInfoGenerator())
-		else:
-			dstDesc.setChInfo(srcCharInfo)
-
-		compList=[]
 		for childSrcDesc in srcDesc.getCompList():
-			if childSrcDesc.isAnonymous():
-				# 若是為匿名結構，無法用名字查出結構，直接複製
-				anonymousName=CharDesc.generateNewAnonymousName()
-				childDstDesc=self.charDescGenerator(anonymousName)
-				childDstDesc=self.expandCharDescInNetwork(childSrcDesc)
+			self.recursivelyAddNode(childSrcDesc)
 
-			else:
-				if childSrcDesc.getName() in self.descNetwork:
-					childDstDesc=self.descNetwork.get(childSrcDesc.getName())
-				else:
-					expandChildSrcDesc=self.charDescQueryer(childSrcDesc.getName())
+		dstCharInfo=self.emptyCharInfoGenerator()
+		dstNode.setChInfo(dstCharInfo)
 
-					childDstDesc=self.charDescGenerator(expandChildSrcDesc.getName())
 
-					childDstDesc=self.expandCharDescInNetwork(expandChildSrcDesc)
-					self.descNetwork[childDstDesc.getName()]=childDstDesc
+	def recursivelyAddLink(self, srcDesc):
+		dstNode=self.addOrFindNodeByCharDesc(srcDesc)
 
-			compList.append(childDstDesc)
-		dstDesc.setCompList(compList)
+		childNodeList=[]
+		for childSrcDesc in srcDesc.getCompList():
+			childNode=self.addOrFindNodeByCharDesc(childSrcDesc)
+			childNodeList.append(childNode)
 
-		return dstDesc
+		if len(childNodeList)>0:
+			operator=srcDesc.getOperator()
+			dstNode.setStructure(operator, childNodeList)
 
-	def setCharTree(self, targetNode):
+		for childSrcDesc in srcDesc.getCompList():
+			self.recursivelyAddLink(childSrcDesc)
+
+	def isInNetwork(self, srcDesc):
+		srcName=srcDesc.getName()
+		return srcName in self.srcDescNameToNodeDict.keys()
+
+	def addOrFindNodeByCharDesc(self, charDesc):
+		ansNode=None
+		charName=charDesc.getName()
+		if not self.isInNetwork(charDesc):
+			self.addNode(charName, charDesc)
+
+		ansNode=self.findNodeByName(charName)
+		return ansNode
+
+	def addNode(self, charName, charDesc):
+		dstDesc=charDesc.copyDescription()
+
+		chInfo=charDesc.getChInfo()
+		if chInfo==None:
+			chInfo=self.emptyCharInfoGenerator()
+
+		ansNode=HanZiNode(dstDesc, chInfo)
+
+		self.srcDescNameToNodeDict[charName]=ansNode
+
+		return ansNode
+
+	def findNodeByName(self, charName):
+		return self.srcDescNameToNodeDict.get(charName)
+
+	def findNodeByCharDesc(self, charDesc):
+		return self.findNodeByName(charDesc.getName())
+
+	def setNodeTree(self, targetNode):
 		"""設定某一個字符所包含的部件的碼"""
 
-		radixList=targetNode.getCompList()
+		radixList=targetNode.getNodeList()
 		for childNode in radixList:
-			self.setCharTree(childNode)
+			self.setNodeTree(childNode)
 
 		targetNode.setByComps(radixList)
 
 	def getCode(self, charName):
-		expandDesc=self.get(charName, None)
-
-		targetNode=self.findNodeByDescription(expandDesc)
-		self.setCharTree(targetNode)
-		return targetNode.getCode()
+		charNode=self.findNodeByName(charName)
+		self.setNodeTree(charNode)
+		return charNode.getCode()
 
