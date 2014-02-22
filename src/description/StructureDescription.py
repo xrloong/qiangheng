@@ -41,59 +41,56 @@ class StructureDescription:
 		targetDescription=StructureDescription(operator, compList)
 		return targetDescription
 
-	def clone(self):
-		return copy.deepcopy(self)
-
 	def setStructureProperties(self, structProp):
 		codeVarianceString=structProp.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
 		codeVarianceType=CodeVarianceTypeFactory.generateByString(codeVarianceString)
 		self.setCodeVarianceType(codeVarianceType)
 
 	def getCodeVarianceType(self):
-		return self.target.codeVariance
+		return self.codeVariance
 
 	def setCodeVarianceType(self, codeVariance):
-		self.target.codeVariance=codeVariance
+		self.codeVariance=codeVariance
 
 	def getUniqueName(self):
-		return self.target.name
+		return self.name
 
 	def setReferenceExpression(self, referenceExpression):
-		self.target.referenceExpression=referenceExpression
+		self.referenceExpression=referenceExpression
 
 	def getReferenceExpression(self):
-		return self.target.referenceExpression
+		return self.referenceExpression
 
 	def getReferenceName(self):
-		expression=self.target.referenceExpression
+		expression=self.referenceExpression
 		if expression:
 			return expression.split(".")[0]
 		else:
 			return expression
 
 	def setRootName(self, rootName):
-		self.target.rootName=rootName
+		self.rootName=rootName
 
 	def getRootName(self):
-		return self.target.rootName
+		return self.rootName
 
 	def isRoot(self):
-		return bool(self.target.getRootName())
+		return bool(self.getRootName())
 
 	def isLeaf(self):
-		return bool(self.target.getReferenceName())
+		return bool(self.getReferenceName())
 
 	def setOperator(self, operator):
-		self.target.operator=operator
+		self.operator=operator
 
 	def getOperator(self):
-		return self.target.operator
+		return self.operator
 
 	def setCompList(self, compList):
-		self.target.compList=compList
+		self.compList=compList
 
 	def getCompList(self):
-		return self.target.compList
+		return self.compList
 
 	@property
 	def target(self):
@@ -108,16 +105,13 @@ class StructureDescription:
 		StructureDescription.countAnonymousName+=1
 		return name
 
-class HangerStructureDescription(StructureDescription):
+# 使用代理人模式
+class HangerStructureDescription:
 	def __init__(self, targetDescription):
-		self.hangerStructureDescription=targetDescription
+		self.targetDescription=targetDescription
 
 	def __deepcopy__(self, memo):
-		copy.deepcopy(None, memo)
-
-		newTarget=copy.deepcopy(self.target)
-		hangerStructureDescription=HangerStructureDescription(newTarget)
-		return hangerStructureDescription
+		return HangerStructureDescription(copy.deepcopy(self.target))
 
 	@staticmethod
 	def generate(operator, compList):
@@ -126,10 +120,59 @@ class HangerStructureDescription(StructureDescription):
 
 	@property
 	def target(self):
-		return self.hangerStructureDescription
+		return self.targetDescription
+
+	def clone(self):
+		return copy.deepcopy(self)
 
 	def replacedBy(self, newStructureDescription):
-		self.hangerStructureDescription=newStructureDescription.target
+		self.targetDescription=newStructureDescription.target
+
+
+	def setStructureProperties(self, structProp):
+		self.targetDescription.setStructureProperties(structProp)
+
+	def getCodeVarianceType(self):
+		return self.targetDescription.getCodeVarianceType()
+
+	def setCodeVarianceType(self, codeVariance):
+		self.targetDescription.setCodeVarianceType(codeVariance)
+
+	def getUniqueName(self):
+		return self.targetDescription.getUniqueName()
+
+	def setReferenceExpression(self, referenceExpression):
+		self.targetDescription.setReferenceExpression(referenceExpression)
+
+	def getReferenceExpression(self):
+		return self.targetDescription.getReferenceExpression()
+
+	def getReferenceName(self):
+		return self.targetDescription.getReferenceName()
+
+	def setRootName(self, rootName):
+		self.targetDescription.setRootName(rootName)
+
+	def getRootName(self):
+		return self.targetDescription.getRootName()
+
+	def isRoot(self):
+		return self.targetDescription.isRoot()
+
+	def isLeaf(self):
+		return self.targetDescription.isLeaf()
+
+	def setOperator(self, operator):
+		self.targetDescription.setOperator(operator)
+
+	def getOperator(self):
+		return self.targetDescription.getOperator()
+
+	def setCompList(self, compList):
+		self.targetDescription.setCompList(compList)
+
+	def getCompList(self):
+		return self.targetDescription.getCompList()
 
 if __name__=='__main__':
 	print(StructureDescription('王', '(龜)', None))

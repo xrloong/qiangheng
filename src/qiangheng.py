@@ -156,6 +156,3 @@ def main():
 if __name__ == "__main__":
 	main()
 
-	import objgraph
-#	objgraph.show_most_common_types()
-
