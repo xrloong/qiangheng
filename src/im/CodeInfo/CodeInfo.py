@@ -56,7 +56,3 @@ class CodeInfo:
 	def characterCode(self):
 		return None
 
-	@property
-	def radixCode(self):
-		return None
-
