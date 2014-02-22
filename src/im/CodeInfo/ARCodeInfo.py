@@ -38,6 +38,10 @@ class ARCodeInfo(CodeInfo):
 	RADIX_EXTEND_1_UP='x:1^:1'	# 即[一口]，豆的上部
 	RADIX_EXTEND_1_CENTER='x:1-:1'	# 即一，但可用來合併字根，末的序列為 '4v,1-' ，但在 '唜' 中，不做合併用。
 	RADIX_EXTEND_0_CENTER='x:0-:1'	# 即口，但可用來合併字根
+
+	RADIX_EXTEND_5_BOTTOM='x:5v:1'	# 即廴
+	RADIX_EXTEND_6_BOTTOM='x:6v:1'	# 即辶
+	RADIX_EXTEND_2_CENTER='x:2-:1'	# 即[亾下]
 	radixToCodeDict={
 		RADIX_1_UP:'q',
 		RADIX_2_UP:'w',
@@ -75,6 +79,10 @@ class ARCodeInfo(CodeInfo):
 		RADIX_EXTEND_1_UP:'q',
 		RADIX_EXTEND_1_CENTER:'a',
 		RADIX_EXTEND_0_CENTER:';',
+
+		RADIX_EXTEND_5_BOTTOM:'b',
+		RADIX_EXTEND_6_BOTTOM:'n',
+		RADIX_EXTEND_2_CENTER:'s',
 	}
 
 	def setRadixCodeProperties(self, propDict):

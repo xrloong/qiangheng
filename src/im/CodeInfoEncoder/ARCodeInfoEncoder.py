@@ -60,10 +60,34 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(newCodeInfoList)
 		codeInfo.setCodeList([arCode])
 
+
+	def encodeAsQi(self, codeInfo, codeInfoList):
+		"""運算 "起" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+
+		firstMainCodeList=firstCodeInfo.getMainCodeList()
+		if len(firstMainCodeList)==1 and (firstMainCodeList[0]==ARCodeInfo.RADIX_EXTEND_5_BOTTOM or firstMainCodeList[0]==ARCodeInfo.RADIX_EXTEND_6_BOTTOM or firstMainCodeList[0]==ARCodeInfo.RADIX_EXTEND_2_CENTER):
+			arCode=ARCodeInfoEncoder.computeArrayCodeForGe([secondCodeInfo, firstCodeInfo])
+		else:
+			arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
+
+		codeInfo.setCodeList([arCode])
+
 	def encodeAsZai(self, codeInfo, codeInfoList):
 		"""運算 "載" """
 		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
 		codeInfo.setCodeList([arCode])
+
+	def encodeAsYou(self, codeInfo, codeInfoList):
+		"""運算 "幽" """
+
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+
+		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
+		self.encodeAsLoong(codeInfo, newCodeInfoList)
 
 	@staticmethod
 	def computeArrayCodeForGenerality(codeInfoList, isWithMergeRadix=False):
