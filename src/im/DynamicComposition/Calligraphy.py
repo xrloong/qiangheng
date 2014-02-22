@@ -28,12 +28,12 @@ class StrokeInfo:
 		newExp = self.getNewExpression()
 		self.actionList = parseStrokeActionList(newExp)
 
-	def getCodeList(self, pane):
+	def getCodeList(self, strokeState):
+		pane=Pane()
+		strokeState.getTargetPane().transformPane(pane)
+
 		codeList=[action.getCode(pane) for action in self.actionList]
 		return codeList
-
-	def getActionList(self):
-		return self.actionList
 
 	def getName(self):
 		return self.name
@@ -1431,11 +1431,7 @@ class Stroke(Writing):
 		return self.strokeInfo.getTypeName()
 
 	def getCode(self):
-#		newContourPane=self.strokeInfo.contourPane.clone()
-		newContourPane=Pane()
-		self.state.getTargetPane().transformPane(newContourPane)
-
-		codeList=self.strokeInfo.getCodeList(newContourPane)
+		codeList=self.strokeInfo.getCodeList(self.state)
 		return ','.join(codeList)
 
 	# 多型
