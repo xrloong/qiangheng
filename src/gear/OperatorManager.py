@@ -25,12 +25,18 @@ class OperatorManager:
 			'同':Operator.OperatorTong,
 			'函':Operator.OperatorHan,
 			'區':Operator.OperatorQu,
-			'左':Operator.OperatorZuo,
+			'左':Operator.OperatorLeft,
 
 			'衍':Operator.OperatorYan,
 			'衷':Operator.OperatorZhong,
 			'瓥':Operator.OperatorGridShape,
 			'粦':Operator.OperatorTriangleShape,
+
+			'畞':Operator.OperatorMu,
+			'㘴':Operator.OperatorZuo,
+			'幽':Operator.OperatorYou,
+			'繭':Operator.OperatorJian,
+			'夾':Operator.OperatorJia,
 		}
 		self.templateOperatorDict={
 		}

@@ -71,10 +71,16 @@ OperatorDou=BuiltinOperator('斗', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorTong=BuiltinOperator('同', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorHan=BuiltinOperator('函', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorQu=BuiltinOperator('區', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorZuo=BuiltinOperator('左', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorLeft=BuiltinOperator('左', '*', RearrangeInfo.RearrangeInfoSame())
 
 OperatorYan=BuiltinOperator('衍', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorZhong=BuiltinOperator('衷', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorGridShape=BuiltinOperator('瓥', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorTriangleShape=BuiltinOperator('粦', '*', RearrangeInfo.RearrangeInfoSame())
+
+OperatorMu=BuiltinOperator('畞', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorZuo=BuiltinOperator('㘴', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorYou=BuiltinOperator('幽', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorJian=BuiltinOperator('繭', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorJia=BuiltinOperator('夾', '*', RearrangeInfo.RearrangeInfoSame())
 

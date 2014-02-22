@@ -1,5 +1,6 @@
 from ..CodeInfo.ZMCodeInfo import ZMCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear import Operator
 
 class ZMCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
@@ -18,7 +19,10 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 			if codeInfoList and all(rtlist):
 				rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
 				zmCode=self.computeCharacterCode(rtlist)
-				codeInfo.setZMProp(rtlist)
+				if Operator.OperatorJian.equals(operator):
+					codeInfo.setZMProp(rtlist[:1])
+				else:
+					codeInfo.setZMProp(rtlist)
 				codeInfo.setCharacterCode(zmCode)
 
 	def computeCharacterCode(self, rtlist):

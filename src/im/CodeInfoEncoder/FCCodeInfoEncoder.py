@@ -38,6 +38,15 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 			elif Operator.OperatorDou.equals(operator):
 				FCCodeInfoEncoder.encodeAsDou(codeInfo, operator, codeInfoList)
 
+			elif Operator.OperatorMu.equals(operator):
+				FCCodeInfoEncoder.encodeAsMu(codeInfo, operator, codeInfoList)
+			elif Operator.OperatorZuo.equals(operator):
+				FCCodeInfoEncoder.encodeAsZuo(codeInfo, operator, codeInfoList)
+			elif Operator.OperatorYou.equals(operator):
+				FCCodeInfoEncoder.encodeAsYou(codeInfo, operator, codeInfoList)
+			elif Operator.OperatorJian.equals(operator):
+				FCCodeInfoEncoder.encodeAsJian(codeInfo, operator, codeInfoList)
+
 			else:
 				FCCodeInfoEncoder.encodeAsTurtle(codeInfo, operator, codeInfoList)
 
@@ -78,11 +87,15 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsLoop(codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
-		codeInfo.setCode(
-			firstCodeInfo.getTopLeft(),
-			firstCodeInfo.getTopRight(),
-			lastCodeInfo.getBottomLeft(),
-			lastCodeInfo.getBottomRight())
+#		codeInfo.setCode(
+#			firstCodeInfo.getTopLeft(),
+#			firstCodeInfo.getTopRight(),
+#			lastCodeInfo.getBottomLeft(),
+#			lastCodeInfo.getBottomRight())
+		grid=FCGrid()
+		grid.setAsOut_In(firstCodeInfo, lastCodeInfo)
+		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
+		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
 	@staticmethod
 	def encodeAsSilkworm(codeInfo, operator, codeInfoList):
@@ -141,6 +154,51 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 
 		grid=FCGrid()
 		grid.setAsBottomRight_TopLeft(firstCodeInfo, lastCodeInfo)
+		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
+		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+
+	@staticmethod
+	def encodeAsMu(codeInfo, operator, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+
+		grid=FCGrid()
+		grid.setAsTop_BottomLeft_BottomRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
+		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
+		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+
+	@staticmethod
+	def encodeAsZuo(codeInfo, operator, codeInfoList):
+		# 以 "㘴" 來說 first: 口，second: 人，third: 土
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+
+		grid=FCGrid()
+		grid.setAsBottom_TopLeft_TopRight(thirdCodeInfo, firstCodeInfo, secondCodeInfo)
+		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
+		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+
+	@staticmethod
+	def encodeAsYou(codeInfo, operator, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+
+		grid=FCGrid()
+		grid.setAsBottom_InTopLeft_InTopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
+		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
+		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+
+	@staticmethod
+	def encodeAsJian(codeInfo, operator, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+
+		grid=FCGrid()
+		grid.setAsTop_InBottomLeft_InBottomRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
@@ -350,8 +408,122 @@ class FCGrid:
 		}
 		self.setStrokeCode(cornerInfoDict)
 
-	def setAsOut_In(self, Outer, inner):
-		pass
+	def setAsOut_In(self, outer, inner):
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[0, 0, outer.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[3, 0, outer.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[0, 3, outer.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[3, 3, outer.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[1, 1, inner.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[2, 1, inner.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[1, 2, inner.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[2, 2, inner.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+	def setAsTop_BottomLeft_BottomRight(self, first, second, third):
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[0, 0, first.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[3, 0, first.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[0, 1, first.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[3, 1, first.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[0, 2, second.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[1, 2, second.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[0, 3, second.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[1, 3, second.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[2, 2, third.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[3, 2, third.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[2, 3, third.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[3, 3, third.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+	def setAsBottom_TopLeft_TopRight(self, first, second, third):
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[0, 2, first.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[3, 2, first.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[0, 3, first.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[3, 3, first.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[0, 0, second.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[1, 0, second.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[0, 1, second.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[1, 1, second.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[2, 0, third.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[3, 0, third.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[2, 1, third.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[3, 1, third.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+	def setAsTop_InBottomLeft_InBottomRight(self, first, second, third):
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[0, 0, first.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[3, 0, first.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[0, 3, first.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[3, 3, first.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[0, 1, second.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[1, 1, second.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[0, 2, second.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[1, 2, second.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[2, 1, third.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[3, 1, third.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[2, 2, third.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[3, 2, third.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+	def setAsBottom_InTopLeft_InTopRight(self, first, second, third):
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[0, 0, first.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[3, 0, first.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[0, 3, first.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[3, 3, first.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[0, 1, second.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[1, 1, second.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[0, 2, second.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[1, 2, second.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
+
+		cornerInfoDict={
+			FCCodeInfo.CORNER_TOP_LEFT:[2, 1, third.getTopLeft()],
+			FCCodeInfo.CORNER_TOP_RIGHT:[3, 1, third.getTopRight()],
+			FCCodeInfo.CORNER_BOTTOM_LEFT:[2, 2, third.getBottomLeft()],
+			FCCodeInfo.CORNER_BOTTOM_RIGHT:[3, 2, third.getBottomRight()],
+		}
+		self.setStrokeCode(cornerInfoDict)
 
 	def getFourCorner(self):
 		return self.getStrokeCode()
