@@ -29,7 +29,7 @@ class CJCharInfo(CharInfo):
 			x_code=codeList[0]
 			if len(x_code)>0:
 				dir_code=x_code[0]
-				if dir_code not in ['|', '-', '*', '@']:
+				if dir_code not in ['|', '-', '*', '@', '$']:
 					dir_code='*'
 
 				radix_list=x_code[1:].split(',')
@@ -95,9 +95,15 @@ class CJCharInfo(CharInfo):
 		return headCode
 
 	@staticmethod
-	def computeBodyCode(codeList, direction='*'):
+	def computeBodyCode(codeList, direction):
 		def convertAllToHeadTail(l):
 			pass
+
+		if direction=='$':
+			tmpCodeList=[CJCharInfo.computeHeadTailCode(x, 3) for x in codeList]
+			tmpCode=''.join(tmpCodeList)
+			bodyCode=CJCharInfo.computeHeadTailCode(tmpCode, 3)
+			return bodyCode
 
 		bodyCode=''
 		if len(codeList)==0:
@@ -137,12 +143,15 @@ class CJCharInfo(CharInfo):
 		return bodyCode
 
 	@staticmethod
-	def computeTotalCode(codeList, direction='*'):
-		if len(codeList)==1:
-			totalCode=CJCharInfo.computeHeadTailCode(codeList[0], 3)
-		elif len(codeList)>1:
-			totalCode=CJCharInfo.computeHeadCode(codeList[0])+CJCharInfo.computeBodyCode(codeList[1:], direction)
+	def computeTotalCode(codeList, direction):
+		if direction=='$':
+			totalCode=CJCharInfo.computeBodyCode(codeList, direction)
 		else:
-			totalCode=''
+			if len(codeList)==1:
+				totalCode=CJCharInfo.computeHeadTailCode(codeList[0], 3)
+			elif len(codeList)>1:
+				totalCode=CJCharInfo.computeHeadCode(codeList[0])+CJCharInfo.computeBodyCode(codeList[1:], direction)
+			else:
+				totalCode=''
 		return totalCode
 

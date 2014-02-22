@@ -26,6 +26,8 @@ class OperatorManager:
 			'爲':RearrangeInfoSame(),
 			'龍':RearrangeInfoSame(),
 
+			'東':RearrangeInfoSame(),
+
 			'蚕':RearrangeInfoSame(),
 			'鴻':RearrangeInfoSame(),
 			'回':RearrangeInfoSame(),
@@ -38,6 +40,8 @@ class OperatorManager:
 			'龜':'*',
 			'爲':'*',
 			'龍':'*',
+
+			'東':'$',
 
 			'蚕':'|',
 			'鴻':'-',
