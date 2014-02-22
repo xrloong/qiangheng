@@ -18,22 +18,22 @@ class StrokeInfo:
 		self.centerX = self.left + self.width//2
 		self.centerY = self.top + self.height//2
 
-		def parseStrokeActionList(actionDescription):
-			actionList=[]
-			for description in actionDescription.split(","):
-				action=StrokeAction.fromDescription(description)
-				actionList.append(action)
-			return actionList
-
-		newExp = self.getNewExpression()
-		self.actionList = parseStrokeActionList(newExp)
-
 	def getCodeList(self, strokeState):
-		pane=Pane()
-		strokeState.getTargetPane().transformPane(pane)
+		pane=strokeState.getTargetPane()
+		points = [(point[0], pane.transformPoint(point[1])) for point in self.getPoints()]
 
-		codeList=[action.getCode(pane) for action in self.actionList]
-		return codeList
+		point = points[0]
+		isCurve = point[0]
+		assert isCurve is False
+		pointExpressionList = ["0000{0[0]:02X}{0[1]:02X}".format(point[1]), ]
+
+		for point in points[1:]:
+			isCurve = point[0]
+			if isCurve:
+				pointExpressionList.append("0002{0[0]:02X}{0[1]:02X}".format(point[1]))
+			else:
+				pointExpressionList.append("0001{0[0]:02X}{0[1]:02X}".format(point[1]))
+		return pointExpressionList
 
 	def getName(self):
 		return self.name
@@ -84,22 +84,6 @@ class StrokeInfo:
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		return pints + self.getTailPoints(points[-1][1])
-
-	def getNewExpression(self):
-		points = self.getPoints()
-
-		point = points[0]
-		isCurve = point[0]
-		assert isCurve is False
-		pointExpressionList = ["0000{0[0]:02X}{0[1]:02X}".format(point[1]), ]
-
-		for point in points[1:]:
-			isCurve = point[0]
-			if isCurve:
-				pointExpressionList.append("0002{0[0]:02X}{0[1]:02X}".format(point[1]))
-			else:
-				pointExpressionList.append("0001{0[0]:02X}{0[1]:02X}".format(point[1]))
-		return ",".join(pointExpressionList)
 
 	def compute_點(self, startPoint, w, h):
 		assert h>0
@@ -1351,41 +1335,6 @@ class Pane:
 
 Pane.DEFAULT_PANE=Pane()
 
-
-class StrokeAction:
-	ACTION_START="0000"
-	ACTION_END="0001"
-	ACTION_CURVE="0002"
-
-	ActionStrToNumDict={
-		ACTION_START : 0,
-		ACTION_END : 1,
-		ACTION_CURVE : 2,
-	}
-
-	ActionNumToStrDict={
-		0: ACTION_START,
-		1: ACTION_END,
-		2: ACTION_CURVE,
-	}
-
-	def __init__(self, action, point):
-		self.action=action
-		self.point=point
-
-	@staticmethod
-	def fromDescription(description):
-		actionStr=description[0:4]
-		action=StrokeAction.ActionStrToNumDict[actionStr]
-		x=int(description[4:6], 16)
-		y=int(description[6:8], 16)
-		point=(x, y)
-		return StrokeAction(action, point)
-
-	def getCode(self, pane):
-		(x, y)=pane.transformPoint(self.point)
-		code="%02X%02X"%(x, y)
-		return StrokeAction.ActionNumToStrDict[self.action]+code
 
 class Writing:
 	def __init__(self, contourPane):

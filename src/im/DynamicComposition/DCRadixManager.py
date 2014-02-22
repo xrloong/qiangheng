@@ -3,7 +3,6 @@ from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 from .Calligraphy import Pane
 from .Calligraphy import Stroke
-from .Calligraphy import StrokeAction
 from .Calligraphy import StrokeGroup
 import re
 
