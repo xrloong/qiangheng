@@ -40,6 +40,9 @@ xml:
 dc:
 	make xml puretable IMLIST=dc
 
+test:
+	PYTHONPATH=src python3 -m unittest discover -s tests/ -p "*.py"
+
 imtables: scim ibus gcin ovim msim puretable
 
 scim: $(SCIM_PATH)
