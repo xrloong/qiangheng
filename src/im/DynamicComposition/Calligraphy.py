@@ -11,6 +11,10 @@ class Point:
 		copy.deepcopy(None, memo)
 		return Point(self.x, self.y)
 
+	@property
+	def code(self):
+		return "%02X%02X"%(self.x, self.y)
+
 	def getX(self):
 		return self.x
 
@@ -35,6 +39,45 @@ class Point:
 
 		self.scale(xScale, yScale)
 		self.translate(left, top)
+
+class StrokeAction:
+	ACTION_START="0000"
+	ACTION_END="0001"
+	ACTION_CURVE="0002"
+
+	ActionStrToNumDict={
+		ACTION_START : 0,
+		ACTION_END : 1,
+		ACTION_CURVE : 2,
+	}
+
+	ActionNumToStrDict={
+		0: ACTION_START,
+		1: ACTION_END,
+		2: ACTION_CURVE,
+	}
+
+	def __init__(self, action, point):
+		self.action=action
+		self.point=point
+
+	def __deepcopy__(self, memo):
+		point=copy.deepcopy(self.point, memo)
+		return StrokeAction(self.action, point)
+
+	@staticmethod
+	def fromDescription(description):
+		actionStr=description[0:4]
+		action=StrokeAction.ActionStrToNumDict[actionStr]
+		point=Point(int(description[4:6], 16), int(description[6:8], 16))
+		return StrokeAction(action, point)
+
+	@property
+	def code(self):
+		return StrokeAction.ActionNumToStrDict[self.action]+self.point.code
+
+	def transform(self, pane):
+		self.point.transform(pane)
 
 class Pane:
 	WIDTH=0x100
@@ -99,6 +142,10 @@ class Writing:
 		self.boundaryPane=Pane.DEFAULT_PANE
 		self.contourPane=contourPane
 
+	def __deepcopy__(self, memo):
+		copy.deepcopy(None, memo)
+		return Writing(self.contourPane)
+
 	def getBoundaryPane(self):
 		return self.boundaryPane
 
@@ -135,7 +182,7 @@ class Stroke(Writing):
 
 	DEFAULT_INSTANCE_NAME='瑲珩預設筆劃名'
 
-	def __init__(self, contourPane, strokeName, actionList, pointList):
+	def __init__(self, contourPane, strokeName, actionList):
 		super().__init__(contourPane)
 
 		assert (strokeName in Stroke.STROKE_NAMES), "不認得的筆畫名稱: %s"%strokeName
@@ -145,11 +192,10 @@ class Stroke(Writing):
 		self.typeName=strokeName
 
 		self.actionList=actionList
-		self.pointList=pointList
 
 	def __deepcopy__(self, memo):
-		pointList=copy.deepcopy(self.pointList, memo)
-		return Stroke(self.contourPane, self.typeName, self.actionList, pointList)
+		actionList=[copy.deepcopy(a, memo) for a in self.actionList]
+		return Stroke(self.contourPane, self.typeName, actionList)
 
 	def getInstanceName(self):
 		return self.name
@@ -161,13 +207,13 @@ class Stroke(Writing):
 		return self.typeName
 
 	def getCode(self):
-		codeList=["%4s%02X%02X"%(action, point.getX(), point.getY()) for [action, point] in zip(self.actionList, self.pointList)]
+		codeList=[action.code for action in self.actionList]
 		return ','.join(codeList)
 
 	# 多型
 	def transform(self, pane):
-		for point in self.pointList:
-			point.transform(pane)
+		for action in self.actionList:
+			action.transform(pane)
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
@@ -176,7 +222,7 @@ class StrokeGroup(Writing):
 		self.strokeList=strokeList
 
 	def __deepcopy__(self, memo):
-		strokeList=copy.deepcopy(self.strokeList, memo)
+		strokeList=[copy.deepcopy(s, memo) for s in self.strokeList]
 		return StrokeGroup(self.contourPane, strokeList)
 
 	def clone(self):

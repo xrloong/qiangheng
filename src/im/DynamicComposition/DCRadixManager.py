@@ -3,9 +3,8 @@ from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 from .Calligraphy import Pane
 from .Calligraphy import Stroke
-#from .Calligraphy import StrokeAction
+from .Calligraphy import StrokeAction
 from .Calligraphy import StrokeGroup
-from .Calligraphy import Point
 import re
 
 class DCRadixParser(RadixParser):
@@ -113,8 +112,8 @@ class DCRadixParser(RadixParser):
 			countourPane=self.parsePane(descriptionRegion)
 			if len(description)>0 and description!='XXXX':
 				if description[0]=='(':
-					[strokeName, actionList, pointList]=self.parseStrokeNameAndAction(description)
-					stroke=Stroke(pane, strokeName, actionList, pointList)
+					[strokeName, actionList]=self.parseStrokeNameAndAction(description)
+					stroke=Stroke(pane, strokeName, actionList)
 
 					strokeName=strokeNode.get(DCRadixParser.TAG_NAME, "瑲珩預設筆劃名")
 					stroke.setInstanceName(strokeName)
@@ -140,14 +139,11 @@ class DCRadixParser(RadixParser):
 
 		descriptionList=strokeDescription.split(',')
 		actionList=[]
-		pointList=[]
 		for description in descriptionList:
-			action=description[0:4]
-			point=Point(int(description[4:6], 16), int(description[6:8], 16))
+			action=StrokeAction.fromDescription(description)
 			actionList.append(action)
-			pointList.append(point)
 
-		return [strokeName, actionList, pointList]
+		return [strokeName, actionList]
 
 	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)
@@ -155,16 +151,6 @@ class DCRadixParser(RadixParser):
 		right=int(descriptionRegion[4:6], 16)
 		bottom=int(descriptionRegion[6:8], 16)
 		return Pane([left, top, right, bottom])
-
-	def parseStrokeAction(self, descriptionList):
-		actionList=[]
-		pointList=[]
-		for description in descriptionList:
-			action=description[0:4]
-			point=Point(int(description[4:6], 16), int(description[6:8], 16))
-			actionList.append(action)
-			pointList.append(point)
-		return [actionList, pointList]
 
 	def findStrokeGroup(self, strokeGroupName):
 		return self.strokeGroupDB.get(strokeGroupName)
