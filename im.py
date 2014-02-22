@@ -9,7 +9,8 @@ class NoneIM:
 			self.operator=parseans[0]
 			self.operandlist=parseans[1]
 
-			self.showflag=False if len(self.charname)>1 else True
+			self.showFlag=False if len(self.charname)>1 else True
+			self.noneFlag=True
 
 		def __str__(self):
 			return self.charname
@@ -18,7 +19,21 @@ class NoneIM:
 			return str(self)
 
 		def isToShow(self):
-			return self.showflag
+			return self.showFlag
+
+		def isToSetTree(self):
+			# 若非空且之前没設過值
+			return (not self.isNone) and (not self.isSeted)
+
+		@property
+		def isNone(self):
+			# 是否為空
+			return self.noneFlag
+
+		@property
+		def isSeted(self):
+			# 是否之前設過值，會被覆蓋
+			return False
 
 	def __init__(self):
 		self.keyMaps=[]
@@ -124,6 +139,8 @@ class CangJie(NoneIM):
 			self._cj_rtcode=None	# 當部件使用
 			if len(prop)>=2:
 				self.setCJProp(prop[0], prop[1])
+			self.noneFlag=False
+			self.setedFlag=False
 
 		def setCJProp(self, cj_incode, cj_rtcode):
 			if cj_incode=='XXXX':
@@ -147,6 +164,10 @@ class CangJie(NoneIM):
 		@property
 		def cj(self):
 			return self._cj_incode
+
+		@property
+		def isSeted(self):
+			return bool(self._cj_incode)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -246,7 +267,7 @@ class CangJie(NoneIM):
 	def setCharTree(self, ch):
 		"""設定某一個字符所包含的部件的碼"""
 
-		if ch.getCJProp()[0]:
+		if not ch.isToSetTree():
 			# 如果有值，代表事先指定或之前設定過。
 			return
 
@@ -289,6 +310,8 @@ class Array(NoneIM):
 			self._ar_incode=None
 			if len(prop)>=1:
 				self.setARProp(prop[0])
+			self.noneFlag=False
+			self.setedFlag=False
 
 		def setARProp(self, ar_incode):
 			if ar_incode=='XXXX':
@@ -302,6 +325,10 @@ class Array(NoneIM):
 		@property
 		def ar(self):
 			return self._ar_incode
+
+		@property
+		def isSeted(self):
+			return bool(self._ar_incode)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -350,7 +377,7 @@ class Array(NoneIM):
 			return ch.ar
 
 	def setCharTree(self, ch):
-		if ch.getARProp():
+		if not ch.isToSetTree():
 			return
 
 		complist=self.getAllComp(ch)
@@ -373,6 +400,8 @@ class DaYi(NoneIM):
 			self._dy_incode=None
 			if len(prop)>=1:
 				self.setDYProp(prop[0])
+			self.noneFlag=False
+			self.setedFlag=False
 
 		def setDYProp(self, dy_incode):
 			if dy_incode=='XXXX':
@@ -386,6 +415,10 @@ class DaYi(NoneIM):
 		@property
 		def dy(self):
 			return self._dy_incode
+
+		@property
+		def isSeted(self):
+			return bool(self._dy_incode)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -444,7 +477,7 @@ class DaYi(NoneIM):
 			return ch.dy
 
 	def setCharTree(self, ch):
-		if ch.getDYProp():
+		if not ch.isToSetTree():
 			return
 
 		complist=self.getAllComp(ch)
@@ -468,6 +501,8 @@ class Boshiamy(NoneIM):
 			self._bs_spcode=None
 			if len(prop)>=2:
 				self.setBSProp(prop[0], prop[1])
+			self.noneFlag=False
+			self.setedFlag=False
 
 		def setBSProp(self, bs_incode, bs_spcode):
 			if bs_incode=='XXXX' or bs_spcode=='XXXX':
@@ -488,6 +523,10 @@ class Boshiamy(NoneIM):
 				return self._bs_incode+self._bs_spcode
 			else:
 				return self._bs_incode
+
+		@property
+		def isSeted(self):
+			return bool(self._bs_incode)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -532,7 +571,7 @@ class Boshiamy(NoneIM):
 			return ch.bs
 
 	def setCharTree(self, ch):
-		if ch.getBSProp()[0]:
+		if not ch.isToSetTree():
 			return
 
 		complist=self.getAllComp(ch)
@@ -562,6 +601,8 @@ class ZhengMa(NoneIM):
 					self.setZMProp([])
 				else:
 					self.setZMProp(str_rtlist.split(','))
+			self.noneFlag=False
+			self.setedFlag=False
 
 		def setZMProp(self, zm_rtlist):
 			self._zm_rtlist=zm_rtlist
@@ -600,6 +641,10 @@ class ZhengMa(NoneIM):
 			else:
 				ans=''
 			return ans
+
+		@property
+		def isSeted(self):
+			return bool(self._zm_rtlist)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -644,7 +689,7 @@ class ZhengMa(NoneIM):
 			return ch.zm
 
 	def setCharTree(self, ch):
-		if ch.getZMProp():
+		if not ch.isToSetTree():
 			return
 
 		complist=self.getAllComp(ch)
