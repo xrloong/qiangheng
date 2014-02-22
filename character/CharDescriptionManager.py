@@ -147,12 +147,8 @@ class CharDescriptionManager:
 
 		for charName in self.characterDB.keys():
 			srcDescList=self.characterDB.get(charName)
-			l=[]
-#			srcDesc=self.charDescQueryer(charName)
 			for srcDesc in srcDescList:
-				charDesc=self.operationMgr.rearrangeRecursively(srcDesc)
-				l.append(charDesc)
-			self.characterDB[charName]=l
+				self.operationMgr.rearrangeRecursively(srcDesc)
 
 if __name__=='__main__':
 	pass

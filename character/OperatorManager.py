@@ -60,7 +60,6 @@ class OperatorManager:
 
 
 			'錯':RearrangeInfoSame(),
-			'函':RearrangeInfoSame(),
 			'起':RearrangeInfoSame(),
 		}
 
@@ -75,7 +74,6 @@ class OperatorManager:
 
 			'錯':'*',
 			'起':'*',
-			'函':'@',
 		}
 
 		self.rearrangeInfoDictForTemplateOperator={}
@@ -134,14 +132,12 @@ class OperatorManager_AR(OperatorManager):
 		operatorLoong=self.getOperatorByName('龍')
 
 		self.rearrangeInfoDictForBuiltinOperator['起']=RearrangeInfoLShapeSimpleRadical(operatorLoong)
-		self.rearrangeInfoDictForBuiltinOperator['函']=RearrangeInfoSurroundingOpenUp(operatorLoong)
 
 class OperatorManager_BS(OperatorManager):
 	def __init__(self, descMgr):
 		OperatorManager.__init__(self, descMgr)
 		operatorLoong=self.getOperatorByName('龍')
 
-		self.rearrangeInfoDictForBuiltinOperator['函']=RearrangeInfoSurroundingOpenUp(operatorLoong)
 		self.rearrangeInfoDictForBuiltinOperator['起']=RearrangeInfoLShapeSimpleRadical(operatorLoong)
 
 class OperatorManager_CJ(OperatorManager):
@@ -153,7 +149,6 @@ class OperatorManager_DY(OperatorManager):
 		OperatorManager.__init__(self, descMgr)
 		operatorLoong=self.getOperatorByName('龍')
 
-		self.rearrangeInfoDictForBuiltinOperator['函']=RearrangeInfoSurroundingOpenUp(operatorLoong)
 		self.rearrangeInfoDictForBuiltinOperator['起']=RearrangeInfoLShapeSimpleRadical(operatorLoong)
 
 class OperatorManager_ZM(OperatorManager):
@@ -161,7 +156,6 @@ class OperatorManager_ZM(OperatorManager):
 		OperatorManager.__init__(self, descMgr)
 		operatorLoong=self.getOperatorByName('龍')
 
-		self.rearrangeInfoDictForBuiltinOperator['函']=RearrangeInfoSurroundingOpenUp(operatorLoong)
 #		self.rearrangeInfoDictForBuiltinOperator['起']=RearrangeInfoLShapeSimpleRadical()
 
 
