@@ -8,10 +8,6 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 
 	def generateDefaultCodeInfo(self, rtlist):
 		codeInfo=ZMCodeInfo(None, rtlist, None)
-
-		rtlist=codeInfo.getRtList()
-		zmCode=self.computeCharacterCode(rtlist)
-		codeInfo.setCharacterCode(zmCode)
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
@@ -27,10 +23,6 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 			rtlist=str_rtlist.split(',')
 
 		codeInfo=ZMCodeInfo(zm_single, rtlist, zm_extra, isSupportCharacterCode, isSupportRadixCode)
-
-		rtlist=codeInfo.getRtList()
-		zmCode=self.computeCharacterCode(rtlist)
-		codeInfo.setCharacterCode(zmCode)
 		return codeInfo
 
 	def interprettCharacterCode(self, codeInfo):
@@ -38,11 +30,16 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		if singletonCode:
 			return singletonCode
 
-		ans=codeInfo.getCharacterCode()
+		rtlist=codeInfo.getRtList()
+		codeList=self.convertRadixListToCodeList(rtlist)
+		ans=self.computeCharacterCode(codeList)
 		extraCode=codeInfo.getExtraCode()
 		if extraCode:
 			ans+=extraCode
 		return ans
+
+	def convertRadixListToCodeList(self, radixList):
+		return sum([ZMCodeInfo.radixToCodeDict.get(radix, [radix]) for radix in radixList], [])
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=codeInfoList and all(map(lambda x: x.getZMProp(), codeInfoList))
@@ -78,6 +75,20 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		return codeInfo
+
+
+	def encodeAsGoose(self, codeInfoList):
+		"""運算 "鴻" """
+
+		firstCodeInfo=codeInfoList[0]
+		lastCodeInfo=codeInfoList[-1]
+
+		newCodeInfoList=codeInfoList
+		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_彳 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_亍:
+			newCodeInfo=self.generateDefaultCodeInfo([ZMCodeInfo.RADIX_行])
+			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 

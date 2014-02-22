@@ -1,6 +1,16 @@
 from gear.CodeInfo import CodeInfo
 
 class ZMCodeInfo(CodeInfo):
+	RADIX_彳='$彳'
+	RADIX_亍='$亍'
+	RADIX_行='$行'
+
+	radixToCodeDict={
+		RADIX_彳:["oi"],
+		RADIX_亍:["bd","i"],
+		RADIX_行:["oi"],
+	}
+
 	def __init__(self, singleCode, rtList, extraCode, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
@@ -10,14 +20,8 @@ class ZMCodeInfo(CodeInfo):
 		self._zm_extra=extraCode
 		self._zm_single=singleCode
 
-	def setCharacterCode(self, zmCode):
-		self._zm_code=zmCode
-
 	def getSingletonCode(self):
 		return self._zm_single
-
-	def getCharacterCode(self):
-		return self._zm_code
 
 	def getExtraCode(self):
 		return self._zm_extra
