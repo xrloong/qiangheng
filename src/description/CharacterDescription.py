@@ -17,6 +17,9 @@ class CharacterDescription:
 	def setStructureList(self, structList):
 		self.structList=structList
 
+	def extendStructureList(self, structList):
+		self.structList.extend(structList)
+
 	def setProperty(self, prop):
 		self.prop.update(prop)
 

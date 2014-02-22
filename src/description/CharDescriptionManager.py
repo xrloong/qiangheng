@@ -66,8 +66,8 @@ class CharDescriptionManager:
 			if charDesc==None:
 				charDesc=CharacterDescription(charName)
 				self.characterDB[charName]=charDesc
-			charDesc.setStructureList(compList)
-			charDesc.updateProperty(propDict)
+			charDesc.extendStructureList(compList)
+#			charDesc.updateProperty(propDict)
 
 	def adjustData(self):
 		self.operationMgr.adjustTemplate()
