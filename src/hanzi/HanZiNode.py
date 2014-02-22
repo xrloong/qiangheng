@@ -112,6 +112,38 @@ class HanZiStructure:
 		for codeInfo in self.getCodeInfoList():
 			pass
 
+class HanZiWrapperStructure:
+	def __init__(self, targetNode, expression):
+		self.targetNode=targetNode
+		self.expression=expression
+
+	def getTargetNode(self):
+		tempList=self.expression.split(".")
+		if(len(tempList)>1):
+			index=int(tempList[1])
+
+			structList=self.targetNode.getStructureListWithCondition()
+			struct=structList[0]
+			nodeList=struct.getNodeList()
+
+			return nodeList[index]
+		else:
+			return self.targetNode
+
+	def getCodeInfoList(self):
+		return self.getTargetNode().getCodeInfoList()
+
+	def getNodeList(self):
+		return [self.targetNode]
+
+	def setNodeTree(self):
+		return self.getTargetNode().setNodeTree()
+
+	def setCompositions(self):
+		structList=self.targetNode.getStructureListWithCondition()
+		struct=structList[0]
+		struct.setCompositions()
+
 class HanZiNode:
 	def __init__(self, name, characterProperty=None):
 		self.name=name
@@ -167,44 +199,4 @@ class HanZiNode:
 		structureList=self.getStructureListWithCondition()
 		for struct in structureList:
 			struct.printAllCodeInfo()
-
-class HanZiWrapperNode:
-	def __init__(self, targetNode, expression):
-		self.targetNode=targetNode
-		self.expression=expression
-
-	def getTargetNode(self):
-		tempList=self.expression.split(".")
-		if(len(tempList)>1):
-			index=int(tempList[1])
-
-			structList=self.targetNode.getStructureListWithCondition()
-			struct=structList[0]
-			nodeList=struct.getNodeList()
-
-			return nodeList[index]
-		else:
-			return self.targetNode
-
-	def getName(self):
-		return self.getTargetNode().getName()
-
-#	def addStructure(self, structure):
-#		self.getTargetNode().addStructure(structure)
-
-#	def setStructureList(self, structureList):
-#		self.getTargetNode().setStructureList(structureList)
-
-	def getStructureListWithCondition(self):
-		return self.getTargetNode().getStructureListWithCondition()
-
-	def getCodeInfoList(self):
-		return self.getTargetNode().getCodeInfoList()
-
-	def getCodePropertiesList(self):
-		return self.getTargetNode().getCodePropertiesList()
-
-	def setNodeTree(self):
-		return self.getTargetNode().setNodeTree()
-
 

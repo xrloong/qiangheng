@@ -77,7 +77,11 @@ class HanZiNetwork:
 		if anonymousName not in self.structDescUniqueNameToNodeDict:
 			expression=structDesc.getReferenceExpression()
 			rootNode=self.structDescExpandNameToNodeDict.get(structDesc.getReferenceName())
-			tmpNode=HanZiNode.HanZiWrapperNode(rootNode, expression)
+
+			tmpNode=HanZiNode.HanZiNode(anonymousName)
+			tmpStructure=HanZiNode.HanZiWrapperStructure(rootNode, expression)
+			tmpNode.addStructure(tmpStructure)
+
 			self.structDescUniqueNameToNodeDict[anonymousName]=tmpNode
 
 	def addTurtleStruct(self, structDesc):
