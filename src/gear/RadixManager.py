@@ -26,6 +26,8 @@ class RadixManager:
 			infoDict=elementCodeInfo.attrib
 
 		codeInfo=self.codeInfoEncoder.generateCodeInfo(infoDict, codeVariance)
+
+		self.setCodeInfoAttribute(codeInfo, radixDesc)
 		return codeInfo
 
 	# 多型
@@ -78,13 +80,20 @@ class RadixManager:
 	def hasRadix(self, radixName):
 		return (radixName in self.radixCodeInfoDB)
 
-
 	def loadRadix(self, toRadixList):
-		allRadixDescriptionList=[]
+		tmpDict={}
 		for filename in toRadixList:
 			radixDescriptionList=self.loadRadixFromXML(filename, fileencoding=Constant.FILE_ENCODING)
-			allRadixDescriptionList.extend(radixDescriptionList)
 
+			for [charName, radixDesc] in radixDescriptionList:
+				if charName in tmpDict:
+					tmpRadixDesc=tmpDict.get(charName)
+				else:
+					tmpRadixDesc=RadixDescription([])
+				tmpRadixDesc.mergeRadixDescription(radixDesc)
+				tmpDict[charName]=tmpRadixDesc
+
+		allRadixDescriptionList=list(tmpDict.items())
 		self.setRadixDescriptionList(allRadixDescriptionList)
 
 	def loadRadixFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
@@ -147,4 +156,8 @@ class RadixDescription:
 	def getRadixCodeInfoDescription(self, index):
 		if index in range(leng(self.radixCodeInfoList)):
 			return self.radixCodeInfoList[index]
+
+	def mergeRadixDescription(self, radixDesc):
+		radixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
+		self.radixCodeInfoList.extend(radixCodeInfoList)
 
