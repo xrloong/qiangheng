@@ -8,17 +8,28 @@
 		<範本 檔案="template/cj.xml" />
 
 		<部件 檔案="frequency/CJK.xml" />
+		<部件 檔案="frequency/CJK-A.xml" />
 
 		<部件 檔案="main/CJK.xml" />
+		<部件 檔案="main/CJK-A.xml" />
 		<部件 檔案="component/CJK/main.xml" />
+<!--
+		<部件 檔案="component/CJK-A/main.xml" />
+-->
 
 		<部件 檔案="style/standard.xml" />
 		<部件 檔案="style/traditional.xml" />
 		<部件 檔案="style/cj.xml" />
 
 		<部件 檔案="component/CJK/cj.xml" />
+<!--
+		<部件 檔案="component/CJK-A/cj.xml" />
+-->
 
 		<字根 檔案="radix/CJK/cj.xml" />
+<!--
+		<字根 檔案="radix/CJK-A/cj.xml" />
+-->
 	</設定檔>
 </瑲珩>
 
