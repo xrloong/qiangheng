@@ -4,7 +4,6 @@ import Constant
 from gear.CharacterProperty import CharacterProperty
 from description.CharacterDescription import CharacterDescription
 from description.StructureDescription import HangerStructureDescription
-from description.StructureDescription import TurtleStructureDescription
 from description.TemplateDescription import TemplateDescription
 from description.TemplateDescription import TemplateSubstitutionDescription
 
@@ -83,25 +82,6 @@ class QHParser:
 			substitutionList.append(substitution)
 
 		return TemplateDescription(templateName, parameterNameList, substitutionList)
-
-	def getDesc_TurtleCharacter(self, nodeCharacter):
-		assembleChar=nodeCharacter
-		infoDict=None
-		codeInfo=assembleChar.find(Constant.TAG_CODE_INFORMATION)
-		if codeInfo is not None:
-			infoDict=codeInfo.attrib
-
-		turtle=TurtleStructureDescription(infoDict)
-		turtle.setStructureProperties(assembleChar.attrib)
-		return turtle
-
-	def getDesc_TurtleCharacterList(self, nodeCharacter):
-		assembleCharList=nodeCharacter.findall(Constant.TAG_COMPOSITION)
-		turtleList=[]
-		for assembleChar in assembleCharList:
-			turtle=self.getDesc_TurtleCharacter(assembleChar)
-			turtleList.append(turtle)
-		return turtleList
 
 	def loadTemplateByParsingXML__0_3(self, rootNode):
 		# 用於 0.3 版

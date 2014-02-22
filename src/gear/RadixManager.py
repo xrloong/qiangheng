@@ -3,6 +3,7 @@ import Constant
 from xml.etree import ElementTree
 from gear import OperatorManager
 from parser import QHParser
+from description.StructureDescription import TurtleStructureDescription
 
 class RadixManager:
 	def __init__(self, codeInfoEncoder):
@@ -14,7 +15,7 @@ class RadixManager:
 
 	# 多型
 	def parseToRadixInfoSet(self, characterNode):
-		structDescList=self.parser.getDesc_TurtleCharacterList(characterNode)
+		structDescList=self.getDesc_TurtleCharacterList(characterNode)
 		radixInfoSet=structDescList
 		return radixInfoSet
 
@@ -80,4 +81,18 @@ class RadixManager:
 
 			radixInfoList.append([charName, structureList])
 		return radixInfoList
+
+	def getDesc_TurtleCharacterList(self, nodeCharacter):
+		nodeCodeInfoList=nodeCharacter.findall(Constant.TAG_CODE_INFORMATION)
+		turtleList=[]
+		for nodeCodeInfo in nodeCodeInfoList:
+			infoDict=None
+			if nodeCodeInfo is not None:
+				infoDict=nodeCodeInfo.attrib
+
+			turtle=TurtleStructureDescription(infoDict)
+			turtle.setStructureProperties(nodeCodeInfo.attrib)
+
+			turtleList.append(turtle)
+		return turtleList
 
