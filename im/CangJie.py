@@ -1,5 +1,6 @@
 from .IM import IM
 from character import CJCharInfo
+from character import OperatorManager
 
 class CangJie(IM):
 	"倉頡輸入法"
@@ -45,6 +46,7 @@ class CangJie(IM):
 
 IMInfo=CangJie
 CharInfoGenerator=CJCharInfo.CJCharInfo
+OperatorManager=OperatorManager.OperatorManager_CJ
 
 if __name__=='__main__':
 	pass

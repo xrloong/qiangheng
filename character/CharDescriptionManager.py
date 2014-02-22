@@ -2,9 +2,8 @@
 
 from .CharDesc import CharDesc
 from .CharInfo import CharInfo
-from .RearrangementManager import RearrangementManager
+from .OperatorManager import OperatorManager
 from xml.etree import ElementTree
-from character.RearrangementManager import *
 
 class CharDescriptionManager:
 	NoneInfo=CharInfo('[瑲珩預設]', [])
@@ -19,11 +18,10 @@ class CharDescriptionManager:
 		self.descDB={}
 		self.descNetwork={}
 
-		imName=imModule.IMInfo.IMName
-
 		def CharDescGenerator(charName, structInfo=['龜', [], '(龜)']):
 			operator, CompList, expression=structInfo
-			direction=RearrangementManager.computeDirection(operator)
+#			direction=RearrangementManager.computeDirection(operator)
+			direction=self.rearrangeMgr.computeDirection(operator)
 			tmpCharInfo=CharInfoGenerator(charName, [])
 			charDesc=CharDesc(charName, operator, CompList, direction, expression, tmpCharInfo)
 			return charDesc
@@ -35,27 +33,13 @@ class CharDescriptionManager:
 			anonymousName=CharDesc.generateNewAnonymousName()
 			return CharDescGenerator(anonymousName)
 
-		self.rearrangeMgr=self.getRearrangeMgr(imName, self, emptyCharDescGenerator)
+		imName=imModule.IMInfo.IMName
+		self.rearrangeMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
 
 		self.charInfoGenerator=CharInfoGenerator
 		self.charDescGenerator=CharDescGenerator
 		self.emptyCharInfoGenerator=emptyCharInfoGenerator
 		self.emptyCharDescGenerator=emptyCharDescGenerator
-
-	def getRearrangeMgr(self, imName, descMgr, emptyCharDescGenerator):
-		if imName=='行列':
-			rearrangementManager=RearrangementManager_AR(descMgr, emptyCharDescGenerator)
-		elif imName=='嘸蝦米':
-			rearrangementManager=RearrangementManager_BS(descMgr, emptyCharDescGenerator)
-		elif imName=='倉頡':
-			rearrangementManager=RearrangementManager_CJ(descMgr, emptyCharDescGenerator)
-		elif imName=='大易':
-			rearrangementManager=RearrangementManager_DY(descMgr, emptyCharDescGenerator)
-		elif imName=='鄭碼':
-			rearrangementManager=RearrangementManager_ZM(descMgr, emptyCharDescGenerator)
-		else:
-			rearrangementManager=RearrangementManager(descMgr, emptyCharDescGenerator)
-		return rearrangementManager
 
 	def __getitem__(self, key):
 		return self.descDB[key]

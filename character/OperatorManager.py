@@ -1,41 +1,41 @@
 from operatorinfo import OperatorInfo
 from operatorinfo.RearrangeInfo import *
 from .CharDesc import CharDesc
-class RearrangementManager:
-	operatorInfoList={
-		'龜':OperatorInfo.Arbitrary,
-		'龍':OperatorInfo.Arbitrary,
-		'纂':OperatorInfo.Vertical,
-		'算':OperatorInfo.Vertical,
-		'志':OperatorInfo.Vertical,
-		'霜':OperatorInfo.Vertical,
-		'想':OperatorInfo.Vertical,
-		'爻':OperatorInfo.Vertical,
-		'卅':OperatorInfo.Vertical,
-		'蚕':OperatorInfo.Vertical,
-		'湘':OperatorInfo.Horizontal,
-		'好':OperatorInfo.Horizontal,
-		'怡':OperatorInfo.Horizontal,
-		'穎':OperatorInfo.Horizontal,
-		'林':OperatorInfo.Horizontal,
-		'鑫':OperatorInfo.Horizontal,
-		'鴻':OperatorInfo.Horizontal,
-		'載':OperatorInfo.Arbitrary,
-		'廖':OperatorInfo.Arbitrary,
-		'起':OperatorInfo.Arbitrary,
-		'夾':OperatorInfo.Arbitrary,
-		'燚':OperatorInfo.Arbitrary,
-		'回':OperatorInfo.Surrounding,
-		'同':OperatorInfo.Surrounding,
-		'函':OperatorInfo.Surrounding,
-		'區':OperatorInfo.Surrounding,
-		'左':OperatorInfo.Surrounding,
-	#	'水':OperatorInfo.Arbitrary,
-	}
-
+class OperatorManager:
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
 		self.descMgr=descMgr
+
+		self.directionInfoList={
+			'龜':OperatorInfo.Arbitrary,
+			'龍':OperatorInfo.Arbitrary,
+			'纂':OperatorInfo.Vertical,
+			'算':OperatorInfo.Vertical,
+			'志':OperatorInfo.Vertical,
+			'霜':OperatorInfo.Vertical,
+			'想':OperatorInfo.Vertical,
+			'爻':OperatorInfo.Vertical,
+			'卅':OperatorInfo.Vertical,
+			'蚕':OperatorInfo.Vertical,
+			'湘':OperatorInfo.Horizontal,
+			'好':OperatorInfo.Horizontal,
+			'怡':OperatorInfo.Horizontal,
+			'穎':OperatorInfo.Horizontal,
+			'林':OperatorInfo.Horizontal,
+			'鑫':OperatorInfo.Horizontal,
+			'鴻':OperatorInfo.Horizontal,
+			'載':OperatorInfo.Arbitrary,
+			'廖':OperatorInfo.Arbitrary,
+			'起':OperatorInfo.Arbitrary,
+			'夾':OperatorInfo.Arbitrary,
+			'燚':OperatorInfo.Arbitrary,
+			'回':OperatorInfo.Surrounding,
+			'同':OperatorInfo.Surrounding,
+			'函':OperatorInfo.Surrounding,
+			'區':OperatorInfo.Surrounding,
+			'左':OperatorInfo.Surrounding,
+#			'水':OperatorInfo.Arbitrary,
+		}
 
 		self.rearrangeInfoDict={
 			'龜':RearrangeInfoSame(),
@@ -86,40 +86,39 @@ class RearrangementManager:
 		if rearrangeInfo!=None:
 			rearrangeInfo.rearrange(charDesc)
 
-	@staticmethod
-	def computeDirection(oldOperator):
+	def computeDirection(self, oldOperator):
 		"""計算部件的結合方向"""
 
-		operatorInfo=RearrangementManager.operatorInfoList.get(oldOperator, OperatorInfo.Arbitrary)
-		return operatorInfo.getDirection()
+		directionInfo=self.directionInfoList.get(oldOperator, OperatorInfo.Arbitrary)
+		return directionInfo.getDirection()
 
-class RearrangementManager_AR(RearrangementManager):
+class OperatorManager_AR(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
-		RearrangementManager.__init__(self, descMgr, emptyCharDescGenerator)
+		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
 		self.rearrangeInfoDict['衍']=RearrangeInfoGo(self.descMgr, self.emptyCharDescGenerator)
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical()
 
-class RearrangementManager_BS(RearrangementManager):
+class OperatorManager_BS(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
-		RearrangementManager.__init__(self, descMgr, emptyCharDescGenerator)
+		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
 		self.rearrangeInfoDict['衍']=RearrangeInfoGo(self.descMgr, self.emptyCharDescGenerator)
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp()
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical()
 
-class RearrangementManager_CJ(RearrangementManager):
+class OperatorManager_CJ(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
-		RearrangementManager.__init__(self, descMgr, emptyCharDescGenerator)
+		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
 		self.rearrangeInfoDict['衍']=RearrangeInfoGo(self.descMgr, self.emptyCharDescGenerator)
 
-class RearrangementManager_DY(RearrangementManager):
+class OperatorManager_DY(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
-		RearrangementManager.__init__(self, descMgr, emptyCharDescGenerator)
+		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
 		self.rearrangeInfoDict['衍']=RearrangeInfoGo(self.descMgr, self.emptyCharDescGenerator)
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp()
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical()
 
-class RearrangementManager_ZM(RearrangementManager):
+class OperatorManager_ZM(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
-		RearrangementManager.__init__(self, descMgr, emptyCharDescGenerator)
+		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp()
 

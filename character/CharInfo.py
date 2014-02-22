@@ -1,5 +1,9 @@
 
 class CharInfo:
+	class CharInfoProp:
+		def __init__(self):
+			pass
+
 	def __init__(self, charname, prop):
 		self.charname=charname
 

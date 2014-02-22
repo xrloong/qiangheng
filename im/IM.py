@@ -1,4 +1,5 @@
 from character import CharInfo
+from character import OperatorManager
 
 class IM:
 	"輸入法"
@@ -34,6 +35,7 @@ class IM:
 		self.descMgr=descMgr
 
 CharInfoGenerator=CharInfo.CharInfo
+OperatorManager=OperatorManager.OperatorManager
 
 if __name__=='__main__':
 	pass

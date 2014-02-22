@@ -1,5 +1,6 @@
 from .IM import IM
 from character import BSCharInfo
+from character import OperatorManager
 
 class Boshiamy(IM):
 	"嘸蝦米輸入法"
@@ -45,6 +46,7 @@ class Boshiamy(IM):
 
 IMInfo=Boshiamy
 CharInfoGenerator=BSCharInfo.BSCharInfo
+OperatorManager=OperatorManager.OperatorManager_BS
 
 if __name__=='__main__':
 	pass

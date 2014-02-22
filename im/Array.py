@@ -1,5 +1,6 @@
 from .IM import IM
 from character import ARCharInfo
+from character import OperatorManager
 
 class Array(IM):
 	"行列輸入法"
@@ -49,6 +50,7 @@ class Array(IM):
 
 IMInfo=Array
 CharInfoGenerator=ARCharInfo.ARCharInfo
+OperatorManager=OperatorManager.OperatorManager_AR
 
 if __name__=='__main__':
 	pass

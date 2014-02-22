@@ -1,5 +1,6 @@
 from .IM import IM
 from character import ZMCharInfo
+from character import OperatorManager
 
 class ZhengMa(IM):
 	"鄭碼輸入法"
@@ -45,6 +46,7 @@ class ZhengMa(IM):
 
 IMInfo=ZhengMa
 CharInfoGenerator=ZMCharInfo.ZMCharInfo
+OperatorManager=OperatorManager.OperatorManager_ZM
 
 if __name__=='__main__':
 	pass

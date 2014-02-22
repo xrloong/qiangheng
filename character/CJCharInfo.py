@@ -71,7 +71,7 @@ class CJCharInfo(CharInfo):
 		if self._cj_single:
 			return self._cj_single
 		else:
-			return self.computeTotalCode(self._cj_radix_list, self._cj_direction).lower()
+			return CJCharInfo.computeTotalCode(self._cj_radix_list, self._cj_direction).lower()
 
 	def getCode(self):
 		if self.cj: return self.cj

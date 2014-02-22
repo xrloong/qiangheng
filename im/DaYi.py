@@ -1,5 +1,6 @@
 from .IM import IM
 from character import DYCharInfo
+from character import OperatorManager
 
 class DaYi(IM):
 	"大易輸入法"
@@ -59,6 +60,7 @@ class DaYi(IM):
 
 IMInfo=DaYi
 CharInfoGenerator=DYCharInfo.DYCharInfo
+OperatorManager=OperatorManager.OperatorManager_DY
 
 if __name__=='__main__':
 	pass
