@@ -37,6 +37,9 @@ xml:
 	done
 	touch $(XML_PATH)
 
+dc:
+	make xml puretable IMLIST=dc
+
 imtables: scim ibus gcin ovim msim puretable
 
 scim: $(SCIM_PATH)

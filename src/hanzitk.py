@@ -134,7 +134,7 @@ class RadicalManager:
 		self.fontDB={}
 		self.strokeCount={}
 
-		fontfile='_dc.xxxx'
+		fontfile='tables/puretable/qhdc-standard.txt'
 
 		for line in open(fontfile).readlines():
 			line=line.strip()

@@ -70,16 +70,6 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 			targetCodeInfo.getBottomRight())
 
 	@staticmethod
-	def encodeAsEast(codeInfo, operator, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-		codeInfo.setCode(
-			firstCodeInfo.getTopLeft(),
-			firstCodeInfo.getTopRight(),
-			lastCodeInfo.getBottomLeft(),
-			lastCodeInfo.getBottomRight())
-
-	@staticmethod
 	def encodeAsLoop(codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]

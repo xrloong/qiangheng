@@ -27,10 +27,10 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
 				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
 
-#			elif Operator.OperatorEqual.equals(operator):
-#				FCCodeInfoEncoder.encodeAsEqual(codeInfo, operator, codeInfoList)
-#			elif Operator.OperatorLoop.equals(operator):
-#				FCCodeInfoEncoder.encodeAsLoop(codeInfo, operator, codeInfoList)
+			elif Operator.OperatorEqual.equals(operator):
+				DCCodeInfoEncoder.encodeAsEqual(codeInfo, operator, codeInfoList)
+			elif Operator.OperatorLoop.equals(operator):
+				DCCodeInfoEncoder.encodeAsLoop(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorSilkworm.equals(operator):
 				DCCodeInfoEncoder.encodeAsSilkworm(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorGoose.equals(operator):
@@ -45,18 +45,16 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			elif Operator.OperatorDou.equals(operator):
 				DCCodeInfoEncoder.encodeAsDou(codeInfo, operator, codeInfoList)
 
-				"""
 			elif Operator.OperatorMu.equals(operator):
-				FCCodeInfoEncoder.encodeAsMu(codeInfo, operator, codeInfoList)
+				DCCodeInfoEncoder.encodeAsMu(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorZuo.equals(operator):
-				FCCodeInfoEncoder.encodeAsZuo(codeInfo, operator, codeInfoList)
+				DCCodeInfoEncoder.encodeAsZuo(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorYou.equals(operator):
-				FCCodeInfoEncoder.encodeAsYou(codeInfo, operator, codeInfoList)
+				DCCodeInfoEncoder.encodeAsYou(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorLiang.equals(operator):
-				FCCodeInfoEncoder.encodeAsLiang(codeInfo, operator, codeInfoList)
+				DCCodeInfoEncoder.encodeAsLiang(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorJia.equals(operator):
-				FCCodeInfoEncoder.encodeAsJia(codeInfo, operator, codeInfoList)
-				"""
+				DCCodeInfoEncoder.encodeAsJia(codeInfo, operator, codeInfoList)
 
 			else:
 				DCCodeInfoEncoder.encodeAsConcatenate(codeInfo, operator, codeInfoList)
@@ -93,31 +91,29 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	@staticmethod
 	def encodeAsEqual(codeInfo, operator, codeInfoList):
-		targetCodeInfo=codeInfoList[0]
-		codeInfo.setCode(
-			targetCodeInfo.getTopLeft(),
-			targetCodeInfo.getTopRight(),
-			targetCodeInfo.getBottomLeft(),
-			targetCodeInfo.getBottomRight())
-
-	@staticmethod
-	def encodeAsEast(codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-		codeInfo.setCode(
-			firstCodeInfo.getTopLeft(),
-			firstCodeInfo.getTopRight(),
-			lastCodeInfo.getBottomLeft(),
-			lastCodeInfo.getBottomRight())
+
+		nCount=len(codeInfoList)
+		helper=DCGridHelper(1, 1)
+
+		newActionList=[]
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 0, 0, 0))
+
+		codeInfo.setActionList(newActionList)
 
 	@staticmethod
 	def encodeAsLoop(codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-		grid=FCGrid()
-		grid.setAsOut_In(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+		secondCodeInfo=codeInfoList[-1]
+
+		nCount=len(codeInfoList)
+		helper=DCGridHelper(3, 3)
+
+		newActionList=[]
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 2, 0, 2))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 1, 1, 1, 1))
+
+		codeInfo.setActionList(newActionList)
 
 	@staticmethod
 	def encodeAsSilkworm(codeInfo, operator, codeInfoList):
@@ -126,19 +122,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		newActionList=[]
 		for (index, tmpCodeInfo) in enumerate(codeInfoList):
-			[left, top, right, bottom]=helper.getBlock(0, 0, index, index)
-			width=right-left
-			height=bottom-top
+			newActionList.extend(DCCodeInfoEncoder.computeNewActionList(tmpCodeInfo, helper, 0, 0, index, index))
 
-			xScale=width*1./DCGridHelper.WIDTH
-			yScale=height*1./DCGridHelper.HEIGHT
-
-			for tmpAction in tmpCodeInfo.getActionList():
-				action=copy.deepcopy(tmpAction)
-				action.scale(xScale, yScale)
-				action.translate(left, top)
-
-				newActionList.append(action)
 		codeInfo.setActionList(newActionList)
 
 	@staticmethod
@@ -148,19 +133,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		newActionList=[]
 		for (index, tmpCodeInfo) in enumerate(codeInfoList):
-			[left, top, right, bottom]=helper.getBlock(index, index, 0, 0)
-			width=right-left
-			height=bottom-top
+			newActionList.extend(DCCodeInfoEncoder.computeNewActionList(tmpCodeInfo, helper, index, index, 0, 0))
 
-			xScale=width*1./DCGridHelper.WIDTH
-			yScale=height*1./DCGridHelper.HEIGHT
-
-			for tmpAction in tmpCodeInfo.getActionList():
-				action=copy.deepcopy(tmpAction)
-				action.scale(xScale, yScale)
-				action.translate(left, top)
-
-				newActionList.append(action)
 		codeInfo.setActionList(newActionList)
 
 	@staticmethod
@@ -225,10 +199,15 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsTop_BottomLeft_BottomRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+		nCount=len(codeInfoList)
+		helper=DCGridHelper(3, 3)
+
+		newActionList=[]
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 2, 0, 2))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 0, 0, 2, 2))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(thirdCodeInfo, helper, 2, 2, 2, 2))
+
+		codeInfo.setActionList(newActionList)
 
 	@staticmethod
 	def encodeAsZuo(codeInfo, operator, codeInfoList):
@@ -237,10 +216,15 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsBottom_TopLeft_TopRight(thirdCodeInfo, firstCodeInfo, secondCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+		nCount=len(codeInfoList)
+		helper=DCGridHelper(3, 3)
+
+		newActionList=[]
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(thirdCodeInfo, helper, 0, 2, 0, 2))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 0, 0, 0))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 2, 2, 0, 0))
+
+		codeInfo.setActionList(newActionList)
 
 	@staticmethod
 	def encodeAsYou(codeInfo, operator, codeInfoList):
@@ -248,10 +232,15 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsBottom_InTopLeft_InTopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+		nCount=len(codeInfoList)
+		helper=DCGridHelper(5, 2)
+
+		newActionList=[]
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(thirdCodeInfo, helper, 0, 4, 0, 1))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 1, 1, 0, 0))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 3, 3, 0, 0))
+
+		codeInfo.setActionList(newActionList)
 
 	@staticmethod
 	def encodeAsLiang(codeInfo, operator, codeInfoList):
@@ -259,10 +248,15 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsTop_InBottomLeft_InBottomRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+		nCount=len(codeInfoList)
+		helper=DCGridHelper(5, 2)
+
+		newActionList=[]
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(thirdCodeInfo, helper, 0, 4, 0, 1))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 1, 1, 1, 1))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 3, 3, 1, 1))
+
+		codeInfo.setActionList(newActionList)
 
 	@staticmethod
 	def encodeAsJia(codeInfo, operator, codeInfoList):
@@ -270,10 +264,15 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsBottom_InTopLeft_InTopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+		nCount=len(codeInfoList)
+		helper=DCGridHelper(3, 3)
+
+		newActionList=[]
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(thirdCodeInfo, helper, 0, 2, 0, 2))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 0, 1, 1))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 2, 2, 1, 1))
+
+		codeInfo.setActionList(newActionList)
 
 class DCGridHelper:
 	WIDTH=256
