@@ -24,6 +24,9 @@ filenamelist=[
 #		'charinfo/Katakana.txt',
 #		'charinfo/Verticalpunct.txt',
 ]
+filenamelist=[
+		'CJK.txt',
+]
 fileencoding='utf-8-sig'
 
 def checkgrammar(g):
@@ -50,7 +53,7 @@ def checkgrammar(g):
 		return False
 	return True
 
-def getDynamicFromFile(filenamelist):
+def getDynamicFromFile(filenamelist, CharConstructor):
 	chlist=[]
 	chdict={}
 
@@ -66,7 +69,7 @@ def getDynamicFromFile(filenamelist):
 					print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
 				else:
 					chlist.append(ll[1])
-					chdict[ll[1]]=char.Char(ll[1], ll[2:])
+					chdict[ll[1]]=CharConstructor(ll[1], ll[2:])
 	return chdict
 
 def getTableFromFile(filename):
@@ -82,21 +85,49 @@ def genFile(options):
 	choice=options.imname
 	method=options.method
 
+	tmpfname=filenamelist[0]
 	if choice in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
+		constructor=char.CJChar
+		pathlist=[
+				'charinfo/main/'+tmpfname,
+				'charinfo/cj/'+tmpfname,
+				]
 		z=im.CangJie()
 	elif choice in ['行', '行列', '行列輸入法', 'array', 'ar',]:
+		constructor=char.ARChar
+		pathlist=[
+				'charinfo/main/'+tmpfname,
+				'charinfo/ar/'+tmpfname,
+				]
 		z=im.Array()
 	elif choice in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
+		constructor=char.DYChar
+		pathlist=[
+				'charinfo/main/'+tmpfname,
+				'charinfo/dy/'+tmpfname,
+				]
 		z=im.DaYi()
 	elif choice in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
+		constructor=char.BSChar
+		pathlist=[
+				'charinfo/main/'+tmpfname,
+				'charinfo/bs/'+tmpfname,
+				]
 		z=im.Boshiamy()
 	elif choice in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
+		constructor=char.ZMChar
+		pathlist=[
+				'charinfo/main/'+tmpfname,
+				'charinfo/zm/'+tmpfname,
+				]
 		z=im.ZhengMa()
 	else:
+		constructor=char.Char
+		pathlist=[]
 		z=im.NoneIM()
 
 	if method in ['動', '動態', '動態組碼', 'dynamic',]:
-		chdict=getDynamicFromFile(filenamelist)
+		chdict=getDynamicFromFile(pathlist, constructor)
 		z.setStruct(chdict)
 	elif method in ['表', '表格', 'puretable', 'pt']:
 		cmtable=getTableFromFile(options.ptfile)
