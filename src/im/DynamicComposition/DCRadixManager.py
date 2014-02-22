@@ -513,7 +513,7 @@ class StrokeObject_橫撇彎鉤(StrokeObject):
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w))
-		points.extend(self.compute_撇曲(points[-1][1], wr, wl, h, cr))
+		points.extend(self.compute_撇曲(points[-1][1], wl, wr, h, cr))
 		points.extend(self.compute_上(points[-1][1], h3))
 		return points
 
@@ -1308,7 +1308,7 @@ class DCRadixParser(RadixParser):
 			"橫折鉤": StrokeObject_橫折鉤,
 			"橫折彎鉤": StrokeObject_橫折彎鉤,
 			"橫撇": StrokeObject_橫撇,
-			"橫撇彎鉤": StrokeObject_橫撇彎鉤,
+			"橫曲鉤": StrokeObject_橫撇彎鉤,
 			"橫撇橫折鉤": StrokeObject_橫撇橫折鉤,
 			"橫斜鉤": StrokeObject_橫斜鉤,
 			"橫折橫折": StrokeObject_橫折橫折,
@@ -1320,6 +1320,7 @@ class DCRadixParser(RadixParser):
 			"豎曲鉤": StrokeObject_豎曲鉤,
 			"豎曲": StrokeObject_豎曲,
 			"豎鉤": StrokeObject_豎鉤,
+			"臥鉤": StrokeObject_豎曲鉤,
 			"斜鉤": StrokeObject_斜鉤,
 			"彎鉤": StrokeObject_彎鉤,
 			"撇鉤": StrokeObject_撇鉤,
