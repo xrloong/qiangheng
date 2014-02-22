@@ -1,6 +1,7 @@
-from .NoneIM import NoneIM
+from .IM import IM
+from character import BSCharInfo
 
-class Boshiamy(NoneIM):
+class Boshiamy(IM):
 	"嘸蝦米輸入法"
 
 	def __init__(self):
@@ -40,6 +41,9 @@ class Boshiamy(NoneIM):
 				}
 		self.iconfile="qhbs.svg"
 		self.maxkeylength=4
+
+IMInfo=Boshiamy
+CharInfoGenerator=BSCharInfo.BSCharInfo
 
 if __name__=='__main__':
 	pass

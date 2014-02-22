@@ -1,10 +1,9 @@
-from im import NoneIM
+from im import IM
 from im import Array
 from im import Boshiamy
 from im import CangJie
 from im import DaYi
 from im import ZhengMa
-from im import TableIM
 
 from character import CharInfo
 from character import ARCharInfo
@@ -18,42 +17,31 @@ class IMMgr:
 		pass
 
 	@staticmethod
-	def getIM(imName, method):
+	def getIMModule(imName):
 		if imName == '倉頡':
-			im=CangJie.CangJie()
+			imModule=CangJie
 		elif imName == '行列':
-			im=Array.Array()
+			imModule=Array
 		elif imName == '大易':
-			im=DaYi.DaYi()
+			imModule=DaYi
 		elif imName == '嘸蝦米':
-			im=Boshiamy.Boshiamy()
+			imModule=Boshiamy
 		elif imName == '鄭碼':
-			im=ZhengMa.ZhengMa()
-		elif imName == '表格':
-			im=TableIM.TableIM()
+			imModule=ZhengMa
 		else:
-			im=NoneIM.NoneIM()
+			imModule=IM
 
-		if method=='表格對應':
-			im=TableIM.TableIM(im)
+		return imModule
 
-		return im
+	@staticmethod
+	def getIM(imName):
+		imModule=IMMgr.getIMModule(imName)
+		return imModule.IMInfo
 
 	@staticmethod
 	def getCharInfoGenerator(imName):
-		if imName == '倉頡':
-			cig=CJCharInfo.CJCharInfo
-		elif imName == '行列':
-			cig=ARCharInfo.ARCharInfo
-		elif imName == '大易':
-			cig=DYCharInfo.DYCharInfo
-		elif imName == '嘸蝦米':
-			cig=BSCharInfo.BSCharInfo
-		elif imName == '鄭碼':
-			cig=ZMCharInfo.ZMCharInfo
-		else:
-			cig=CharInfo.CharInfo
-		return cig
+		imModule=IMMgr.getIMModule(imName)
+		return imModule.CharInfoGenerator
 
 if __name__=='__main__':
 	pass

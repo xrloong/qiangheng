@@ -1,6 +1,7 @@
-from .NoneIM import NoneIM
+from .IM import IM
+from character import CJCharInfo
 
-class CangJie(NoneIM):
+class CangJie(IM):
 	"倉頡輸入法"
 
 	def __init__(self):
@@ -40,6 +41,9 @@ class CangJie(NoneIM):
 				}
 		self.iconfile="qhcj.svg"
 		self.maxkeylength=5
+
+IMInfo=CangJie
+CharInfoGenerator=CJCharInfo.CJCharInfo
 
 if __name__=='__main__':
 	pass

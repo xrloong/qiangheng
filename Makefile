@@ -25,7 +25,7 @@ puretable:
 	touch $(PURETABLE_PATH)
 	for im in $(IMLIST);\
 	do\
-		time ./qiangheng.py -i $$im -p puretable -m dynamic > $(PURETABLE_PATH)/qh$$im.txt;\
+		time ./qiangheng.py -i $$im > $(PURETABLE_PATH)/qh$$im.txt;\
 	done
 
 imtables: scim ibus gcin ovim msim
@@ -36,7 +36,7 @@ $(SCIM_PATH): $(PURETABLE_PATH)
 	touch $(SCIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		./qiangheng.py -i $$im -p scim -m table -t $(PURETABLE_PATH)/qh$$im.txt > $(SCIM_PATH)/qh$$im.scim;\
+		./convertTable.py -i $$im -p scim -t $(PURETABLE_PATH)/qh$$im.txt > $(SCIM_PATH)/qh$$im.scim;\
 		scim-make-table $(SCIM_PATH)/qh$$im.scim -b -o $(SCIM_PATH)/qh$$im.bin;\
 	done
 
@@ -47,7 +47,7 @@ $(IBUS_PATH): $(PURETABLE_PATH)
 	mkdir -p tmp
 	for im in $(IMLIST);\
 	do\
-		./qiangheng.py -i $$im -p ibus -m table -t $(PURETABLE_PATH)/qh$$im.txt > $(IBUS_PATH)/qh$$im.ibus;\
+		./convertTable.py -i $$im -p ibus -t $(PURETABLE_PATH)/qh$$im.txt > $(IBUS_PATH)/qh$$im.ibus;\
 		bash -c "cd tmp; ibus-table-createdb -s ../$(IBUS_PATH)/qh$$im.ibus";\
 	done
 	cp tmp/*.db $(IBUS_PATH)
@@ -58,7 +58,7 @@ $(GCIN_PATH): $(PURETABLE_PATH)
 	touch $(GCIN_PATH)
 	for im in $(IMLIST);\
 	do\
-		./qiangheng.py -i $$im -p gcin -m table -t $(PURETABLE_PATH)/qh$$im.txt > $(GCIN_PATH)/qh$$im.cin;\
+		./convertTable.py -i $$im -p gcin -t $(PURETABLE_PATH)/qh$$im.txt > $(GCIN_PATH)/qh$$im.cin;\
 		gcin2tab $(GCIN_PATH)/qh$$im.cin;\
 	done
 
@@ -68,7 +68,7 @@ $(OVIM_PATH): $(PURETABLE_PATH)
 	touch $(OVIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		./qiangheng.py -i $$im -p ovim -m table -t $(PURETABLE_PATH)/qh$$im.txt > $(OVIM_PATH)/qh$$im.cin;\
+		./convertTable.py -i $$im -p ovim -t $(PURETABLE_PATH)/qh$$im.txt > $(OVIM_PATH)/qh$$im.cin;\
 	done
 
 msim: $(MSIM_PATH)
@@ -77,14 +77,14 @@ $(MSIM_PATH): $(PURETABLE_PATH)
 	touch $(MSIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		./qiangheng.py -i $$im -p msim -m table -t $(PURETABLE_PATH)/qh$$im.txt > $(MSIM_PATH)/qh$$im.msim;\
+		./convertTable.py -i $$im -p msim -t $(PURETABLE_PATH)/qh$$im.txt > $(MSIM_PATH)/qh$$im.msim;\
 		sed 's/$$'"/`echo \\\r`/" $(MSIM_PATH)/qh$$im.msim > tmp/qh$$im.msim.dos;\
 		iconv -f utf-8 -t utf-16le tmp/qh$$im.msim.dos > $(MSIM_PATH)/qh$$im.msim.txt;\
 	done
 
 testing:
 	for im in $(TEST_IMLIST);\
-	do ./qiangheng.py --dir-charinfo test/charinfo -i $$im -p puretable -m dynamic > test/puretable/$$im.puretable.txt;\
+	do ./qiangheng.py --dir-charinfo test/charinfo -i $$im > test/puretable/$$im.puretable.txt;\
 	done
 
 compare: testing

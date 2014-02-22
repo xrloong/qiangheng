@@ -1,6 +1,7 @@
-from .NoneIM import NoneIM
+from .IM import IM
+from character import ZMCharInfo
 
-class ZhengMa(NoneIM):
+class ZhengMa(IM):
 	"鄭碼輸入法"
 
 	def __init__(self):
@@ -40,6 +41,9 @@ class ZhengMa(NoneIM):
 				}
 		self.iconfile="qhzm.svg"
 		self.maxkeylength=4
+
+IMInfo=ZhengMa
+CharInfoGenerator=ZMCharInfo.ZMCharInfo
 
 if __name__=='__main__':
 	pass

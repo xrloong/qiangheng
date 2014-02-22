@@ -1,6 +1,7 @@
-from .NoneIM import NoneIM
+from .IM import IM
+from character import DYCharInfo
 
-class DaYi(NoneIM):
+class DaYi(IM):
 	"大易輸入法"
 
 	def __init__(self):
@@ -54,6 +55,9 @@ class DaYi(NoneIM):
 				}
 		self.iconfile="qhdy.svg"
 		self.maxkeylength=4
+
+IMInfo=DaYi
+CharInfoGenerator=DYCharInfo.DYCharInfo
 
 if __name__=='__main__':
 	pass

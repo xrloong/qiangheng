@@ -1,6 +1,7 @@
-from .NoneIM import NoneIM
+from .IM import IM
+from character import ARCharInfo
 
-class Array(NoneIM):
+class Array(IM):
 	"行列輸入法"
 
 	def __init__(self):
@@ -44,6 +45,9 @@ class Array(NoneIM):
 				}
 		self.iconfile="qhar.svg"
 		self.maxkeylength=4
+
+IMInfo=Array
+CharInfoGenerator=ARCharInfo.ARCharInfo
 
 if __name__=='__main__':
 	pass

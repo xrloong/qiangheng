@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 from im.IMMgr import IMMgr
 
@@ -8,10 +9,7 @@ import qhparser
 
 from optparse import OptionParser
 oparser = OptionParser()
-oparser.add_option("-t", "--pure-table-file", dest="ptfile", help="表格名稱")
 oparser.add_option("-i", "--im", dest="imname", help="輸入法名稱", default="倉頡")
-oparser.add_option("-m", "--method", dest="method", help="産生的方式", default="動態")
-oparser.add_option("-p", "--platform", dest="platform", help="目標平台", default="puretable")
 oparser.add_option("--dir-charinfo", dest="dir_charinfo", help="結構所在的目錄", default="charinfo")
 (options, args) = oparser.parse_args()
 
@@ -100,95 +98,71 @@ def getDescDBFromFile(filenamelist, descMgr):
 					comp.setChInfo(chInfo)
 					descMgr[ll[1]]=comp
 
-def getTableFromFile(filename):
-	t=[]
-	if filename:
-		f=open(filename, encoding=fileencoding)
-		for line in f.readlines():
-			t.append(line.split())
-	return t
+def genIMMapping(descMgr, targetCharList):
+	table=[]
+	for chname in targetCharList:
+		expandDesc=descMgr.getExpandDescriptionByNameInNetwork(chname)
 
-def genFile(options):
-	pf=options.platform
-	choice=options.imname
-	method=options.method
+		if expandDesc==None:
+			continue
 
-	if choice in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
+		descMgr.setCharTree(expandDesc)
+
+		chinfo=expandDesc.getChInfo()
+		code=chinfo.getCode()
+		if chinfo.isToShow() and code:
+			table.append([code, chname])
+		else:
+			pass
+	return table
+
+def getIMInfo(imName):
+	if imName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
 		imDirPath='cj/'
 		imName='倉頡'
-	elif choice in ['行', '行列', '行列輸入法', 'array', 'ar',]:
+	elif imName in ['行', '行列', '行列輸入法', 'array', 'ar',]:
 		imDirPath='ar/'
 		imName='行列'
-	elif choice in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
+	elif imName in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
 		imDirPath='dy/'
 		imName='大易'
-	elif choice in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
+	elif imName in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
 		imDirPath='bs/'
 		imName='嘸蝦米'
-	elif choice in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
+	elif imName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
 		imDirPath='zm/'
 		imName='鄭碼'
-	elif choice in ['表', '表格', '表格輸入法', 'table', 'tb',]:
-		imName='表格'
 	else:
+		imDirPath=''
 		imName='空'
 
-	if method in ['動態組碼', 'dynamic', ]:
-		imMethod='動態組碼'
-	elif method in ['表格對應', 'table']:
-		imMethod='表格對應'
-	else:
-		imMethod='不做事'
+	imModule=IMMgr.getIMModule(imName)
+	return [imModule, imDirPath]
+	
+def genFile(options):
+	choice=options.imname
 
-	inputMethod=IMMgr.getIM(imName, imMethod)
+	[imModule, imDirPath]=getIMInfo(choice)
 
-	if imMethod=='動態組碼':
-		dirchar=options.dir_charinfo + "/"
-		tmpfname=filenamelist[0]
-		pathlist=[
-				dirchar+'main/'+tmpfname,
-				dirchar+imDirPath+tmpfname,
-				]
+	dirchar=options.dir_charinfo + "/"
+	tmpfname=filenamelist[0]
+	pathlist=[
+			dirchar+'main/'+tmpfname,
+			dirchar+imDirPath+tmpfname,
+			]
 
-		constructor=IMMgr.getCharInfoGenerator(imName)
-		descMgr=CharDescriptionManager(constructor)
+#	imModule=IMMgr.getIMModule(imName)
+#	constructor=IMMgr.getCharInfoGenerator(imName)
+	ciGenerator=imModule.CharInfoGenerator
+	descMgr=CharDescriptionManager(ciGenerator)
 
-		getDescDBFromFile(pathlist, descMgr)
-		descMgr.ConstructDescriptionNetwork()
+	getDescDBFromFile(pathlist, descMgr)
+	descMgr.ConstructDescriptionNetwork()
 
-		inputMethod.setStruct(descMgr)
-	elif imMethod=='表格對應':
-		cmtable=getTableFromFile(options.ptfile)
-		inputMethod.setTable(cmtable)
-	else:
-		pass
-
-	if pf in ['scim']:
-		p=platform.ScimPlatform(inputMethod)
-	elif pf in ['ibus']:
-		p=platform.IBusPlatform(inputMethod)
-	elif pf in ['gcin']:
-		p=platform.GcinPlatform(inputMethod)
-	elif pf in ['ovim']:
-		p=platform.OVimPlatform(inputMethod)
-	elif pf in ['msim']:
-		p=platform.MSimPlatform(inputMethod)
-	elif pf in ['table']:
-		p=platform.NonePlatform(inputMethod)
-	else:
-		p=platform.NonePlatform(inputMethod)
-
-	# 產生檔頭
-	header=p.genHeader()
-
-	if header: print(header)
-	if p.strBeginTable: print(p.strBeginTable)
-
-	table=p.genCodeMappingsTable(inputMethod.genIMMapping())
-	if table: print(table)
-#	for x in sorted(table): print(*x, sep='\t')
-
-	if p.strEndTable: print(p.strEndTable)
-
+	targetCharList=descMgr.keys()
+	cm=genIMMapping(descMgr, targetCharList)
+	table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x), cm)))
+	print(table)
 
 genFile(options)
+
