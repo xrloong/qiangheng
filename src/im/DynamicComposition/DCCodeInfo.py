@@ -1,5 +1,5 @@
 from ..base.CodeInfo import CodeInfo
-from .Stroke import Pane
+from .Calligraphy import Pane
 
 class DCCodeInfo(CodeInfo):
 	INSTALLMENT_SEPERATOR='|'

@@ -1,7 +1,7 @@
 from .DCCodeInfo import DCCodeInfo
 from ..base.CodeInfoEncoder import CodeInfoEncoder
 from ..base.CodeInfo import CodeInfo
-from .Stroke import Pane
+from .Calligraphy import Pane
 
 import sys
 import copy
