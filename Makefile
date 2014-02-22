@@ -109,6 +109,8 @@ testing:
 compare: testing
 	diff -rN test/puretable_ans test/puretable
 
+pdf: tex/principle.pdf
+
 tex/principle.pdf: tex/principle.tex
 	cd tex; xelatex principle.tex; rm principle.aux  principle.log
 
