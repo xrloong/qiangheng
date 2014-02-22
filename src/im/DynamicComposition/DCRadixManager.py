@@ -36,10 +36,16 @@ class DCRadixParser(RadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo=radixInfo.getCodeElement()
 
-		strokeGroupNode=elementCodeInfo.find(DCRadixParser.TAG_STROKE_GROUP)
-		[strokeGroupName, strokeGroup]=self.parseStrokeGroup(strokeGroupNode)
+		strokeGroupDB={}
 
-		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeGroup)
+		strokeGroupNodeList=elementCodeInfo.findall(DCRadixParser.TAG_STROKE_GROUP)
+		for strokeGroupNode in strokeGroupNodeList:
+			[strokeGroupName, strokeGroup]=self.parseStrokeGroup(strokeGroupNode)
+			if strokeGroupName==None:
+				strokeGroupName=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT
+			strokeGroupDB[strokeGroupName]=strokeGroup
+
+		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeGroupDB)
 
 		extraPaneDB=self.parseExtraScopeDB(elementCodeInfo)
 		codeInfo.setExtraPaneDB(extraPaneDB)

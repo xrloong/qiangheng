@@ -1,6 +1,7 @@
 from ..base.CodeInfo import CodeInfo
 from .Calligraphy import Pane
 from .Calligraphy import StrokeGroup
+import copy
 
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"
@@ -26,22 +27,36 @@ class DCCodeInfo(CodeInfo):
 	PANE_NAME_ZUO_1="㘴:1"
 	PANE_NAME_ZUO_2="㘴:2"
 
-	def __init__(self, strokeGroup):
+	STROKE_GROUP_NAME_DEFAULT="瑲珩預設筆劃組名稱"
+
+	STROKE_GROUP_NAME_LOOP="回"
+	STROKE_GROUP_NAME_QI="起"
+	STROKE_GROUP_NAME_LIAO="廖"
+	STROKE_GROUP_NAME_DAO="斗"
+	STROKE_GROUP_NAME_ZAI="載"
+
+	STROKE_GROUP_NAME_MU="畞"
+	STROKE_GROUP_NAME_YOU="幽"
+	STROKE_GROUP_NAME_LIANG="㒳"
+	STROKE_GROUP_NAME_JIA="夾"
+	STROKE_GROUP_NAME_ZUO="㘴"
+
+	def __init__(self, strokeGroupDB):
 		CodeInfo.__init__(self)
 
-		self.strokeGroup=strokeGroup
+		self.strokeGroupDB=strokeGroupDB
 		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.DEFAULT_PANE}
 
 	@staticmethod
-	def generateDefaultCodeInfo(strokeGroup):
-		codeInfo=DCCodeInfo(strokeGroup)
+	def generateDefaultCodeInfo(strokeGroupDB):
+		codeInfo=DCCodeInfo(strokeGroupDB)
 		return codeInfo
 
 	def toCode(self):
 		return self.getCode()
 
 	def getStrokeList(self):
-		return self.strokeGroup.getStrokeList()
+		return self.getStrokeGroup().getStrokeList()
 
 	def getCode(self):
 		strokeList=self.getStrokeList()
@@ -58,12 +73,18 @@ class DCCodeInfo(CodeInfo):
 	def getExtraPane(self, paneName):
 		return self.extraPaneDB.get(paneName, None)
 
-	def getStrokeGroup(self):
-		return self.strokeGroup
+	def getStrokeGroup(self, strokeGroupName=STROKE_GROUP_NAME_DEFAULT):
+		return self.strokeGroupDB.get(strokeGroupName)
+
+	def getCopyOfStrokeGroup(self, strokeGroupName=STROKE_GROUP_NAME_DEFAULT):
+		strokeGroup=self.getStrokeGroup(strokeGroupName)
+		if strokeGroupName!=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT and strokeGroup==None:
+			strokeGroup=self.getStrokeGroup(DCCodeInfo.STROKE_GROUP_NAME_DEFAULT)
+		return copy.deepcopy(strokeGroup)
 
 	def getStrokeCount(self):
-		return len(self.strokeGroup.getStrokeList())
+		return len(self.getStrokeList())
 
 	def transform(self, pane):
-		self.strokeGroup.transform(pane)
+		self.getStrokeGroup().transform(pane)
 
