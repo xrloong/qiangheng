@@ -78,7 +78,9 @@ def parsestructure(g):
 
 def getDescDBFromFile(filenamelist, descMgr):
 	charInfoGenerator=descMgr.getCharInfoGenerator()
-	anonyCharInfoGenerator=descMgr.getAnonymousCharInfoGenerator()
+	emptyCharInfoGenerator=descMgr.getEmptyCharInfoGenerator()
+	charDescGenerator=descMgr.getCharDescGenerator()
+	emptyCharDescGenerator=descMgr.getEmptyCharDescGenerator()
 
 	for filename in filenamelist:
 		f=open(filename, encoding=fileencoding)
@@ -94,7 +96,7 @@ def getDescDBFromFile(filenamelist, descMgr):
 				else:
 					operator, operandlist=parseans
 					chInfo=charInfoGenerator(ll[1], ll[3:])
-					comp=qhparser.Parser.parse(ll[2], ll[1], anonyCharInfoGenerator)
+					comp=qhparser.Parser.parse(ll[2], ll[1], charDescGenerator)
 					comp.setChInfo(chInfo)
 					descMgr[ll[1]]=comp
 

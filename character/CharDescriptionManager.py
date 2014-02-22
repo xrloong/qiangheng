@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 from .CharDesc import CharDesc
+from .CharInfo import CharInfo
 from .RearrangementManager import RearrangementManager
 
 class CharDescriptionManager:
-	NoneDesc=CharDesc("", '龜', [], '+', '(龜)')
+	NoneInfo=CharInfo('[瑲珩預設空字符]', [])
+	NoneDesc=CharDesc("", '龜', [], '+', '(龜)', NoneInfo)
 
 	def __init__(self, CharInfoGenerator):
 		# descDB 放最原始、沒有擴展過的 CharDesc ，也就是從檔案讀出來的資料。
@@ -15,23 +17,19 @@ class CharDescriptionManager:
 		self.descDB={}
 		self.descNetwork={}
 
-		def AnonymouseCharInfoGenerator():
+		def emptyCharInfoGenerator():
 			return CharInfoGenerator("XXXX", [])
 
-		def generateAnonymousDescription():
+		def emptyCharDescGenerator():
 			anonymousName=CharDesc.generateNewAnonymousName()
-			return CharDescriptionManager.generateDescription(anonymousName)
+			return self.generateDescription(anonymousName)
 
-		# charInfoGenerator 會產生新的 CharInfo (不同的輸入法有相對應的 CharInfo) 。
-		# charDescGenerator 會產生新的 CharDesc ，可自動加上匿名。
-		anonymousCharInfoGenerator=AnonymouseCharInfoGenerator
-		charInfoGenerator=CharInfoGenerator
-		charDescGenerator=generateAnonymousDescription
+		self.rearrangeMgr=RearrangementManager(emptyCharInfoGenerator, emptyCharDescGenerator)
 
-		self.rearrangeMgr=RearrangementManager(anonymousCharInfoGenerator, charDescGenerator)
-		self.anonymousCharInfoGenerator=AnonymouseCharInfoGenerator
-		self.charInfoGenerator=charInfoGenerator
-		self.charDescGenerator=charDescGenerator
+		self.charInfoGenerator=CharInfoGenerator
+		self.charDescGenerator=self.generateDescription
+		self.emptyCharInfoGenerator=emptyCharInfoGenerator
+		self.emptyCharDescGenerator=emptyCharDescGenerator
 
 	def __getitem__(self, key):
 		return self.descDB[key]
@@ -45,16 +43,27 @@ class CharDescriptionManager:
 	def getCharInfoGenerator(self):
 		return self.charInfoGenerator
 
-	def getAnonymousCharInfoGenerator(self):
-		return self.anonymousCharInfoGenerator
-
-	def getAnonymousCharDescGenerator(self):
+	def getCharDescGenerator(self):
 		return self.charDescGenerator
+
+	def getEmptyCharInfoGenerator(self):
+		return self.emptyCharInfoGenerator
+
+	def getEmptyCharDescGenerator(self):
+		return self.emptyCharDescGenerator
+
+	@staticmethod
+	def getNoneInfo():
+		return CharDescriptionManager.NoneInfo
+
+	@staticmethod
+	def getNoneDescription():
+		return CharDescriptionManager.NoneDesc
 
 	def ConstructDescriptionNetwork(self):
 		for charName in self.descDB.keys():
 			if charName not in self.descNetwork:
-				charDesc=CharDescriptionManager.generateDescription(charName)
+				charDesc=self.generateDescription(charName)
 				self.expandCharDescInNetwork(charDesc, self.descDB.get(charName))
 				self.descNetwork[charName]=charDesc
 
@@ -68,7 +77,7 @@ class CharDescriptionManager:
 			if childSrcDesc.isAnonymous():
 				# 若是為匿名結構，無法用名字查出結構，直接複製
 				anonymousName=CharDesc.generateNewAnonymousName()
-				childDstDesc=CharDescriptionManager.generateDescription(anonymousName)
+				childDstDesc=self.generateDescription(anonymousName)
 				self.expandCharDescInNetwork(childDstDesc, childSrcDesc)
 
 			else:
@@ -77,7 +86,7 @@ class CharDescriptionManager:
 				else:
 					expandChildSrcDesc=self.descDB.get(childSrcDesc.name)
 
-					childDstDesc=CharDescriptionManager.generateDescription(expandChildSrcDesc.name)
+					childDstDesc=self.generateDescription(expandChildSrcDesc.name)
 
 					self.expandCharDescInNetwork(childDstDesc, expandChildSrcDesc)
 					self.descNetwork[childDstDesc.name]=childDstDesc
@@ -90,16 +99,12 @@ class CharDescriptionManager:
 	def getExpandDescriptionByNameInNetwork(self, charName):
 		return self.descNetwork.get(charName, None)
 
-	@staticmethod
-	def generateDescription(charName, structInfo=['龜', [], '(龜)']):
+	def generateDescription(self, charName, structInfo=['龜', [], '(龜)']):
 		operator, CompList, expression=structInfo
 		direction=RearrangementManager.computeDirection(operator)
-		charDesc=CharDesc(charName, operator, CompList, direction, expression)
+#		charDesc=CharDesc(charName, operator, CompList, direction, expression, CharDescriptionManager.NoneInfo)
+		charDesc=CharDesc(charName, operator, CompList, direction, expression, self.emptyCharInfoGenerator())
 		return charDesc
-
-	@staticmethod
-	def getNoneDescription():
-		return CharDescriptionManager.NoneDesc
 
 	@staticmethod
 	def setCharTree(charDesc):

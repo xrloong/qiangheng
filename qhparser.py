@@ -94,7 +94,7 @@ class Parser:
 	def __init__(self):
 		pass
 
-	def parse(data, name, CharInfoConstructor):
+	def parse(data, name, CharDescGenerator):
 		def parseCompDesc():
 			tkn=lexer.getNextToken()
 			if tkn.ttype != Token.leftParenthesis:
@@ -131,7 +131,7 @@ class Parser:
 				compList=[]
 
 			anonymousName=CharDesc.generateNewAnonymousName()
-			comp=CharDescriptionManager.generateDescription(anonymousName, [operator, compList, '(龜)'])
+			comp=CharDescGenerator(anonymousName, [operator, compList, '(龜)'])
 
 			return comp
 
@@ -140,14 +140,12 @@ class Parser:
 			while True:
 				tnk=lexer.getNextToken()
 				if tnk.ttype==Token.hanzi or tnk.ttype==Token.radical:
-					comp=CharDescriptionManager.generateDescription(tnk.value)
+					comp=CharDescGenerator(tnk.value)
 					l.append(comp)
 				elif tnk.ttype==Token.leftParenthesis:
 					lexer.pushBackToken(tnk)
-					chInfo=CharInfoConstructor()
 					tmpcomp=parseCompDesc()
 					if tmpcomp:
-						tmpcomp.setChInfo(chInfo)
 						l.append(tmpcomp)
 					else:
 						l=None

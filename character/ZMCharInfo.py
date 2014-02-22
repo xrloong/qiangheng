@@ -5,7 +5,6 @@ class ZMCharInfo(CharInfo):
 		super().__init__(charname, prop)
 
 		self.setFlag=False
-		self.noneFlag=False
 
 		self._zm_rtlist=[]
 		self._zm_incode=None

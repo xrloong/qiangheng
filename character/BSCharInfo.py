@@ -5,7 +5,6 @@ class BSCharInfo(CharInfo):
 		super().__init__(charname, prop)
 
 		self.setFlag=False
-		self.noneFlag=False
 
 		self._bs_incode=None
 		self._bs_spcode=None

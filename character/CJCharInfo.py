@@ -5,7 +5,6 @@ class CJCharInfo(CharInfo):
 		super().__init__(charname, prop)
 
 		self.setFlag=False
-		self.noneFlag=False
 
 		self._cj_direction=None	# 組件的方向
 		self._cj_single=None	# 當此字為獨體時的碼。

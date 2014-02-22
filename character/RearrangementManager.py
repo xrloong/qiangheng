@@ -1,8 +1,8 @@
 from .CharDesc import CharDesc
 class RearrangementManager:
-	def __init__(self, charInfoGenerator, charDescGenerator):
-		self.charInfoGenerator=charInfoGenerator
-		self.charDescGenerator=charDescGenerator
+	def __init__(self, emptyCharInfoGenerator, emptyCharDescGenerator):
+		self.emptyCharInfoGenerator=emptyCharInfoGenerator
+		self.emptyCharDescGenerator=emptyCharDescGenerator
 
 	# 分成以下層級
 	# 錯
@@ -66,9 +66,9 @@ class RearrangementManager:
 			y=oldCompList[1]
 			z=oldCompList[2]
 
-			tmpDesc=self.charDescGenerator()
+			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([y, z,])
-			tmpInfo=self.charInfoGenerator()
+			tmpInfo=self.emptyCharInfoGenerator()
 			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('好', '-')
 
@@ -80,9 +80,9 @@ class RearrangementManager:
 			y=oldCompList[1]
 			z=oldCompList[2]
 
-			tmpDesc=self.charDescGenerator()
+			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([x, y,])
-			tmpInfo=self.charInfoGenerator()
+			tmpInfo=self.emptyCharInfoGenerator()
 			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('好', '-')
 
@@ -94,9 +94,9 @@ class RearrangementManager:
 			y=oldCompList[1]
 			z=oldCompList[2]
 
-			tmpDesc=self.charDescGenerator()
+			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([y, z,])
-			tmpInfo=self.charInfoGenerator()
+			tmpInfo=self.emptyCharInfoGenerator()
 			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('志', '|')
 
@@ -108,9 +108,9 @@ class RearrangementManager:
 			y=oldCompList[1]
 			z=oldCompList[2]
 
-			tmpDesc=self.charDescGenerator()
+			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([x, y,])
-			tmpInfo=self.charInfoGenerator()
+			tmpInfo=self.emptyCharInfoGenerator()
 			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('志', '|')
 
@@ -189,9 +189,9 @@ class RearrangementManager:
 			ansDirection='|'
 			x=oldCompList[0]
 
-			tmpDesc=self.charDescGenerator()
+			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([x, x,])
-			tmpInfo=self.charInfoGenerator()
+			tmpInfo=self.emptyCharInfoGenerator()
 			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('好', '-')
 

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 import copy
-from .CharInfo import NoneChar
 
 class CharDesc:
 	"""字符描述"""
 	countAnonymousName=0
-	def __init__(self, name, operator, compList, direction, description):
+	def __init__(self, name, operator, compList, direction, description, chInfo):
 		self.name=name
 
 		self.op=operator
@@ -16,7 +15,7 @@ class CharDesc:
 		self.description=description
 
 		# 字符的資訊，如在某種輸入法下如何拆碼
-		self.chInfo=NoneChar
+		self.chInfo=chInfo
 
 	def __str__(self):
 		return '<{0}={1}|({2})>'.format(self.name, self.op, ",".join(map(str, self.compList)))

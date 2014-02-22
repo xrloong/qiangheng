@@ -5,7 +5,6 @@ class ARCharInfo(CharInfo):
 		super().__init__(charname, prop)
 
 		self.setFlag=False
-		self.noneFlag=False
 
 		self._ar_incode=None
 		if len(prop)>=1:

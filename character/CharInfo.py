@@ -29,6 +29,3 @@ class CharInfo:
 		#多型
 		return ""
 
-NoneChar=CharInfo('[瑲珩預設空字符]', [])
-NoneChar.noneFlag=True
-
