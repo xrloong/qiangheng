@@ -64,8 +64,9 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		return ARCodeInfoEncoder.computeArrayCodeByCodeList(arCodeList)
 
 	def computeArrayCodeByCodeList(arCodeList):
-		cat="".join(arCodeList)
-		arCode=cat[:3]+cat[-1] if len(cat)>4 else cat
+#		cat="".join(arCodeList)
+		cat=sum(arCodeList, [])
+		arCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
 		return arCode
 
 	@staticmethod
