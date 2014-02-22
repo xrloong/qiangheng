@@ -1,4 +1,4 @@
-from ..CodeInfo import CodeInfo
+from gear.CodeInfo import CodeInfo
 
 class IMInfo:
 	"輸入法"
@@ -30,10 +30,7 @@ class IMInfo:
 	def getKeyList(self):
 		return "".join(list(zip(*self.keyMaps))[0])
 
-#	def setStruct(self, descMgr):
-#		self.descMgr=descMgr
-
-CodeInfoGenerator=CodeInfo.CodeInfo
+CodeInfoGenerator=CodeInfo
 
 if __name__=='__main__':
 	pass

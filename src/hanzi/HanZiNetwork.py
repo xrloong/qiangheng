@@ -3,7 +3,6 @@ import copy
 
 from util.topsort import topsort
 from util.topsort import CycleError
-from description.CodeType import CodeType
 from description.operator import Operator
 
 from . import HanZiStructure
@@ -31,9 +30,6 @@ class DescriptionManagerToHanZiNetworkConverter:
 			for structDesc in structDescList:
 				structDesc.setRootName(charName)
 				self.recursivelyAddStructure(structDesc)
-
-#		self.hanziNetwork.setNodeTreeOfAllNodes()
-#		self.hanziNetwork.setNodeTreeByOrder(sortedNameList)
 
 		self.hanziNetwork.setNodeTreeByOrder(sortedNameList)
 		return self.hanziNetwork
@@ -105,10 +101,6 @@ class HanZiNetwork:
 		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager)
 		hanziNetwork=toHanZiNetworkConverter.constructDescriptionNetwork()
 		return hanziNetwork
-
-#	def setNodeTreeOfAllNodes(self):
-#		for node in self.nodeDict.values():
-#			node.setNodeTree()
 
 	def setNodeTreeByOrder(self, nameList):
 		for name in nameList:

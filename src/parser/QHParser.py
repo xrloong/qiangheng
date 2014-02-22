@@ -1,6 +1,6 @@
 import sys
 
-from description.CharacterProperty import CharacterProperty
+from gear.CharacterProperty import CharacterProperty
 from description.CharacterDescription import CharacterDescription
 from description.StructureDescription import HangerStructureDescription
 from description.StructureDescription import TurtleStructureDescription

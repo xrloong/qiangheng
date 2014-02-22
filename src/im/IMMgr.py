@@ -5,13 +5,6 @@ from .IMInfo import CangJieInfo
 from .IMInfo import DaYiInfo
 from .IMInfo import ZhengMaInfo
 
-from .CodeInfo import CodeInfo
-from .CodeInfo import ARCodeInfo
-from .CodeInfo import BSCodeInfo
-from .CodeInfo import CJCodeInfo
-from .CodeInfo import DYCodeInfo
-from .CodeInfo import ZMCodeInfo
-
 class IMMgr:
 	def __init__(self):
 		pass
@@ -47,18 +40,6 @@ class IMMgr:
 			imModule=IMInfo
 
 		return imModule
-
-	"""
-	@staticmethod
-	def getIM(imName):
-		imModule=IMMgr.getIMModule(imName)
-		return imModule.IMInfo
-
-	@staticmethod
-	def getCodeInfoGenerator(imName):
-		imModule=IMMgr.getIMModule(imName)
-		return imModule.CodeInfoGenerator
-	"""
 
 if __name__=='__main__':
 	pass

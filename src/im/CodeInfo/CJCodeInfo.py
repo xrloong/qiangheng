@@ -1,4 +1,4 @@
-from .CodeInfo import CodeInfo
+from gear.CodeInfo import CodeInfo
 
 class CJCodeInfo(CodeInfo):
 	def setRadixCodeProperties(self, propDict):

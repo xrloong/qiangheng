@@ -1,4 +1,4 @@
-from description.CodeType import CodeType
+from .CodeType import CodeType
 
 class CodeInfo:
 	def __init__(self, propDict={}):
@@ -18,8 +18,6 @@ class CodeInfo:
 		pass
 
 	def setCompositions(self, operator, complist):
-		# 計算倉頡碼時，需要知道此字的組成方向
-		# 計算行列、大易、嘸蝦米及鄭碼時，不需要知道此字的組成方向
 		for codeInfo in complist:
 			codeType=codeInfo.getCodeType()
 			self.codeType.multi(codeType)

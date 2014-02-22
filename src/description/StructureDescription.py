@@ -2,7 +2,7 @@
 
 import sys
 import copy
-from description.CodeType import CodeType
+from gear.CodeType import CodeType
 
 class StructureDescription:
 	"""字符描述"""
