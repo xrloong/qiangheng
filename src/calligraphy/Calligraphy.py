@@ -4,23 +4,32 @@ import sys
 from . import quadratic
 import math
 
+class StrokeDrawing:
+	def __init__(self, points):
+		self.points = points
+
+	def computeLeft(self):
+		return StrokeInfo.computeExtreme(self.points, min, quadratic.solveMin, lambda p: p[0])
+
+	def computeRight(self):
+		return StrokeInfo.computeExtreme(self.points, max, quadratic.solveMax, lambda p: p[0])
+
+	def computeTop(self):
+		return StrokeInfo.computeExtreme(self.points, min, quadratic.solveMin, lambda p: p[1])
+
+	def computeBottom(self):
+		return StrokeInfo.computeExtreme(self.points, max, quadratic.solveMax, lambda p: p[1])
+
+	def computeScope(self):
+		return (
+			self.computeLeft(), self.computeTop(),
+			self.computeRight(), self.computeBottom(),
+			)
+
 class StrokeInfo:
-	def __init__(self, name, scope, parameterList):
+	def __init__(self, name, parameterList):
 		self.name = name
-		self.scope = scope
 		self.parameterList=parameterList
-
-		self.scopeWidth = scope[2]-scope[0]
-		self.scopeHeight = scope[3]-scope[1]
-		self.width = self.scopeWidth-2
-		self.height = self.scopeHeight-2
-
-		self.left = self.scope[0] + 1
-		self.top = self.scope[1] + 1
-		self.right = self.scope[2] - 1
-		self.bottom = self.scope[3] - 1
-		self.centerX = self.left + self.width//2
-		self.centerY = self.top + self.height//2
 
 	def getName(self):
 		return self.name
@@ -29,52 +38,9 @@ class StrokeInfo:
 	def parseExpression(cls, parameterExpressionList):
 		return []
 
-	def getWidth(self):
-		return self.width
-
-	def getHeight(self):
-		return self.height
-
-
-	def getTopLeft(self):
-		return (self.left, self.top)
-
-	def getTopRight(self):
-		return (self.right, self.top)
-
-	def getBottomLeft(self):
-		return (self.left, self.bottom)
-
-	def getBottomRight(self):
-		return (self.right, self.bottom)
-
-
-	def getTop(self):
-		return (self.centerX, self.top)
-
-	def getBottom(self):
-		return (self.centerX, self.bottom)
-
-	def getLeft(self):
-		return (self.left, self.centerY)
-
-	def getRight(self):
-		return (self.right, self.centerY)
-
-
-	def getStartPoint(self):
-		return self.getTopLeft()
-
-	def getTailPoints(self, startPoint):
-		return [(False, (startPoint[0] + self.getWidth(), startPoint[1] + self.getHeight())), ]
-
-	def getPoints(self):
-		startPoint = self.getStartPoint()
-		return self.computePoints(startPoint)
-
-	def computePoints(self, startPoint):
-		points=[(False, startPoint), ]
-		return pints + self.getTailPoints(points[-1][1])
+	def computePoints(self):
+		points=[(False, startPoint), (False, startPoint), ]
+		return points
 
 	@staticmethod
 	def computeExtreme(points, extreme, solveExtreme, retrieveValue):
@@ -100,18 +66,6 @@ class StrokeInfo:
 				midPoint=None
 
 		return extremeValue
-
-	def computeLeft(self):
-		return StrokeInfo.computeExtreme(self.getPoints(), min, quadratic.solveMin, lambda p: p[0])
-
-	def computeRight(self):
-		return StrokeInfo.computeExtreme(self.getPoints(), max, quadratic.solveMax, lambda p: p[0])
-
-	def computeTop(self):
-		return StrokeInfo.computeExtreme(self.getPoints(), min, quadratic.solveMin, lambda p: p[1])
-
-	def computeBottom(self):
-		return StrokeInfo.computeExtreme(self.getPoints(), max, quadratic.solveMax, lambda p: p[1])
 
 	def compute_點(self, startPoint, w, h):
 		assert h>0
@@ -246,15 +200,6 @@ class StrokeInfo_點(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1])]
 
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w=paramList[0]
-		h=paramList[1]
-		if w>0:
-			return self.getTopLeft()
-		else:
-			return self.getTopRight()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w=paramList[0]
@@ -273,9 +218,6 @@ class StrokeInfo_圈(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1])]
 
-	def getStartPoint(self):
-		return self.getTop()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		a=paramList[0]
@@ -292,9 +234,6 @@ class StrokeInfo_橫(StrokeInfo):
 		assert len(l)==1
 		assert int(l[0])>0
 		return [int(l[0])]
-
-	def getStartPoint(self):
-		return self.getLeft()
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -313,14 +252,6 @@ class StrokeInfo_橫鉤(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
-
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-		w2=paramList[1]
-
-		topLeft=self.getTopLeft()
-		return (topLeft[0]+max(0, w2-w1), topLeft[1])
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -342,9 +273,6 @@ class StrokeInfo_橫折(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
-	def getStartPoint(self):
-		return self.getTopLeft()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -364,9 +292,6 @@ class StrokeInfo_橫折折(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
-
-	def getStartPoint(self):
-		return self.getTopLeft()
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -390,9 +315,6 @@ class StrokeInfo_橫折提(StrokeInfo):
 		assert int(l[2])>0
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
-
-	def getStartPoint(self):
-		return self.getTopLeft()
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -419,15 +341,6 @@ class StrokeInfo_橫折鉤(StrokeInfo):
 		assert int(l[4])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), ]
 
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-		w2=paramList[1]
-		w3=paramList[3]
-
-		topLeft = self.getTopLeft()
-		return (topLeft[0]+max(0, (w2+w3)-w1), topLeft[1])
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -452,9 +365,6 @@ class StrokeInfo_橫折彎(StrokeInfo):
 		assert int(l[2])>0
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
-
-	def getStartPoint(self):
-		return self.getTopLeft()
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -482,15 +392,6 @@ class StrokeInfo_橫撇(StrokeInfo):
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-		w2=paramList[1]
-		h2=paramList[2]
-
-		topLeft = self.getTopLeft()
-		return (topLeft[0]+max(0, w2-w1), topLeft[1])
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -514,15 +415,6 @@ class StrokeInfo_橫斜彎鉤(StrokeInfo):
 		assert int(l[4])>0
 		assert int(l[5])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), ]
-
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-		w2l=paramList[2]
-		w2r=paramList[3]
-
-		topLeft = self.getTopLeft()
-		return (topLeft[0]+(w2l-w1), topLeft[1])
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -554,9 +446,6 @@ class StrokeInfo_橫折折折鉤(StrokeInfo):
 		assert int(l[7])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), int(l[6]), int(l[7]), ]
 
-	def getStartPoint(self):
-		return self.getTopLeft()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -587,9 +476,6 @@ class StrokeInfo_橫斜鉤(StrokeInfo):
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
-	def getStartPoint(self):
-		return self.getTopLeft()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -614,9 +500,6 @@ class StrokeInfo_橫折折折(StrokeInfo):
 		assert len(l)==4
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
-	def getStartPoint(self):
-		return self.getTopLeft()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -639,9 +522,6 @@ class StrokeInfo_豎(StrokeInfo):
 		assert int(l[0])>0
 		return [int(l[0]), ]
 
-	def getStartPoint(self):
-		return self.getTop()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
@@ -658,9 +538,6 @@ class StrokeInfo_豎折(StrokeInfo):
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
-
-	def getStartPoint(self):
-		return self.getTopLeft()
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -682,9 +559,6 @@ class StrokeInfo_豎提(StrokeInfo):
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
-	def getStartPoint(self):
-		return self.getTopLeft()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
@@ -705,9 +579,6 @@ class StrokeInfo_豎折折(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
-
-	def getStartPoint(self):
-		return self.getTopLeft()
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -734,13 +605,6 @@ class StrokeInfo_豎折彎鉤(StrokeInfo):
 		assert int(l[5])>0
 		assert int(l[6])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), int(l[6]), ]
-
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-
-		topLeft = self.getTopLeft()
-		return (topLeft[0] + w1, topLeft[1])
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -775,16 +639,6 @@ class StrokeInfo_豎彎鉤(StrokeInfo):
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
-	def getStartPoint(self):
-		paramList=self.parameterList
-		h1=paramList[0]
-		w1=paramList[1]
-		cr=paramList[2]
-		h2=paramList[3]
-
-		topLeft = self.getTopLeft()
-		return (topLeft[0], topLeft[1]+max(0, h2-h1))
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
@@ -809,14 +663,6 @@ class StrokeInfo_豎彎(StrokeInfo):
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
-	def getStartPoint(self):
-		paramList=self.parameterList
-		cr=paramList[0]
-		w=paramList[1]
-		h=paramList[2]
-
-		return self.getTopLeft()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -838,9 +684,6 @@ class StrokeInfo_豎鉤(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
-
-	def getStartPoint(self):
-		return self.getTopRight()
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -870,9 +713,6 @@ class StrokeInfo_斜鉤(StrokeInfo):
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
-	def getStartPoint(self):
-		return self.getTopLeft()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -894,16 +734,6 @@ class StrokeInfo_彎鉤(StrokeInfo):
 		assert int(l[2])>0
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
-
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-		h1=paramList[1]
-		w2=paramList[2]
-		h2=paramList[3]
-
-		topLeft=self.getTopLeft()
-		return (topLeft[0]+max(0,w2-w1), topLeft[1])
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -928,16 +758,6 @@ class StrokeInfo_撇鉤(StrokeInfo):
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-		h1=paramList[1]
-		w2=paramList[2]
-		h2=paramList[3]
-
-		topLeft=self.getTopLeft()
-		return (topLeft[0]-w1+w2, topLeft[1])
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -959,9 +779,6 @@ class StrokeInfo_撇(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
-	def getStartPoint(self):
-		return self.getTopRight()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -981,13 +798,6 @@ class StrokeInfo_撇點(StrokeInfo):
 		assert int(l[2])>0
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
-
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-
-		topLeft = self.getTopLeft()
-		return (topLeft[0]+w1, topLeft[1])
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -1011,13 +821,6 @@ class StrokeInfo_撇橫(StrokeInfo):
 		assert int(l[2])>0
 #		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
-
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-
-		topLeft = self.getTopLeft()
-		return (topLeft[0]+w1, topLeft[1])
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -1048,18 +851,6 @@ class StrokeInfo_撇橫撇(StrokeInfo):
 		assert int(l[4])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), ]
 
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-		w2=paramList[2]
-		w3=paramList[3]
-
-		paramList=self.parameterList
-		w1=paramList[0]
-
-		topLeft = self.getTopLeft()
-		return (topLeft[0]+w1+max(0, w3-w2), topLeft[1])
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -1083,9 +874,6 @@ class StrokeInfo_豎撇(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
-	def getStartPoint(self):
-		return self.getTopRight()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -1108,9 +896,6 @@ class StrokeInfo_提(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
-	def getStartPoint(self):
-		return self.getBottomLeft()
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -1129,14 +914,6 @@ class StrokeInfo_捺(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
-	def getStartPoint(self):
-		paramList=self.parameterList
-		w1=paramList[0]
-		h1=paramList[1]
-
-		topRight = self.getTopRight()
-		return (topRight[0]-w1, topRight[1])
-
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -1154,13 +931,6 @@ class StrokeInfo_臥捺(StrokeInfo):
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
-
-	def getStartPoint(self):
-		paramList=self.parameterList
-		h1=paramList[1]
-
-		left = self.getLeft()
-		return (left[0], left[1]-h1//2)
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -1389,13 +1159,27 @@ class StrokeState:
 		return self.targetPane
 
 class Stroke(Writing):
-	def __init__(self, strokeInfo, state=StrokeState()):
+	def __init__(self, scope, strokeInfo, state=StrokeState()):
 		super().__init__(Pane())
+
+		self.scope=scope
 		self.strokeInfo=strokeInfo
 		self.state=state
 
+		self.scopeWidth = scope[2]-scope[0]
+		self.scopeHeight = scope[3]-scope[1]
+		self.width = self.scopeWidth-2
+		self.height = self.scopeHeight-2
+
+		self.left = self.scope[0]
+		self.top = self.scope[1]
+		self.right = self.scope[2]
+		self.bottom = self.scope[3]
+		self.centerX = self.left + self.width//2
+		self.centerY = self.top + self.height//2
+
 	def clone(self):
-		return Stroke(self.strokeInfo, self.state.clone())
+		return Stroke(self.scope, self.strokeInfo, self.state.clone())
 
 	def getTypeName(self):
 		return self.strokeInfo.getTypeName()
@@ -1410,17 +1194,37 @@ class Stroke(Writing):
 	def transform(self, pane):
 		pane.transformPane(self.state.getTargetPane())
 
-	def computeLeft(self):
-		return self.strokeInfo.computeLeft()
+	def getPoints(self):
+		def toValid(point):
+			x, y = point
+			newX = max(0, min(0xFF, x))
+			newY = max(0, min(0xFF, y))
+			return (newX, newY)
 
-	def computeRight(self):
-		return self.strokeInfo.computeRight()
+		strokeState=self.getState()
+		pane=strokeState.getTargetPane()
+#		tmpPoints=self.strokeInfo.getPoints()
 
-	def computeTop(self):
-		return self.strokeInfo.computeTop()
+		points=self.strokeInfo.computePoints((0, 0))
+		drawing=StrokeDrawing(points)
+		left, top, right, bottom = drawing.computeScope()
+		left-=1
+		top-=1
+		right+=1
+		bottom+=1
+		width=right-left
+		height=bottom-top
+		tmpPoints=[
+			(isCurve,
+			((x-left)*self.width/width+self.left, (y-top)*self.height/height+self.top)
+			)
+			for (isCurve, (x, y)) in points]
 
-	def computeBottom(self):
-		return self.strokeInfo.computeBottom()
+		newPoints = [(isCurve, toValid(pane.transformPoint(point))) for (isCurve, point) in tmpPoints]
+		return newPoints
+
+	def computeScope(self):
+		return StrokeDrawing(self.strokeInfo.getPoints()).computeScope()
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
@@ -1443,15 +1247,11 @@ class StrokeGroup(Writing):
 		for stroke in self.strokeList:
 			stroke.transform(pane)
 
-	def computeLeft(self):
-		return min([s.strokeInfo.computeLeft() for s in self.strokeList])
-
-	def computeRight(self):
-		return max([s.strokeInfo.computeRight() for s in self.strokeList])
-
-	def computeTop(self):
-		return min([s.strokeInfo.computeTop() for s in self.strokeList])
-
-	def computeBottom(self):
-		return max([s.strokeInfo.computeBottom() for s in self.strokeList])
+	def computeScope(self):
+		scopes=[s.computeScope() for s in self.strokeList]
+		left=min([s[0] for s in scopes])
+		top=min([s[1] for s in scopes])
+		right=min([s[2] for s in scopes])
+		bottom=min([s[3] for s in scopes])
+		return (left, top, right, bottom)
 
