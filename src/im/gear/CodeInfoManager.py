@@ -1,18 +1,19 @@
 
 class CodeInfoManager:
-	def __init__(self, radixParser):
-		radixManager=radixParser.getRadixManager()
-		self.radixManager=radixManager
-		self.codeInfoEncoder=radixManager.getEncoder()
+	def __init__(self, codeInfoEncoder):
+		self.codeInfoEncoder=codeInfoEncoder
+		self.radixCodeInfoDB={}
 
-	def loadRadix(self, radixFileList):
-		return self.radixManager.loadRadix(radixFileList)
 
-	def hasRadix(self, charName):
-		return self.radixManager.hasRadix(charName)
+	def loadRadix(self, radixParser, radixFileList):
+		radixParser.loadRadix(radixFileList)
+		self.radixCodeInfoDB=radixParser.getRadixCodeInfoDB();
 
-	def getRadixCodeInfoList(self, charName):
-		return self.radixManager.getRadixCodeInfoList(charName)
+	def getRadixCodeInfoList(self, radixName):
+		return self.radixCodeInfoDB.get(radixName)
+
+	def hasRadix(self, radixName):
+		return (radixName in self.radixCodeInfoDB)
 
 
 	def interpretCodeInfo(self, codeInfo):

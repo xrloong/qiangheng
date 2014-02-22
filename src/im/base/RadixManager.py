@@ -7,80 +7,25 @@ from ..gear import OperatorManager
 from ..gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 from gear.CodeVarianceType import CodeVarianceType
 
-class RadixManager:
-	def __init__(self):
-		self.characterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
-
-		self.radixCodeInfoDB={}
-
-		self.operationMgr=OperatorManager.OperatorManager(self)
-
-	def getCharacterDescriptionRearrangerGenerator(self):
-		return self.characterDescriptionRearrangerGenerator
-
-	def setRadixDescriptionList(self, radixDescList):
-		self.parser.setRadixDescriptionList(radixDescList)
-
-		for [charName, radixDesc] in radixDescList:
-			self.convertRadixDescIntoDB(charName, radixDesc)
-
-	# 遞迴
-	def convertRadixDescIntoDB(self, charName, radixDesc):
-		radixCodeInfoList=[]
-		tmpRadixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
-		for radixInfo in tmpRadixCodeInfoList:
-			codeInfo=self.parser.convertRadixDescToCodeInfo(radixInfo)
-			if codeInfo:
-				radixCodeInfoList.append(codeInfo)
-		self.radixCodeInfoDB[charName]=radixCodeInfoList
-
-
-	def getMainRadixCodeInfo(self, radixName):
-		return self.radixCodeInfoDB.get(radixName)[0]
-
-	def getRadixCodeInfoList(self, radixName):
-		return self.radixCodeInfoDB.get(radixName)
-
-	def hasRadix(self, radixName):
-		return (radixName in self.radixCodeInfoDB)
-
-	def loadRadix(self, toRadixList):
-		tmpDict={}
-		radixDescriptionList=self.parser.parseRadixDescriptionList(toRadixList)
-		for [charName, radixDesc] in radixDescriptionList:
-			if charName in tmpDict:
-				tmpRadixDesc=tmpDict.get(charName)
-			else:
-				tmpRadixDesc=RadixDescription([])
-			tmpRadixDesc.mergeRadixDescription(radixDesc)
-			tmpDict[charName]=tmpRadixDesc
-
-		allRadixDescriptionList=list(tmpDict.items())
-		self.setRadixDescriptionList(allRadixDescriptionList)
-
-	def getEncoder(self):
-		return self.parser.getEncoder()
-
-
 class RadixParser:
 	def __init__(self, nameInputMethod):
 		self.nameInputMethod=nameInputMethod
 		self.codeInfoEncoder=self.createEncoder()
 
+		self.radixCodeInfoDB={}
 		self.radixDescDB={}
 
-
-		self.converter=RadixManager()
-		self.converter.parser=self
 
 	def createEncoder(self):
 		return CodeInfoEncoder()
 
-	def getRadixManager(self):
-		return self.converter
-
 	def getEncoder(self):
 		return self.codeInfoEncoder
+
+
+	def loadRadix(self, radixFileList):
+		self.parseRadixDescriptionList(radixFileList)
+
 
 	def setCodeInfoAttribute(self, codeInfo, radixInfo):
 		codeVariance=radixInfo.getCodeVarianceType()
@@ -91,6 +36,24 @@ class RadixParser:
 	def setRadixDescriptionList(self, radixDescList):
 		for [charName, radixDesc] in radixDescList:
 			self.radixDescDB[charName]=radixDesc
+
+		for [charName, radixDesc] in radixDescList:
+			self.convertRadixDescIntoDB(charName, radixDesc)
+
+	def convertRadixDescIntoDB(self, charName, radixDesc):
+		radixCodeInfoList=[]
+		tmpRadixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
+		for radixInfo in tmpRadixCodeInfoList:
+			codeInfo=self.convertRadixDescToCodeInfo(radixInfo)
+			if codeInfo:
+				radixCodeInfoList.append(codeInfo)
+		self.radixCodeInfoDB[charName]=radixCodeInfoList
+
+	def getMainRadixCodeInfo(self, radixName):
+		return self.radixCodeInfoDB.get(radixName)[0]
+
+	def getRadixCodeInfoDB(self):
+		return self.radixCodeInfoDB
 
 	# 多型
 	def convertElementToRadixInfo(self, elementCodeInfo):
@@ -117,8 +80,19 @@ class RadixParser:
 			radixDescriptionList=self.parseRadixFromXML(filename, fileencoding=Constant.FILE_ENCODING)
 			allRadixDescriptionList.extend(radixDescriptionList)
 
-		return allRadixDescriptionList
+		radixDescriptionList=allRadixDescriptionList
+		tmpDict={}
+		for [charName, radixDesc] in radixDescriptionList:
+			if charName in tmpDict:
+				tmpRadixDesc=tmpDict.get(charName)
+			else:
+				tmpRadixDesc=RadixDescription([])
+			tmpRadixDesc.mergeRadixDescription(radixDesc)
+			tmpDict[charName]=tmpRadixDesc
 
+		allRadixDescriptionList=list(tmpDict.items())
+
+		self.setRadixDescriptionList(allRadixDescriptionList)
 
 	def parseRadixFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
 		f=open(filename, encoding=fileencoding)

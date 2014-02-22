@@ -17,11 +17,10 @@ def setIMModule(imModule):
 
 	__state_IMModule=imModule
 
-	radixParser=imModule.radixParser
-	radixManager=radixParser.getRadixManager()
-
 	characterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
-	codeInfoManager=CodeInfoManager.CodeInfoManager(radixParser)
+
+	radixParser=imModule.radixParser
+	codeInfoManager=CodeInfoManager.CodeInfoManager(radixParser.getEncoder())
 
 def getIMModule():
 	return __state_IMModule

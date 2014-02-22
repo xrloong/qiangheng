@@ -44,11 +44,11 @@ class ARRadixParser(RadixParser):
 		for radixName in nameList:
 			radixDesc=self.radixDescDB.get(radixName)
 
-			self.converter.convertRadixDescIntoDB(radixName, radixDesc)
+			self.convertRadixDescIntoDB(radixName, radixDesc)
 
 		codeList=[]
 		for radixName in nameList:
-			radixInfo=self.converter.getMainRadixCodeInfo(radixName)
+			radixInfo=self.getMainRadixCodeInfo(radixName)
 			radixCodeList=radixInfo.getMainCodeList()
 			codeList.append(radixCodeList)
 

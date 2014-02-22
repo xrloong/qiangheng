@@ -20,7 +20,9 @@ class QiangHeng:
 		imModule=IMMgr.IMMgr.getIMModule(imProp)
 
 		StateManager.setIMModule(imModule)
-		StateManager.getCodeInfoManager().loadRadix(toCodeList)
+
+		radixParser=imModule.radixParser
+		StateManager.getCodeInfoManager().loadRadix(radixParser, toCodeList)
 
 		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(imModule)
 		self.descMgr.loadData(toTemplateList, toComponentList)
