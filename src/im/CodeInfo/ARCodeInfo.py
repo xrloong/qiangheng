@@ -46,6 +46,12 @@ class ARCodeInfo(CodeInfo):
 	RADIX_EXTEND_3_CENTER='x:3-:1'	# 即山，可用來合併字根
 	RADIX_EXTEND_3_CENTER_1_CENTER='x:3-:1-:1'	# 即[山一]，[特微]的右半部
 
+#	RADIX_EXTEND_6_UP='x:6^:1'	# 即亠，可用來合併字根
+#	RADIX_EXTEND_9_BOTTOM_2='x:9v:2'	# 即乂
+	RADIX_EXTEND_6_UP_9_BOTTOM='x:6^:9v:1'	# 即文
+	RADIX_EXTEND_1_BOTTOM='x:1v:1'	# 即厂
+	RADIX_EXTEND_6_UP_9_BOTTOM_1_BUTTOM='x:6^:9v:1v'	# 即[文厂]
+
 	RADIX_EXTEND_5_BOTTOM='x:5v:1'	# 即廴
 	RADIX_EXTEND_6_BOTTOM='x:6v:1'	# 即辶
 	RADIX_EXTEND_2_CENTER='x:2-:1'	# 即[亾下]
@@ -99,6 +105,12 @@ class ARCodeInfo(CodeInfo):
 		RADIX_EXTEND_9_BOTTOM:'.',
 		RADIX_EXTEND_3_CENTER:'d',
 		RADIX_EXTEND_3_CENTER_1_CENTER:'da',
+
+#		RADIX_EXTEND_6_UP:'y',
+#		RADIX_EXTEND_9_BOTTOM_2:'.',
+		RADIX_EXTEND_6_UP_9_BOTTOM:'y.',
+		RADIX_EXTEND_1_BOTTOM:'z',
+		RADIX_EXTEND_6_UP_9_BOTTOM_1_BUTTOM:'n',
 	}
 
 	def setRadixCodeProperties(self, propDict):

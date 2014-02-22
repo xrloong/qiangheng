@@ -175,6 +175,9 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_3_CENTER and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_1_CENTER:
 					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_3_CENTER_1_CENTER]
 					tmpArCodeList[i+1]=arCodeNext[1:]
+				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_6_UP_9_BOTTOM and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_1_BOTTOM:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_6_UP_9_BOTTOM_1_BUTTOM]
+					tmpArCodeList[i+1]=arCodeNext[1:]
 
 		# 合併字根後，有些字根列可能為空，如：戓
 		tmpArCodeList=filter(lambda x: len(x)>0, tmpArCodeList)
