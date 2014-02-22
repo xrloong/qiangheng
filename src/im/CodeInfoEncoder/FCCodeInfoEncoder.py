@@ -15,13 +15,16 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: len(x.getCharacterCode())==4, codeInfoList))
 		if isAllWithCode:
 			if Operator.OperatorTurtle.equals(operator):
-				FCCodeInfoEncoder.encodeAsTurtle(codeInfo, operator, codeInfoList)
+				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
+				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+			elif Operator.OperatorLoong.equals(operator):
+				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
+				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+
 			elif Operator.OperatorEqual.equals(operator):
 				FCCodeInfoEncoder.encodeAsEqual(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorEast.equals(operator):
 				FCCodeInfoEncoder.encodeAsEast(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorLoong.equals(operator):
-				FCCodeInfoEncoder.encodeAsLoong(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorLoop.equals(operator):
 				FCCodeInfoEncoder.encodeAsLoop(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorSilkworm.equals(operator):
@@ -53,8 +56,8 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 				FCCodeInfoEncoder.encodeAsTurtle(codeInfo, operator, codeInfoList)
 
 	@staticmethod
-	def encodeAsTurtle(codeInfo, operator, codeInfoList):
-		codeInfo.setCode('Z', 'Z', 'Z', 'Z')
+	def encodeAsInvalidate(codeInfo, operator, codeInfoList):
+		codeInfo.setCode('X', 'X', 'X', 'X')
 
 	@staticmethod
 	def encodeAsEqual(codeInfo, operator, codeInfoList):
@@ -76,24 +79,9 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 			lastCodeInfo.getBottomRight())
 
 	@staticmethod
-	def encodeAsLoong(codeInfo, operator, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-		codeInfo.setCode(
-			firstCodeInfo.getTopLeft(),
-			firstCodeInfo.getTopRight(),
-			lastCodeInfo.getBottomLeft(),
-			lastCodeInfo.getBottomRight())
-
-	@staticmethod
 	def encodeAsLoop(codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
-#		codeInfo.setCode(
-#			firstCodeInfo.getTopLeft(),
-#			firstCodeInfo.getTopRight(),
-#			lastCodeInfo.getBottomLeft(),
-#			lastCodeInfo.getBottomRight())
 		grid=FCGrid()
 		grid.setAsOut_In(firstCodeInfo, lastCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
