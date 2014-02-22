@@ -90,7 +90,8 @@ def parsestructure(g):
 		return None
 
 def getDescDBFromFile(filenamelist, CharConstructor):
-	descDB={}
+	descMgr={}
+	descMgr=chardesc.CharDescriptionManager()
 
 	for filename in filenamelist:
 		f=open(filename, encoding=fileencoding)
@@ -108,8 +109,8 @@ def getDescDBFromFile(filenamelist, CharConstructor):
 					chInfo=CharConstructor(ll[1], parseans, ll[3:])
 					comp=qhparser.Parser.parse(ll[2], ll[1])
 					comp.setChInfo(chInfo)
-					descDB[ll[1]]=comp
-	return descDB
+					descMgr[ll[1]]=comp
+	return descMgr
 
 def getTableFromFile(filename):
 	t=[]
@@ -168,8 +169,8 @@ def genFile(options):
 		z=im.NoneIM()
 
 	if method in ['動', '動態', '動態組碼', 'dynamic',]:
-		descDB=getDescDBFromFile(pathlist, constructor)
-		z.setStruct(descDB)
+		descMgr=getDescDBFromFile(pathlist, constructor)
+		z.setStruct(descMgr)
 	elif method in ['表', '表格', 'puretable', 'pt']:
 		cmtable=getTableFromFile(options.ptfile)
 		z.setTable(cmtable)

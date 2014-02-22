@@ -33,8 +33,8 @@ class NoneIM:
 		self.tb=tb
 		self.method='T'
 
-	def setStruct(self, descDB):
-		self.descDB=descDB
+	def setStruct(self, descMgr):
+		self.descMgr=descMgr
 		self.method='D'
 
 	def genIMMapping(self):
@@ -47,22 +47,20 @@ class NoneIM:
 					'畦',
 					'海',
 					]
-			charPool=self.descDB.keys()
+			charPool=self.descMgr.keys()
 			return charPool
 
 		if self.method=='D':
-			lookupDB=self.descDB
 			table=[]
 			for chname in getTargetChars():
-				chdesc=lookupDB.get(chname, None)
-				if not chdesc:
+				expandDesc=self.descMgr.getExpandDescriptionByName(chname)
+
+				if expandDesc==None:
 					continue
 
-				newDesc=copy.copy(chdesc)
-				newDesc.expandCharTree(lookupDB)
+				expandDesc.setCharTree()
 
-				newDesc.setCharTree()
-				chinfo=newDesc.getChInfo()
+				chinfo=expandDesc.getChInfo()
 				code=chinfo.getCode()
 				if chinfo.isToShow() and code:
 					table.append([code, chname])
