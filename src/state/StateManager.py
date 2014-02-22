@@ -15,11 +15,11 @@ def setIMModule(imModule):
 	global codeInfoManager
 
 	__state_IMModule=imModule
-	codeInfoEncoder=imModule.codeInfoEncoder
-	characterDescriptionRearrangerGenerator=imModule.CharacterDescriptionRearrangerGenerator
 
 	radixManager=imModule.radixManager
-	codeInfoManager=CodeInfoManager.CodeInfoManager(radixManager, codeInfoEncoder)
+
+	characterDescriptionRearrangerGenerator=radixManager.getCharacterDescriptionRearrangerGenerator()
+	codeInfoManager=CodeInfoManager.CodeInfoManager(radixManager)
 
 def getIMModule():
 	return __state_IMModule

@@ -1,11 +1,15 @@
 from .ZMCodeInfo import ZMCodeInfo
+from .ZMCodeInfoEncoder import ZMCodeInfoEncoder
 from ..base.RadixManager import RadixManager
 
 import Constant
 
 class ZMRadixManager(RadixManager):
-	def __init__(self, codeInfoEncoder):
-		RadixManager.__init__(self, codeInfoEncoder)
+	def __init__(self):
+		RadixManager.__init__(self)
+
+	def createEncoder(self):
+		return ZMCodeInfoEncoder()
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):

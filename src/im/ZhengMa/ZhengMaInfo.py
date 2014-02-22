@@ -1,8 +1,5 @@
 from ..base.IMInfo import IMInfo
-from . import ZMCodeInfo
-from . import ZMCodeInfoEncoder
 from . import ZMRadixManager
-from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class ZhengMaInfo(IMInfo):
 	"鄭碼輸入法"
@@ -47,12 +44,8 @@ class ZhengMaInfo(IMInfo):
 		self.maxkeylength=4
 
 IMInfo=ZhengMaInfo
-CodeInfoGenerator=ZMCodeInfo.ZMCodeInfo
 
-codeInfoEncoder=ZMCodeInfoEncoder.ZMCodeInfoEncoder()
-CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
-
-radixManager=ZMRadixManager.ZMRadixManager(codeInfoEncoder)
+radixManager=ZMRadixManager.ZMRadixManager()
 
 if __name__=='__main__':
 	pass

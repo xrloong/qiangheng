@@ -1,20 +1,34 @@
+from .CodeInfo import CodeInfo
+from .CodeInfoEncoder import CodeInfoEncoder
+
 import sys
 import Constant
 from xml.etree import ElementTree
 from parser import QHParser
 from gear import OperatorManager
 from gear.CodeVarianceType import CodeVarianceType
-from .CodeInfo import CodeInfo
+from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class RadixManager:
-	def __init__(self, codeInfoEncoder):
-		self.codeInfoEncoder=codeInfoEncoder
+	def __init__(self):
+		self.characterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
+		self.codeInfoEncoder=self.createEncoder()
+
 		self.radixCodeInfoDB={}
 
 		self.radixDescDB={}
 
 		self.operationMgr=OperatorManager.OperatorManager(self)
 		self.parser=QHParser.QHParser(self.operationMgr.getOperatorGenerator())
+
+	def createEncoder(self):
+		return CodeInfoEncoder()
+
+	def getEncoder(self):
+		return self.codeInfoEncoder
+
+	def getCharacterDescriptionRearrangerGenerator(self):
+		return self.characterDescriptionRearrangerGenerator
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):

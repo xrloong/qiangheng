@@ -1,8 +1,5 @@
 from ..base.IMInfo import IMInfo
-from . import FCCodeInfo
-from . import FCCodeInfoEncoder
 from . import FCRadixManager
-from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class FourCornerInfo(IMInfo):
 	"範例輸入法"
@@ -31,12 +28,8 @@ class FourCornerInfo(IMInfo):
 		self.maxkeylength=4
 
 IMInfo=FourCornerInfo
-CodeInfoGenerator=FCCodeInfo.FCCodeInfo
 
-codeInfoEncoder=FCCodeInfoEncoder.FCCodeInfoEncoder()
-CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
-
-radixManager=FCRadixManager.FCRadixManager(codeInfoEncoder)
+radixManager=FCRadixManager.FCRadixManager()
 
 if __name__=='__main__':
 	pass

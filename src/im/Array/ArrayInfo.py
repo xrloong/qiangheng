@@ -1,8 +1,5 @@
 from ..base.IMInfo import IMInfo
-from . import ARCodeInfo
-from . import ARCodeInfoEncoder
 from . import ARRadixManager
-from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class ArrayInfo(IMInfo):
 	"行列輸入法"
@@ -51,12 +48,8 @@ class ArrayInfo(IMInfo):
 		self.maxkeylength=4
 
 IMInfo=ArrayInfo
-CodeInfoGenerator=ARCodeInfo.ARCodeInfo
 
-codeInfoEncoder=ARCodeInfoEncoder.ARCodeInfoEncoder()
-CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
-
-radixManager=ARRadixManager.ARRadixManager(codeInfoEncoder)
+radixManager=ARRadixManager.ARRadixManager()
 
 if __name__=='__main__':
 	pass

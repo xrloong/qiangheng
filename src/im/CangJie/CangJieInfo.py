@@ -1,8 +1,5 @@
 from ..base.IMInfo import IMInfo
-from . import CJCodeInfo
-from . import CJCodeInfoEncoder
 from . import CJRadixManager
-from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class CangJieInfo(IMInfo):
 	"倉頡輸入法"
@@ -47,12 +44,8 @@ class CangJieInfo(IMInfo):
 		self.maxkeylength=5
 
 IMInfo=CangJieInfo
-CodeInfoGenerator=CJCodeInfo.CJCodeInfo
 
-codeInfoEncoder=CJCodeInfoEncoder.CJCodeInfoEncoder()
-CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
-
-radixManager=CJRadixManager.CJRadixManager(codeInfoEncoder)
+radixManager=CJRadixManager.CJRadixManager()
 
 if __name__=='__main__':
 	pass

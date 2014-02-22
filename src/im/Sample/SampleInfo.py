@@ -1,8 +1,5 @@
 from ..base.IMInfo import IMInfo
-from . import SPCodeInfo
-from . import SPCodeInfoEncoder
 from . import SPRadixManager
-from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class SampleInfo(IMInfo):
 	"範例輸入法"
@@ -47,12 +44,8 @@ class SampleInfo(IMInfo):
 		self.maxkeylength=4
 
 IMInfo=SampleInfo
-CodeInfoGenerator=SPCodeInfo.SPCodeInfo
 
-codeInfoEncoder=SPCodeInfoEncoder.SPCodeInfoEncoder()
-CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
-
-radixManager=SPRadixManager.SPRadixManager(codeInfoEncoder)
+radixManager=SPRadixManager.SPRadixManager()
 
 if __name__=='__main__':
 	pass

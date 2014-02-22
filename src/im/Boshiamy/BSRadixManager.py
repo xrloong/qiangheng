@@ -1,10 +1,14 @@
 from .BSCodeInfo import BSCodeInfo
+from .BSCodeInfoEncoder import BSCodeInfoEncoder
 from ..base.RadixManager import RadixManager
 import Constant
 
 class BSRadixManager(RadixManager):
-	def __init__(self, codeInfoEncoder):
-		RadixManager.__init__(self, codeInfoEncoder)
+	def __init__(self):
+		RadixManager.__init__(self)
+
+	def createEncoder(self):
+		return BSCodeInfoEncoder()
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):

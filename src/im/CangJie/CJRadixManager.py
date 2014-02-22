@@ -1,6 +1,6 @@
-from ..base.RadixManager import RadixManager
-from state import StateManager
 from .CJCodeInfo import CJCodeInfo
+from .CJCodeInfoEncoder import CJCodeInfoEncoder
+from ..base.RadixManager import RadixManager
 from .CJLump import CJLump
 import Constant
 
@@ -8,8 +8,11 @@ import re
 import sys
 
 class CJRadixManager(RadixManager):
-	def __init__(self, codeInfoEncoder):
-		RadixManager.__init__(self, codeInfoEncoder)
+	def __init__(self):
+		RadixManager.__init__(self)
+
+	def createEncoder(self):
+		return CJCodeInfoEncoder()
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
@@ -31,11 +34,11 @@ class CJRadixManager(RadixManager):
 		description=infoDict.get('資訊表示式')
 
 		if description==CJCodeInfo.RADIX_儿:
-			codeInfo=StateManager.getCodeInfoManager().codeInfoEncoder.encodeAsGoose(
+			codeInfo=self.codeInfoEncoder.encodeAsGoose(
 				[CJCodeInfo.CODE_INFO_丿, CJCodeInfo.CODE_INFO_乚])
 			codeInfo.setSpecialRadix(CJCodeInfo.RADIX_儿)
 		elif description==CJCodeInfo.RADIX_丨丨:
-			codeInfo=StateManager.getCodeInfoManager().codeInfoEncoder.encodeAsGoose(
+			codeInfo=self.codeInfoEncoder.encodeAsGoose(
 				[CJCodeInfo.CODE_INFO_丨, CJCodeInfo.CODE_INFO_丨])
 			codeInfo.setSpecialRadix(CJCodeInfo.RADIX_丨丨)
 		else:

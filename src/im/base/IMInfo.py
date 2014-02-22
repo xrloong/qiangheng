@@ -1,6 +1,3 @@
-from .CodeInfo import CodeInfo
-from .CodeInfoEncoder import CodeInfoEncoder
-from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 from . import RadixManager
 
 class IMInfo:
@@ -33,12 +30,7 @@ class IMInfo:
 	def getKeyList(self):
 		return "".join(list(zip(*self.keyMaps))[0])
 
-CodeInfoGenerator=CodeInfo
-
-codeInfoEncoder=CodeInfoEncoder()
-CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
-
-radixManager=RadixManager.RadixManager(codeInfoEncoder)
+radixManager=RadixManager.RadixManager()
 
 if __name__=='__main__':
 	pass

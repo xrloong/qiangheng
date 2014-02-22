@@ -1,10 +1,14 @@
 from .DYCodeInfo import DYCodeInfo
+from .DYCodeInfoEncoder import DYCodeInfoEncoder
 from ..base.RadixManager import RadixManager
 import Constant
 
 class DYRadixManager(RadixManager):
-	def __init__(self, codeInfoEncoder):
-		RadixManager.__init__(self, codeInfoEncoder)
+	def __init__(self):
+		RadixManager.__init__(self)
+
+	def createEncoder(self):
+		return DYCodeInfoEncoder()
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):

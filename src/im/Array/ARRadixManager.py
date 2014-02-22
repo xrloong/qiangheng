@@ -1,11 +1,15 @@
 from .ARCodeInfo import ARCodeInfo
+from .ARCodeInfoEncoder import ARCodeInfoEncoder
 from ..base.RadixManager import RadixManager
 from ..base.RadixManager import RadixCodeInfoDescription
 import Constant
 
 class ARRadixManager(RadixManager):
-	def __init__(self, codeInfoEncoder):
-		RadixManager.__init__(self, codeInfoEncoder)
+	def __init__(self):
+		RadixManager.__init__(self)
+
+	def createEncoder(self):
+		return ARCodeInfoEncoder()
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):

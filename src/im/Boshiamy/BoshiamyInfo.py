@@ -1,8 +1,5 @@
 from ..base.IMInfo import IMInfo
-from . import BSCodeInfo
-from . import BSCodeInfoEncoder
 from . import BSRadixManager
-from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class BoshiamyInfo(IMInfo):
 	"嘸蝦米輸入法"
@@ -47,12 +44,8 @@ class BoshiamyInfo(IMInfo):
 		self.maxkeylength=4
 
 IMInfo=BoshiamyInfo
-CodeInfoGenerator=BSCodeInfo.BSCodeInfo
 
-codeInfoEncoder=BSCodeInfoEncoder.BSCodeInfoEncoder()
-CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
-
-radixManager=BSRadixManager.BSRadixManager(codeInfoEncoder)
+radixManager=BSRadixManager.BSRadixManager()
 
 if __name__=='__main__':
 	pass
