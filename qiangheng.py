@@ -37,15 +37,18 @@ class QiangHeng:
 
 	def readDesc(self, dirCharInfoRoot, dirIM):
 		filenamelist=[
-#				'CJK.txt',
 				'CJK.xml',
 		]
+
+		radixDir="radix"+"/"+dirIM
+		componentDir="component"+"/"+dirIM
 
 		dirCharInfo=dirCharInfoRoot + "/"
 		tmpfname=filenamelist[0]
 		pathlist=[
 				dirCharInfo+'main/'+tmpfname,
-				dirCharInfo+dirIM+tmpfname,
+				dirCharInfo+componentDir+tmpfname,
+				dirCharInfo+radixDir+tmpfname,
 				]
 
 		self.getDescDBFromXML(pathlist)
