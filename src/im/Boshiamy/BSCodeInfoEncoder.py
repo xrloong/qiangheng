@@ -98,6 +98,20 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 
+	def encodeAsLiao(self, codeInfoList):
+		"""運算 "廖" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+
+		if firstCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_厂 and secondCodeInfo.getMainCodeList()[0]==BSCodeInfo.RADIX_一:
+			newCodeInfo=self.generateDefaultCodeInfo([[BSCodeInfo.RADIX_厂一]], "a")
+			tmpCodeInfo=self.generateDefaultCodeInfo([secondCodeInfo.getMainCodeList()[1:]], secondCodeInfo.getBSSupplement())
+			codeInfo=self.encodeAsLiao([newCodeInfo, tmpCodeInfo])
+			return codeInfo
+
+		codeInfo=self.encodeAsLoong([firstCodeInfo, secondCodeInfo])
+		return codeInfo
+
 	def encodeAsZhe(self, codeInfoList):
 		"""運算 "這" """
 		firstCodeInfo=codeInfoList[0]

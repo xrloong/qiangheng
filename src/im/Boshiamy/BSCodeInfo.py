@@ -43,6 +43,8 @@ class BSCodeInfo(CodeInfo):
 	RADIX_丨丿='$丨丿'
 	RADIX_丿丨='$丿丨'
 	RADIX_儿='$儿'
+	RADIX_厂='$厂'
+	RADIX_厂一='$厂一'
 
 	COMPLEMENTARY_A='a'
 	COMPLEMENTARY_E='e'
@@ -96,6 +98,8 @@ class BSCodeInfo(CodeInfo):
 		RADIX_丨丿:'r',
 		RADIX_丿丨:'r',
 		RADIX_儿:'r',
+		RADIX_厂:'l',
+		RADIX_厂一:'f',
 	}
 
 	def __init__(self, singletonCode, codeList, supplementCode):

@@ -1,5 +1,4 @@
 from ..base.StructureRearranger import StructureRearranger
-import sys
 from im.gear import Operator
 
 class CJStructureRearranger(StructureRearranger):
