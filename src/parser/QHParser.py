@@ -27,7 +27,7 @@ class QHParser:
 	def getDesc_AssembleChar(self, assembleChar):
 		structDescList=[]
 		filter_lambda=lambda x: x.tag in [Constant.TAG_RADIX, Constant.TAG_COMPOSITION]
-		targetChildNodes=filter(filter_lambda , list(assembleChar))
+		targetChildNodes=filter(filter_lambda , assembleChar.iterchildren())
 		for node in targetChildNodes:
 			if node.tag==Constant.TAG_RADIX:
 				structDesc=self.getDesc_Radix(node)
