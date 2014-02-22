@@ -13,12 +13,12 @@ class QiangHeng:
 		choice=options.imname
 		xml_format=options.xml_format
 
-		[imModule, dirIM]=self.getIMInfo(choice)
+		[imModule, dirIM, styleFileIM]=self.getIMInfo(choice)
 
 		self.initManager(imModule)
 
 		dirQHDataRoot=options.dir_qhdata
-		self.readDesc(dirQHDataRoot, dirIM)
+		self.readDesc(dirQHDataRoot, dirIM, styleFileIM)
 
 		self.constructDescriptionNetwork()
 
@@ -35,10 +35,14 @@ class QiangHeng:
 		charDescQueryer=self.descMgr.getCharDescQueryer()
 		self.hanziNetwork=HanZiNetwork(ciGenerator)
 
-	def readDesc(self, dirQHDataRoot, dirIM):
+	def readDesc(self, dirQHDataRoot, dirIM, styleFileIM):
 		filenamelist=[
 				'CJK.xml',
 		]
+
+		styleDir=dirQHDataRoot+"/"+"style"+"/"
+		styleStandardFilePath=styleDir+'standard.xml'
+		styleImFilePath=styleDir+styleFileIM
 
 		componentDir="component"+"/"
 		componentMainDir=componentDir+"main/"
@@ -49,6 +53,10 @@ class QiangHeng:
 		radixDir="radix"+"/"+dirIM
 		toComponentList=[
 				dirQHData+'main/'+tmpfname,
+
+				styleStandardFilePath,
+				styleImFilePath,
+
 				dirQHData+componentMainDir+tmpfname,
 				dirQHData+componentImDir+tmpfname,
 #				dirQHData+radixDir+tmpfname,
@@ -174,26 +182,32 @@ class QiangHeng:
 
 	def getIMInfo(self, imName):
 		if imName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
+			imStyleFile='cj.xml'
 			imDirPath='cj/'
 			imName='倉頡'
 		elif imName in ['行', '行列', '行列輸入法', 'array', 'ar',]:
+			imStyleFile='ar.xml'
 			imDirPath='ar/'
 			imName='行列'
 		elif imName in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
+			imStyleFile='dy.xml'
 			imDirPath='dy/'
 			imName='大易'
 		elif imName in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
+			imStyleFile='bs.xml'
 			imDirPath='bs/'
 			imName='嘸蝦米'
 		elif imName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
+			imStyleFile='zm.xml'
 			imDirPath='zm/'
 			imName='鄭碼'
 		else:
+			imStyleFile='standard.xml'
 			imDirPath=''
 			imName='空'
 
 		imModule=IMMgr.getIMModule(imName)
-		return [imModule, imDirPath]
+		return [imModule, imDirPath, imStyleFile]
 
 oparser = OptionParser()
 oparser.add_option("-i", "--im", dest="imname", help="輸入法名稱", default="倉頡")
