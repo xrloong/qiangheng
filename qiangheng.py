@@ -24,7 +24,7 @@ filenamelist=[
 #		'charinfo/Katakana.txt',
 #		'charinfo/Verticalpunct.txt',
 ]
-fileencoding='utf-8'
+fileencoding='utf-8-sig'
 
 def checkgrammar(g):
 	if g[0]=='(' and g[-1]==')':

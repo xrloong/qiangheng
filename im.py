@@ -155,7 +155,7 @@ class CangJie(NoneIM):
 	def setCharTree(self, ch):
 		"""設定某一個字符所包含的部件的碼"""
 
-		if ch.cj:
+		if ch.getCJProp():
 			# 如果有值，代表事先指定或之前設定過。
 			return
 
@@ -165,7 +165,7 @@ class CangJie(NoneIM):
 			# 字首最多取兩碼
 			if len(prelist)==1:
 				# 如果字首只有一個部件
-				tmpcode=prelist[0].cj
+				tmpcode=prelist[0].getCJProp()
 				if len(tmpcode)<=2:
 					# 字首小於或剛好二個碼就全取
 					return tmpcode
@@ -174,7 +174,7 @@ class CangJie(NoneIM):
 					return tmpcode[0]+tmpcode[-1]
 			else:
 				# 如果字首有超過一個部件，則取首部件的首碼及尾部件的尾碼
-				return prelist[0].cj[0]+prelist[-1].cj[-1]
+				return prelist[0].getCJProp()[0]+prelist[-1].getCJProp()[-1]
 
 		def getCJPostfixCode(postlist):
 			"""計算倉頡字身的碼"""
@@ -182,7 +182,7 @@ class CangJie(NoneIM):
 			# 字身最多取三碼
 			if len(postlist)==1:
 				# 如果字身只有一個部件
-				tmpcode=postlist[0].cj
+				tmpcode=postlist[0].getCJProp()
 				if len(tmpcode)<=3:
 					# 字身只有三個碼就全取
 					return tmpcode
@@ -191,7 +191,7 @@ class CangJie(NoneIM):
 					return tmpcode[0:2]+tmpcode[-1]
 			else:
 				# 如果字身有超過一個部件
-				tmpcode=postlist[0].cj
+				tmpcode=postlist[0].getCJProp()
 				if len(tmpcode)==1:
 					# 如果次字首有只有一個碼
 					# 則取次字首的全碼及次字身的尾碼及尾碼
@@ -199,7 +199,7 @@ class CangJie(NoneIM):
 				else:
 					# 如果次字首有有超過一個碼
 					# 則取次字首的首碼及尾碼及最後部件的尾碼
-					return tmpcode[0]+tmpcode[-1]+postlist[-1].cj[-1]
+					return tmpcode[0]+tmpcode[-1]+postlist[-1].getCJProp()[-1]
 
 		[prefixlist, postfixlist]=self.getCJPrePostList(ch)
 
@@ -207,9 +207,9 @@ class CangJie(NoneIM):
 		for tmpch in tmplist:
 			self.setCharTree(tmpch)
 
-		if prefixlist and postfixlist and all(tmplist) and all(map(lambda ch: ch.cj, tmplist)):
-			cjcode=getCJPrefixCode(prefixlist)+getCJPostfixCode(postfixlist)
-			ch.cj=cjcode
+		if prefixlist and postfixlist and all(tmplist) and all(map(lambda ch: ch.getCJProp(), tmplist)):
+			cj=getCJPrefixCode(prefixlist)+getCJPostfixCode(postfixlist)
+			ch.setCJProp(cj)
 
 class Array(NoneIM):
 	"行列輸入法"
@@ -263,7 +263,7 @@ class Array(NoneIM):
 			return ch.ar
 
 	def setCharTree(self, ch):
-		if ch.ar:
+		if ch.getARProp():
 			return
 
 		complist=self.getAllComp(ch)
@@ -271,14 +271,11 @@ class Array(NoneIM):
 		for tmpch in complist:
 			self.setCharTree(tmpch)
 
-		arlist=list(map(lambda c: c.ar, complist))
+		arlist=list(map(lambda c: c.getARProp(), complist))
 		if complist and all(arlist):
 			cat="".join(arlist)
-			if len(cat)>4:
-				ch.ar=(cat[:3]+cat[-1])
-			else:
-				ch.ar=(cat)
-
+			ar=cat[:3]+cat[-1] if len(cat)>4 else cat
+			ch.setARProp(ar)
 
 class DaYi(NoneIM):
 	"大易輸入法"
@@ -332,7 +329,7 @@ class DaYi(NoneIM):
 			return ch.dy
 
 	def setCharTree(self, ch):
-		if ch.dy:
+		if ch.getDYProp():
 			return
 
 		complist=self.getAllComp(ch)
@@ -340,13 +337,11 @@ class DaYi(NoneIM):
 		for tmpch in complist:
 			self.setCharTree(tmpch)
 
-		dylist=list(map(lambda c: c.dy, complist))
+		dylist=list(map(lambda c: c.getDYProp(), complist))
 		if complist and all(dylist):
 			cat="".join(dylist)
-			if len(cat)>4:
-				ch.dy=(cat[:3]+cat[-1])
-			else:
-				ch.dy=(cat)
+			dy=cat[:3]+cat[-1] if len(cat)>4 else cat
+			ch.setDYProp(dy)
 
 class Boshiamy(NoneIM):
 	"嘸蝦米輸入法"
@@ -382,11 +377,11 @@ class Boshiamy(NoneIM):
 			]
 
 	def getCode(self, ch):
-		if ch.bscode:
-			return ch.bscode
+		if ch.bs:
+			return ch.bs
 
 	def setCharTree(self, ch):
-		if ch.bs:
+		if ch.getBSProp()[0]:
 			return
 
 		complist=self.getAllComp(ch)
@@ -394,14 +389,12 @@ class Boshiamy(NoneIM):
 		for tmpch in complist:
 			self.setCharTree(tmpch)
 
-		bslist=list(map(lambda c: c.bs, complist))
+		bslist=list(map(lambda c: c.getBSProp()[0], complist))
 		if complist and all(bslist):
 			cat="".join(bslist)
-			if len(cat)>4:
-				ch.bs=(cat[:3]+cat[-1])
-			else:
-				ch.bs=(cat)
-			ch.bssp=complist[-1].bssp
+			bs_incode=(cat[:3]+cat[-1]) if len(cat)>4 else cat
+			bs_spcode=complist[-1].getBSProp()[1]
+			ch.setBSProp(bs_incode, bs_spcode)
 
 class ZhengMa(NoneIM):
 	"鄭碼輸入法"
@@ -442,7 +435,7 @@ class ZhengMa(NoneIM):
 			return ch.zm
 
 	def setCharTree(self, ch):
-		if ch.zm:
+		if ch.getZMProp()[0]:
 			return
 
 		complist=self.getAllComp(ch)
@@ -522,11 +515,10 @@ class ZhengMa(NoneIM):
 					return [l[0][0][0:3]+l[-1][0][0], '43']
 
 		if all(complist):
-			ctlist=list(map(lambda c: codeToList(c.zm, c.zmtp), complist))
+			ctlist=list(map(lambda c: codeToList(*c.getZMProp()), complist))
 			if complist and all(ctlist):
 				code, type=listToCode(sum(ctlist, []))
-				ch.zm=code
-				ch.zmtp=type
+				ch.setZMProp(code, type)
 
 if __name__=='__main__':
 	pass
