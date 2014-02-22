@@ -1,6 +1,7 @@
 from .DCCodeInfo import DCCodeInfo
 from ..base.CodeInfoEncoder import CodeInfoEncoder
 from ..base.CodeInfo import CodeInfo
+from .Stroke import Pane
 
 import sys
 import copy
@@ -11,8 +12,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateDefaultCodeInfo(self, strokeList, region=[0, 0, 0xFF, 0xFF]):
-		return DCCodeInfo.generateDefaultCodeInfo(strokeList, region)
+	def generateDefaultCodeInfo(self, strokeList, pane=Pane.DEFAULT_PANE):
+		return DCCodeInfo.generateDefaultCodeInfo(strokeList, pane)
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getStrokeList())>0, codeInfoList))

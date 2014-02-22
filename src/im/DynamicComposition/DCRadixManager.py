@@ -1,6 +1,7 @@
 from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..base.RadixManager import RadixParser
+from .Stroke import Pane
 from .Stroke import Stroke
 from .Stroke import StrokeGroup
 import copy
@@ -39,7 +40,7 @@ class DCRadixParser(RadixParser):
 			infoDict=elementCodeInfo.attrib
 
 		geometryNode=elementCodeInfo.find(DCRadixParser.TAG_GEOMETRY)
-		region=self.parseGeometry(geometryNode)
+		pane=self.parseGeometry(geometryNode)
 
 		strokeNode=elementCodeInfo.find(DCRadixParser.TAG_STROKE)
 		strokeNodeList=elementCodeInfo.findall(DCRadixParser.TAG_STROKE)
@@ -49,7 +50,7 @@ class DCRadixParser(RadixParser):
 			description=strokeNode.attrib.get(DCRadixParser.ATTRIB_CODE_EXPRESSION, '')
 			if len(description)>0 and description!='XXXX':
 				if description[0]=='(':
-					stroke=Stroke(description, region)
+					stroke=Stroke(description, pane)
 					strokeList.append(stroke)
 				else:
 					strokeGroupName=description
@@ -57,12 +58,11 @@ class DCRadixParser(RadixParser):
 					tmpStrokeGroup=copy.deepcopy(strokeGroup)
 					strokeList.extend(tmpStrokeGroup.getStrokeList())
 
-		strokeGroup=StrokeGroup()
-		strokeGroup=StrokeGroup(region, strokeList)
+		strokeGroup=StrokeGroup(pane, strokeList)
 
-		region=strokeGroup.getRegion()
+		pane=strokeGroup.getPane()
 		strokeGroup=strokeGroup.getStrokeList()
-		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeList, region)
+		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeList, pane)
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):
@@ -85,40 +85,39 @@ class DCRadixParser(RadixParser):
 
 	def parseGeometry(self, geometryNode):
 		descriptionRegion=geometryNode.get(DCRadixParser.TAG_SCOPE)
-		region=self.parseRegion(descriptionRegion)
-		return region
+		pane=self.parsePane(descriptionRegion)
+		return pane
 
 	def parseStrokeGroup(self, strokeGroupNode):
 		strokeGroupName=strokeGroupNode.get(DCRadixParser.TAG_NAME)
 
 		geometryNode=strokeGroupNode.find(DCRadixParser.TAG_GEOMETRY)
-		region=self.parseGeometry(geometryNode)
+		pane=self.parseGeometry(geometryNode)
 
-		strokeGroup=self.parseStroke(region, strokeGroupNode)
+		strokeGroup=self.parseStroke(pane, strokeGroupNode)
 
 		self.strokeGroupDB[strokeGroupName]=strokeGroup
 
-	def parseStroke(self, region, strokeGroupNode):
+	def parseStroke(self, pane, strokeGroupNode):
 		strokeList=[]
 		strokeNodeList=strokeGroupNode.findall(DCRadixParser.TAG_STROKE)
 		for strokeNode in strokeNodeList:
 			codeExpression=strokeNode.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
-			stroke=Stroke(codeExpression, region)
+			stroke=Stroke(codeExpression, pane)
 
 			strokeName=strokeNode.get(DCRadixParser.TAG_NAME)
 			stroke.setInstanceName(strokeName)
 
 			strokeList.append(stroke)
-		strokeGroup=StrokeGroup(region, strokeList)
+		strokeGroup=StrokeGroup(pane, strokeList)
 		return strokeGroup
 
-	def parseRegion(self, descriptionRegion):
+	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)
 		top=int(descriptionRegion[2:4], 16)
 		right=int(descriptionRegion[4:6], 16)
 		bottom=int(descriptionRegion[6:8], 16)
-		region=[left, top, right, bottom]
-		return region
+		return Pane([left, top, right, bottom])
 
 	def findStrokeGroup(self, strokeGroupName):
 		return self.strokeGroupDB.get(strokeGroupName)

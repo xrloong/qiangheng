@@ -1,24 +1,20 @@
 from ..base.CodeInfo import CodeInfo
+from .Stroke import Pane
 
 class DCCodeInfo(CodeInfo):
 	INSTALLMENT_SEPERATOR='|'
 	STROKE_SEPERATOR=';'
 	RADIX_SEPERATOR=','
 
-	def __init__(self, strokeList, region):
+	def __init__(self, strokeList, pane):
 		CodeInfo.__init__(self)
 
 		self.strokeList=strokeList
-#		self.width, self.height=size
-		[left, top, right, bottom]=region
-		self.left=left
-		self.top=top
-		self.right=right
-		self.bottomm=bottom
+		self.pane=pane
 
 	@staticmethod
-	def generateDefaultCodeInfo(strokeList, region=[0, 0, 0xFF, 0xFF]):
-		codeInfo=DCCodeInfo(strokeList, region)
+	def generateDefaultCodeInfo(strokeList, pane):
+		codeInfo=DCCodeInfo(strokeList, pane)
 		return codeInfo
 
 	def toCode(self):

@@ -1,7 +1,7 @@
 import re
 import sys
 
-class Stroke:
+class Pane:
 	WIDTH=0x100
 	HEIGHT=0x100
 	X_MAX=0xFF
@@ -9,6 +9,58 @@ class Stroke:
 
 	DEFAULT_REGION=[0, 0, X_MAX, Y_MAX]
 
+	def __init__(self, region=DEFAULT_REGION):
+		[left, top, right, bottom]=region
+		self.left=left
+		self.top=top
+		self.right=right
+		self.bottom=bottom
+
+	@property
+	def width(self):
+		return self.right-self.left+1
+
+	@property
+	def height(self):
+		return self.bottom-self.top+1
+
+	def setByList(self, region):
+		[left, top, right, bottom]=region
+		self.left=left
+		self.top=top
+		self.right=right
+		self.bottom=bottom
+
+	def setByCorners(self, left, top, right, bottom):
+		self.left=left
+		self.top=top
+		self.right=right
+		self.bottom=bottom
+
+	def getAsList(self):
+		return [self.left, self.top, self.right, self.bottom]
+
+	def getLeft(self):
+		return self.left
+
+	def getTop(self):
+		return self.top
+
+	def getRight(self):
+		return self.right
+
+	def getBottom(self):
+		return self.bottom
+
+	def getWidth(self):
+		return self.width
+
+	def getHeight(self):
+		return self.height
+
+Pane.DEFAULT_PANE=Pane()
+
+class Stroke:
 	STROKE_NAMES=[
 #		"XXXX",
 
@@ -34,7 +86,7 @@ class Stroke:
 
 	DEFAULT_INSTANCE_NAME='瑲珩預設筆劃名'
 
-	def __init__(self, description, region):
+	def __init__(self, description, pane):
 		matchResult=re.match("\((.*)\)(.*)", description)
 
 		self.setInstanceName(Stroke.DEFAULT_INSTANCE_NAME)
@@ -50,7 +102,7 @@ class Stroke:
 		descriptionList=strokeDescription.split(',')
 		self.actionList=[StrokeAction(d) for d in descriptionList]
 
-		[left, top, right, bottom]=region
+		[left, top, right, bottom]=pane.getAsList()
 		self.left=left
 		self.top=top
 		self.right=right
@@ -87,7 +139,7 @@ class StrokeAction:
 		self.x=int(description[4:6], 16)
 		self.y=int(description[6:8], 16)
 
-		[left, top, right, bottom]=Stroke.DEFAULT_REGION
+		[left, top, right, bottom]=Pane.DEFAULT_REGION
 		self.left=left
 		self.top=top
 		self.right=right
@@ -113,30 +165,21 @@ class StrokeAction:
 		self.y=int(self.y+yOffset)
 
 class StrokeGroup:
-	def __init__(self, region=Stroke.DEFAULT_REGION, strokeList=[]):
-		self.region=region
+	def __init__(self, pane=Pane.DEFAULT_PANE, strokeList=[]):
+		self.pane=pane
 		self.strokeList=strokeList
 
-	def getRegion(self):
-		return self.region
+	def getPane(self):
+		return self.pane
 
 	def getStrokeList(self):
 		return self.strokeList
-
-	def __init__X(self, regionExpression, codeExpressionList):
-		region=self.parseRegion(regionExpression)
-
-		strokeList=[]
-		for codeExpression in codeExpressionList:
-			stroke=Stroke(codeExpression, region)
-			strokeList.append(stroke)
-		self.strokeList=strokeList
 
 	def parseRegion(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)
 		top=int(descriptionRegion[2:4], 16)
 		right=int(descriptionRegion[4:6], 16)
 		bottom=int(descriptionRegion[6:8], 16)
-		region=[left, top, right, bottom]
-		return region
+		pane=Pane([left, top, right, bottom])
+		return pane.getAsList()
 
