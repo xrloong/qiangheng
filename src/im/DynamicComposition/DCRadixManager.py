@@ -1,9 +1,8 @@
-
-
-import Constant
-from im.CodeInfo.DCCodeInfo import DCCodeInfo
+from .DCCodeInfo import DCCodeInfo
 from ..base.RadixManager import RadixManager
 from gear.Stroke import Stroke
+import Constant
+
 class DCRadixManager(RadixManager):
 	def __init__(self, codeInfoEncoder):
 		RadixManager.__init__(self, codeInfoEncoder)

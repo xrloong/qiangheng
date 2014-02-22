@@ -1,5 +1,5 @@
-from gear.CodeInfo import CodeInfo
-from gear.CodeInfoEncoder import CodeInfoEncoder
+from .CodeInfo import CodeInfo
+from .CodeInfoEncoder import CodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 from . import RadixManager
 

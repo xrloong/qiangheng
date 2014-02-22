@@ -1,5 +1,6 @@
+from ..base.CodeInfo import CodeInfo
+
 import sys
-from gear.CodeInfo import CodeInfo
 
 class ARCodeInfo(CodeInfo):
 	INSTALLMENT_SEPERATOR='|'

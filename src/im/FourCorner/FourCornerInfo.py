@@ -1,6 +1,6 @@
 from ..base.IMInfo import IMInfo
-from ..CodeInfo import FCCodeInfo
-from ..CodeInfoEncoder import FCCodeInfoEncoder
+from . import FCCodeInfo
+from . import FCCodeInfoEncoder
 from . import FCRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 

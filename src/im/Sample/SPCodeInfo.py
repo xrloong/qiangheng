@@ -1,12 +1,12 @@
-from gear.CodeInfo import CodeInfo
+from ..base.CodeInfo import CodeInfo
 
-class GXCodeInfo(CodeInfo):
-	def __init__(self, characterCode):
+class SPCodeInfo(CodeInfo):
+	def __init__(self):
 		CodeInfo.__init__(self)
 
 	@staticmethod
 	def generateDefaultCodeInfo(characterCode):
-		codeInfo=GXCodeInfo(characterCode)
+		codeInfo=SPCodeInfo(characterCode)
 		return codeInfo
 
 	def toCode(self):

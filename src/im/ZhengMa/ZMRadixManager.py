@@ -1,8 +1,8 @@
-
+from .ZMCodeInfo import ZMCodeInfo
+from ..base.RadixManager import RadixManager
 
 import Constant
-from im.CodeInfo.ZMCodeInfo import ZMCodeInfo
-from ..base.RadixManager import RadixManager
+
 class ZMRadixManager(RadixManager):
 	def __init__(self, codeInfoEncoder):
 		RadixManager.__init__(self, codeInfoEncoder)

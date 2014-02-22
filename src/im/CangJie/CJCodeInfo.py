@@ -1,4 +1,4 @@
-from gear.CodeInfo import CodeInfo
+from ..base.CodeInfo import CodeInfo
 
 class CJCodeInfo(CodeInfo):
 	INSTALLMENT_SEPERATOR='|'

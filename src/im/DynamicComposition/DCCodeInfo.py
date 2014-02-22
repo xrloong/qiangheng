@@ -1,6 +1,4 @@
-import re
-import sys
-from gear.CodeInfo import CodeInfo
+from ..base.CodeInfo import CodeInfo
 
 class DCCodeInfo(CodeInfo):
 	INSTALLMENT_SEPERATOR='|'

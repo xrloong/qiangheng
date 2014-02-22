@@ -1,6 +1,6 @@
 from ..base.IMInfo import IMInfo
-from ..CodeInfo import DCCodeInfo
-from ..CodeInfoEncoder import DCCodeInfoEncoder
+from . import DCCodeInfo
+from . import DCCodeInfoEncoder
 from . import DCRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 

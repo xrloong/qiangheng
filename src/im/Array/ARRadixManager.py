@@ -1,10 +1,7 @@
-
-import sys
-import Constant
-from im.CodeInfo.ARCodeInfo import ARCodeInfo
-from gear.CodeInfo import CodeInfo
+from .ARCodeInfo import ARCodeInfo
 from ..base.RadixManager import RadixManager
 from ..base.RadixManager import RadixCodeInfoDescription
+import Constant
 
 class ARRadixManager(RadixManager):
 	def __init__(self, codeInfoEncoder):

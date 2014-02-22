@@ -1,6 +1,6 @@
 from ..base.IMInfo import IMInfo
-from ..CodeInfo import DYCodeInfo
-from ..CodeInfoEncoder import DYCodeInfoEncoder
+from . import DYCodeInfo
+from . import DYCodeInfoEncoder
 from . import DYRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 

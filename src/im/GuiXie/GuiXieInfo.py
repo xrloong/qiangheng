@@ -1,6 +1,6 @@
 from ..base.IMInfo import IMInfo
-from ..CodeInfo import GXCodeInfo
-from ..CodeInfoEncoder import GXCodeInfoEncoder
+from . import GXCodeInfo
+from . import GXCodeInfoEncoder
 from . import GXRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 

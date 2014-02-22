@@ -4,7 +4,7 @@ from xml.etree import ElementTree
 from parser import QHParser
 from gear import OperatorManager
 from gear.CodeVarianceType import CodeVarianceType
-from gear.CodeInfo import CodeInfo
+from .CodeInfo import CodeInfo
 
 class RadixManager:
 	def __init__(self, codeInfoEncoder):

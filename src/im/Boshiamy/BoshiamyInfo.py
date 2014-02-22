@@ -1,6 +1,6 @@
 from ..base.IMInfo import IMInfo
-from ..CodeInfo import BSCodeInfo
-from ..CodeInfoEncoder import BSCodeInfoEncoder
+from . import BSCodeInfo
+from . import BSCodeInfoEncoder
 from . import BSRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 

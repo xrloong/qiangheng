@@ -1,8 +1,7 @@
-
-
-import Constant
-from im.CodeInfo.DYCodeInfo import DYCodeInfo
+from .DYCodeInfo import DYCodeInfo
 from ..base.RadixManager import RadixManager
+import Constant
+
 class DYRadixManager(RadixManager):
 	def __init__(self, codeInfoEncoder):
 		RadixManager.__init__(self, codeInfoEncoder)

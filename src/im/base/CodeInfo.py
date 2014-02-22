@@ -1,4 +1,4 @@
-from .CodeVarianceType import CodeVarianceType
+from gear.CodeVarianceType import CodeVarianceType
 
 class CodeInfo:
 	def __init__(self):

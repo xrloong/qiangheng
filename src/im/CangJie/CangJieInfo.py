@@ -1,6 +1,6 @@
 from ..base.IMInfo import IMInfo
-from ..CodeInfo import CJCodeInfo
-from ..CodeInfoEncoder import CJCodeInfoEncoder
+from . import CJCodeInfo
+from . import CJCodeInfoEncoder
 from . import CJRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 

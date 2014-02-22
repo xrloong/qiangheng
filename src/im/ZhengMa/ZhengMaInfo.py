@@ -1,6 +1,6 @@
 from ..base.IMInfo import IMInfo
-from ..CodeInfo import ZMCodeInfo
-from ..CodeInfoEncoder import ZMCodeInfoEncoder
+from . import ZMCodeInfo
+from . import ZMCodeInfoEncoder
 from . import ZMRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 

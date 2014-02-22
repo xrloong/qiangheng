@@ -1,6 +1,6 @@
 from ..base.IMInfo import IMInfo
-from ..CodeInfo import SPCodeInfo
-from ..CodeInfoEncoder import SPCodeInfoEncoder
+from . import SPCodeInfo
+from . import SPCodeInfoEncoder
 from . import SPRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
