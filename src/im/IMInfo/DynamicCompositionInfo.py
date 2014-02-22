@@ -2,6 +2,7 @@ from .IMInfo import IMInfo
 from ..CodeInfo import DCCodeInfo
 from ..CodeInfoEncoder import DCCodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
+from gear import RadixManager
 
 class DynamicCompositionInfo(IMInfo):
 	"動態組字"
@@ -34,6 +35,8 @@ CodeInfoGenerator=DCCodeInfo.DCCodeInfo
 
 codeInfoEncoder=DCCodeInfoEncoder.DCCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
+
+radixManager=RadixManager.RadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

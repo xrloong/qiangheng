@@ -21,12 +21,10 @@ class QiangHeng:
 		imModule=IMMgr.IMMgr.getIMModule(imProp)
 
 		StateManager.setIMModule(imModule)
+		StateManager.radixManager.loadRadix(toCodeList)
 
 		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(imModule)
-		self.descMgr.loadData(toTemplateList, toComponentList, toCodeList)
-
-		radixList=self.descMgr.getRadixList()
-		StateManager.radixManager.setTurtleInfoList(radixList)
+		self.descMgr.loadData(toTemplateList, toComponentList)
 
 		self.hanziNetwork=HanZiNetwork.HanZiNetwork.construct(self.descMgr)
 

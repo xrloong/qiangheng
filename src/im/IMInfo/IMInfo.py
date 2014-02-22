@@ -1,6 +1,7 @@
 from gear.CodeInfo import CodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
+from gear import RadixManager
 
 class IMInfo:
 	"輸入法"
@@ -36,6 +37,8 @@ CodeInfoGenerator=CodeInfo
 
 codeInfoEncoder=CodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
+
+radixManager=RadixManager.RadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

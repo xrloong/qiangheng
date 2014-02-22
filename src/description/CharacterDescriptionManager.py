@@ -7,14 +7,12 @@ from gear import RadixManager
 from parser import QHParser
 from state import StateManager
 from xml.etree import ElementTree
+import Constant
 
 class CharDescriptionManager:
 	def __init__(self, imModule):
 		self.templateDB={}
 		self.characterDB={}
-
-#		self.radixDB={}
-		self.radixList=[]
 
 		def charDescQueryer(charName):
 			charDesc=self.characterDB.get(charName, None)
@@ -29,9 +27,6 @@ class CharDescriptionManager:
 	def getAllCharacters(self):
 		return self.characterDB.keys()
 
-	def getRadixList(self):
-		return self.radixList
-
 	def queryCharacterDescription(self, character):
 		return self.charDescQueryer(character)
 
@@ -41,18 +36,15 @@ class CharDescriptionManager:
 		return freq
 
 
-	def loadData(self, toTemplateList, toComponentList, toCodeList):
+	def loadData(self, toTemplateList, toComponentList):
 		for filename in toTemplateList:
-			self.loadTemplateFromXML(filename, fileencoding='utf-8-sig')
+			self.loadTemplateFromXML(filename, fileencoding=Constant.FILE_ENCODING)
 
 		for filename in toComponentList:
-			self.loadFromXML(filename, fileencoding='utf-8-sig')
+			self.loadFromXML(filename, fileencoding=Constant.FILE_ENCODING)
 		self.adjustData()
 
-		for filename in toCodeList:
-			self.loadCodeInfoFromXML(filename, fileencoding='utf-8-sig')
-
-	def loadFromXML(self, filename, fileencoding='utf-8-sig'):
+	def loadFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
 		f=open(filename, encoding=fileencoding)
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
@@ -69,21 +61,13 @@ class CharDescriptionManager:
 				self.characterDB[charName]=charDesc
 
 
-	def loadTemplateFromXML(self, filename, fileencoding='utf-8-sig'):
+	def loadTemplateFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
 		f=open(filename, encoding=fileencoding)
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
 		templateDB=self.parser.loadTemplateByParsingXML(rootNode)
 		self.templateDB.update(templateDB)
 		self.operationMgr.setTemplateDB(self.templateDB)
-
-	def loadCodeInfoFromXML(self, filename, fileencoding='utf-8-sig'):
-		f=open(filename, encoding=fileencoding)
-		xmlNode=ElementTree.parse(f)
-		rootNode=xmlNode.getroot()
-
-		radixInfoList=self.parser.loadCodeInfoByParsingXML(rootNode)
-		self.radixList.extend(radixInfoList)
 
 	def adjustData(self):
 		charDescRearranger=StateManager.characterDescriptionRearrangerGenerator(self.operationMgr)

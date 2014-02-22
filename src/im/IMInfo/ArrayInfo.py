@@ -2,6 +2,7 @@ from .IMInfo import IMInfo
 from ..CodeInfo import ARCodeInfo
 from ..CodeInfoEncoder import ARCodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
+from gear import RadixManager
 
 class ArrayInfo(IMInfo):
 	"行列輸入法"
@@ -54,6 +55,8 @@ CodeInfoGenerator=ARCodeInfo.ARCodeInfo
 
 codeInfoEncoder=ARCodeInfoEncoder.ARCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
+
+radixManager=RadixManager.RadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

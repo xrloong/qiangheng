@@ -2,6 +2,7 @@ from .IMInfo import IMInfo
 from ..CodeInfo import CJCodeInfo
 from ..CodeInfoEncoder import CJCodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
+from gear import RadixManager
 
 class CangJieInfo(IMInfo):
 	"倉頡輸入法"
@@ -50,6 +51,8 @@ CodeInfoGenerator=CJCodeInfo.CJCodeInfo
 
 codeInfoEncoder=CJCodeInfoEncoder.CJCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
+
+radixManager=RadixManager.RadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

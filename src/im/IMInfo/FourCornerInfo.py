@@ -2,6 +2,7 @@ from .IMInfo import IMInfo
 from ..CodeInfo import FCCodeInfo
 from ..CodeInfoEncoder import FCCodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
+from gear import RadixManager
 
 class FourCornerInfo(IMInfo):
 	"範例輸入法"
@@ -34,6 +35,8 @@ CodeInfoGenerator=FCCodeInfo.FCCodeInfo
 
 codeInfoEncoder=FCCodeInfoEncoder.FCCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
+
+radixManager=RadixManager.RadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass
