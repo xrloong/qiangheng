@@ -34,6 +34,9 @@ class StrokeInfo:
 	def getName(self):
 		return self.name
 
+	def isValid(self):
+		return false
+
 	@classmethod
 	def parseExpression(cls, parameterExpressionList):
 		return []
@@ -93,7 +96,7 @@ class StrokeInfo:
 			]
 
 	def compute_橫(self, startPoint, w):
-#		assert w>0
+		assert w>0
 		return [(False, (startPoint[0]+w, startPoint[1])), ]
 
 	def compute_豎(self, startPoint, h):
@@ -200,6 +203,12 @@ class StrokeInfo_點(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1])]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w=paramList[0]
+		h=paramList[1]
+		return w>0 and h>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w=paramList[0]
@@ -218,6 +227,12 @@ class StrokeInfo_圈(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1])]
 
+	def isValid(self):
+		paramList=self.parameterList
+		a=paramList[0]
+		b=paramList[1]
+		return a>0 and b>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		a=paramList[0]
@@ -234,6 +249,11 @@ class StrokeInfo_橫(StrokeInfo):
 		assert len(l)==1
 		assert int(l[0])>0
 		return [int(l[0])]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		return w1>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -252,6 +272,13 @@ class StrokeInfo_橫鉤(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		return w1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -273,6 +300,12 @@ class StrokeInfo_橫折(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h2=paramList[1]
+		return w1>0 and h2>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -292,6 +325,13 @@ class StrokeInfo_橫折折(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h2=paramList[1]
+		w3=paramList[2]
+		return w1>0 and h2>0 and w3>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -315,6 +355,14 @@ class StrokeInfo_橫折提(StrokeInfo):
 		assert int(l[2])>0
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h2=paramList[1]
+		w3=paramList[2]
+		h3=paramList[3]
+		return w1>0 and h2>0 and w3>0 and h3>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -341,6 +389,15 @@ class StrokeInfo_橫折鉤(StrokeInfo):
 		assert int(l[4])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		w3=paramList[3]
+		h3=paramList[4]
+		return w1>0 and w2>0 and h2>0 and w3>0 and h3>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -366,20 +423,26 @@ class StrokeInfo_橫折彎(StrokeInfo):
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h2=paramList[1]
+		w2=paramList[2]
+		cr=paramList[3]
+		return w1>0 and h2>0 and w2>0 and cr>0 and(h2-cr)>0 and (w2-cr)>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 		w2=paramList[2]
 		cr=paramList[3]
-#		h3=paramList[4]
 
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_豎(points[-1][1], h2 - cr))
 		points.extend(self.compute_曲(points[-1][1], cr))
 		points.extend(self.compute_橫(points[-1][1], w2 - cr))
-#		points.extend(self.compute_上(points[-1][1], h3))
 		return points
 
 class StrokeInfo_橫撇(StrokeInfo):
@@ -391,6 +454,13 @@ class StrokeInfo_橫撇(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		return w1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -415,6 +485,16 @@ class StrokeInfo_橫斜彎鉤(StrokeInfo):
 		assert int(l[4])>0
 		assert int(l[5])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h2=paramList[1]
+		w2l=paramList[2]
+		w2r=paramList[3]
+		cr=paramList[4]
+		h3=paramList[5]
+		return w1>0 and h2>0 and w2l>0 and w2r>0 and cr>0 and h3>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -446,6 +526,18 @@ class StrokeInfo_橫折折折鉤(StrokeInfo):
 		assert int(l[7])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), int(l[6]), int(l[7]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		w3=paramList[3]
+		w4=paramList[4]
+		h4=paramList[5]
+		w5=paramList[6]
+		h5=paramList[7]
+		return w1>0 and w2>0 and h2>0 and w3>0 and w4>0 and h4>0 and w5>0 and h5>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -476,6 +568,14 @@ class StrokeInfo_橫斜鉤(StrokeInfo):
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		h3=paramList[3]
+		return w1>0 and w2>0 and h2>0 and h3>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -500,6 +600,14 @@ class StrokeInfo_橫折折折(StrokeInfo):
 		assert len(l)==4
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h2=paramList[1]
+		w3=paramList[2]
+		h4=paramList[3]
+		return w1>0 and h2>0 and w3>0 and h4>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -522,6 +630,11 @@ class StrokeInfo_豎(StrokeInfo):
 		assert int(l[0])>0
 		return [int(l[0]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		h1=paramList[0]
+		return h1>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
@@ -538,6 +651,12 @@ class StrokeInfo_豎折(StrokeInfo):
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		h1=paramList[0]
+		w2=paramList[1]
+		return h1>0 and w2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -559,6 +678,13 @@ class StrokeInfo_豎提(StrokeInfo):
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		h1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		return h1>0 and w2>0 and h2>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
@@ -579,6 +705,13 @@ class StrokeInfo_豎折折(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		h1=paramList[0]
+		w2=paramList[1]
+		h3=paramList[2]
+		return h1>0 and w2>0 and h3>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -605,6 +738,17 @@ class StrokeInfo_豎折彎鉤(StrokeInfo):
 		assert int(l[5])>0
 		assert int(l[6])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), int(l[6]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		w2=paramList[2]
+		w3=paramList[3]
+		h3=paramList[4]
+		w4=paramList[5]
+		h4=paramList[6]
+		return w1>0 and h1>0 and w2>0 and w3>0 and h3>0 and w4>0 and h4>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -639,6 +783,14 @@ class StrokeInfo_豎彎鉤(StrokeInfo):
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		h1=paramList[0]
+		w1=paramList[1]
+		cr=paramList[2]
+		h2=paramList[3]
+		return h1>0 and w1>0 and cr>0 and h2>0 and(h1-cr)>0 and (w1-cr)>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
@@ -663,6 +815,13 @@ class StrokeInfo_豎彎(StrokeInfo):
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		cr=paramList[2]
+		return w1>0 and h1>0 and cr>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -684,6 +843,13 @@ class StrokeInfo_豎鉤(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		h1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		return h1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -713,6 +879,13 @@ class StrokeInfo_斜鉤(StrokeInfo):
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		h2=paramList[2]
+		return w1>0 and h1>0 and h2>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -734,6 +907,14 @@ class StrokeInfo_彎鉤(StrokeInfo):
 		assert int(l[2])>0
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		w2=paramList[2]
+		h2=paramList[3]
+		return w1>0 and h1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -758,6 +939,14 @@ class StrokeInfo_撇鉤(StrokeInfo):
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		w2=paramList[2]
+		h2=paramList[3]
+		return w1>0 and h1>0 and w2>0 and h2>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -779,6 +968,12 @@ class StrokeInfo_撇(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		return w1>0 and h1>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -798,6 +993,14 @@ class StrokeInfo_撇點(StrokeInfo):
 		assert int(l[2])>0
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		w2=paramList[2]
+		h2=paramList[3]
+		return w1>0 and h1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -821,6 +1024,14 @@ class StrokeInfo_撇橫(StrokeInfo):
 		assert int(l[2])>0
 #		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		w2=paramList[2]
+		h2=paramList[3]
+		return w1>0 and h1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -851,6 +1062,15 @@ class StrokeInfo_撇橫撇(StrokeInfo):
 		assert int(l[4])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		w2=paramList[2]
+		w3=paramList[3]
+		h3=paramList[4]
+		return w1>0 and h1>0 and w2>0 and w3>0 and h3>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -874,6 +1094,12 @@ class StrokeInfo_豎撇(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		return w1>0 and h1>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -896,6 +1122,12 @@ class StrokeInfo_提(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		return w1>0 and h1>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -914,6 +1146,12 @@ class StrokeInfo_捺(StrokeInfo):
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		return w1>0 and h1>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -931,6 +1169,12 @@ class StrokeInfo_臥捺(StrokeInfo):
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		return w1>0 and h1>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -959,6 +1203,14 @@ class StrokeInfo_提捺(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0], topLeft[1]+h1)
 
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		h1=paramList[1]
+		w2=paramList[2]
+		h2=paramList[3]
+		return w1>0 and h1>0 and w2>0 and h2>0
+
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -983,6 +1235,13 @@ class StrokeInfo_橫捺(StrokeInfo):
 
 	def getStartPoint(self):
 		return self.getTopLeft()
+
+	def isValid(self):
+		paramList=self.parameterList
+		w1=paramList[0]
+		w2=paramList[1]
+		h2=paramList[2]
+		return w1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -1249,9 +1508,9 @@ class StrokeGroup(Writing):
 
 	def computeScope(self):
 		scopes=[s.computeScope() for s in self.strokeList]
-		left=min([s[0] for s in scopes])
-		top=min([s[1] for s in scopes])
-		right=min([s[2] for s in scopes])
-		bottom=min([s[3] for s in scopes])
+		left=min(list(zip(*scopes))[0])
+		top=min(list(zip(*scopes))[1])
+		right=min(list(zip(*scopes))[2])
+		bottom=min(list(zip(*scopes))[3])
 		return (left, top, right, bottom)
 
