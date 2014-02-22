@@ -20,39 +20,29 @@ class HanZiStructure:
 	def setCharInfo(self, charInfo):
 		self.charInfo=charInfo
 
+	def getCharInfoList(self):
+		return [self.charInfo]
+
 	def setStructure(self, operator, nodeList):
 		self.operator=operator
 		self.nodeList=nodeList
 
 	def setByComps(self):
 		chInfo=self.getCharInfo()
-		charDescList=self.nodeList
+		nodeList=self.nodeList
 		if not chInfo.isToSetTree():
 			return
 
-		infoList=[x.getChInfo() for x in charDescList]
+		infoList=[node.getCharInfoList()[0] for node in nodeList]
 		chInfo.setByComps(self.getOperator(), infoList)
 
 class HanZiNode:
 	def __init__(self, charDesc, chInfo):
-		self.flagExpanded=False
-
 		self.structureX=HanZiStructure(charDesc.getOperator(), [], chInfo)
 		self.structureList=[self.structureX]
 
 		self.isToShow=charDesc.isToShow()
 
-	def isExpanded(self):
-		return self.flagExpanded
-
-	def setExpanded(self, flag):
-		self.flagExpanded=flag
-
-	def setChInfo(self, charInfo):
-		self.getStructure().setCharInfo(charInfo)
-
-	def getChInfo(self):
-		return self.getStructure().getCharInfo()
 
 	def setStructure(self, operator, nodeList):
 		self.getStructure().setStructure(operator, nodeList)
@@ -63,6 +53,10 @@ class HanZiNode:
 	def getStructureListWithCondition(self):
 #		return self.structureList[:1]
 		return self.structureList
+
+	def getCharInfoList(self):
+		structureList=self.getStructureListWithCondition()
+		return sum(map(lambda s: s.getCharInfoList(), structureList), [])
 
 	def getCodeList(self):
 		self.setNodeTree()
