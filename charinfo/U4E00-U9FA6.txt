@@ -90,8 +90,8 @@ U+4E56	乖	(龜)	hjlp	XXXX	XXXX	XXXX	XXXX	metr	32
 U+4E57	乗	(龜)	hdt	XXXX	XXXX	XXXX	XXXX	mfea	22
 U+4E58	乘	(龜)	hdlp	XXXX	XXXX	XXXX	XXXX	mftr	32
 U+4E59	乙	(龜)	nu	s	c	z	l	yda	13
-U+4E5A	乚	(龜)	lu	s	c	l	l	zaaa	14
-U+4E5B	乛	(龜)	n	g	b	y	y	xaaa	14
+U+4E5A	乚	(龜)	lu	s	c	l	l	z	11
+U+4E5B	乛	(龜)	n	g	b	y	y	x	11
 U+4E5C	乜	(龜)	pn	gs	XXXX	yl	l	yz	21
 U+4E5D	九	(龜)	kn	sl	/c	k	l	qy	12
 U+4E5E	乞	(龜)	on	os	2c	vz	l	mayd	22
@@ -133,7 +133,7 @@ U+4E81	亁	(龜)	jjon	fpls	XXXX	XXXX	XXXX	edmy	42
 U+4E82	亂	(龜)	bbu	.bjs	XXXX	XXXX	XXXX	pvxz	42
 U+4E83	亃	(好 粦乚)
 U+4E84	亄	(好 壹乚)
-U+4E85	亅	(龜)	n	d	j	i	i	iaaa	14
+U+4E85	亅	(龜)	n	d	j	i	i	i	11
 U+4E86	了	(龜)	nn	gd	bj	w	i	y	11
 U+4E87	亇	(龜)	nn	jd	XXXX	ni	i	ri	21
 U+4E88	予	(龜)	ninn	bgd	bj	u	i	xsxi	31
@@ -945,7 +945,7 @@ U+51A7	冧	(志 冖林)
 U+51A8	冨	(志 冖畐)
 U+51A9	冩	(志 冖舄)
 U+51AA	冪	(志 冖幕)
-U+51AB	冫	(龜)	im	XXXX	XXXX	XXXX	XXXX	tdaa	14
+U+51AB	冫	(龜)	im	XXXX	XXXX	XXXX	XXXX	td	12
 U+51AC	冬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	rstd	42
 U+51AD	冭	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	gdtd	42
 U+51AE	冮	(好 冫工)
@@ -1019,7 +1019,7 @@ U+51F1	凱	(好 豈几)
 U+51F2	凲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	qdux	32
 U+51F3	凳	(志 登几)
 U+51F4	凴	(志 馮几)
-U+51F5	凵	(龜)	vl	w	w	u	i	ziaa	14
+U+51F5	凵	(龜)	vl	w	w	u	i	zi	12
 U+51F6	凶	(函 凵乂)
 U+51F7	凷	(函 凵土)
 U+51F8	凸	(龜)	bss	da	qw	ru	o	iaya	41
@@ -6427,7 +6427,7 @@ U+66EC	曬	(好 日麗)
 U+66ED	曭	(好 日黨)
 U+66EE	曮	(好 日嚴)
 U+66EF	曯	(好 日屬)
-U+66F0	曰	(龜)	a	p	d	d	o	kaa	13
+U+66F0	曰	(龜)	a	p	d	d	o	k	11
 U+66F1	曱	(龜)	wml	pd	XXXX	dt	i	ki	21
 U+66F2	曲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kkd	21
 U+66F3	曳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kzm	31
@@ -10585,7 +10585,7 @@ U+7708	眈	(好 目冘)
 U+7709	眉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xml	22
 U+770A	眊	(好 目毛)
 U+770B	看	(廖 手目)
-U+770C	県	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	lzko	e1
+U+770C	県	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	lzko	31
 U+770D	眍	(好 目区)
 U+770E	眎	(好 目示)
 U+770F	眏	(好 目央)
@@ -14275,7 +14275,7 @@ U+8556	蕖	(志 艹渠)
 U+8557	蕗	(志 艹路)
 U+8558	蕘	(志 艹堯)
 U+8559	蕙	(志 艹惠)
-U+855A	蕚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	萼	41
+U+855A	蕚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ejbz	41
 U+855B	蕛	(志 艹稊)
 U+855C	蕜	(志 艹悲)
 U+855D	蕝	(志 艹絶)
@@ -16448,7 +16448,7 @@ U+8DC4	跄	(好 足仓)
 U+8DC5	跅	(好 足斥)
 U+8DC6	跆	(好 足台)
 U+8DC7	跇	(好 足世)
-U+8DC8	跈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	跈	32
+U+8DC8	跈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	jiop	32
 U+8DC9	跉	(好 足令)
 U+8DCA	跊	(好 足未)
 U+8DCB	跋	(好 足犮)
@@ -18821,7 +18821,7 @@ U+96F7	雷	(志 雨田)
 U+96F8	雸	(志 雨甘)
 U+96F9	雹	(志 雨包)
 U+96FA	雺	(志 雨矛)
-U+96FB	電	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	電	32
+U+96FB	電	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	fvkz	32
 U+96FC	雼	(志 雨石)
 U+96FD	雽	(志 雨乎)
 U+96FE	雾	(志 雨务)

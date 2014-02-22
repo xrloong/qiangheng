@@ -12,6 +12,9 @@ class NoneIM:
 			code=self.getCode(ch)
 			if code:
 				table.append([code, chname])
+			else:
+				pass
+#				print("Debug", chname)
 		return table
 
 	def getCode(self, ch):
@@ -29,7 +32,7 @@ class NoneIM:
 #		['纂', '膷',]
 		if ch.structure[1] in ['龜']:
 			return []
-		elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起']:
+		elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
 			x=chdict.get(ch.structure[3], None)
 			y=chdict.get(ch.structure[4], None)
 			return [x, y]
@@ -38,6 +41,12 @@ class NoneIM:
 			y=chdict.get(ch.structure[4], None)
 			z=chdict.get(ch.structure[5], None)
 			return [x, y, z]
+		elif ch.structure[1] in ['纂',]:
+			x=chdict.get(ch.structure[3], None)
+			y=chdict.get(ch.structure[4], None)
+			z=chdict.get(ch.structure[5], None)
+			w=chdict.get(ch.structure[6], None)
+			return [x, y, z, w]
 		elif ch.structure[1] in ['林', '爻']:
 			x=chdict.get(ch.structure[3], None)
 			return [x, x]
@@ -272,16 +281,22 @@ class ZhengMa(NoneIM):
 					return [[code[0], type], [code[1:], type]]
 				elif type[1]=='2':
 					return [[code[0:2], type], [code[2:], type]]
+				elif type[1]=='3':
+					return [[code[0:3], type], [code[3:], type]]
 			elif type[0]=='3':
 				if type[1]=='1':
 					return [[code[0], type], [code[1], type], [code[2:], type]]
 				elif type[1]=='2':
 					return [[code[0:2], type], [code[2], type], [code[3], type]]
+				elif type[1]=='3':
+					return [[code[0:3], type], [code[3], type]]
 			elif type[0]=='4':
 				if type[1]=='1':
 					return [[code[0], type], [code[1], type], [code[2], type], [code[3], type]]
 				elif type[1]=='2':
 					return [[code[0:2], type], [code[2], type], [code[3], type]]
+				elif type[1]=='3':
+					return [[code[0:3], type], [code[3], type]]
 
 		def listToCode(l):
 			nmCompList=sum(map(lambda x: int(x[1][0]), l))
@@ -292,27 +307,40 @@ class ZhengMa(NoneIM):
 			elif nmCompList==2:
 				# 如果部件數為 2
 				# 鄭碼為首部件及尾部件的全碼
-				return [l[0][0]+l[1][0], '2'+l[0][1][1]]
+				if l[0][1][1]=='1':
+					return [l[0][0][0:2]+l[-1][0][0:3], '21']
+				elif l[0][1][1]=='2':
+					return [l[0][0][0:2]+l[-1][0][0:2], '22']
+				elif l[0][1][1]=='3':
+					return [l[0][0][0:3]+l[-1][0][0:1], '23']
+#				return [l[0][0]+l[1][0], '2'+l[0][1][1]]
 			elif nmCompList==3:
 				# 如果部件數為 3
 				if l[0][1][1]=='1':
 					# 如果首部件為單碼
 					# 鄭碼為首部件的首碼，次末部件的首碼及尾部件的雙碼
-					return [l[0][0][0]+l[-2][0][0]+l[-1][0][0:2], '3'+l[0][1][1]]
-				else:
+					return [l[0][0][0]+l[-2][0][0]+l[-1][0][0:2], '31']
+				elif l[0][1][1]=='2':
 					# 如果首部件為雙碼
 					# 鄭碼為首部件的雙碼，次末部件的首碼及尾部件的首碼
-					return [l[0][0][0:2]+l[-2][0][0]+l[-1][0][0], '3'+l[0][1][1]]
+					return [l[0][0][0:2]+l[-2][0][0]+l[-1][0][0], '32']
+				elif l[0][1][1]=='3':
+					# 如果首部件為三碼
+					# 鄭碼為首部件的雙碼，次末部件的首碼及尾部件的首碼
+					return [l[0][0][0:3]+l[-1][0][0], '33']
 			elif nmCompList>=4:
 				# 如果部件數超過 4
 				if l[0][1][1]=='1':
 					# 如果首部件為單碼
 					# 鄭碼為首部件的首碼、次首部件的首碼、次末部件的首碼及尾部件的雙碼
-					return [l[0][0][0]+l[1][0][0]+l[-2][0][0]+l[-1][0][0], '4'+l[0][1][1]]
-				else:
+					return [l[0][0][0]+l[1][0][0]+l[-2][0][0]+l[-1][0][0], '41']
+				elif l[0][1][1]=='2':
 					# 如果首部件為雙碼
 					# 鄭碼為首部件的雙碼，次末部件的首碼及尾部件的首碼
-					return [l[0][0][0:2]+l[-2][0][0]+l[-1][0][0], '4'+l[0][1][1]]
+					return [l[0][0][0:2]+l[-2][0][0]+l[-1][0][0], '42']
+				else:
+					# 如果首部件為三碼
+					return [l[0][0][0:3]+l[-1][0][0], '43']
 
 		if all(complist):
 			ctlist=list(map(lambda c: codeToList(c.zm, c.zmtp), complist))
