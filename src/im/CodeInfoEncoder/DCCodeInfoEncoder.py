@@ -10,8 +10,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=DCCodeInfo(propDict, codeVariance)
+	def generateCodeInfo(self, propDict):
+		codeInfo=DCCodeInfo(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
@@ -36,25 +36,22 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			newActionList.append(action)
 		return newActionList
 
-	def encodeAsConcatenate(self, codeInfo, codeInfoList):
-		actionList=[]
-		for tmpCodeInfo in codeInfoList:
-			actionList.extend(copy.deepcopy(tmpCodeInfo.getActionList()))
-		codeInfo.setActionList(actionList)
-
-	def encodeAsTurtle(self, codeInfo, codeInfoList):
+	def encodeAsTurtle(self, codeInfoList):
 		print("不合法的運算：龜", file=sys.stderr)
-		self.encodeAsInvalidate(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		return codeInfo
 
-	def encodeAsLoong(self, codeInfo, codeInfoList):
+	def encodeAsLoong(self, codeInfoList):
 		print("不合法的運算：龍", file=sys.stderr)
-		self.encodeAsInvalidate(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		return codeInfo
 
-	def encodeAsEast(self, codeInfo, codeInfoList):
+	def encodeAsEast(self, codeInfoList):
 		print("不合法的運算：東", file=sys.stderr)
-		self.encodeAsInvalidate(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		return codeInfo
 
-	def encodeAsEqual(self, codeInfo, codeInfoList):
+	def encodeAsEqual(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 
 		nCount=len(codeInfoList)
@@ -63,9 +60,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList=[]
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 0, 0, 0))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsLoop(self, codeInfo, codeInfoList):
+	def encodeAsLoop(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[-1]
 
@@ -76,9 +75,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 2, 0, 2))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 1, 1, 1, 1))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsSilkworm(self, codeInfo, codeInfoList):
+	def encodeAsSilkworm(self, codeInfoList):
 		nCount=len(codeInfoList)
 		helper=DCGridHelper(1, nCount)
 
@@ -86,9 +87,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		for (index, tmpCodeInfo) in enumerate(codeInfoList):
 			newActionList.extend(DCCodeInfoEncoder.computeNewActionList(tmpCodeInfo, helper, 0, 0, index, index))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsGoose(self, codeInfo, codeInfoList):
+	def encodeAsGoose(self, codeInfoList):
 		nCount=len(codeInfoList)
 		helper=DCGridHelper(nCount, 1)
 
@@ -96,9 +99,14 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		for (index, tmpCodeInfo) in enumerate(codeInfoList):
 			newActionList.extend(DCCodeInfoEncoder.computeNewActionList(tmpCodeInfo, helper, index, index, 0, 0))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsQi(self, codeInfo, codeInfoList):
+	def encodeAsQi(self, codeInfoList):
+		if len(codeInfoList)<2:
+			return self.encodeAsInvalidate(codeInfoList)
+
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
@@ -109,9 +117,14 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 1, 0, 1))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 1, 1, 0, 0))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsLiao(self, codeInfo, codeInfoList):
+	def encodeAsLiao(self, codeInfoList):
+		if len(codeInfoList)<2:
+			return self.encodeAsInvalidate(codeInfoList)
+
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
@@ -122,9 +135,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 1, 0, 1))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 1, 1, 1, 1))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsZai(self, codeInfo, codeInfoList):
+	def encodeAsZai(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
@@ -135,9 +150,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 1, 0, 1))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 0, 0, 1, 1))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsDou(self, codeInfo, codeInfoList):
+	def encodeAsDou(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
@@ -148,9 +165,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 1, 0, 1))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 0, 0, 0, 0))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsMu(self, codeInfo, codeInfoList):
+	def encodeAsMu(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -163,9 +182,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 0, 0, 2, 2))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(thirdCodeInfo, helper, 2, 2, 2, 2))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsZuo(self, codeInfo, codeInfoList):
+	def encodeAsZuo(self, codeInfoList):
 		# 以 "㘴" 來說 first: 口，second: 人，third: 土
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
@@ -179,9 +200,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 0, 0, 0))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 2, 2, 0, 0))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsYou(self, codeInfo, codeInfoList):
+	def encodeAsYou(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -194,9 +217,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 1, 1, 0, 0))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 3, 3, 0, 0))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsLiang(self, codeInfo, codeInfoList):
+	def encodeAsLiang(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -209,9 +234,11 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 1, 1, 1, 1))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 3, 3, 1, 1))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
-	def encodeAsJia(self, codeInfo, codeInfoList):
+	def encodeAsJia(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -224,7 +251,9 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 0, 1, 1))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 2, 2, 1, 1))
 
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setActionList(newActionList)
+		return codeInfo
 
 class DCGridHelper:
 	WIDTH=256

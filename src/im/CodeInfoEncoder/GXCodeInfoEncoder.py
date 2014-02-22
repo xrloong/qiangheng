@@ -5,28 +5,32 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=GXCodeInfo(propDict, codeVariance)
+	def generateCodeInfo(self, propDict):
+		codeInfo=GXCodeInfo(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getCharacterCode(), codeInfoList))
 		return isAllWithCode
 
-	def encodeAsTurtle(self, codeInfo, codeInfoList):
+	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsLoong(self, codeInfo, codeInfoList):
+	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
-
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setCharacterCode('GGGG')
+		return codeInfo
 
-	def encodeAsEast(self, codeInfo, codeInfoList):
+	def encodeAsEast(self, codeInfoList):
 		"""運算 "東" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsEqual(self, codeInfo, codeInfoList):
+	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 

@@ -6,8 +6,8 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=ZMCodeInfo(propDict, codeVariance)
+	def generateCodeInfo(self, propDict):
+		codeInfo=ZMCodeInfo(propDict)
 		rtlist=codeInfo.getRtList()
 		zmCode=self.computeCharacterCode(rtlist)
 		codeInfo.setCharacterCode(zmCode)
@@ -17,38 +17,44 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=codeInfoList and all(map(lambda x: x.getZMProp(), codeInfoList))
 		return isAllWithCode
 
-	def encodeAsTurtle(self, codeInfo, codeInfoList):
+	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsLoong(self, codeInfo, codeInfoList):
+	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
 		rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
 		zmCode=self.computeCharacterCode(rtlist)
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setZMProp(rtlist)
 		codeInfo.setCharacterCode(zmCode)
+		return codeInfo
 
-	def encodeAsEast(self, codeInfo, codeInfoList):
+	def encodeAsEast(self, codeInfoList):
 		"""運算 "東" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsEqual(self, codeInfo, codeInfoList):
+	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
 
-	def encodeAsHan(self, codeInfo, codeInfoList):
+	def encodeAsHan(self, codeInfoList):
 		"""運算 "爲" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
-		self.encodeAsLoong(codeInfo, newCodeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		return codeInfo
 
 
-	def encodeAsYou(self, codeInfo, codeInfoList):
+	def encodeAsYou(self, codeInfoList):
 		"""運算 "幽" """
 
 		firstCodeInfo=codeInfoList[0]
@@ -56,17 +62,20 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		thirdCodeInfo=codeInfoList[2]
 
 		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
-		self.encodeAsLoong(codeInfo, newCodeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		return codeInfo
 
-	def encodeAsLiang(self, codeInfo, codeInfoList):
+	def encodeAsLiang(self, codeInfoList):
 		"""運算 "㒳" """
 
 		rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
 		zmCode=self.computeCharacterCode(rtlist)
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setZMProp(rtlist[:1])
 		codeInfo.setCharacterCode(zmCode)
+		return codeInfo
 
 	def computeCharacterCode(self, rtlist):
 		ans=''

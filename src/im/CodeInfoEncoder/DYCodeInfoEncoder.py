@@ -7,56 +7,69 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=DYCodeInfo(propDict, codeVariance)
+	def generateCodeInfo(self, propDict):
+		codeInfo=DYCodeInfo(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getMainCode(), codeInfoList))
 		return isAllWithCode
 
-	def encodeAsTurtle(self, codeInfo, codeInfoList):
+	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsLoong(self, codeInfo, codeInfoList):
+	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
 		dyCode=DYCodeInfoEncoder.computeDaYiCode(codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setCodeList([dyCode])
+		return codeInfo
 
-	def encodeAsEast(self, codeInfo, codeInfoList):
+	def encodeAsEast(self, codeInfoList):
 		"""運算 "東" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsEqual(self, codeInfo, codeInfoList):
+	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
 
-	def encodeAsLoop(self, codeInfo, codeInfoList):
+	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setCodeList([dyCode])
+		return codeInfo
 
-	def encodeAsTong(self, codeInfo, codeInfoList):
+	def encodeAsTong(self, codeInfoList):
 		"""運算 "同" """
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setCodeList([dyCode])
+		return codeInfo
 
-	def encodeAsHan(self, codeInfo, codeInfoList):
+	def encodeAsHan(self, codeInfoList):
 		"""運算 "函" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(newCodeInfoList)
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setCodeList([dyCode])
+		return codeInfo
 
-	def encodeAsZai(self, codeInfo, codeInfoList):
+	def encodeAsZai(self, codeInfoList):
 		"""運算 "載" """
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setCodeList([dyCode])
+		return codeInfo
 
 	@staticmethod
 	def computeDaYiCode(codeInfoList):

@@ -5,157 +5,180 @@ class CodeInfoEncoder:
 	def __init__(self):
 		pass
 
-	def generateCodeInfo(self, propDict, codeVariance):
-		codeInfo=CodeInfo(propDict, codeVariance)
+	def generateCodeInfo(self, propDict):
+		return CodeInfo(propDict)
+
+	def generateDefaultCodeInfo(self):
+		return self.generateCodeInfo({})
+
+	def encode(self, operator, codeInfoList):
+		codeInfo=self.setByComps(operator, codeInfoList)
 		return codeInfo
 
-	def encode(self, codeInfo, operator, codeInfoList):
-		for childCodeInfo in codeInfoList:
-			codeVariance=childCodeInfo.getCodeVarianceType()
-			codeInfo.multiplyCodeVarianceType(codeVariance)
+	def setByComps(self, operator, codeInfoList):
+		codeInfo=None
 
-		self.setByComps(codeInfo, operator, codeInfoList)
-
-	def setByComps(self, codeInfo, operator, codeInfoList):
 		isAvailable=self.isAvailableOperation(codeInfoList)
 		if isAvailable:
 			if Operator.OperatorTurtle.equals(operator):
-				self.encodeAsTurtle(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsTurtle(codeInfoList)
 			elif Operator.OperatorLoong.equals(operator):
-				self.encodeAsLoong(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsLoong(codeInfoList)
 			elif Operator.OperatorEast.equals(operator):
-				self.encodeAsEast(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsEast(codeInfoList)
 			elif Operator.OperatorEqual.equals(operator):
-				self.encodeAsEqual(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsEqual(codeInfoList)
 
 			elif Operator.OperatorSilkworm.equals(operator):
-				self.encodeAsSilkworm(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsSilkworm(codeInfoList)
 			elif Operator.OperatorGoose.equals(operator):
-				self.encodeAsGoose(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsGoose(codeInfoList)
 			elif Operator.OperatorLoop.equals(operator):
-				self.encodeAsLoop(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsLoop(codeInfoList)
 
 			elif Operator.OperatorQi.equals(operator):
-				self.encodeAsQi(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsQi(codeInfoList)
 			elif Operator.OperatorLiao.equals(operator):
-				self.encodeAsLiao(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsLiao(codeInfoList)
 			elif Operator.OperatorZai.equals(operator):
-				self.encodeAsZai(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsZai(codeInfoList)
 			elif Operator.OperatorDou.equals(operator):
-				self.encodeAsDou(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsDou(codeInfoList)
 
 			elif Operator.OperatorTong.equals(operator):
-				self.encodeAsTong(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsTong(codeInfoList)
 			elif Operator.OperatorQu.equals(operator):
-				self.encodeAsQu(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsQu(codeInfoList)
 			elif Operator.OperatorHan.equals(operator):
-				self.encodeAsHan(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsHan(codeInfoList)
 			elif Operator.OperatorLeft.equals(operator):
-				self.encodeAsLeft(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsLeft(codeInfoList)
 
 			elif Operator.OperatorMu.equals(operator):
-				self.encodeAsMu(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsMu(codeInfoList)
 			elif Operator.OperatorZuo.equals(operator):
-				self.encodeAsZuo(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsZuo(codeInfoList)
 			elif Operator.OperatorYou.equals(operator):
-				self.encodeAsYou(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsYou(codeInfoList)
 			elif Operator.OperatorLiang.equals(operator):
-				self.encodeAsLiang(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsLiang(codeInfoList)
 			elif Operator.OperatorJia.equals(operator):
-				self.encodeAsJia(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsJia(codeInfoList)
 
 			else:
-				self.encodeAsInvalidate(codeInfo, codeInfoList)
+				codeInfo=self.encodeAsInvalidate(codeInfoList)
+		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
 		return True
 
-	def encodeAsInvalidate(self, codeInfo, codeInfoList):
+
+	def encodeAsInvalidate(self, codeInfoList):
 		"""不合法的運算"""
-		pass
+		return None
 
 
-	def encodeAsTurtle(self, codeInfo, codeInfoList):
+	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		pass
+		codeInfo=self.generateDefaultCodeInfo()
+		return codeInfo
 
-	def encodeAsLoong(self, codeInfo, codeInfoList):
+	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
-		pass
+		codeInfo=self.generateDefaultCodeInfo()
+		return codeInfo
 
-	def encodeAsEast(self, codeInfo, codeInfoList):
+	def encodeAsEast(self, codeInfoList):
 		"""運算 "東" """
-		pass
+		codeInfo=self.generateDefaultCodeInfo()
+		return codeInfo
 
-	def encodeAsEqual(self, codeInfo, codeInfoList):
+	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		pass
+		codeInfo=self.generateDefaultCodeInfo()
+		return codeInfo
 
 
-	def encodeAsSilkworm(self, codeInfo, codeInfoList):
+	def encodeAsSilkworm(self, codeInfoList):
 		"""運算 "蚕" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsGoose(self, codeInfo, codeInfoList):
+	def encodeAsGoose(self, codeInfoList):
 		"""運算 "鴻" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsLoop(self, codeInfo, codeInfoList):
+	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
 
-	def encodeAsQi(self, codeInfo, codeInfoList):
+	def encodeAsQi(self, codeInfoList):
 		"""運算 "起" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsLiao(self, codeInfo, codeInfoList):
+	def encodeAsLiao(self, codeInfoList):
 		"""運算 "廖" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsZai(self, codeInfo, codeInfoList):
+	def encodeAsZai(self, codeInfoList):
 		"""運算 "載" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsDou(self, codeInfo, codeInfoList):
+	def encodeAsDou(self, codeInfoList):
 		"""運算 "斗" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
 
-	def encodeAsTong(self, codeInfo, codeInfoList):
+	def encodeAsTong(self, codeInfoList):
 		"""運算 "同" """
-		self.encodeAsLoop(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoop(codeInfoList)
+		return codeInfo
 
-	def encodeAsQu(self, codeInfo, codeInfoList):
+	def encodeAsQu(self, codeInfoList):
 		"""運算 "區" """
-		self.encodeAsLoop(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoop(codeInfoList)
+		return codeInfo
 
-	def encodeAsHan(self, codeInfo, codeInfoList):
+	def encodeAsHan(self, codeInfoList):
 		"""運算 "函" """
-		self.encodeAsLoop(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoop(codeInfoList)
+		return codeInfo
 
-	def encodeAsLeft(self, codeInfo, codeInfoList):
+	def encodeAsLeft(self, codeInfoList):
 		"""運算 "左" """
-		self.encodeAsLoop(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoop(codeInfoList)
+		return codeInfo
 
 
-	def encodeAsMu(self, codeInfo, codeInfoList):
+	def encodeAsMu(self, codeInfoList):
 		"""運算 "畞" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsZuo(self, codeInfo, codeInfoList):
+	def encodeAsZuo(self, codeInfoList):
 		"""運算 "㘴" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsYou(self, codeInfo, codeInfoList):
+	def encodeAsYou(self, codeInfoList):
 		"""運算 "幽" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsLiang(self, codeInfo, codeInfoList):
+	def encodeAsLiang(self, codeInfoList):
 		"""運算 "㒳" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
-	def encodeAsJia(self, codeInfo, codeInfoList):
+	def encodeAsJia(self, codeInfoList):
 		"""運算 "夾" """
-		self.encodeAsLoong(codeInfo, codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
 
