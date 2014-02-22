@@ -2,48 +2,91 @@ import sys
 from gear.CodeInfo import CodeInfo
 
 class ARCodeInfo(CodeInfo):
+	RADIX_1_UP='1^'
+	RADIX_2_UP='2^'
+	RADIX_3_UP='3^'
+	RADIX_4_UP='4^'
+	RADIX_5_UP='5^'
+	RADIX_6_UP='6^'
+	RADIX_7_UP='7^'
+	RADIX_8_UP='8^'
+	RADIX_9_UP='9^'
+	RADIX_0_UP='0^'
+
+	RADIX_1_CENTER='1-'
+	RADIX_2_CENTER='2-'
+	RADIX_3_CENTER='3-'
+	RADIX_4_CENTER='4-'
+	RADIX_5_CENTER='5-'
+	RADIX_6_CENTER='6-'
+	RADIX_7_CENTER='7-'
+	RADIX_8_CENTER='8-'
+	RADIX_9_CENTER='9-'
+	RADIX_0_CENTER='0-'
+
+	RADIX_1_BOTTOM='1v'
+	RADIX_2_BOTTOM='2v'
+	RADIX_3_BOTTOM='3v'
+	RADIX_4_BOTTOM='4v'
+	RADIX_5_BOTTOM='5v'
+	RADIX_6_BOTTOM='6v'
+	RADIX_7_BOTTOM='7v'
+	RADIX_8_BOTTOM='8v'
+	RADIX_9_BOTTOM='9v'
+	RADIX_0_BOTTOM='0v'
+
+	RADIX_EXTEND_1_UP='x:1^:1'	# 即[一口]，豆的上部
+	RADIX_EXTEND_1_CENTER='x:1-:1'	# 即一，但可用來合併字根，末的序列為 '4v,1-' ，但在 '唜' 中，不做合併用。
+	RADIX_EXTEND_0_CENTER='x:0-:1'	# 即口，但可用來合併字根
 	radixToCodeDict={
-		'1-':'a',
-		'5v':'b',
-		'3v':'c',
-		'3-':'d',
-		'3^':'e',
-		'4-':'f',
-		'5-':'g',
-		'6-':'h',
-		'8^':'i',
-		'7-':'j',
-		'8-':'k',
-		'9-':'l',
-		'7v':'m',
-		'6v':'n',
-		'9^':'o',
-		'0^':'p',
-		'1^':'q',
-		'4^':'r',
-		'2-':'s',
-		'5^':'t',
-		'7^':'u',
-		'4v':'v',
-		'2^':'w',
-		'2v':'x',
-		'6^':'y',
-		'1v':'z',
-		'9v':'.',
-		'8v':',',
-		'0v':'/',
-		'0-':';',
+		RADIX_1_UP:'q',
+		RADIX_2_UP:'w',
+		RADIX_3_UP:'e',
+		RADIX_4_UP:'r',
+		RADIX_5_UP:'t',
+		RADIX_6_UP:'y',
+		RADIX_7_UP:'u',
+		RADIX_8_UP:'i',
+		RADIX_9_UP:'o',
+		RADIX_0_UP:'p',
+
+		RADIX_1_CENTER:'a',
+		RADIX_2_CENTER:'s',
+		RADIX_3_CENTER:'d',
+		RADIX_4_CENTER:'f',
+		RADIX_5_CENTER:'g',
+		RADIX_6_CENTER:'h',
+		RADIX_7_CENTER:'j',
+		RADIX_8_CENTER:'k',
+		RADIX_9_CENTER:'l',
+		RADIX_0_CENTER:';',
+
+		RADIX_1_BOTTOM:'z',
+		RADIX_2_BOTTOM:'x',
+		RADIX_3_BOTTOM:'c',
+		RADIX_4_BOTTOM:'v',
+		RADIX_5_BOTTOM:'b',
+		RADIX_6_BOTTOM:'n',
+		RADIX_7_BOTTOM:'m',
+		RADIX_8_BOTTOM:',',
+		RADIX_9_BOTTOM:'.',
+		RADIX_0_BOTTOM:'/',
+
+		RADIX_EXTEND_1_UP:'q',
+		RADIX_EXTEND_1_CENTER:'a',
+		RADIX_EXTEND_0_CENTER:';',
 	}
+
 	def setRadixCodeProperties(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
 			codeList=str_rtlist.split('|')
-			codeList=list(map(lambda x: x.split(':'), codeList))
+			codeList=list(map(lambda x: x.split(','), codeList))
 			self.setCodeList(codeList)
 
 	@property
 	def characterCode(self):
-		mainRadixList=self.getMainCode()
+		mainRadixList=self.getMainCodeList()
 		mainCodeList=list(map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList))
 		return "".join(mainCodeList)
 
@@ -59,9 +102,8 @@ class ARCodeInfo(CodeInfo):
 	def setCodeList(self, codeList):
 		self._codeList=codeList
 
-	def getMainCode(self):
+	def getMainCodeList(self):
 		if self._codeList != None:
-#			return "".join(self._codeList)
 			return sum(self._codeList, [])
 		return None
 
