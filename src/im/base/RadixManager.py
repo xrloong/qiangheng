@@ -8,6 +8,9 @@ from ..gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 from gear.CodeVarianceType import CodeVarianceType
 
 class RadixParser:
+	TAG_CODE_INFORMATION='編碼資訊'
+	TAG_CODE='編碼'
+
 	def __init__(self, nameInputMethod, codeInfoEncoder):
 		self.nameInputMethod=nameInputMethod
 		self.codeInfoEncoder=codeInfoEncoder
@@ -68,13 +71,6 @@ class RadixParser:
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
-		codeVariance=radixDesc.getCodeVarianceType()
-		elementCodeInfo=radixDesc.getElement()
-
-		infoDict={}
-		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo.attrib
-
 		codeInfo=CodeInfo()
 		return codeInfo
 
@@ -107,7 +103,7 @@ class RadixParser:
 			self.radixDescriptionManager.addDescription(charName, radixDescription)
 
 	def parseRadixDescription(self, nodeCharacter):
-		elementCodeInfoList=nodeCharacter.findall(Constant.TAG_CODE_INFORMATION)
+		elementCodeInfoList=nodeCharacter.findall(RadixParser.TAG_CODE_INFORMATION)
 		radixCodeInfoDescList=[]
 		for elementCodeInfo in elementCodeInfoList:
 			radixCodeInfoDesc=self.convertElementToRadixInfo(elementCodeInfo)
@@ -155,21 +151,29 @@ class RadixDescriptionManager:
 
 class RadixCodeInfoDescription:
 	def __init__(self, elementCodeInfo):
+		self.codeVariance=CodeVarianceType()
+		self.elementCodeInfo=elementCodeInfo
+
+		self.setupCodeAttribute()
+
+	def setupCodeAttribute(self):
+		elementCodeInfo=self.getElement()
+
 		infoDict={}
 		if elementCodeInfo is not None:
 			infoDict=elementCodeInfo.attrib
 
-		self.codeVariance=CodeVarianceType()
-		self.setCodeVarianceType(infoDict)
+		codeVarianceString=infoDict.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
+		self.setCodeVarianceType(codeVarianceString)
 
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(infoDict)
+		self.setSupportCode(isSupportCharacterCode, isSupportRadixCode)
+
+	def setSupportCode(self, isSupportCharacterCode, isSupportRadixCode):
 		self._isSupportCharacterCode=isSupportCharacterCode
 		self._isSupportRadixCode=isSupportRadixCode
 
-		self.elementCodeInfo=elementCodeInfo
-
-	def setCodeVarianceType(self, codeInfoDict):
-		codeVarianceString=codeInfoDict.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
+	def setCodeVarianceType(self, codeVarianceString):
 		self.codeVariance.setVarianceByString(codeVarianceString)
 
 	def getCodeVarianceType(self):
@@ -180,6 +184,9 @@ class RadixCodeInfoDescription:
 
 	def isSupportRadixCode(self):
 		return self._isSupportRadixCode
+
+	def getCodeElement(self):
+		return self.elementCodeInfo.find(RadixParser.TAG_CODE)
 
 	def getElement(self):
 		return self.elementCodeInfo

@@ -19,13 +19,14 @@ class ARRadixParser(RadixParser):
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
-		elementCodeInfo=radixInfo.getElement()
+		elementCodeInfo=radixInfo.getCodeElement()
 
 		infoDict={}
 		if elementCodeInfo is not None:
 			infoDict=elementCodeInfo.attrib
 
 		codeList=None
+
 		str_rtlist=infoDict.get(Constant.ATTRIB_CODE_EXPRESSION)
 		if str_rtlist!=None:
 			codeList=str_rtlist.split(ARCodeInfo.INSTALLMENT_SEPERATOR)
@@ -65,10 +66,6 @@ class ARRadixCodeInfoDescription(RadixCodeInfoDescription):
 		return self.radixNameList
 
 	def isWithExpression(self):
-		elementCodeInfo=self.getElement()
-
-		infoDict={}
-		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo.attrib
-		return (Constant.ATTRIB_CODE_EXPRESSION in infoDict)
+		codeExpressionNode=self.getCodeElement()
+		return codeExpressionNode!=None
 

@@ -32,7 +32,7 @@ class DCRadixParser(RadixParser):
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
-		elementCodeInfo=radixInfo.getElement()
+		elementCodeInfo=radixInfo.getCodeElement()
 
 		infoDict={}
 		if elementCodeInfo is not None:
