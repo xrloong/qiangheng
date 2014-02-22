@@ -2,10 +2,10 @@ import re
 import sys
 
 class StrokeObject:
-	def __init__(self, name, scope, expression):
+	def __init__(self, name, scope, parameterExpressionList):
 		self.name = name
 		self.scope = scope
-		self.expression = expression
+		self.parameterExpressionList = parameterExpressionList
 		self.scopeWidth = scope[2]-scope[0]
 		self.scopeHeight = scope[3]-scope[1]
 		self.width = self.scopeWidth-2
@@ -222,7 +222,8 @@ class StrokeObject:
 
 class StrokeObject_點(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==2
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1])]
 
@@ -247,7 +248,8 @@ class StrokeObject_點(StrokeObject):
 
 class StrokeObject_圈(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1])]
@@ -267,7 +269,8 @@ class StrokeObject_圈(StrokeObject):
 
 class StrokeObject_橫(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==1
 		assert int(l[0])>0
 		return [int(l[0])]
 
@@ -285,7 +288,8 @@ class StrokeObject_橫(StrokeObject):
 
 class StrokeObject_橫鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -313,7 +317,8 @@ class StrokeObject_橫鉤(StrokeObject):
 
 class StrokeObject_橫折(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
@@ -334,7 +339,8 @@ class StrokeObject_橫折(StrokeObject):
 
 class StrokeObject_橫折橫(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -358,7 +364,8 @@ class StrokeObject_橫折橫(StrokeObject):
 
 class StrokeObject_橫折提(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -384,7 +391,8 @@ class StrokeObject_橫折提(StrokeObject):
 
 class StrokeObject_橫折鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -419,7 +427,8 @@ class StrokeObject_橫折鉤(StrokeObject):
 
 class StrokeObject_橫折彎鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==5
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -449,7 +458,8 @@ class StrokeObject_橫折彎鉤(StrokeObject):
 
 class StrokeObject_橫撇(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -478,7 +488,8 @@ class StrokeObject_橫撇(StrokeObject):
 
 class StrokeObject_橫撇彎鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -513,7 +524,8 @@ class StrokeObject_橫撇彎鉤(StrokeObject):
 
 class StrokeObject_橫撇橫折鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==7
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -547,7 +559,8 @@ class StrokeObject_橫撇橫折鉤(StrokeObject):
 
 class StrokeObject_橫斜鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -573,11 +586,12 @@ class StrokeObject_橫斜鉤(StrokeObject):
 
 class StrokeObject_橫折橫折(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
 		assert int(l[3])>0
+		assert len(l)==4
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
 	def getStartPoint(self):
@@ -600,7 +614,8 @@ class StrokeObject_橫折橫折(StrokeObject):
 
 class StrokeObject_豎(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==1
 		assert int(l[0])>0
 		return [int(l[0]), ]
 
@@ -618,7 +633,8 @@ class StrokeObject_豎(StrokeObject):
 
 class StrokeObject_豎折(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
@@ -639,7 +655,8 @@ class StrokeObject_豎折(StrokeObject):
 
 class StrokeObject_豎挑(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -662,7 +679,8 @@ class StrokeObject_豎挑(StrokeObject):
 
 class StrokeObject_豎橫折(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -686,7 +704,8 @@ class StrokeObject_豎橫折(StrokeObject):
 
 class StrokeObject_豎橫折鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==6
 		assert int(l[0])>=0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -726,7 +745,8 @@ class StrokeObject_豎橫折鉤(StrokeObject):
 
 class StrokeObject_豎曲鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -760,7 +780,8 @@ class StrokeObject_豎曲鉤(StrokeObject):
 
 class StrokeObject_豎曲(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -789,7 +810,8 @@ class StrokeObject_豎曲(StrokeObject):
 
 class StrokeObject_豎鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -812,7 +834,8 @@ class StrokeObject_豎鉤(StrokeObject):
 
 class StrokeObject_斜鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -835,7 +858,8 @@ class StrokeObject_斜鉤(StrokeObject):
 
 class StrokeObject_彎鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 #		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -867,7 +891,8 @@ class StrokeObject_彎鉤(StrokeObject):
 
 class StrokeObject_撇鉤(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 #		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -899,7 +924,8 @@ class StrokeObject_撇鉤(StrokeObject):
 
 class StrokeObject_撇(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
@@ -919,7 +945,8 @@ class StrokeObject_撇(StrokeObject):
 
 class StrokeObject_撇頓點(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -948,7 +975,8 @@ class StrokeObject_撇頓點(StrokeObject):
 
 class StrokeObject_撇橫(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -982,7 +1010,8 @@ class StrokeObject_撇橫(StrokeObject):
 
 class StrokeObject_撇橫撇(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==5
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -1019,7 +1048,8 @@ class StrokeObject_撇橫撇(StrokeObject):
 
 class StrokeObject_豎撇(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
@@ -1039,7 +1069,8 @@ class StrokeObject_豎撇(StrokeObject):
 
 class StrokeObject_挑(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
@@ -1059,7 +1090,8 @@ class StrokeObject_挑(StrokeObject):
 
 class StrokeObject_捺(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
@@ -1084,7 +1116,8 @@ class StrokeObject_捺(StrokeObject):
 
 class StrokeObject_臥捺(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
@@ -1108,7 +1141,8 @@ class StrokeObject_臥捺(StrokeObject):
 
 class StrokeObject_挑捺(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -1137,7 +1171,8 @@ class StrokeObject_挑捺(StrokeObject):
 
 class StrokeObject_橫捺(StrokeObject):
 	def parseExpression(self):
-		l=self.expression[1:-1].split(',')
+		l=self.parameterExpressionList
+		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -1429,10 +1464,12 @@ class Stroke(Writing):
 		scope=(left, top, right, bottom)
 
 		strokeDesc=l[2]
+		parameterExpression = strokeDesc[1:-1]
+		parameterExpressionList = parameterExpression.split(',')
 
 		clsStrokeObject = StrokeObjectMap.get(name, None)
 		assert clsStrokeObject!=None
-		return clsStrokeObject(name, scope, strokeDesc)
+		return clsStrokeObject(name, scope, parameterExpressionList)
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
