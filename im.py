@@ -38,32 +38,31 @@ class NoneIM:
 		self.method='D'
 
 	def genIMMapping(self):
-		def getSmallDescDB():
-			charlist=[
-#					'土',
-#					'吉',
-#					'夠',
-#					'炎',
-#					'畦',
+		def getTargetChars():
+			charPool=[
+					'土',
+					'吉',
+					'夠',
+					'炎',
+					'畦',
 					'海',
 					]
-			smallDB={}
-			for chname in charlist:
-				chdesc=self.descDB.get(chname, None)
-				if chdesc:
-					smallDB[chname]=chdesc
-
-			return smallDB
+			charPool=self.descDB.keys()
+			return charPool
 
 		if self.method=='D':
-			targetDB=self.descDB
-#			targetDB=getSmallDescDB()
-
+			lookupDB=self.descDB
 			table=[]
-			for chname, chdesc in targetDB.items():
-				chdesc.setCharTree(self.descDB)
+			for chname in getTargetChars():
+				chdesc=lookupDB.get(chname, None)
+				if not chdesc:
+					continue
 
-				chinfo=chdesc.getChInfo()
+				newDesc=copy.copy(chdesc)
+				newDesc.expandCharTree(lookupDB)
+
+				newDesc.setCharTree()
+				chinfo=newDesc.getChInfo()
 				code=chinfo.getCode()
 				if chinfo.isToShow() and code:
 					table.append([code, chname])

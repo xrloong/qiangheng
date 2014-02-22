@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import charinfo
+import copy
 
 class CharDesc:
 	"""字符描述"""
@@ -42,17 +43,16 @@ class CharDesc:
 	def __repr__(self):
 		return str(self)
 
-	def setCharTree(self, descDB):
+	def setCharTree(self):
 		"""設定某一個字符所包含的部件的碼"""
 
 		if not self.getChInfo().isToSetTree():
 			return
 
-		expand_chdesc=self.expandCharTree(descDB)
-		for tmpdesc in expand_chdesc.getSubRootList():
-			tmpdesc.setCharTree(descDB)
+		for tmpdesc in self.getSubRootList():
+			tmpdesc.setCharTree()
 
-		expand_chdesc.updateCharInfo()
+		self.updateCharInfo()
 
 	def expandCharTree(self, descDB):
 
@@ -65,13 +65,13 @@ class CharDesc:
 				return chdesc.expandCharTree(descDB)
 
 		l=[]
-		for tc in self.getCompList():
-			x=tc.expandCharTree(descDB)
-			l.append(x)
+		for idxChdesc in self.getCompList():
+			newDesc=copy.copy(idxChdesc)
+			expandDesc=newDesc.expandCharTree(descDB)
+			l.append(expandDesc)
 
-		anscomp=self.getRearrangedDesc(descDB)
-
-		return anscomp
+		self.rearrangeDesc(descDB)
+		return
 
 	def getSubRootList(self):
 		# 計算及更新 self.chInfo
@@ -84,13 +84,18 @@ class CharDesc:
 		# 計算及更新 self.chInfo
 		# updateIMCode 會依不同輸人法而多型
 		# 倉頡的演算法與其它不同
-		self.chInfo.updateIMCode(self)
 
-	def getRearrangedDesc(self, descDB):
+		infoList=[x.getChInfo() for x in self.getSubRootList()]
+		self.chInfo.setByComps(infoList, self.getDir())
+
+	def rearrangeDesc(self, descDB):
 		[newOp, newCompList]=self.getRearrangedOpAndCompList(descDB)
 		self.setOp(newOp)
+
+		# deepcopy 可以防止動到 descDB 的內容
+		# 但不用 deepcopy 則快很多
+#		self.setCompList(copy.deepcopy(newCompList))
 		self.setCompList(newCompList)
-		return self
 
 	def getRearrangedOpAndCompList(self, descDB):
 #		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
@@ -99,47 +104,45 @@ class CharDesc:
 #		'起', '廖', '載', '聖', '句',
 #		'夾', '衍', '衷',]
 #		['纂', '膷',]
-#		descDB=self.descDB
 		ch=self.getChInfo()
 
 		newOperator='龜'
 		newCompList=[]
 
 		oldOperator=ch.operator
-		oldCompList=[x for x in map(lambda x: x.name, self.getCompList())]
+		nameCompList=[x.name for x in self.getCompList()]
 
 		if oldOperator in ['龜']:
 			newOperator=oldOperator
 			newCompList=[]
 		elif oldOperator in ['水']:
-			x=descDB.get(oldCompList, None)
-			x=oldCompList[0]
+			x=descDB.get(nameCompList[0], None)
 
 			newOperator=oldOperator
 			newCompList=[x]
 		elif oldOperator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=descDB.get(oldCompList[0], None)
-			y=descDB.get(oldCompList[1], None)
+			x=descDB.get(nameCompList[0], None)
+			y=descDB.get(nameCompList[1], None)
 
 			newOperator=oldOperator
 			newCompList=[x, y]
 		elif oldOperator in ['算', '湘', '霜', '想', '怡', '穎',]:
-			x=descDB.get(oldCompList[0], None)
-			y=descDB.get(oldCompList[1], None)
-			z=descDB.get(oldCompList[2], None)
+			x=descDB.get(nameCompList[0], None)
+			y=descDB.get(nameCompList[1], None)
+			z=descDB.get(nameCompList[2], None)
 
 			newOperator=oldOperator
 			newCompList=[x, y, z]
 		elif oldOperator in ['纂',]:
-			x=descDB.get(oldCompList[0], None)
-			y=descDB.get(oldCompList[1], None)
-			z=descDB.get(oldCompList[2], None)
-			w=descDB.get(oldCompList[3], None)
+			x=descDB.get(nameCompList[0], None)
+			y=descDB.get(nameCompList[1], None)
+			z=descDB.get(nameCompList[2], None)
+			w=descDB.get(nameCompList[3], None)
 
 			newOperator=oldOperator
 			newCompList=[x, y, z, w]
 		elif oldOperator in ['林', '爻']:
-			x=descDB.get(oldCompList[0], None)
+			x=descDB.get(nameCompList[0], None)
 
 			if oldOperator=='林':
 				newOperator='好'
@@ -149,7 +152,7 @@ class CharDesc:
 				newOperator='錯'
 			newCompList=[x, x]
 		elif oldOperator in ['卅', '鑫']:
-			x=descDB.get(oldCompList[0], None)
+			x=descDB.get(nameCompList[0], None)
 
 			if oldOperator=='卅':
 				newOperator='湘'
@@ -161,72 +164,14 @@ class CharDesc:
 			newCompList=[x, x, x]
 		elif oldOperator in ['燚',]:
 			# 暫不處理
-			x=descDB.get(oldCompList[0], None)
+			x=descDB.get(nameCompList[0], None)
 
 			newOperator=oldOperator
 			newCompList=[x, x, x, x]
 		else:
 			newOperator='龜'
 			newCompList=[]
-#		chdesc.setOp(newOperator)
-#		chdesc.setCompList(newCompList)
 		return [newOperator, newCompList]
-
-	def getCJPrePostList(self):
-		"""傳回倉頡的字首及字尾的部件串列"""
-
-		oldOperator=self.op
-		oldCompList=self.getCompList()
-
-		prelist=[]
-		postlist=[]
-		if oldOperator in ['龜']:
-			prelist=[]
-			postlist=[]
-		elif oldOperator in ['水']:
-			x=oldCompList[0]
-			prelist=[x]
-			postlist=[]
-		elif oldOperator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=oldCompList[0]
-			y=oldCompList[1]
-			prelist=[x]
-			postlist=[y]
-		elif oldOperator in ['算', '湘', '霜', '怡',]:
-			x=oldCompList[0]
-			y=oldCompList[1]
-			z=oldCompList[2]
-			prelist=[x]
-			postlist=[y, z]
-		elif oldOperator in ['想', '穎',]:
-			x=oldCompList[0]
-			y=oldCompList[1]
-			z=oldCompList[2]
-			prelist=[x, y]
-			postlist=[z]
-		elif oldOperator in ['林', '爻']:
-			x=oldCompList[0]
-			prelist=[x]
-			postlist=[x]
-		elif oldOperator in ['卅', '鑫']:
-			x=oldCompList[0]
-			prelist=[x]
-			postlist=[x, x]
-		elif oldOperator in ['燚',]:
-			x=oldCompList[0]
-			prelist=[x, x]
-			postlist=[x, x]
-		elif oldOperator in ['纂',]:
-			x=oldCompList[0]
-			y=oldCompList[1]
-			z=oldCompList[2]
-			w=oldCompList[3]
-			prelist=[x]
-			postlist=[y, z, w]
-		else:
-			prelist=[]
-			postlist=[]
-		return [prelist, postlist]
 
 	def getDir(self):
 		"""傳回倉頡的結合方向"""

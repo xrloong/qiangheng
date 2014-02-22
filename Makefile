@@ -6,10 +6,11 @@ STYLELIST	=	scim gcin ime
 
 all:
 	for im in $(IMLIST);\
-		do ./qiangheng.py -i $$im -p puretable -m dynamic > puretable/$$im.puretable.txt;\
-		./qiangheng.py -i $$im -p scim -m puretable -t puretable/$$im.puretable.txt > scim/$$im.scim.txt;\
-		./qiangheng.py -i $$im -p gcin -m puretable -t puretable/$$im.puretable.txt > gcin/$$im.gcin.txt;\
-		./qiangheng.py -i $$im -p msim -m puretable -t puretable/$$im.puretable.txt > msim/$$im.msim.txt;\
+		do\
+		time ./qiangheng.py -i $$im -p puretable -m dynamic > puretable/$$im.puretable.txt;\
+#		./qiangheng.py -i $$im -p scim -m puretable -t puretable/$$im.puretable.txt > scim/$$im.scim.txt;\
+#		./qiangheng.py -i $$im -p gcin -m puretable -t puretable/$$im.puretable.txt > gcin/$$im.gcin.txt;\
+#		./qiangheng.py -i $$im -p msim -m puretable -t puretable/$$im.puretable.txt > msim/$$im.msim.txt;\
 	done
 
 testing:

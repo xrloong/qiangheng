@@ -22,7 +22,10 @@ class CharInfo:
 		# 若非空且之前没設過值
 		return (not self.isNone) and (not self.isSeted)
 
-	def setByComps(self, complist):
+	def setByComps(self, complist, direction):
+		# 多型
+		# 計算倉頡碼時，需要知道此字的組成方向
+		# 計算行列、大易、嘸蝦米及鄭碼時，不需要知道此字的組成方向
 		pass
 
 	@property
@@ -38,12 +41,6 @@ class CharInfo:
 	def getCode(self):
 		#多型
 		return ""
-
-	def updateIMCode(self, chdesc):
-		# 多型
-		descList=self.normalizationToLinear(chdesc)
-		compList=[x.getChInfo() for x in descList]
-		self.setByComps(compList)
 
 	def normalizationToLinear(self, comp):
 		"""將樹狀結構轉為線性結構"""
@@ -66,8 +63,7 @@ class CJCharInfo(CharInfo):
 		self._cj_body=None	# 當此字為字身時的碼。
 		self._cj_radix_list=[]	# 組件
 		if len(prop)>=2:
-#			self.setCJProp(prop[0], prop[1])
-			self.setCJProp(prop[0], prop[2])
+			self.setCJProp(prop[0], prop[1])
 		self.noneFlag=False
 
 	def setCJProp(self, cj_single, cj_info_code):
@@ -90,25 +86,31 @@ class CJCharInfo(CharInfo):
 		self._cj_direction=dir_code
 		self._cj_body=self.computeBodyCode(self._cj_radix_list)
 
+#		totalCode=self.computeTotalCode(self._cj_radix_list)
+#		if cj_single.lower()!=totalCode.lower():
+#			print("XX", self, cj_single, totalCode)
+
 	def getCJProp(self):
 		return [self._cj_direction, self._cj_radix_list]
 
-	def setByComps(self, complist):
-		dir_code=self._cj_direction
+	def setByComps(self, complist, direction):
+		# 計算倉頡碼時，需要知道此字的組成方向
 
 		ansRadixList=[]
 		for tmpchinfo in complist:
 			tmpDirCode, tmpRadixList=tmpchinfo.getCJProp()
 			if tmpDirCode=='+':
 				ansRadixList.append(tmpchinfo._cj_body)
-			elif tmpDirCode==dir_code:
+			elif tmpDirCode==direction:
 				# 同向
 				ansRadixList.extend(tmpRadixList)
 			else:
 				# 不同向
 				ansRadixList.append(tmpchinfo._cj_body)
 
+		self._cj_direction=direction
 		self._cj_radix_list=ansRadixList
+#		self._cj_radix_list=[x.lower() for x in ansRadixList[:-1]]+ansRadixList[-1:]
 		self._cj_body=self.computeBodyCode(self._cj_radix_list)
 
 	@property
@@ -179,19 +181,13 @@ class CJCharInfo(CharInfo):
 		return bodyCode
 
 	def computeTotalCode(self, codeList):
-		if len(codeList)>0:
+		if len(codeList)==1:
+			totalCode=self.computeHeadTailCode(codeList[0], 3)
+		elif len(codeList)>1:
 			totalCode=self.computeHeadCode(codeList[0])+self.computeBodyCode(codeList[1:])
 		else:
 			totalCode=''
 		return totalCode
-
-	def updateIMCode(self, chdesc):
-		# 計算倉頡碼時，需要知道此字部件的組成方向
-		self._cj_direction=chdesc.getDir()
-
-		descList=chdesc.getCompList()
-		compList=[x.getChInfo() for x in descList]
-		self.setByComps(compList)
 
 	def normalizationToLinear(self, chdesc):
 		"""將樹狀結構轉為線性結構"""
@@ -214,7 +210,9 @@ class ARCharInfo(CharInfo):
 	def getARProp(self):
 		return self._ar_incode
 
-	def setByComps(self, complist):
+	def setByComps(self, complist, direction):
+		# 計算行列碼時，不需要知道此字的組成方向
+
 		arlist=list(map(lambda c: c.getARProp(), complist))
 		if complist and all(arlist):
 			cat="".join(arlist)
@@ -251,7 +249,9 @@ class DYCharInfo(CharInfo):
 	def getDYProp(self):
 		return self._dy_incode
 
-	def setByComps(self, complist):
+	def setByComps(self, complist, direction):
+		# 計算大易碼時，不需要知道此字的組成方向
+
 		dylist=list(map(lambda c: c.getDYProp(), complist))
 		if complist and all(dylist):
 			cat="".join(dylist)
@@ -290,7 +290,9 @@ class BSCharInfo(CharInfo):
 	def getBSProp(self):
 		return [self._bs_incode, self._bs_spcode]
 
-	def setByComps(self, complist):
+	def setByComps(self, complist, direction):
+		# 計算嘸蝦米碼時，不需要知道此字的組成方向
+
 		bslist=list(map(lambda c: c.getBSProp()[0], complist))
 		if complist and all(bslist):
 			cat="".join(bslist)
@@ -334,7 +336,9 @@ class ZMCharInfo(CharInfo):
 	def getZMProp(self):
 		return self._zm_rtlist
 
-	def setByComps(self, complist):
+	def setByComps(self, complist, direction):
+		# 計算鄭碼時，不需要知道此字的組成方向
+
 		if all(complist):
 			rtlist=sum(map(lambda c: c.getZMProp(), complist), [])
 			if complist and all(rtlist):
