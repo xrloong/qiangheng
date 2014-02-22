@@ -2,7 +2,7 @@
 
 import Constant
 from im.CodeInfo.ZMCodeInfo import ZMCodeInfo
-from gear.RadixManager import RadixManager
+from ..base.RadixManager import RadixManager
 class ZMRadixManager(RadixManager):
 	def __init__(self, codeInfoEncoder):
 		RadixManager.__init__(self, codeInfoEncoder)

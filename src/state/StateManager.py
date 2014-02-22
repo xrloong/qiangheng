@@ -1,6 +1,5 @@
 
 # 視此模式為獨體模式（Singleton）。
-from gear import RadixManager
 from gear import CodeInfoManager
 
 __state_IMModule=None

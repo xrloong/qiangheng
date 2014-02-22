@@ -2,7 +2,7 @@
 
 import Constant
 from im.CodeInfo.CJCodeInfo import CJCodeInfo
-from gear.RadixManager import RadixManager
+from ..base.RadixManager import RadixManager
 class CJRadixManager(RadixManager):
 	def __init__(self, codeInfoEncoder):
 		RadixManager.__init__(self, codeInfoEncoder)

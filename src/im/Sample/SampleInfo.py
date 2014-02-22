@@ -1,7 +1,7 @@
 from ..base.IMInfo import IMInfo
 from ..CodeInfo import SPCodeInfo
 from ..CodeInfoEncoder import SPCodeInfoEncoder
-from ..RadixManager import SPRadixManager
+from . import SPRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class SampleInfo(IMInfo):

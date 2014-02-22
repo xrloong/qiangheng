@@ -1,7 +1,7 @@
 from ..base.IMInfo import IMInfo
 from ..CodeInfo import ZMCodeInfo
 from ..CodeInfoEncoder import ZMCodeInfoEncoder
-from ..RadixManager import ZMRadixManager
+from . import ZMRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class ZhengMaInfo(IMInfo):

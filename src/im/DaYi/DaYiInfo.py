@@ -1,7 +1,7 @@
 from ..base.IMInfo import IMInfo
 from ..CodeInfo import DYCodeInfo
 from ..CodeInfoEncoder import DYCodeInfoEncoder
-from ..RadixManager import DYRadixManager
+from . import DYRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class DaYiInfo(IMInfo):

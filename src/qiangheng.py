@@ -9,7 +9,6 @@ from description import CharacterDescriptionManager
 from hanzi import HanZiNetwork
 from state import StateManager
 from optparse import OptionParser
-from gear import RadixManager
 
 class QiangHeng:
 	def __init__(self, options):

@@ -1,7 +1,7 @@
 from ..base.IMInfo import IMInfo
 from ..CodeInfo import BSCodeInfo
 from ..CodeInfoEncoder import BSCodeInfoEncoder
-from ..RadixManager import BSRadixManager
+from . import BSRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class BoshiamyInfo(IMInfo):

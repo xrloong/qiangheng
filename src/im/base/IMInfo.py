@@ -1,7 +1,7 @@
 from gear.CodeInfo import CodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
-from gear import RadixManager
+from . import RadixManager
 
 class IMInfo:
 	"輸入法"

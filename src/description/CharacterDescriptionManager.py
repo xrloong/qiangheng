@@ -3,7 +3,6 @@
 import sys
 from .CharacterDescription import CharacterDescription
 from gear import OperatorManager
-from gear import RadixManager
 from parser import QHParser
 from state import StateManager
 from xml.etree import ElementTree

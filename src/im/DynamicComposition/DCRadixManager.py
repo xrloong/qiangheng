@@ -1,9 +1,10 @@
 
 
 import Constant
-from im.CodeInfo.FCCodeInfo import FCCodeInfo
-from gear.RadixManager import RadixManager
-class FCRadixManager(RadixManager):
+from im.CodeInfo.DCCodeInfo import DCCodeInfo
+from ..base.RadixManager import RadixManager
+from gear.Stroke import Stroke
+class DCRadixManager(RadixManager):
 	def __init__(self, codeInfoEncoder):
 		RadixManager.__init__(self, codeInfoEncoder)
 
@@ -21,19 +22,15 @@ class FCRadixManager(RadixManager):
 		if elementCodeInfo is not None:
 			infoDict=elementCodeInfo.attrib
 
-		top_left=''
-		top_right=''
-		bottom_left=''
-		bottom_right=''
+		strokeList=[]
+		description=infoDict.get('資訊表示式', '')
+		if len(description)>0 and description!='XXXX':
+			strokeDescriptionList=description.split(DCCodeInfo.STROKE_SEPERATOR)
+			strokeList=[]
+			for d in strokeDescriptionList:
+				stroke=Stroke(d)
+				strokeList.append(stroke)
 
-		characterCode=infoDict.get('資訊表示式', '')
-		if len(characterCode)==4:
-			top_left=characterCode[0]
-			top_right=characterCode[1]
-			bottom_left=characterCode[2]
-			bottom_right=characterCode[3]
-
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=FCCodeInfo(corners)
+		codeInfo=DCCodeInfo(strokeList)
 		return codeInfo
 

@@ -1,7 +1,7 @@
 from ..base.IMInfo import IMInfo
 from ..CodeInfo import ARCodeInfo
 from ..CodeInfoEncoder import ARCodeInfoEncoder
-from ..RadixManager import ARRadixManager
+from . import ARRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class ArrayInfo(IMInfo):
