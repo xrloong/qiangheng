@@ -124,8 +124,6 @@ class HanZiNetwork:
 	def addStructure(self, structDesc):
 		if structDesc.isLeaf():
 			structure=self.addReferenceLink(structDesc)
-		elif structDesc.isTurtle():
-			pass
 		elif structDesc.isRoot():
 			structure=self.addLink(structDesc)
 			self.addStructureIntoNode(structure, structDesc.getRootName())

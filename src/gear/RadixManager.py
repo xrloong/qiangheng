@@ -3,7 +3,7 @@ import Constant
 from xml.etree import ElementTree
 from gear import OperatorManager
 from parser import QHParser
-from description.StructureDescription import TurtleStructureDescription
+from gear.CodeVarianceType import CodeVarianceType
 
 class RadixManager:
 	def __init__(self, codeInfoEncoder):
@@ -14,22 +14,11 @@ class RadixManager:
 		self.parser=QHParser.QHParser(self.operationMgr.getOperatorGenerator())
 
 	# 多型
-	def parseToRadixInfoSet(self, characterNode):
-		structDescList=self.getDesc_TurtleCharacterList(characterNode)
-		radixInfoSet=structDescList
-		return radixInfoSet
-
-	# 多型
 	def convertRadixInfoToCodeInfo(self, radixInfo):
-		structDesc=radixInfo
-		if structDesc.isTurtle():
-			codeVariance=structDesc.getCodeVarianceType()
-			codeInfoProperties=structDesc.getCodeInfoDict()
-			codeInfo=self.codeInfoEncoder.generateCodeInfo(codeInfoProperties)
-			codeInfo.multiplyCodeVarianceType(codeVariance)
-		else:
-			print("型態錯誤", file=sys.stderr)
-			codeInfo=None
+		codeVariance=radixInfo.getCodeVarianceType()
+		codeInfoProperties=radixInfo.getCodeInfoDict()
+		codeInfo=self.codeInfoEncoder.generateCodeInfo(codeInfoProperties)
+		codeInfo.multiplyCodeVarianceType(codeVariance)
 		return codeInfo
 
 	# 多型
@@ -43,6 +32,20 @@ class RadixManager:
 			oldRadixCodeInfoList=self.radixCodeInfoDB.get(charName, [])
 			oldRadixCodeInfoList.extend(radixCodeInfoList)
 			self.radixCodeInfoDB[charName]=oldRadixCodeInfoList
+
+	# 多型
+	def parseRadixDescriptionList(self, nodeCharacter):
+		nodeCodeInfoList=nodeCharacter.findall(Constant.TAG_CODE_INFORMATION)
+		radixDescList=[]
+		for nodeCodeInfo in nodeCodeInfoList:
+			infoDict={}
+			if nodeCodeInfo is not None:
+				infoDict=nodeCodeInfo.attrib
+
+			radixDesc=RadixDescription(infoDict)
+
+			radixDescList.append(radixDesc)
+		return radixDescList
 
 
 	def getRadixCodeInfo(self, radixName):
@@ -77,22 +80,24 @@ class RadixManager:
 		radixInfoList=[]
 		for characterNode in characterNodeList:
 			charName=characterNode.get(Constant.TAG_NAME)
-			structureList=self.parseToRadixInfoSet(characterNode)
+			radixInfoSet=self.parseRadixDescriptionList(characterNode)
 
-			radixInfoList.append([charName, structureList])
+			radixInfoList.append([charName, radixInfoSet])
 		return radixInfoList
 
-	def getDesc_TurtleCharacterList(self, nodeCharacter):
-		nodeCodeInfoList=nodeCharacter.findall(Constant.TAG_CODE_INFORMATION)
-		turtleList=[]
-		for nodeCodeInfo in nodeCodeInfoList:
-			infoDict=None
-			if nodeCodeInfo is not None:
-				infoDict=nodeCodeInfo.attrib
+class RadixDescription:
+	def __init__(self, codeInfoDict):
+		self.codeVariance=CodeVarianceType()
+		self.setCodeVarianceType(codeInfoDict)
+		self.codeInfoDict=codeInfoDict
 
-			turtle=TurtleStructureDescription(infoDict)
-			turtle.setStructureProperties(nodeCodeInfo.attrib)
+	def setCodeVarianceType(self, codeInfoDict):
+		codeVarianceString=codeInfoDict.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
+		self.codeVariance.setVarianceByString(codeVarianceString)
 
-			turtleList.append(turtle)
-		return turtleList
+	def getCodeVarianceType(self):
+		return self.codeVariance
+
+	def getCodeInfoDict(self):
+		return self.codeInfoDict
 

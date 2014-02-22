@@ -2,6 +2,7 @@
 
 import sys
 import copy
+import Constant
 from gear.CodeVarianceType import CodeVarianceType
 
 class StructureDescription:
@@ -25,9 +26,6 @@ class StructureDescription:
 	def __repr__(self):
 		return str(self)
 
-	def isTurtle(self):
-		return False
-
 	def copyDescription(self):
 		copyStructureDescription=StructureDescription(self.getOperator(), [])
 		copyStructureDescription.setReferenceExpression(self.getReferenceExpression())
@@ -48,7 +46,7 @@ class StructureDescription:
 		return ansDesc
 
 	def setStructureProperties(self, structProp):
-		codeVarianceString=structProp.get("類型", "標準")
+		codeVarianceString=structProp.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
 		self.target.getCodeVarianceType().setVarianceByString(codeVarianceString)
 
 	def getCodeVarianceType(self):
@@ -129,17 +127,6 @@ class HangerStructureDescription(StructureDescription):
 		hangerStructureDescription=HangerStructureDescription(self.getOperator(), self.getCompList())
 		hangerStructureDescription.replacedBy(newTarget)
 		return hangerStructureDescription
-
-class TurtleStructureDescription(StructureDescription):
-	def __init__(self, codeInfoDict):
-		StructureDescription.__init__(self, None, [])
-		self.codeInfoDict=codeInfoDict
-
-	def getCodeInfoDict(self):
-		return self.codeInfoDict
-
-	def isTurtle(self):
-		return True
 
 if __name__=='__main__':
 	print(StructureDescription('王', '(龜)', None))
