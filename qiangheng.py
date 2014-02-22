@@ -1,6 +1,12 @@
+#!/usr/bin/env python3
 
 import char
 import im
+
+from optparse import OptionParser
+oparser = OptionParser()
+oparser.add_option("-g", "--gen", dest="imname", help="輸入法名稱", default="倉頡")
+(options, args) = oparser.parse_args()
 
 filename='U4E00-U9FA6.txt'
 fileencoding='utf-8'
@@ -44,35 +50,35 @@ for line in f.readlines():
 			chlist.append(ll[1])
 			chdict[ll[1]]=char.Char(ll[1], ll[2:])
 
-imchoices=['倉', '行', '易', '無', '鄭']
-choice=imchoices[1]
+choice=options.imname
+print(choice)
 
 table=[]
-if choice=='倉':
+if choice in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
 	for chname, ch in chdict.items():
 		if ch.cj:
 			table.append([ch.cj, chname])
 	for x in sorted(table): print(*x, sep='\t')
 	im.CangJie()
-elif choice=='行':
+elif choice in ['行', '行列', '行列輸入法', 'array', 'ar',]:
 	for chname, ch in chdict.items():
 		if ch.ar:
 			table.append([ch.ar, chname])
 	for x in sorted(table): print(*x, sep='\t')
 	im.Array()
-elif choice=='易':
+elif choice in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
 	for chname, ch in chdict.items():
 		if ch.dy:
 			table.append([ch.dy, chname])
 	for x in sorted(table): print(*x, sep='\t')
 	im.DaYi()
-elif choice=='無':
+elif choice in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
 	for chname, ch in chdict.items():
 		if ch.bs:
 			table.append([ch.bs, chname])
 	for x in sorted(table): print(*x, sep='\t')
 	im.Boshiamy()
-elif choice=='鄭':
+elif choice in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
 	for chname, ch in chdict.items():
 		if ch.zm:
 			table.append([ch.zm, chname])
