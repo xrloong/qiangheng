@@ -1,7 +1,7 @@
 ﻿# 4E00
 # U+	字	構	倉	行	易	嘸	嘸補	鄭	鄭類
 U+4E00	一	(龜)	m	a	e	e	e	a	11
-U+4E01	丁	(龜)	mn	ad	ej	ei	i	ai	12
+U+4E01	丁	(龜)	mn	ad	ej	t	i	ai	12
 U+4E02	丂	(龜)	mvs	ag	XXXX	k	k	az	21
 U+4E03	七	(龜)	ju	q	c	c	l	hd	12
 U+4E04	丄	(龜)	lm	da	1e	l	e	ia	21
