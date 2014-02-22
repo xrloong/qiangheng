@@ -9,6 +9,9 @@ class Operator:
 	def __str__(self):
 		return "%s"%self.name
 
+	def equals(self, other):
+		return self.getName()==other.getName()
+
 	def getName(self):
 		return self.name
 
