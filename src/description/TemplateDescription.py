@@ -14,11 +14,19 @@ class TemplateCondition:
 	def isMatchAll(self):
 		return self.operator==None
 
-	def getOperand1(self):
-		return self.operand1
+	def isMatch(self, parameterToArgumentDict):
+		if self.isMatchAll():
+			return True
+		parameterName=self.operand1
+		targetValue=self.operand2
+		argumentName=parameterToArgumentDict.get(parameterName)
+		return (argumentName==targetValue)
 
-	def getOperand2(self):
-		return self.operand2
+#	def getOperand1(self):
+#		return self.operand1
+
+#	def getOperand2(self):
+#		return self.operand2
 
 class TemplateDescription:
 	"""字符描述"""
@@ -49,14 +57,18 @@ class TemplateDescription:
 
 	def rearrange(self, charDesc):
 		def getMapping(parameterList, argumentList):
-			mappingDict={}
+			parameterToArgumentMapping={}
+			parameterToArgumentNameMapping={}
 			if len(argumentList)==len(parameterList):
+				argumentNameList=map(lambda x: x.getExpandName(), argumentList)
 				pairList=zip(parameterList, argumentList)
+				namePairList=zip(parameterList, argumentNameList)
 
-				mappingDict=dict(pairList)
+				parameterToArgumentMapping=dict(pairList)
+				parameterToArgumentNameMapping=dict(namePairList)
 			else:
 				print("參數列及引數列個數不符", file=sys.stderr)
-			return mappingDict
+			return (parameterToArgumentMapping, parameterToArgumentNameMapping)
 
 		def getReplacedCharDesc(targetStructureDescription):
 			tempDesc=targetStructureDescription.copyDeeply()
@@ -71,31 +83,25 @@ class TemplateDescription:
 			for comp in charDesc.getCompList():
 				replaceCharDesc(comp)
 
-			argumentDesc=mappingDict.get(charDesc.getExpandName())
+			argumentDesc=parameterToArgumentMapping.get(charDesc.getExpandName())
 			if argumentDesc!=None:
 				charDesc.replacedBy(argumentDesc)
 
-		def isConditionMatch(condition, mappingDict):
-			if condition.isMatchAll():
-				return True
-			operand1=condition.getOperand1()
-			operand2=condition.getOperand2()
-			argumentDesc=mappingDict.get(operand1)
-			return argumentDesc.getExpandName()==operand2
-
-		def getWantedCharDesc(mappingDict):
+		def getMatchedStructureDescription(parameterToArgumentNameMapping):
 			targetCharDesc=None
 			for replaceInfo in self.replaceInfoList:
 				[condition, charDesc]=replaceInfo
-				if isConditionMatch(condition, mappingDict):
+				if condition.isMatch(parameterToArgumentNameMapping):
 					targetCharDesc=charDesc
 					break
 			return targetCharDesc
 
 		argumentList=charDesc.getCompList()
 		parameterList=self.parameterList
-		mappingDict=getMapping(parameterList, argumentList)
-		targetStructureDescription=getWantedCharDesc(mappingDict)
+		mappings=getMapping(parameterList, argumentList)
+		(parameterToArgumentMapping, parameterToArgumentNameMapping)=mappings
+
+		targetStructureDescription=getMatchedStructureDescription(parameterToArgumentNameMapping)
 		resultDesc=getReplacedCharDesc(targetStructureDescription)
 		charDesc.replacedBy(resultDesc)
 
