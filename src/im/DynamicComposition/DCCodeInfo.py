@@ -7,6 +7,7 @@ class DCCodeInfo(CodeInfo):
 		CodeInfo.__init__(self)
 
 		self.strokeGroup=strokeGroup
+		self.extraPane=None
 
 	@staticmethod
 	def generateDefaultCodeInfo(strokeGroup):
@@ -23,4 +24,16 @@ class DCCodeInfo(CodeInfo):
 		strokeList=self.getStrokeList()
 		codeList=[stroke.getCode() for stroke in strokeList]
 		return ','.join(codeList)
+
+	def setExtraPane(self, extranPane):
+		self.extraPane=extranPane
+
+	def getExtraPane(self):
+		return self.extraPane
+
+	def getStrokeGroup(self):
+		return self.strokeGroup
+
+	def transform(self, pane):
+		self.strokeGroup.transform(pane)
 

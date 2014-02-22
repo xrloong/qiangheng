@@ -14,6 +14,7 @@ class DCRadixParser(RadixParser):
 	TAG_SCOPE='範圍'
 	TAG_STROKE='筆劃'
 	TAG_NAME='名稱'
+	TAG_EXTRA_SCOPE='補充範圍'
 
 	TAG_CODE_INFORMATION='編碼資訊'
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
@@ -35,16 +36,16 @@ class DCRadixParser(RadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo=radixInfo.getCodeElement()
 
-		infoDict={}
-		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo.attrib
-
 		strokeGroupNode=elementCodeInfo.find(DCRadixParser.TAG_STROKE_GROUP)
-
 		[strokeGroupName, strokeGroup]=self.parseStrokeGroup(strokeGroupNode)
 
-
 		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeGroup)
+
+		extraScopeNode=elementCodeInfo.find(DCRadixParser.TAG_EXTRA_SCOPE)
+		if extraScopeNode!=None:
+			extraPane=self.parseExtraScope(extraScopeNode)
+
+			codeInfo.setExtraPane(extraPane)
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):
@@ -65,6 +66,11 @@ class DCRadixParser(RadixParser):
 			radixDescription=self.parseRadixDescription(characterNode)
 
 			self.radixDescriptionManager.addDescription(charName, radixDescription)
+
+	def parseExtraScope(self, extraScopeNode):
+		geometryNode=extraScopeNode.find(DCRadixParser.TAG_GEOMETRY)
+		pane=self.parseGeometry(geometryNode)
+		return pane
 
 	def parseGeometry(self, geometryNode):
 		descriptionRegion=geometryNode.get(DCRadixParser.TAG_SCOPE)
