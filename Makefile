@@ -10,6 +10,7 @@ IBUS_PATH	=	$(TABLES_PATH)/ibus
 GCIN_PATH	=	$(TABLES_PATH)/gcin
 OVIM_PATH	=	$(TABLES_PATH)/ovim
 MSIM_PATH	=	$(TABLES_PATH)/msim
+PROFILE_PATH	=	profiles
 TARBALLS_PATH	=	tarballs
 XFORM		=	--xform="s:^:qiangheng/:"
 ICON_PATH	=	icons/
@@ -34,6 +35,15 @@ xml:
 		echo $$im;\
 		time src/qiangheng.py -c qhdata/config/$$im.xml --xml |\
 			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
+	done
+	touch $(XML_PATH)
+
+profile:
+	mkdir -p $(PROFILE_PATH)
+	for im in $(IMLIST);\
+	do\
+		echo $$im;\
+		python3 -m profile src/qiangheng.py -q -c qhdata/config/$$im.xml > $(PROFILE_PATH)/$$im.txt;\
 	done
 	touch $(XML_PATH)
 

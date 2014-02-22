@@ -14,6 +14,8 @@ class QiangHeng:
 	def __init__(self, options):
 		configFile=options.config_file
 		xml_format=options.xml_format
+		quiet=options.quiet
+		isToOutput=not quiet
 
 		configList=self.readConfig(configFile)
 		[imProp, toTemplateList, toComponentList, toCodeList]=configList
@@ -30,11 +32,15 @@ class QiangHeng:
 		self.hanziNetwork=HanZiNetwork.construct(self.descMgr)
 
 		codeMappingInfoList=self.genIMMapping()
-		if xml_format:
-			imInfo=imPackage.IMInfo()
-			self.toXML(imInfo, codeMappingInfoList)
+		if isToOutput:
+			if xml_format:
+				imInfo=imPackage.IMInfo()
+				self.toXML(imInfo, codeMappingInfoList)
+			else:
+				self.toTXT(codeMappingInfoList)
 		else:
-			self.toTXT(codeMappingInfoList)
+			# 不輸出結果
+			pass
 
 	def readConfig(self, configFileName):
 		f=open(configFileName, encoding='utf-8-sig')
@@ -137,11 +143,16 @@ class QiangHeng:
 			table.extend(characterInfo.getCodeMappingInfoList())
 		return table
 
-oparser = OptionParser()
-oparser.add_option("-c", "--config", dest="config_file", help="輸入法設定檔", default="qhdata/config/default.xml")
-oparser.add_option("--xml", action="store_true", dest="xml_format")
-oparser.add_option("--text", action="store_false", dest="xml_format")
-(options, args) = oparser.parse_args()
+def main():
+	oparser = OptionParser()
+	oparser.add_option("-c", "--config", dest="config_file", help="輸入法設定檔", default="qhdata/config/default.xml")
+	oparser.add_option("--xml", action="store_true", dest="xml_format")
+	oparser.add_option("--text", action="store_false", dest="xml_format")
+	oparser.add_option("-q", "--quiet", action="store_true", dest="quiet")
+	(options, args) = oparser.parse_args()
 
-qiangheng=QiangHeng(options)
+	qiangheng=QiangHeng(options)
+
+if __name__ == "__main__":
+	main()
 
