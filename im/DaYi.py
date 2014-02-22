@@ -1,5 +1,5 @@
 from .IM import IM
-from character import DYCharInfo
+from im import DYCharInfo
 from character import OperatorManager
 
 class DaYi(IM):

@@ -1,5 +1,5 @@
 from .IM import IM
-from character import ZMCharInfo
+from im import ZMCharInfo
 from character import OperatorManager
 
 class ZhengMa(IM):

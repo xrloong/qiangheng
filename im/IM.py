@@ -1,4 +1,4 @@
-from character import CharInfo
+from im import CharInfo
 from character import OperatorManager
 
 class IM:

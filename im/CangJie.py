@@ -1,5 +1,5 @@
 from .IM import IM
-from character import CJCharInfo
+from im import CJCharInfo
 from character import OperatorManager
 
 class CangJie(IM):

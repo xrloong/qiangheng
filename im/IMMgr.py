@@ -5,12 +5,12 @@ from im import CangJie
 from im import DaYi
 from im import ZhengMa
 
-from character import CharInfo
-from character import ARCharInfo
-from character import BSCharInfo
-from character import CJCharInfo
-from character import DYCharInfo
-from character import ZMCharInfo
+from im import CharInfo
+from im import ARCharInfo
+from im import BSCharInfo
+from im import CJCharInfo
+from im import DYCharInfo
+from im import ZMCharInfo
 
 class IMMgr:
 	def __init__(self):

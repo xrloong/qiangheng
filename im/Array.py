@@ -1,5 +1,5 @@
 from .IM import IM
-from character import ARCharInfo
+from im import ARCharInfo
 from character import OperatorManager
 
 class Array(IM):

@@ -1,5 +1,5 @@
 from .IM import IM
-from character import BSCharInfo
+from im import BSCharInfo
 from character import OperatorManager
 
 class Boshiamy(IM):
