@@ -38,27 +38,27 @@ class DCRadixParser(RadixParser):
 		if elementCodeInfo is not None:
 			infoDict=elementCodeInfo.attrib
 
-		strokeGroup=StrokeGroup()
-
 		geometryNode=elementCodeInfo.find(DCRadixParser.TAG_GEOMETRY)
 		region=self.parseGeometry(geometryNode)
 
 		strokeNode=elementCodeInfo.find(DCRadixParser.TAG_STROKE)
-		description=strokeNode.attrib.get(DCRadixParser.ATTRIB_CODE_EXPRESSION, '')
-		if len(description)>0 and description!='XXXX':
-			strokeDescriptionList=description.split(DCCodeInfo.STROKE_SEPERATOR)
-			strokeList=[]
-			for d in strokeDescriptionList:
-				if d[0]=='(':
-					stroke=Stroke(d, region)
+		strokeNodeList=elementCodeInfo.findall(DCRadixParser.TAG_STROKE)
+
+		strokeList=[]
+		for strokeNode in strokeNodeList:
+			description=strokeNode.attrib.get(DCRadixParser.ATTRIB_CODE_EXPRESSION, '')
+			if len(description)>0 and description!='XXXX':
+				if description[0]=='(':
+					stroke=Stroke(description, region)
 					strokeList.append(stroke)
 				else:
-					strokeGroupName=d
+					strokeGroupName=description
 					strokeGroup=self.findStrokeGroup(strokeGroupName)
 					tmpStrokeGroup=copy.deepcopy(strokeGroup)
 					strokeList.extend(tmpStrokeGroup.getStrokeList())
 
-			strokeGroup=StrokeGroup(region, strokeList)
+		strokeGroup=StrokeGroup()
+		strokeGroup=StrokeGroup(region, strokeList)
 
 		region=strokeGroup.getRegion()
 		strokeGroup=strokeGroup.getStrokeList()
