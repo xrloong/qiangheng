@@ -21,7 +21,7 @@ class QiangHeng:
 
 		self.initManager(imModule)
 
-		self.getDescDBFromXML(toTemplateList, toComponentList, toCodeList)
+		self.descMgr.loadData(toTemplateList, toComponentList, toCodeList)
 
 		self.constructDescriptionNetwork()
 
@@ -62,44 +62,22 @@ class QiangHeng:
 		return [imProp, toTemplateList, toComponentList, toCodeList]
 
 
-	def readDesc(self, dirQHDataRoot, configFile):
-		rootDirPrefix=dirQHDataRoot+"/"
-		configFile=rootDirPrefix+configFile
-
-		f=open(configFile, encoding='utf-8-sig')
-		xmlNode=ElementTree.parse(f)
-		rootNode=xmlNode.getroot()
-
-		configNode=rootNode.find('設定檔')
-		templateNodeList=configNode.findall('範本')
-		componentNodeList=configNode.findall('部件')
-		radixNodeList=configNode.findall('字根')
-
-		toComponentList=[rootDirPrefix+node.get('檔案') for node in componentNodeList]
-
-		toTemplateList=[rootDirPrefix+node.get('檔案') for node in templateNodeList]
-
-		toCodeList=[rootDirPrefix+node.get('檔案') for node in radixNodeList]
-
-		self.getDescDBFromXML(toTemplateList, toComponentList, toCodeList)
-
 	def constructDescriptionNetwork(self):
-		charNameList=self.descMgr.keys()
+		charNameList=self.getAllCharacters()
 		hanziNetwork=self.hanziNetwork
-		charDescQueryer=self.descMgr.getCharDescQueryer()
 		sortedNameList=sorted(charNameList)
 
 		for charName in sortedNameList:
 			hanziNetwork.addNode(charName)
 
 		for charName in sortedNameList:
-			charDesc=charDescQueryer(charName)
+			charDesc=self.queryDescription(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
 				self.recursivelyAddNode(structDesc)
 
 		for charName in sortedNameList:
-			charDesc=charDescQueryer(charName)
+			charDesc=self.queryDescription(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
 				if structDesc.isTurtle():
@@ -151,7 +129,7 @@ class QiangHeng:
 
 		# 對照表
 		charGroup=ElementTree.SubElement(rootNode, "對應集")
-		targetCharList=self.descMgr.keys()
+		targetCharList=self.getAllCharacters()
 		cm=self.genIMMapping(targetCharList)
 		for x in sorted(cm):
 			attrib={"按鍵序列":x[0], "字符":x[1], "頻率":x[2], "類型":x[3]}
@@ -161,34 +139,28 @@ class QiangHeng:
 #		xmlNode.write(sys.stdout)
 
 	def toTXT(self):
-		targetCharList=self.descMgr.keys()
+		targetCharList=self.getAllCharacters()
 		cm=self.genIMMapping(targetCharList)
 		table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x), cm)))
 		print(table)
 
-	def getDescDBFromXML(self, toTemplateList, toComponentList, toCodeList):
-		for filename in toTemplateList:
-			self.descMgr.loadTemplateFromXML(filename, fileencoding='utf-8-sig')
-
-		for filename in toComponentList:
-			self.descMgr.loadFromXML(filename, fileencoding='utf-8-sig')
-		self.descMgr.adjustData()
-
-		for filename in toCodeList:
-			self.descMgr.loadCodeInfoFromXML(filename, fileencoding='utf-8-sig')
-
 	def genIMMapping(self, targetCharList):
-		charDescQueryer=self.descMgr.getCharDescQueryer()
 
 		table=[]
 		for charName in sorted(targetCharList):
 #			print("<-- %s -->"%charName)
 			codePropList=self.hanziNetwork.getCodePropertiesList(charName)
-			charDesc=charDescQueryer(charName)
+			charDesc=self.queryDescription(charName)
 			freq=charDesc.getFrequency()
 			for code, type in codePropList:
 				table.append([code, charName, freq, type])
 		return table
+
+	def getAllCharacters(self):
+		return self.descMgr.getAllCharacters()
+
+	def queryDescription(self, characterName):
+		return self.descMgr.queryCharacterDescription(characterName)
 
 oparser = OptionParser()
 oparser.add_option("-c", "--config", dest="config_file", help="輸入法設定檔", default="qhdata/config/default.xml")

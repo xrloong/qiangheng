@@ -27,11 +27,23 @@ class CharDescriptionManager:
 
 		self.parser=QHParser.QHParser(self.operationMgr.getOperatorGenerator())
 
-	def keys(self):
+	def getAllCharacters(self):
 		return self.characterDB.keys()
 
-	def getCharDescQueryer(self):
-		return self.charDescQueryer
+	def queryCharacterDescription(self, character):
+		return self.charDescQueryer(character)
+
+	def loadData(self, toTemplateList, toComponentList, toCodeList):
+		for filename in toTemplateList:
+			self.loadTemplateFromXML(filename, fileencoding='utf-8-sig')
+
+		for filename in toComponentList:
+			self.loadFromXML(filename, fileencoding='utf-8-sig')
+		self.adjustData()
+
+		for filename in toCodeList:
+			self.loadCodeInfoFromXML(filename, fileencoding='utf-8-sig')
+
 
 	def loadFromXML(self, filename, fileencoding='utf-8-sig'):
 		f=open(filename, encoding=fileencoding)
