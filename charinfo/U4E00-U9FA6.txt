@@ -4161,26 +4161,26 @@ U+5E1F	帟	(志 亦巾)
 U+5E20	帠	(志 臼巾)
 U+5E21	帡	(好 巾并)
 U+5E22	帢	(好 巾合)
-U+5E23	帣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E23	帣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ubli	22
 U+5E24	帤	(好 如巾)
-U+5E25	帥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E25	帥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	myli	31
 U+5E26	带	(算 卅冖巾)
 U+5E27	帧	(好 巾贞)
 U+5E28	帨	(好 巾兌)
 U+5E29	帩	(好 巾肖)
 U+5E2A	帪	(好 巾辰)
-U+5E2B	師	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E2B	師	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	myal	41
 U+5E2C	帬	(志 君巾)
-U+5E2D	席	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E2D	席	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgel	32
 U+5E2E	帮	(志 邦巾)
 U+5E2F	帯	(算 丗冖巾)
-U+5E30	帰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E30	帰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kdwl	42
 U+5E31	帱	(好 巾寿)
 U+5E32	帲	(好 巾幷)
 U+5E33	帳	(好 巾長)
 U+5E34	帴	(好 巾戔)
 U+5E35	帵	(好 巾宛)
-U+5E36	帶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E36	帶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eawl	42
 U+5E37	帷	(好 巾隹)
 U+5E38	常	(志 尚巾)
 U+5E39	帹	(好 巾妾)
@@ -4206,8 +4206,8 @@ U+5E4C	幌	(好 巾晃)
 U+5E4D	幍	(好 巾舀)
 U+5E4E	幎	(好 巾冥)
 U+5E4F	幏	(好 巾家)
-U+5E50	幐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5E51	幑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E50	幐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	quli	32
+U+5E51	幑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oilm	42
 U+5E52	幒	(好 巾悤)
 U+5E53	幓	(好 巾參)
 U+5E54	幔	(好 巾曼)
@@ -4240,20 +4240,20 @@ U+5E6E	幮	(好 巾廚)
 U+5E6F	幯	(好 巾節)
 U+5E70	幰	(好 巾憲)
 U+5E71	幱	(好 巾闌)
-U+5E72	干	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5E73	平	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5E74	年	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E72	干	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	aed	21
+U+5E73	平	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	aua	21
+U+5E74	年	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	mamb	22
 U+5E75	幵	(林 干)
-U+5E76	并	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5E77	幷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5E78	幸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E76	并	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uae	22
+U+5E77	幷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	maae	41
+U+5E78	幸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bub	21
 U+5E79	幹	(廖 倝干)
-U+5E7A	幺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5E7B	幻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E7A	幺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zzs	21
+U+5E7B	幻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zzy	31
 U+5E7C	幼	(好 幺力)
-U+5E7D	幽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5E7E	幾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5E7F	广	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E7D	幽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zzzl	41
+U+5E7E	幾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zzho	41
+U+5E7F	广	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tg	12
 U+5E80	庀	(廖 广匕)
 U+5E81	庁	(廖 广丁)
 U+5E82	庂	(廖 广人)
@@ -4274,13 +4274,13 @@ U+5E90	庐	(廖 广戶)
 U+5E91	庑	(廖 广无)
 U+5E92	庒	(廖 广去)
 U+5E93	库	(廖 广车)
-U+5E94	应	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E94	应	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgva	22
 U+5E95	底	(廖 广氐)
 U+5E96	庖	(廖 广包)
 U+5E97	店	(廖 广占)
 U+5E98	庘	(廖 广甲)
 U+5E99	庙	(廖 广由)
-U+5E9A	庚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5E9A	庚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgxo	32
 U+5E9B	庛	(廖 广此)
 U+5E9C	府	(廖 广付)
 U+5E9D	庝	(廖 广冬)
@@ -4292,7 +4292,7 @@ U+5EA2	庢	(廖 广至)
 U+5EA3	庣	(廖 广兆)
 U+5EA4	庤	(廖 广寺)
 U+5EA5	庥	(廖 广休)
-U+5EA6	度	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5EA6	度	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgex	32
 U+5EA7	座	(廖 广坐)
 U+5EA8	庨	(廖 广孝)
 U+5EA9	庩	(廖 广余)
@@ -4308,12 +4308,12 @@ U+5EB2	庲	(廖 广來)
 U+5EB3	庳	(廖 广卑)
 U+5EB4	庴	(廖 广昔)
 U+5EB5	庵	(廖 广奄)
-U+5EB6	庶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5EB6	庶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgeu	32
 U+5EB7	康	(廖 广隶)
-U+5EB8	庸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5EB9	庹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5EB8	庸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgxl	32
+U+5EB9	庹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgxs	42
 U+5EBA	庺	(廖 广枀)
-U+5EBB	庻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5EBB	庻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgoo	42
 U+5EBC	庼	(廖 广顷)
 U+5EBD	庽	(廖 广禺)
 U+5EBE	庾	(廖 广臾)
@@ -4322,7 +4322,7 @@ U+5EC0	廀	(廖 广叜)
 U+5EC1	廁	(廖 广則)
 U+5EC2	廂	(廖 广相)
 U+5EC3	廃	(廖 广発)
-U+5EC4	廄	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5EC4	廄	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgxq	32
 U+5EC5	廅	(廖 广盍)
 U+5EC6	廆	(廖 广鬼)
 U+5EC7	廇	(廖 广留)
@@ -4330,10 +4330,10 @@ U+5EC8	廈	(廖 广夏)
 U+5EC9	廉	(廖 广兼)
 U+5ECA	廊	(廖 广郎)
 U+5ECB	廋	(廖 广叟)
-U+5ECC	廌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5ECC	廌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgzu	42
 U+5ECD	廍	(廖 广部)
 U+5ECE	廎	(廖 广頃)
-U+5ECF	廏	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5ECF	廏	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgrq	42
 U+5ED0	廐	(廖 广既)
 U+5ED1	廑	(廖 广堇)
 U+5ED2	廒	(廖 广敖)
@@ -4370,9 +4370,9 @@ U+5EF0	廰	(廖 广聴)
 U+5EF1	廱	(廖 广雝)
 U+5EF2	廲	(廖 广麗)
 U+5EF3	廳	(廖 广聽)
-U+5EF4	廴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5EF4	廴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	y	11
 U+5EF5	廵	(起 廴巛)
-U+5EF6	延	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5EF6	延	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ymii	31
 U+5EF7	廷	(起 廴壬)
 U+5EF8	廸	(起 廴由)
 U+5EF9	廹	(起 廴白)
@@ -4380,11 +4380,11 @@ U+5EFA	建	(起 廴聿)
 U+5EFB	廻	(起 廴回)
 U+5EFC	廼	(起 廴酉)
 U+5EFD	廽	(起 廴囬)
-U+5EFE	廾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5EFF	廿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5EFE	廾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	e	11
+U+5EFF	廿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ea	12
 # 5F00
 # U+	字	構	倉	行	易	嘸	嘸補	鄭	鄭類
-U+5F00	开	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F00	开	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ae	21
 U+5F01	弁	(志 厶廾)
 U+5F02	异	(志 巳廾)
 U+5F03	弃	(志 亠弁)
@@ -4395,19 +4395,19 @@ U+5F07	弇	(志 合廾)
 U+5F08	弈	(志 亦廾)
 U+5F09	弉	(志 壯廾)
 U+5F0A	弊	(志 敝廾)
-U+5F0B	弋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F0B	弋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hs	12
 U+5F0C	弌	(載 弋一)
 U+5F0D	弍	(載 弋二)
 U+5F0E	弎	(載 弋三)
 U+5F0F	式	(載 弋工)
-U+5F10	弐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F10	弐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ahbd	31
 U+5F11	弑	(好 杀式)
 U+5F12	弒	(穎 乂术式)
-U+5F13	弓	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F14	弔	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F13	弓	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yz	12
+U+5F14	弔	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yzi	21
 U+5F15	引	(好 弓丨)
 U+5F16	弖	(志 弓一)
-U+5F17	弗	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F17	弗	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yznd	22
 U+5F18	弘	(好 弓厶)
 U+5F19	弙	(好 弓于)
 U+5F1A	弚	(志 八弔)
@@ -4415,10 +4415,10 @@ U+5F1B	弛	(好 弓也)
 U+5F1C	弜	(林 弓)
 U+5F1D	弝	(好 弓巴)
 U+5F1E	弞	(好 弓欠)
-U+5F1F	弟	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F1F	弟	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uyz	21
 U+5F20	张	(好 弓长)
 U+5F21	弡	(好 弓巨)
-U+5F22	弢	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F22	弢	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yzzx	32
 U+5F23	弣	(好 弓付)
 U+5F24	弤	(好 弓氐)
 U+5F25	弥	(好 弓尔)
@@ -4426,14 +4426,14 @@ U+5F26	弦	(好 弓玄)
 U+5F27	弧	(好 弓瓜)
 U+5F28	弨	(好 弓召)
 U+5F29	弩	(志 奴弓)
-U+5F2A	弪	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F2A	弪	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yzxb	32
 U+5F2B	弫	(好 弓臣)
-U+5F2C	弬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F2C	弬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yzh	22
 U+5F2D	弭	(好 弓耳)
-U+5F2E	弮	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F2E	弮	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ubyz	22
 U+5F2F	弯	(志 亦弓)
 U+5F30	弰	(好 弓肖)
-U+5F31	弱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F31	弱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	yzyt	42
 U+5F32	弲	(好 弓肙)
 U+5F33	弳	(好 弓巠)
 U+5F34	弴	(好 弓享)
@@ -4481,7 +4481,7 @@ U+5F5D	彝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+5F5E	彞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+5F5F	彟	(好 寻蒦)
 U+5F60	彠	(好 尋蒦)
-U+5F61	彡	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F61	彡	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pd	12
 U+5F62	形	(好 开彡)
 U+5F63	彣	(起 文彡)
 U+5F64	彤	(好 丹彡)
@@ -4499,7 +4499,7 @@ U+5F6F	彯	(好 票彡)
 U+5F70	彰	(好 章彡)
 U+5F71	影	(好 景彡)
 U+5F72	彲	(好 麗彡)
-U+5F73	彳	(龜)	XXXX	XXXX	XXXX	mi	i	XXXX	XXXX
+U+5F73	彳	(龜)	XXXX	XXXX	XXXX	mi	i	oi	12
 U+5F74	彴	(好 彳勺)
 U+5F75	彵	(好 彳也)
 U+5F76	彶	(好 彳及)
@@ -4579,9 +4579,9 @@ U+5FBF	徿	(好 彳龍)
 U+5FC0	忀	(好 彳襄)
 U+5FC1	忁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+5FC2	忂	(好 彳瞿)
-U+5FC3	心	(龜)	XXXX	XXXX	XXXX	h	a	XXXX	XXXX
-U+5FC4	忄	(龜)	XXXX	XXXX	XXXX	h	a	XXXX	XXXX
-U+5FC5	必	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5FC3	心	(龜)	XXXX	XXXX	XXXX	h	a	wz	12
+U+5FC4	忄	(龜)	XXXX	XXXX	XXXX	h	a	u	11
+U+5FC5	必	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wzm	22
 U+5FC6	忆	(好 忄乙)
 U+5FC7	忇	(好 忄力)
 U+5FC8	忈	(志 二心)
@@ -5163,16 +5163,16 @@ U+6204	戄	(好 忄矍)
 U+6205	戅	(志 贑心)
 U+6206	戆	(志 赣心)
 U+6207	戇	(志 贛心)
-U+6208	戈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6209	戉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+620A	戊	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+620B	戋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+620C	戌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+620D	戍	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6208	戈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hm	12
+U+6209	戉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hmz	22
+U+620A	戊	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hm	12
+U+620B	戋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hm	12
+U+620C	戌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hma	22
+U+620D	戍	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hms	22
 U+620E	戎	(載 戈十)
 U+620F	戏	(好 又戈)
-U+6210	成	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6211	我	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6210	成	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hmy	22
+U+6211	我	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	mdhm	22
 U+6212	戒	(載 戈廾)
 U+6213	戓	(載 戈口)
 U+6214	戔	(爻 戈)
@@ -5209,9 +5209,9 @@ U+6232	戲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6233	戳	(好 翟戈)
 U+6234	戴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6235	戵	(好 瞿戈)
-U+6236	戶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6237	户	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6238	戸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6236	戶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wm	12
+U+6237	户	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wm	12
+U+6238	戸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	axm	21
 U+6239	戹	(廖 戶乙)
 U+623A	戺	(好 戶巳)
 U+623B	戻	(廖 戶大)
@@ -5230,9 +5230,9 @@ U+6247	扇	(廖 戶羽)
 U+6248	扈	(廖 戶邑)
 U+6249	扉	(廖 戶非)
 U+624A	扊	(廖 戶炎)
-U+624B	手	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+624C	扌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+624D	才	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+624B	手	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	md	12
+U+624C	扌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	d	11
+U+624D	才	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dm	21
 U+624E	扎	(好 扌乚)
 U+624F	扏	(好 扌九)
 U+6250	扐	(好 扌力)
@@ -6064,9 +6064,9 @@ U+6583	斃	(志 敝死)
 U+6584	斄	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6585	斅	(好 學攴)
 U+6586	斆	(好 學攵)
-U+6587	文	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6587	文	(龜)	yk	XXXX	XXXX	w	x	so	12
 U+6588	斈	(志 文子)
-U+6589	斉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6589	斉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sond	22
 U+658A	斊	(志 文耳)
 U+658B	斋	(志 文而)
 U+658C	斌	(好 文武)
@@ -6080,7 +6080,7 @@ U+6593	斓	(好 文阑)
 U+6594	斔	(好 蚉臾)
 U+6595	斕	(好 文闌)
 U+6596	斖	(好 文舋)
-U+6597	斗	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6597	斗	(龜)	yj	XXXX	XXXX	d	j	tded	22
 U+6598	斘	(好 夕斗)
 U+6599	料	(好 米斗)
 U+659A	斚	(算 厸冖斗)
@@ -6093,8 +6093,8 @@ U+65A0	斠	(好 冓斗)
 U+65A1	斡	(廖 倝斗)
 U+65A2	斢	(好 黃斗)
 U+65A3	斣	(好 蜀斗)
-U+65A4	斤	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65A5	斥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65A4	斤	(龜)	XXXX	XXXX	XXXX	k	a	pd	12
+U+65A5	斥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pds	22
 U+65A6	斦	(林 斤)
 U+65A7	斧	(志 父斤)
 U+65A8	斨	(好 爿斤)
@@ -6114,7 +6114,7 @@ U+65B5	斵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+65B6	斶	(好 斤蜀)
 U+65B7	斷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+65B8	斸	(好 屬斤)
-U+65B9	方	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65B9	方	(龜)	XXXX	XXXX	XXXX	f	y	sy	12
 U+65BA	斺	(好 方介)
 U+65BB	斻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+65BC	於	(好 方仒)
@@ -6207,7 +6207,7 @@ U+6610	昐	(好 日分)
 U+6611	昑	(好 日今)
 U+6612	昒	(好 日勿)
 U+6613	易	(志 日勿)
-U+6614	昔	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6614	昔	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eak	22
 U+6615	昕	(好 日斤)
 U+6616	昖	(好 日公)
 U+6617	昗	(志 日六)
@@ -6485,7 +6485,7 @@ U+6724	朤	(燚 月)
 U+6725	朥	(好 月勞)
 U+6726	朦	(好 月蒙)
 U+6727	朧	(好 月龍)
-U+6728	木	(龜)	d	XXXX	XXXX	t	n	XXXX	XXXX
+U+6728	木	(龜)	d	XXXX	XXXX	t	n	f	11
 U+6729	朩	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+672A	未	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+672B	末	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
@@ -11279,7 +11279,7 @@ U+79BA	禺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+79BB	离	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+79BC	禼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+79BD	禽	(志 人离)
-U+79BE	禾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+79BE	禾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	mf	12
 U+79BF	禿	(志 禾儿)
 U+79C0	秀	(志 禾乃)
 U+79C1	私	(好 禾厶)
@@ -11463,7 +11463,7 @@ U+7A70	穰	(好 禾襄)
 U+7A71	穱	(好 禾爵)
 U+7A72	穲	(好 禾麗)
 U+7A73	穳	(好 禾贊)
-U+7A74	穴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+7A74	穴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wo	12
 U+7A75	穵	(志 穴乙)
 U+7A76	究	(志 穴九)
 U+7A77	穷	(志 穴力)
@@ -15892,7 +15892,7 @@ U+8B9C	讜	(好 言黨)
 U+8B9D	讝	(好 言嚴)
 U+8B9E	讞	(好 言獻)
 U+8B9F	讟	(湘 言賣言)
-U+8BA0	讠	(龜)	XXXX	XXXX	XXXX	i	l	XXXX	XXXX
+U+8BA0	讠	(龜)	XXXX	XXXX	XXXX	i	l	s	11
 U+8BA1	计	(好 讠十)
 U+8BA2	订	(好 讠丁)
 U+8BA3	讣	(好 讠卜)
@@ -16045,7 +16045,7 @@ U+8C33	谳	(好 讠献)
 U+8C34	谴	(好 讠遣)
 U+8C35	谵	(好 讠詹)
 U+8C36	谶	(好 讠韱)
-U+8C37	谷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8C37	谷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ooj	31
 U+8C38	谸	(好 千谷)
 U+8C39	谹	(好 谷厷)
 U+8C3A	谺	(好 谷牙)
@@ -16060,7 +16060,7 @@ U+8C42	豂	(好 谷翏)
 U+8C43	豃	(好 谷敢)
 U+8C44	豄	(好 谷賣)
 U+8C45	豅	(好 谷龍)
-U+8C46	豆	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8C46	豆	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ajua	31
 U+8C47	豇	(好 豆工)
 U+8C48	豈	(志 山豆)
 U+8C49	豉	(好 豆支)
@@ -16147,10 +16147,10 @@ U+8C99	貙	(好 豸區)
 U+8C9A	貚	(好 豸單)
 U+8C9B	貛	(好 豸雚)
 U+8C9C	貜	(好 豸矍)
-U+8C9D	貝	(龜)	muc	XXXX	XXXX	mb	a	XXXX	XXXX
-U+8C9E	貞	(龜)	ybuc	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8C9D	貝	(龜)	muc	XXXX	XXXX	mb	a	lo	12
+U+8C9E	貞	(龜)	ybuc	XXXX	XXXX	XXXX	XXXX	ilo	21
 U+8C9F	貟	(志 厶貝)
-U+8CA0	負	(龜)	nbuc	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8CA0	負	(龜)	nbuc	XXXX	XXXX	XXXX	XXXX	rlo	21
 U+8CA1	財	(好 貝才)
 U+8CA2	貢	(志 工貝)
 U+8CA3	貣	(志 弋貝)
@@ -16277,9 +16277,9 @@ U+8D19	贙	(志 虤貝)
 U+8D1A	贚	(好 貝龍)
 U+8D1B	贛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+8D1C	贜	(好 貝藏)
-U+8D1D	贝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+8D1E	贞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+8D1F	负	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8D1D	贝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	lo	12
+U+8D1E	贞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ilo	21
+U+8D1F	负	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	nlo	21
 U+8D20	贠	(志 厶贝)
 U+8D21	贡	(志 工贝)
 U+8D22	财	(好 贝才)
@@ -16360,8 +16360,8 @@ U+8D6C	赬	(好 赤貞)
 U+8D6D	赭	(好 赤者)
 U+8D6E	赮	(好 赤叚)
 U+8D6F	赯	(好 赤唐)
-U+8D70	走	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+8D71	赱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8D70	走	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bo	12
+U+8D71	赱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bus	31
 U+8D72	赲	(起 走力)
 U+8D73	赳	(起 走丩)
 U+8D74	赴	(起 走卜)
@@ -16427,7 +16427,7 @@ U+8DAF	趯	(起 走翟)
 U+8DB0	趰	(起 走爾)
 U+8DB1	趱	(起 走赞)
 U+8DB2	趲	(起 走贊)
-U+8DB3	足	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8DB3	足	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ji	12
 U+8DB4	趴	(好 足八)
 U+8DB5	趵	(好 足勺)
 U+8DB6	趶	(好 足于)
@@ -16733,7 +16733,7 @@ U+8EDF	軟	(好 車欠)
 U+8EE0	軠	(好 車壬)
 U+8EE1	軡	(好 車今)
 U+8EE2	転	(好 車云)
-U+8EE3	軣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8EE3	軣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	fkv	22
 U+8EE4	軤	(好 車乎)
 U+8EE5	軥	(好 車句)
 U+8EE6	軦	(好 車兄)
@@ -16866,7 +16866,7 @@ U+8F62	轢	(好 車樂)
 U+8F63	轣	(好 車歷)
 U+8F64	轤	(好 車盧)
 U+8F65	轥	(好 車藺)
-U+8F66	车	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8F66	车	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	he	12
 U+8F67	轧	(好 车乚)
 U+8F68	轨	(好 车九)
 U+8F69	轩	(好 车干)
@@ -16945,8 +16945,8 @@ U+8FB1	辱	(志 辰寸)
 U+8FB2	農	(志 曲辰)
 U+8FB3	辳	(志 林辰)
 U+8FB4	辴	(好 單辰)
-U+8FB5	辵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+8FB6	辶	(龜)	XXXX	XXXX	XXXX	w	n	XXXX	XXXX
+U+8FB5	辵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pdii	22
+U+8FB6	辶	(龜)	XXXX	XXXX	XXXX	w	n	w	11
 U+8FB7	辷	(起 辶一)
 U+8FB8	辸	(起 辶乃)
 U+8FB9	边	(起 辶力)
@@ -17353,9 +17353,9 @@ U+9145	酅	(好 巂阝)
 U+9146	酆	(好 豐阝)
 U+9147	酇	(好 贊阝)
 U+9148	酈	(好 麗阝)
-U+9149	酉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9149	酉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	fd	12
 U+914A	酊	(好 酉丁)
-U+914B	酋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+914B	酋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	udfd	22
 U+914C	酌	(好 酉勾)
 U+914D	配	(好 酉己)
 U+914E	酎	(好 酉寸)
@@ -17478,14 +17478,14 @@ U+91C2	釂	(好 酉襄)
 U+91C3	釃	(好 酉麗)
 U+91C4	釄	(好 酉靡)
 U+91C5	釅	(好 酉嚴)
-U+91C6	釆	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+91C6	釆	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pf	12
 U+91C7	采	(志 爫木)
 U+91C8	釈	(好 釆尺)
 U+91C9	釉	(好 釆由)
 U+91CA	释	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+91CB	釋	(好 釆睪)
-U+91CC	里	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+91CD	重	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+91CC	里	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kb	21
+U+91CD	重	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	mekb	32
 U+91CE	野	(好 里予)
 U+91CF	量	(志 旦里)
 U+91D0	釐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
@@ -18187,7 +18187,7 @@ U+9481	钁	(好 金矍)
 U+9482	钂	(好 金黨)
 U+9483	钃	(好 金屬)
 U+9484	钄	(好 金蘭)
-U+9485	钅	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9485	钅	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	p	11
 U+9486	钆	(好 钅乚)
 U+9487	钇	(好 钅乙)
 U+9488	针	(好 钅十)
@@ -18431,16 +18431,16 @@ U+9573	镳	(好 钅麃)
 U+9574	镴	(好 钅巤)
 U+9575	镵	(好 钅毚)
 U+9576	镶	(好 钅襄)
-U+9577	長	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+9578	镸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9577	長	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ch	12
+U+9578	镸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ch	12
 U+9579	镹	(好 镸久)
 U+957A	镺	(好 镸夭)
 U+957B	镻	(好 镸失)
 U+957C	镼	(好 镸屈)
 U+957D	镽	(好 镸尞)
 U+957E	镾	(好 镸爾)
-U+957F	长	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+9580	門	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+957F	长	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ch	12
+U+9580	門	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xd	12
 U+9581	閁	(同 門丿)
 U+9582	閂	(同 門一)
 U+9583	閃	(同 門人)
@@ -18544,7 +18544,7 @@ U+95E4	闤	(同 門睘)
 U+95E5	闥	(同 門達)
 U+95E6	闦	(同 門豊)
 U+95E7	闧	(同 門遠)
-U+95E8	门	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+95E8	门	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tl	12
 U+95E9	闩	(同 门一)
 U+95EA	闪	(同 门人)
 U+95EB	闫	(同 门三)
@@ -18755,7 +18755,7 @@ U+96B5	隵	(好 阝戲)
 U+96B6	隶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+96B7	隷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+96B8	隸	(好 柰隶)
-U+96B9	隹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+96B9	隹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ni	12
 U+96BA	隺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+96BB	隻	(志 隹又)
 U+96BC	隼	(志 隹十)
@@ -18773,7 +18773,7 @@ U+96C7	雇	(廖 戶隹)
 U+96C8	雈	(志 艹隹)
 U+96C9	雉	(好 矢隹)
 U+96CA	雊	(好 句隹)
-U+96CB	雋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+96CB	雋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	niiy	42
 U+96CC	雌	(好 此隹)
 U+96CD	雍	(霜 亠乡隹)
 U+96CE	雎	(好 目隹)
@@ -18909,8 +18909,8 @@ U+974D	靍	(霜 雨隹鳥)
 U+974E	靎	(志 雨鵭)
 U+974F	靏	(志 雨鶴)
 U+9750	靐	(鑫 雷)
-U+9751	靑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+9752	青	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9751	靑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ciq	22
+U+9752	青	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ciq	22
 U+9753	靓	(好 青见)
 U+9754	靔	(好 青气)
 U+9755	靕	(好 正青)
@@ -18922,18 +18922,18 @@ U+975A	靚	(好 青見)
 U+975B	靛	(好 青定)
 U+975C	靜	(好 青爭)
 U+975D	靝	(好 青氣)
-U+975E	非	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+975E	非	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kc	12
 U+975F	靟	(志 非毛)
 U+9760	靠	(志 告毛)
 U+9761	靡	(廖 麻非)
-U+9762	面	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+9763	靣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9762	面	(龜)	mwsl	XXXX	XXXX	toh	e	gjko	31
+U+9763	靣	(龜)	mwr	XXXX	XXXX	too	o	gjj	31
 U+9764	靤	(好 面包)
 U+9765	靥	(志 厌面)
 U+9766	靦	(好 面見)
 U+9767	靧	(好 面貴)
 U+9768	靨	(志 厭面)
-U+9769	革	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9769	革	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ee	12
 U+976A	靪	(好 革丁)
 U+976B	靫	(好 革叉)
 U+976C	靬	(好 革干)
@@ -19087,7 +19087,7 @@ U+97FF	響	(志 鄉音)
 # 9800
 # U+	字	構	倉	行	易	嘸	嘸補	鄭	鄭類
 U+9800	頀	(好 音蒦)
-U+9801	頁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9801	頁	(龜)	XXXX	XXXX	XXXX	tmb	a	go	12
 U+9802	頂	(好 丁頁)
 U+9803	頃	(好 匕頁)
 U+9804	頄	(好 九頁)
@@ -19203,7 +19203,7 @@ U+9871	顱	(好 盧頁)
 U+9872	顲	(好 嗇頁)
 U+9873	顳	(好 聶頁)
 U+9874	顴	(好 雚頁)
-U+9875	页	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9875	页	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	go	12
 U+9876	顶	(好 丁页)
 U+9877	顷	(好 匕页)
 U+9878	顸	(好 干页)
@@ -19305,12 +19305,12 @@ U+98D7	飗	(起 风留)
 U+98D8	飘	(好 票风)
 U+98D9	飙	(好 猋风)
 U+98DA	飚	(起 风焱)
-U+98DB	飛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+98DB	飛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ydan	XXXX
 U+98DC	飜	(好 番飛)
 U+98DD	飝	(鑫 飛)
-U+98DE	飞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+98DF	食	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+98E0	飠	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+98DE	飞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ydat	XXXX
+U+98DF	食	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ox	12
+U+98E0	飠	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ox	12
 U+98E1	飡	(好 冫食)
 U+98E2	飢	(好 飠几)
 U+98E3	飣	(好 飠丁)
@@ -19443,7 +19443,7 @@ U+995F	饟	(好 飠襄)
 U+9960	饠	(好 飠羅)
 U+9961	饡	(好 飠贊)
 U+9962	饢	(好 飠囊)
-U+9963	饣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9963	饣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ox	12
 U+9964	饤	(好 饣丁)
 U+9965	饥	(好 饣几)
 U+9966	饦	(好 饣乇)
@@ -19494,7 +19494,7 @@ U+9992	馒	(好 饣曼)
 U+9993	馓	(好 饣散)
 U+9994	馔	(好 饣巽)
 U+9995	馕	(好 饣囊)
-U+9996	首	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9996	首	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uanl	22
 U+9997	馗	(起 尢首)
 U+9998	馘	(好 首或)
 U+9999	香	(志 禾日)
@@ -19516,7 +19516,7 @@ U+99A8	馨	(志 殸香)
 U+99A9	馩	(好 志賁)
 U+99AA	馪	(好 香賓)
 U+99AB	馫	(鑫 香)
-U+99AC	馬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+99AC	馬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	cu	12
 U+99AD	馭	(好 馬又)
 U+99AE	馮	(好 冫馬)
 U+99AF	馯	(好 馬干)
@@ -19710,7 +19710,7 @@ U+9A68	驨	(好 馬巂)
 U+9A69	驩	(好 馬雚)
 U+9A6A	驪	(好 馬麗)
 U+9A6B	驫	(鑫 馬)
-U+9A6C	马	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9A6C	马	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	x	11
 U+9A6D	驭	(好 马又)
 U+9A6E	驮	(好 马大)
 U+9A6F	驯	(好 马川)
@@ -19818,8 +19818,8 @@ U+9AD4	體	(好 骨豊)
 U+9AD5	髕	(好 骨賓)
 U+9AD6	髖	(好 骨寬)
 U+9AD7	髗	(好 骨盧)
-U+9AD8	高	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+9AD9	髙	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9AD8	高	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sjld	31
+U+9AD9	髙	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	skld	31
 U+9ADA	髚	(好 高亢)
 U+9ADB	髛	(好 高尻)
 U+9ADC	髜	(好 高昇)
@@ -19896,7 +19896,7 @@ U+9B21	鬡	(志 髟寧)
 U+9B22	鬢	(志 髟賓)
 U+9B23	鬣	(志 髟巤)
 U+9B24	鬤	(志 髟襄)
-U+9B25	鬥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9B25	鬥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	cc	12
 U+9B26	鬦	(同 鬥斗)
 U+9B27	鬧	(同 鬥市)
 U+9B28	鬨	(同 鬥共)
@@ -19919,7 +19919,7 @@ U+9B38	鬸	(志 鬲留)
 U+9B39	鬹	(志 規鬲)
 U+9B3A	鬺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+9B3B	鬻	(志 粥鬲)
-U+9B3C	鬼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9B3C	鬼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	nj	12
 U+9B3D	鬽	(起 鬼彡)
 U+9B3E	鬾	(起 鬼支)
 U+9B3F	鬿	(起 鬼斤)
@@ -19949,7 +19949,7 @@ U+9B56	魖	(起 鬼虛)
 U+9B57	魗	(好 壽鬼)
 U+9B58	魘	(廖 厭鬼)
 U+9B59	魙	(志 漸鬼)
-U+9B5A	魚	(龜)	nwf	XXXX	XXXX	uf	a	XXXX	XXXX
+U+9B5A	魚	(龜)	nwf	XXXX	XXXX	uf	a	r	11
 U+9B5B	魛	(好 魚刀)
 U+9B5C	魜	(好 魚人)
 U+9B5D	魝	(好 魚刂)
@@ -20240,7 +20240,7 @@ U+9C78	鱸	(好 魚盧)
 U+9C79	鱹	(好 魚雚)
 U+9C7A	鱺	(好 魚麗)
 U+9C7B	鱻	(鑫 魚)
-U+9C7C	鱼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9C7C	鱼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	r	11
 U+9C7D	鱽	(好 鱼刀)
 U+9C7E	鱾	(好 鱼己)
 U+9C7F	鱿	(好 鱼尤)
@@ -20352,14 +20352,14 @@ U+9CE8	鳨	(好 鳥力)
 U+9CE9	鳩	(好 九鳥)
 U+9CEA	鳪	(好 卜鳥)
 U+9CEB	鳫	(廖 厂鳥)
-U+9CEC	鳬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9CEC	鳬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	rzqd	22
 U+9CED	鳭	(好 刀鳥)
 U+9CEE	鳮	(好 又鳥)
-U+9CEF	鳯	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9CEF	鳯	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	qdrz	22
 U+9CF0	鳰	(好 入鳥)
 U+9CF1	鳱	(好 干鳥)
 U+9CF2	鳲	(好 尸鳥)
-U+9CF3	鳳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9CF3	鳳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	qdar	32
 U+9CF4	鳴	(好 口鳥)
 U+9CF5	鳵	(好 卂鳥)
 U+9CF6	鳶	(志 弋鳥)
@@ -20382,7 +20382,7 @@ U+9D04	鴄	(好 匹鳥)
 U+9D05	鴅	(好 丹鳥)
 U+9D06	鴆	(好 冘鳥)
 U+9D07	鴇	(穎 匕十鳥)
-U+9D08	鴈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9D08	鴈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ggnr	32
 U+9D09	鴉	(好 牙鳥)
 U+9D0A	鴊	(好 正鳥)
 U+9D0B	鴋	(好 方鳥)
@@ -20418,8 +20418,8 @@ U+9D28	鴨	(好 甲鳥)
 U+9D29	鴩	(好 失鳥)
 U+9D2A	鴪	(好 穴鳥)
 U+9D2B	鴫	(好 田鳥)
-U+9D2C	鴬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+9D2D	鴭	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9D2C	鴬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	vdwr	32
+U+9D2D	鴭	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	myrz	31
 U+9D2E	鴮	(好 夸鳥)
 U+9D2F	鴯	(好 而鳥)
 U+9D30	鴰	(好 舌鳥)
@@ -20495,7 +20495,7 @@ U+9D75	鵵	(好 兔鳥)
 U+9D76	鵶	(好 亞鳥)
 U+9D77	鵷	(好 宛鳥)
 U+9D78	鵸	(好 奇鳥)
-U+9D79	鵹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9D79	鵹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	mfmr	42
 U+9D7A	鵺	(好 夜鳥)
 U+9D7B	鵻	(好 鳥隹)
 U+9D7C	鵼	(好 空鳥)
@@ -20549,9 +20549,9 @@ U+9DAB	鶫	(好 柬鳥)
 U+9DAC	鶬	(好 倉鳥)
 U+9DAD	鶭	(志 紡鳥)
 U+9DAE	鶮	(好 鬲鳥)
-U+9DAF	鶯	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9DAF	鶯	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uowr	42
 U+9DB0	鶰	(好 員鳥)
-U+9DB1	鶱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9DB1	鶱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wdor	42
 U+9DB2	鶲	(好 翁鳥)
 U+9DB3	鶳	(好 鳥師)
 U+9DB4	鶴	(好 隺鳥)
@@ -20568,12 +20568,12 @@ U+9DBE	鶾	(廖 倝鳥)
 U+9DBF	鶿	(志 兹鳥)
 U+9DC0	鷀	(好 兹鳥)
 U+9DC1	鷁	(好 益鳥)
-U+9DC2	鷂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9DC2	鷂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pvzr	42
 U+9DC3	鷃	(好 晏鳥)
 U+9DC4	鷄	(好 奚鳥)
 U+9DC5	鷅	(好 栗鳥)
 U+9DC6	鷆	(好 真鳥)
-U+9DC7	鷇	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9DC7	鷇	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bwrq	41
 U+9DC8	鷈	(好 鳥虒)
 U+9DC9	鷉	(好 虒鳥)
 U+9DCA	鷊	(好 鬲鳥)
@@ -20608,13 +20608,13 @@ U+9DE6	鷦	(好 焦鳥)
 U+9DE7	鷧	(好 壹鳥)
 U+9DE8	鷨	(好 華鳥)
 U+9DE9	鷩	(志 敝鳥)
-U+9DEA	鷪	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9DEA	鷪	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	llwr	41
 U+9DEB	鷫	(好 肅鳥)
 U+9DEC	鷬	(好 黃鳥)
 U+9DED	鷭	(好 番鳥)
 U+9DEE	鷮	(好 喬鳥)
 U+9DEF	鷯	(好 尞鳥)
-U+9DF0	鷰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9DF0	鷰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	earr	42
 U+9DF1	鷱	(好 臯鳥)
 U+9DF2	鷲	(志 就鳥)
 U+9DF3	鷳	(好 閒鳥)
@@ -20623,17 +20623,17 @@ U+9DF5	鷵	(好 屠鳥)
 U+9DF6	鷶	(好 買鳥)
 U+9DF7	鷷	(好 尊鳥)
 U+9DF8	鷸	(好 矞鳥)
-U+9DF9	鷹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9DF9	鷹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgnr	42
 U+9DFA	鷺	(志 路鳥)
 U+9DFB	鷻	(好 鳥敦)
 U+9DFC	鷼	(好 間鳥)
-U+9DFD	鷽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9DFD	鷽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	nbor	42
 U+9DFE	鷾	(好 意鳥)
 U+9DFF	鷿	(志 辟鳥)
 # 9E00
 # U+	字	構	倉	行	易	嘸	嘸補	鄭	鄭類
 U+9E00	鸀	(好 蜀鳥)
-U+9E01	鸁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9E01	鸁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	shrq	42
 U+9E02	鸂	(好 溪鳥)
 U+9E03	鸃	(好 鳥義)
 U+9E04	鸄	(志 敖鳥)
@@ -20662,7 +20662,7 @@ U+9E1A	鸚	(好 嬰鳥)
 U+9E1B	鸛	(好 雚鳥)
 U+9E1C	鸜	(好 瞿鳥)
 U+9E1D	鸝	(好 麗鳥)
-U+9E1E	鸞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9E1E	鸞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zsrz	22
 U+9E1F	鸟	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	rz	12
 U+9E20	鸠	(好 九鸟)
 U+9E21	鸡	(好 又鸟)
@@ -20684,7 +20684,7 @@ U+9E30	鸰	(好 令鸟)
 U+9E31	鸱	(好 氐鸟)
 U+9E32	鸲	(好 句鸟)
 U+9E33	鸳	(志 夗鸟)
-U+9E34	鸴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9E34	鸴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	vdwr	32
 U+9E35	鸵	(好 鸟它)
 U+9E36	鸶	(志 丝鸟)
 U+9E37	鸷	(志 执鸟)
@@ -20726,7 +20726,7 @@ U+9E5A	鹚	(好 兹鸟)
 U+9E5B	鹛	(好 眉鸟)
 U+9E5C	鹜	(志 敄鸟)
 U+9E5D	鹝	(好 鬲鸟)
-U+9E5E	鹞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9E5E	鹞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pvzr	42
 U+9E5F	鹟	(好 翁鸟)
 U+9E60	鹠	(好 留鸟)
 U+9E61	鹡	(好 脊鸟)
@@ -20744,20 +20744,20 @@ U+9E6C	鹬	(好 矞鸟)
 U+9E6D	鹭	(志 路鸟)
 U+9E6E	鹮	(好 睘鸟)
 U+9E6F	鹯	(好 亶鸟)
-U+9E70	鹰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9E70	鹰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgnr	42
 U+9E71	鹱	(好 鸟蒦)
 U+9E72	鹲	(好 蒙鸟)
 U+9E73	鹳	(好 雚鸟)
 U+9E74	鹴	(好 霜鸟)
-U+9E75	鹵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9E75	鹵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	idjo	32
 U+9E76	鹶	(好 鹵今)
 U+9E77	鹷	(好 鹵令)
-U+9E78	鹸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9E78	鹸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	idjo	32
 U+9E79	鹹	(好 鹵咸)
 U+9E7A	鹺	(好 鹵差)
 U+9E7B	鹻	(好 鹵兼)
 U+9E7C	鹼	(好 鹵僉)
-U+9E7D	鹽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9E7D	鹽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hmol	41
 U+9E7E	鹾	(好 鹵差)
 U+9E7F	鹿	(龜)	ixp	yqq	c	lb	l	tx	12
 U+9E80	麀	(廖 鹿匕)
