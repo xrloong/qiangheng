@@ -1,5 +1,6 @@
 from ..base.IMInfo import IMInfo
-from . import FCRadixManager
+from .FCRadixManager import FCRadixParser
+from .FCCodeInfoEncoder import FCCodeInfoEncoder
 
 class FourCornerInfo(IMInfo):
 	"四角號碼"
@@ -29,7 +30,8 @@ class FourCornerInfo(IMInfo):
 
 IMInfo=FourCornerInfo
 
-radixParser=FCRadixManager.FCRadixParser(IMInfo.IMName)
+codeInfoEncoder=FCCodeInfoEncoder()
+radixParser=FCRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

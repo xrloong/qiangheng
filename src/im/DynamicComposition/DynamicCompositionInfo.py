@@ -1,5 +1,6 @@
 from ..base.IMInfo import IMInfo
-from . import DCRadixManager
+from .DCRadixManager import DCRadixParser
+from .DCCodeInfoEncoder import DCCodeInfoEncoder
 
 class DynamicCompositionInfo(IMInfo):
 	"動態組字"
@@ -29,7 +30,8 @@ class DynamicCompositionInfo(IMInfo):
 
 IMInfo=DynamicCompositionInfo
 
-radixParser=DCRadixManager.DCRadixParser(IMInfo.IMName)
+codeInfoEncoder=DCCodeInfoEncoder()
+radixParser=DCRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

@@ -8,16 +8,13 @@ from ..gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 from gear.CodeVarianceType import CodeVarianceType
 
 class RadixParser:
-	def __init__(self, nameInputMethod):
+	def __init__(self, nameInputMethod, codeInfoEncoder):
 		self.nameInputMethod=nameInputMethod
-		self.codeInfoEncoder=self.createEncoder()
+		self.codeInfoEncoder=codeInfoEncoder
 
 		self.radixCodeInfoDB={}
 		self.radixDescDB={}
 
-
-	def createEncoder(self):
-		return CodeInfoEncoder()
 
 	def getEncoder(self):
 		return self.codeInfoEncoder

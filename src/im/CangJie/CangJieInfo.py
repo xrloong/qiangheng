@@ -1,5 +1,6 @@
 from ..base.IMInfo import IMInfo
-from . import CJRadixManager
+from .CJRadixManager import CJRadixParser
+from .CJCodeInfoEncoder import CJCodeInfoEncoder
 
 class CangJieInfo(IMInfo):
 	"倉頡輸入法"
@@ -45,7 +46,8 @@ class CangJieInfo(IMInfo):
 
 IMInfo=CangJieInfo
 
-radixParser=CJRadixManager.CJRadixParser(IMInfo.IMName)
+codeInfoEncoder=CJCodeInfoEncoder()
+radixParser=CJRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

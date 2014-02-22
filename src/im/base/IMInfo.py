@@ -1,4 +1,5 @@
-from . import RadixManager
+from .RadixManager import RadixParser
+from .CodeInfoEncoder import CodeInfoEncoder
 
 class IMInfo:
 	"輸入法"
@@ -30,7 +31,8 @@ class IMInfo:
 	def getKeyList(self):
 		return "".join(list(zip(*self.keyMaps))[0])
 
-radixParser=RadixManager.RadixParser(IMInfo.IMName)
+codeInfoEncoder=CodeInfoEncoder()
+radixParser=RadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

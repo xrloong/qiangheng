@@ -1,5 +1,7 @@
 from ..base.IMInfo import IMInfo
-from . import SORadixManager
+from .SORadixManager import SORadixParser
+from .SOCodeInfoEncoder import SOCodeInfoEncoder
+
 
 class StrokeOrderInfo(IMInfo):
 	"筆順"
@@ -29,7 +31,8 @@ class StrokeOrderInfo(IMInfo):
 
 IMInfo=StrokeOrderInfo
 
-radixParser=SORadixManager.SORadixParser(IMInfo.IMName)
+codeInfoEncoder=SOCodeInfoEncoder()
+radixParser=SORadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

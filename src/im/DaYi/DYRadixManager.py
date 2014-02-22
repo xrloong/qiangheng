@@ -4,9 +4,6 @@ from ..base.RadixManager import RadixParser
 import Constant
 
 class DYRadixParser(RadixParser):
-	def createEncoder(self):
-		return DYCodeInfoEncoder()
-
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)

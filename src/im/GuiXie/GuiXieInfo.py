@@ -1,5 +1,6 @@
 from ..base.IMInfo import IMInfo
-from . import GXRadixManager
+from .GXRadixManager import GXRadixParser
+from .GXCodeInfoEncoder import GXCodeInfoEncoder
 
 class GuiXieInfo(IMInfo):
 	"中國字庋㩪"
@@ -29,7 +30,8 @@ class GuiXieInfo(IMInfo):
 
 IMInfo=GuiXieInfo
 
-radixParser=GXRadixManager.GXRadixParser(IMInfo.IMName)
+codeInfoEncoder=GXCodeInfoEncoder()
+radixParser=GXRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

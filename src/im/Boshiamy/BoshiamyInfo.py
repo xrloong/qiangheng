@@ -1,5 +1,6 @@
 from ..base.IMInfo import IMInfo
-from . import BSRadixManager
+from .BSRadixManager import BSRadixParser
+from .BSCodeInfoEncoder import BSCodeInfoEncoder
 
 class BoshiamyInfo(IMInfo):
 	"嘸蝦米輸入法"
@@ -45,7 +46,8 @@ class BoshiamyInfo(IMInfo):
 
 IMInfo=BoshiamyInfo
 
-radixParser=BSRadixManager.BSRadixParser(IMInfo.IMName)
+codeInfoEncoder=BSCodeInfoEncoder()
+radixParser=BSRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

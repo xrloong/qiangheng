@@ -1,5 +1,7 @@
 from ..base.IMInfo import IMInfo
-from . import ZMRadixManager
+from .ZMRadixManager import ZMRadixParser
+from .ZMCodeInfoEncoder import ZMCodeInfoEncoder
+
 
 class ZhengMaInfo(IMInfo):
 	"鄭碼輸入法"
@@ -45,7 +47,8 @@ class ZhengMaInfo(IMInfo):
 
 IMInfo=ZhengMaInfo
 
-radixParser=ZMRadixManager.ZMRadixParser(IMInfo.IMName)
+codeInfoEncoder=ZMCodeInfoEncoder()
+radixParser=ZMRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

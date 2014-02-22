@@ -5,9 +5,6 @@ from .Stroke import Stroke
 import Constant
 
 class DCRadixParser(RadixParser):
-	def createEncoder(self):
-		return DCCodeInfoEncoder()
-
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)

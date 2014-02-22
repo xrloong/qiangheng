@@ -1,5 +1,6 @@
 from ..base.IMInfo import IMInfo
-from . import ARRadixManager
+from .ARRadixManager import ARRadixParser
+from .ARCodeInfoEncoder import ARCodeInfoEncoder
 
 class ArrayInfo(IMInfo):
 	"行列輸入法"
@@ -49,7 +50,8 @@ class ArrayInfo(IMInfo):
 
 IMInfo=ArrayInfo
 
-radixParser=ARRadixManager.ARRadixParser(IMInfo.IMName)
+codeInfoEncoder=ARCodeInfoEncoder()
+radixParser=ARRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

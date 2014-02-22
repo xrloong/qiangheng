@@ -19,8 +19,10 @@ def setIMModule(imModule):
 
 	characterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
+	codeInfoEncoder=imModule.codeInfoEncoder
 	radixParser=imModule.radixParser
-	codeInfoManager=CodeInfoManager.CodeInfoManager(radixParser.getEncoder())
+
+	codeInfoManager=CodeInfoManager.CodeInfoManager(codeInfoEncoder)
 
 def getIMModule():
 	return __state_IMModule

@@ -1,4 +1,3 @@
-
 class RearrangeInfo:
 	def __init__(self):
 		pass

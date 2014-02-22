@@ -5,9 +5,6 @@ from ..base.RadixManager import RadixCodeInfoDescription
 import Constant
 
 class ARRadixParser(RadixParser):
-	def createEncoder(self):
-		return ARCodeInfoEncoder()
-
 	# 多型
 	def convertElementToRadixInfo(self, elementCodeInfo):
 		radixInfoDescription=ARRadixCodeInfoDescription(elementCodeInfo)

@@ -8,9 +8,6 @@ import re
 import sys
 
 class CJRadixParser(RadixParser):
-	def createEncoder(self):
-		return CJCodeInfoEncoder()
-
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)

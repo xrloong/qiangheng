@@ -1,5 +1,6 @@
 from ..base.IMInfo import IMInfo
-from . import DYRadixManager
+from .DYRadixManager import DYRadixParser
+from .DYCodeInfoEncoder import DYCodeInfoEncoder
 
 class DaYiInfo(IMInfo):
 	"大易輸入法"
@@ -59,7 +60,8 @@ class DaYiInfo(IMInfo):
 
 IMInfo=DaYiInfo
 
-radixParser=DYRadixManager.DYRadixParser(IMInfo.IMName)
+codeInfoEncoder=DYCodeInfoEncoder()
+radixParser=DYRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

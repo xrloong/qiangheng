@@ -1,5 +1,6 @@
 from ..base.IMInfo import IMInfo
-from . import SPRadixManager
+from .SPRadixManager import SPRadixParser
+from .SPCodeInfoEncoder import SPCodeInfoEncoder
 
 class SampleInfo(IMInfo):
 	"範例輸入法"
@@ -45,7 +46,8 @@ class SampleInfo(IMInfo):
 
 IMInfo=SampleInfo
 
-radixParser=SPRadixManager.SPRadixParser(IMInfo.IMName)
+codeInfoEncoder=SPCodeInfoEncoder()
+radixParser=SPRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass
