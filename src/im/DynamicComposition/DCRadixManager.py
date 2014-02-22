@@ -41,11 +41,8 @@ class DCRadixParser(RadixParser):
 
 		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeGroup)
 
-		extraScopeNode=elementCodeInfo.find(DCRadixParser.TAG_EXTRA_SCOPE)
-		if extraScopeNode!=None:
-			extraPane=self.parseExtraScope(extraScopeNode)
-
-			codeInfo.setExtraPane(extraPane)
+		extraPaneDB=self.parseExtraScopeDB(elementCodeInfo)
+		codeInfo.setExtraPaneDB(extraPaneDB)
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):
@@ -66,6 +63,18 @@ class DCRadixParser(RadixParser):
 			radixDescription=self.parseRadixDescription(characterNode)
 
 			self.radixDescriptionManager.addDescription(charName, radixDescription)
+
+	def parseExtraScopeDB(self, elementCodeInfo):
+		extraPaneDB={}
+
+		extraScopeNodeList=elementCodeInfo.findall(DCRadixParser.TAG_EXTRA_SCOPE)
+		for extraScopeNode in extraScopeNodeList:
+			paneName=extraScopeNode.attrib.get(DCRadixParser.TAG_NAME)
+			pane=self.parseExtraScope(extraScopeNode)
+
+			extraPaneDB[paneName]=pane
+
+		return extraPaneDB
 
 	def parseExtraScope(self, extraScopeNode):
 		geometryNode=extraScopeNode.find(DCRadixParser.TAG_GEOMETRY)

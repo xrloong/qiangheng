@@ -83,7 +83,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
 
-		codeInfo.setExtraPane(firstCodeInfo.getExtraPane())
+		codeInfo.setExtraPane(copy.deepcopy(firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)), DCCodeInfo.PANE_NAME_QI)
 		return codeInfo
 
 	def encodeAsSilkworm(self, codeInfoList):
@@ -98,7 +98,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
 
 		lastCodeInfo=codeInfoList[-1]
-		codeInfo.setExtraPane(copy.deepcopy(lastCodeInfo.getExtraPane()))
+		codeInfo.setExtraPane(copy.deepcopy(lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)), DCCodeInfo.PANE_NAME_QI)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
@@ -113,22 +113,21 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
 		return codeInfo
 
-	def encodeByEmbed(self, codeInfoList):
+	def encodeByEmbed(self, codeInfoList, paneNameList):
 		if len(codeInfoList)<2:
 			return self.encodeAsInvalidate(codeInfoList)
 
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-
-		extraPane=firstCodeInfo.getExtraPane()
-		assert extraPane!=None, "extraPane 不應為 None %s %s"%(str(firstCodeInfo), str(secondCodeInfo))
+		containerCodeInfo=codeInfoList[0]
 
 		newStrokeGroupList=[]
-		firstStrokeGroup=copy.deepcopy(firstCodeInfo.getStrokeGroup())
-		newStrokeGroupList.append(firstStrokeGroup)
-		secondStrokeGroup=copy.deepcopy(secondCodeInfo.getStrokeGroup())
-		secondStrokeGroup.transform(extraPane)
-		newStrokeGroupList.append(secondStrokeGroup)
+		paneNameList=[DCCodeInfo.PANE_NAME_DEFAULT]+paneNameList
+		for [paneName, codeInfo] in zip(paneNameList, codeInfoList):
+			extraPane=containerCodeInfo.getExtraPane(paneName)
+			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
+
+			strokeGroup=copy.deepcopy(codeInfo.getStrokeGroup())
+			strokeGroup.transform(extraPane)
+			newStrokeGroupList.append(strokeGroup)
 
 		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
 
@@ -136,107 +135,38 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsQi(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList)
+		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_QI])
 
 	def encodeAsLiao(self, codeInfoList):
-		codeInfo=self.encodeByEmbed(codeInfoList)
+		codeInfo=self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_LIAO])
 
 		lastCodeInfo=codeInfoList[-1]
-		codeInfo.setExtraPane(copy.deepcopy(lastCodeInfo.getExtraPane()))
+		codeInfo.setExtraPane(copy.deepcopy(lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)), DCCodeInfo.PANE_NAME_QI)
 		return codeInfo
 
 	def encodeAsZai(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList)
+		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_ZAI])
 
 	def encodeAsDou(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList)
+		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DOU])
 
 
 	def encodeAsMu(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
-
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(3, 3)
-
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 2, 0, 2))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 0, 0, 2, 2))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(thirdCodeInfo, helper, 2, 2, 2, 2))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-		return codeInfo
+		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_MU_1, DCCodeInfo.PANE_NAME_MU_2])
 
 	def encodeAsZuo(self, codeInfoList):
 		# 以 "㘴" 來說 first: 口，second: 人，third: 土
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
-
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(3, 3)
-
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(thirdCodeInfo, helper, 0, 2, 0, 2))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 0, 0, 0))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 2, 2, 0, 0))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-		return codeInfo
+		tmpCodeInfoList=codeInfoList[-1:]+codeInfoList[:-1]
+		return self.encodeByEmbed(tmpCodeInfoList, [DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
 
 	def encodeAsYou(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
-
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(5, 2)
-
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(thirdCodeInfo, helper, 0, 4, 0, 1))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 1, 1, 0, 0))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 3, 3, 0, 0))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-		return codeInfo
+		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_YOU_1, DCCodeInfo.PANE_NAME_YOU_2])
 
 	def encodeAsLiang(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
-
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(5, 2)
-
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(thirdCodeInfo, helper, 0, 4, 0, 1))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 1, 1, 1, 1))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 3, 3, 1, 1))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-		return codeInfo
+		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_LIANG_1, DCCodeInfo.PANE_NAME_LIANG_2])
 
 	def encodeAsJia(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
-
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(3, 3)
-
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(thirdCodeInfo, helper, 0, 2, 0, 2))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 0, 1, 1))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 2, 2, 1, 1))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-		return codeInfo
+		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
 
 class DCGridHelper:
 	WIDTH=256

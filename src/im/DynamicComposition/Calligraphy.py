@@ -44,6 +44,8 @@ class Pane:
 		self.right=right
 		self.bottom=bottom
 
+		self.name="預設範圍"
+
 	@property
 	def width(self):
 		return self.right-self.left+1
@@ -51,6 +53,12 @@ class Pane:
 	@property
 	def height(self):
 		return self.bottom-self.top+1
+
+	def setName(self, name):
+		self.name=name
+
+	def getName(self):
+		return self.name
 
 	def setByList(self, region):
 		[left, top, right, bottom]=region
