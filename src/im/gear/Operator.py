@@ -3,7 +3,7 @@ from . import RearrangeInfo
 class Operator:
 	def __init__(self, name):
 		self.name=name
-		self.rearrangeInfo=None
+		self.rearrangeInfo=RearrangeInfo.RearrangeInfoSame()
 
 	def __str__(self):
 		return "%s"%self.name
@@ -24,10 +24,6 @@ class Operator:
 		return False
 
 class BuiltinOperator(Operator):
-	def __init__(self, name, rearrangeInfo):
-		super().__init__(name)
-		self.rearrangeInfo=rearrangeInfo
-
 	def getRearrangeInfo(self):
 		return self.rearrangeInfo
 
@@ -42,6 +38,9 @@ class TemplateOperator(Operator):
 	def setRearrangeInfo(self, rearrangeInfo):
 		self.rearrangeInfo=rearrangeInfo
 
+	def isBuiltin(self):
+		return False
+
 # 龜
 # 爲
 # 龍東
@@ -51,37 +50,37 @@ class TemplateOperator(Operator):
 # 衍衷瓥粦
 # 錯
 
-OperatorTurtle=BuiltinOperator('龜', RearrangeInfo.RearrangeInfoSame())
-OperatorLoong=BuiltinOperator('龍', RearrangeInfo.RearrangeInfoSame())
-OperatorEast=BuiltinOperator('東', RearrangeInfo.RearrangeInfoSame())
-OperatorEqual=BuiltinOperator('爲', RearrangeInfo.RearrangeInfoSame())
+OperatorTurtle=BuiltinOperator('龜')
+OperatorLoong=BuiltinOperator('龍')
+OperatorEast=BuiltinOperator('東')
+OperatorEqual=BuiltinOperator('爲')
 
-OperatorSilkworm=BuiltinOperator('蚕', RearrangeInfo.RearrangeInfoSame())
-OperatorGoose=BuiltinOperator('鴻', RearrangeInfo.RearrangeInfoSame())
-OperatorLoop=BuiltinOperator('回', RearrangeInfo.RearrangeInfoSame())
+OperatorSilkworm=BuiltinOperator('蚕')
+OperatorGoose=BuiltinOperator('鴻')
+OperatorLoop=BuiltinOperator('回')
 
-OperatorQi=BuiltinOperator('起', RearrangeInfo.RearrangeInfoSame())
-OperatorZhe=BuiltinOperator('這', RearrangeInfo.RearrangeInfoSame())
-OperatorLiao=BuiltinOperator('廖', RearrangeInfo.RearrangeInfoSame())
-OperatorZai=BuiltinOperator('載', RearrangeInfo.RearrangeInfoSame())
-OperatorDou=BuiltinOperator('斗', RearrangeInfo.RearrangeInfoSame())
+OperatorQi=BuiltinOperator('起')
+OperatorZhe=BuiltinOperator('這')
+OperatorLiao=BuiltinOperator('廖')
+OperatorZai=BuiltinOperator('載')
+OperatorDou=BuiltinOperator('斗')
 
-OperatorTong=BuiltinOperator('同', RearrangeInfo.RearrangeInfoSame())
-OperatorHan=BuiltinOperator('函', RearrangeInfo.RearrangeInfoSame())
-OperatorQu=BuiltinOperator('區', RearrangeInfo.RearrangeInfoSame())
-OperatorLeft=BuiltinOperator('左', RearrangeInfo.RearrangeInfoSame())
+OperatorTong=BuiltinOperator('同')
+OperatorHan=BuiltinOperator('函')
+OperatorQu=BuiltinOperator('區')
+OperatorLeft=BuiltinOperator('左')
 
-OperatorYan=BuiltinOperator('衍', RearrangeInfo.RearrangeInfoSame())
-OperatorZhong=BuiltinOperator('衷', RearrangeInfo.RearrangeInfoSame())
+OperatorYan=BuiltinOperator('衍')
+OperatorZhong=BuiltinOperator('衷')
 
-OperatorMu=BuiltinOperator('畞', RearrangeInfo.RearrangeInfoSame())
-OperatorZuo=BuiltinOperator('㘴', RearrangeInfo.RearrangeInfoSame())
-OperatorYou=BuiltinOperator('幽', RearrangeInfo.RearrangeInfoSame())
-OperatorLiang=BuiltinOperator('㒳', RearrangeInfo.RearrangeInfoSame())
-OperatorJia=BuiltinOperator('夾', RearrangeInfo.RearrangeInfoSame())
+OperatorMu=BuiltinOperator('畞')
+OperatorZuo=BuiltinOperator('㘴')
+OperatorYou=BuiltinOperator('幽')
+OperatorLiang=BuiltinOperator('㒳')
+OperatorJia=BuiltinOperator('夾')
 
-OperatorLin=BuiltinOperator('粦', RearrangeInfo.RearrangeInfoSame())
-OperatorLi=BuiltinOperator('瓥', RearrangeInfo.RearrangeInfoSame())
-OperatorLuan=BuiltinOperator('䜌', RearrangeInfo.RearrangeInfoSame())
-OperatorBan=BuiltinOperator('辦', RearrangeInfo.RearrangeInfoSame())
+OperatorLin=BuiltinOperator('粦')
+OperatorLi=BuiltinOperator('瓥')
+OperatorLuan=BuiltinOperator('䜌')
+OperatorBan=BuiltinOperator('辦')
 
