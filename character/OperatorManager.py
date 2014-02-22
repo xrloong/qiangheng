@@ -9,31 +9,29 @@ class OperatorManager:
 		self.templateDB={}
 
 		operatorLoong=self.getOperatorByName('龍')
-		operatorH2=self.getOperatorByName('好')
-		operatorH3=self.getOperatorByName('湘')
-		operatorH4=self.getOperatorByName('膷')
-		operatorV2=self.getOperatorByName('志')
-		operatorV3=self.getOperatorByName('算')
-		operatorV4=self.getOperatorByName('纂')
 		self.rearrangeInfoDict={
 			'龜':RearrangeInfoSame(),
 			'水':RearrangeInfoSame(),
 			'錯':RearrangeInfoSame(),
+
+			'蚕':RearrangeInfoSame(),
+			'鴻':RearrangeInfoSame(),
+
 			'起':RearrangeInfoSame(),
 			'廖':RearrangeInfoSame(),
 			'載':RearrangeInfoSame(),
 			'聖':RearrangeInfoSame(),
+
 			'回':RearrangeInfoSame(),
 			'同':RearrangeInfoSame(),
 			'函':RearrangeInfoSame(),
 			'區':RearrangeInfoSame(),
 			'左':RearrangeInfoSame(),
+
 			'好':RearrangeInfoSame(),
 			'志':RearrangeInfoSame(),
 			'算':RearrangeInfoSame(),
 			'湘':RearrangeInfoSame(),
-			'纂':RearrangeInfoSame(),
-			'膷':RearrangeInfoSame(),
 		}
 		def operatorGenerator(operatorName):
 			return Operator.Operator(operatorName)
