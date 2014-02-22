@@ -564,25 +564,25 @@ class ZhengMa(NoneIM):
 				return [[code, type]]
 			elif type[0]=='2':
 				if type[1]=='1':
-					return [[code[0], type], [code[1:], type]]
+					return [[code[0], '11'], [code[1:], '1%d'%len(code[1:])]]
 				elif type[1]=='2':
-					return [[code[0:2], type], [code[2:], type]]
+					return [[code[0:2], '12'], [code[2:], '1%d'%len(code[2:])]]
 				elif type[1]=='3':
-					return [[code[0:3], type], [code[3:], type]]
+					return [[code[0:3], '13'], [code[3:], '11']]
 			elif type[0]=='3':
 				if type[1]=='1':
-					return [[code[0], type], [code[1], type], [code[2:], type]]
+					return [[code[0], '11'], [code[1], '11'], [code[2:], '1%d'%len(code[2:])]]
 				elif type[1]=='2':
-					return [[code[0:2], type], [code[2], type], [code[3], type]]
+					return [[code[0:2], '12'], [code[2], '11'], [code[3], '11']]
 				elif type[1]=='3':
-					return [[code[0:3], type], [code[3], type]]
+					return [[code[0:3], '13'], [code[3], '11']]
 			elif type[0]=='4':
 				if type[1]=='1':
-					return [[code[0], type], [code[1], type], [code[2], type], [code[3], type]]
+					return [[code[0], '11'], [code[1], '11'], [code[2], '11'], [code[3], '11']]
 				elif type[1]=='2':
-					return [[code[0:2], type], [code[2], type], [code[3], type]]
+					return [[code[0:2], '12'], [code[2], '11'], [code[3], '11']]
 				elif type[1]=='3':
-					return [[code[0:3], type], [code[3], type]]
+					return [[code[0:3], '13'], [code[3], '11']]
 
 		def listToCode(l):
 			nmCompList=sum(map(lambda x: int(x[1][0]), l))

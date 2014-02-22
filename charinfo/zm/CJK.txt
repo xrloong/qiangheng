@@ -50,7 +50,7 @@ U+4E34	临	(龜)	kdmk	32
 U+4E35	丵	(龜)	kuub	22
 U+4E36	丶	(龜)	s	11
 U+4E37	丷	(龜)	ud	12
-U+4E38	丸	(龜)	qys	22
+U+4E38	丸	(龜)	qya	13
 U+4E39	丹	(龜)	qs	21
 U+4E3A	为	(龜)	udys	32
 U+4E3B	主	(龜)	sc	21
@@ -617,7 +617,7 @@ U+5C23	尣	(龜)	ord	21
 U+5C24	尤	(龜)	gr	12
 U+5C27	尧	(龜)	hmgr	22
 U+5C38	尸	(龜)	xm	12
-U+5C39	尹	(龜)	xm	12
+U+5C39	尹	(龜)	xma	13
 U+5C3A	尺	(龜)	xms	22
 U+5C40	局	(龜)	xmyj	32
 U+5C50	屐	(龜)	xmex	42
@@ -670,9 +670,9 @@ U+5DEE	差	(龜)	ucbi	32
 U+5DEF	巯	(龜)	xszn	41
 U+5DF0	巰	(龜)	hdzn	42
 U+5DF1	己	(龜)	yy	12
-U+5DF2	已	(龜)	yy	12
+U+5DF2	已	(龜)	yya	13
 U+5DF3	巳	(龜)	yyb	12
-U+5DF4	巴	(龜)	yi	12
+U+5DF4	巴	(龜)	yia	13
 U+5DF5	巵	(龜)	pday	32
 U+5DF7	巷	(龜)	eaoy	32
 U+5DF8	巸	(龜)	hyy	21
@@ -1323,7 +1323,7 @@ U+767D	白	(龜)	nk	12
 U+768D	皍	(龜)	nkry	42
 U+7690	皐	(龜)	nkve	42
 U+76AE	皮	(龜)	xi	12
-U+76BF	皿	(龜)	lk	12
+U+76BF	皿	(龜)	lka	13
 U+76CA	益	(龜)	uaol	32
 U+76D1	监	(龜)	kdml	32
 U+76D6	盖	(龜)	uclk	22
