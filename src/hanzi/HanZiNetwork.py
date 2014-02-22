@@ -1,5 +1,8 @@
 import sys
 import copy
+
+from util.topsort import topsort
+from util.topsort import CycleError
 from description.CodeType import CodeType
 from description.operator import Operator
 
@@ -12,14 +15,14 @@ class DescriptionManagerToHanZiNetworkConverter:
 		self.hanziNetwork=HanZiNetwork()
 
 	def constructDescriptionNetwork(self):
-		charNameList=self.descriptionManager.getAllCharacters()
-		sortedNameList=sorted(charNameList)
+		sortedNameList=self.getSortedNameList()
+#		print(sortedNameList, file=sys.stderr)
 
 		# 加入如 "相" "[漢右]" 的節點。
 		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
 			characterProperty=charDesc.getCharacterProperty()
-			self.hanziNetwork.addNamedNode(charName, characterProperty)
+			self.hanziNetwork.addNode(charName, characterProperty)
 
 		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
@@ -29,7 +32,56 @@ class DescriptionManagerToHanZiNetworkConverter:
 				structDesc.setRootName(charName)
 				self.recursivelyAddStructure(structDesc)
 
+#		self.hanziNetwork.setNodeTreeOfAllNodes()
+#		self.hanziNetwork.setNodeTreeByOrder(sortedNameList)
+
+		self.hanziNetwork.setNodeTreeByOrder(sortedNameList)
 		return self.hanziNetwork
+
+	def getSortedNameList(self, usingTopologicSorting=True):
+		charNameList=self.descriptionManager.getAllCharacters()
+
+		if usingTopologicSorting:
+			try:
+				pairList=[]
+				startNodeName='[拓樸排序起始點]'
+				endNodeName='[拓樸排序結束點]'
+				for charName in charNameList:
+					charDesc=self.queryDescription(charName)
+
+					nameSet=set()
+					structDescList=charDesc.getStructureList()
+					for structDesc in structDescList:
+						childNameSet=self.recursivelyFindAllReferenceNameSet(structDesc)
+						nameSet=nameSet|childNameSet
+
+					pairList.append([startNodeName, charName])
+					pairList.append([charName, endNodeName])
+					for referenceName in list(nameSet):
+						pairList.append([referenceName, charName])
+
+				sortedNameList=topsort(pairList)
+				sortedNameList.remove(startNodeName)
+				sortedNameList.remove(endNodeName)
+			except CycleError as err:
+				answer, num_parents, children = err.args
+				print("有迴圈: {0}".format(children), file=sys.stderr)
+				raise
+		else:
+			sortedNameList=sorted(charNameList)
+		return sortedNameList
+
+	def recursivelyFindAllReferenceNameSet(self, structDesc):
+		if structDesc.isLeaf():
+			name=structDesc.getReferenceName()
+			nameSet={name}
+		else:
+			nameSet=set()
+			childDescList=structDesc.getCompList()
+			for childSrcDesc in childDescList:
+				childNameSet=self.recursivelyFindAllReferenceNameSet(childSrcDesc)
+				nameSet=nameSet|childNameSet
+		return nameSet
 
 	def recursivelyAddStructure(self, structDesc):
 		childDescList=structDesc.getCompList()
@@ -52,14 +104,18 @@ class HanZiNetwork:
 	def construct(descriptionManager):
 		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager)
 		hanziNetwork=toHanZiNetworkConverter.constructDescriptionNetwork()
-		hanziNetwork.setNodeTreeOfAllNodes()
 		return hanziNetwork
 
-	def setNodeTreeOfAllNodes(self):
-		for node in self.nodeDict.values():
+#	def setNodeTreeOfAllNodes(self):
+#		for node in self.nodeDict.values():
+#			node.setNodeTree()
+
+	def setNodeTreeByOrder(self, nameList):
+		for name in nameList:
+			node=self.nodeDict.get(name)
 			node.setNodeTree()
 
-	def addNamedNode(self, name, characterProperty):
+	def addNode(self, name, characterProperty):
 		if name not in self.nodeDict:
 			tmpNode=HanZiNode.HanZiNode(name, characterProperty)
 			self.nodeDict[name]=tmpNode
