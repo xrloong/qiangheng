@@ -42,7 +42,7 @@ class SampleInfo(IMInfo):
 				'hk':'範例',
 				'en':'Sample',
 				}
-		self.iconfile="qhzm.svg"
+		self.iconfile="qhsp.svg"
 		self.maxkeylength=4
 
 IMInfo=SampleInfo
