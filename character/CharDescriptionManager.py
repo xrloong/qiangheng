@@ -95,15 +95,28 @@ class CharDescriptionManager:
 			targetChildNodes=filter(filter_lambda , list(assembleChar))
 			for node in targetChildNodes:
 				if node.tag=="字根":
-					name=node.get("名稱")
+					name=node.get("置換")
 					l.append(charDescGenerator(name))
 				elif node.tag=="組字":
 					l.append(getDesc_AssembleChar(node))
 				else:
 					pass
 
+			infoList=[]
+			infoDict={}
+			charInfo=assembleChar.find("編碼資訊")
+			if charInfo is not None:
+				infoDict=charInfo.attrib
+				
+			chInfo=charInfoGenerator(infoDict)
+
 			anonymousName=CharDesc.generateNewAnonymousName()
-			comp=charDescGenerator(anonymousName, [operatorName, l])
+			if operatorName:
+				comp=charDescGenerator(anonymousName, [operatorName, l])
+			else:
+				comp=charDescGenerator(anonymousName)
+
+			comp.setChInfo(chInfo)
 
 			return comp
 
@@ -112,16 +125,7 @@ class CharDescriptionManager:
 			if assembleChar==None:
 				return None
 
-			infoList=[]
-			infoDict={}
-			charInfo=nodeCharacter.find("編碼資訊")
-			if charInfo is not None:
-				infoDict=charInfo.attrib
-				
-			chInfo=charInfoGenerator(infoDict)
-
 			comp=getDesc_AssembleChar(assembleChar)
-			comp.setChInfo(chInfo)
 
 			return comp
 
