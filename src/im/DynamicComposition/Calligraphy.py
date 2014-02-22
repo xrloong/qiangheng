@@ -1072,7 +1072,7 @@ class StrokeObject_豎撇(StrokeObject):
 		points.extend(self.compute_豎撇(points[-1][1], w1, hs, hp))
 		return points
 
-class StrokeObject_挑(StrokeObject):
+class StrokeObject_提(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==2
@@ -1144,7 +1144,7 @@ class StrokeObject_臥捺(StrokeObject):
 		points.extend(self.compute_臥捺(points[-1][1], w1, h1))
 		return points
 
-class StrokeObject_挑捺(StrokeObject):
+class StrokeObject_提捺(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==4
@@ -1228,16 +1228,16 @@ StrokeObjectMap = {
 	"撇鉤": StrokeObject_撇鉤,
 
 	"撇": StrokeObject_撇,
-	"撇頓點": StrokeObject_撇點,
+	"撇點": StrokeObject_撇點,
 	"撇橫": StrokeObject_撇橫,
-	"撇挑": StrokeObject_撇橫,
+	"撇提": StrokeObject_撇橫,
 	"撇折": StrokeObject_撇橫,
 	"撇橫撇": StrokeObject_撇橫撇,
 	"豎撇": StrokeObject_豎撇,
-	"挑": StrokeObject_挑,
+	"提": StrokeObject_提,
 	"捺": StrokeObject_捺,
 	"臥捺": StrokeObject_臥捺,
-	"挑捺": StrokeObject_挑捺,
+	"提捺": StrokeObject_提捺,
 	"橫捺": StrokeObject_橫捺,
 }
 
