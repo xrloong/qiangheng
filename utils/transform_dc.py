@@ -6,7 +6,7 @@ def main():
 	filename="qhdata/radix/CJK/dc.xml"
 #	filename="qhdata/radix/CJK-A/dc.xml"
 
-	pattern = '(.*)資訊表示式="\((.*)\)(.*)"(.*)'
+	pattern = '(.*)資訊表示式="\(([^"]*)\)([^"]*)"(.*)'
 	r=re.compile(pattern)
 	for line in open(filename):
 		l = line.strip('\n')
@@ -310,7 +310,7 @@ class BaseCurveComputer:
 			]
 
 	def get_橫(self, startPoint, width):
-		assert width>0
+		assert width>0, self.exp
 		return [(False, (startPoint[0] + width, startPoint[1]))]
 
 	def get_豎(self, startPoint, height):
@@ -761,7 +761,8 @@ class CurveComputer_橫撇(BaseCurveComputer):
 
 class CurveComputer_橫撇彎鉤(BaseCurveComputer):
 	def checkType(self):
-		assert self.actionList==['0000', '0001', '0001', '0002', '0001', '0002', '0001', '0001', ], "Error: {0}".format(self.getErrorInfo())
+#		assert self.actionList==['0000', '0001', '0001', '0002', '0001', '0002', '0001', '0001', ], "Error: {0}".format(self.getErrorInfo())
+		pass
 
 	def genInfo(self):
 		startX, startY = self.getPos(self.pointList[0])
@@ -812,7 +813,7 @@ class CurveComputer_橫撇橫折鉤(BaseCurveComputer):
 		mid2X, mid2Y = self.getPos(pointList[-2]) 
 		endX, endY = self.getPos(pointList[-1]) 
 		assert startX<endX and startY==mid1Y, "Error: {0}".format(self.getErrorInfo())
-		assert mid1X>=mid2X and mid1Y<mid2Y, "Error: {0}".format(self.getErrorInfo())
+#		assert mid1X>=mid2X and mid1Y<mid2Y, "Error: {0}".format(self.getErrorInfo())
 #		assert mid2X>endX, "Error: {0}".format(self.getErrorInfo())
 
 	def genInfo(self):

@@ -7,6 +7,287 @@ from .Calligraphy import StrokeAction
 from .Calligraphy import StrokeGroup
 import re
 
+class StrokeObject:
+	def __init__(self, name, scope, expression):
+		self.name = name
+		self.scope = scope
+		self.expression = expression
+		self.scopeWidth = scope[2]-scope[0]
+		self.scopeHeight = scope[3]-scope[1]
+		self.width = self.scopeWidth-2
+		self.height = self.scopeHeight-2
+
+		self.left = self.scope[0] + 1
+		self.top = self.scope[1] + 1
+		self.right = self.scope[2] - 1
+		self.bottom = self.scope[3] - 1
+		self.centerX = self.left + self.width//2
+		self.centerY = self.top + self.height//2
+
+	def getName(self):
+		return self.name
+
+	def parseExpression(self):
+		return []
+
+	def getWidth(self):
+		return self.width
+
+	def getHeight(self):
+		return self.height
+
+
+	def getTopLeft(self):
+		return (self.left, self.top)
+
+	def getTopRight(self):
+		return (self.right, self.top)
+
+	def getBottomLeft(self):
+		return (self.left, self.bottom)
+
+	def getBottomRight(self):
+		return (self.right, self.bottom)
+
+
+	def getTop(self):
+		return (self.centerX, self.top)
+
+	def getBottom(self):
+		return (self.centerX, self.bottom)
+
+	def getLeft(self):
+		return (self.left, self.centerY)
+
+	def getRight(self):
+		return (self.right, self.centerY)
+
+
+	def getStartPoint(self):
+		return self.getTopLeft()
+
+	def getTailPoints(self, startPoint):
+		return [(False, (startPoint[0] + self.getWidth(), startPoint[1] + self.getHeight())), ]
+
+	def getPoints(self):
+		startPoint = self.getStartPoint()
+		points=[(False, startPoint), ]
+		return pints + self.getTailPoints(points[-1][1])
+
+	def getNewExpression(self):
+		points = self.getPoints()
+
+		point = points[0]
+		isCurve = point[0]
+		assert isCurve is False
+		pointExpressionList = ["0000{0[0]:02X}{0[1]:02X}".format(point[1]), ]
+
+		for point in points[1:]:
+			isCurve = point[0]
+			if isCurve:
+				pointExpressionList.append("0002{0[0]:02X}{0[1]:02X}".format(point[1]))
+			else:
+				pointExpressionList.append("0001{0[0]:02X}{0[1]:02X}".format(point[1]))
+		return ",".join(pointExpressionList)
+
+	def compute_點(self, startPoint, w, h):
+		assert h>0
+		return [(False, (startPoint[0] + w, startPoint[1] + h))]
+
+	def compute_圈(self, startPoint, a, b):
+		assert a>0 and b>0
+		CX = startPoint[0]
+		CY = startPoint[1] + b
+
+		topLeft = [CX - a, CY - b]
+		top = [CX, CY - b]
+		topRight = [CX + a, CY - b]
+		bottomLeft = [CX - a, CY + b]
+		bottom = [CX, CY + b]
+		bottomRight = [CX + a, CY + b]
+		left = [CX - a, CY]
+		right = [CX + a, CY]
+
+		return [
+			(True, topRight), (False, right),
+			(True, bottomRight), (False, bottom),
+			(True, bottomLeft), (False, left),
+			(True, topLeft), (False, top)
+			]
+
+	def compute_橫(self, startPoint, w):
+		assert w>0
+		return [(False, (startPoint[0]+w, startPoint[1])), ]
+
+	def compute_豎(self, startPoint, h):
+		assert h>0
+		return [(False, (startPoint[0], startPoint[1]+h)), ]
+
+	def compute_左(self, startPoint, w):
+		assert w>0
+		return [ (False, (startPoint[0]-w, startPoint[1])), ]
+
+	def compute_上(self, startPoint, height):
+		assert h>0
+		return [ (False, (startPoint[0], startPoint[1]-h)), ]
+
+	def compute_提(self, startPoint, w, h):
+		assert w>0 and h>0
+		return [(False, (startPoint[0]+w, startPoint[1]-h)), ]
+
+class StrokeObject_點(StrokeObject):
+	def parseExpression(self):
+		l=self.expression[1:-1].split(',')
+		assert int(l[1])>0
+		return [int(l[0]), int(l[1])]
+
+	def getStartPoint(self):
+		paramList=self.parseExpression()
+		w=paramList[0]
+		h=paramList[1]
+		if w>0:
+			return self.getTopLeft()
+		else:
+			return self.getTopRight()
+
+	def getPoints(self):
+		paramList=self.parseExpression()
+		w=paramList[0]
+		h=paramList[1]
+
+		startPoint = self.getStartPoint()
+		points=[(False, startPoint), ]
+		points.extend(self.compute_點(points[-1][1], w, h))
+		return points
+
+class StrokeObject_圈(StrokeObject):
+	def parseExpression(self):
+		l=self.expression[1:-1].split(',')
+		assert int(l[0])>0
+		assert int(l[1])>0
+		return [int(l[0]), int(l[1])]
+
+	def getStartPoint(self):
+		return self.getTop()
+
+	def getPoints(self):
+		paramList=self.parseExpression()
+		a=paramList[0]
+		b=paramList[1]
+
+		startPoint = self.getStartPoint()
+		points=[(False, startPoint), ]
+		points.extend(self.compute_圈(points[-1][1], a, b))
+		return points
+
+class StrokeObject_橫(StrokeObject):
+	def parseExpression(self):
+		l=self.expression[1:-1].split(',')
+		assert int(l[0])>0
+		return [int(l[0])]
+
+	def getStartPoint(self):
+		return self.getLeft()
+
+	def getPoints(self):
+		paramList=self.parseExpression()
+		w1=paramList[0]
+
+		startPoint = self.getStartPoint()
+		points=[(False, startPoint), ]
+		points.extend(self.compute_橫(points[-1][1], w1))
+		return points
+
+class StrokeObject_橫折(StrokeObject):
+	def parseExpression(self):
+		l=self.expression[1:-1].split(',')
+		assert int(l[0])>0
+		assert int(l[1])>0
+		return [int(l[0]), int(l[1]), ]
+
+	def getStartPoint(self):
+		return self.getTopLeft()
+
+	def getPoints(self):
+		paramList=self.parseExpression()
+		w1=paramList[0]
+		h2=paramList[1]
+
+		startPoint = self.getStartPoint()
+		points=[(False, startPoint), ]
+		points.extend(self.compute_橫(points[-1][1], w1))
+		points.extend(self.compute_豎(points[-1][1], h2))
+		return points
+
+class StrokeObject_橫折橫(StrokeObject):
+	def parseExpression(self):
+		l=self.expression[1:-1].split(',')
+		assert int(l[0])>0
+		assert int(l[1])>0
+		assert int(l[2])>0
+		return [int(l[0]), int(l[1]), int(l[2]), ]
+
+	def getStartPoint(self):
+		return self.getTopLeft()
+
+	def getPoints(self):
+		paramList=self.parseExpression()
+		w1=paramList[0]
+		h2=paramList[1]
+		w3=paramList[2]
+
+		startPoint = self.getStartPoint()
+		points=[(False, startPoint), ]
+		points.extend(self.compute_橫(points[-1][1], w1))
+		points.extend(self.compute_豎(points[-1][1], h2))
+		points.extend(self.compute_橫(points[-1][1], w3))
+		return points
+
+class StrokeObject_橫折提(StrokeObject):
+	def parseExpression(self):
+		l=self.expression[1:-1].split(',')
+		assert int(l[0])>0
+		assert int(l[1])>0
+		assert int(l[2])>0
+		assert int(l[3])>0
+		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
+
+	def getStartPoint(self):
+		return self.getTopLeft()
+
+	def getPoints(self):
+		paramList=self.parseExpression()
+		w1=paramList[0]
+		h2=paramList[1]
+		w3=paramList[2]
+		h3=paramList[3]
+
+		startPoint = self.getStartPoint()
+		points=[(False, startPoint), ]
+		points.extend(self.compute_橫(points[-1][1], w1))
+		points.extend(self.compute_豎(points[-1][1], h2))
+		points.extend(self.compute_提(points[-1][1], w3, h3))
+		return points
+
+class StrokeObject_豎(StrokeObject):
+	def parseExpression(self):
+		l=self.expression[1:-1].split(',')
+		assert int(l[0])>0
+		return [int(l[0])]
+
+	def getStartPoint(self):
+		return self.getTop()
+
+	def getPoints(self):
+		paramList=self.parseExpression()
+		h1=paramList[0]
+
+		startPoint = self.getStartPoint()
+		points=[(False, startPoint), ]
+		points.extend(self.compute_豎(points[-1][1], h1))
+		return points
+
+
 class DCRadixParser(RadixParser):
 	TAG_RADIX_SET='字根集'
 	TAG_RADIX='字根'
@@ -19,6 +300,7 @@ class DCRadixParser(RadixParser):
 
 	TAG_CODE_INFORMATION='編碼資訊'
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
+	ATTRIB_STROKE_EXPRESSION='筆劃資訊'
 
 	TAG_CHARACTER_SET='字符集'
 	TAG_CHARACTER='字符'
@@ -112,7 +394,15 @@ class DCRadixParser(RadixParser):
 			countourPane=self.parsePane(descriptionRegion)
 			if len(description)>0 and description!='XXXX':
 				if description[0]=='(':
-					[strokeName, actionList]=self.parseStrokeNameAndAction(description)
+					strokeExpression=strokeNode.attrib.get(DCRadixParser.ATTRIB_STROKE_EXPRESSION, '')
+					strokeObject = self.parseStrokeInfo(strokeExpression)
+					if strokeObject:
+						newExp = strokeObject.getNewExpression()
+						strokeName = strokeObject.getName()
+						actionList = self.parseStrokeActionList(newExp)
+#						print(strokeObject.getName(), newExp)
+					else:
+						[strokeName, actionList]=self.parseStrokeNameAndAction(description)
 					stroke=Stroke.fromData(pane, strokeName, actionList)
 
 					strokeName=strokeNode.get(DCRadixParser.TAG_NAME, "瑲珩預設筆劃名")
@@ -127,6 +417,43 @@ class DCRadixParser(RadixParser):
 					strokeList.extend(tmpStrokeGroup.getStrokeList())
 		strokeGroup=StrokeGroup(pane, strokeList)
 		return strokeGroup
+
+	def parseStrokeInfo(self, strokeExpression):
+		StrokeObjectMap = {
+			"點": StrokeObject_點,
+			"圈": StrokeObject_圈,
+			"橫": StrokeObject_橫,
+			"橫折": StrokeObject_橫折,
+			"橫折橫": StrokeObject_橫折橫,
+			"橫折提": StrokeObject_橫折提,
+			"豎": StrokeObject_豎,
+		}
+
+		l=strokeExpression.split(';')
+		name=l[0]
+		scopeDesc=l[1]
+
+		left=int(scopeDesc[0:2], 16)
+		top=int(scopeDesc[2:4], 16)
+		right=int(scopeDesc[4:6], 16)
+		bottom=int(scopeDesc[6:8], 16)
+		scope=(left, top, right, bottom)
+
+		strokeDesc=l[2]
+
+		clsStrokeObject = StrokeObjectMap.get(name, None)
+#		clsStrokeObject = StrokeObjectMap.get(name, StrokeObject)
+		if clsStrokeObject:
+			return clsStrokeObject(name, scope, strokeDesc)
+		else:
+			return None
+
+	def parseStrokeActionList(self, actionDescription):
+		actionList=[]
+		for description in actionDescription.split(","):
+			action=StrokeAction.fromDescription(description)
+			actionList.append(action)
+		return actionList
 
 	def parseStrokeNameAndAction(self, strokeDescription):
 		matchResult=re.match("\((.*)\)(.*)", strokeDescription)
