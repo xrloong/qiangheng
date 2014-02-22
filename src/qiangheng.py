@@ -108,10 +108,12 @@ class QiangHeng:
 		table=[]
 		for charName in sorted(targetCharList):
 #			print("<-- %s -->"%charName)
-			codePropList=self.hanziNetwork.getCodePropertiesList(charName)
-			freq=self.descMgr.queryCharacterFrequency(charName)
-			for code, type in codePropList:
-				table.append([code, charName, freq, type])
+			isCharacter=(len(charName)==1)
+			if isCharacter:
+				codePropList=self.hanziNetwork.getCodePropertiesList(charName)
+				freq=self.descMgr.queryCharacterFrequency(charName)
+				for code, type in codePropList:
+					table.append([code, charName, freq, type])
 		return table
 
 oparser = OptionParser()

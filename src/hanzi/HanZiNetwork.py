@@ -110,11 +110,8 @@ class HanZiStructure:
 		return infoListList
 
 class HanZiNode:
-	def __init__(self, charName):
+	def __init__(self):
 		self.structureList=[]
-		self.charName=charName
-
-		self.isToShow=len(charName)==1
 
 	def addStructure(self, structure):
 		self.structureList.append(structure)
@@ -130,13 +127,12 @@ class HanZiNode:
 		self.setNodeTree()
 
 		codeList=[]
-		if self.isToShow:
-			tmpCodeInfoList=self.getCodeInfoList()
-			codeInfoList=filter(lambda x: x.isSupportCharacterCode(), tmpCodeInfoList)
-			for codeInfo in codeInfoList:
-				codeProp=codeInfo.getCodeProperties()
-				if codeProp:
-					codeList.append(codeProp)
+		tmpCodeInfoList=self.getCodeInfoList()
+		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), tmpCodeInfoList)
+		for codeInfo in codeInfoList:
+			codeProp=codeInfo.getCodeProperties()
+			if codeProp:
+				codeList.append(codeProp)
 		return codeList
 
 	def setNodeTree(self):
@@ -205,30 +201,31 @@ class HanZiNetwork:
 	def __init__(self):
 		self.nodeList=[]
 
-		self.descNetwork={}
-		self.srcDescNameToNodeDict={}
+		self.structDescUniqueNameToNodeDict={}
+		self.structDescExpandNameToNodeDict={}
 
 	def construct(self, descriptionManager, targetCharacterList):
 		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager, self, targetCharacterList)
 		toHanZiNetworkConverter.run()
 
 	def isInNetwork(self, srcDesc):
-		return self.findNodeByCharDesc(srcDesc)!=None
+		return self.findNode(srcDesc)!=None
 
 	def addNode(self, structDesc):
 		ansNode=None
 		if not self.isInNetwork(structDesc):
-			charName=structDesc.getHybridName()
-			ansNode=HanZiNode(charName)
-			self.srcDescNameToNodeDict[charName]=ansNode
+			ansNode=HanZiNode()
+		else:
+			ansNode=self.findNode(structDesc)
+		self.structDescUniqueNameToNodeDict[structDesc.getUniqueName()]=ansNode
+		self.structDescExpandNameToNodeDict[structDesc.getExpandName()]=ansNode
 
-		ansNode=self.findNodeByCharDesc(structDesc)
 		return ansNode
 
 	def addLink(self, structDesc, operator, childDescList):
 		if len(childDescList)>0:
-			childNodeList=[self.findNodeByCharDesc(childDesc) for childDesc in childDescList]
-			dstNode=self.findNodeByCharDesc(structDesc)
+			childNodeList=[self.findNode(childDesc) for childDesc in childDescList]
+			dstNode=self.findNode(structDesc)
 
 			codeType=structDesc.getCodeType()
 			structure=HanZiStructure(codeType, operator, childNodeList)
@@ -237,7 +234,7 @@ class HanZiNetwork:
 			dstNode.addStructure(structure)
 
 	def appendTurtleStruct(self, structDesc):
-		dstNode=self.findNodeByCharDesc(structDesc)
+		dstNode=self.findNode(structDesc)
 
 		codeType=structDesc.getCodeType()
 
@@ -253,12 +250,13 @@ class HanZiNetwork:
 
 		dstNode.addStructure(structure)
 
-	def findNodeByCharDesc(self, charDesc):
-
-		hybridName=charDesc.getHybridName()
-		return self.srcDescNameToNodeDict.get(hybridName)
+	def findNode(self, structDesc):
+		if structDesc.isExpandable():
+			return self.structDescExpandNameToNodeDict.get(structDesc.getExpandName())
+		else:
+			return self.structDescUniqueNameToNodeDict.get(structDesc.getUniqueName())
 
 	def getCodePropertiesList(self, charName):
-		charNode=self.srcDescNameToNodeDict.get(charName)
+		charNode=self.structDescExpandNameToNodeDict.get(charName)
 		return charNode.getCodePropertiesList()
 

@@ -16,7 +16,7 @@ class StructureDescription:
 		self.codeType=CodeType()
 
 	def __str__(self):
-		return '<{0}={1}|({2})>'.format(self.getHybridName(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
+		return '<{0}={1}|({2})>'.format(self.getExpandName(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
 
 	def __repr__(self):
 		return str(self)
@@ -55,12 +55,6 @@ class StructureDescription:
 
 	def getUniqueName(self):
 		return self.target.name
-
-	def getHybridName(self):
-		if self.isExpandable():
-			return self.getExpandName()
-		else:
-			return self.getUniqueName()
 
 	def setExpandName(self, expandName):
 		self.target.expandName=expandName
