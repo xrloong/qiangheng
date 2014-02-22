@@ -3,6 +3,7 @@ from .IMInfo import ArrayInfo
 from .IMInfo import BoshiamyInfo
 from .IMInfo import CangJieInfo
 from .IMInfo import DaYiInfo
+from .IMInfo import DynamicCompositionInfo
 from .IMInfo import FourCornerInfo
 from .IMInfo import GuiXieInfo
 from .IMInfo import ZhengMaInfo
@@ -26,6 +27,8 @@ class IMMgr:
 			imName='嘸蝦米'
 		elif imName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
 			imName='鄭碼'
+		elif imName in ['動', '動組', '動態組字', 'dynamiccomposition', 'dc',]:
+			imName='動組'
 		elif imName in ['四', '四角', '四角號碼', 'fourcorner', 'fc',]:
 			imName='四角'
 		elif imName in ['庋', '庋㩪', '中國字庋㩪', 'guixie', 'gx',]:
@@ -45,6 +48,8 @@ class IMMgr:
 			imModule=BoshiamyInfo
 		elif imName == '鄭碼':
 			imModule=ZhengMaInfo
+		elif imName == '動組':
+			imModule=DynamicCompositionInfo
 		elif imName == '四角':
 			imModule=FourCornerInfo
 		elif imName == '庋㩪':
