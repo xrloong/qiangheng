@@ -65,6 +65,12 @@ class StructureDescription:
 	def isExpandable(self):
 		return bool(self.target.getExpandName())
 
+	def getHybridName(self):
+		if self.isExpandable():
+			return self.getExpandName()
+		else:
+			return self.getUniqueName()
+
 	def setOperator(self, operator):
 		self.target.operator=operator
 

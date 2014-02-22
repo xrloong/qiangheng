@@ -162,8 +162,6 @@ class DescriptionManagerToHanZiNetworkConverter:
 		sortedNameList=sorted(charNameList)
 
 		for charName in sortedNameList:
-			hanziNetwork.addNamedNode(charName)
-
 			charDesc=self.queryDescription(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
@@ -171,10 +169,8 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 	def recursivelyAddStructure(self, structDesc):
 		hanziNetwork=self.hanziNetwork
-		if structDesc.isExpandable():
-			hanziNetwork.addNamedNode(structDesc.getExpandName())
-		else:
-			hanziNetwork.addAnonymousNode(structDesc.getUniqueName())
+
+		hanziNetwork.addNode(structDesc.getHybridName())
 		if structDesc.isTurtle():
 			hanziNetwork.appendTurtleStruct(structDesc)
 		else:  
@@ -195,20 +191,15 @@ class HanZiNetwork:
 	def __init__(self):
 		self.nodeList=[]
 
-		self.structDescUniqueNameToNodeDict={}
-		self.structDescExpandNameToNodeDict={}
+		self.structDescNameToNodeDict={}
 
 	def construct(self, descriptionManager, targetCharacterList):
 		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager, self, targetCharacterList)
 		toHanZiNetworkConverter.run()
 
-	def addNamedNode(self, expandName):
-		if expandName not in self.structDescExpandNameToNodeDict:
-			self.structDescExpandNameToNodeDict[expandName]=HanZiNode()
-
-	def addAnonymousNode(self, anonymousName):
-		if anonymousName not in self.structDescUniqueNameToNodeDict:
-			self.structDescUniqueNameToNodeDict[anonymousName]=HanZiNode()
+	def addNode(self, nodeName):
+		if nodeName not in self.structDescNameToNodeDict:
+			self.structDescNameToNodeDict[nodeName]=HanZiNode()
 
 	def addLink(self, structDesc, operator, childDescList):
 		if len(childDescList)>0:
@@ -239,12 +230,9 @@ class HanZiNetwork:
 		dstNode.addStructure(structure)
 
 	def findNode(self, structDesc):
-		if structDesc.isExpandable():
-			return self.structDescExpandNameToNodeDict.get(structDesc.getExpandName())
-		else:
-			return self.structDescUniqueNameToNodeDict.get(structDesc.getUniqueName())
+		return self.structDescNameToNodeDict.get(structDesc.getHybridName())
 
 	def getCodePropertiesList(self, charName):
-		charNode=self.structDescExpandNameToNodeDict.get(charName)
+		charNode=self.structDescNameToNodeDict.get(charName)
 		return charNode.getCodePropertiesList()
 
