@@ -3,7 +3,6 @@ from .CodeInfoEncoder import CodeInfoEncoder
 
 import Constant
 from xml.etree import ElementTree
-from parser import QHParser
 from ..gear import OperatorManager
 from ..gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 from gear.CodeVarianceType import CodeVarianceType
@@ -20,7 +19,8 @@ class RadixManager:
 		self.radixDescDB={}
 
 		self.operationMgr=OperatorManager.OperatorManager(self)
-		self.parser=QHParser.QHParser(self.operationMgr.getOperatorGenerator())
+
+		self.parser=RadixParser(nameInputMethod, self)
 
 	def createEncoder(self):
 		return CodeInfoEncoder()
@@ -50,7 +50,6 @@ class RadixManager:
 		radixInfoDescription=RadixCodeInfoDescription(elementCodeInfo)
 		return radixInfoDescription
 
-	# 多型
 	def setRadixDescriptionList(self, radixDescList):
 		for [charName, radixDesc] in radixDescList:
 			self.radixDescDB[charName]=radixDesc
@@ -67,14 +66,6 @@ class RadixManager:
 			if codeInfo:
 				radixCodeInfoList.append(codeInfo)
 		self.radixCodeInfoDB[charName]=radixCodeInfoList
-
-	def parseRadixDescription(self, nodeCharacter):
-		elementCodeInfoList=nodeCharacter.findall(Constant.TAG_CODE_INFORMATION)
-		radixCodeInfoDescList=[]
-		for elementCodeInfo in elementCodeInfoList:
-			radixCodeInfoDesc=self.convertElementToRadixInfo(elementCodeInfo)
-			radixCodeInfoDescList.append(radixCodeInfoDesc)
-		return RadixDescription(radixCodeInfoDescList)
 
 
 	def setCodeInfoAttribute(self, codeInfo, radixInfo):
@@ -97,21 +88,34 @@ class RadixManager:
 
 	def loadRadix(self, toRadixList):
 		tmpDict={}
-		for filename in toRadixList:
-			radixDescriptionList=self.loadRadixFromXML(filename, fileencoding=Constant.FILE_ENCODING)
-
-			for [charName, radixDesc] in radixDescriptionList:
-				if charName in tmpDict:
-					tmpRadixDesc=tmpDict.get(charName)
-				else:
-					tmpRadixDesc=RadixDescription([])
-				tmpRadixDesc.mergeRadixDescription(radixDesc)
-				tmpDict[charName]=tmpRadixDesc
+		radixDescriptionList=self.parser.parseRadixDescriptionList(toRadixList)
+		for [charName, radixDesc] in radixDescriptionList:
+			if charName in tmpDict:
+				tmpRadixDesc=tmpDict.get(charName)
+			else:
+				tmpRadixDesc=RadixDescription([])
+			tmpRadixDesc.mergeRadixDescription(radixDesc)
+			tmpDict[charName]=tmpRadixDesc
 
 		allRadixDescriptionList=list(tmpDict.items())
 		self.setRadixDescriptionList(allRadixDescriptionList)
 
-	def loadRadixFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
+
+class RadixParser:
+	def __init__(self, nameInputMethod, converter):
+		self.nameInputMethod=nameInputMethod
+		self.converter=converter
+
+	def parseRadixDescriptionList(self, toRadixList):
+		allRadixDescriptionList=[]
+		for filename in toRadixList:
+			radixDescriptionList=self.parseRadixFromXML(filename, fileencoding=Constant.FILE_ENCODING)
+			allRadixDescriptionList.extend(radixDescriptionList)
+
+		return allRadixDescriptionList
+
+
+	def parseRadixFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
 		f=open(filename, encoding=fileencoding)
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
@@ -119,10 +123,10 @@ class RadixManager:
 		self.checkFileType(rootNode)
 		self.checkInputMethod(rootNode)
 
-		radixInfoList=self.loadRadixInfo(rootNode)
+		radixInfoList=self.parseRadixInfo(rootNode)
 		return radixInfoList
 
-	def loadRadixInfo(self, rootNode):
+	def parseRadixInfo(self, rootNode):
 		characterSetNode=rootNode.find(Constant.TAG_CHARACTER_SET)
 		characterNodeList=characterSetNode.findall(Constant.TAG_CHARACTER)
 		radixInfoList=[]
@@ -132,6 +136,15 @@ class RadixManager:
 
 			radixInfoList.append([charName, radixInfoSet])
 		return radixInfoList
+
+	def parseRadixDescription(self, nodeCharacter):
+		elementCodeInfoList=nodeCharacter.findall(Constant.TAG_CODE_INFORMATION)
+		radixCodeInfoDescList=[]
+		for elementCodeInfo in elementCodeInfoList:
+			radixCodeInfoDesc=self.converter.convertElementToRadixInfo(elementCodeInfo)
+			radixCodeInfoDescList.append(radixCodeInfoDesc)
+		return RadixDescription(radixCodeInfoDescList)
+
 
 	def checkFileType(self, rootNode):
 		fileType=rootNode.get(Constant.TAG_FILE_TYPE)
