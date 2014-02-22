@@ -157,8 +157,7 @@ class Parser:
 		if comp!=chardesc.CharDesc.NoneDesc:
 			tnk=lexer.getNextToken() # none
 			if tnk.ttype == Token.none:
-				pass
-#				comp.setName(name)
+				comp.setName(name)
 			else:
 				print("預期結尾")
 				comp=chardesc.CharDesc.NoneDesc

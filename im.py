@@ -1,4 +1,6 @@
 
+import copy
+
 class NoneIM:
 	"輸入法"
 
@@ -74,8 +76,9 @@ class NoneIM:
 		if self.method=='D':
 			table=[]
 			for chname, desc in self.descDB.items():
-				ch=desc.getChInfo()
-				self.setCharTree(ch)
+				chdesc=self.descDB.get(chname)
+				ch=chdesc.getChInfo()
+				self.setCharTree(ch, chdesc)
 				code=self.getCode(ch)
 				if ch.isToShow() and code:
 					table.append([code, chname])
@@ -88,19 +91,73 @@ class NoneIM:
 			table=[]
 		return table
 
+	"""
+	def genIMMapping(self):
+		if self.method=='D':
+			table=[]
+			for chname in [
+					'徰',
+					]:
+				chdesc=self.descDB.get(chname)
+				ch=chdesc.getChInfo()
+				self.setCharTree(ch, chdesc)
+				code=self.getCode(ch)
+				if ch.isToShow() and code:
+					table.append([code, chname])
+				else:
+					pass
+#					print("Debug", chname)
+		elif self.method=='T':
+			table=self.tb
+		else:
+			table=[]
+		return table
+	"""
+
 	def getCode(self, ch):
+		ch=chdesc.getChInfo()
 		pass
 
-	def setCharTree(self, ch):
+	def setCharTree(self, ch, chdesc):
+		ch=chdesc.getChInfo()
+
 		if not ch.isToSetTree():
 			return
 
-		complist=self.getAllComp(ch)
-
-		for tmpch in complist:
-			self.setCharTree(tmpch)
-
+		descList=self.normalizationToLinear(self.expandCharTree(chdesc))
+#		descList=self.expandCharTree(chdesc).compList
+		for tmpdesc in descList:
+			tmpch=tmpdesc.getChInfo()
+			self.setCharTree(tmpch, tmpdesc)
+#		complist=self.getAllComp(ch)
+		complist=[x.getChInfo() for x in descList]
 		ch.setByComps(complist)
+
+	def expandCharTree(self, comp):
+
+		if comp.op=='龜':
+			chdesc=self.descDB.get(comp.name, None)
+			if chdesc.op=='龜':
+				return chdesc
+			else:
+				return self.expandCharTree(chdesc)
+
+#		anscomp=copy.deepcopy(comp)
+		anscomp=comp
+		l=[]
+		for tc in anscomp.compList:
+			x=self.expandCharTree(tc)
+			l.append(self.expandCharTree(tc))
+		anscomp.setCompList(l)
+		return anscomp
+
+	def normalizationToLinear(self, comp):
+		if comp.op=='龜':
+			return [comp]
+		l=[]
+		for tc in comp.compList:
+			l.extend(self.normalizationToLinear(tc))
+		return l
 
 	def getAllComp(self, ch):
 #		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]

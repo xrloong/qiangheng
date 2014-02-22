@@ -22,14 +22,17 @@ class CharDesc:
 	def getDescription(self):
 		return self.getDescription
 
+	def setChInfo(self, chInfo):
+		self.chInfo=chInfo
+
 	def getChInfo(self):
 		return self.chInfo
 
 	def __str__(self):
-		if self.name=="":
-			return '<None>'
-		else:
-			return '<{0}={1}|({2})>'.format(self.name, self.op, ",".join(map(str, self.compList)))
+		return '<{0}={1}|({2})>'.format(self.name, self.op, ",".join(map(str, self.compList)))
+
+	def __repr__(self):
+		return str(self)
 
 CharDesc.NoneDesc=CharDesc("", '', None)
 

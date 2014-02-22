@@ -3,6 +3,7 @@
 import im
 import platform
 import chardesc
+import qhparser
 
 from optparse import OptionParser
 oparser = OptionParser()
@@ -103,7 +104,9 @@ def getDescDBFromFile(filenamelist, CharConstructor):
 				else:
 					operator, operandlist=parseans
 					chInfo=CharConstructor(ll[1], parseans, ll[3:])
-					descDB[ll[1]]=chardesc.CharDesc(ll[1], ll[2], chInfo)
+					comp=qhparser.Parser.parse(ll[2], ll[1])
+					comp.setChInfo(chInfo)
+					descDB[ll[1]]=comp
 	return descDB, chlist
 
 def getTableFromFile(filename):
