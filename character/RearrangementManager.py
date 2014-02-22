@@ -163,6 +163,17 @@ class RearrangementManager:
 			ansDirection='@'
 		elif oldOperator=='函':
 			ansDirection='@'
+			x=oldCompList[0]
+			y=oldCompList[1]
+			if self.imName == '鄭碼':
+				charDesc.setCompList([y, x])
+				charDesc.setOperatorAndDirection('龍', '@')
+			elif self.imName == '嘸蝦米':
+				charDesc.setCompList([y, x])
+				charDesc.setOperatorAndDirection('龍', '@')
+			elif self.imName == '大易':
+				charDesc.setCompList([y, x])
+				charDesc.setOperatorAndDirection('龍', '@')
 		elif oldOperator=='區':
 			ansDirection='@'
 		elif oldOperator=='左':

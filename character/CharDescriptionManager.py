@@ -125,9 +125,7 @@ class CharDescriptionManager:
 
 			return comp
 
-
 		charGroupNode=rootNode.find("字符集")
-
 		targetChildNodes=charGroupNode.findall("字符")
 		for node in targetChildNodes:
 			comp=getDesc_Character(node)
