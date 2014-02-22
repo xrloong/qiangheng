@@ -46,13 +46,16 @@ class CharDesc:
 	def setCharTree(self):
 		"""設定某一個字符所包含的部件的碼"""
 
-		if not self.getChInfo().isToSetTree():
+		chInfo=self.getChInfo()
+		if not chInfo.isToSetTree():
 			return
 
-		for tmpdesc in self.getSubRootList():
+		radixList=self.getCompList()
+		for tmpdesc in radixList:
 			tmpdesc.setCharTree()
 
-		self.updateCharInfo()
+		infoList=[x.getChInfo() for x in radixList]
+		chInfo.setByComps(infoList, self.getDir())
 
 	def expandCharTree(self, descDB):
 
@@ -72,21 +75,6 @@ class CharDesc:
 
 		self.rearrangeDesc(descDB)
 		return
-
-	def getSubRootList(self):
-		# 計算及更新 self.chInfo
-		# normalizationToLinear 會依不同輸人法而多型
-		# 倉頡為較大的組件
-		# 其它為最小的組件
-		return self.chInfo.normalizationToLinear(self)
-
-	def updateCharInfo(self):
-		# 計算及更新 self.chInfo
-		# updateIMCode 會依不同輸人法而多型
-		# 倉頡的演算法與其它不同
-
-		infoList=[x.getChInfo() for x in self.getSubRootList()]
-		self.chInfo.setByComps(infoList, self.getDir())
 
 	def rearrangeDesc(self, descDB):
 		[newOp, newCompList]=self.getRearrangedOpAndCompList(descDB)

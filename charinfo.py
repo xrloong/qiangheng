@@ -42,53 +42,48 @@ class CharInfo:
 		#多型
 		return ""
 
-	def normalizationToLinear(self, comp):
-		"""將樹狀結構轉為線性結構"""
-		# 多型
-		if len(comp.getCompList())==0:
-			return [comp]
-		return sum(map(lambda x: self.normalizationToLinear(x), comp.getCompList()), [])
-
 CharInfo.NoneChar=CharInfo('[瑲珩預設空字符]', ['龜', []], [])
 CharInfo.NoneChar.noneFlag=True
 
 class CJCharInfo(CharInfo):
 	def __init__(self, charname, parseans, prop):
 		super().__init__(charname, parseans, prop)
-		self._cj_incode=None	# 當獨體使用
-		self._cj_rtcode=None	# 當部件使用
-
 		self._cj_direction=None	# 組件的方向
 		self._cj_single=None	# 當此字為獨體時的碼。
 		self._cj_body=None	# 當此字為字身時的碼。
 		self._cj_radix_list=[]	# 組件
-		if len(prop)>=2:
-			self.setCJProp(prop[0], prop[1])
+		if len(prop)>=1:
+			self.setCJProp(prop[0])
 		self.noneFlag=False
 
-	def setCJProp(self, cj_single, cj_info_code):
-		if len(cj_info_code)>0:
-			dir_code=cj_info_code[0]
-			if dir_code not in ['|', '-', '+']:
-				dir_code='+'
+	def setCJProp(self, cj_info_code):
+		single_code=None
+		dir_code='+'
+		radix_list=[]
 
-			self._cj_radix_list=cj_info_code[1:].split(',')
-		else:
-			dir_code='+'
-			self._cj_radix_list=[]
+		codeList=cj_info_code.split('=')
 
-		if cj_single=='XXXX':
-			self._cj_incode=None
-		else:
-			self._cj_incode=cj_single
+		if len(codeList)>0:
+			x_code=codeList[0]
+			if len(x_code)>0:
+				dir_code=x_code[0]
+				if dir_code not in ['|', '-', '+']:
+					dir_code='+'
 
-		self._cj_single=cj_single
+				radix_list=x_code[1:].split(',')
+
+		if len(codeList)>1:
+			single_code=codeList[1]
+
+		self._cj_radix_list=radix_list
+		self._cj_single=single_code
 		self._cj_direction=dir_code
 		self._cj_body=self.computeBodyCode(self._cj_radix_list)
 
+#		# 以下用來看哪些字的獨體碼無法自動產生
 #		totalCode=self.computeTotalCode(self._cj_radix_list)
 #		if cj_single.lower()!=totalCode.lower():
-#			print("XX", self, cj_single, totalCode)
+#			print("XX", self, single_code, totalCode)
 
 	def getCJProp(self):
 		return [self._cj_direction, self._cj_radix_list]
@@ -119,11 +114,13 @@ class CJCharInfo(CharInfo):
 			return self._cj_single
 		else:
 			return self.computeTotalCode(self._cj_radix_list).lower()
-		return self._cj_incode.lower()
+#		return self._cj_incode.lower()
 
 	@property
 	def isSeted(self):
-		return bool(self._cj_incode)
+		# 不是很多的判斷指標
+		return bool(self._cj_radix_list)
+#		return bool(self._cj_incode)
 
 	def getCode(self):
 		if self.cj: return self.cj
@@ -188,10 +185,6 @@ class CJCharInfo(CharInfo):
 		else:
 			totalCode=''
 		return totalCode
-
-	def normalizationToLinear(self, chdesc):
-		"""將樹狀結構轉為線性結構"""
-		return chdesc.getCompList()
 
 class ARCharInfo(CharInfo):
 	def __init__(self, charname, parseans, prop):
