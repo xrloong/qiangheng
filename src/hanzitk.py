@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 # coding=utf8
 
-import tkinter
-
+from optparse import OptionParser
 from canvas import TkHanZiCanvas
 from canvas import TrueTypeGlyphHanZiCanvas
 from gear.shape import *
 
 
 class HanZiDrawingSystem():
-    def __init__(self, canvas, rm):
+    def __init__(self, canvas):
         self.canvas=canvas
-        self.rm=rm
 
         # 描述檔預計的長寬
         self.dh=256
@@ -72,69 +70,32 @@ class ShowHanziWidget():
 		self.buttonInputOK=tkinter.Button(frame, text='確定', command=self.byKnownChar)
 		self.buttonInputOK.grid(row=0, column=1)
 
-		self.ttfFilename=tkinter.Entry(frame)
-		self.ttfFilename.grid(row=2, column=0)
-
-		self.buttonGenFont=tkinter.Button(frame, text='確定', command=self.genTTF)
-		self.buttonGenFont.grid(row=2, column=1)
-
 		self.canvasHanzi=tkinter.Canvas(master=frame, width=self.canvasW, height=self.canvasH)
 		self.canvasHanzi.grid(row=3, columnspan=2)
 
 		canvas=TkHanZiCanvas.TkHanZiCanvas(self.canvasHanzi, self.canvasW, self.canvasH)
-		self.dh=HanZiDrawingSystem(canvas, rm)
+		self.dh=HanZiDrawingSystem(canvas)
 
 		self.byKnownChar()
 
 	def genTTF(self):
-		return
-		emsize=1024
-
 		filename=self.ttfFilename.get()
 		if not filename:
 			print('沒有指定檔名')
 			return
 
-		f=fontforge.font()
-		f.is_quadratic=True
-		f.strokedfont=True
-		f.strokewidth=50
-		f.em=emsize
+		generateTTF(filename)
 
-		start, end=0x4E00, 0x9FA6 # 全部
-#		start, end=0x4E00, 0x4EFF #
-#		start, end=0x4E00, 0x4E00 # 一
-#		start, end=0x738B, 0x738B # 王
-#		start, end=0x738B, 0x738B # 王
-#		start, end=0x76EE, 0x76EE # 目
-#		start, end=0x4E3F, 0x4E3F # 丿
-#		start, end=0x9F9C, 0x9F9C # 龜
-#		start, end=0x4E56, 0x4E56 # 乖
-
-		for o in range(start, end+1):
-			g=f.createChar(o)
-			canvas=TrueTypeGlyphHanziCanvas(g, emsize, emsize)
-
-			if o%256==0:
-				print("U+%04X"%o)
-
-			ct=rm.getDesc(unichr(o))
-			self.dh.draw(ct, canvas=canvas)
-
-		f.save(filename)
-		print('結束')
 
 	def byKnownChar(self):
 		string=self.entryInput.get()
-		def_list=rm.getFont(string)
+		def_list=self.rm.getFont(string)
 		self.dh.draw(def_list)
 
 class RadicalManager:
-	def __init__(self):
+	def __init__(self, fontfile):
 		self.fontDB={}
 		self.strokeCount={}
-
-		fontfile='tables/puretable/qhdc-standard.txt'
 
 		for line in open(fontfile).readlines():
 			line=line.strip()
@@ -155,8 +116,52 @@ class RadicalManager:
 	def getFont(self, strIndex):
 		return self.fontDB.get(strIndex, "")
 
-rm=RadicalManager()
+def generateTTF(filename):
+	import fontforge
 
-root=tkinter.Tk()
-app=ShowHanziWidget(root, rm)
-root.mainloop()
+	emsize=1024
+
+	f=fontforge.font()
+	f.is_quadratic=True
+	f.strokedfont=True
+	f.strokewidth=50
+	f.em=emsize
+
+	start, end=0x4E00, 0x9FA6 # 全部
+
+	for o in range(start, end+1):
+		g=f.createChar(o)
+		canvas=TrueTypeGlyphHanziCanvas(g, emsize, emsize)
+		drawSystem=HanZiDrawingSystem(canvas)
+
+		if o%256==0:
+			print("U+%04X"%o)
+
+		ct=rm.getDesc(unichr(o))
+		drawSystem.draw(ct, canvas=canvas)
+
+	f.save(filename)
+	print('結束')
+
+oparser = OptionParser()
+oparser.add_option("-s", action="store_true", dest="show_font", help="秀出字形", default=False)
+oparser.add_option("-g", action="store_true", dest="gen_font", help="產生字型檔", default=False)
+oparser.add_option("-i", "--in-fontfile", dest="fontfile", help="字型來源檔")
+oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔", default="qhdc.ttf")
+(options, args) = oparser.parse_args()
+
+fontfile=options.fontfile
+rm=RadicalManager(fontfile)
+
+if options.show_font:
+	import tkinter
+
+	root=tkinter.Tk()
+	app=ShowHanziWidget(root, rm)
+	root.mainloop()
+elif options.gen_font:
+	outfile=options.outfile
+	generateTTF(outfile)
+else:
+	oparser.print_usage()
+
