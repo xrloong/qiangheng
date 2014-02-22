@@ -117,11 +117,10 @@ class HanZiNetwork:
 			structure=HanZiStructure(operator, childNodeList, chInfo)
 			dstNode.addStructure(structure)
 
-	def findNodeByName(self, charName):
-		return self.srcDescNameToNodeDict.get(charName)
-
 	def findNodeByCharDesc(self, charDesc):
-		return self.findNodeByName(charDesc.getHybridName())
+
+		hybridName=charDesc.getHybridName()
+		return self.srcDescNameToNodeDict.get(hybridName)
 
 	def addOrFindNodeByCharDesc(self, charDesc):
 		ansNode=None
@@ -129,9 +128,9 @@ class HanZiNetwork:
 		if not self.isInNetwork(charDesc):
 			self.addNode(charName, charDesc)
 
-		ansNode=self.findNodeByName(charName)
+		ansNode=self.findNodeByCharDesc(charDesc)
 		return ansNode
 
-	def getCodeList(self, charName):
-		charNode=self.findNodeByName(charName)
+	def getCodeList(self, charDesc):
+		charNode=self.findNodeByCharDesc(charDesc)
 		return charNode.getCodeList()

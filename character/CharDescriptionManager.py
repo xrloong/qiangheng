@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from .CharDesc import CharDesc
+from .CharDesc import HangerCharDesc
 from .TemplateDesc import TemplateDesc
 from .OperatorManager import OperatorManager
 from xml.etree import ElementTree
@@ -18,10 +19,12 @@ class CharDescriptionManager:
 			if len(operatorName)>1:
 				# 暫時以運算名稱的字數來區分是否為範本
 				charDesc=CharDesc(operator, CompList)
+#				charDesc=HangerCharDesc(operator, CompList)
 				return charDesc
 			else:
 				if operator.isAvailableOperation():
 					charDesc=CharDesc(operator, CompList)
+#					charDesc=HangerCharDesc(operator, CompList)
 				else:
 					charDesc=None
 			return charDesc

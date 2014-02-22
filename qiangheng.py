@@ -132,9 +132,11 @@ class QiangHeng:
 		self.descMgr.adjustData()
 
 	def genIMMapping(self, targetCharList):
+		charDescQueryer=self.descMgr.getCharDescQueryer()
 		table=[]
 		for charName in targetCharList:
-			codeList=self.hanziNetwork.getCodeList(charName)
+			charDesc=charDescQueryer(charName)
+			codeList=self.hanziNetwork.getCodeList(charDesc)
 			for code in codeList:
 				table.append([code, charName])
 		return table
