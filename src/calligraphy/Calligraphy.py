@@ -207,7 +207,8 @@ class StrokeInfo_點(StrokeInfo):
 		paramList=self.parameterList
 		w=paramList[0]
 		h=paramList[1]
-		return w>0 and h>0
+		return h>0
+#		return w>0 and h>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -854,7 +855,8 @@ class StrokeInfo_豎折彎鉤(StrokeInfo):
 		h3=paramList[4]
 		w4=paramList[5]
 		h4=paramList[6]
-		return w1>0 and h1>0 and w2>0 and w3>0 and h3>0 and w4>0 and h4>0
+		return w1>=0 and h1>0 and w2>0 and w3>0 and h3>0 and w4>0 and h4>0
+#		return w1>0 and h1>0 and w2>0 and w3>0 and h3>0 and w4>0 and h4>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -1020,7 +1022,8 @@ class StrokeInfo_彎鉤(StrokeInfo):
 		h1=paramList[1]
 		w2=paramList[2]
 		h2=paramList[3]
-		return w1>0 and h1>0 and w2>0 and h2>0
+		return h1>0 and w2>0 and h2>0
+#		return w1>0 and h1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -1051,7 +1054,8 @@ class StrokeInfo_撇鉤(StrokeInfo):
 		h1=paramList[1]
 		w2=paramList[2]
 		h2=paramList[3]
-		return w1>0 and h1>0 and w2>0 and h2>0
+		return h1>0 and w2>0 and h2>0
+#		return w1>0 and h1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -1137,7 +1141,8 @@ class StrokeInfo_撇橫(StrokeInfo):
 		h1=paramList[1]
 		w2=paramList[2]
 		h2=paramList[3]
-		return w1>0 and h1>0 and w2>0 and h2>0
+		return w1>0 and h1>0 and w2>0
+#		return w1>0 and h1>0 and w2>0 and h2>0
 
 	def computePoints(self, startPoint):
 		paramList=self.parameterList
@@ -1558,6 +1563,9 @@ class Stroke(Writing):
 	def getStrokeInfo(self):
 		return self.strokeInfo
 
+	def isValid(self):
+		return self.strokeInfo.isValid()
+
 	# 多型
 	def transform(self, pane):
 		pane.transformPane(self.state.getTargetPane())
@@ -1609,6 +1617,9 @@ class StrokeGroup(Writing):
 
 	def getCount(self):
 		return len(self.strokeList)
+
+	def isValid(self):
+		return all([stroke.isValid() for stroke in self.strokeList])
 
 	# 多型
 	def transform(self, pane):
