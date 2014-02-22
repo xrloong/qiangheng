@@ -44,6 +44,15 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(codeInfoList)
 		codeInfo.setCodeList([dyCode])
 
+	def encodeAsHan(self, codeInfo, codeInfoList):
+		"""運算 "函" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+
+		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
+		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(newCodeInfoList)
+		codeInfo.setCodeList([dyCode])
+
 	def encodeAsZai(self, codeInfo, codeInfoList):
 		"""運算 "載" """
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(codeInfoList)

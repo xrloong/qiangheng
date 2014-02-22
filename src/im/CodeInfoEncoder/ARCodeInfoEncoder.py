@@ -44,6 +44,15 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
 		codeInfo.setCodeList([arCode])
 
+	def encodeAsHan(self, codeInfo, codeInfoList):
+		"""運算 "函" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+
+		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
+		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(newCodeInfoList)
+		codeInfo.setCodeList([arCode])
+
 	def encodeAsZai(self, codeInfo, codeInfoList):
 		"""運算 "載" """
 		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
