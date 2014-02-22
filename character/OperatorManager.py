@@ -38,19 +38,14 @@ class OperatorManager:
 			'湘':RearrangeInfoSame(),
 			'纂':RearrangeInfoSame(),
 			'膷':RearrangeInfoSame(),
-			'林':RearrangeInfoH2(operatorH2),
-			'爻':RearrangeInfoV2(operatorV2),
-			'卅':RearrangeInfoH3(operatorH3),
-			'丰':RearrangeInfoV3(operatorV3),
-			'鑫':RearrangeInfoTriangle(self.emptyCharDescGenerator, operatorH2, operatorV2),
-			'卌':RearrangeInfoH4(operatorH4),
-			'圭':RearrangeInfoV4(operatorV4),
-			'燚':RearrangeInfoSquare(self.emptyCharDescGenerator, operatorH2, operatorV2),
 		}
 		def operatorGenerator(operatorName):
 			return Operator.Operator(operatorName)
 
 		self.operatorGenerator=operatorGenerator
+
+	def isTemplateName(self, operatorName):
+		return (operatorName in self.templateDB.keys())
 
 	def setTemplateDB(self, templateDB):
 		self.templateDB=templateDB
@@ -86,13 +81,15 @@ class OperatorManager:
 	def rearrangeRecursively(self, charDesc):
 		if charDesc.isTemplate():
 			charDesc=self.getCharDescFromTemplate(charDesc)
+		l=[]
 		for childDesc in charDesc.getCompList():
-			self.rearrangeRecursively(childDesc)
+			newChildDesc=self.rearrangeRecursively(childDesc)
+			l.append(newChildDesc)
+		charDesc.setCompList(l)
 		self.rearrangeDesc(charDesc)
 		return charDesc
 
-	@staticmethod
-	def getOperatorByName(operatorName):
+	def getOperatorByName(self, operatorName):
 		return Operator.Operator(operatorName)
 
 	# 分成以下層級

@@ -92,7 +92,7 @@ class TemplateCharDesc(CharDesc):
 		self.chInfo=None
 
 	def __str__(self):
-		return self.templateName
+		return "[%s %s %s]"%(self.templateName, self.templateDesc, self.argumentList)
 
 	def isTemplate(self):
 		return True
