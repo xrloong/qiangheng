@@ -116,13 +116,18 @@ class QHParser:
 		# 用於 0.2 版
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
-		turtleInfoList=[]
+		charDescList=[]
 		for node in targetChildNodes:
 			charName=node.get('名稱')
-			turtleList=self.getDesc_TurtleCharacterList(node)
+			structureList=self.getDesc_TurtleCharacterList(node)
+			charProperties=node.attrib
 
-			turtleInfoList.append([charName, turtleList, node.attrib])
-		return turtleInfoList
+			charDesc=CharacterDescription(charName)
+			charDesc.setStructureList(structureList)
+			charDesc.updateProperty(charProperties)
+
+			charDescList.append(charDesc)
+		return charDescList
 
 	def loadTemplateByParsingXML__0_2(self, rootNode):
 		# 用於 0.2 版
@@ -141,7 +146,7 @@ class QHParser:
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
 
-		nodeInfoList=[]
+		charDescList=[]
 		for node in targetChildNodes:
 			structureList=self.getDesc_StructureList(node)
 			charName=node.get('名稱')
@@ -151,15 +156,15 @@ class QHParser:
 			charDesc.setStructureList(structureList)
 			charDesc.updateProperty(charProperties)
 
-			nodeInfoList.append(charDesc)
-		return nodeInfoList
+			charDescList.append(charDesc)
+		return charDescList
 
 	def loadCodeInfoByParsingXML(self, node):
 		version=node.get('版本號')
 		propertyDB={}
 		if version=='0.2':
-			propertyDB=self.loadCodeInfoByParsingXML__0_2(node)
-		return propertyDB
+			charDescList=self.loadCodeInfoByParsingXML__0_2(node)
+		return charDescList
 
 	def loadTemplateByParsingXML(self, node):
 		version=node.get('版本號')
@@ -170,8 +175,8 @@ class QHParser:
 
 	def loadCharDescriptionByParsingXML(self, node):
 		version=node.get('版本號')
-		nodeInfoList=[]
+		charDescList=[]
 		if version=='0.2':
-			nodeInfoList=self.loadCharDescriptionByParsingXML__0_2(node)
-		return nodeInfoList
+			charDescList=self.loadCharDescriptionByParsingXML__0_2(node)
+		return charDescList
 
