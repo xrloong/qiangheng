@@ -46,8 +46,11 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
-		arCode=ARCodeInfoEncoder.computeArrayCodeForGenerality(codeInfoList)
+		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
+		tmpArCodeList=arCodeList
+		arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
 		codeInfo=self.generateDefaultCodeInfo([arCode])
+
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
@@ -63,31 +66,27 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsSilkworm(self, codeInfoList):
 		"""運算 "蚕" """
-		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
-		tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsSilkworm(arCodeList)
-		arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
-		codeInfo=self.generateDefaultCodeInfo([arCode])
+		newCodeInfoList=self.getMergedCodeInfoListAsSilkworm(codeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
-		"""運算 "蚕" """
-		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
-		tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsGoose(arCodeList)
-		arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
-		codeInfo=self.generateDefaultCodeInfo([arCode])
+		"""運算 "鴻" """
+		newCodeInfoList=self.getMergedCodeInfoListAsGoose(codeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
 	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """
-		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo([arCode])
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 	def encodeAsTong(self, codeInfoList):
 		"""運算 "同" """
-		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo([arCode])
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 	def encodeAsHan(self, codeInfoList):
@@ -96,8 +95,8 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
-		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(newCodeInfoList)
-		codeInfo=self.generateDefaultCodeInfo([arCode])
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(newCodeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
@@ -111,8 +110,8 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsZai(self, codeInfoList):
 		"""運算 "載" """
-		arCode=ARCodeInfoEncoder.computeArrayCodeForGe(codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo([arCode])
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 	def encodeAsYou(self, codeInfoList):
@@ -141,47 +140,16 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 
 		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_儿:
-			tmpFrontCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
-			tmpRearCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_乚]])
-			codeInfo=self.encodeAsGoose([tmpFrontCodeInfo, secondCodeInfo, tmpRearCodeInfo])
+			radix_丨=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
+			radix_乚=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_乚]])
+			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_乚])
 			return codeInfo
-		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_丨丨:
-			tmpFrontCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
-			tmpRearCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
-			codeInfo=self.encodeAsGoose([tmpFrontCodeInfo, secondCodeInfo, tmpRearCodeInfo])
+		elif firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_丨丨:
+			radix_丨=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
+			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_丨])
 			return codeInfo
-
-
-	@staticmethod
-	def computeArrayCodeForGenerality(codeInfoList, isWithMergeRadix=False):
-		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
-
-		tmpArCodeList=arCodeList
-		if isWithMergeRadix:
-			tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsSilkworm(arCodeList)
-		return ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
-
-	@staticmethod
-	def computeArrayCodeForGe(codeInfoList):
-		# 如 咸、戎
-		if len(codeInfoList)<=1:
-			print("錯誤：", file=sys.stderr)
-			arCode=ARCodeInfoEncoder.computeArrayCodeForGenerality(codeInfoList)
 		else:
-			firstCodeInfo=codeInfoList[0]
-			if firstCodeInfo.isInstallmentEncoded():
-				frontMainCode=firstCodeInfo.getInstallmentCode(0)
-				rearMainCode=firstCodeInfo.getInstallmentCode(1)
-
-				restMainCode=ARCodeInfoEncoder.computeArrayCodeForGenerality(codeInfoList[1:])
-
-				arCodeList=[frontMainCode, restMainCode, rearMainCode]
-
-				tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsSilkworm(arCodeList)
-				arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
-			else:
-				arCode=ARCodeInfoEncoder.computeArrayCodeForGenerality(codeInfoList)
-		return arCode
+			return self.encodeAsInvalidate()
 
 	@staticmethod
 	def computeArrayCodeByCodeList(arCodeList):
@@ -189,48 +157,105 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		arCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
 		return arCode
 
-	@staticmethod
-	def mergeRadixAsSilkworm(arCodeList):
-		tmpArCodeList=copy.copy(arCodeList)
+	def getCodeInfoExceptLast(self, codeInfo):
+		mainCodeList=codeInfo.getMainCodeList()
 
-		numArCode=len(tmpArCodeList)
-		for i in range(numArCode-1):
-			arCodePrev=tmpArCodeList[i]
-			arCodeNext=tmpArCodeList[i+1]
-			if len(arCodePrev)>0 and len(arCodeNext)>0:
-				if arCodePrev[-1]==ARCodeInfo.RADIX_一 and arCodeNext[0]==ARCodeInfo.RADIX_口:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_一口]
-					tmpArCodeList[i+1]=arCodeNext[1:]
-				if arCodePrev[-1]==ARCodeInfo.RADIX_士 and arCodeNext[0]==ARCodeInfo.RADIX_冖:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_士冖]
-					tmpArCodeList[i+1]=arCodeNext[1:]
-				if arCodePrev[-1]==ARCodeInfo.RADIX_山 and arCodeNext[0]==ARCodeInfo.RADIX_一:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_山一]
-					tmpArCodeList[i+1]=arCodeNext[1:]
-				if arCodePrev[-1]==ARCodeInfo.RADIX_文 and arCodeNext[0]==ARCodeInfo.RADIX_厂:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_文厂]
-					tmpArCodeList[i+1]=arCodeNext[1:]
+		if len(mainCodeList)>1:
+			tmpCodeInfo=self.generateDefaultCodeInfo([mainCodeList[:-1]])
+		else:
+			tmpCodeInfo=None
 
-		# 合併字根後，有些字根列可能為空，如：戓
-		tmpArCodeList=filter(lambda x: len(x)>0, tmpArCodeList)
+		return tmpCodeInfo
 
-		return tmpArCodeList
+	def getCodeInfoExceptFirst(self, codeInfo):
+		mainCodeList=codeInfo.getMainCodeList()
 
-	@staticmethod
-	def mergeRadixAsGoose(arCodeList):
-		tmpArCodeList=copy.copy(arCodeList)
+		if len(mainCodeList)>1:
+			tmpCodeInfo=self.generateDefaultCodeInfo([mainCodeList[1:]])
+		else:
+			tmpCodeInfo=None
 
-		numArCode=len(tmpArCodeList)
-		for i in range(numArCode-1):
-			arCodePrev=tmpArCodeList[i]
-			arCodeNext=tmpArCodeList[i+1]
-			if len(arCodePrev)>0 and len(arCodeNext)>0:
-				if arCodePrev[-1]==ARCodeInfo.RADIX_彳 and arCodeNext[0]==ARCodeInfo.RADIX_山一:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_彳山一]
-					tmpArCodeList[i+1]=arCodeNext[1:]
+		return tmpCodeInfo
 
-		# 合併字根後，有些字根列可能為空，如：戓
-		tmpArCodeList=filter(lambda x: len(x)>0, tmpArCodeList)
+	def convertMergedCode(self, firstCodeInfo, secondCodeInfo, firstRadix, secondRadix, targetRadix):
+		firstMainCodeList=firstCodeInfo.getMainCodeList()
+		secondMainCodeList=secondCodeInfo.getMainCodeList()
 
-		return tmpArCodeList
+		if firstMainCodeList[-1]==firstRadix and secondMainCodeList[0]==secondRadix:
+			newFirstCodeInfo=self.getCodeInfoExceptLast(firstCodeInfo)
+			targetCodeInfo=self.generateDefaultCodeInfo([[targetRadix]])
+			newSecondCodeInfo=self.getCodeInfoExceptFirst(secondCodeInfo)
+		else:
+			newFirstCodeInfo=firstCodeInfo
+			targetCodeInfo=None
+			newSecondCodeInfo=secondCodeInfo
+		return [newFirstCodeInfo, targetCodeInfo, newSecondCodeInfo]
+
+	def getMergedCodeInfoList(self, codeInfoList, mergeCodeInfoList):
+		firstCodeInfo=None
+		secondCodeInfo=None
+
+		newCodeInfoList=[]
+		for xCodeInfo in codeInfoList:
+			firstCodeInfo=secondCodeInfo
+			secondCodeInfo=xCodeInfo
+
+			if firstCodeInfo==None:
+				continue
+
+			for [firstRadix, secondRadix, targetRadix] in mergeCodeInfoList:
+				[newFirstCodeInfo, targetCodeInfo, newSecondCodeInfo,]=self.convertMergedCode(firstCodeInfo, secondCodeInfo, firstRadix, secondRadix, targetRadix)
+				if targetCodeInfo:
+					if newFirstCodeInfo:
+						newCodeInfoList.append(newFirstCodeInfo)
+					newCodeInfoList.append(targetCodeInfo)
+					secondCodeInfo=newSecondCodeInfo
+					break;
+			else:
+				newCodeInfoList.append(firstCodeInfo)
+
+		if secondCodeInfo!=None:
+			newCodeInfoList.append(secondCodeInfo)
+
+		return newCodeInfoList
+
+	def getMergedCodeInfoListAsSilkworm(self, codeInfoList):
+		firstCodeInfo=None
+		secondCodeInfo=None
+
+		mergeCodeInfoList=[
+			[ARCodeInfo.RADIX_一, ARCodeInfo.RADIX_口, ARCodeInfo.RADIX_一口],
+			[ARCodeInfo.RADIX_士, ARCodeInfo.RADIX_冖, ARCodeInfo.RADIX_士冖],
+			[ARCodeInfo.RADIX_山, ARCodeInfo.RADIX_一, ARCodeInfo.RADIX_山一],
+			[ARCodeInfo.RADIX_文, ARCodeInfo.RADIX_厂, ARCodeInfo.RADIX_文厂],
+		]
+
+		return self.getMergedCodeInfoList(codeInfoList, mergeCodeInfoList)
+
+	def getMergedCodeInfoListAsGoose(self, codeInfoList):
+		firstCodeInfo=None
+		secondCodeInfo=None
+
+		mergeCodeInfoList=[
+			[ARCodeInfo.RADIX_彳, ARCodeInfo.RADIX_山一, ARCodeInfo.RADIX_彳山一],
+		]
+
+		return self.getMergedCodeInfoList(codeInfoList, mergeCodeInfoList)
+
+	def getMergedCodeInfoListAsForGe(self, codeInfoList):
+		# 如 咸、戎
+		if len(codeInfoList)<=1:
+			print("錯誤：", file=sys.stderr)
+			return codeInfoList
+		else:
+			firstCodeInfo=codeInfoList[0]
+			if firstCodeInfo.isInstallmentEncoded():
+				frontMainCode=firstCodeInfo.getInstallmentCode(0)
+				rearMainCode=firstCodeInfo.getInstallmentCode(1)
+
+				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
+				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
+				return self.getMergedCodeInfoListAsSilkworm([frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo])
+			else:
+				return codeInfoList
 
