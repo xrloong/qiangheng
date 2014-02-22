@@ -42,7 +42,18 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsSilkworm(self, codeInfoList):
 		"""運算 "蚕" """
-		arCode=ARCodeInfoEncoder.computeArrayCodeForGenerality(codeInfoList, True)
+		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
+		tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsSilkworm(arCodeList)
+		arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
+		codeInfo=self.generateDefaultCodeInfo()
+		codeInfo.setCodeList([arCode])
+		return codeInfo
+
+	def encodeAsGoose(self, codeInfoList):
+		"""運算 "蚕" """
+		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
+		tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsGoose(arCodeList)
+		arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
 		codeInfo=self.generateDefaultCodeInfo()
 		codeInfo.setCodeList([arCode])
 		return codeInfo
@@ -119,7 +130,11 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 	@staticmethod
 	def computeArrayCodeForGenerality(codeInfoList, isWithMergeRadix=False):
 		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
-		return ARCodeInfoEncoder.computeArrayCodeByCodeList(arCodeList, isWithMergeRadix)
+
+		tmpArCodeList=arCodeList
+		if isWithMergeRadix:
+			tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsSilkworm(arCodeList)
+		return ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
 
 	@staticmethod
 	def computeArrayCodeForGe(codeInfoList):
@@ -136,32 +151,57 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 				restMainCode=ARCodeInfoEncoder.computeArrayCodeForGenerality(codeInfoList[1:])
 
 				arCodeList=[frontMainCode, restMainCode, rearMainCode]
-				arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(arCodeList, True)
+
+				tmpArCodeList=ARCodeInfoEncoder.mergeRadixAsSilkworm(arCodeList)
+				arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
 			else:
 				arCode=ARCodeInfoEncoder.computeArrayCodeForGenerality(codeInfoList)
 		return arCode
 
 	@staticmethod
-	def computeArrayCodeByCodeList(arCodeList, isWithMergeRadix=False):
-		tmpArCodeList=copy.copy(arCodeList)
-
-		if isWithMergeRadix:
-			numArCode=len(tmpArCodeList)
-			for i in range(numArCode-1):
-				arCodePrev=tmpArCodeList[i]
-				arCodeNext=tmpArCodeList[i+1]
-				if len(arCodePrev)>0 and len(arCodeNext)>0:
-					if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_1_CENTER and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_0_CENTER:
-						tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_1_UP]
-						tmpArCodeList[i+1]=arCodeNext[1:]
-					if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_4_UP and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_7_CENTER:
-						tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_4_BOTTOM]
-						tmpArCodeList[i+1]=arCodeNext[1:]
-
-			# 合併字根後，有些字根列可能為空，如：戓
-			tmpArCodeList=filter(lambda x: len(x)>0, tmpArCodeList)
-
-		cat=sum(tmpArCodeList, [])
+	def computeArrayCodeByCodeList(arCodeList):
+		cat=sum(arCodeList, [])
 		arCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
 		return arCode
+
+	@staticmethod
+	def mergeRadixAsSilkworm(arCodeList):
+		tmpArCodeList=copy.copy(arCodeList)
+
+		numArCode=len(tmpArCodeList)
+		for i in range(numArCode-1):
+			arCodePrev=tmpArCodeList[i]
+			arCodeNext=tmpArCodeList[i+1]
+			if len(arCodePrev)>0 and len(arCodeNext)>0:
+				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_1_CENTER and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_0_CENTER:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_1_UP]
+					tmpArCodeList[i+1]=arCodeNext[1:]
+				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_4_UP and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_7_CENTER:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_4_BOTTOM]
+					tmpArCodeList[i+1]=arCodeNext[1:]
+				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_3_CENTER and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_1_CENTER:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_3_CENTER_1_CENTER]
+					tmpArCodeList[i+1]=arCodeNext[1:]
+
+		# 合併字根後，有些字根列可能為空，如：戓
+		tmpArCodeList=filter(lambda x: len(x)>0, tmpArCodeList)
+
+		return tmpArCodeList
+
+	def mergeRadixAsGoose(arCodeList):
+		tmpArCodeList=copy.copy(arCodeList)
+
+		numArCode=len(tmpArCodeList)
+		for i in range(numArCode-1):
+			arCodePrev=tmpArCodeList[i]
+			arCodeNext=tmpArCodeList[i+1]
+			if len(arCodePrev)>0 and len(arCodeNext)>0:
+				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_9_BOTTOM and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_3_CENTER_1_CENTER:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_9_UP]
+					tmpArCodeList[i+1]=arCodeNext[1:]
+
+		# 合併字根後，有些字根列可能為空，如：戓
+		tmpArCodeList=filter(lambda x: len(x)>0, tmpArCodeList)
+
+		return tmpArCodeList
 

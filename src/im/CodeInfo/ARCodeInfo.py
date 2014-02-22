@@ -41,6 +41,10 @@ class ARCodeInfo(CodeInfo):
 	RADIX_EXTEND_4_BOTTOM='x:4v:1'	# 即[士冖]，壹的上部
 	RADIX_EXTEND_4_UP='x:4^:1'	# 即士，可用來合併字根
 	RADIX_EXTEND_7_CENTER='x:7-:1'	# 即冖，可用來合併字根
+	RADIX_EXTEND_9_UP='x:9^:1'	# 即[特微]，由彳、山、一所組成
+	RADIX_EXTEND_9_BOTTOM='x:9v:1'	# 即彳，可用來合併字根
+	RADIX_EXTEND_3_CENTER='x:3-:1'	# 即山，可用來合併字根
+	RADIX_EXTEND_3_CENTER_1_CENTER='x:3-:1-:1'	# 即[山一]，[特微]的右半部
 
 	RADIX_EXTEND_5_BOTTOM='x:5v:1'	# 即廴
 	RADIX_EXTEND_6_BOTTOM='x:6v:1'	# 即辶
@@ -90,6 +94,11 @@ class ARCodeInfo(CodeInfo):
 		RADIX_EXTEND_5_BOTTOM:'b',
 		RADIX_EXTEND_6_BOTTOM:'n',
 		RADIX_EXTEND_2_CENTER:'s',
+
+		RADIX_EXTEND_9_UP:'o',
+		RADIX_EXTEND_9_BOTTOM:'.',
+		RADIX_EXTEND_3_CENTER:'d',
+		RADIX_EXTEND_3_CENTER_1_CENTER:'da',
 	}
 
 	def setRadixCodeProperties(self, propDict):
@@ -103,7 +112,8 @@ class ARCodeInfo(CodeInfo):
 	def characterCode(self):
 		mainRadixList=self.getMainCodeList()
 		mainCodeList=list(map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList))
-		return "".join(mainCodeList)
+		code="".join(mainCodeList)
+		return (code[:3]+code[-1] if len(code)>4 else code)
 
 	def setDataEmpty(self):
 		self._codeList=None
