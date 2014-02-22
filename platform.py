@@ -19,7 +19,6 @@ class NonePlatform:
 	    return map(lambda x: self.fmt.format(*x), self.im.keyMaps)
 
     def genCodeMappingsTable(self, cm):
-	    return "\n".join(list(map(lambda x : self.cmfmt.format(*x), cm)))
 	    return "\n".join(sorted(map(lambda x : self.cmfmt.format(*x), cm)))
 
     def genKeyMappings(self):
