@@ -40,6 +40,8 @@ Options:
 	tex/
 		principle.pdf		說明文件
 	utils/
+		StrokeNaming		一隻在安卓（Android）上的輔助工具。
+					用來秀出字根的筆劃及方便使用者選擇筆劃名稱。
 	xslt/
 
 == 動態組字說明 ==
