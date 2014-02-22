@@ -1,22 +1,25 @@
 import sys
 import Constant
 from xml.etree import ElementTree
-from gear import OperatorManager
 from parser import QHParser
+from gear import OperatorManager
 from gear.CodeVarianceType import CodeVarianceType
+from gear.CodeInfo import CodeInfo
 
 class RadixManager:
 	def __init__(self, codeInfoEncoder):
 		self.codeInfoEncoder=codeInfoEncoder
 		self.radixCodeInfoDB={}
 
+		self.radixDescDB={}
+
 		self.operationMgr=OperatorManager.OperatorManager(self)
 		self.parser=QHParser.QHParser(self.operationMgr.getOperatorGenerator())
 
 	# 多型
-	def convertRadixInfoToCodeInfo(self, radixInfo):
-		codeVariance=radixInfo.getCodeVarianceType()
-		elementCodeInfo=radixInfo.getElement()
+	def convertRadixDescToCodeInfo(self, radixDesc):
+		codeVariance=radixDesc.getCodeVarianceType()
+		elementCodeInfo=radixDesc.getElement()
 
 		infoDict={}
 		if elementCodeInfo is not None:
@@ -26,32 +29,51 @@ class RadixManager:
 		return codeInfo
 
 	# 多型
-	def setRadixDescriptionList(self, radixDescList):
-		for [charName, radixDesc] in radixDescList:
-			tmpRadixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
-
-			radixCodeInfoList=self.radixCodeInfoDB.get(charName, [])
-			for radixInfo in tmpRadixCodeInfoList:
-				codeInfo=self.convertRadixInfoToCodeInfo(radixInfo)
-				if codeInfo:
-					radixCodeInfoList.append(codeInfo)
-			self.radixCodeInfoDB[charName]=radixCodeInfoList
+	def convertElementToRadixInfo(self, elementCodeInfo):
+		radixInfoDescription=RadixCodeInfoDescription(elementCodeInfo)
+		return radixInfoDescription
 
 	# 多型
-	def parseRadixDescriptionList(self, nodeCharacter):
+	def setRadixDescriptionList(self, radixDescList):
+		for [charName, radixDesc] in radixDescList:
+			self.radixDescDB[charName]=radixDesc
+
+		for [charName, radixDesc] in radixDescList:
+			self.convertRadixDescIntoDB(charName, radixDesc)
+
+	# 遞迴
+	def convertRadixDescIntoDB(self, charName, radixDesc):
+		radixCodeInfoList=[]
+		tmpRadixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
+		for radixInfo in tmpRadixCodeInfoList:
+			codeInfo=self.convertRadixDescToCodeInfo(radixInfo)
+			if codeInfo:
+				radixCodeInfoList.append(codeInfo)
+		self.radixCodeInfoDB[charName]=radixCodeInfoList
+
+	def parseRadixDescription(self, nodeCharacter):
 		elementCodeInfoList=nodeCharacter.findall(Constant.TAG_CODE_INFORMATION)
-		radixDescList=[]
+		radixCodeInfoDescList=[]
 		for elementCodeInfo in elementCodeInfoList:
-			radixDesc=RadixCodeInfoDescription(elementCodeInfo)
-			radixDescList.append(radixDesc)
-		return RadixDescription(radixDescList)
+			radixCodeInfoDesc=self.convertElementToRadixInfo(elementCodeInfo)
+			radixCodeInfoDescList.append(radixCodeInfoDesc)
+		return RadixDescription(radixCodeInfoDescList)
 
 
-	def getRadixCodeInfo(self, radixName):
+	def setCodeInfoAttribute(self, codeInfo, radixInfo):
+		codeVariance=radixInfo.getCodeVarianceType()
+		isSupportCharacterCode=radixInfo.isSupportCharacterCode()
+		isSupportRadixCode=radixInfo.isSupportRadixCode()
+		codeInfo.setCodeInfoAttribute(codeVariance, isSupportCharacterCode, isSupportRadixCode)
+
+	def getMainRadixCodeInfo(self, radixName):
 		return self.radixCodeInfoDB.get(radixName)[0]
 
 	def getRadixCodeInfoList(self, radixName):
 		return self.radixCodeInfoDB.get(radixName)
+
+	def getRadixDescription(self, radixName):
+		return self.radixDescDB.get(radixName)
 
 	def hasRadix(self, radixName):
 		return (radixName in self.radixCodeInfoDB)
@@ -79,7 +101,7 @@ class RadixManager:
 		radixInfoList=[]
 		for characterNode in characterNodeList:
 			charName=characterNode.get(Constant.TAG_NAME)
-			radixInfoSet=self.parseRadixDescriptionList(characterNode)
+			radixInfoSet=self.parseRadixDescription(characterNode)
 
 			radixInfoList.append([charName, radixInfoSet])
 		return radixInfoList
@@ -93,6 +115,10 @@ class RadixCodeInfoDescription:
 		self.codeVariance=CodeVarianceType()
 		self.setCodeVarianceType(infoDict)
 
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(infoDict)
+		self._isSupportCharacterCode=isSupportCharacterCode
+		self._isSupportRadixCode=isSupportRadixCode
+
 		self.elementCodeInfo=elementCodeInfo
 
 	def setCodeVarianceType(self, codeInfoDict):
@@ -101,6 +127,12 @@ class RadixCodeInfoDescription:
 
 	def getCodeVarianceType(self):
 		return self.codeVariance
+
+	def isSupportCharacterCode(self):
+		return self._isSupportCharacterCode
+
+	def isSupportRadixCode(self):
+		return self._isSupportRadixCode
 
 	def getElement(self):
 		return self.elementCodeInfo

@@ -115,26 +115,14 @@ class ARCodeInfo(CodeInfo):
 		RADIX_丨丨:'e',
 	}
 
-	def __init__(self, codeList=None, isSupportCharacterCode=True, isSupportRadixCode=True):
-		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
+	def __init__(self, codeList=[]):
+		CodeInfo.__init__(self, True, True)
 
 		self._codeList=codeList
 
 	@staticmethod
 	def generateDefaultCodeInfo(codeList):
 		codeInfo=ARCodeInfo(codeList)
-		return codeInfo
-
-	@staticmethod
-	def generateCodeInfo(propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
-		codeList=None
-		str_rtlist=propDict.get('資訊表示式')
-		if str_rtlist!=None:
-			codeList=str_rtlist.split(ARCodeInfo.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(ARCodeInfo.RADIX_SEPERATOR), codeList))
-
-		codeInfo=ARCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def toCode(self):

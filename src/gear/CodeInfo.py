@@ -3,6 +3,11 @@ from .CodeVarianceType import CodeVarianceType
 class CodeInfo:
 	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
 		self.codeVariance=CodeVarianceType()
+		self._isSupportCharacterCode=True
+		self._isSupportRadixCode=True
+
+	def setCodeInfoAttribute(self, codeVariance, isSupportCharacterCode, isSupportRadixCode):
+		self.multiplyCodeVarianceType(codeVariance)
 		self._isSupportCharacterCode=isSupportCharacterCode
 		self._isSupportRadixCode=isSupportRadixCode
 
