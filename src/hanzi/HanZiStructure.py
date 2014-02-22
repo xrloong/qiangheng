@@ -1,10 +1,11 @@
+import sys
 from . import HanZiCodeInfo
 
 class HanZiStructure:
 	def __init__(self):
 		pass
 
-	def getNodeList(self):
+	def getStructureList(self):
 		return []
 
 	def getCodeInfoList(self):
@@ -13,12 +14,16 @@ class HanZiStructure:
 	def setCompositions(self):
 		pass
 
+	def printAllCodeInfo(self):
+		for codeInfo in self.getCodeInfoList():
+			pass
+
 class HanZiUnitStructure(HanZiStructure):
 	def __init__(self, codeType, codeInfoProperties):
 		codeInfo=HanZiCodeInfo.HanZiCodeInfo(codeInfoProperties, codeType)
 		self.codeInfoList=[codeInfo]
 
-	def getNodeList(self):
+	def getStructureList(self):
 		return []
 
 	def getCodeInfoList(self):
@@ -31,22 +36,19 @@ class HanZiWrapperStructure(HanZiStructure):
 	def __init__(self, referenceNode, expression):
 		self.referenceNode=referenceNode
 		self.expression=expression
-		self.targetNode=None
 		self.codeInfoList=[]
 
-	def getNodeList(self):
-		return [self.referenceNode]
+	def getStructureList(self):
+		return self.getTargetStructureList()
 
 	def getCodeInfoList(self):
-		return self.codeInfoList
+		codeInfoList=[]
+		for structure in self.getStructureList():
+			codeInfoList.extend(structure.getCodeInfoList())
+		return codeInfoList
 
 	def setCompositions(self):
-		targetNode=self.targetNode
-		targetNode.setCompositions()
-		self.codeInfoList=targetNode.getCodeInfoList()
-
-	def setTargetNode(self, targetNode):
-		self.targetNode=targetNode
+		self.referenceNode.setNodeTree()
 
 	def getReferenceNode(self):
 		return self.referenceNode
@@ -54,18 +56,28 @@ class HanZiWrapperStructure(HanZiStructure):
 	def getExpression(self):
 		return self.expression
 
+	def getTargetStructureList(self):
+		tempList=self.expression.split(".")
+		if(len(tempList)>1):
+			referenceName=tempList[0]
+			index=int(tempList[1])
+			structureList=self.referenceNode.getSubStructureList(index)
+		else:
+			structureList=self.referenceNode.getStructureList()
+		return structureList
+
 class HanZiAssemblageStructure(HanZiStructure):
-	def __init__(self, codeType, operator, nodeList):
+	def __init__(self, codeType, operator, structureList):
 		self.operator=operator
-		self.nodeList=nodeList
+		self.structureList=structureList
 
 		self.codeInfoList=[]
 		self.codeType=codeType
 
 		self.flagIsSet=False
 
-	def getNodeList(self):
-		return self.nodeList
+	def getStructureList(self):
+		return self.structureList
 
 	def getCodeInfoList(self):
 		return self.codeInfoList
@@ -76,7 +88,10 @@ class HanZiAssemblageStructure(HanZiStructure):
 
 		self.flagIsSet=True
 
-		structureList=sum(map(lambda node: node.getStructureList(), self.nodeList), [])
+		structureList=self.structureList
+		for structure in structureList:
+			structure.setCompositions()
+
 		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(structureList)
 
 		for infoList in infoListList:

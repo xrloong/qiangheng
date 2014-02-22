@@ -29,55 +29,13 @@ class DescriptionManagerToHanZiNetworkConverter:
 				structDesc.setRootName(charName)
 				self.recursivelyAddStructure(structDesc)
 
-		# 將 referenceNode 轉為 targetNode
-		# 如焤會使用 "府.0" 及 "府.1" ，則 "府" 為 referenceNode
-		# 而 "广" 及 "付" 為 targetNode 。
-		# 因有可能先建構 "焤" 的結構後，才建構 "府"
-		# 所以在建構 "焤" 時， "府.0" 及 "府.1" 還不存在
-		for charName in sortedNameList:
-			charDesc=self.queryDescription(charName)
-
-			structDescList=charDesc.getStructureList()
-			for structDesc in structDescList:
-				node=self.hanziNetwork.findNode(structDesc)
-				strctureList=node.getStructureListWithCondition()
-				for structure in strctureList:
-					self.recursivelyConvertReferenceNodeToTargetNode(structure)
 		return self.hanziNetwork
-
-	def computeTargetNodeOfWrapperStrcture(self, wrapperStructuer):
-		expression=wrapperStructuer.getExpression()
-		tempList=expression.split(".")
-		if(len(tempList)>1):
-			referenceName=tempList[0]
-			index=int(tempList[1])
-			referenceNode=self.hanziNetwork.structDescUniqueNameToNodeDict.get(referenceName)
-			targetNode=self.hanziNetwork.structDescUniqueNameToNodeDict.get(expression)
-			targetNode.setStructureList(referenceNode.getSubStructureList(index))
-			return targetNode
-
-		else:
-			return wrapperStructuer.referenceNode
-
-	def recursivelyConvertReferenceNodeToTargetNode(self, structure):
-		if isinstance(structure, HanZiStructure.HanZiWrapperStructure):
-			targetNode=self.computeTargetNodeOfWrapperStrcture(structure)
-			structure.setTargetNode(targetNode)
-		else:
-			nodeList=structure.getNodeList()
-			for node in nodeList:
-				strctureList=node.getStructureListWithCondition()
-				for childStructure in strctureList:
-					self.recursivelyConvertReferenceNodeToTargetNode(childStructure);
 
 	def recursivelyAddStructure(self, structDesc):
 		childDescList=structDesc.getCompList()
 		for childSrcDesc in childDescList:
 			self.recursivelyAddStructure(childSrcDesc)
 
-		self.addNodeIntoNetwork(structDesc)
-
-	def addNodeIntoNetwork(self, structDesc):
 		self.hanziNetwork.addNode(structDesc)
 
 	def queryDescription(self, characterName):
@@ -116,23 +74,19 @@ class HanZiNetwork:
 			self.structDescUniqueNameToNodeDict[anonymousName]=tmpNode
 
 	def addNode(self, structDesc):
+		self.addAnonymousNode(structDesc)
 		if structDesc.isLeaf():
-			expression=structDesc.getReferenceExpression()
-			self.addNamedNode(expression, None)
-			self.addAnonymousNode(structDesc)
 			self.addReferenceLink(structDesc)
 		elif structDesc.isTurtle():
-			self.addAnonymousNode(structDesc)
 			self.addUnitLink(structDesc)
 		else:
-			self.addAnonymousNode(structDesc)
 			self.addLink(structDesc)
 
 	def addReferenceLink(self, structDesc):
 		expression=structDesc.getReferenceExpression()
 		name=structDesc.getReferenceName()
-#		rootNode=self.structDescExpandNameToNodeDict.get(name)
-		rootNode=self.structDescExpandNameToNodeDict.get(expression)
+		rootNode=self.structDescExpandNameToNodeDict.get(name)
+#		rootNode=self.structDescExpandNameToNodeDict.get(expression)
 
 		structure=HanZiStructure.HanZiWrapperStructure(rootNode, expression)
 
@@ -152,9 +106,10 @@ class HanZiNetwork:
 		childDescList=structDesc.getCompList()
 
 		childNodeList=[self.findNode(childDesc) for childDesc in childDescList]
+		childStrctureList=[node.getFirstStructure() for node in childNodeList]
 
 		codeType=structDesc.getCodeType()
-		structure=HanZiStructure.HanZiAssemblageStructure(codeType, operator, childNodeList)
+		structure=HanZiStructure.HanZiAssemblageStructure(codeType, operator, childStrctureList)
 
 		dstNode=self.findNode(structDesc)
 		dstNode.addStructure(structure)

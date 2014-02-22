@@ -1,3 +1,4 @@
+import sys
 from . import HanZiStructure
 
 class HanZiNode:
@@ -24,22 +25,17 @@ class HanZiNode:
 	def getStructureListWithCondition(self):
 		return self.structureList
 
-	def getSubNodeList(self, index):
-		subNodeList=[]
-		for structure in self.structureList:
-			if isinstance(structure, HanZiStructure.HanZiAssemblageStructure):
-				nodeList=structure.getNodeList()
-				subNode=nodeList[index]
-				subNodeList.append(subNode)
-		return subNodeList
-
 	def getSubStructureList(self, index):
 		subStructureList=[]
-		subNodeList=self.getSubNodeList(index)
-		for subNode in subNodeList:
-			structureList=subNode.getStructureListWithCondition()
-			subStructureList.extend(structureList)
+		for structure in self.structureList:
+			if isinstance(structure, HanZiStructure.HanZiAssemblageStructure):
+				structureList=structure.getStructureList()
+				subStructureList.append(structureList[index])
 		return subStructureList
+
+	def getFirstStructure(self):
+		structureList=self.getStructureListWithCondition()
+		return structureList[0]
 
 	def getCodeInfoList(self):
 		structureList=self.getStructureListWithCondition()
@@ -63,10 +59,6 @@ class HanZiNode:
 		structureList=self.getStructureListWithCondition()
 
 		for structure in structureList:
-			radixList=structure.getNodeList()
-			for childNode in radixList:
-				childNode.setNodeTree()
-
 			structure.setCompositions()
 
 	def setCompositions(self):
