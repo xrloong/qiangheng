@@ -1,3 +1,5 @@
+from . import HanZiStructure
+
 class HanZiNode:
 	def __init__(self, name, characterProperty=None):
 		self.name=name
@@ -24,10 +26,11 @@ class HanZiNode:
 
 	def getSubNodeList(self, index):
 		subNodeList=[]
-		for structure in self.structureList[:1]:
-			nodeList=structure.getNodeList()
-			subNode=nodeList[index]
-			subNodeList.append(subNode)
+		for structure in self.structureList:
+			if isinstance(structure, HanZiStructure.HanZiAssemblageStructure):
+				nodeList=structure.getNodeList()
+				subNode=nodeList[index]
+				subNodeList.append(subNode)
 		return subNodeList
 
 	def getSubStructureList(self, index):
