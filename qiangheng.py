@@ -10,15 +10,16 @@ from optparse import OptionParser
 
 class QiangHeng:
 	def __init__(self, options):
-		choice=options.imname
+		configFile=options.config_file
 		xml_format=options.xml_format
 
-		[imModule, configFile]=self.getIMInfo(choice)
+		configList=self.readConfig(configFile)
+		[imname, toTemplateList, toComponentList, toCodeList]=configList
+		imModule=self.getIMInfo(imname)
 
 		self.initManager(imModule)
 
-		dirQHDataRoot=options.dir_qhdata
-		self.readDesc(dirQHDataRoot, configFile)
+		self.getDescDBFromXML(toTemplateList, toComponentList, toCodeList)
 
 		self.constructDescriptionNetwork()
 
@@ -34,6 +35,30 @@ class QiangHeng:
 
 		charDescQueryer=self.descMgr.getCharDescQueryer()
 		self.hanziNetwork=HanZiNetwork(ciGenerator)
+
+	def readConfig(self, configFile):
+		f=open(configFile, encoding='utf-8-sig')
+		xmlNode=ElementTree.parse(f)
+		rootNode=xmlNode.getroot()
+
+		configNode=rootNode.find('設定')
+		imnameNode=configNode.find('輸入法名稱')
+		imname=imnameNode.text
+
+		configFileNode=rootNode.find('設定檔')
+		templateNodeList=configFileNode.findall('範本')
+		componentNodeList=configFileNode.findall('部件')
+		radixNodeList=configFileNode.findall('字根')
+
+		rootDirPrefix=configFileNode.get('資料目錄')
+
+		toComponentList=[rootDirPrefix+node.get('檔案') for node in componentNodeList]
+		toTemplateList=[rootDirPrefix+node.get('檔案') for node in templateNodeList]
+		toCodeList=[rootDirPrefix+node.get('檔案') for node in radixNodeList]
+
+
+		return [imname, toTemplateList, toComponentList, toCodeList]
+
 
 	def readDesc(self, dirQHDataRoot, configFile):
 		rootDirPrefix=dirQHDataRoot+"/"
@@ -162,30 +187,23 @@ class QiangHeng:
 
 	def getIMInfo(self, imName):
 		if imName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
-			configFile='config/cj.xml'
 			imName='倉頡'
 		elif imName in ['行', '行列', '行列輸入法', 'array', 'ar',]:
-			configFile='config/ar.xml'
 			imName='行列'
 		elif imName in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
-			configFile='config/dy.xml'
 			imName='大易'
 		elif imName in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
-			configFile='config/bs.xml'
 			imName='嘸蝦米'
 		elif imName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
-			configFile='config/zm.xml'
 			imName='鄭碼'
 		else:
-			configFile='config/default.xml'
 			imName='空'
 
 		imModule=IMMgr.getIMModule(imName)
-		return [imModule, configFile]
+		return imModule
 
 oparser = OptionParser()
-oparser.add_option("-i", "--im", dest="imname", help="輸入法名稱", default="倉頡")
-oparser.add_option("--dir-charinfo", dest="dir_qhdata", help="結構所在的目錄", default="qhdata")
+oparser.add_option("-c", "--config", dest="config_file", help="輸入法設定檔", default="qhdata/config/default.xml")
 oparser.add_option("--xml", action="store_true", dest="xml_format")
 oparser.add_option("--text", action="store_false", dest="xml_format")
 (options, args) = oparser.parse_args()

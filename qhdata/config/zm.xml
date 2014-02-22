@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <瑲珩 版本號="0.2">
-	<設定檔>
-		<範本 檔案="main/template.xml" />
-		<範本 檔案="component/zm/template.xml" />
+	<設定>
+		<輸入法名稱>鄭碼</輸入法名稱>
+	</設定>
+	<設定檔 資料目錄="qhdata/">
+		<範本 檔案="template/main.xml" />
+		<範本 檔案="template/zm.xml" />
 
 		<部件 檔案="main/CJK.xml" />
 		<部件 檔案="component/main/CJK.xml" />

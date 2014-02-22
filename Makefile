@@ -26,7 +26,7 @@ xml:
 	do\
 		echo $$im;\
 #		time ./qiangheng.py -i $$im --xml > _$$im.xml;\
-		time ./qiangheng.py -i $$im --xml |\
+		time ./qiangheng.py -c qhdata/config/$$im.xml --xml |\
 			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
 	done
 	touch $(XML_PATH)
