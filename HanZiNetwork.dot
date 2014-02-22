@@ -1,0 +1,67 @@
+digraph G {
+	edge [color=red]
+	subgraph cluster01 {
+		label="CharacterDescriptionManager"
+		edge [color=purple]
+		C_字符_湘 [label="湘"]
+		C_字符_相 [label="相", group=相]
+		C_字符_想 [label="想"]
+
+		C_湘_氵 [label="氵"]
+		C_湘_相 [label="相"]
+		C_相_木 [label="木", group=木]
+		C_相_目 [label="目", group=目]
+		C_想_相 [label="相"]
+		C_想_心 [label="心", group=心]
+
+		C_字符_湘->C_湘_氵
+		C_字符_湘->C_湘_相
+
+		C_字符_相->C_相_木
+		C_字符_相->C_相_目
+
+		C_字符_想->C_想_相
+		C_字符_想->C_想_心
+
+		C_湘_相->C_字符_相 [color=white]
+		C_想_相->C_字符_相 [color=white]
+	}
+	subgraph cluster02 {
+		label="HanZinetwork"
+		edge [color=blue]
+		N_字符_湘 [label="湘"]
+		N_字符_相 [label="相", group=相]
+		N_字符_想 [label="想"]
+		N_湘_氵 [label="氵", shape=box]
+		N_湘_相 [label="相", shape=box]
+		N_相_木 [label="木", shape=box, group=木]
+		N_相_目 [label="目", shape=box, group=目]
+		N_想_相 [label="相", shape=box]
+		N_想_心 [label="心", shape=box, group=心]
+
+		N_字符_湘->N_湘_氵
+		N_字符_湘->N_湘_相
+
+		N_字符_相->N_相_木
+		N_字符_相->N_相_目
+
+		N_字符_想->N_想_相
+		N_字符_想->N_想_心
+
+		N_湘_相->N_字符_相 [style=dotted]
+		N_想_相->N_字符_相 [style=dotted]
+	}
+	C_字符_湘->N_字符_湘 [constraint=false]
+	C_字符_相->N_字符_相 [constraint=false]
+	C_字符_想->N_字符_想 [constraint=false]
+
+	C_湘_氵->N_湘_氵 [constraint=false]
+	C_湘_相->N_湘_相 [constraint=false]
+
+	C_相_木->N_相_木 [constraint=false]
+	C_相_目->N_相_目 [constraint=false]
+
+	C_想_相->N_想_相 [constraint=false, weight=100]
+	C_想_心->N_想_心 [constraint=false, weight=100]
+}
+
