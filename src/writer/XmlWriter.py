@@ -3,7 +3,7 @@
 import lxml.etree as ET
 #import lxml.objectify as ET
 
-class XMLWriter:
+class XmlWriter:
 	def write(self, imInfo, codeMappingInfoList):
 		keyMaps=imInfo.getKeyMaps()
 

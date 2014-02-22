@@ -39,14 +39,14 @@ class QiangHeng:
 		codeMappingInfoList=self.genIMMapping()
 		if isToOutput:
 			if isFormatXML:
-				from writer import XMLWriter
-				writer = XMLWriter.XMLWriter()
+				from writer import XmlWriter
+				writer = XmlWriter.XmlWriter()
 			elif isFormatTXT:
-				from writer import TXTWriter
-				writer = TXTWriter.TXTWriter()
+				from writer import TxtWriter
+				writer = TxtWriter.TxtWriter()
 			else:
-				from writer import TXTWriter
-				writer = TXTWriter.TXTWriter()
+				from writer import TxtWriter
+				writer = TxtWriter.TxtWriter()
 		else:
 			# 不輸出結果
 			from writer import QuietWriter
