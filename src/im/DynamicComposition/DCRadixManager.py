@@ -1,6 +1,6 @@
 from .DCCodeInfo import DCCodeInfo
 from ..base.RadixManager import RadixManager
-from gear.Stroke import Stroke
+from .Stroke import Stroke
 import Constant
 
 class DCRadixManager(RadixManager):
