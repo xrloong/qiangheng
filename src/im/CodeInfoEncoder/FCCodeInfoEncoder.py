@@ -46,6 +46,8 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 				FCCodeInfoEncoder.encodeAsYou(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorJian.equals(operator):
 				FCCodeInfoEncoder.encodeAsJian(codeInfo, operator, codeInfoList)
+			elif Operator.OperatorJia.equals(operator):
+				FCCodeInfoEncoder.encodeAsJia(codeInfo, operator, codeInfoList)
 
 			else:
 				FCCodeInfoEncoder.encodeAsTurtle(codeInfo, operator, codeInfoList)
@@ -199,6 +201,17 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 
 		grid=FCGrid()
 		grid.setAsTop_InBottomLeft_InBottomRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
+		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
+		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+
+	@staticmethod
+	def encodeAsJia(codeInfo, operator, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+
+		grid=FCGrid()
+		grid.setAsBottom_InTopLeft_InTopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
