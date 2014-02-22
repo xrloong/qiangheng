@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import copy
 
 class TemplateCondition:
@@ -53,20 +54,22 @@ class TemplateDescription:
 				pairList=zip(parameterList, argumentList)
 
 				mappingDict=dict(pairList)
+			else:
+				print("參數列及引數列個數不符", file=sys.stderr)
 			return mappingDict
 
 		def getReplacedCharDesc(targetStructureDescription):
 			tempDesc=targetStructureDescription.copyDeeply()
 
-			replaceCharDesc(tempDesc, mappingDict)
+			replaceCharDesc(tempDesc)
 			return tempDesc
 
 		# 需要先替換兒子，才可以進行自己的替換。
 		# 否則，如：條=(範翛 木)=(範湘 亻丨(志 夂木))
 		# 而 '木' 會被誤判為湘的參數。
-		def replaceCharDesc(charDesc, mappingDict):
+		def replaceCharDesc(charDesc):
 			for comp in charDesc.getCompList():
-				replaceCharDesc(comp, mappingDict)
+				replaceCharDesc(comp)
 
 			argumentDesc=mappingDict.get(charDesc.getExpandName())
 			if argumentDesc!=None:
@@ -89,8 +92,9 @@ class TemplateDescription:
 					break
 			return targetCharDesc
 
-		compList=charDesc.getCompList()
-		mappingDict=getMapping(self.parameterList, compList)
+		argumentList=charDesc.getCompList()
+		parameterList=self.parameterList
+		mappingDict=getMapping(parameterList, argumentList)
 		targetStructureDescription=getWantedCharDesc(mappingDict)
 		resultDesc=getReplacedCharDesc(targetStructureDescription)
 		charDesc.replacedBy(resultDesc)

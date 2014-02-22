@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 from .CharacterDescription import CharacterDescription
 from .operator import OperatorManager
 from parser import QHParser
@@ -106,6 +107,7 @@ class CharDescriptionManager:
 		self.operationMgr.adjustTemplate()
 
 		for charName in self.characterDB.keys():
+#			print("name: %s"%charName, file=sys.stderr);
 			charDesc=self.characterDB.get(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
