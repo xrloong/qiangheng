@@ -45,6 +45,34 @@
 對鄭碼而言：
 對部件分類，各類別的部件互相結合時，採用適當的組合方式。
 
+== 用法說明 ==
+Usage: qiangheng.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -g IMNAME, --gen=IMNAME
+                        輸入法名稱
+  -s STYLE, --style=STYLE
+                        表格格式
+
+其中的 IMNAME 可以為：
+	['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]
+	['行', '行列', '行列輸入法', 'array', 'ar',]
+	['易', '大易', '大易輸入法', 'dayi', 'dy',]
+	['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]
+	['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]
+
+其中的 STYLE 可以為：
+	['scim', 'gcin', 'umie',]
+	uime 用於微軟視窗作業系統上的 uimetool
+
+== 檔案說明 ==
+   README.txt		說明文件
+   U4E00-U9FA6.txt	字的結構描述
+   qiangheng.py		主程式
+   char.py		字符類別
+   im.py		輸入法類別
+
 == 結構說明 ==
 每行定義一個字的結構。以 "叡" 字來做說明。
 
