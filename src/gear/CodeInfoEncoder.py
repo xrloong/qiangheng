@@ -214,7 +214,7 @@ class CodeInfoEncoder:
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 
-		topCodeInfo=self.encodeAsLoong([firstCodeInfo])
+		topCodeInfo=firstCodeInfo
 		bottomCodeInfo=self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
 
 		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])

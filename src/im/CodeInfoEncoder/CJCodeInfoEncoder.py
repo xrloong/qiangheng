@@ -98,6 +98,19 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		self.encodeInternal(codeInfo, '$', codeInfoList)
 		return codeInfo
 
+
+	def encodeAsLin(self, codeInfoList):
+		"""運算 "粦" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+
+		topCodeInfo=self.encodeAsLoong([firstCodeInfo])
+		bottomCodeInfo=self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
+
+		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
+		return codeInfo
+
 	@staticmethod
 	def computeHeadTailCode(code, headCount):
 		frontCode=code[:headCount]
