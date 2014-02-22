@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from .CharDesc import CharDesc
-from .CharDesc import TemplateCharDesc
 from .TemplateDesc import TemplateDesc
 from .CharInfo import CharInfo
 from .OperatorManager import OperatorManager
@@ -19,7 +18,7 @@ class CharDescriptionManager:
 
 			if len(operatorName)>1:
 				# 暫時以運算名稱的字數來區分是否為範本
-				charDesc=TemplateCharDesc(charName, operator, CompList)
+				charDesc=CharDesc(charName, operator, CompList)
 				return charDesc
 			else:
 				if operator.isAvailableOperation():

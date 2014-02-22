@@ -73,52 +73,12 @@ class CharDesc:
 	def setAnonymous(self, anonymous):
 		self.anonymous=anonymous
 
-	def isTemplate(self):
-		return False
+#	def isTemplate(self):
+#		return False
 
 	def isToShow(self):
 		return self.showFlag
 		return self.chInfo.isToShow()
-
-class TemplateCharDesc(CharDesc):
-	def __init__(self, name, operator, argumentList):
-		CharDesc.__init__(self, name, operator, argumentList)
-
-		self.operator=operator
-		self.templateName=operator.getName()
-		self.templateDesc=None
-		self.argumentList=argumentList
-		self.anonymous=True
-		self.chInfo=None
-
-	def __str__(self):
-		return "[%s %s %s]"%(self.templateName, self.templateDesc, self.argumentList)
-
-	def isTemplate(self):
-		return True
-
-	def getTemplateName(self):
-		return self.templateName
-
-	def setTemplateName(self, templateName):
-		self.templateName=templateName
-
-	def setTemplateDesc(self, templateDesc):
-		self.templateDesc=templateDesc
-		self.targetCharDesc=self.templateDesc.getReplacedCharDesc(self.argumentList)
-
-	def getTemplateDesc(self):
-		return self.templateDesc
-
-	def getCharDesc(self):
-		return self.targetCharDesc
-
-	def getCompList(self):
-		return self.getCharDesc().getCompList()
-
-	def copyDescription(self):
-		templateDesc=TemplateCharDesc(self.getName(), self.operator, self.templateDesc)
-		return templateDesc
 
 if __name__=='__main__':
 	print(CharDesc('王', '(龜)', None))

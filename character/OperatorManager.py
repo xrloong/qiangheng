@@ -47,11 +47,13 @@ class OperatorManager:
 		self.templateDB=templateDB
 
 	def getCharDescFromTemplate(self, charDesc):
-		templateName=charDesc.getTemplateName()
-		templateDesc=self.templateDB.get(templateName)
-		charDesc.setTemplateDesc(templateDesc)
+		operator=charDesc.getOperator()
+		compList=charDesc.getCompList()
 
-		resultDesc=charDesc.getCharDesc()
+		templateName=operator.getName()
+		templateDesc=self.templateDB.get(templateName)
+
+		resultDesc=templateDesc.getReplacedCharDesc(compList)
 
 		resultDesc=self.copyCharDesc(resultDesc)
 		resultDesc.setName(charDesc.getName())
@@ -74,8 +76,11 @@ class OperatorManager:
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
 
+	def isTemplateOperator(self, operator):
+		return len(operator.getName())>1
+
 	def rearrangeRecursively(self, charDesc):
-		if charDesc.isTemplate():
+		if self.isTemplateOperator(charDesc.getOperator()):
 			charDesc=self.getCharDescFromTemplate(charDesc)
 		l=[]
 		for childDesc in charDesc.getCompList():
