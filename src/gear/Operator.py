@@ -81,3 +81,8 @@ OperatorYou=BuiltinOperator('幽', RearrangeInfo.RearrangeInfoSame())
 OperatorLiang=BuiltinOperator('㒳', RearrangeInfo.RearrangeInfoSame())
 OperatorJia=BuiltinOperator('夾', RearrangeInfo.RearrangeInfoSame())
 
+OperatorLin=BuiltinOperator('粦', RearrangeInfo.RearrangeInfoSame())
+OperatorLi=BuiltinOperator('瓥', RearrangeInfo.RearrangeInfoSame())
+OperatorLuan=BuiltinOperator('䜌', RearrangeInfo.RearrangeInfoSame())
+OperatorBan=BuiltinOperator('辦', RearrangeInfo.RearrangeInfoSame())
+

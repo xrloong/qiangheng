@@ -107,6 +107,15 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
+
+	def encodeAsLuan(self, codeInfoList):
+		"""運算 "䜌" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		codeInfo=self.encodeAsLoong([firstCodeInfo, secondCodeInfo, secondCodeInfo])
+		return codeInfo
+
+
 	@staticmethod
 	def computeArrayCodeForGenerality(codeInfoList, isWithMergeRadix=False):
 		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))

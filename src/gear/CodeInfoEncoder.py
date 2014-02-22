@@ -65,6 +65,16 @@ class CodeInfoEncoder:
 			elif Operator.OperatorJia.equals(operator):
 				codeInfo=self.encodeAsJia(codeInfoList)
 
+			elif Operator.OperatorLuan.equals(operator):
+				codeInfo=self.encodeAsLuan(codeInfoList)
+			elif Operator.OperatorBan.equals(operator):
+				codeInfo=self.encodeAsBan(codeInfoList)
+
+			elif Operator.OperatorLin.equals(operator):
+				codeInfo=self.encodeAsLin(codeInfoList)
+			elif Operator.OperatorLi.equals(operator):
+				codeInfo=self.encodeAsLi(codeInfoList)
+
 			else:
 				codeInfo=self.encodeAsInvalidate(codeInfoList)
 		return codeInfo
@@ -180,5 +190,46 @@ class CodeInfoEncoder:
 	def encodeAsJia(self, codeInfoList):
 		"""運算 "夾" """
 		codeInfo=self.encodeAsLoong(codeInfoList)
+		return codeInfo
+
+
+	def encodeAsLuan(self, codeInfoList):
+		"""運算 "䜌" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		codeInfo=self.encodeAsGoose([secondCodeInfo, firstCodeInfo, secondCodeInfo])
+		return codeInfo
+
+	def encodeAsBan(self, codeInfoList):
+		"""運算 "辦" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		codeInfo=self.encodeAsGoose([firstCodeInfo, secondCodeInfo, firstCodeInfo])
+		return codeInfo
+
+
+	def encodeAsLin(self, codeInfoList):
+		"""運算 "粦" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+
+		topCodeInfo=self.encodeAsLoong([firstCodeInfo])
+		bottomCodeInfo=self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
+
+		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
+		return codeInfo
+
+	def encodeAsLi(self, codeInfoList):
+		"""運算 "瓥" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+		fourthCodeInfo=codeInfoList[3]
+
+		topCodeInfo=self.encodeAsGoose([firstCodeInfo, secondCodeInfo])
+		bottomCodeInfo=self.encodeAsGoose([thirdCodeInfo, fourthCodeInfo])
+
+		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
 

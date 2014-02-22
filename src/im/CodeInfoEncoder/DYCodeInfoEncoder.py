@@ -71,6 +71,14 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo.setCodeList([dyCode])
 		return codeInfo
 
+
+	def encodeAsLuan(self, codeInfoList):
+		"""運算 "䜌" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		codeInfo=self.encodeAsLoong([firstCodeInfo, secondCodeInfo, secondCodeInfo])
+		return codeInfo
+
 	@staticmethod
 	def computeDaYiCode(codeInfoList):
 		dyCodeList=list(map(lambda c: c.getMainCode(), codeInfoList))
