@@ -24,8 +24,9 @@ Options:
   -h, --help            show this help message and exit
   -c CONFIG_FILE, --config=CONFIG_FILE
                         輸入法設定檔
-  --xml
-  --text
+  --format=OUTPUT_FORMAT
+                        輸出格式，可能的選項有：xml、text、quiet
+  -q, --quiet
 
 
 == 檔案說明 ==
