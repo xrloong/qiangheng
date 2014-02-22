@@ -3,6 +3,7 @@ from character import CharInfo
 class IM:
 	"輸入法"
 
+	IMName="空"
 	def __init__(self):
 		self.keyMaps=[]
 		self.nameDict={

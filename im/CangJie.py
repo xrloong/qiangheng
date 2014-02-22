@@ -4,6 +4,7 @@ from character import CJCharInfo
 class CangJie(IM):
 	"倉頡輸入法"
 
+	IMName="倉頡"
 	def __init__(self):
 		self.keyMaps=[
 			['a', '日',],

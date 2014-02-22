@@ -4,6 +4,7 @@ from character import DYCharInfo
 class DaYi(IM):
 	"大易輸入法"
 
+	IMName="大易"
 	def __init__(self):
 		self.keyMaps=[
 			[',', '力',],

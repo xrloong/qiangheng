@@ -9,7 +9,7 @@ class CharDescriptionManager:
 	NoneInfo=CharInfo('[瑲珩預設]', [])
 	NoneDesc=CharDesc("", '龜', [], '+', '(龜)', NoneInfo)
 
-	def __init__(self, CharInfoGenerator):
+	def __init__(self, imModule, CharInfoGenerator):
 		# descDB 放最原始、沒有擴展過的 CharDesc ，也就是從檔案讀出來的資料。
 		# descNetwork 放擴展過的，且各個 CharDesc 可能會彼此參照。
 		# 但 descNetwork 跟 descDB 則是完全獨立。
@@ -17,6 +17,8 @@ class CharDescriptionManager:
 		# ConstructDescriptionNetwork() 會從 descDB 建立 descNetwork
 		self.descDB={}
 		self.descNetwork={}
+
+		imName=imModule.IMInfo.IMName
 
 		def CharDescGenerator(charName, structInfo=['龜', [], '(龜)']):
 			operator, CompList, expression=structInfo
@@ -32,7 +34,7 @@ class CharDescriptionManager:
 			anonymousName=CharDesc.generateNewAnonymousName()
 			return CharDescGenerator(anonymousName)
 
-		self.rearrangeMgr=RearrangementManager(emptyCharDescGenerator)
+		self.rearrangeMgr=RearrangementManager(imModule, self, emptyCharDescGenerator)
 
 		self.charInfoGenerator=CharInfoGenerator
 		self.charDescGenerator=CharDescGenerator

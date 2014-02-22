@@ -4,6 +4,7 @@ from character import ZMCharInfo
 class ZhengMa(IM):
 	"鄭碼輸入法"
 
+	IMName="鄭碼"
 	def __init__(self):
 		self.keyMaps=[
 			['a', 'Ａ',],

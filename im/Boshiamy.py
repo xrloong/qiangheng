@@ -4,6 +4,7 @@ from character import BSCharInfo
 class Boshiamy(IM):
 	"嘸蝦米輸入法"
 
+	IMName="嘸蝦米"
 	def __init__(self):
 		self.keyMaps=[
 			['a', 'Ａ',],

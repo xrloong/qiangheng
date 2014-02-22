@@ -77,7 +77,7 @@ def genFile(options):
 			]
 
 	ciGenerator=imModule.CharInfoGenerator
-	descMgr=CharDescriptionManager(ciGenerator)
+	descMgr=CharDescriptionManager(imModule, ciGenerator)
 
 	getDescDBFromXML(pathlist, descMgr)
 	descMgr.ConstructDescriptionNetwork()

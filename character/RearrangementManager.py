@@ -1,11 +1,13 @@
 from .CharDesc import CharDesc
 class RearrangementManager:
-	def __init__(self, emptyCharDescGenerator):
+	def __init__(self, imModule, descMgr, emptyCharDescGenerator):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
+		self.imName=imModule.IMInfo.IMName
+		self.descMgr=descMgr
 
 	# 分成以下層級
 	# 錯
-	# SpecialCase:	龜、水
+	# SpecialCase:	龜、水、龍
 	# 橫、縱
 	# Base:		好、志、湘、算、纂、膷、回、同、區、函、左、句
 	# LShape:	廖、載、聖、起
@@ -44,6 +46,21 @@ class RearrangementManager:
 			ansDirection='+'
 		elif oldOperator=='衍':
 			ansDirection='-'
+			if self.imName!='鄭碼':
+				x=oldCompList[0]
+				y=oldCompList[1]
+
+				leftDesc=self.descMgr.getExpandDescriptionByNameInNetwork('彳')
+				rightDesc=self.descMgr.getExpandDescriptionByNameInNetwork('亍')
+				if x.getName()=='行':
+#					tmpDesc=self.emptyCharDescGenerator()
+#					tmpDesc.setCompList([lefDesc, y, rightDesc])
+#					tmpDesc.setOperatorAndDirection('湘', '-')
+
+					charDesc.setCompList([leftDesc, y, rightDesc])
+					charDesc.setOperatorAndDirection('湘', '-')
+			else:
+				pass
 		elif oldOperator=='衷':
 			ansDirection='|'
 		else:
@@ -55,6 +72,12 @@ class RearrangementManager:
 
 		if oldOperator=='起':
 			ansDirection='+'
+			if self.imName in ['嘸蝦米', '行列', '大易']:
+				x=oldCompList[0]
+				y=oldCompList[1]
+
+				charDesc.setCompList([y, x])
+				charDesc.setOperatorAndDirection('龍', '+')
 		elif oldOperator=='廖':
 			ansDirection='+'
 		elif oldOperator=='載':
@@ -209,6 +232,8 @@ class RearrangementManager:
 
 		ansDir='+'
 		if oldOperator in ['龜']:
+			ansDir='+'
+		elif oldOperator in ['龍']:
 			ansDir='+'
 		elif oldOperator in ['水']:
 			# 暫時不會執行這段，且還在重構中

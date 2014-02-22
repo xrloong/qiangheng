@@ -4,6 +4,7 @@ from character import ARCharInfo
 class Array(IM):
 	"行列輸入法"
 
+	IMName="行列"
 	def __init__(self):
 		self.keyMaps=[
 			['a', '1-',],
