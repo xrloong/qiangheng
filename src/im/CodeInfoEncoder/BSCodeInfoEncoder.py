@@ -1,3 +1,5 @@
+import sys
+
 from ..CodeInfo.BSCodeInfo import BSCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
 
@@ -21,12 +23,13 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
-		codeInfo=self.generateDefaultCodeInfo()
 		bslist=list(map(lambda c: c.getBSProp()[0], codeInfoList))
-		cat="".join(bslist)
-		bs_incode=(cat[:3]+cat[-1]) if len(cat)>4 else cat
+		bslist=list(sum(bslist, []))
+		bs_code_list=(bslist[:3]+bslist[-1:]) if len(bslist)>4 else bslist
 		bs_spcode=codeInfoList[-1].getBSProp()[1]
-		codeInfo.setBSProp(bs_incode, bs_spcode)
+
+		codeInfo=self.generateDefaultCodeInfo()
+		codeInfo.setBSProp(bs_code_list, bs_spcode)
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
