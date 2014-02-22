@@ -39,7 +39,9 @@ class RadixManager:
 				codeInfo=self.convertRadixInfoToCodeInfo(radixInfo)
 				if codeInfo:
 					radixCodeInfoList.append(codeInfo)
-			self.radixCodeInfoDB[charName]=radixCodeInfoList
+			oldRadixCodeInfoList=self.radixCodeInfoDB.get(charName, [])
+			oldRadixCodeInfoList.extend(radixCodeInfoList)
+			self.radixCodeInfoDB[charName]=oldRadixCodeInfoList
 
 
 	def getRadixCodeInfo(self, radixName):
