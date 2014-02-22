@@ -3,7 +3,6 @@ class NoneIM:
 	"輸入法"
 
 	class CharInfo:
-	#	NoneChar=CharInfo('[瑲珩預設空字符]', [], [])
 		def __init__(self, charname, parseans, prop):
 			self.charname=charname
 			self.operator=parseans[0]
@@ -37,6 +36,8 @@ class NoneIM:
 		def isSeted(self):
 			# 是否之前設過值，會被覆蓋
 			return False
+	CharInfo.NoneChar=CharInfo('[瑲珩預設空字符]', ['龜', []], [])
+	CharInfo.NoneChar.noneFlag=True
 
 	def __init__(self):
 		self.keyMaps=[]
