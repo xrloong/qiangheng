@@ -20,14 +20,10 @@
 		<部件 檔案="style/ar.xml" />
 
 		<部件 檔案="component/CJK/ar.xml" />
-<!--
 		<部件 檔案="component/CJK-A/ar.xml" />
--->
 
 		<字根 檔案="radix/CJK/ar.xml" />
-<!--
 		<字根 檔案="radix/CJK-A/ar.xml" />
--->
 	</設定檔>
 </瑲珩>
 

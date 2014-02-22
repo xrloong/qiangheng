@@ -113,6 +113,9 @@ class HanZiNode:
 		self.name=name
 		self.structureList=[]
 
+	def getName(self):
+		return self.name
+
 	def addStructure(self, structure):
 		self.structureList.append(structure)
 
@@ -167,6 +170,9 @@ class HanZiWrapperNode:
 			return nodeList[index]
 		else:
 			return self.targetNode
+
+	def getName(self):
+		return self.getTargetNode().getName()
 
 #	def addStructure(self, structure):
 #		self.getTargetNode().addStructure(structure)

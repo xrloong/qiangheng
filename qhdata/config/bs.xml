@@ -20,15 +20,11 @@
 		<部件 檔案="style/bs.xml" />
 
 		<部件 檔案="component/CJK/bs.xml" />
-<!--
 		<部件 檔案="component/CJK-A/bs.xml" />
--->
 
 		<字根 檔案="radix/CJK/bs.xml" />
 		<字根 檔案="radix/CJK/bs-simple.xml" />
-<!--
 		<字根 檔案="radix/CJK-A/bs.xml" />
--->
 	</設定檔>
 </瑲珩>
 
