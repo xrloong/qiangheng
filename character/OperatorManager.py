@@ -49,30 +49,41 @@ class OperatorManager:
 		self.descMgr=descMgr
 		self.templateDB={}
 
-		operatorLoong=self.getOperatorByName('龍')
 		self.rearrangeInfoDictForBuiltinOperator={
 			'龜':RearrangeInfoSame(),
 			'爲':RearrangeInfoSame(),
-			'錯':RearrangeInfoSame(),
+			'龍':RearrangeInfoSame(),
 
 			'蚕':RearrangeInfoSame(),
 			'鴻':RearrangeInfoSame(),
-
-			'起':RearrangeInfoSame(),
-			'廖':RearrangeInfoSame(),
-			'載':RearrangeInfoSame(),
-			'聖':RearrangeInfoSame(),
-
 			'回':RearrangeInfoSame(),
-			'同':RearrangeInfoSame(),
+
+
+			'錯':RearrangeInfoSame(),
 			'函':RearrangeInfoSame(),
-			'區':RearrangeInfoSame(),
-			'左':RearrangeInfoSame(),
+			'起':RearrangeInfoSame(),
 		}
+
+		self.directionInfoList={
+			'龜':'*',
+			'爲':'*',
+			'龍':'*',
+
+			'蚕':'|',
+			'鴻':'-',
+			'回':'@',
+
+			'錯':'*',
+			'起':'*',
+			'函':'@',
+		}
+
 		self.rearrangeInfoDictForTemplateOperator={}
 		def operatorGenerator(operatorName):
-			return Operator.Operator(operatorName)
+			direction=self.directionInfoList.get(operatorName, '*')
+			return Operator.Operator(operatorName, direction)
 
+		operatorLoong=operatorGenerator('龍')
 		self.operatorGenerator=operatorGenerator
 
 	def setTemplateDB(self, templateDB):
@@ -80,11 +91,6 @@ class OperatorManager:
 		for templateName, templateDesc in templateDB.items():
 			rearrangeInfoTemplate=RearrangeInfoTemplate(templateDesc)
 			self.rearrangeInfoDictForTemplateOperator[templateName]=rearrangeInfoTemplate
-
-	def getTemplateFromOperator(self, operator):
-		templateName=operator.getName()
-		templateDesc=self.templateDB.get(templateName)
-		return templateDesc
 
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
@@ -99,7 +105,7 @@ class OperatorManager:
 		return charDesc
 
 	def getOperatorByName(self, operatorName):
-		return Operator.Operator(operatorName)
+		return self.operatorGenerator(operatorName)
 
 	def rearrangeDesc(self, charDesc):
 		operator=charDesc.getOperator()

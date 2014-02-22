@@ -16,15 +16,7 @@ class CharDescriptionManager:
 			operatorName, CompList=structInfo
 			operator=self.operatorGenerator(operatorName)
 
-			if len(operatorName)>1:
-				# 暫時以運算名稱的字數來區分是否為範本
-				charDesc=HangerCharDesc(operator, CompList)
-				return charDesc
-			else:
-				if operator.isAvailableOperation():
-					charDesc=HangerCharDesc(operator, CompList)
-				else:
-					charDesc=None
+			charDesc=HangerCharDesc(operator, CompList)
 			return charDesc
 
 		def charDescRearranger(charDesc):
