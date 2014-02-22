@@ -1,4 +1,3 @@
-from operatorinfo import OperatorInfo
 from operatorinfo.RearrangeInfo import *
 from .CharDesc import CharDesc
 
