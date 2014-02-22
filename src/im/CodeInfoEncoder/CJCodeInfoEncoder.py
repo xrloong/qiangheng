@@ -5,28 +5,24 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateDefaultCodeInfo(self, direction, codeInfoList):
-		codeInfo=CJCodeInfo(None, direction, [])
-		self.encodeInternal(codeInfo, direction, codeInfoList)
+	def generateDefaultCodeInfo(self, direction, ansRadixList):
+		cjBody=CJCodeInfoEncoder.computeBodyCode(ansRadixList, direction)
+		codeInfo=CJCodeInfo(None, direction, ansRadixList, cjBody)
+
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
 
-		_cj_single=propDict.get('獨體編碼')
-		_cj_rtlist=[]
+		direction='*'
+		singleCode=propDict.get('獨體編碼')
+		rtlist=[]
 		str_rtlist=propDict.get('資訊表示式')
-		direction='*'
 		if str_rtlist!=None:
-			_cj_rtlist=[str_rtlist]
+			rtlist=[str_rtlist]
 
-		codeInfo=CJCodeInfo(_cj_single, direction, _cj_rtlist, isSupportCharacterCode, isSupportRadixCode)
-
-		direction='*'
-		rtlist=codeInfo.getRtList()
-		cjBody=self.computeBodyCode(rtlist, direction)
-		cjTotal=CJCodeInfoEncoder.computeTotalCode(rtlist, direction).lower()
-		codeInfo.setCharacter(cjTotal, cjBody)
+		cjBody=CJCodeInfoEncoder.computeBodyCode(rtlist, direction)
+		codeInfo=CJCodeInfo(singleCode, direction, rtlist, cjBody, isSupportCharacterCode, isSupportRadixCode)
 
 		return codeInfo
 
@@ -35,78 +31,80 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		if singletonCode:
 			return singletonCode
 		else:
-			return codeInfo.getTotalCode()
+			direction=codeInfo.getDirection()
+			rtlist=codeInfo.getRtList()
+
+			cjTotal=CJCodeInfoEncoder.computeTotalCode(rtlist, direction).lower()
+			return cjTotal
 
 	def isAvailableOperation(self, codeInfoList):
 		return True
 
-	def encodeInternal(self, codeInfo, direction, codeInfoList):
-		ansRadixList=[]
-		for tmpCodeInfo in codeInfoList:
-			tmpDirCode, tmpRadixList=tmpCodeInfo.getCJProp()
-			if direction=='$':
-				ansRadixList.extend(tmpRadixList)
-			elif tmpDirCode in ['*', '@']:
-				ansRadixList.append(tmpCodeInfo._cj_body)
-			elif tmpDirCode==direction:
-				# 同向
-				ansRadixList.extend(tmpRadixList)
-			else:
-				# 不同向
-				ansRadixList.append(tmpCodeInfo._cj_body)
-
-		codeInfo.setCJProp(direction, ansRadixList)
-
-		if direction!=None and ansRadixList!=None:
-			cjBody=self.computeBodyCode(ansRadixList, direction)
-			cjTotal=CJCodeInfoEncoder.computeTotalCode(ansRadixList, direction).lower()
-			codeInfo.setCharacter(cjTotal, cjBody)
-
 
 	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		codeInfo=self.generateDefaultCodeInfo('*', codeInfoList)
+		direction='*'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
-		codeInfo=self.generateDefaultCodeInfo('*', codeInfoList)
+		direction='*'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
 		"""運算 "東" """
-		codeInfo=self.generateDefaultCodeInfo('$', codeInfoList)
+		direction='$'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=self.generateDefaultCodeInfo('*', codeInfoList)
+		direction='*'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 
 	def encodeAsSilkworm(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo('|', codeInfoList)
+		direction='|'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo('-', codeInfoList)
+		direction='-'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 	def encodeAsLoop(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo('@', codeInfoList)
+		direction='@'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 
 	def encodeAsMu(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo('$', codeInfoList)
+		direction='$'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 	def encodeAsZuo(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo('$', codeInfoList)
+		direction='$'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 	def encodeAsJia(self, codeInfoList):
-		codeInfo=self.generateDefaultCodeInfo('$', codeInfoList)
+		direction='$'
+		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
 		return codeInfo
 
 
@@ -121,6 +119,25 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
+
+	def convertCodeInfoListToRadixList(self, direction, codeInfoList):
+		ansRadixList=[]
+		for tmpCodeInfo in codeInfoList:
+			tmpDirCode=tmpCodeInfo.getDirection()
+			tmpRadixList=tmpCodeInfo.getRtList()
+			if direction=='$':
+				ansRadixList.extend(tmpRadixList)
+			elif tmpDirCode in ['*', '@']:
+				ansRadixList.append(tmpCodeInfo.getBodyCode())
+			elif tmpDirCode==direction:
+				# 同向
+				ansRadixList.extend(tmpRadixList)
+			else:
+				# 不同向
+				ansRadixList.append(tmpCodeInfo.getBodyCode())
+
+		return ansRadixList
+
 
 	@staticmethod
 	def computeHeadTailCode(code, headCount):
@@ -146,9 +163,6 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 	@staticmethod
 	def computeBodyCode(codeList, direction):
-		def convertAllToHeadTail(l):
-			pass
-
 		if direction=='$':
 			tmpCodeList=[CJCodeInfoEncoder.computeHeadTailCode(x, 3) for x in codeList]
 			tmpCode=''.join(tmpCodeList)
