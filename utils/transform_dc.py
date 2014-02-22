@@ -297,9 +297,11 @@ class BaseCurveComputer:
 		return self.newExp
 
 	def get_點(self, startPoint, width, height):
+		assert height>0
 		return [(False, (startPoint[0] + width, startPoint[1] + height))]
 
 	def get_圓(self, startPoint, a, b):
+		assert a>0 and b>0
 		CX = startPoint[0]
 		CY = startPoint[1] + b
 
@@ -320,78 +322,61 @@ class BaseCurveComputer:
 			]
 
 	def get_橫(self, startPoint, width):
+		assert width>0
 		return [(False, (startPoint[0] + width, startPoint[1]))]
 
 	def get_豎(self, startPoint, height):
+		assert height>0
 		return [(False, (startPoint[0], startPoint[1] + height))]
 
 	def get_左(self, startPoint, width):
+		assert width>0
 		return [ (False, (startPoint[0] - width, startPoint[1])), ]
 
 	def get_上(self, startPoint, height):
+		assert height>0
 		return [ (False, (startPoint[0], startPoint[1] - height)), ]
 
 	def get_提(self, startPoint, width, height):
+		assert width>0 and height>0
 		return [(False, (startPoint[0] + width, startPoint[1] - height))]
 
 	def get_捺(self, startPoint, width, height):
-		cPoint = [startPoint[0] + width/2, startPoint[1] + height/2]
-		midPoint = [max(0, int(cPoint[0] - height/3)), min(0xFF, int(cPoint[1] + width/3))]
+		assert width>0 and height>0
+		cPoint = [startPoint[0] + width//2, startPoint[1] + height//2]
+		midPoint = [max(0, cPoint[0] - height//3), min(0xFF, cPoint[1] + width//3)]
 		endPoint = [startPoint[0] + width, startPoint[1] + height]
 		return [(True, (midPoint[0], midPoint[1])),
 			(False, (endPoint[0], endPoint[1])), ]
 
 	def get_撇(self, startPoint, width, height):
+#		if not (width>0 and height>0): print(self.exp)
+		assert (width>=0 and height>0)
 		return [(False, (startPoint[0] - width, startPoint[1] + height))]
 
 	def get_趯(self, startPoint, width, height):
+		assert width>0 and height>0
 		return [ (False, (startPoint[0] - width, startPoint[1] - height)), ]
 
 
 	def get__臥捺(self, startPoint, w, h):
-		halfW = int(w/2)
-		halfH = int(h/2)
+		assert w>0 and h>0
+		halfW = w//2
+		halfH = h//2
 
 		endPoint = [startPoint[0] + w, startPoint[1] + h]
 		cPoint = [startPoint[0] + halfW, startPoint[1] + halfH]
-		midPoint1 = [startPoint[0]+int(halfW/2)+int(halfH/4), startPoint[1]+int(halfH/2)-int(halfW/4)]
-		midPoint2 = [cPoint[0]+int(halfW/2)-int(halfH/4), min(0xFF, cPoint[1]+int(halfH/2)+int(halfW/4))]
+		midPoint1 = [startPoint[0]+halfW//2+halfH//4, startPoint[1]+halfH//2-halfW//4]
+		midPoint2 = [cPoint[0]+halfW//2-halfH//4, min(0xFF, cPoint[1]+halfH//2+halfW//4)]
 		return [(True, midPoint1),
 			(False, cPoint),
 			(True, midPoint2),
 			(False, endPoint),]
 
-	def get_豎鉤(self, startPoint, h1, h2, w):
-		midPoint1 = [startPoint[0], startPoint[1] + h1 - h2*2]
-		midPoint2 = [startPoint[0], startPoint[1] + h1 + h2]
-		midPoint3 = [int(midPoint2[0] - w/4), midPoint2[1]]
-		return [(False, midPoint1),
-			(True, midPoint2),
-			(False, midPoint3), ]
-
-	def get_彎鉤(self, startPoint, w1, h1):
-		cPoint = [startPoint[0] + w1/2, startPoint[1] + h1/2]
-		midPoint1 = [min(0xFF, int(cPoint[0] + h1/2)), max(0, int(cPoint[1] - w1/2))]
-		midPoint2 = [startPoint[0] + w1, startPoint[1] + h1]
-		return [(True, midPoint1),
-			(False, midPoint2),
-			]
-
-	def get_撇鉤(self, startPoint, h, wg, hg):
-		return [(True, (startPoint[0], startPoint[1] + h)),
-			(False, (startPoint[0] - int(wg/2), startPoint[1] + h)),
-			(False, (startPoint[0] - wg, startPoint[1] + h - hg)),
-			]
-
-	def get_斜鉤(self, startPoint, w, h, ht):
-		return [(True, (startPoint[0] + int(w/5), startPoint[1] + int(h*4/5))),
-			(False, (startPoint[0] + w, startPoint[1] + h)),
-			(False, (startPoint[0] + w, startPoint[1] + h - ht)),
-			]
-
 	def get_豎撇(self, startPoint, w, h):
-		r = h / w / 2
-		tmph = h - int(w * r)
+		assert w>0 and h>0
+		r = h // w // 2
+		tmph = h - w * r
 
 		startEnd = self.getStartEnd()
 		startPoint = startEnd[:2]
@@ -401,10 +386,42 @@ class BaseCurveComputer:
 
 		return [ (False, midPoint1), (True, midPoint2), (False, endPoint) ]
 
+	def get_豎鉤之豎(self, startPoint, h1, h2, w):
+		assert h1>0 and h2 and w>0
+		midPoint1 = [startPoint[0], startPoint[1] + h1 - h2*2]
+		midPoint2 = [startPoint[0], startPoint[1] + h1 + h2]
+		midPoint3 = [midPoint2[0] - w//4, midPoint2[1]]
+		return [(False, midPoint1),
+			(True, midPoint2),
+			(False, midPoint3), ]
+
+	def get_彎鉤之彎(self, startPoint, w1, h1):
+		assert h1>0
+		cPoint = [startPoint[0] + w1//2, startPoint[1] + h1//2]
+		midPoint1 = [min(0xFF, cPoint[0] + h1//2), max(0, cPoint[1] - w1//2)]
+		midPoint2 = [startPoint[0] + w1, startPoint[1] + h1]
+		return [(True, midPoint1),
+			(False, midPoint2),
+			]
+
+	def get_撇鉤之撇(self, startPoint, w, h):
+		assert w>0 and h>0
+		return [(True, (startPoint[0], startPoint[1] + h)),
+			(False, (startPoint[0] - w, startPoint[1] + h)),
+			]
+
+	def get_斜鉤之斜(self, startPoint, w, h):
+		assert w>0 and h>0
+		return [(True, (startPoint[0] + w//5, startPoint[1] + h*4//5)),
+			(False, (startPoint[0] + w, startPoint[1] + h)),
+			]
+
 	def get_曲(self, startPoint, cr):
+		assert cr>0
 		return [ (True, (startPoint[0], startPoint[1] + cr)), (False, (startPoint[0] + cr, startPoint[1] + cr)),]
 
-	def get_撇彎(self, startPoint, wl, wr, h):
+	def get_撇曲(self, startPoint, wl, wr, h):
+		assert wl>0 and wr>0 and h>0
 		midPoint2 = [startPoint[0] - wl, startPoint[1] + h]
 
 		cr = 0x30
@@ -433,7 +450,7 @@ class CurveComputer_點(BaseCurveComputer):
 	def genInfo(self):
 		startX, startY = self.getPos(self.pointList[0])
 		endX, endY = self.getPos(self.pointList[1])
-		self.info = [endY - startY, endX - startX]
+		self.info = [endX - startX, endY - startY]
 
 	def genNewExp(self):
 		w = self.getInfo()[0]
@@ -593,8 +610,7 @@ class CurveComputer_橫折提(BaseCurveComputer):
 
 class CurveComputer_橫折鉤(BaseCurveComputer):
 	def checkType(self):
-		if not len(self.actionList)>=4: print("Error: {0}".format(self.getErrorInfo()))
-#		assert len(self.actionList)>=2, "Error: {0}".format(self.getErrorInfo())
+		assert len(self.actionList)>=4, "Error: {0}".format(self.getErrorInfo())
 #		assert self.actionList==['0000', '0001', '0001', '0001', ], "Error: {0}".format(self.getErrorInfo())
 
 		pointList = self.pointList
@@ -629,7 +645,8 @@ class CurveComputer_橫折鉤(BaseCurveComputer):
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
 		pointInfoList.extend(self.get_橫(pointInfoList[-1][1], w))
-		pointInfoList.extend(self.get_撇鉤(pointInfoList[-1][1], h, wg, hg))
+		pointInfoList.extend(self.get_撇鉤之撇(pointInfoList[-1][1], wg//2, h))
+		pointInfoList.extend(self.get_趯(pointInfoList[-1][1], wg//2, hg))
 		self.newExp = self.genStrokeString(pointInfoList)
 
 class CurveComputer_橫折彎鉤(BaseCurveComputer):
@@ -722,7 +739,7 @@ class CurveComputer_橫撇彎鉤(BaseCurveComputer):
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
 		pointInfoList.extend(self.get_橫(pointInfoList[-1][1], w))
-		pointInfoList.extend(self.get_撇彎(pointInfoList[-1][1], wl, wr, h))
+		pointInfoList.extend(self.get_撇曲(pointInfoList[-1][1], wl, wr, h))
 		pointInfoList.extend(self.get_上(pointInfoList[-1][1], t))
 		self.newExp = self.genStrokeString(pointInfoList)
 
@@ -772,7 +789,8 @@ class CurveComputer_橫撇橫折鉤(BaseCurveComputer):
 		pointInfoList.extend(self.get_橫(pointInfoList[-1][1], w))
 		pointInfoList.extend(self.get_撇(pointInfoList[-1][1], w2, h2))
 		pointInfoList.extend(self.get_橫(pointInfoList[-1][1], w3))
-		pointInfoList.extend(self.get_撇鉤(pointInfoList[-1][1], hh, wg, hg))
+		pointInfoList.extend(self.get_撇鉤之撇(pointInfoList[-1][1], wg//2, hh))
+		pointInfoList.extend(self.get_趯(pointInfoList[-1][1], wg//2, hg))
 		self.newExp = self.genStrokeString(pointInfoList)
 
 class CurveComputer_橫斜鉤(BaseCurveComputer):
@@ -804,7 +822,8 @@ class CurveComputer_橫斜鉤(BaseCurveComputer):
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
 		pointInfoList.extend(self.get_橫(pointInfoList[-1][1], w))
-		pointInfoList.extend(self.get_斜鉤(pointInfoList[-1][1], w2, h2, hg))
+		pointInfoList.extend(self.get_斜鉤之斜(pointInfoList[-1][1], w2, h2))
+		pointInfoList.extend(self.get_上(pointInfoList[-1][1], hg))
 		self.newExp = self.genStrokeString(pointInfoList)
 
 class CurveComputer_橫折橫折(BaseCurveComputer):
@@ -976,28 +995,36 @@ class CurveComputer_豎橫折鉤(BaseCurveComputer):
 		mid3X, mid3Y = self.getPos(self.pointList[3])
 		mid4X, mid4Y = self.getPos(self.pointList[4])
 		endX, endY = self.getPos(self.pointList[5])
-		wp = mid1X - startX
+		wp = startX - mid1X
 		hp = mid1Y - startY
 		w = mid2X - mid1X
 		h = mid4Y - mid2Y
 		wg = mid2X - endX
 		hg = mid4Y - endY
-		self.info = [hp, w, h, wg, hg]
+		self.info = [wp, hp, w, h, wg, hg]
 
 	def genNewExp(self):
 		startEnd = self.getStartEnd()
 		startPoint = startEnd[:2]
-		hp = self.getInfo()[0]
-		w = self.getInfo()[1]
-		h = self.getInfo()[2]
-		wg = self.getInfo()[3]
-		hg = self.getInfo()[4]
+		wp = self.getInfo()[0]
+		hp = self.getInfo()[1]
+		w = self.getInfo()[2]
+		h = self.getInfo()[3]
+		wg = self.getInfo()[4]
+		hg = self.getInfo()[5]
 
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
-		pointInfoList.extend(self.get_豎(pointInfoList[-1][1], hp))
+		if wp>0:
+			pointInfoList.extend(self.get_撇(pointInfoList[-1][1], wp, hp))
+		elif wp<0:
+			#捺
+			assert False
+		else:
+			pointInfoList.extend(self.get_豎(pointInfoList[-1][1], hp))
 		pointInfoList.extend(self.get_橫(pointInfoList[-1][1], w))
-		pointInfoList.extend(self.get_撇鉤(pointInfoList[-1][1], h, wg, hg))
+		pointInfoList.extend(self.get_撇鉤之撇(pointInfoList[-1][1], wg//2, h))
+		pointInfoList.extend(self.get_趯(pointInfoList[-1][1], wg//2, hg))
 		self.newExp = self.genStrokeString(pointInfoList)
 
 class CurveComputer_豎曲鉤(BaseCurveComputer):
@@ -1052,7 +1079,7 @@ class CurveComputer_豎曲(BaseCurveComputer):
 		startX, startY = self.getPos(self.pointList[0])
 		endX, endY = self.getPos(self.pointList[-1])
 
-		cr = min(int((endX - startX)/3), int((endY - startY)/3), 0x20)
+		cr = min((endX - startX)//3, (endY - startY)//3, 0x20)
 		w = endX - startX - cr
 		h = endY - startY - cr
 		self.info = [w, h, cr]
@@ -1099,8 +1126,8 @@ class CurveComputer_豎鉤(BaseCurveComputer):
 
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
-		pointInfoList.extend(self.get_豎鉤(pointInfoList[-1][1], h1, h2, w))
-		pointInfoList.extend(self.get_趯(pointInfoList[-1][1], int(w/2), int(w/2)))
+		pointInfoList.extend(self.get_豎鉤之豎(pointInfoList[-1][1], h1, h2, w))
+		pointInfoList.extend(self.get_趯(pointInfoList[-1][1], w//2, w//2))
 		self.newExp = self.genStrokeString(pointInfoList)
 
 
@@ -1134,7 +1161,8 @@ class CurveComputer_斜鉤(BaseCurveComputer):
 
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
-		pointInfoList.extend(self.get_斜鉤(pointInfoList[-1][1], w, h, ht))
+		pointInfoList.extend(self.get_斜鉤之斜(pointInfoList[-1][1], w, h))
+		pointInfoList.extend(self.get_上(pointInfoList[-1][1], ht))
 		self.newExp = self.genStrokeString(pointInfoList)
 
 class CurveComputer_彎鉤(BaseCurveComputer):
@@ -1168,7 +1196,7 @@ class CurveComputer_彎鉤(BaseCurveComputer):
 
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
-		pointInfoList.extend(self.get_彎鉤(pointInfoList[-1][1], w1, h1))
+		pointInfoList.extend(self.get_彎鉤之彎(pointInfoList[-1][1], w1, h1))
 		pointInfoList.extend(self.get_趯(pointInfoList[-1][1], wg, hg))
 		self.newExp = self.genStrokeString(pointInfoList)
 
@@ -1196,7 +1224,7 @@ class CurveComputer_撇鉤(BaseCurveComputer):
 
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
-		pointInfoList.extend(self.get_彎鉤(pointInfoList[-1][1], wp, hp))
+		pointInfoList.extend(self.get_彎鉤之彎(pointInfoList[-1][1], wp, hp))
 		pointInfoList.extend(self.get_趯(pointInfoList[-1][1], wg, hg))
 		self.newExp = self.genStrokeString(pointInfoList)
 
@@ -1295,7 +1323,12 @@ class CurveComputer_撇橫(BaseCurveComputer):
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
 		pointInfoList.extend(self.get_撇(pointInfoList[-1][1], w1, h1))
-		pointInfoList.extend(self.get_點(pointInfoList[-1][1], w2, h2))
+		if h2>0:
+			pointInfoList.extend(self.get_點(pointInfoList[-1][1], w2, h2))
+		elif h2<0:
+			pointInfoList.extend(self.get_提(pointInfoList[-1][1], w2, -h2))
+		else:
+			pointInfoList.extend(self.get_橫(pointInfoList[-1][1], w2))
 		self.newExp = self.genStrokeString(pointInfoList)
 
 class CurveComputer_撇橫撇(BaseCurveComputer):
