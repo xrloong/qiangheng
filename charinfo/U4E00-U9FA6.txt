@@ -4447,10 +4447,10 @@ U+5F3B	弻	(湘 弓西弓)
 U+5F3C	弼	(湘 弓百弓)
 U+5F3D	弽	(好 弓枼)
 U+5F3E	弾	(好 弓単)
-U+5F3F	弿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F40	彀	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F3F	弿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wdoy	42
+U+5F40	彀	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bwyq	41
 U+5F41	彁	(好 弓哥)
-U+5F42	彂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F42	彂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kuym	32
 U+5F43	彃	(好 弓畢)
 U+5F44	彄	(好 弓區)
 U+5F45	彅	(好 弓剪)
@@ -4462,32 +4462,32 @@ U+5F4A	彊	(好 弓畺)
 U+5F4B	彋	(好 弓睘)
 U+5F4C	彌	(好 弓爾)
 U+5F4D	彍	(好 弓廣)
-U+5F4E	彎	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F4E	彎	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zsyz	22
 U+5F4F	彏	(好 弓矍)
-U+5F50	彐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F51	彑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F52	归	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F53	当	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F50	彐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xb	12
+U+5F51	彑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zm	12
+U+5F52	归	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kdxb	22
+U+5F53	当	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	koxb	22
 U+5F54	彔	(志 彑氺)
 U+5F55	录	(志 彐氺)
-U+5F56	彖	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F57	彗	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F58	彘	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F56	彖	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zmgq	22
+U+5F57	彗	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	cicx	32
+U+5F58	彘	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zmmr	42
 U+5F59	彙	(算 彑冖果)
 U+5F5A	彚	(算 彐冖果)
 U+5F5B	彛	(算 彐粉廾)
 U+5F5C	彜	(算 彑粉廾)
-U+5F5D	彝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F5E	彞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F5D	彝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zmze	42
+U+5F5E	彞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xbze	42
 U+5F5F	彟	(好 寻蒦)
 U+5F60	彠	(好 尋蒦)
 U+5F61	彡	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pd	12
 U+5F62	形	(好 开彡)
 U+5F63	彣	(起 文彡)
 U+5F64	彤	(好 丹彡)
-U+5F65	彥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F66	彦	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5F67	彧	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F65	彥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sogp	32
+U+5F66	彦	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sump	32
+U+5F67	彧	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hmja	32
 U+5F68	彨	(好 丽彡)
 U+5F69	彩	(好 采彡)
 U+5F6A	彪	(起 虎彡)
@@ -4516,7 +4516,7 @@ U+5F80	往	(好 彳主)
 U+5F81	征	(好 彳正)
 U+5F82	徂	(好 彳且)
 U+5F83	徃	(好 彳生)
-U+5F84	径	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F84	径	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oixb	32
 U+5F85	待	(好 彳寺)
 U+5F86	徆	(好 彳西)
 U+5F87	徇	(好 彳旬)
@@ -4531,18 +4531,18 @@ U+5F8F	徏	(好 彳步)
 U+5F90	徐	(好 彳余)
 U+5F91	徑	(好 彳巠)
 U+5F92	徒	(好 彳走)
-U+5F93	従	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F93	従	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oiui	32
 U+5F94	徔	(好 彳芝)
 U+5F95	徕	(好 彳来)
 U+5F96	徖	(好 彳宗)
-U+5F97	得	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F97	得	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oiad	42
 U+5F98	徘	(好 彳非)
 U+5F99	徙	(好 彳歨)
 U+5F9A	徚	(好 彳柬)
 U+5F9B	徛	(好 彳奇)
 U+5F9C	徜	(好 彳尚)
 U+5F9D	徝	(好 彳直)
-U+5F9E	從	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5F9E	從	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oioi	42
 U+5F9F	徟	(好 彳周)
 U+5FA0	徠	(好 彳來)
 U+5FA1	御	(好 彳卸)
@@ -4557,27 +4557,27 @@ U+5FA9	復	(好 彳复)
 U+5FAA	循	(好 彳盾)
 U+5FAB	徫	(好 彳韋)
 U+5FAC	徬	(好 彳旁)
-U+5FAD	徭	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5FAE	微	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5FAD	徭	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oiez	42
+U+5FAE	微	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oiqm	42
 U+5FAF	徯	(好 彳奚)
-U+5FB0	徰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5FB0	徰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oiai	42
 U+5FB1	徱	(好 彳票)
 U+5FB2	徲	(好 彳犀)
-U+5FB3	徳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5FB4	徴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5FB5	徵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5FB3	徳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oilw	42
+U+5FB4	徴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oicm	42
+U+5FB5	徵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oicm	42
 U+5FB6	徶	(好 彳敝)
-U+5FB7	德	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5FB7	德	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oiaw	42
 U+5FB8	徸	(好 彳童)
 U+5FB9	徹	(湘 彳育攵)
 U+5FBA	徺	(好 彳堯)
 U+5FBB	徻	(好 彳會)
 U+5FBC	徼	(好 彳敫)
-U+5FBD	徽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+5FBE	徾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5FBD	徽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oizm	42
+U+5FBE	徾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oism	42
 U+5FBF	徿	(好 彳龍)
 U+5FC0	忀	(好 彳襄)
-U+5FC1	忁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5FC1	忁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	oigk	42
 U+5FC2	忂	(好 彳瞿)
 U+5FC3	心	(龜)	XXXX	XXXX	XXXX	h	a	wz	12
 U+5FC4	忄	(龜)	XXXX	XXXX	XXXX	h	a	u	11
@@ -4605,7 +4605,7 @@ U+5FD9	忙	(好 忄亡)
 U+5FDA	忚	(好 忄也)
 U+5FDB	忛	(好 忄凡)
 U+5FDC	応	(廖 广心)
-U+5FDD	忝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+5FDD	忝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	agu	31
 U+5FDE	忞	(志 文心)
 U+5FDF	忟	(好 忄文)
 U+5FE0	忠	(志 中心)
@@ -4700,11 +4700,11 @@ U+6037	怷	(志 朮心)
 U+6038	怸	(志 术心)
 U+6039	怹	(志 他心)
 U+603A	怺	(好 忄永)
-U+603B	总	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+603B	总	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	udjw	32
 U+603C	怼	(志 对心)
 U+603D	怽	(好 忄未)
 U+603E	怾	(好 忄只)
-U+603F	怿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+603F	怿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uxbi	31
 U+6040	恀	(好 忄多)
 U+6041	恁	(志 任心)
 U+6042	恂	(好 忄旬)
@@ -4730,7 +4730,7 @@ U+6055	恕	(好 如心)
 U+6056	恖	(志 囟心)
 U+6057	恗	(好 忄夸)
 U+6058	恘	(好 忄休)
-U+6059	恙	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6059	恙	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ucwz	22
 U+605A	恚	(志 圭心)
 U+605B	恛	(好 忄回)
 U+605C	恜	(好 忄式)
@@ -4738,7 +4738,7 @@ U+605D	恝	(想 丰刀心)
 U+605E	恞	(好 忄夷)
 U+605F	恟	(好 忄匈)
 U+6060	恠	(好 忄在)
-U+6061	恡	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6061	恡	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uogz	41
 U+6062	恢	(好 忄灰)
 U+6063	恣	(志 次心)
 U+6064	恤	(好 忄血)
@@ -4750,7 +4750,7 @@ U+6069	恩	(志 因心)
 U+606A	恪	(好 忄各)
 U+606B	恫	(好 忄同)
 U+606C	恬	(好 忄舌)
-U+606D	恭	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+606D	恭	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eaou	32
 U+606E	恮	(好 忄全)
 U+606F	息	(志 自心)
 U+6070	恰	(好 忄合)
@@ -4758,14 +4758,14 @@ U+6071	恱	(好 忄兊)
 U+6072	恲	(好 忄并)
 U+6073	恳	(志 艮心)
 U+6074	恴	(算 亠日心)
-U+6075	恵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6075	恵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	akwz	31
 U+6076	恶	(志 亚心)
 U+6077	恷	(志 休心)
 U+6078	恸	(好 忄动)
 U+6079	恹	(好 忄厌)
 U+607A	恺	(好 忄岂)
 U+607B	恻	(好 忄则)
-U+607C	恼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+607C	恼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	usoz	41
 U+607D	恽	(好 忄军)
 U+607E	恾	(好 忄芒)
 U+607F	恿	(志 甬心)
@@ -4810,7 +4810,7 @@ U+60A5	悥	(志 言心)
 U+60A6	悦	(好 忄兌)
 U+60A7	悧	(志 你利)
 U+60A8	您	(志 你心)
-U+60A9	悩	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+60A9	悩	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uvoz	41
 U+60AA	悪	(志 亜心)
 U+60AB	悫	(志 壳心)
 U+60AC	悬	(志 县心)
@@ -4865,7 +4865,7 @@ U+60DC	惜	(好 忄昔)
 U+60DD	惝	(好 忄尚)
 U+60DE	惞	(好 忄欣)
 U+60DF	惟	(好 忄隹)
-U+60E0	惠	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+60E0	惠	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	fkwz	22
 U+60E1	惡	(志 亞心)
 U+60E2	惢	(鑫 心)
 U+60E3	惣	(志 物心)
@@ -4877,12 +4877,12 @@ U+60E8	惨	(好 忄參)
 U+60E9	惩	(志 征心)
 U+60EA	惪	(志 直心)
 U+60EB	惫	(志 备心)
-U+60EC	惬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+60EC	惬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uhbu	41
 U+60ED	惭	(好 忄斩)
 U+60EE	惮	(好 忄单)
 U+60EF	惯	(好 忄贯)
-U+60F0	惰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+60F1	惱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+60F0	惰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ugbq	41
+U+60F1	惱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uzno	41
 U+60F2	惲	(好 忄軍)
 U+60F3	想	(志 相心)
 U+60F4	惴	(好 忄耑)
@@ -4895,7 +4895,7 @@ U+60FA	惺	(好 忄星)
 U+60FB	惻	(好 忄則)
 U+60FC	惼	(好 忄扁)
 U+60FD	惽	(好 忄昬)
-U+60FE	惾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+60FE	惾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uoor	41
 U+60FF	惿	(好 忄是)
 #6100
 U+6100	愀	(好 忄秋)
@@ -4925,7 +4925,7 @@ U+6117	愗	(志 敄心)
 U+6118	愘	(好 忄客)
 U+6119	愙	(志 客心)
 U+611A	愚	(志 禺心)
-U+611B	愛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+611B	愛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pvwr	42
 U+611C	愜	(好 忄匧)
 U+611D	愝	(好 忄匽)
 U+611E	愞	(好 忄耎)
@@ -4938,18 +4938,18 @@ U+6124	愤	(好 忄贲)
 U+6125	愥	(好 忄英)
 U+6126	愦	(好 忄贵)
 U+6127	愧	(好 忄鬼)
-U+6128	愨	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6128	愨	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bwqw	41
 U+6129	愩	(好 忄貢)
 U+612A	愪	(好 忄員)
 U+612B	愫	(好 忄素)
 U+612C	愬	(志 朔心)
 U+612D	愭	(好 忄耆)
-U+612E	愮	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+612E	愮	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	upez	41
 U+612F	愯	(好 忄隻)
 U+6130	愰	(好 忄晃)
 U+6131	愱	(好 忄疾)
 U+6132	愲	(好 忄骨)
-U+6133	愳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6133	愳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	llwz	31
 U+6134	愴	(好 忄倉)
 U+6135	愵	(好 忄弱)
 U+6136	愶	(好 忄脅)
@@ -4983,7 +4983,7 @@ U+6151	慑	(好 忄聂)
 U+6152	慒	(好 忄曹)
 U+6153	慓	(好 忄票)
 U+6154	慔	(好 忄莫)
-U+6155	慕	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6155	慕	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ekgu	41
 U+6156	慖	(好 忄國)
 U+6157	慗	(志 敕心)
 U+6158	慘	(好 忄參)
@@ -5009,14 +5009,14 @@ U+616B	慫	(志 從心)
 U+616C	慬	(好 忄堇)
 U+616D	慭	(想 来犬心)
 U+616E	慮	(廖 虍思)
-U+616F	慯	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+616F	慯	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	umro	41
 U+6170	慰	(志 尉心)
 U+6171	慱	(好 忄專)
-U+6172	慲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6172	慲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ueoo	41
 U+6173	慳	(好 忄堅)
 U+6174	慴	(好 忄習)
 U+6175	慵	(好 忄庸)
-U+6176	慶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6176	慶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgwr	42
 U+6177	慷	(好 忄康)
 U+6178	慸	(志 帶心)
 U+6179	慹	(志 執心)
@@ -5028,7 +5028,7 @@ U+617E	慾	(志 欲心)
 U+617F	慿	(志 馮心)
 U+6180	憀	(好 忄翏)
 U+6181	憁	(好 忄悤)
-U+6182	憂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6182	憂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	anwr	41
 U+6183	憃	(志 舂心)
 U+6184	憄	(志 徝心)
 U+6185	憅	(志 動心)
@@ -5076,7 +5076,7 @@ U+61AE	憮	(好 忄無)
 U+61AF	憯	(好 忄朁)
 U+61B0	憰	(好 忄矞)
 U+61B1	憱	(好 忄就)
-U+61B2	憲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+61B2	憲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wdlw	42
 U+61B3	憳	(好 忄尋)
 U+61B4	憴	(好 忄黽)
 U+61B5	憵	(志 辟心)
@@ -5099,14 +5099,14 @@ U+61C5	懅	(好 忄豦)
 U+61C6	懆	(好 忄喿)
 U+61C7	懇	(志 貇心)
 U+61C8	懈	(好 忄解)
-U+61C9	應	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+61C9	應	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	tgnw	42
 U+61CA	懊	(好 忄奧)
 U+61CB	懋	(志 楙心)
 U+61CC	懌	(好 忄睪)
 U+61CD	懍	(好 忄稟)
 U+61CE	懎	(好 忄嗇)
 U+61CF	懏	(好 忄雋)
-U+61D0	懐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+61D0	懐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ussr	41
 U+61D1	懑	(志 满心)
 U+61D2	懒	(好 忄赖)
 U+61D3	懓	(好 忄愛)
@@ -5116,7 +5116,7 @@ U+61D6	懖	(志 銛心)
 U+61D7	懗	(好 忄赫)
 U+61D8	懘	(志 滯心)
 U+61D9	懙	(好 忄與)
-U+61DA	懚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+61DA	懚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	upxw	41
 U+61DB	懛	(好 忄臺)
 U+61DC	懜	(好 忄夢)
 U+61DD	懝	(好 忄疑)
@@ -5155,7 +5155,7 @@ U+61FD	懽	(好 忄雚)
 U+61FE	懾	(好 忄聶)
 U+61FF	懿	(好 壹恣)
 #6200
-U+6200	戀	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6200	戀	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zswz	22
 U+6201	戁	(志 難心)
 U+6202	戂	(好 忄靡)
 U+6203	戃	(好 忄黨)
@@ -5177,17 +5177,17 @@ U+6212	戒	(載 戈廾)
 U+6213	戓	(載 戈口)
 U+6214	戔	(爻 戈)
 U+6215	戕	(好 又戈)
-U+6216	或	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6216	或	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hmja	32
 U+6217	戗	(好 仓戈)
 U+6218	战	(好 占戈)
 U+6219	戙	(好 同戈)
 U+621A	戚	(同 戊尗)
-U+621B	戛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+621B	戛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	anhm	31
 U+621C	戜	(載 戈呈)
 U+621D	戝	(好 貝戈)
-U+621E	戞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+621F	戟	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6220	戠	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+621E	戞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	anwh	41
+U+621F	戟	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	edeh	42
+U+6220	戠	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sukh	32
 U+6221	戡	(好 音戈)
 U+6222	戢	(好 咠戈)
 U+6223	戣	(好 癸戈)
@@ -5197,7 +5197,7 @@ U+6226	戦	(好 単戈)
 U+6227	戧	(好 倉戈)
 U+6228	戨	(好 哥戈)
 U+6229	戩	(好 晉戈)
-U+622A	截	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+622A	截	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ehni	31
 U+622B	戫	(好 有或)
 U+622C	戬	(好 晋戈)
 U+622D	戭	(好 寅戈)
@@ -5205,9 +5205,9 @@ U+622E	戮	(好 翏戈)
 U+622F	戯	(好 虚戈)
 U+6230	戰	(好 單戈)
 U+6231	戱	(好 虛戈)
-U+6232	戲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6232	戲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ihuh	42
 U+6233	戳	(好 翟戈)
-U+6234	戴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6234	戴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eheo	41
 U+6235	戵	(好 瞿戈)
 U+6236	戶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wm	12
 U+6237	户	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wm	12
@@ -5215,12 +5215,12 @@ U+6238	戸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	axm	21
 U+6239	戹	(廖 戶乙)
 U+623A	戺	(好 戶巳)
 U+623B	戻	(廖 戶大)
-U+623C	戼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+623C	戼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hxix	41
 U+623D	戽	(廖 戶斗)
 U+623E	戾	(廖 戶犬)
 U+623F	房	(廖 戶方)
 U+6240	所	(好 戶斤)
-U+6241	扁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6241	扁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wml	22
 U+6242	扂	(廖 戶占)
 U+6243	扃	(廖 戶冋)
 U+6244	扄	(廖 戶向)
@@ -5256,14 +5256,14 @@ U+6261	扡	(好 扌也)
 U+6262	扢	(好 扌乞)
 U+6263	扣	(好 扌口)
 U+6264	扤	(好 扌兀)
-U+6265	扥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6265	扥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dmhd	31
 U+6266	扦	(好 扌千)
 U+6267	执	(好 扌丸)
 U+6268	扨	(好 扌刃)
 U+6269	扩	(好 本广)
 U+626A	扪	(好 扌门)
-U+626B	扫	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+626C	扬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+626B	扫	(州 扌彐)
+U+626C	扬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dyo	31
 U+626D	扭	(好 扌丑)
 U+626E	扮	(好 扌分)
 U+626F	扯	(好 扌止)
@@ -5282,7 +5282,7 @@ U+627B	扻	(好 扌欠)
 U+627C	扼	(好 扌厄)
 U+627D	扽	(好 扌屯)
 U+627E	找	(好 扌戈)
-U+627F	承	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+627F	承	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xkcd	31
 U+6280	技	(好 扌支)
 U+6281	抁	(好 扌允)
 U+6282	抂	(好 扌王)
@@ -5310,7 +5310,7 @@ U+6297	抗	(好 扌亢)
 U+6298	折	(好 扌斤)
 U+6299	抙	(好 扌手)
 U+629A	抚	(好 扌无)
-U+629B	抛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+629B	抛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dqym	31
 U+629C	抜	(好 扌友)
 U+629D	抝	(好 扌妒)
 U+629E	択	(好 扌尺)
@@ -5320,7 +5320,7 @@ U+62A1	抡	(好 扌仑)
 U+62A2	抢	(好 扌仓)
 U+62A3	抣	(好 扌匀)
 U+62A4	护	(好 扌戶)
-U+62A5	报	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+62A5	报	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dyxs	31
 U+62A6	抦	(好 扌丙)
 U+62A7	抧	(好 扌只)
 U+62A8	抨	(好 扌平)
@@ -5329,7 +5329,7 @@ U+62AA	抪	(好 扌布)
 U+62AB	披	(好 扌皮)
 U+62AC	抬	(好 扌台)
 U+62AD	抭	(好 扌宂)
-U+62AE	抮	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+62AE	抮	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dop	31
 U+62AF	抯	(好 扌且)
 U+62B0	抰	(好 扌央)
 U+62B1	抱	(好 扌包)
@@ -5358,7 +5358,7 @@ U+62C7	拇	(好 扌母)
 U+62C8	拈	(好 扌占)
 U+62C9	拉	(好 扌立)
 U+62CA	拊	(好 扌付)
-U+62CB	拋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+62CB	拋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dgym	31
 U+62CC	拌	(好 扌半)
 U+62CD	拍	(好 扌白)
 U+62CE	拎	(好 扌令)
@@ -5369,26 +5369,26 @@ U+62D2	拒	(好 扌巨)
 U+62D3	拓	(好 扌石)
 U+62D4	拔	(好 扌犮)
 U+62D5	拕	(好 扌它)
-U+62D6	拖	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+62D6	拖	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dmyi	31
 U+62D7	拗	(好 扌幼)
 U+62D8	拘	(好 扌句)
 U+62D9	拙	(好 扌出)
 U+62DA	拚	(好 扌弁)
 U+62DB	招	(好 扌召)
-U+62DC	拜	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+62DD	拝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+62DC	拜	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	mdac	31
+U+62DD	拝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dac	31
 U+62DE	拞	(好 扌丘)
 U+62DF	拟	(好 扌以)
 U+62E0	拠	(好 扌処)
 U+62E1	拡	(好 扌広)
 U+62E2	拢	(好 扌龙)
-U+62E3	拣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+62E3	拣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dhyo	41
 U+62E4	拤	(好 扌卡)
 U+62E5	拥	(好 扌用)
 U+62E6	拦	(好 扌兰)
 U+62E7	拧	(好 扌宁)
 U+62E8	拨	(好 扌发)
-U+62E9	择	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+62E9	择	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dxbi	31
 U+62EA	拪	(好 扌西)
 U+62EB	拫	(好 扌艮)
 U+62EC	括	(好 扌舌)
@@ -5398,10 +5398,10 @@ U+62EF	拯	(好 扌丞)
 U+62F0	拰	(好 扌任)
 U+62F1	拱	(好 扌共)
 U+62F2	拲	(志 共手)
-U+62F3	拳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+62F3	拳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ubmd	22
 U+62F4	拴	(好 扌全)
 U+62F5	拵	(好 扌存)
-U+62F6	拶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+62F6	拶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dzrs	31
 U+62F7	拷	(好 扌考)
 U+62F8	拸	(好 扌多)
 U+62F9	拹	(好 扌劦)
@@ -5413,7 +5413,7 @@ U+62FE	拾	(好 扌合)
 U+62FF	拿	(志 合手)
 # 6300
 # U+	字	構	倉	行	易	嘸	嘸補	鄭	鄭類
-U+6300	挀	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6300	挀	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dprh	31
 U+6301	持	(好 扌寺)
 U+6302	挂	(好 扌圭)
 U+6303	挃	(好 扌至)
@@ -5476,7 +5476,7 @@ U+633B	挻	(好 扌延)
 U+633C	挼	(好 扌妥)
 U+633D	挽	(好 扌免)
 U+633E	挾	(好 扌來)
-U+633F	挿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+633F	挿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dmk	31
 U+6340	捀	(好 夆扌)
 U+6341	捁	(好 扌告)
 U+6342	捂	(好 扌吾)
@@ -5494,7 +5494,7 @@ U+634D	捍	(好 扌旱)
 U+634E	捎	(好 扌肖)
 U+634F	捏	(好 扌圼)
 U+6350	捐	(好 扌肙)
-U+6351	捑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6351	捑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dkas	41
 U+6352	捒	(好 扌束)
 U+6353	捓	(好 扌邪)
 U+6354	捔	(好 扌角)
@@ -5505,7 +5505,7 @@ U+6358	捘	(好 扌夋)
 U+6359	捙	(好 扌車)
 U+635A	捚	(好 扌里)
 U+635B	捛	(好 扌呂)
-U+635C	捜	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+635C	捜	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dnxs	31
 U+635D	捝	(好 扌兑)
 U+635E	捞	(好 扌劳)
 U+635F	损	(好 扌员)
@@ -5591,7 +5591,7 @@ U+63AE	掮	(好 扌肩)
 U+63AF	掯	(好 扌肯)
 U+63B0	掰	(湘 手分手)
 U+63B1	掱	(鑫 手)
-U+63B2	掲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+63B2	掲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dkry	31
 U+63B3	掳	(好 扌虏)
 U+63B4	掴	(好 扌国)
 U+63B5	掵	(好 扌命)
@@ -5622,7 +5622,7 @@ U+63CD	揍	(好 扌奏)
 U+63CE	揎	(好 扌宣)
 U+63CF	描	(好 扌苗)
 U+63D0	提	(好 扌是)
-U+63D1	揑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+63D1	揑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dnbi	31
 U+63D2	插	(好 扌臿)
 U+63D3	揓	(好 扌施)
 U+63D4	揔	(好 扌怱)
@@ -5663,7 +5663,7 @@ U+63F6	揶	(好 扌耶)
 U+63F7	揷	(好 扌臿)
 U+63F8	揸	(好 抗查)
 U+63F9	揹	(好 抗背)
-U+63FA	揺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+63FA	揺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dpez	41
 U+63FB	揻	(好 抗威)
 U+63FC	揼	(好 抗泵)
 U+63FD	揽	(好 抗览)
@@ -5671,7 +5671,7 @@ U+63FE	揾	(好 抗昷)
 U+63FF	揿	(好 抗钦)
 # 6400
 # U+	字	構	倉	行	易	嘸	嘸補	鄭	鄭類
-U+6400	搀	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6400	搀	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	drrt	41
 U+6401	搁	(好 扌阁)
 U+6402	搂	(好 扌娄)
 U+6403	搃	(好 扌总)
@@ -5693,7 +5693,7 @@ U+6412	搒	(好 扌旁)
 U+6413	搓	(好 扌差)
 U+6414	搔	(好 扌蚤)
 U+6415	搕	(好 扌盍)
-U+6416	搖	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6416	搖	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	drez	41
 U+6417	搗	(好 扌島)
 U+6418	搘	(好 扌耆)
 U+6419	搙	(好 扌辱)
@@ -5711,7 +5711,7 @@ U+6424	搤	(好 扌益)
 U+6425	搥	(好 扌追)
 U+6426	搦	(好 扌弱)
 U+6427	搧	(好 扌扇)
-U+6428	搨	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6428	搨	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dkyy	41
 U+6429	搩	(好 扌桀)
 U+642A	搪	(好 扌唐)
 U+642B	搫	(志 般手)
@@ -5723,28 +5723,28 @@ U+6430	搰	(好 扌骨)
 U+6431	搱	(好 扌屖)
 U+6432	搲	(好 扌窊)
 U+6433	搳	(好 扌害)
-U+6434	搴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6434	搴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	wdom	41
 U+6435	搵	(好 扌昷)
 U+6436	搶	(好 扌倉)
 U+6437	搷	(好 扌真)
 U+6438	搸	(好 扌秦)
 U+6439	搹	(好 扌鬲)
 U+643A	携	(好 扌隽)
-U+643B	搻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+643B	搻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	odmm	42
 U+643C	搼	(好 扌拳)
 U+643D	搽	(好 扌茶)
 U+643E	搾	(好 扌窄)
 U+643F	搿	(湘 手合手)
 U+6440	摀	(好 扌烏)
 U+6441	摁	(好 扌恩)
-U+6442	摂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6442	摂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dcv	31
 U+6443	摃	(好 扌頁)
 U+6444	摄	(好 扌聂)
 U+6445	摅	(好 扌虑)
 U+6446	摆	(好 扌罢)
-U+6447	摇	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6447	摇	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dpez	41
 U+6448	摈	(好 扌宾)
-U+6449	摉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6449	摉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dwor	41
 U+644A	摊	(好 扌难)
 U+644B	摋	(好 扌殺)
 U+644C	摌	(好 扌產)
@@ -5772,7 +5772,7 @@ U+6461	摡	(好 扌既)
 U+6462	摢	(好 扌虖)
 U+6463	摣	(好 扌虘)
 U+6464	摤	(好 扌爽)
-U+6465	摥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6465	摥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dmro	41
 U+6466	摦	(好 扌瓠)
 U+6467	摧	(好 扌崔)
 U+6468	摨	(好 扌犀)
@@ -5798,7 +5798,7 @@ U+647B	摻	(好 扌參)
 U+647C	摼	(好 扌堅)
 U+647D	摽	(好 扌票)
 U+647E	摾	(好 扌强)
-U+647F	摿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+647F	摿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dosk	41
 U+6480	撀	(好 殸手)
 U+6481	撁	(好 扌牽)
 U+6482	撂	(好 扌畧)
@@ -5873,7 +5873,7 @@ U+64C6	擆	(好 扌著)
 U+64C7	擇	(好 扌睪)
 U+64C8	擈	(好 扌業)
 U+64C9	擉	(好 扌蜀)
-U+64CA	擊	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+64CA	擊	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	fkqm	42
 U+64CB	擋	(好 扌當)
 U+64CC	擌	(好 扌筴)
 U+64CD	操	(好 扌喿)
@@ -5900,7 +5900,7 @@ U+64E1	擡	(好 扌臺)
 U+64E2	擢	(好 扌翟)
 U+64E3	擣	(好 扌壽)
 U+64E4	擤	(好 扌鼻)
-U+64E5	擥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+64E5	擥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hmlm	32
 U+64E6	擦	(好 扌察)
 U+64E7	擧	(志 與手)
 U+64E8	擨	(好 扌歋)
@@ -5964,25 +5964,25 @@ U+651F	攟	(好 扌麕)
 U+6520	攠	(好 扌靡)
 U+6521	攡	(好 扌難)
 U+6522	攢	(好 扌贊)
-U+6523	攣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6523	攣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zsmd	22
 U+6524	攤	(好 扌難)
 U+6525	攥	(好 扌纂)
 U+6526	攦	(好 扌麗)
 U+6527	攧	(好 扌顛)
-U+6528	攨	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6528	攨	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	dwpp	41
 U+6529	攩	(好 扌黨)
 U+652A	攪	(好 扌覺)
 U+652B	攫	(好 扌矍)
 U+652C	攬	(好 扌覽)
 U+652D	攭	(好 扌蠡)
 U+652E	攮	(好 扌囊)
-U+652F	支	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+652F	支	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	edxs	22
 U+6530	攰	(起 支力)
 U+6531	攱	(好 立支)
 U+6532	攲	(好 奇支)
 U+6533	攳	(起 支尋)
-U+6534	攴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6535	攵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6534	攴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	idxs	22
+U+6535	攵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	mo	12
 U+6536	收	(好 丩攵)
 U+6537	攷	(好 丂攵)
 U+6538	攸	(湘 亻丨攵)
@@ -6007,7 +6007,7 @@ U+654A	敊	(好 尗攴)
 U+654B	敋	(好 各攵)
 U+654C	敌	(好 舌攵)
 U+654D	敍	(好 余攴)
-U+654E	敎	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+654E	敎	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bmym	32
 U+654F	敏	(好 每攴)
 U+6550	敐	(好 辰攴)
 U+6551	救	(好 求攵)
@@ -6022,13 +6022,13 @@ U+6559	教	(好 孝攵)
 U+655A	敚	(好 兑攵)
 U+655B	敛	(好 佥攵)
 U+655C	敜	(好 念攵)
-U+655D	敝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+655D	敝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kvlm	32
 U+655E	敞	(好 尚攵)
 U+655F	敟	(好 典攵)
 U+6560	敠	(好 叕攴)
 U+6561	敡	(好 易攴)
-U+6562	敢	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6563	散	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6562	敢	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xcmo	32
+U+6563	散	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eaqm	32
 U+6564	敤	(好 果攵)
 U+6565	敥	(好 炎攴)
 U+6566	敦	(好 享攵)
@@ -6050,9 +6050,9 @@ U+6575	敵	(好 啇攵)
 U+6576	敶	(好 陳攵)
 U+6577	敷	(穎 甫方攵)
 U+6578	數	(好 婁攵)
-U+6579	敹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6579	敹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	idpm	42
 U+657A	敺	(好 區攴)
-U+657B	敻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+657B	敻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	nllm	41
 U+657C	敼	(好 喜攴)
 U+657D	敽	(好 喬攴)
 U+657E	敾	(好 善攵)
@@ -6061,7 +6061,7 @@ U+6580	斀	(好 蜀攴)
 U+6581	斁	(好 睪攵)
 U+6582	斂	(好 僉攵)
 U+6583	斃	(志 敝死)
-U+6584	斄	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6584	斄	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bdoo	42
 U+6585	斅	(好 學攴)
 U+6586	斆	(好 學攵)
 U+6587	文	(龜)	yk	XXXX	XXXX	w	x	so	12
@@ -6102,60 +6102,60 @@ U+65A9	斩	(好 车斤)
 U+65AA	斪	(好 句斤)
 U+65AB	斫	(好 石斤)
 U+65AC	斬	(好 車斤)
-U+65AD	断	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65AD	断	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ufzp	32
 U+65AE	斮	(好 昔斤)
 U+65AF	斯	(好 其斤)
 U+65B0	新	(好 亲斤)
 U+65B1	斱	(好 者斤)
-U+65B2	斲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65B2	斲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bzpd	22
 U+65B3	斳	(好 堇斤)
 U+65B4	斴	(好 粦斤)
-U+65B5	斵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65B5	斵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	rhbp	42
 U+65B6	斶	(好 斤蜀)
-U+65B7	斷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65B7	斷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zzzp	41
 U+65B8	斸	(好 屬斤)
 U+65B9	方	(龜)	XXXX	XXXX	XXXX	f	y	sy	12
 U+65BA	斺	(好 方介)
-U+65BB	斻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65BB	斻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	symq	32
 U+65BC	於	(好 方仒)
-U+65BD	施	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65BE	斾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65BF	斿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65BD	施	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	symy	32
+U+65BE	斾	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syml	32
+U+65BF	斿	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	symy	32
 U+65C0	旀	(好 方厼)
-U+65C1	旁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65C2	旂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65C3	旃	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65C4	旄	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65C5	旅	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65C6	旆	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65C7	旇	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65C8	旈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65C1	旁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	suws	32
+U+65C2	旂	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	symp	32
+U+65C3	旃	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syqs	42
+U+65C4	旄	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	symm	32
+U+65C5	旅	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	symr	32
+U+65C6	旆	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syal	42
+U+65C7	旇	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	symx	42
+U+65C8	旈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syzn	42
 U+65C9	旉	(志 甫方)
-U+65CA	旊	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65CB	旋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65CC	旌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65CD	旍	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65CE	旎	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65CF	族	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65D0	旐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65CA	旊	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syys	42
+U+65CB	旋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syxi	42
+U+65CC	旌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	symm	32
+U+65CD	旍	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syow	42
+U+65CE	旎	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syxr	42
+U+65CF	族	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	symm	32
+U+65D0	旐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syvr	42
 U+65D1	旑	(好 方奇)
-U+65D2	旒	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65D3	旓	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65D2	旒	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syzn	42
+U+65D3	旓	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sykq	42
 U+65D4	旔	(好 方建)
 U+65D5	旕	(志 於叱)
-U+65D6	旖	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65D7	旗	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65D6	旖	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syaj	42
+U+65D7	旗	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syme	32
 U+65D8	旘	(好 方戠)
 U+65D9	旙	(好 方番)
-U+65DA	旚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65DB	旛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65DC	旜	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65DD	旝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65DE	旞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65DF	旟	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65E0	无	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65E1	旡	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65E2	既	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65DA	旚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syfb	42
+U+65DB	旛	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sypk	42
+U+65DC	旜	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syka	42
+U+65DD	旝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sylk	42
+U+65DE	旞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sygw	42
+U+65DF	旟	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	syio	42
+U+65E0	无	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	agr	21
+U+65E1	旡	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	hrd	13
+U+65E2	既	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xohr	22
 U+65E3	旣	(好 皂旡)
 U+65E4	旤	(好 咼旡)
 U+65E5	日	(龜)	a	XXXX	XXXX	XXXX	XXXX	ka	12
@@ -6177,8 +6177,8 @@ U+65F4	旴	(好 日于)
 U+65F5	旵	(志 日山)
 U+65F6	时	(好 日寸)
 U+65F7	旷	(好 日广)
-U+65F8	旸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+65F9	旹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+65F8	旸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kyod	31
+U+65F9	旹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ziak	32
 U+65FA	旺	(好 日王)
 U+65FB	旻	(志 日文)
 U+65FC	旼	(好 日文)
@@ -6213,7 +6213,7 @@ U+6616	昖	(好 日公)
 U+6617	昗	(志 日六)
 U+6618	昘	(志 日方)
 U+6619	昙	(志 日云)
-U+661A	昚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+661A	昚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	gduk	32
 U+661B	昛	(好 日巨)
 U+661C	昜	(志 旦勿)
 U+661D	昝	(志 处日)
@@ -6222,9 +6222,9 @@ U+661F	星	(志 日生)
 U+6620	映	(好 日央)
 U+6621	昡	(好 日玄)
 U+6622	昢	(好 日出)
-U+6623	昣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6623	昣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kop	31
 U+6624	昤	(好 日令)
-U+6625	春	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6625	春	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	co	12
 U+6626	昦	(志 日夰)
 U+6627	昧	(好 日未)
 U+6628	昨	(好 日乍)
@@ -6234,7 +6234,7 @@ U+662B	昫	(好 日句)
 U+662C	昬	(好 民日)
 U+662D	昭	(好 日召)
 U+662E	昮	(好 日功)
-U+662F	是	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+662F	是	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kaii	31
 U+6630	昰	(好 日正)
 U+6631	昱	(好 日立)
 U+6632	昲	(好 日弗)
@@ -6260,7 +6260,7 @@ U+6645	晅	(好 日亘)
 U+6646	晆	(好 日圭)
 U+6647	晇	(好 日夸)
 U+6648	晈	(好 日交)
-U+6649	晉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6649	晉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bdzk	42
 U+664A	晊	(好 日至)
 U+664B	晋	(志 亚日)
 U+664C	晌	(好 日向)
@@ -6280,7 +6280,7 @@ U+6659	晙	(好 日夋)
 U+665A	晚	(好 日免)
 U+665B	晛	(好 日見)
 U+665C	晜	(志 日弟)
-U+665D	晝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+665D	晝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xbka	32
 U+665E	晞	(好 日希)
 U+665F	晟	(志 日成)
 U+6660	晠	(好 日成)
@@ -6341,7 +6341,7 @@ U+6696	暖	(好 日爰)
 U+6697	暗	(好 日音)
 U+6698	暘	(好 日昜)
 U+6699	暙	(好 日春)
-U+669A	暚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+669A	暚	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kpez	41
 U+669B	暛	(好 日差)
 U+669C	暜	(志 竝日)
 U+669D	暝	(好 日冥)
@@ -6353,11 +6353,11 @@ U+66A2	暢	(好 申昜)
 U+66A3	暣	(好 日氣)
 U+66A4	暤	(好 日皋)
 U+66A5	暥	(好 日晏)
-U+66A6	暦	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+66A6	暦	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ggfk	42
 U+66A7	暧	(好 日爱)
 U+66A8	暨	(志 既旦)
 U+66A9	暩	(好 日祭)
-U+66AA	暪	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+66AA	暪	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	keoo	41
 U+66AB	暫	(志 斬日)
 U+66AC	暬	(志 埶日)
 U+66AD	暭	(好 日皐)
@@ -6367,8 +6367,8 @@ U+66B0	暰	(好 日從)
 U+66B1	暱	(好 日匿)
 U+66B2	暲	(好 日章)
 U+66B3	暳	(好 日彗)
-U+66B4	暴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+66B5	暵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+66B4	暴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	keok	41
+U+66B5	暵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kebo	41
 U+66B6	暶	(好 日旋)
 U+66B7	暷	(好 日專)
 U+66B8	暸	(好 日尞)
@@ -6396,7 +6396,7 @@ U+66CD	曍	(好 日臯)
 U+66CE	曎	(好 日睪)
 U+66CF	曏	(志 日鄉)
 U+66D0	曐	(志 晶生)
-U+66D1	曑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+66D1	曑	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kkop	41
 U+66D2	曒	(好 日敫)
 U+66D3	曓	(纂 日出大本)
 U+66D4	曔	(好 日敬)
@@ -6422,7 +6422,7 @@ U+66E7	曧	(志 日融)
 U+66E8	曨	(好 日龍)
 U+66E9	曩	(志 日襄)
 U+66EA	曪	(好 日羅)
-U+66EB	曫	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+66EB	曫	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	zsk	22
 U+66EC	曬	(好 日麗)
 U+66ED	曭	(好 日黨)
 U+66EE	曮	(好 日嚴)
