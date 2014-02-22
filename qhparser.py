@@ -185,6 +185,123 @@ class Parser:
 	test=staticmethod(test)
 
 
+class ParserXML:
+	def __init__(self):
+		pass
+
+	def parse(data, name, CharDescGenerator, xmlNode):
+		def parseCompDesc():
+			tkn=lexer.getNextToken()
+			if tkn.ttype != Token.leftParenthesis:
+				print("預期 (")
+				return CharDescriptionManager.getNoneDescription()
+
+			tnk=lexer.getNextToken() # op
+			if tnk.ttype == Token.hanzi or tnk.ttype == Token.htemplate:
+				operator=tnk.value
+			else:
+				operator=''
+				print("預期運算元")
+				return CharDescriptionManager.getNoneDescription()
+
+			# ' '
+			tnk=lexer.getNextToken()
+			if tnk.ttype == Token.space:
+				while tnk.ttype == Token.space:
+					tnk=lexer.getNextToken()
+				lexer.pushBackToken(tnk)
+
+				compList=parseCompList()
+
+				if compList is None:
+					return CharDescriptionManager.getNoneDescription()
+				else:
+					pass
+
+				tnk=lexer.getNextToken() # ')'
+				if tnk.ttype != Token.rightParenthesis:
+					print("預期 )")
+					return None
+			else:
+				compList=[]
+
+			y=xmlNode.createElement("組字")
+			y.setAttribute('運算', operator)
+			for node in compList:
+				y.appendChild(node)
+			return y
+
+			anonymousName=CharDesc.generateNewAnonymousName()
+			comp=CharDescGenerator(anonymousName, [operator, compList, '(龜)'])
+
+			return comp
+
+		def parseCompList():
+			l=[]
+#			y=xmlNode.createElement("字符")
+			while True:
+				tnk=lexer.getNextToken()
+				if tnk.ttype==Token.hanzi or tnk.ttype==Token.radical:
+					comp=CharDescGenerator(tnk.value)
+					x=xmlNode.createElement("字根")
+					x.setAttribute("名稱", tnk.value)
+#					y.appendChild(x)
+					l.append(x)
+				elif tnk.ttype==Token.leftParenthesis:
+					lexer.pushBackToken(tnk)
+#					tmpcomp=parseCompDesc()
+					tmpx=parseCompDesc()
+#					y.append(tmpx)
+					if tmpx:
+						l.append(tmpx)
+#					if tmpcomp:
+#						l.append(tmpcomp)
+#					else:
+#						l=None
+#						break
+				else:
+					lexer.pushBackToken(tnk)
+					break
+#			print(y.toxml())
+#			return y
+			return l
+
+		lexer=Lexer(data)
+#		comp=parseCompDesc()
+		x=parseCompDesc()
+#		x.setAttribute("註記", name)
+		return x
+
+		"""
+		if comp!=CharDescriptionManager.getNoneDescription():
+			tnk=lexer.getNextToken() # none
+			if tnk.ttype == Token.none:
+				pass
+#				comp.setName(name)
+			else:
+				print("預期結尾")
+				comp=CharDescriptionManager.getNoneDescription()
+		"""
+
+		return comp
+
+	def test():
+		descList=[
+				'龜)',
+				'(龜)',
+				'(龜)龍',
+				'(好 女子)',
+				'(志 (好 木目)心)',
+				'(志 雨(好 木目)))',
+				'(志 雨好 木目))',
+				]
+		for d in descList:
+			print(d, Parser.parse(d))
+
+	parse=staticmethod(parse)
+	test=staticmethod(test)
+
+
 
 if __name__=='__main__':
 	Lexer('(龜)').test()

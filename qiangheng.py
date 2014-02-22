@@ -101,40 +101,49 @@ def getDescDBFromFile(filenamelist, descMgr):
 					descMgr[ll[1]]=comp
 
 def getDescDBFromXML(filenamelist, descMgr):
+	for filename in filenamelist:
+		f=open(filename, encoding=fileencoding)
+		xmlNode=minidom.parse(f)
+		rootNode=xmlNode.documentElement
+		version=rootNode.getAttribute('版本號')
+		if version=='0.1':
+			getDescDBbyParsingXML__0_1(rootNode, descMgr)
+
+def getDescDBbyParsingXML__0_1(rootNode, descMgr):
+	# 用於 0.1 版
 	charInfoGenerator=descMgr.getCharInfoGenerator()
 	emptyCharInfoGenerator=descMgr.getEmptyCharInfoGenerator()
 	charDescGenerator=descMgr.getCharDescGenerator()
 	emptyCharDescGenerator=descMgr.getEmptyCharDescGenerator()
 
-	for filename in filenamelist:
-		f=open(filename, encoding=fileencoding)
-		xmlNode=minidom.parse(f)
-		rootNode=xmlNode.documentElement
-		charGroupNode=rootNode.getElementsByTagName("字符集")[0]
-		charNodeList=charGroupNode.getElementsByTagName("字符")
 
-		for node in charNodeList:
-			charName=node.getAttribute('名稱')
-			charExpr=node.getAttribute('表示式')
+	charGroupNode=rootNode.getElementsByTagName("字符集")[0]
+	charNodeList=charGroupNode.getElementsByTagName("字符")
 
-			parseans=parsestructure(charExpr)
-			if not parseans:
-				print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
-			else:
-				operator, operandlist=parseans
-				infoList=[]
-				charInfoList=node.getElementsByTagName("字符資訊")
-				if charInfoList:
-					charInfo=charInfoList[0]
-					infoExpr=charInfo.getAttribute('資訊表示式')
-					infoExtra=charInfo.getAttribute('補充資訊')
-					if infoExpr: infoList.append(infoExpr)
-					if infoExtra: infoList.append(infoExtra)
-					
-				chInfo=charInfoGenerator(charName, infoList)
-				comp=qhparser.Parser.parse(charExpr, charName, charDescGenerator)
-				comp.setChInfo(chInfo)
-				descMgr[charName]=comp
+	for node in charNodeList:
+		charName=node.getAttribute('名稱')
+		combInfo=node.getElementsByTagName("組字資訊")[0]
+		charExpr=combInfo.getAttribute('表示式')
+
+		parseans=parsestructure(charExpr)
+		if not parseans:
+			print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
+		else:
+			operator, operandlist=parseans
+			infoList=[]
+			charInfoList=node.getElementsByTagName("編碼資訊")
+			if charInfoList:
+				charInfo=charInfoList[0]
+				infoExpr=charInfo.getAttribute('資訊表示式')
+				infoExtra=charInfo.getAttribute('補充資訊')
+				if infoExpr: infoList.append(infoExpr)
+				if infoExtra: infoList.append(infoExtra)
+				
+			chInfo=charInfoGenerator(charName, infoList)
+			comp=qhparser.Parser.parse(charExpr, charName, charDescGenerator)
+			comp.setChInfo(chInfo)
+			descMgr[charName]=comp
+	pass
 
 def genIMMapping(descMgr, targetCharList):
 	table=[]
