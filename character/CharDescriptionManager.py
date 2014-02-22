@@ -3,6 +3,7 @@
 from .CharDesc import CharDesc
 from .CharDesc import HangerCharDesc
 from .TemplateDesc import TemplateDesc
+from .TemplateDesc import TemplateCondition
 from .OperatorManager import OperatorManager
 from xml.etree import ElementTree
 from character import Operator
@@ -114,15 +115,42 @@ class CharDescriptionManager:
 				parameterList.append(charName)
 			return parameterList
 
+		def getDesc_Template_Structure(nodeStructure):
+			condition=None
+
+			conditionNode=nodeStructure.find("條件式")
+			if conditionNode!=None:
+				operator=conditionNode.get('運算')
+				operand1=conditionNode.get('運算元一')
+				operand2=conditionNode.get('運算元二')
+				condition=TemplateCondition([operator, operand1, operand2])
+			else:
+				condition=TemplateCondition()
+
+			assembleChar=nodeStructure.find("組字")
+			comp=getDesc_AssembleChar(assembleChar)
+			return [condition, comp]
+
 		def getDesc_Template(nodeTemplate):
 			templateName=nodeTemplate.get('名稱')
-			parameterNodeList=nodeTemplate.find("參數列")
-			assembleChar=nodeTemplate.find("組字")
 
+			parameterNodeList=nodeTemplate.find("參數列")
 			parameterNameList=getDesc_ParameterList(parameterNodeList)
 
-			comp=getDesc_AssembleChar(assembleChar)
-			return TemplateDesc(templateName, comp, parameterNameList)
+			replaceInfoList=[]
+			structureNodes=nodeTemplate.findall("組字結構")
+			for node in structureNodes:
+				replaceInfo=getDesc_Template_Structure(node)
+				replaceInfoList.append(replaceInfo)
+			[condition, comp]=replaceInfoList[0]
+
+#			structureChar=nodeTemplate.find("組字結構")
+#			[condition, comp]=getDesc_Template_Structure(structureChar)
+
+#			assembleChar=nodeTemplate.find("組字")
+#			comp=getDesc_AssembleChar(assembleChar)
+
+			return TemplateDesc(templateName, replaceInfoList, parameterNameList)
 
 		templateGroupNode=rootNode.find("範本集")
 		if None!=templateGroupNode:

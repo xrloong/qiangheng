@@ -2,13 +2,33 @@
 
 import copy
 
+class TemplateCondition:
+	def __init__(self, expression=[None, None, None]):
+		operator, operand1, operand2=expression
+
+		self.operator=operator
+		self.operand1=operand1
+		self.operand2=operand2
+
+	def isMatchAll(self):
+		return self.operator==None
+
+	def getOperand1(self):
+		return self.operand1
+
+	def getOperand2(self):
+		return self.operand2
+
 class TemplateDesc:
 	"""字符描述"""
 	countAnonymousName=0
-	def __init__(self, name, charDesc, parameterList):
+	def __init__(self, name, replaceInfoList, parameterList):
 		self.name=name
 
+		[condition, charDesc]=replaceInfoList[0]
+
 		self.charDesc=charDesc
+		self.replaceInfoList=replaceInfoList
 		self.parameterList=parameterList
 
 	def __str__(self):
@@ -29,13 +49,33 @@ class TemplateDesc:
 	def getParameterList(self):
 		return self.parameterList
 
+	def getWantedCharDesc(self, mappingDict):
+		def isConditionMatch(condition, mappingDict):
+			if condition.isMatchAll():
+				return True
+			operand1=condition.getOperand1()
+			operand2=condition.getOperand2()
+			argumentDesc=mappingDict.get(operand1)
+			return argumentDesc.getExpandName()==operand2
+
+		targetCharDesc=None
+		for replaceInfo in self.replaceInfoList:
+			[condition, charDesc]=replaceInfo
+			if isConditionMatch(condition, mappingDict):
+				targetCharDesc=charDesc
+				break
+		return targetCharDesc
+
 	def getReplacedCharDesc(self, argumentList):
-		tempDesc=self.charDesc.copyDeeply()
 		mappingDict={}
 		if len(argumentList)==len(self.parameterList):
 			pairList=zip(self.parameterList, argumentList)
 
 			mappingDict=dict(pairList)
+
+		targetCharDesc=self.getWantedCharDesc(mappingDict)
+		tempDesc=targetCharDesc.copyDeeply()
+
 		self.replaceCharDesc(tempDesc, mappingDict)
 		return tempDesc
 

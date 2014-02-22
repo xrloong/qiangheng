@@ -8,34 +8,6 @@ class RearrangeInfoSame:
 	def rearrange(self, charDesc):
 		pass
 
-class RearrangeInfoSurroundingOpenUp:
-	def __init__(self, OperatorLoong):
-		self.operatorLoong=OperatorLoong
-
-	def rearrange(self, charDesc):
-		oldCompList=charDesc.getCompList()
-
-		ansOperator=self.operatorLoong
-		x=oldCompList[0]
-		y=oldCompList[1]
-		charDesc.setCompList([y, x])
-		charDesc.setOperator(ansOperator)
-
-class RearrangeInfoLShapeSimpleRadical:
-	def __init__(self, OperatorLoong):
-		self.operatorLoong=OperatorLoong
-
-	def rearrange(self, charDesc):
-		oldCompList=charDesc.getCompList()
-
-		ansOperator=self.operatorLoong
-		x=oldCompList[0]
-		y=oldCompList[1]
-
-		if x.getExpandName() in ['辶', '廴']:
-			charDesc.setCompList([y, x])
-			charDesc.setOperator(ansOperator)
-
 class RearrangeInfoTemplate:
 	def __init__(self, templateDesc):
 		self.templateDesc=templateDesc
@@ -60,7 +32,6 @@ class OperatorManager:
 
 
 			'錯':RearrangeInfoSame(),
-			'起':RearrangeInfoSame(),
 		}
 
 		self.directionInfoList={
@@ -73,7 +44,6 @@ class OperatorManager:
 			'回':'@',
 
 			'錯':'*',
-			'起':'*',
 		}
 
 		self.rearrangeInfoDictForTemplateOperator={}
@@ -126,36 +96,9 @@ class OperatorManager:
 	def adjustTemplate(self):
 		pass
 
-class OperatorManager_AR(OperatorManager):
-	def __init__(self, descMgr):
-		OperatorManager.__init__(self, descMgr)
-		operatorLoong=self.getOperatorByName('龍')
-
-		self.rearrangeInfoDictForBuiltinOperator['起']=RearrangeInfoLShapeSimpleRadical(operatorLoong)
-
-class OperatorManager_BS(OperatorManager):
-	def __init__(self, descMgr):
-		OperatorManager.__init__(self, descMgr)
-		operatorLoong=self.getOperatorByName('龍')
-
-		self.rearrangeInfoDictForBuiltinOperator['起']=RearrangeInfoLShapeSimpleRadical(operatorLoong)
-
-class OperatorManager_CJ(OperatorManager):
-	def __init__(self, descMgr):
-		OperatorManager.__init__(self, descMgr)
-
-class OperatorManager_DY(OperatorManager):
-	def __init__(self, descMgr):
-		OperatorManager.__init__(self, descMgr)
-		operatorLoong=self.getOperatorByName('龍')
-
-		self.rearrangeInfoDictForBuiltinOperator['起']=RearrangeInfoLShapeSimpleRadical(operatorLoong)
-
-class OperatorManager_ZM(OperatorManager):
-	def __init__(self, descMgr):
-		OperatorManager.__init__(self, descMgr)
-		operatorLoong=self.getOperatorByName('龍')
-
-#		self.rearrangeInfoDictForBuiltinOperator['起']=RearrangeInfoLShapeSimpleRadical()
-
+OperatorManager_AR=OperatorManager
+OperatorManager_BS=OperatorManager
+OperatorManager_CJ=OperatorManager
+OperatorManager_DY=OperatorManager
+OperatorManager_ZM=OperatorManager
 
