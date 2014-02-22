@@ -911,7 +911,7 @@ U+6BCB	毋	(龜)	wj	wj
 U+6BCC	毌	(龜)	wj	wj
 U+6BCD	母	(龜)	wyi	wyi
 U+6BCE	毎	(龜)	owj	owj
-U+6BCF	每	(龜)	owyi	owi
+U+6BCF	每	(龜)	owyi	owy
 U+6BD2	毒	(龜)	qmwyi	qmi
 U+6BD4	比	(龜)	pp	pp
 U+6BDA	毚	(龜)	nrpi	nri
@@ -1298,7 +1298,7 @@ U+820E	舎	(龜)	ogr	ogr
 U+821B	舛	(龜)	niq	niq
 U+821C	舜	(龜)	bbnq	bbq
 U+821D	舝	(龜)	dmvvq	dmq
-U+821F	舟	(龜)	hbyi	hbi
+U+821F	舟	(龜)	hbyi	hby
 U+8227	舧	(龜)	hyhni	hyn
 U+826E	艮	(龜)	av	av
 U+826F	良	(龜)	iav	iav
