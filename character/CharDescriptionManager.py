@@ -134,6 +134,11 @@ class CharDescriptionManager:
 			self[comp.getName()]=comp
 
 	def ConstructDescriptionNetwork(self):
+#		# dirty Work
+#		# 需要先處理的 List
+#		dirtySpecialList=["彳", "亍", "亠", "[衣下]", ]
+#		for charName in dirtySpecialList+list(self.descDB.keys()):
+
 		for charName in self.descDB.keys():
 			if charName not in self.descNetwork:
 				charDesc=self.charDescGenerator(charName)

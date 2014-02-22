@@ -53,16 +53,20 @@ class RearrangementManager:
 				leftDesc=self.descMgr.getExpandDescriptionByNameInNetwork('彳')
 				rightDesc=self.descMgr.getExpandDescriptionByNameInNetwork('亍')
 				if x.getName()=='行':
-#					tmpDesc=self.emptyCharDescGenerator()
-#					tmpDesc.setCompList([lefDesc, y, rightDesc])
-#					tmpDesc.setOperatorAndDirection('湘', '-')
-
 					charDesc.setCompList([leftDesc, y, rightDesc])
 					charDesc.setOperatorAndDirection('湘', '-')
 			else:
 				pass
 		elif oldOperator=='衷':
 			ansDirection='|'
+			x=oldCompList[0]
+			y=oldCompList[1]
+
+			upDesc=self.descMgr.getExpandDescriptionByNameInNetwork('亠')
+			downDesc=self.descMgr.getExpandDescriptionByNameInNetwork('[衣下]')
+			if x.getName()=='衣':
+				charDesc.setCompList([upDesc, y, downDesc])
+				charDesc.setOperatorAndDirection('志', '|')
 		else:
 			pass
 
@@ -72,10 +76,17 @@ class RearrangementManager:
 
 		if oldOperator=='起':
 			ansDirection='+'
-			if self.imName in ['嘸蝦米', '行列', '大易']:
-				x=oldCompList[0]
-				y=oldCompList[1]
+			x=oldCompList[0]
+			y=oldCompList[1]
 
+#			if self.imName in ['嘸蝦米', '行列', '大易'] and x.getName()=='辶':
+			if self.imName == '嘸蝦米' and x.getName() in ['辶', '廴']:
+				charDesc.setCompList([y, x])
+				charDesc.setOperatorAndDirection('龍', '+')
+			elif self.imName == '行列' and x.getName() in ['辶', '廴']:
+				charDesc.setCompList([y, x])
+				charDesc.setOperatorAndDirection('龍', '+')
+			elif self.imName == '大易' and x.getName() in ['辶', '廴']:
 				charDesc.setCompList([y, x])
 				charDesc.setOperatorAndDirection('龍', '+')
 		elif oldOperator=='廖':
