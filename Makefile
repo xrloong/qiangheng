@@ -30,8 +30,7 @@ xml:
 	for im in $(IMLIST);\
 	do\
 		echo $$im;\
-#		time ./qiangheng.py -i $$im --xml > _$$im.xml;\
-		time ./qiangheng.py -c qhdata/config/$$im.xml --xml |\
+		time src/qiangheng.py -c qhdata/config/$$im.xml --xml |\
 			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
 	done
 	touch $(XML_PATH)
@@ -144,7 +143,7 @@ tarball-all:
 
 clean:
 	rm -rf tables/ tmp/ tarballs/ pixmaps
-	rm `find . -name "*.pyc"`
+	rm -f `find src -name "*.pyc"`
 	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log tex/*.pdf
 	rm -f test/puretable/*
 
