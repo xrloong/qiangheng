@@ -63,8 +63,8 @@ Options:
 	['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]
 
 其中的 STYLE 可以為：
-	['scim', 'gcin', 'umie',]
-	uime 用於微軟視窗作業系統上的 uimetool
+	['scim', 'gcin', 'msim',]
+	msim 用於微軟視窗作業系統上的 uimetool
 
 == 檔案說明 ==
    README.txt		說明文件
