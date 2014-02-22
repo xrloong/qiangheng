@@ -46,7 +46,7 @@ class StructureRearranger:
 		operatorName, CompList=structInfo
 		operator=self.operatorGenerator(operatorName)
 
-		structDesc=HangerStructureDescription(operator, CompList)
+		structDesc=HangerStructureDescription.generate(operator, CompList)
 		return structDesc
 
 	def generateStructureDescriptionWithName(self, name):

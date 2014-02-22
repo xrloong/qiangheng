@@ -15,7 +15,7 @@ class QHParser:
 		operatorName, CompList=structInfo
 		operator=self.operatorGenerator(operatorName)
 
-		structDesc=HangerStructureDescription(operator, CompList)
+		structDesc=HangerStructureDescription.generate(operator, CompList)
 		return structDesc
 
 	def getDesc_Radix(self, node):

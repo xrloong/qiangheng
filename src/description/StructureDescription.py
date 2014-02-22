@@ -26,24 +26,23 @@ class StructureDescription:
 	def __repr__(self):
 		return str(self)
 
-	def copyDescription(self):
-		copyStructureDescription=StructureDescription(self.getOperator(), [])
-		copyStructureDescription.setReferenceExpression(self.getReferenceExpression())
-		copyStructureDescription.setCodeVarianceType(self.getCodeVarianceType())
-		return copyStructureDescription
-
-	def copyDeeply(self):
-		ansChildList=[]
-		for childDesc in self.getCompList():
-			ansChilDesc=childDesc.copyDeeply()
-			ansChildList.append(ansChilDesc)
+	def __deepcopy__(self, memo):
+		compList=copy.deepcopy(self.getCompList(), memo)
+		structureDescription=StructureDescription.generate(self.getOperator(), compList)
 
 		if self.getOperator().getName()=='龜':
-			ansDesc=self.copyDescription()
-		else:
-			ansDesc=StructureDescription(self.getOperator(), ansChildList)
+			structureDescription.setReferenceExpression(self.getReferenceExpression())
+			structureDescription.setCodeVarianceType(self.getCodeVarianceType())
 
-		return ansDesc
+		return structureDescription
+
+	@staticmethod
+	def generate(operator, compList):
+		targetDescription=StructureDescription(operator, compList)
+		return targetDescription
+
+	def clone(self):
+		return copy.deepcopy(self)
 
 	def setStructureProperties(self, structProp):
 		codeVarianceString=structProp.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
@@ -112,21 +111,29 @@ class HangerStructureDescription(StructureDescription):
 	def __init__(self, operator, compList):
 		self.hangerStructureDescription=StructureDescription(operator, compList)
 
+	def __init__(self, targetDescription):
+		self.hangerStructureDescription=targetDescription
+
+	def __deepcopy__(self, memo):
+		copy.deepcopy(None, memo)
+
+		newTarget=copy.deepcopy(self.target)
+		compList=self.getCompList()
+		hangerStructureDescription=HangerStructureDescription(newTarget)
+		hangerStructureDescription.replacedBy(newTarget)
+		return hangerStructureDescription
+
+	@staticmethod
+	def generate(operator, compList):
+		targetDescription=StructureDescription(operator, compList)
+		return HangerStructureDescription(targetDescription)
+
 	@property
 	def target(self):
 		return self.hangerStructureDescription
 
 	def replacedBy(self, newStructureDescription):
 		self.hangerStructureDescription=newStructureDescription.target
-
-	def copyDescription(self):
-		return HangerStructureDescription(self.getOperator(), [])
-
-	def copyDeeply(self):
-		newTarget=self.target.copyDeeply()
-		hangerStructureDescription=HangerStructureDescription(self.getOperator(), self.getCompList())
-		hangerStructureDescription.replacedBy(newTarget)
-		return hangerStructureDescription
 
 if __name__=='__main__':
 	print(StructureDescription('王', '(龜)', None))

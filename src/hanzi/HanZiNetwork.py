@@ -1,5 +1,4 @@
 import sys
-import copy
 
 from util.topsort import topsort
 from util.topsort import CycleError

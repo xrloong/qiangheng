@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import copy
 
 class TemplateSubstitutionDescription:
 	"""樣本結構描述"""
@@ -67,10 +66,9 @@ class TemplateDescription:
 			targetArgumentDesc=parameterToArgumentMapping.get(referenceName)
 			referenceExpression=charDesc.getReferenceExpression()
 
-#			argumentDesc=copy.deepcopy(targetArgumentDesc)
 			argumentDesc=None
 			if targetArgumentDesc:
-				argumentDesc=targetArgumentDesc.copyDeeply()
+				argumentDesc=targetArgumentDesc.clone()
 				argumentReferenceName=argumentDesc.getReferenceName()
 				argumentReferenceExpression=argumentDesc.getReferenceName()
 				if referenceExpression and argumentReferenceExpression and referenceExpression.count(".")>0 and argumentReferenceExpression.count(".")==0:
@@ -91,7 +89,7 @@ class TemplateDescription:
 			else:
 				print("沒考到符合條件的結構", file=sys.stderr)
 
-			tempDesc=targetCharDesc.copyDeeply()
+			tempDesc=targetCharDesc.clone()
 			return tempDesc
 
 		argumentList=charDesc.getCompList()
