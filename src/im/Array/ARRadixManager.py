@@ -52,6 +52,9 @@ class ARRadixParser(RadixParser):
 		codeInfo=ARCodeInfo(codeList)
 		return codeInfo
 
+	def getMainRadixCodeInfo(self, radixName):
+		return self.getRadixCodeInfoList(radixName)[0]
+
 class ARRadixCodeInfoDescription(RadixCodeInfoDescription):
 	def __init__(self, elementCodeInfo):
 		RadixCodeInfoDescription.__init__(self, elementCodeInfo)

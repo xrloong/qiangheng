@@ -16,12 +16,16 @@ class RadixParser:
 		self.radixDescDB={}
 
 
+	def loadRadix(self, radixFileList):
+		self.parseRadixDescriptionList(radixFileList)
+		return self.radixCodeInfoDB
+
+
 	def getEncoder(self):
 		return self.codeInfoEncoder
 
-
-	def loadRadix(self, radixFileList):
-		self.parseRadixDescriptionList(radixFileList)
+	def getRadixCodeInfoList(self, radixName):
+		return self.radixCodeInfoDB.get(radixName)
 
 
 	def setCodeInfoAttribute(self, codeInfo, radixInfo):
@@ -45,12 +49,6 @@ class RadixParser:
 			if codeInfo:
 				radixCodeInfoList.append(codeInfo)
 		self.radixCodeInfoDB[charName]=radixCodeInfoList
-
-	def getMainRadixCodeInfo(self, radixName):
-		return self.radixCodeInfoDB.get(radixName)[0]
-
-	def getRadixCodeInfoDB(self):
-		return self.radixCodeInfoDB
 
 	# 多型
 	def convertElementToRadixInfo(self, elementCodeInfo):

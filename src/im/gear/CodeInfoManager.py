@@ -6,8 +6,7 @@ class CodeInfoManager:
 
 
 	def loadRadix(self, radixParser, radixFileList):
-		radixParser.loadRadix(radixFileList)
-		self.radixCodeInfoDB=radixParser.getRadixCodeInfoDB();
+		self.radixCodeInfoDB=radixParser.loadRadix(radixFileList)
 
 	def getRadixCodeInfoList(self, radixName):
 		return self.radixCodeInfoDB.get(radixName)
