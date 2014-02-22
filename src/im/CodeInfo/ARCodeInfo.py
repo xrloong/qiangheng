@@ -12,7 +12,7 @@ class ARCodeInfo(CodeInfo):
 		return self.getMainCode()
 
 	def setDataEmpty(self):
-		pass
+		self._codeList=None
 
 	def setSingleDataEmpty(self):
 		pass
