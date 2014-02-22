@@ -5,6 +5,7 @@ from .Stroke import Stroke
 from .Stroke import StrokeGroup
 import Constant
 import sys
+import copy
 
 class DCRadixParser(RadixParser):
 	TAG_RADIX_SET='字根集'
@@ -47,8 +48,14 @@ class DCRadixParser(RadixParser):
 			strokeDescriptionList=description.split(DCCodeInfo.STROKE_SEPERATOR)
 			strokeList=[]
 			for d in strokeDescriptionList:
-				stroke=Stroke(d, region)
-				strokeList.append(stroke)
+				if d[0]=='(':
+					stroke=Stroke(d, region)
+					strokeList.append(stroke)
+				else:
+					strokeGroupName=d
+					strokeGroup=self.findStrokeGroup(strokeGroupName)
+					tmpStrokeGroup=copy.deepcopy(strokeGroup)
+					strokeList.extend(tmpStrokeGroup.getStrokeList())
 
 			strokeGroup=StrokeGroup(region, strokeList)
 
@@ -82,7 +89,8 @@ class DCRadixParser(RadixParser):
 		region=self.parseRegion(descriptionRegion)
 
 		strokeGroup=self.parseStroke(region, strokeGroupNode)
-		return strokeGroup
+
+		self.strokeGroupDB[strokeGroupName]=strokeGroup
 
 	def parseStroke(self, region, strokeGroupNode):
 		strokeList=[]
