@@ -6,10 +6,10 @@ class CodeInfo:
 		self._isSupportCharacterCode=True
 		self._isSupportRadixCode=True
 
-	def setCodeInfoAttribute(self, codeVariance, isSupportCharacterCode, isSupportRadixCode):
-		self.multiplyCodeVarianceType(codeVariance)
-		self._isSupportCharacterCode=isSupportCharacterCode
-		self._isSupportRadixCode=isSupportRadixCode
+	@staticmethod
+	def generateDefaultCodeInfo(self):
+		codeInfo=CodeInfo()
+		return codeInfo
 
 	@staticmethod
 	def computeSupportingFromProperty(propDict):
@@ -32,6 +32,11 @@ class CodeInfo:
 			isSupportCharacterCode=True
 			isSupportRadixCode=True
 		return [isSupportCharacterCode, isSupportRadixCode]
+
+	def setCodeInfoAttribute(self, codeVariance, isSupportCharacterCode, isSupportRadixCode):
+		self.multiplyCodeVarianceType(codeVariance)
+		self._isSupportCharacterCode=isSupportCharacterCode
+		self._isSupportRadixCode=isSupportRadixCode
 
 	def __str__(self):
 		return "{{{0}}}".format(self.getCode())

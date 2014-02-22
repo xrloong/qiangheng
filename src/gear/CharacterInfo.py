@@ -9,10 +9,10 @@ class CharacterInfo:
 	def setCodeInfoList(self, codeInfoList):
 		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
 
-		codeInfoEncoder=StateManager.codeInfoEncoder
+		codeInfoManager=StateManager.getCodeInfoManager()
 		codeList=[]
 		for codeInfo in codeInfoList:
-			characterCode=codeInfoEncoder.interprettCharacterCode(codeInfo)
+			characterCode=codeInfoManager.interpretCodeInfo(codeInfo)
 			variance=codeInfo.variance
 			if characterCode:
 				codeList.append([characterCode, variance])

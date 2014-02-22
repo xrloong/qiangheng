@@ -91,8 +91,9 @@ class HanZiAssemblageStructure(HanZiStructure):
 		structureList=self.getStructureList()
 		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(structureList)
 
+		codeInfoManager=StateManager.getCodeInfoManager()
 		for infoList in infoListList:
-			codeInfo=StateManager.codeInfoEncoder.encode(self.operator, infoList)
+			codeInfo=codeInfoManager.encodeToCodeInfo(self.operator, infoList)
 			if codeInfo!=None:
 				codeInfo.multiplyCodeVarianceType(self.codeVariance)
 

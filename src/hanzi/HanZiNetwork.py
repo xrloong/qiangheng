@@ -32,10 +32,10 @@ class DescriptionManagerToHanZiNetworkConverter:
 				structDesc.setRootName(charName)
 				self.recursivelyAddStructure(structDesc)
 
+		codeInfoManager=StateManager.getCodeInfoManager()
 		for charName in sortedNameList:
-			radixManager=StateManager.radixManager
-			if radixManager.hasRadix(charName):
-				radixInfoList=radixManager.getRadixCodeInfoList(charName)
+			if codeInfoManager.hasRadix(charName):
+				radixInfoList=codeInfoManager.getRadixCodeInfoList(charName)
 				for radixCodeInfo in radixInfoList:
 					self.hanziNetwork.addRadixStructure(charName, radixCodeInfo)
 

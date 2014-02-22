@@ -14,11 +14,7 @@ class CodeInfoEncoder:
 		return CodeInfo.computeSupporting(hasCharacter, hasRadix)
 
 	def generateDefaultCodeInfo(self):
-		codeInfo=CodeInfo(isSupportCharacterCode, isSupportRadixCode)
-		return codeInfo
-
-	def interprettCharacterCode(self, codeInfo):
-		return codeInfo.toCode()
+		return CodeInfo.generateDefaultCodeInfo()
 
 	def encode(self, operator, codeInfoList):
 		codeInfo=self.setByComps(operator, codeInfoList)
