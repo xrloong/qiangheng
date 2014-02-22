@@ -18,12 +18,10 @@ class CharDescriptionManager:
 
 			if len(operatorName)>1:
 				# 暫時以運算名稱的字數來區分是否為範本
-#				charDesc=CharDesc(operator, CompList)
 				charDesc=HangerCharDesc(operator, CompList)
 				return charDesc
 			else:
 				if operator.isAvailableOperation():
-#					charDesc=CharDesc(operator, CompList)
 					charDesc=HangerCharDesc(operator, CompList)
 				else:
 					charDesc=None
@@ -153,6 +151,8 @@ class CharDescriptionManager:
 			self.characterDB[charName]=compList
 
 	def adjustData(self):
+		self.operationMgr.adjustTemplate()
+
 		for charName in self.characterDB.keys():
 			srcDescList=self.characterDB.get(charName)
 			l=[]

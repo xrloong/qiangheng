@@ -41,14 +41,14 @@ class TemplateDesc:
 		return tempDesc
 
 	def replaceCharDesc(self, charDesc, mappingDict):
+		for comp in charDesc.getCompList():
+			self.replaceCharDesc(comp, mappingDict)
+
 		argumentDesc=mappingDict.get(charDesc.getExpandName())
 		if argumentDesc!=None:
 			argumentName=argumentDesc.getExpandName()
 			charDesc.setHanger(argumentDesc.getHanger().copyDeeply())
 			charDesc.setExpandName(argumentName)
-
-		for comp in charDesc.getCompList():
-			self.replaceCharDesc(comp, mappingDict)
 
 if __name__=='__main__':
 	print(TemplateDesc('王', '(龜)', None))

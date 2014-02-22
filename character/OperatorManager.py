@@ -63,8 +63,6 @@ class OperatorManager:
 
 			'好':RearrangeInfoSame(),
 			'志':RearrangeInfoSame(),
-			'算':RearrangeInfoSame(),
-			'湘':RearrangeInfoSame(),
 		}
 		def operatorGenerator(operatorName):
 			return Operator.Operator(operatorName)
@@ -98,25 +96,11 @@ class OperatorManager:
 		if self.isTemplateOperator(charDesc.getOperator()):
 			charDesc=self.getCharDescFromTemplate(charDesc)
 			charDesc=self.rearrangeRecursively(charDesc)
-		l=[]
-		for childDesc in charDesc.getCompList():
-			newChildDesc=self.rearrangeRecursively(childDesc)
-			l.append(newChildDesc)
-		charDesc.setCompList(l)
-		self.rearrangeDesc(charDesc)
-		return charDesc
-
-	"""
-	def rearrangeRecursively(self, charDesc):
-		if self.isTemplateOperator(charDesc.getOperator()):
-			charDesc=self.getCharDescFromTemplate(charDesc)
-			charDesc=self.rearrangeRecursively(charDesc)
 		for childDesc in charDesc.getCompList():
 			newChildDesc=self.rearrangeRecursively(childDesc)
 			childDesc.setHanger(newChildDesc.getHanger())
 		self.rearrangeDesc(charDesc)
 		return charDesc
-		"""
 
 	def getOperatorByName(self, operatorName):
 		return Operator.Operator(operatorName)
@@ -128,6 +112,9 @@ class OperatorManager:
 
 		if rearrangeInfo!=None:
 			rearrangeInfo.rearrange(charDesc)
+
+	def adjustTemplate(self):
+		pass
 
 class OperatorManager_AR(OperatorManager):
 	def __init__(self, descMgr):
