@@ -7,8 +7,7 @@ class Point:
 		self.x=x
 		self.y=y
 
-	def __deepcopy__(self, memo):
-		copy.deepcopy(None, memo)
+	def clone(self):
 		return Point(self.x, self.y)
 
 	@property
@@ -61,9 +60,8 @@ class StrokeAction:
 		self.action=action
 		self.point=point
 
-	def __deepcopy__(self, memo):
-		point=copy.deepcopy(self.point, memo)
-		return StrokeAction(self.action, point)
+	def clone(self):
+		return StrokeAction(self.action, self.point.clone())
 
 	@staticmethod
 	def fromDescription(description):
@@ -95,10 +93,6 @@ class Pane:
 		self.bottom=bottom
 
 		self.name="預設範圍"
-
-	def __deepcopy__(self, memo):
-		copy.deepcopy(None, memo)
-		return self
 
 	@property
 	def width(self):
@@ -141,10 +135,6 @@ class Writing:
 	def __init__(self, contourPane):
 		self.boundaryPane=Pane.DEFAULT_PANE
 		self.contourPane=contourPane
-
-	def __deepcopy__(self, memo):
-		copy.deepcopy(None, memo)
-		return Writing(self.contourPane)
 
 	def getBoundaryPane(self):
 		return self.boundaryPane
@@ -193,8 +183,8 @@ class Stroke(Writing):
 
 		self.actionList=actionList
 
-	def __deepcopy__(self, memo):
-		actionList=[copy.deepcopy(a, memo) for a in self.actionList]
+	def clone(self):
+		actionList=[a.clone() for a in self.actionList]
 		return Stroke(self.contourPane, self.typeName, actionList)
 
 	def getInstanceName(self):
@@ -221,12 +211,9 @@ class StrokeGroup(Writing):
 
 		self.strokeList=strokeList
 
-	def __deepcopy__(self, memo):
-		strokeList=[copy.deepcopy(s, memo) for s in self.strokeList]
-		return StrokeGroup(self.contourPane, strokeList)
-
 	def clone(self):
-		return copy.deepcopy(self)
+		strokeList=[s.clone() for s in self.strokeList]
+		return StrokeGroup(self.contourPane, strokeList)
 
 	def getStrokeList(self):
 		return self.strokeList
