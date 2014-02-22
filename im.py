@@ -20,16 +20,6 @@ class NoneIM:
 	def setCharTree(self, ch, chdict):
 		pass
 
-	def genCompList(self, ch, chdict):
-		if ch.structure[1] in ['龜']:
-			return [ch]
-		elif ch.structure[1] in ['好', '志']:
-			x=chdict.get(ch.structure[3], None)
-			y=chdict.get(ch.structure[4], None)
-			if x and y:
-				return self.genCompList(x,  chdict)+self.genCompList(y, chdict)
-		return []
-
 	def getAllComp(self, ch, chdict):
 #		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
 #		['好', '志',
@@ -66,12 +56,72 @@ class CangJie(NoneIM):
 	def __init__(self):
 		pass
 
-	def genTable(self, chdict):
-		table=[]
-		for chname, ch in chdict.items():
-			if ch.cj:
-				table.append([ch.cj, chname])
-		return table
+	def getCode(self, ch):
+		if ch.cj:
+			return ch.cj
+
+	def setCharTree(self, ch, chdict):
+		if ch.ar:
+			return
+
+		complist=self.getAllComp(ch, chdict)
+
+		for tmpch in complist:
+			self.setCharTree(tmpch, chdict)
+
+		def getLstcode(chlist):
+			return chlist[-1].cj[-1]
+
+		def getFstLstcode(chlist):
+			if len(chlist)==1:
+				cjcode=chlist[0].cj
+				if len(cjcode)==1:
+					return cjcode[0]
+				elif len(cjcode)>=2:
+					return cjcode[0]+cjcode[-1]
+			elif len(chlist)>=2:
+				return chlist[0].cj[0]+chlist[-1].cj[-1]
+
+		def getFstSndLstcode(chlist):
+			if len(chlist)==1:
+				cjcode=chlist[0].cj
+				if len(cjcode)<=2:
+					return cjcode
+				elif len(cjcode)>=3:
+					return cjcode[0:2]+cjcode[-1]
+			elif len(chlist)>=2:
+				flcode=getFstLstcode(chlist)
+				if len(flcode)==1:
+					return flcode+getFstLstcode(chlist[1:])
+				else:
+					return flcode+getLstcode(chlist[1:])
+		cjlist=list(map(lambda c: c.cj, complist))
+
+		if complist and all(cjlist):
+			if ch.structure[1] in ['龜']:
+				cjcode=ch.cj
+			elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起']:
+				x=chdict.get(ch.structure[3], None)
+				y=chdict.get(ch.structure[4], None)
+				cjcode=getFstLstcode([x])+getFstSndLstcode([y])
+			elif ch.structure[1] in ['算', '湘', '霜', '想', '怡', '穎',]:
+				x=chdict.get(ch.structure[3], None)
+				y=chdict.get(ch.structure[4], None)
+				z=chdict.get(ch.structure[5], None)
+				cjcode=getFstLstcode([x])+getFstSndLstcode([y, z])
+			elif ch.structure[1] in ['林', '爻']:
+				x=chdict.get(ch.structure[3], None)
+				cjcode=getFstLstcode([x])+getFstSndLstcode([x])
+			elif ch.structure[1] in ['卅', '鑫']:
+				x=chdict.get(ch.structure[3], None)
+				cjcode=getFstLstcode([x])+getFstSndLstcode([x, x, x])
+			elif ch.structure[1] in ['燚',]:
+				x=chdict.get(ch.structure[3], None)
+				cjcode=getFstLstcode([x, x])+getFstSndLstcode([x, x])
+			else:
+				cjcode=""
+			if cjcode:
+				ch.cj=cjcode
 
 class Array(NoneIM):
 	"行列輸入法"
