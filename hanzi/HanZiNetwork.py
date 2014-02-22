@@ -22,9 +22,6 @@ class HanZiStructure:
 	def getNodeList(self):
 		return self.nodeList
 
-	def getCodeInfo(self):
-		return self.getCodeInfoList()[0]
-
 	def appendCodeInfo(self, codeInfo):
 		return self.codeInfoList.append(codeInfo)
 
@@ -40,14 +37,36 @@ class HanZiStructure:
 			return
 		self.flagIsSet=True
 
-		codeInfo=self.getCodeInfo()
 		nodeList=self.nodeList
-		infoList=self.getAllCodeInfoList(nodeList)
-		codeInfo.setByComps(self.getOperator(), infoList[0])
+		infoListList=self.getAllCodeInfoList(nodeList)
+
+		quantity=StateManager.getQuantity()
+
+		if quantity==StateManager.STATE_QUANTITY_NONE:
+			infoListList=[]
+		elif quantity==StateManager.STATE_QUANTITY_FIRST:
+			infoListList=infoListList[:1]
+		elif quantity==StateManager.STATE_QUANTITY_ALL:
+			infoListList=infoListList
+
+		for infoList in infoListList:
+			codeInfo=StateManager.codeInfoGenerator({})
+			codeInfo.setByComps(self.getOperator(), infoList)
+			self.appendCodeInfo(codeInfo)
 
 	def getAllCodeInfoList(self, nodeList):
-		infoList=[[node.getCodeInfoList()[0] for node in nodeList]]
-		return infoList
+		def combineList(infoListList, infoListOfNode):
+			if len(infoListList)==0:
+				ansListList=[infoListOfNode]
+			else:
+				ansListList=[infoList+[codeInfo] for infoList in infoListList for codeInfo in infoListOfNode]
+			return ansListList
+
+		infoListList=[]
+		for node in nodeList:
+			infoListList=combineList(infoListList, node.getCodeInfoList())
+
+		return infoListList
 
 class HanZiNode:
 	def __init__(self, charName):
@@ -60,7 +79,6 @@ class HanZiNode:
 		self.structureList.append(structure)
 
 	def getStructureListWithCondition(self):
-#		return self.structureList[:1]
 		return self.structureList
 
 	def getCodeInfoList(self):
@@ -77,13 +95,6 @@ class HanZiNode:
 				code=codeInfo.getCode()
 				if code:
 					codeList.append(code)
-
-#			structureList=self.getStructureListWithCondition()
-#			for struct in structureList:
-#				codeInfo=struct.getCodeInfo()
-#				code=codeInfo.getCode()
-#				if code:
-#					codeList.append(code)
 		return codeList
 
 	def setNodeTree(self):
@@ -120,9 +131,7 @@ class HanZiNetwork:
 			childNodeList=[self.findNodeByCharDesc(childDesc) for childDesc in childDescList]
 			dstNode=self.findNodeByCharDesc(charDesc)
 
-			codeInfo=StateManager.codeInfoGenerator()
 			structure=HanZiStructure(operator, childNodeList)
-			structure.appendCodeInfo(codeInfo)
 			structure.setToRadix()
 
 			dstNode.addStructure(structure)
