@@ -299,11 +299,9 @@ class BaseCurveComputer:
 	def get_點(self, startPoint, width, height):
 		return [(False, (startPoint[0] + width, startPoint[1] + height))]
 
-	def get_圓(self, a, b):
-		scope = self.getScope()
-		left, top, right, bottom = scope
-		CX = left + (right-left)//2
-		CY = top + (bottom-top)//2
+	def get_圓(self, startPoint, a, b):
+		CX = startPoint[0]
+		CY = startPoint[1] + b
 
 		startEnd = self.getStartEnd()
 		topLeftPoint = [CX - a, CY - b]
@@ -316,8 +314,10 @@ class BaseCurveComputer:
 		rightPoint = [CX + a, CY]
 
 		return [
-			(False, topPoint), (True, topRightPoint), (False, rightPoint), (True, bottomRightPoint),
-			(False, bottomPoint), (True, bottomLeftPoint), (False, leftPoint), (True, topLeftPoint), (False, topPoint)]
+			(False, topPoint), (True, topRightPoint), (False, rightPoint),
+			(True, bottomRightPoint), (False, bottomPoint), (True, bottomLeftPoint),
+			(False, leftPoint), (True, topLeftPoint), (False, topPoint)
+			]
 
 	def get_橫(self, startPoint, width):
 		return [(False, (startPoint[0] + width, startPoint[1]))]
@@ -404,20 +404,17 @@ class BaseCurveComputer:
 	def get_曲(self, startPoint, cr):
 		return [ (True, (startPoint[0], startPoint[1] + cr)), (False, (startPoint[0] + cr, startPoint[1] + cr)),]
 
-	def get_橫撇彎鉤(self, startPoint, w, h, wb, wg):
-		startEnd = self.getStartEnd()
-		startPoint = startEnd[:2]
-		topLeftPoint = startPoint
-		topRightPoint = [startPoint[0] + w, startPoint[1]]
-		bottomLeftPoint = [max(0, startPoint[0] - int((wb-w)/2)), startPoint[1]+h]
-		bottomRightPoint = [min(0xFF, topRightPoint[0] + int((wb-w)/2)), startPoint[1]+h]
-		tPoint = [int((topLeftPoint[0]+bottomLeftPoint[0])/2), int((topLeftPoint[1]+bottomLeftPoint[1])/2)]
-		endPoint = [int((topRightPoint[0]+bottomRightPoint[0])/2), int((topRightPoint[1]+bottomRightPoint[1])/2)]
-		bottomPoint = [int((bottomLeftPoint[0] + bottomRightPoint[0])/2), bottomLeftPoint[1]]
-		leftPoint = [int((tPoint[0]+bottomLeftPoint[0])/2), int((tPoint[1]+bottomLeftPoint[1])/2)]
-		rightPoint = [int((endPoint[0]+bottomRightPoint[0])/2), int((endPoint[1]+bottomRightPoint[1])/2)]
+	def get_撇彎(self, startPoint, wl, wr, h):
+		midPoint2 = [startPoint[0] - wl, startPoint[1] + h]
 
-		return [ (False, topRightPoint), (True, tPoint), (False, leftPoint), (True, bottomLeftPoint), (False, bottomPoint), (True, bottomRightPoint), (False, rightPoint), (False, endPoint), ]
+		cr = 0x30
+		tmp = cr
+
+		midPoint1 = [midPoint2[0] + tmp, startPoint[1] + (wl - tmp) * h // wl]
+		midPoint3 = [midPoint2[0] + tmp, startPoint[1] + h]
+		midPoint4 = [startPoint[0] + wr , startPoint[1] + h]
+
+		return [ (False, midPoint1), (True, midPoint2), (False, midPoint3), (False, midPoint4), ]
 
 class InvalidCurveComputer(BaseCurveComputer):
 	def checkType(self):
@@ -710,18 +707,23 @@ class CurveComputer_橫撇彎鉤(BaseCurveComputer):
 		w = mid1X - startX
 		h = (mid2Y - startY)
 		wb = (mid2X - mid1X)*2+h
-		wg = mid2Y - endY
-		self.info = [w, h, wb, wg]
+		t = mid2Y - endY
+		self.info = [w, h, wb, t]
 
 	def genNewExp(self):
 		w = self.getInfo()[0]
 		h = self.getInfo()[1]
 		wb = self.getInfo()[2]
-		wg = self.getInfo()[3]
+		t = self.getInfo()[3]
+
+		wr = (wb-w)//2
+		wl = wb - wr
 
 		startPoint = self.getStartPoint()
 		pointInfoList = [(False, startPoint)]
-		pointInfoList.extend(self.get_橫撇彎鉤(pointInfoList[-1][1], w, h, wb, wg))
+		pointInfoList.extend(self.get_橫(pointInfoList[-1][1], w))
+		pointInfoList.extend(self.get_撇彎(pointInfoList[-1][1], wl, wr, h))
+		pointInfoList.extend(self.get_上(pointInfoList[-1][1], t))
 		self.newExp = self.genStrokeString(pointInfoList)
 
 class CurveComputer_橫撇橫折鉤(BaseCurveComputer):
@@ -1460,9 +1462,15 @@ class CurveComputer_圈(BaseCurveComputer):
 		self.info = [(right - left - 2)//2, (bottom - top - 2)//2]
 
 	def genNewExp(self):
+		scope = self.getScope()
+		left, top, right, bottom = scope
+		CX = left + (right-left)//2
+		CY = top + (bottom-top)//2
+
 		a = self.getInfo()[0]
 		b = self.getInfo()[1]
-		pointInfoList = self.get_圓(a, b)
+		startPoint = [CX, CY - b]
+		pointInfoList = self.get_圓(startPoint, a, b)
 		self.newExp = self.genStrokeString(pointInfoList)
 
 def genStroke(name, exp):
