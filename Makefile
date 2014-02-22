@@ -1,7 +1,6 @@
 
 VERSION	=	0.04
-#IMLIST	=	cj ar dy bs zm
-IMLIST	=	zm
+IMLIST	=	cj ar dy bs zm
 STYLELIST	=	scim gcin ime
 
 all:

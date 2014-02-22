@@ -204,13 +204,12 @@ class CangJie(NoneIM):
 
 	class CJCharInfo(NoneIM.CharInfo):
 		def __init__(self, charname, parseans, prop):
-			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
+			super().__init__(charname, parseans, prop)
 			self._cj_incode=None	# 當獨體使用
 			self._cj_rtcode=None	# 當部件使用
 			if len(prop)>=2:
 				self.setCJProp(prop[0], prop[1])
 			self.noneFlag=False
-			self.setedFlag=False
 
 		def setCJProp(self, cj_incode, cj_rtcode):
 			if cj_incode=='XXXX':
@@ -359,8 +358,11 @@ class CangJie(NoneIM):
 			postlist=[]
 		return [prelist, postlist]
 
-	def setCharTree(self, ch):
+	def setCharTree(self, ch, chdesc):
 		"""設定某一個字符所包含的部件的碼"""
+
+		# 在倉頡中未使用
+		chdesc=None
 
 		if not ch.isToSetTree():
 			# 如果有值，代表事先指定或之前設定過。
@@ -370,7 +372,7 @@ class CangJie(NoneIM):
 		complist=[prelist, postlist]
 
 		for tmpch in prelist+postlist:
-			self.setCharTree(tmpch)
+			self.setCharTree(tmpch, chdesc)
 
 		ch.setCJByComps(prelist, postlist)
 
@@ -379,12 +381,11 @@ class Array(NoneIM):
 
 	class ARCharInfo(NoneIM.CharInfo):
 		def __init__(self, charname, parseans, prop):
-			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
+			super().__init__(charname, parseans, prop)
 			self._ar_incode=None
 			if len(prop)>=1:
 				self.setARProp(prop[0])
 			self.noneFlag=False
-			self.setedFlag=False
 
 		def setARProp(self, ar_incode):
 			if ar_incode=='XXXX':
@@ -461,18 +462,19 @@ class DaYi(NoneIM):
 
 	class DYCharInfo(NoneIM.CharInfo):
 		def __init__(self, charname, parseans, prop):
-			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
+			super().__init__(charname, parseans, prop)
 			self._dy_incode=None
+			self._flag_seted=False
 			if len(prop)>=1:
 				self.setDYProp(prop[0])
 			self.noneFlag=False
-			self.setedFlag=False
 
 		def setDYProp(self, dy_incode):
 			if dy_incode=='XXXX':
 				self._dy_incode=None
 			else:
 				self._dy_incode=dy_incode
+			self._flag_seted=True
 
 		def getDYProp(self):
 			return self._dy_incode
@@ -490,6 +492,7 @@ class DaYi(NoneIM):
 
 		@property
 		def isSeted(self):
+			return self._flag_seted
 			return bool(self._dy_incode)
 
 	def __init__(self):
@@ -553,13 +556,12 @@ class Boshiamy(NoneIM):
 
 	class BSCharInfo(NoneIM.CharInfo):
 		def __init__(self, charname, parseans, prop):
-			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
+			super().__init__(charname, parseans, prop)
 			self._bs_incode=None
 			self._bs_spcode=None
 			if len(prop)>=2:
 				self.setBSProp(prop[0], prop[1])
 			self.noneFlag=False
-			self.setedFlag=False
 
 		def setBSProp(self, bs_incode, bs_spcode):
 			if bs_incode=='XXXX' or bs_spcode=='XXXX':
@@ -640,7 +642,7 @@ class ZhengMa(NoneIM):
 
 	class ZMCharInfo(NoneIM.CharInfo):
 		def __init__(self, charname, parseans, prop):
-			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
+			super().__init__(charname, parseans, prop)
 			self._zm_rtlist=[]
 			self._zm_incode=None
 			self._zm_tpcode=None
@@ -651,7 +653,6 @@ class ZhengMa(NoneIM):
 				else:
 					self.setZMProp(str_rtlist.split(','))
 			self.noneFlag=False
-			self.setedFlag=False
 
 		def setZMProp(self, zm_rtlist):
 			self._zm_rtlist=zm_rtlist
