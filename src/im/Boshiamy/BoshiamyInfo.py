@@ -1,13 +1,13 @@
-from .IMInfo import IMInfo
-from ..CodeInfo import SPCodeInfo
-from ..CodeInfoEncoder import SPCodeInfoEncoder
-from ..RadixManager import SPRadixManager
+from ..base.IMInfo import IMInfo
+from ..CodeInfo import BSCodeInfo
+from ..CodeInfoEncoder import BSCodeInfoEncoder
+from ..RadixManager import BSRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
-class SampleInfo(IMInfo):
-	"範例輸入法"
+class BoshiamyInfo(IMInfo):
+	"嘸蝦米輸入法"
 
-	IMName="範例"
+	IMName="嘸蝦米"
 	def __init__(self):
 		self.keyMaps=[
 			['a', 'Ａ',],
@@ -38,21 +38,21 @@ class SampleInfo(IMInfo):
 			['z', 'Ｚ',],
 			]
 		self.nameDict={
-				'cn':'范例',
-				'tw':'範例',
-				'hk':'範例',
-				'en':'Sample',
+				'cn':'呒蝦米',
+				'tw':'嘸蝦米',
+				'hk':'嘸蝦米',
+				'en':'Boshiamy',
 				}
-		self.iconfile="qhsp.svg"
+		self.iconfile="qhbs.svg"
 		self.maxkeylength=4
 
-IMInfo=SampleInfo
-CodeInfoGenerator=SPCodeInfo.SPCodeInfo
+IMInfo=BoshiamyInfo
+CodeInfoGenerator=BSCodeInfo.BSCodeInfo
 
-codeInfoEncoder=SPCodeInfoEncoder.SPCodeInfoEncoder()
+codeInfoEncoder=BSCodeInfoEncoder.BSCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
-radixManager=SPRadixManager.SPRadixManager(codeInfoEncoder)
+radixManager=BSRadixManager.BSRadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

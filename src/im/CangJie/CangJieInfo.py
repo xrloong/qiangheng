@@ -1,4 +1,4 @@
-from .IMInfo import IMInfo
+from ..base.IMInfo import IMInfo
 from ..CodeInfo import CJCodeInfo
 from ..CodeInfoEncoder import CJCodeInfoEncoder
 from ..RadixManager import CJRadixManager

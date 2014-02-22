@@ -1,13 +1,13 @@
-from .IMInfo import IMInfo
-from .IMInfo import ArrayInfo
-from .IMInfo import BoshiamyInfo
-from .IMInfo import CangJieInfo
-from .IMInfo import DaYiInfo
-from .IMInfo import DynamicCompositionInfo
-from .IMInfo import FourCornerInfo
-from .IMInfo import GuiXieInfo
-from .IMInfo import ZhengMaInfo
-from .IMInfo import SampleInfo
+from .base import IMInfo
+from .Array import ArrayInfo
+from .Boshiamy import BoshiamyInfo
+from .CangJie import CangJieInfo
+from .DaYi import DaYiInfo
+from .DynamicComposition import DynamicCompositionInfo
+from .FourCorner import FourCornerInfo
+from .GuiXie import GuiXieInfo
+from .ZhengMa import ZhengMaInfo
+from .Sample import SampleInfo
 
 class IMMgr:
 	def __init__(self):

@@ -1,4 +1,4 @@
-from .IMInfo import IMInfo
+from ..base.IMInfo import IMInfo
 from ..CodeInfo import GXCodeInfo
 from ..CodeInfoEncoder import GXCodeInfoEncoder
 from ..RadixManager import GXRadixManager

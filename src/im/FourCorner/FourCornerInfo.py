@@ -1,4 +1,4 @@
-from .IMInfo import IMInfo
+from ..base.IMInfo import IMInfo
 from ..CodeInfo import FCCodeInfo
 from ..CodeInfoEncoder import FCCodeInfoEncoder
 from ..RadixManager import FCRadixManager

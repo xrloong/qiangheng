@@ -1,4 +1,4 @@
-from .IMInfo import IMInfo
+from ..base.IMInfo import IMInfo
 from ..CodeInfo import DCCodeInfo
 from ..CodeInfoEncoder import DCCodeInfoEncoder
 from ..RadixManager import DCRadixManager

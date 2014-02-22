@@ -1,13 +1,13 @@
-from .IMInfo import IMInfo
-from ..CodeInfo import ZMCodeInfo
-from ..CodeInfoEncoder import ZMCodeInfoEncoder
-from ..RadixManager import ZMRadixManager
+from ..base.IMInfo import IMInfo
+from ..CodeInfo import SPCodeInfo
+from ..CodeInfoEncoder import SPCodeInfoEncoder
+from ..RadixManager import SPRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
-class ZhengMaInfo(IMInfo):
-	"鄭碼輸入法"
+class SampleInfo(IMInfo):
+	"範例輸入法"
 
-	IMName="鄭碼"
+	IMName="範例"
 	def __init__(self):
 		self.keyMaps=[
 			['a', 'Ａ',],
@@ -38,21 +38,21 @@ class ZhengMaInfo(IMInfo):
 			['z', 'Ｚ',],
 			]
 		self.nameDict={
-				'cn':'郑码',
-				'tw':'鄭碼',
-				'hk':'鄭碼',
-				'en':'ZhengMa',
+				'cn':'范例',
+				'tw':'範例',
+				'hk':'範例',
+				'en':'Sample',
 				}
-		self.iconfile="qhzm.svg"
+		self.iconfile="qhsp.svg"
 		self.maxkeylength=4
 
-IMInfo=ZhengMaInfo
-CodeInfoGenerator=ZMCodeInfo.ZMCodeInfo
+IMInfo=SampleInfo
+CodeInfoGenerator=SPCodeInfo.SPCodeInfo
 
-codeInfoEncoder=ZMCodeInfoEncoder.ZMCodeInfoEncoder()
+codeInfoEncoder=SPCodeInfoEncoder.SPCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
-radixManager=ZMRadixManager.ZMRadixManager(codeInfoEncoder)
+radixManager=SPRadixManager.SPRadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

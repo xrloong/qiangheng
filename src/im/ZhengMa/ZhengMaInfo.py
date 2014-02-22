@@ -1,13 +1,13 @@
-from .IMInfo import IMInfo
-from ..CodeInfo import BSCodeInfo
-from ..CodeInfoEncoder import BSCodeInfoEncoder
-from ..RadixManager import BSRadixManager
+from ..base.IMInfo import IMInfo
+from ..CodeInfo import ZMCodeInfo
+from ..CodeInfoEncoder import ZMCodeInfoEncoder
+from ..RadixManager import ZMRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
-class BoshiamyInfo(IMInfo):
-	"嘸蝦米輸入法"
+class ZhengMaInfo(IMInfo):
+	"鄭碼輸入法"
 
-	IMName="嘸蝦米"
+	IMName="鄭碼"
 	def __init__(self):
 		self.keyMaps=[
 			['a', 'Ａ',],
@@ -38,21 +38,21 @@ class BoshiamyInfo(IMInfo):
 			['z', 'Ｚ',],
 			]
 		self.nameDict={
-				'cn':'呒蝦米',
-				'tw':'嘸蝦米',
-				'hk':'嘸蝦米',
-				'en':'Boshiamy',
+				'cn':'郑码',
+				'tw':'鄭碼',
+				'hk':'鄭碼',
+				'en':'ZhengMa',
 				}
-		self.iconfile="qhbs.svg"
+		self.iconfile="qhzm.svg"
 		self.maxkeylength=4
 
-IMInfo=BoshiamyInfo
-CodeInfoGenerator=BSCodeInfo.BSCodeInfo
+IMInfo=ZhengMaInfo
+CodeInfoGenerator=ZMCodeInfo.ZMCodeInfo
 
-codeInfoEncoder=BSCodeInfoEncoder.BSCodeInfoEncoder()
+codeInfoEncoder=ZMCodeInfoEncoder.ZMCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
-radixManager=BSRadixManager.BSRadixManager(codeInfoEncoder)
+radixManager=ZMRadixManager.ZMRadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass
