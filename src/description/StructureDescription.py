@@ -41,8 +41,6 @@ class StructureDescription:
 		else:
 			ansDesc=StructureDescription(self.getOperator(), ansChildList)
 
-#		if isWithSameExpandName:
-#			ansDesc.setExpandName(self.getExpandName())
 		return ansDesc
 
 	def setStructureProperties(self, structProp):

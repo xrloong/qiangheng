@@ -37,8 +37,8 @@ class TemplateDescription:
 	def __repr__(self):
 		return str(self)
 
-	def setName(self, name):
-		self.name=name
+#	def setName(self, name):
+#		self.name=name
 
 	def getName(self):
 		return self.name
@@ -46,8 +46,8 @@ class TemplateDescription:
 	def setParameterList(self, parameterList):
 		self.parameterList=parameterList
 
-	def getParameterList(self):
-		return self.parameterList
+#	def getParameterList(self):
+#		return self.parameterList
 
 	def getWantedCharDesc(self, mappingDict):
 		def isConditionMatch(condition, mappingDict):
