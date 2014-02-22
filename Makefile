@@ -1,5 +1,5 @@
 
-VERSION	=	0.04
+VERSION	=	0.20
 IMLIST	=	cj ar dy bs zm
 TEST_IMLIST	=	cj ar dy bs zm
 PLATFORM_LIST	=	puretable scim gcin msim
@@ -122,11 +122,12 @@ old-format:
 
 pixmaps:
 	mkdir -p pixmaps
+	inkscape -D --export-width=64 --export-height=64 --export-png\=pixmaps/qiangheng.png icons/qiangheng.svg;\
 	for im in $(IMLIST);\
-	do inkscape -D --export-png\=pixmaps/qh$$im.png icons/qh$$im.svg;\
+	do inkscape -D --export-width=48 --export-height=48 --export-png\=pixmaps/qh$$im.png icons/qh$$im.svg;\
 	done
 
-tarballs: pre-tarballs tarball-src tarball-all
+tarballs: pre-tarballs pdf tarball-src tarball-all
 	make tarball-src VERSION=$(VERSION)
 	make xml
 	make imtables
@@ -144,11 +145,11 @@ tarball-src:
 	tar cjf $(TARBALLS_PATH)/qiangheng-src-$(VERSION).tar.bz2 --exclude-vcs --no-recursion $(XFORM) -T tmp/files.list
 
 tarballs-platform: pixmaps
-	tar cjf $(TARBALLS_PATH)/qiangheng-scim-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(SCIM_PATH)/*.bin $(ICON_PATH) README.txt
-	tar cjf $(TARBALLS_PATH)/qiangheng-ibus-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(IBUS_PATH)/*.db $(ICON_PATH) README.txt
-	tar cjf $(TARBALLS_PATH)/qiangheng-gcin-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(GCIN_PATH)/*.gtab $(ICON_PATH) README.txt
-	tar cjf $(TARBALLS_PATH)/qiangheng-ovim-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(OVIM_PATH)/*.cin $(ICON_PATH) README.txt
-	tar cjf $(TARBALLS_PATH)/qiangheng-msim-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(MSIM_PATH)/*.txt $(ICON_PATH) README.txt
+	tar cjf $(TARBALLS_PATH)/qiangheng-scim-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(SCIM_PATH)/*.bin $(ICON_PATH) tex/qiangheng.pdf README.txt
+	tar cjf $(TARBALLS_PATH)/qiangheng-ibus-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(IBUS_PATH)/*.db $(ICON_PATH) tex/qiangheng.pdf README.txt
+	tar cjf $(TARBALLS_PATH)/qiangheng-gcin-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(GCIN_PATH)/*.gtab $(ICON_PATH) tex/qiangheng.pdf README.txt
+	tar cjf $(TARBALLS_PATH)/qiangheng-ovim-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(OVIM_PATH)/*.cin $(ICON_PATH) tex/qiangheng.pdf README.txt
+	tar cjf $(TARBALLS_PATH)/qiangheng-msim-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(MSIM_PATH)/*.txt $(ICON_PATH) tex/qiangheng.pdf README.txt
 
 tarball-all:
 	tar cjf $(TARBALLS_PATH)/qiangheng-$(VERSION).tar.bz2 --exclude-vcs --exclude=tarballs -C .. qiangheng
