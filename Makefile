@@ -14,8 +14,13 @@ MSIM_PATH	=	$(TABLES_PATH)/msim
 TARBALLS_PATH	=	tarballs
 XFORM		=	--xform="s:^:qiangheng/:"
 ICON_PATH	=	icons/ pixmaps/
+SCIM_ICON_PATH	=	icons/scim
+IBUS_ICON_PATH	=	icons/ibus
+GCIN_ICON_PATH	=	icons/gcin
+OVIM_ICON_PATH	=	icons/ovim
+MSIM_ICON_PATH	=	icons/msim
 
-.PHONY: xml tarballs pixmaps
+.PHONY: xml tarballs all-icons
 
 all: xml
 
@@ -120,11 +125,15 @@ old-format:
 		xalan -xsl xslt/xml2txt.xslt -in charinfo/$$i/CJK.xml -out charinfo/$$i/CJK.old.txt;\
 	done
 
-pixmaps:
-	mkdir -p pixmaps
-	inkscape -D --export-width=64 --export-height=64 --export-png\=pixmaps/qiangheng.png icons/qiangheng.svg;\
+all-icons:
+	#inkscape -D -w 64 -h 64 -e pixmaps/qiangheng.png icons/qiangheng.svg;
+	mkdir -p $(SCIM_ICON_PATH) $(GCIN_ICON_PATH) $(OVIM_ICON_PATH) $(MSIM_ICON_PATH) $(IBUS_ICON_PATH)
 	for im in $(IMLIST);\
-	do inkscape -D --export-width=48 --export-height=48 --export-png\=pixmaps/qh$$im.png icons/qh$$im.svg;\
+	do
+		inkscape -D -w 48 -h 48 -e $(SCIM_ICON_PATH)/qh$$im.png icons/qh$$im.svg;\
+		inkscape -D -w 30 -h 30 -e $(GCIN_ICON_PATH)/qh$$im.png icons/qh$$im.svg;\
+		inkscape -D -w 48 -h 48 -e $(OVIM_ICON_PATH)/qh$$im.png icons/qh$$im.svg;\
+		cp icons/qh$$im.svg $(IBUS_ICON_PATH)/qh$$im.png;\
 	done
 
 tarballs: pre-tarballs pdf tarball-src tarball-all

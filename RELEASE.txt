@@ -1,6 +1,6 @@
 ﻿== 2011/01/22 ==
 版本：0.20
-SVN: http://svn.openfoundry.org/qiangheng	289
+SVN: http://svn.openfoundry.org/qiangheng	290
 提供範本能力。
 修正字形描述錯誤。
 目前與原輸入法不同的計有：
