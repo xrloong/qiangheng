@@ -54,7 +54,7 @@ class ZMCharInfo(CharInfo):
 				ans=self._zm_rtlist[0][0:2]+self._zm_rtlist[-2][0]+self._zm_rtlist[-1][0]
 			elif len(tmp_rtlist[0])==3:
 				ans=self._zm_rtlist[0][0:3]+self._zm_rtlist[-1][0]
-		elif len(tmp_rtlist)==4:
+		elif len(tmp_rtlist)>=4:
 			if len(tmp_rtlist[0])==1:
 				ans=self._zm_rtlist[0][0]+self._zm_rtlist[1][0]+self._zm_rtlist[-2][0]+self._zm_rtlist[-1][0]
 			elif len(tmp_rtlist[0])==2:

@@ -77,7 +77,9 @@ $(MSIM_PATH): $(PURETABLE_PATH)
 	touch $(MSIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		./qiangheng.py -i $$im -p msim -m table -t $(PURETABLE_PATH)/qh$$im.txt > $(MSIM_PATH)/qh$$im.msim.txt;\
+		./qiangheng.py -i $$im -p msim -m table -t $(PURETABLE_PATH)/qh$$im.txt > $(MSIM_PATH)/qh$$im.msim;\
+		sed 's/$$'"/`echo \\\r`/" $(MSIM_PATH)/qh$$im.msim > tmp/qh$$im.msim.dos;\
+		iconv -f utf-8 -t utf-16le tmp/qh$$im.msim.dos > $(MSIM_PATH)/qh$$im.msim.txt;\
 	done
 
 testing:

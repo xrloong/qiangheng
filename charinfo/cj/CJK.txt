@@ -143,6 +143,7 @@ U+4EFA	仺	(龜)	|o,sm
 U+4F1E	伞	(龜)	|o,fj
 U+4F24	伤	(龜)	-o,oks
 U+4F2B	伫	(龜)	-o,jm
+U+4F59	余	(龜)	+omd
 U+4F65	佥	(龜)	|o,m,fm
 U+4F69	佩	(龜)	-o,hNb
 U+4F7E	佾	(龜)	-o,cb
@@ -186,6 +187,7 @@ U+5160	兠	(龜)	|lmmu
 U+5165	入	(龜)	+o=oh
 U+5166	兦	(龜)	+vo
 U+5167	內	(龜)	+ob
+U+5168	全	(龜)	+omg
 U+5169	兩	(龜)	+mlBo
 U+516A	兪	(龜)	|o,m,bvv
 U+516B	八	(龜)	+c=ho
@@ -298,6 +300,7 @@ U+5358	単	(龜)	+f,wj
 U+535C	卜	(龜)	+y
 U+535D	卝	(龜)	-lm,y
 U+535E	卞	(龜)	+yy
+U+5360	占	(龜)	+yr
 U+5362	卢	(龜)	+ys
 U+5363	卣	(龜)	+yWs
 U+5364	卤	(龜)	+yWk
@@ -348,6 +351,7 @@ U+53DF	叟	(龜)	+hxle
 U+53E2	叢	(龜)	+tcte
 U+53E3	口	(龜)	+r
 U+53E4	古	(龜)	+jr
+U+53EF	可	(龜)	+mnr
 U+53EA	只	(龜)	+rc
 U+53F2	史	(龜)	+lk
 U+53F3	右	(龜)	+kr
@@ -1662,6 +1666,7 @@ U+9A9E	骞	(龜)	|j,ttc,nvsm
 U+9AA8	骨	(龜)	|bb,b
 U+9AD8	高	(龜)	|y,r,Br
 U+9AD9	髙	(龜)	|yslB
+U+9ADF	髟	(好 镸彡)
 # 9B00
 U+9B1B	鬛	(龜)	|sihhh,Wk,vyv
 U+9B25	鬥	(龜)	+ln
