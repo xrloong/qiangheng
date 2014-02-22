@@ -109,10 +109,10 @@ testing:
 compare: testing
 	diff -rN test/puretable_ans test/puretable
 
-pdf: tex/principle.pdf
+pdf: tex/qiangheng.pdf
 
-tex/principle.pdf: tex/principle.tex
-	cd tex; xelatex principle.tex; rm principle.aux  principle.log
+tex/qiangheng.pdf: tex/qiangheng.tex
+	cd tex; xelatex qiangheng.tex; rm qiangheng.aux  qiangheng.log
 
 old-format:
 	for i in ar bs cj dy zm main;\
@@ -140,7 +140,7 @@ pre-tarballs:
 tarball-src:
 	mkdir -p tmp
 	svn ls -R > tmp/files.list
-	echo tex/principle.pdf >> tmp/files.list
+	echo tex/qiangheng.pdf >> tmp/files.list
 	tar cjf $(TARBALLS_PATH)/qiangheng-src-$(VERSION).tar.bz2 --exclude-vcs --no-recursion $(XFORM) -T tmp/files.list
 
 tarballs-platform: pixmaps
@@ -157,7 +157,7 @@ clean:
 	rm -rf tables/ tmp/ tarballs/ pixmaps
 	rm -f charinfo/*/CJK.old.txt
 	rm -f *.pyc im/*.pyc character/*.pyc operatorinfo/*.pyc
-	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log
+	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log tex/*.pdf
 	rm -f charinfo/*/*.bak.txt charinfo/*/*.rst.txt
 	rm -f test/puretable/*
 

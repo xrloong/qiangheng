@@ -1,87 +1,5 @@
-\documentclass{article}
-\usepackage{CJKnumb}
-
-\usepackage{fontspec}
-\setmainfont[Mapping=tex-text]{AR PL UMing TW}
-%\setmainfont[Mapping=tex-text]{文泉驛正黑}
-\XeTeXlinebreaklocale ``zh''
-\XeTeXlinebreakskip = 0pt plus 1pt
-
-\usepackage{amsmath}
-\usepackage{multirow}
-
-\def\tac{\textasciicircum}
-\title{瑲珩}
-\author{王湘叡}
-
-\newcommand\qhchar[1]{\mbox{#1}}
-
-\newcommand\qhstroke[1]{\qhchar{#1}_{\mbox{筆}}}
-
-\newcommand\qhar[1]{\qhchar{#1}_{\mbox{行}}}
-\newcommand\qharrule{\mbox{取}_{\mbox{前三後一}}}
-\newcommand\qhdy[1]{\qhchar{#1}_{\mbox{易}}}
-\newcommand\qhdyrule{\mbox{取}_{\mbox{前三後一}}}
-\newcommand\qhbs[1]{\qhchar{#1}_{\mbox{嘸}}}
-\newcommand\qhbscomp[1]{\qhchar{#1}_{\mbox{嘸補}}}
-\newcommand\qhbstemp[1]{\qhchar{#1}_{\mbox{嘸暫}}}
-\newcommand\qhzm[1]{\qhchar{#1}_{\mbox{鄭}}}
-\newcommand\qhzmlist[1]{\qhchar{#1}_{\mbox{鄭串}}}
-\newcommand\qhcj[1]{\qhchar{#1}_{\mbox{倉}}}
-\newcommand\qhcjlist[1]{\qhchar{#1}_{\mbox{倉串}}}
-\newcommand\qhcjdir[1]{\qhchar{#1}_{\mbox{倉向}}}
-\newcommand\qhcjbody[1]{\qhchar{#1}_{\mbox{倉身}}}
-\newcommand\qhcjmerge[2]{\oplus_{\qhchar{#1}}(#2)}
-
-\begin{document}
-\maketitle{}
-
-漢字系統，是一個特別的書寫系統。%
-它利用數千以至上萬種不同的字形來表達各種意義。%
-然而，這些字形卻可以由數百至一千多種字形所構成。
-具體的構造方法，則闡述於漢字構造的「六書」中的「會意」及「形聲」。
-
-因為可以藉由組合的方式產生新字，%
-於是就產生了兩個特性：「開放」、「數量龐大」。%
-「開放」意味著可以依需求造字，%
-千餘年來不斷有新的字被造出來，%
-這又導致了「數量龐大」的這個特性。%
-目前累積已有約十萬字（包含日本、韓國及越南所造漢字）。%
-而這兩個特性則都對漢字的資訊化產生了了一定程度的影響。
-
-通常一種語言要資訊化，要經過以下的步驟：
-\begin{enumerate}
-\item[一、]搜集該語言所用到的字形。\\
-搜集到的字形所成的集合稱做字符集或字集。%
-但因漢字的開放特性，不可能將所有字都搜集。
-
-\item[二、]賦予每個字形一個獨立的編號（專業的術語稱作編碼）。\\
-因為電腦並擅長處理的是數值而非二維的圖形，所以需要對每個字形編號。%
-於是，原本對人而言的文字的處理，如儲存、搜尋、排序或比對，%
-對電腦而言就是儲存、搜尋、排序或比對數值。%
-但因為不可能搜集到所有的字，意味著漏掉的字將無法資訊化。
-
-\item[三、]產生字形檔，要為每個字形準備相對應的圖。\\
-電腦可以很輕易地處理數值，但人不行。%
-因此，當電腦處理完數值後，要將結果呈現給人時，需要轉換成人類所能理解的形式。%
-由於「數量龐大」的原因，要為漢字產生一種字型往往需要耗費大量的人力。%
-而如果字符集改變，如新造了或搜集到了一個字，則每種字型再造形。%
-為了能將大量的工作轉為自動化，就有了「動態組字」的研究出現。%
-「動態組字」的目標在於，利用漢字組字的特性，能動態的將字形產生出來。%
-即我們只要準備一些字根的字形，而電腦自動幫我們產生所有漢字的字形。
-
-\item[四、]定義輸入法，為每個字形生成輸入碼。\\
-大部分語言所定義的字形數都不像漢字系統採取如此龐大的數量，%
-因此在輸入時，通常是使用特殊的鍵盤來容納所有字形，且按壓一個鍵將產生一個字形。
-然而漢字系統無法採用此種方式，因此許多字形輸入法被開發出來。%
-亦即，利用一組「按鍵序列」來產生一個字。%
-然而，因為「數量龐大」的特性，要為一個字形產生一組輸入法，往往也要耗費大量的人力。%
-又如新造了或搜集到了一個字，則每種字形都要再次為此字形拆碼。%
-為了能將大量的工作轉為自動化，就是本計劃的目標，可以視為「動態拆碼」。
-
-\end{enumerate}
-
-\section{原理}
+﻿
+\chapter{原理}
 在開始之前，讓我們可以利用漢字的``筆劃數''的這個屬性來做說明。%
 假設我們需要知道``曉''這個字的筆劃數，%
 最直覺得方法就是：從第一筆（日的第一筆）到最後一筆（兀的最後一筆），%
@@ -227,26 +145,41 @@
 \end{tabular}
 
 \subsection{遞迴式}
-分別使用$\qhar{字}$和$\qhdy{字}$來表示一個字的行列碼與大易碼。\\
-如 $\qhar{曉}$ =``PRRS''、$\qhdy{曉}$=``DFFQ''。
+為方便說明起見，分別使用$\QhAr{字}$和$\QhDy{字}$來表示一個字的行列碼與大易碼。\\
+如： $\QhAr{曉}$ =``PRRS''、$\QhDy{曉}$=``DFFQ''。
 \begin{subequations}
   \begin{align}
-  \qhar{字} &= 行列碼\\
-  \qhdy{字} &= 大易碼\\
-  甲 \oplus 乙 &= 取(甲+乙)的前三後一碼
+  \QhAr{字} &= 行列碼\\
+  \QhDy{字} &= 大易碼\\
+  \QhArRlist{字} &= 將字拆成行列字根所構成的串列\\
+  \QhDyRlist{字} &= 將字拆成大易字根所構成的串列\\
   \end{align}
 \end{subequations}
 
-若$(\qhchar{丙}=\qhchar{甲}+\qhchar{乙})$
-其遞迴算式為：
+若$(\qhchar{丙}=\qhchar{甲}+\qhchar{乙})$，其遞迴算式分別為：
 \begin{subequations}
   \begin{align}
-  \qhar{丙}&=\qharrule{}(\qhar{甲} \oplus \qhar{乙})\\
-  \qhdy{丙}&=\qhdyrule{}(\qhdy{甲} \oplus \qhdy{乙})
+  \QhArRlist{丙}&=\QhArRlist{甲} \oplus \QhArRlist{乙}\\
+  \QhDyRlist{丙}&=\QhDyRlist{甲} \oplus \QhDyRlist{乙}
   \end{align}
 \end{subequations}
 
-\subsection{資料格式說明}
+然而考慮到：
+\begin{subequations}
+  \begin{align}
+  \QhArRule{}({丙})&=\QhRuleThreeOne{}({甲})\\
+  \QhDyRule{}({丙})&=\QhRuleThreeOne{}({甲})
+  \end{align}
+\end{subequations}
+
+則可以得到其衍生的遞迴算式為：
+\begin{subequations}
+  \begin{align}
+  \QhAr{丙}&=\QhArRule{}(\QhAr{甲} \oplus \QhAr{乙})\\
+  \QhDy{丙}&=\QhDyRule{}(\QhDy{甲} \oplus \QhDy{乙})
+  \end{align}
+\end{subequations}
+
 \subsection{注意事項}
 對於行列輸入法而言，``囚''即為特別，它有兩個拆法。
 在``溫''中及在``囚''中的拆法不一。照行列的說法是以面積來決定。
@@ -258,75 +191,82 @@
 為此，為嘸蝦米添加一個屬性：
 用``嘸''、``.嘸補'' 表示一個字的嘸蝦米碼和補碼，\\
 \subsection{遞迴式}
-使用``$\qhbscomp{字}$''來表示一個字的嘸蝦米補碼。
-使用``$\qhbs{字}$''來表示一個字的嘸蝦米碼。
-$\qhbs{垚}=YYY$\\
-$\qhbscomp{兀}=L$\\
+使用``$\QhBscomp{字}$''來表示一個字的嘸蝦米補碼。
+使用``$\QhBs{字}$''來表示一個字的嘸蝦米碼。
+$\QhBs{垚}=YYY$\\
+$\QhBscomp{兀}=L$\\
 則
 \begin{subequations}
   \begin{align}
-  \qhbs{字} &= 嘸蝦米碼\\
-  \qhbscomp{字} &= 嘸蝦米補碼\\
-  \qhbstemp{字} &= 嘸蝦米暫時碼，即沒有補碼\\
-  \qhbs{字} &=
+  \QhBs{字} &= 嘸蝦米碼\\
+  \QhBscomp{字} &= 嘸蝦米補碼\\
+  \QhBstemp{字} &= 嘸蝦米暫時碼，即沒有補碼\\
+  \QhBs{字} &=
       \left\{\begin{array}{ll}
-        \qhbstemp{字}
-           & \text{若$\qhbstemp{字} \geq $三碼}\\
-        \qhbstemp{字}+\qhbscomp{字}
-           & \text{若$\qhbstemp{丙} \leq $二碼}
+        \QhBstemp{字}
+           & \text{若$\QhBstemp{字} \geq $三碼}\\
+        \QhBstemp{字}+\QhBscomp{字}
+           & \text{若$\QhBstemp{丙} \leq $二碼}
       \end{array}\right.\\
   甲 \oplus 乙 &= 取(甲+乙)的前三後一碼\\
+  \QhBsRlist{字} &= 將字拆成嘸蝦米字根所構成的串列\\
   \end{align}
 \end{subequations}
 
-若$(\qhchar{丙}=\qhchar{甲}+\qhchar{乙})$
-其遞迴算式為：
+若$(\qhchar{丙}=\qhchar{甲}+\qhchar{乙})$，其遞迴算式為：
 \begin{subequations}
   \begin{align}
-  \qhbscomp{丙}&=\qhbscomp{乙}\\
-  \qhbstemp{丙}&=\qhbstemp{甲} \oplus \qhbscomp{乙}\\
+  \QhBsRlist{丙}&=\QhBsRlist{甲} \oplus \QhBsRlist{乙}\\
   \end{align}
 \end{subequations}
 
-\subsection{資料格式說明}
+考慮到：
+\begin{subequations}
+  \begin{align}
+  \QhBsRule{}({字})&=\QhRuleThreeOne{}({字})
+  \end{align}
+\end{subequations}
+
+則可以得到其衍生的遞迴算式為：
+\begin{subequations}
+  \begin{align}
+  \QhBs{丙}&=\QhBsRule{}(\QhBs{甲} \oplus \QhBs{乙})\\
+  \end{align}
+\end{subequations}
+
 \subsection{注意事項}
 
 \section{鄭碼輸入法}
 \subsection{輸入法說明}
 鄭碼的規則有點複雜。首先，鄭碼會定義一些字根，並為每個字根編碼。
-到目前為止，還跟其它輸入法類似。不同的是，鄭碼會使用二碼來為字根編碼。
-
-鄭碼的字根大多為二碼字，對一些常用的部件則為一碼。
-在少數的情況下，有三碼。
-鄭碼會依不同的情況，可以省略一些部件或位碼。
-須要計算部件數，並依其個數，來決定規則。
+到目前為止，還跟其它輸入法類似。
+不同的是，為字根編碼時，其它輸入法都是使用單碼，但鄭碼會使用雙碼。
+不過對一些常用的字根，則會優化為一碼。
+在極少數的情況下，則用三碼來為字根編碼。
+在將一個字拆為一個個字根的序列時，鄭碼會依據字根數，來決定其編碼規則。
 不過，鄭碼會用到的字根最多只有頭兩個和尾兩個，總共最多四個。
 
 \subsection{遞迴式}
-使用``$\qhzmlist{字}$''來表示一個字的字根串列。
-如$\qhzmlist{曉}=[\qhchar{``日''}, \qhchar{``土''}, \qhchar{``土''}, \qhchar{兀}]$\\
-
+使用``$\QhZmRlist{字}$''來表示一個字的字根串列。
+如：$\QhZmRlist{曉}=[\qhchar{``日''}, \qhchar{``土''}, \qhchar{``土''}, \qhchar{``土''}, \qhchar{``兀''}]$。\\
+鄭碼的計算方式為：
 \begin{subequations}
   \begin{align}
-    \qhzmlist{字} &= 表示一個字的鄭碼字根串列。\\
-    甲 \oplus 乙 &= 取(甲+乙)的鄭碼字根串列的前二後二。
+    \QhZmRlist{字} &= 表示一個字的鄭碼字根串列。\\
+    \QhZm{字} &= \QhZmRule(\QhZmRlist{字})\\
   \end{align}
 \end{subequations}
 
-若$(\qhchar{丙}=\qhchar{甲}+\qhchar{乙})$
-其遞迴算式為：
+若$(\qhchar{丙}=\qhchar{甲}+\qhchar{乙})$，其遞迴算式為：
 \begin{subequations}
   \begin{align}
-  \qhzmlist{丙} &= \qhzmlist{甲} \oplus \qhzmlist{乙} \\
+  \QhZmRlist{丙}&=\QhZmRlist{甲} \oplus \QhZmRlist{乙}\\
   \end{align}
 \end{subequations}
 
-只要為每個字求出其所用到的字根串列，再套用其規則，即可算出鄭碼。
-此外，在鄭碼中，區碼的重要性大於位碼，也就是說，在無法全取字根的碼時，會先保留區碼。
-如``由''的碼為``KIA''，在遇到``由''這個字根，且只能取一碼時，就取''K''。
-且只能取二碼時，就取''KI''。
-且只能取三碼時，就取''KIA''。
-
+然而，由於鄭碼的計算方式較為複雜。%
+無法將鄭碼字根串列的遞迴和鄭碼的計算方式結合成一個簡單的遞迴式。%
+以下列出鄭碼的計算規則：\\
 \begin{tabular}{lcll}
            & 首根碼數 & 規則 & 例字\\
   \multirow{3}{*}{二基根字} & 1 & 首根一碼+末根三碼，若末根只有一碼，則補``VV''\\
@@ -342,7 +282,7 @@ $\qhbscomp{兀}=L$\\
 
 \section{倉頡輸入法}
 \subsection{輸入法說明}
-倉頡輸入法算是最為複雜的一個輸入法了。
+倉頡輸入法算是最為複雜的一個輸入法了。%
 主要是倉頡輸入法不只考慮字根，還會考慮字的結構。
 
 倉頡的規則分為整體字和組合字。
@@ -363,29 +303,31 @@ $\qhbscomp{兀}=L$\\
 \subsection{遞迴式}
 \begin{subequations}
   \begin{align}
-    \qhcjlist{字} &= 表示一個字的倉頡碼字根串列。\\
-    \qhcjdir{字} &= 表示一個字的字根組成方向。\\
-    \qhcjbody{字} &= 表示一個字當另一個字的字身時的倉頡碼。\\
+    \QhCjlist{字} &= 表示一個字的倉頡碼字根串列。\\
+    \QhCjdir{字} &= 表示一個字的字根組成方向。\\
+    \QhCjbody{字} &= 表示一個字當另一個字的字身時的倉頡碼。\\
   \end{align}
 \end{subequations}
 
-如$\qhcjlist{``曉''}=[\qhchar{``日''}, \qhchar{``土''}, \qhchar{``土''}, \qhchar{``山''}]$\\
-如$\qhcjdir{``曉''}=`-'$\\
-如$\qhcjbody{``曉''}=[\qhchar{``日''}, \qhchar{``土''}, \qhchar{``山''}]$\\
+如$\QhCjlist{``曉''}=[\qhchar{``日''}, \qhchar{``土''}, \qhchar{``土''}, \qhchar{``山''}]$\\
+如$\QhCjdir{``曉''}=`-'$\\
+如$\QhCjbody{``曉''}=[\qhchar{``日''}, \qhchar{``土''}, \qhchar{``山''}]$\\
+
 \begin{subequations}
   \begin{align}
-    \qhcjmerge{字}{甲} &=
+    \QhCjmerge{字}{甲} &=
       \left\{\begin{array}{ll}
-        \qhcjlist{甲}
-           & \text{若$\qhcjdir{甲} = \qhcjdir{字}$}\\
-        $[$ \qhcjbody{甲} $]$
-           & \text{若$\qhcjbody{甲} \neq \qhcjbody{字}$}
+        \QhCjlist{甲}
+           & \text{若$\QhCjdir{甲} = \QhCjdir{字}$}\\
+        $[$ \QhCjbody{甲} $]$
+           & \text{若$\QhCjbody{甲} \neq \QhCjbody{字}$}
       \end{array}\right.\\
-  \qhcjbody{丙} &= \qhcjmerge{丙}{甲} + \qhcjmerge{丙}{乙}\\
+  \QhCjbody{丙} &= \QhCjmerge{丙}{甲} + \QhCjmerge{丙}{乙}\\
+  \QhCjdir{丙} &= 由丙的組成方式計算出方向。\\
   \end{align}
 \end{subequations}
 
-\subsection{資料格式說明}
+\subsection{注意事項}
 倉頡對於字根的取碼有特殊規定。
 若字本身為輔助字根，則不能直接取碼。
 
@@ -394,7 +336,3 @@ $\qhbscomp{兀}=L$\\
 %但若``氵''當獨立字時，則要取碼``卜一''
 %若``工''當獨立字時，則要取碼``一中一''
 
-\subsection{注意事項}
-
-\subsection{資料格式說明}
-\end{document}
