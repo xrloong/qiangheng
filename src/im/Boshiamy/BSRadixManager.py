@@ -1,12 +1,9 @@
 from .BSCodeInfo import BSCodeInfo
 from .BSCodeInfoEncoder import BSCodeInfoEncoder
-from ..base.RadixManager import RadixManager
+from ..base.RadixManager import RadixParser
 import Constant
 
-class BSRadixManager(RadixManager):
-	def __init__(self, nameInputMethod):
-		RadixManager.__init__(self, nameInputMethod)
-
+class BSRadixParser(RadixParser):
 	def createEncoder(self):
 		return BSCodeInfoEncoder()
 

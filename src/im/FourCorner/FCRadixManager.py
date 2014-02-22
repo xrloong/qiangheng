@@ -1,13 +1,10 @@
 from .FCCodeInfo import FCCodeInfo
 from .FCCodeInfoEncoder import FCCodeInfoEncoder
-from ..base.RadixManager import RadixManager
+from ..base.RadixManager import RadixParser
 
 import Constant
 
-class FCRadixManager(RadixManager):
-	def __init__(self, nameInputMethod):
-		RadixManager.__init__(self, nameInputMethod)
-
+class FCRadixParser(RadixParser):
 	def createEncoder(self):
 		return FCCodeInfoEncoder()
 

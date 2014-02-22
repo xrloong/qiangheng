@@ -45,7 +45,8 @@ class SampleInfo(IMInfo):
 
 IMInfo=SampleInfo
 
-radixManager=SPRadixManager.SPRadixManager(IMInfo.IMName)
+radixParser=SPRadixManager.SPRadixParser(IMInfo.IMName)
+radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass

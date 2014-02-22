@@ -1,15 +1,17 @@
 from .ARCodeInfo import ARCodeInfo
 from .ARCodeInfoEncoder import ARCodeInfoEncoder
-from ..base.RadixManager import RadixManager
+from ..base.RadixManager import RadixParser
 from ..base.RadixManager import RadixCodeInfoDescription
 import Constant
 
-class ARRadixManager(RadixManager):
-	def __init__(self, nameInputMethod):
-		RadixManager.__init__(self, nameInputMethod)
-
+class ARRadixParser(RadixParser):
 	def createEncoder(self):
 		return ARCodeInfoEncoder()
+
+	# 多型
+	def convertElementToRadixInfo(self, elementCodeInfo):
+		radixInfoDescription=ARRadixCodeInfoDescription(elementCodeInfo)
+		return radixInfoDescription
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
@@ -37,29 +39,22 @@ class ARRadixManager(RadixManager):
 		codeInfo=ARCodeInfo(codeList)
 		return codeInfo
 
-	# 遞迴
 	def convertRadixDescToCodeInfoByReference(self, radixDesc):
 		nameList=radixDesc.getRadixNameList()
 		for radixName in nameList:
-			if radixName not in self.radixCodeInfoDB:
+			if radixName not in self.converter.radixCodeInfoDB:
 				radixDesc=self.radixDescDB.get(radixName)
 
-				self.convertRadixDescIntoDB(radixName, radixDesc)
+				self.converter.convertRadixDescIntoDB(radixName, radixDesc)
 
 		codeList=[]
 		for radixName in nameList:
-			radixInfo=self.getMainRadixCodeInfo(radixName)
+			radixInfo=self.converter.getMainRadixCodeInfo(radixName)
 			radixCodeList=radixInfo.getMainCodeList()
 			codeList.append(radixCodeList)
 
 		codeInfo=ARCodeInfo(codeList)
 		return codeInfo
-		return self.convertRadixDescToCodeInfoByExpression(radixDesc)
-
-	# 多型
-	def convertElementToRadixInfo(self, elementCodeInfo):
-		radixInfoDescription=ARRadixCodeInfoDescription(elementCodeInfo)
-		return radixInfoDescription
 
 class ARRadixCodeInfoDescription(RadixCodeInfoDescription):
 	def __init__(self, elementCodeInfo):

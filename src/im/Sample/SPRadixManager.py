@@ -1,11 +1,8 @@
 from .SPCodeInfo import SPCodeInfo
 from .SPCodeInfoEncoder import SPCodeInfoEncoder
-from ..base.RadixManager import RadixManager
+from ..base.RadixManager import RadixParser
 
-class SPRadixManager(RadixManager):
-	def __init__(self, nameInputMethod):
-		RadixManager.__init__(self, nameInputMethod)
-
+class SPRadixParser(RadixParser):
 	def createEncoder(self):
 		return SPCodeInfoEncoder()
 

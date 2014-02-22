@@ -1,11 +1,8 @@
 from .GXCodeInfo import GXCodeInfo
 from .GXCodeInfoEncoder import GXCodeInfoEncoder
-from ..base.RadixManager import RadixManager
+from ..base.RadixManager import RadixParser
 
-class GXRadixManager(RadixManager):
-	def __init__(self, nameInputMethod):
-		RadixManager.__init__(self, nameInputMethod)
-
+class GXRadixParser(RadixParser):
 	def createEncoder(self):
 		return GXCodeInfoEncoder()
 

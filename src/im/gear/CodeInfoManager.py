@@ -2,7 +2,7 @@
 class CodeInfoManager:
 	def __init__(self, radixManager):
 		self.radixManager=radixManager
-		self.codeInfoEncoder=radixManager.codeInfoEncoder
+		self.codeInfoEncoder=radixManager.getEncoder()
 
 	def loadRadix(self, radixFileList):
 		return self.radixManager.loadRadix(radixFileList)

@@ -1,13 +1,10 @@
 from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
-from ..base.RadixManager import RadixManager
+from ..base.RadixManager import RadixParser
 from .Stroke import Stroke
 import Constant
 
-class DCRadixManager(RadixManager):
-	def __init__(self, nameInputMethod):
-		RadixManager.__init__(self, nameInputMethod)
-
+class DCRadixParser(RadixParser):
 	def createEncoder(self):
 		return DCCodeInfoEncoder()
 

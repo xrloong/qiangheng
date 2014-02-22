@@ -29,7 +29,8 @@ class DynamicCompositionInfo(IMInfo):
 
 IMInfo=DynamicCompositionInfo
 
-radixManager=DCRadixManager.DCRadixManager(IMInfo.IMName)
+radixParser=DCRadixManager.DCRadixParser(IMInfo.IMName)
+radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass

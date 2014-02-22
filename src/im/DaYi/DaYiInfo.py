@@ -59,7 +59,8 @@ class DaYiInfo(IMInfo):
 
 IMInfo=DaYiInfo
 
-radixManager=DYRadixManager.DYRadixManager(IMInfo.IMName)
+radixParser=DYRadixManager.DYRadixParser(IMInfo.IMName)
+radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass

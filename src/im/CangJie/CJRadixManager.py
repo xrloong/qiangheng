@@ -1,16 +1,13 @@
 from .CJCodeInfo import CJCodeInfo
 from .CJCodeInfoEncoder import CJCodeInfoEncoder
-from ..base.RadixManager import RadixManager
+from ..base.RadixManager import RadixParser
 from .CJLump import CJLump
 import Constant
 
 import re
 import sys
 
-class CJRadixManager(RadixManager):
-	def __init__(self, nameInputMethod):
-		RadixManager.__init__(self, nameInputMethod)
-
+class CJRadixParser(RadixParser):
 	def createEncoder(self):
 		return CJCodeInfoEncoder()
 
@@ -60,3 +57,4 @@ class CJRadixManager(RadixManager):
 			cjLumpList.append(cjLump)
 
 		return cjLumpList
+
