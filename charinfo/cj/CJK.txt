@@ -1777,6 +1777,7 @@ U+9FA0	龠	(龜)	omrb	omb
 [焔右]	[焔右]	(龜)	nla	nla
 [流右]	[流右]	(龜)	yihu	yiu
 [氾右]	[氾右]	(龜)	su	su
+[垴右]	[垴右]	(龜)	yuk	yuk
 ##
 [糉右]	[糉右]	(龜)	uche	uce
 [糭右]	[糭右]	(龜)	uche	uce

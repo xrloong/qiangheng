@@ -60,11 +60,11 @@ class NoneIM:
 
 			table=[]
 			for chname, chdesc in targetDB.items():
-				self.setCharTree(chdesc)
+				chdesc.setCharTree(self.descDB)
 
-				ch=chdesc.getChInfo()
-				code=ch.getCode()
-				if ch.isToShow() and code:
+				chinfo=chdesc.getChInfo()
+				code=chinfo.getCode()
+				if chinfo.isToShow() and code:
 					table.append([code, chname])
 				else:
 					pass
@@ -74,34 +74,6 @@ class NoneIM:
 		else:
 			table=[]
 		return table
-
-	def setCharInfoOfCharDesc(self, chdesc):
-		# 多型
-		descList=self.normalizationToLinear(chdesc)
-		complist=[x.getChInfo() for x in descList]
-
-		charinfo=chdesc.getChInfo()
-		charinfo.setByComps(complist)
-
-	def setCharTree(self, chdesc):
-		"""設定某一個字符所包含的部件的碼"""
-
-		if not chdesc.getChInfo().isToSetTree():
-			return
-
-		expand_chdesc=chdesc.expandCharTree(self.descDB)
-		descList=self.normalizationToLinear(expand_chdesc)
-		for tmpdesc in descList:
-			self.setCharTree(tmpdesc)
-
-		self.setCharInfoOfCharDesc(expand_chdesc)
-
-	def normalizationToLinear(self, comp):
-		"""將樹狀結構轉為線性結構"""
-		# 多型
-		if len(comp.getCompList())==0:
-			return [comp]
-		return sum(map(lambda x: self.normalizationToLinear(x), comp.getCompList()), [])
 
 class CangJie(NoneIM):
 	"倉頡輸入法"
@@ -143,76 +115,6 @@ class CangJie(NoneIM):
 				}
 		self.iconfile="CangJie.png"
 		self.maxkeylength=5
-
-	def getCJPrePostList(self, chdesc):
-		"""傳回倉頡的字首及字尾的部件串列"""
-
-		descDB=self.descDB
-		oldOperator=chdesc.op
-		oldCompList=chdesc.getCompList()
-
-		prelist=[]
-		postlist=[]
-		if oldOperator in ['龜']:
-			prelist=[]
-			postlist=[]
-		elif oldOperator in ['水']:
-			x=oldCompList[0]
-			prelist=[x]
-			postlist=[]
-		elif oldOperator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=oldCompList[0]
-			y=oldCompList[1]
-			prelist=[x]
-			postlist=[y]
-		elif oldOperator in ['算', '湘', '霜', '怡',]:
-			x=oldCompList[0]
-			y=oldCompList[1]
-			z=oldCompList[2]
-			prelist=[x]
-			postlist=[y, z]
-		elif oldOperator in ['想', '穎',]:
-			x=oldCompList[0]
-			y=oldCompList[1]
-			z=oldCompList[2]
-			prelist=[x, y]
-			postlist=[z]
-		elif oldOperator in ['林', '爻']:
-			x=oldCompList[0]
-			prelist=[x]
-			postlist=[x]
-		elif oldOperator in ['卅', '鑫']:
-			x=oldCompList[0]
-			prelist=[x]
-			postlist=[x, x]
-		elif oldOperator in ['燚',]:
-			x=oldCompList[0]
-			prelist=[x, x]
-			postlist=[x, x]
-		elif oldOperator in ['纂',]:
-			x=oldCompList[0]
-			y=oldCompList[1]
-			z=oldCompList[2]
-			w=oldCompList[3]
-			prelist=[x]
-			postlist=[y, z, w]
-		else:
-			prelist=[]
-			postlist=[]
-		return [prelist, postlist]
-
-	def setCharInfoOfCharDesc(self, chdesc):
-		prelist, postlist=self.getCJPrePostList(chdesc)
-
-		pre_chinfo_list=map(lambda x:x.getChInfo(), prelist)
-		post_chinfo_list=map(lambda x:x.getChInfo(), postlist)
-
-		charinfo=chdesc.getChInfo()
-		charinfo.setCJByComps(pre_chinfo_list, post_chinfo_list)
-
-	def normalizationToLinear(self, chdesc):
-		"""將樹狀結構轉為線性結構"""
-		return chdesc.getCompList()
 
 class Array(NoneIM):
 	"行列輸入法"

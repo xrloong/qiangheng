@@ -23,9 +23,14 @@ c	水
 c	氵
 c	氺
 ca	业
+clm	洀
+cosz	海
 d	刂
 da	丄
 ea	上
+ei	齒
+eil;	齣
+eiua	齟
 em;	卨
 eq	北
 eqa	丠
@@ -58,6 +63,8 @@ l	勹
 l;	句
 l;mm	够
 lef	阜
+lm	舟
+lmsb	般
 lr	壬
 lrx	丟
 m	夕
@@ -75,6 +82,8 @@ ohdf	孵
 ohdh	卵
 oj	卬
 osb	段
+osz	每
+osz.	敏
 q	七
 q	工
 qc	东

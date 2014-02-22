@@ -4,10 +4,13 @@ d	木
 dw	東
 dwf	柬
 e	水
+ehby	洀
+eowy	海
 ff	氺
 g	土
 gr	吉
 gsl	壭
+hbyi	舟
 hf	爫
 hg	壬
 hhsld	孵
@@ -22,6 +25,7 @@ hrj	阜
 hs	勹
 hvsl	卬
 hy	忄
+hyhne	般
 ie	氷
 ine	永
 jk	丈
@@ -70,6 +74,8 @@ om	亼
 oo	从
 oom	丛
 ov	亾
+owyi	每
+oyok	敏
 pnbq	懈
 pr	句
 prnin	够
@@ -94,4 +100,7 @@ vvm	丝
 ybbr	卨
 ym	上
 ym	氵
+ymuoo	齒
 ysm	与
+yubm	齟
+yupr	齣

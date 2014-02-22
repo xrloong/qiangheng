@@ -63,6 +63,7 @@ U+67EC	柬	(龜)	jqs	n
 # 6800
 U+6BB3	殳	(龜)	ru	x
 U+6BB5	段	(龜)	eru	x
+U+6BCF	每	(龜)	vom	a
 U+6C34	水	(龜)	w	n
 U+6C35	氵	(龜)	w	e
 U+6C36	氶	(龜)	w	n
@@ -72,7 +73,9 @@ U+6C3A	氺	(龜)	w	n
 U+722B	爫	(龜)	e	a
 U+725B	牛	(龜)	s	j
 U+725C	牜	(龜)	s	j
+U+821F	舟	(龜)	z	a
 U+89D2	角	(龜)	n	e
 U+961C	阜	(龜)	pbj	j
 U+961D	阝	(龜)	b	i
+U+9F52	齒	(龜)	zu	i
 

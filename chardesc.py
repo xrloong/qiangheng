@@ -42,6 +42,18 @@ class CharDesc:
 	def __repr__(self):
 		return str(self)
 
+	def setCharTree(self, descDB):
+		"""設定某一個字符所包含的部件的碼"""
+
+		if not self.getChInfo().isToSetTree():
+			return
+
+		expand_chdesc=self.expandCharTree(descDB)
+		for tmpdesc in expand_chdesc.getSubRootList():
+			tmpdesc.setCharTree(descDB)
+
+		expand_chdesc.updateCharInfo()
+
 	def expandCharTree(self, descDB):
 
 		if len(self.getCompList())==0:
@@ -60,6 +72,19 @@ class CharDesc:
 		anscomp=self.getRearrangedDesc(descDB)
 
 		return anscomp
+
+	def getSubRootList(self):
+		# 計算及更新 self.chInfo
+		# normalizationToLinear 會依不同輸人法而多型
+		# 倉頡為較大的組件
+		# 其它為最小的組件
+		return self.chInfo.normalizationToLinear(self)
+
+	def updateCharInfo(self):
+		# 計算及更新 self.chInfo
+		# updateIMCode 會依不同輸人法而多型
+		# 倉頡的演算法與其它不同
+		self.chInfo.updateIMCode(self)
 
 	def getRearrangedDesc(self, descDB):
 		[newOp, newCompList]=self.getRearrangedOpAndCompList(descDB)
@@ -146,6 +171,62 @@ class CharDesc:
 #		chdesc.setOp(newOperator)
 #		chdesc.setCompList(newCompList)
 		return [newOperator, newCompList]
+
+	def getCJPrePostList(self):
+		"""傳回倉頡的字首及字尾的部件串列"""
+
+		oldOperator=self.op
+		oldCompList=self.getCompList()
+
+		prelist=[]
+		postlist=[]
+		if oldOperator in ['龜']:
+			prelist=[]
+			postlist=[]
+		elif oldOperator in ['水']:
+			x=oldCompList[0]
+			prelist=[x]
+			postlist=[]
+		elif oldOperator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
+			x=oldCompList[0]
+			y=oldCompList[1]
+			prelist=[x]
+			postlist=[y]
+		elif oldOperator in ['算', '湘', '霜', '怡',]:
+			x=oldCompList[0]
+			y=oldCompList[1]
+			z=oldCompList[2]
+			prelist=[x]
+			postlist=[y, z]
+		elif oldOperator in ['想', '穎',]:
+			x=oldCompList[0]
+			y=oldCompList[1]
+			z=oldCompList[2]
+			prelist=[x, y]
+			postlist=[z]
+		elif oldOperator in ['林', '爻']:
+			x=oldCompList[0]
+			prelist=[x]
+			postlist=[x]
+		elif oldOperator in ['卅', '鑫']:
+			x=oldCompList[0]
+			prelist=[x]
+			postlist=[x, x]
+		elif oldOperator in ['燚',]:
+			x=oldCompList[0]
+			prelist=[x, x]
+			postlist=[x, x]
+		elif oldOperator in ['纂',]:
+			x=oldCompList[0]
+			y=oldCompList[1]
+			z=oldCompList[2]
+			w=oldCompList[3]
+			prelist=[x]
+			postlist=[y, z, w]
+		else:
+			prelist=[]
+			postlist=[]
+		return [prelist, postlist]
 
 CharDesc.NoneDesc=CharDesc("", '', charinfo.CharInfo.NoneChar)
 

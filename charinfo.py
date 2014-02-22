@@ -39,6 +39,19 @@ class CharInfo:
 		#多型
 		return ""
 
+	def updateIMCode(self, chdesc):
+		# 多型
+		descList=self.normalizationToLinear(chdesc)
+		complist=[x.getChInfo() for x in descList]
+		self.setByComps(complist)
+
+	def normalizationToLinear(self, comp):
+		"""將樹狀結構轉為線性結構"""
+		# 多型
+		if len(comp.getCompList())==0:
+			return [comp]
+		return sum(map(lambda x: self.normalizationToLinear(x), comp.getCompList()), [])
+
 CharInfo.NoneChar=CharInfo('[瑲珩預設空字符]', ['龜', []], [])
 CharInfo.NoneChar.noneFlag=True
 
@@ -105,6 +118,18 @@ class CJCharInfo(CharInfo):
 
 	def getCode(self):
 		if self.cj: return self.cj
+
+	def updateIMCode(self, chdesc):
+		prelist, postlist=chdesc.getCJPrePostList()
+
+		pre_chinfo_list=map(lambda x:x.getChInfo(), prelist)
+		post_chinfo_list=map(lambda x:x.getChInfo(), postlist)
+
+		self.setCJByComps(pre_chinfo_list, post_chinfo_list)
+
+	def normalizationToLinear(self, chdesc):
+		"""將樹狀結構轉為線性結構"""
+		return chdesc.getCompList()
 
 class ARCharInfo(CharInfo):
 	def __init__(self, charname, parseans, prop):
