@@ -5,7 +5,7 @@ from .CharInfo import CharInfo
 from .RearrangementManager import RearrangementManager
 
 class CharDescriptionManager:
-	NoneInfo=CharInfo('[瑲珩預設空字符]', [])
+	NoneInfo=CharInfo('[瑲珩預設]', [])
 	NoneDesc=CharDesc("", '龜', [], '+', '(龜)', NoneInfo)
 
 	def __init__(self, CharInfoGenerator):
@@ -17,17 +17,24 @@ class CharDescriptionManager:
 		self.descDB={}
 		self.descNetwork={}
 
+		def CharDescGenerator(charName, structInfo=['龜', [], '(龜)']):
+			operator, CompList, expression=structInfo
+			direction=RearrangementManager.computeDirection(operator)
+			tmpCharInfo=CharInfoGenerator(charName, [])
+			charDesc=CharDesc(charName, operator, CompList, direction, expression, tmpCharInfo)
+			return charDesc
+
 		def emptyCharInfoGenerator():
-			return CharInfoGenerator("XXXX", [])
+			return CharInfoGenerator("[瑲珩預設]", [])
 
 		def emptyCharDescGenerator():
 			anonymousName=CharDesc.generateNewAnonymousName()
-			return self.generateDescription(anonymousName)
+			return CharDescGenerator(anonymousName)
 
-		self.rearrangeMgr=RearrangementManager(emptyCharInfoGenerator, emptyCharDescGenerator)
+		self.rearrangeMgr=RearrangementManager(emptyCharDescGenerator)
 
 		self.charInfoGenerator=CharInfoGenerator
-		self.charDescGenerator=self.generateDescription
+		self.charDescGenerator=CharDescGenerator
 		self.emptyCharInfoGenerator=emptyCharInfoGenerator
 		self.emptyCharDescGenerator=emptyCharDescGenerator
 
@@ -63,7 +70,7 @@ class CharDescriptionManager:
 	def ConstructDescriptionNetwork(self):
 		for charName in self.descDB.keys():
 			if charName not in self.descNetwork:
-				charDesc=self.generateDescription(charName)
+				charDesc=self.charDescGenerator(charName)
 				self.expandCharDescInNetwork(charDesc, self.descDB.get(charName))
 				self.descNetwork[charName]=charDesc
 
@@ -77,7 +84,7 @@ class CharDescriptionManager:
 			if childSrcDesc.isAnonymous():
 				# 若是為匿名結構，無法用名字查出結構，直接複製
 				anonymousName=CharDesc.generateNewAnonymousName()
-				childDstDesc=self.generateDescription(anonymousName)
+				childDstDesc=self.charDescGenerator(anonymousName)
 				self.expandCharDescInNetwork(childDstDesc, childSrcDesc)
 
 			else:
@@ -86,7 +93,7 @@ class CharDescriptionManager:
 				else:
 					expandChildSrcDesc=self.descDB.get(childSrcDesc.name)
 
-					childDstDesc=self.generateDescription(expandChildSrcDesc.name)
+					childDstDesc=self.charDescGenerator(expandChildSrcDesc.name)
 
 					self.expandCharDescInNetwork(childDstDesc, expandChildSrcDesc)
 					self.descNetwork[childDstDesc.name]=childDstDesc
@@ -98,13 +105,6 @@ class CharDescriptionManager:
 
 	def getExpandDescriptionByNameInNetwork(self, charName):
 		return self.descNetwork.get(charName, None)
-
-	def generateDescription(self, charName, structInfo=['龜', [], '(龜)']):
-		operator, CompList, expression=structInfo
-		direction=RearrangementManager.computeDirection(operator)
-#		charDesc=CharDesc(charName, operator, CompList, direction, expression, CharDescriptionManager.NoneInfo)
-		charDesc=CharDesc(charName, operator, CompList, direction, expression, self.emptyCharInfoGenerator())
-		return charDesc
 
 	@staticmethod
 	def setCharTree(charDesc):

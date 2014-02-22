@@ -1,17 +1,17 @@
 from .CharDesc import CharDesc
 class RearrangementManager:
-	def __init__(self, emptyCharInfoGenerator, emptyCharDescGenerator):
-		self.emptyCharInfoGenerator=emptyCharInfoGenerator
+	def __init__(self, emptyCharDescGenerator):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
 
 	# 分成以下層級
 	# 錯
-	# 龜、水
+	# SpecialCase:	龜、水
 	# 橫、縱
-	# 好、志、湘、算、纂、膷、回、同、區、函、左、句
-	# 夾、衍、衷、廖、載、聖、起
-	# 霜、想、怡、穎
-	# 林、爻、卅、丰、卌、圭、燚
+	# Base:		好、志、湘、算、纂、膷、回、同、區、函、左、句
+	# LShape:	廖、載、聖、起
+	# SpecialShape:	夾、衍、衷
+	# SecondLayer:	霜、想、怡、穎
+	# Repeate:	林、爻、卅、丰、卌、圭、燚
 	def rearrangeDesc(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldCompList=charDesc.getCompList()
@@ -19,6 +19,7 @@ class RearrangementManager:
 		self.rearrangeRepeate(charDesc)
 		self.rearrangeSecondLayer(charDesc)
 		self.rearrangeSpecialShape(charDesc)
+		self.rearrangeLShape(charDesc)
 		self.rearrangeSpecialCase(charDesc)
 		self.rearrangeBase(charDesc)
 
@@ -37,6 +38,21 @@ class RearrangementManager:
 		oldOperator=charDesc.getOperator()
 		oldCompList=charDesc.getCompList()
 
+		if oldOperator=='句':
+			ansDirection='+'
+		elif oldOperator=='夾':
+			ansDirection='+'
+		elif oldOperator=='衍':
+			ansDirection='-'
+		elif oldOperator=='衷':
+			ansDirection='|'
+		else:
+			pass
+
+	def rearrangeLShape(self, charDesc):
+		oldOperator=charDesc.getOperator()
+		oldCompList=charDesc.getCompList()
+
 		if oldOperator=='起':
 			ansDirection='+'
 		elif oldOperator=='廖':
@@ -45,14 +61,6 @@ class RearrangementManager:
 			ansDirection='+'
 		elif oldOperator=='聖':
 			ansDirection='+'
-		elif oldOperator=='句':
-			ansDirection='+'
-		elif oldOperator=='夾':
-			ansDirection='+'
-		elif oldOperator=='衍':
-			ansDirection='-'
-		elif oldOperator=='衷':
-			ansDirection='|'
 		else:
 			pass
 
@@ -68,8 +76,6 @@ class RearrangementManager:
 
 			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([y, z,])
-			tmpInfo=self.emptyCharInfoGenerator()
-			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('好', '-')
 
 			charDesc.setCompList([x, tmpDesc,])
@@ -82,8 +88,6 @@ class RearrangementManager:
 
 			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([x, y,])
-			tmpInfo=self.emptyCharInfoGenerator()
-			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('好', '-')
 
 			charDesc.setCompList([tmpDesc, z,])
@@ -96,8 +100,6 @@ class RearrangementManager:
 
 			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([y, z,])
-			tmpInfo=self.emptyCharInfoGenerator()
-			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('志', '|')
 
 			charDesc.setCompList([x, tmpDesc,])
@@ -110,8 +112,6 @@ class RearrangementManager:
 
 			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([x, y,])
-			tmpInfo=self.emptyCharInfoGenerator()
-			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('志', '|')
 
 			charDesc.setCompList([tmpDesc, z,])
@@ -191,8 +191,6 @@ class RearrangementManager:
 
 			tmpDesc=self.emptyCharDescGenerator()
 			tmpDesc.setCompList([x, x,])
-			tmpInfo=self.emptyCharInfoGenerator()
-			tmpDesc.setChInfo(tmpInfo)
 			tmpDesc.setOperatorAndDirection('好', '-')
 
 			charDesc.setCompList([tmpDesc, tmpDesc,])
