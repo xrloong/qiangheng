@@ -20672,7 +20672,7 @@ U+9E24	鸤	(好 尸鸟)
 U+9E25	鸥	(好 区鸟)
 U+9E26	鸦	(好 牙鸟)
 U+9E27	鸧	(好 仓鸟)
-U+9E28	鸨	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+9E28	鸨	(穎 七十鸟)
 U+9E29	鸩	(好 冘鸟)
 U+9E2A	鸪	(好 古鸟)
 U+9E2B	鸫	(好 东鸟)
@@ -20993,7 +20993,7 @@ U+9F63	齣	(好 齒可)
 U+9F64	齤	(龜)	fqymu	izei	uv9w	bnzu	i	ubio	22
 U+9F65	齥	(好 齒曳)
 U+9F66	齦	(好 齒艮)
-U+9F67	齧	(龜)	qhymu	fjei	fn9w	fdzu	i	ciyi	32
+U+9F67	齧	(想 丰刀齒)
 U+9F68	齨	(好 齒臼)
 U+9F69	齩	(好 齒交)
 U+9F6A	齪	(好 齒足)
