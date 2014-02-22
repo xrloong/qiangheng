@@ -50,7 +50,7 @@ class TemplateOperator(Operator):
 # 爲
 # 龍東
 # 蚕鴻回
-# 起廖載聖
+# 起廖載斗
 # 同函區左
 # 衍衷瓥粦
 # 錯
@@ -66,7 +66,7 @@ OperatorLoop=BuiltinOperator('回', '@', RearrangeInfo.RearrangeInfoSame())
 OperatorQi=BuiltinOperator('起', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorLiao=BuiltinOperator('廖', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorZai=BuiltinOperator('載', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorSheng=BuiltinOperator('聖', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorDou=BuiltinOperator('斗', '*', RearrangeInfo.RearrangeInfoSame())
 
 OperatorTong=BuiltinOperator('同', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorHan=BuiltinOperator('函', '*', RearrangeInfo.RearrangeInfoSame())

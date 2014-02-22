@@ -20,7 +20,7 @@ class OperatorManager:
 			'起':Operator.OperatorQi,
 			'廖':Operator.OperatorLiao,
 			'載':Operator.OperatorZai,
-			'聖':Operator.OperatorSheng,
+			'斗':Operator.OperatorDou,
 
 			'同':Operator.OperatorTong,
 			'函':Operator.OperatorHan,
