@@ -145,7 +145,7 @@ def generateTTF(filename):
 
 	from canvas import TrueTypeGlyphHanZiCanvas
 
-	characters=sorted(rm.getCharacters())
+	characters=sorted(rm.getCharacters())[130:132]
 	print("總共有 %s 個字符"%len(characters))
 	for index, ch in enumerate(characters):
 		if index%100==0:
@@ -165,7 +165,9 @@ def generateTTF(filename):
 		# stroke(penType, strokeWidth, lineCap, lineJoin)
 		# stroke(circular|calligraphic|polygon, strokeWidth, square|round|butt, miter|round|bevel)
 		g.stroke("circular",30, "round", "miter")
+		g.correctDirection()
 		g.removeOverlap()
+		g.correctDirection()
 
 	f.generate(filename)
 	print('結束')
