@@ -1,5 +1,5 @@
 
-VERSION	=	0.01
+VERSION	=	0.03
 IMLIST	=	cj ar dy bs zm
 STYLELIST	=	scim gcin ime
 
@@ -21,7 +21,7 @@ test:
 	done
 
 tarball: all
-	cd ..; tar cjf qiangheng-$(VERSION).tar.bz2 --no-recursion `find qiangheng | egrep -v ".svn"`
+	tar cjf ../qiangheng-$(VERSION).tar.bz2 --exclude-vcs -C .. qiangheng
 
 clean:
 	rm -f *.pyc *~ scim/* gcin/* msim/* puretable/*
