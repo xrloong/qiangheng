@@ -5,7 +5,6 @@ from description.CharacterDescription import CharacterDescription
 from description.StructureDescription import HangerStructureDescription
 from description.StructureDescription import TurtleStructureDescription
 from description.TemplateDescription import TemplateDescription
-from description.TemplateDescription import TemplateCondition
 from description.TemplateDescription import TemplateSubstitutionDescription
 
 class QHParser:
@@ -66,20 +65,9 @@ class QHParser:
 		return parameterList
 
 	def getDesc_Template_Substitution(self, nodeStructure):
-		condition=None
-
-		conditionNode=nodeStructure.find("條件式")
-		if conditionNode!=None:
-			operator=conditionNode.get('運算')
-			operand1=conditionNode.get('運算元一')
-			operand2=conditionNode.get('運算元二')
-			condition=TemplateCondition([operator, operand1, operand2])
-		else:
-			condition=TemplateCondition()
-
 		assembleChar=nodeStructure.find("組字")
 		comp=self.getDesc_AssembleChar(assembleChar)
-		return TemplateSubstitutionDescription(condition, comp)
+		return TemplateSubstitutionDescription(comp)
 
 	def getDesc_Template(self, nodeTemplate):
 		templateName=nodeTemplate.get('名稱')

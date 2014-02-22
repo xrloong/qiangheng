@@ -3,36 +3,16 @@
 import sys
 import copy
 
-class TemplateCondition:
-	def __init__(self, expression=[None, None, None]):
-		operator, operand1, operand2=expression
-
-		self.operator=operator
-		self.operand1=operand1
-		self.operand2=operand2
-
-	def isMatchAll(self):
-		return self.operator==None
-
-	def isMatch(self, parameterToArgumentDict):
-		if self.isMatchAll():
-			return True
-		parameterName=self.operand1
-		targetValue=self.operand2
-		argumentName=parameterToArgumentDict.get(parameterName)
-		return (argumentName==targetValue)
-
 class TemplateSubstitutionDescription:
 	"""樣本結構描述"""
-	def __init__(self, condition, structure):
-		self.condition=condition
+	def __init__(self, structure):
 		self.structure=structure
 
 	def getStructure(self):
 		return self.structure
 
 	def isMatch(self, parameterToArgumentNameMapping):
-		return self.condition.isMatch(parameterToArgumentNameMapping)
+		return True
 
 class TemplateDescription:
 	"""樣本描述"""
