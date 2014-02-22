@@ -1,5 +1,6 @@
 bm	且
 bnd	孚
+d	木
 dw	東
 dwf	柬
 e	水
@@ -75,6 +76,8 @@ prnin	够
 pt	世
 qni	专
 r	口
+rd	呆
+rdrd	槑
 rnin	哆
 sh	刀
 shc	刅

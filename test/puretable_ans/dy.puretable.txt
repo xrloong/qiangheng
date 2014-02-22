@@ -48,6 +48,7 @@ hb	万
 hr	丘
 hrs	阜
 hxqx	段
+i	木
 i4	柬
 id	東
 j	爫
@@ -68,6 +69,8 @@ nnbo	夠
 nnfo	夡
 nnp	卶
 o	口
+oi	呆
+oioi	槑
 onn	哆
 p	卩
 p	阝

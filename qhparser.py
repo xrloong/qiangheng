@@ -135,7 +135,7 @@ class Parser:
 			while True:
 				tnk=lexer.getNextToken()
 				if tnk.ttype==Token.hanzi or tnk.ttype==Token.radical:
-					comp=chardesc.CharDesc(tnk.value, '龜', None)
+					comp=chardesc.CharDesc(tnk.value, '(龜)', None)
 					comp.setOp('龜')
 					l.append(comp)
 				elif tnk.ttype==Token.leftParenthesis:

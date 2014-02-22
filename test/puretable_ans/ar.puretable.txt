@@ -3,6 +3,8 @@
 .gf	孚
 ;	口
 ;mm	哆
+;v	呆
+;v;v	槑
 a	一
 aaa	三
 aab	专
@@ -87,6 +89,7 @@ t	阝
 tvp	陳
 tvp.	敶
 ua	且
+v	木
 v/	柬
 vp	東
 z	不

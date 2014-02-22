@@ -57,6 +57,7 @@ U+5B50	子	(龜)	nd	nd
 U+5DE5	工	(龜)	mlm	l
 U+5FC4	忄	(龜)	hy	p
 U+6535	攵	(龜)	ok	ok
+U+6728	木	(龜)	d	d
 U+6771	東	(龜)	dw	dw
 U+67EC	柬	(龜)	dwf	dwf
 # 6800

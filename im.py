@@ -14,6 +14,7 @@ class NoneIM:
 			self.noneFlag=True
 
 		def __str__(self):
+			return "{{ {0}|{1},{2} }}".format(self.charname, self.operator, self.operandlist)
 			return self.charname
 
 		def __repr__(self):
@@ -76,9 +77,10 @@ class NoneIM:
 		if self.method=='D':
 			table=[]
 			for chname, desc in self.descDB.items():
-				chdesc=self.descDB.get(chname)
+				chdesc=desc
+				self.setCharTree(chdesc)
+
 				ch=chdesc.getChInfo()
-				self.setCharTree(ch, chdesc)
 				code=self.getCode(ch)
 				if ch.isToShow() and code:
 					table.append([code, chname])
@@ -99,8 +101,9 @@ class NoneIM:
 					'徰',
 					]:
 				chdesc=self.descDB.get(chname)
+				self.setCharTree(chdesc)
+
 				ch=chdesc.getChInfo()
-				self.setCharTree(ch, chdesc)
 				code=self.getCode(ch)
 				if ch.isToShow() and code:
 					table.append([code, chname])
@@ -118,7 +121,7 @@ class NoneIM:
 		ch=chdesc.getChInfo()
 		pass
 
-	def setCharTree(self, ch, chdesc):
+	def setCharTree(self, chdesc):
 		ch=chdesc.getChInfo()
 
 		if not ch.isToSetTree():
@@ -128,7 +131,7 @@ class NoneIM:
 #		descList=self.expandCharTree(chdesc).compList
 		for tmpdesc in descList:
 			tmpch=tmpdesc.getChInfo()
-			self.setCharTree(tmpch, tmpdesc)
+			self.setCharTree(tmpdesc)
 #		complist=self.getAllComp(ch)
 		complist=[x.getChInfo() for x in descList]
 		ch.setByComps(complist)
@@ -314,43 +317,43 @@ class CangJie(NoneIM):
 			prelist=[]
 			postlist=[]
 		elif ch.operator in ['水']:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			x=descDB.get(ch.operandlist[0], None)
 			prelist=[x]
 			postlist=[]
 		elif ch.operator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			y=descDB.get(ch.operandlist[1], None).getChInfo()
+			x=descDB.get(ch.operandlist[0], None)
+			y=descDB.get(ch.operandlist[1], None)
 			prelist=[x]
 			postlist=[y]
 		elif ch.operator in ['算', '湘', '霜', '怡',]:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			y=descDB.get(ch.operandlist[1], None).getChInfo()
-			z=descDB.get(ch.operandlist[2], None).getChInfo()
+			x=descDB.get(ch.operandlist[0], None)
+			y=descDB.get(ch.operandlist[1], None)
+			z=descDB.get(ch.operandlist[2], None)
 			prelist=[x]
 			postlist=[y, z]
 		elif ch.operator in ['想', '穎',]:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			y=descDB.get(ch.operandlist[1], None).getChInfo()
-			z=descDB.get(ch.operandlist[2], None).getChInfo()
+			x=descDB.get(ch.operandlist[0], None)
+			y=descDB.get(ch.operandlist[1], None)
+			z=descDB.get(ch.operandlist[2], None)
 			prelist=[x, y]
 			postlist=[z]
 		elif ch.operator in ['林', '爻']:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			x=descDB.get(ch.operandlist[0], None)
 			prelist=[x]
 			postlist=[x]
 		elif ch.operator in ['卅', '鑫']:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			x=descDB.get(ch.operandlist[0], None)
 			prelist=[x]
 			postlist=[x, x]
 		elif ch.operator in ['燚',]:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			x=descDB.get(ch.operandlist[0], None)
 			prelist=[x, x]
 			postlist=[x, x]
 		elif ch.operator in ['纂',]:
-			x=descDB.get(ch.operandlist[0], None).getChInfo()
-			y=descDB.get(ch.operandlist[1], None).getChInfo()
-			z=descDB.get(ch.operandlist[2], None).getChInfo()
-			w=descDB.get(ch.operandlist[3], None).getChInfo()
+			x=descDB.get(ch.operandlist[0], None)
+			y=descDB.get(ch.operandlist[1], None)
+			z=descDB.get(ch.operandlist[2], None)
+			w=descDB.get(ch.operandlist[3], None)
 			prelist=[x]
 			postlist=[y, z, w]
 		else:
@@ -358,11 +361,10 @@ class CangJie(NoneIM):
 			postlist=[]
 		return [prelist, postlist]
 
-	def setCharTree(self, ch, chdesc):
+	def setCharTree(self, chdesc):
 		"""設定某一個字符所包含的部件的碼"""
 
-		# 在倉頡中未使用
-		chdesc=None
+		ch=chdesc.getChInfo()
 
 		if not ch.isToSetTree():
 			# 如果有值，代表事先指定或之前設定過。
@@ -371,10 +373,13 @@ class CangJie(NoneIM):
 		prelist, postlist=self.getCJPrePostList(ch)
 		complist=[prelist, postlist]
 
-		for tmpch in prelist+postlist:
-			self.setCharTree(tmpch, chdesc)
+		for tmpchdesc in prelist+postlist:
+			self.setCharTree(tmpchdesc)
 
-		ch.setCJByComps(prelist, postlist)
+		pre_chinfo_list=map(lambda x:x.getChInfo(), prelist)
+		post_chinfo_list=map(lambda x:x.getChInfo(), postlist)
+
+		ch.setCJByComps(pre_chinfo_list, post_chinfo_list)
 
 class Array(NoneIM):
 	"行列輸入法"

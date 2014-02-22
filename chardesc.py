@@ -3,11 +3,14 @@
 class CharDesc:
 	"""字符描述"""
 	def __init__(self, name, description, chInfo):
-		self.description='()'
+		self.name=name
+
 		self.op='龜'
 		self.compList=[]
-		self.name=name
+
 		self.description=description
+
+		# 字符的資訊，如在某種輸入法下如何拆碼
 		self.chInfo=chInfo
 
 	def setName(self, name):

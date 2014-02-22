@@ -59,6 +59,8 @@ noo	句
 ny	勹
 occ	哆
 oo	口
+otn	呆
+otot	槑
 paa	卪
 pbj	阜
 pee	卫
@@ -77,6 +79,7 @@ so	丗
 ti	丁
 ti	丅
 tly	丏
+tn	木
 un	永
 vy	万
 we	氵

@@ -824,15 +824,15 @@ U+6700	最	(龜)	XXXX
 U+6702	朂	(龜)	XXXX
 U+6703	會	(龜)	XXXX
 U+6708	月	(龜)	j
-U+6709	有	(龜)	XXXX
-U+6717	朗	(龜)	XXXX
-U+6728	木	(龜)	XXXX
-U+6729	朩	(龜)	XXXX
-U+672A	未	(龜)	XXXX
-U+672B	末	(龜)	XXXX
-U+672C	本	(龜)	XXXX
-U+672E	朮	(龜)	XXXX
-U+672F	术	(龜)	XXXX
+U+6709	有	(龜)	sj
+U+6717	朗	(龜)	.;j
+U+6728	木	(龜)	i
+U+6729	朩	(龜)	i
+U+672A	未	(龜)	ei
+U+672B	末	(龜)	ei
+U+672C	本	(龜)	ie
+U+672E	朮	(龜)	i.
+U+672F	术	(龜)	i.
 U+6731	朱	(龜)	XXXX
 U+673F	朿	(龜)	XXXX
 U+675F	束	(龜)	IO
@@ -841,7 +841,7 @@ U+6771	東	(龜)	id
 U+679C	果	(龜)	di
 U+67AD	枭	(龜)	XXXX
 U+67BE	枾	(龜)	XXXX
-U+67D7	柗	(龜)	XXXX
+U+67D7	柗	(龜)	i8o
 U+67EC	柬	(龜)	i4
 # 6800
 U+6804	栄	(龜)	XXXX

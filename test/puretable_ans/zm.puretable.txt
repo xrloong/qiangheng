@@ -20,6 +20,7 @@ cd	三
 czs	丟
 ea	丗
 eaz	世
+f	木
 fkvv	東
 flk	柬
 gd	丆
@@ -31,6 +32,8 @@ iavv	丄
 ida	上
 idlj	卨
 j	口
+jfvv	呆
+jfvv	槑
 jrrs	哆
 kd	刂
 ku	业
