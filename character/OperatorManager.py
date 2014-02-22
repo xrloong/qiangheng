@@ -6,6 +6,7 @@ class OperatorManager:
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
 		self.descMgr=descMgr
+		self.templateDB={}
 
 		operatorLoong=self.getOperatorByName('龍')
 		operatorH2=self.getOperatorByName('好')
@@ -51,15 +52,48 @@ class OperatorManager:
 
 		self.operatorGenerator=operatorGenerator
 
+	def setTemplateDB(self, templateDB):
+		self.templateDB=templateDB
+
+	def getCharDescFromTemplate(self, charDesc):
+		templateName=charDesc.getTemplateName()
+		templateDesc=self.templateDB.get(templateName)
+		charDesc.setTemplateDesc(templateDesc)
+
+		resultDesc=charDesc.getCharDesc()
+
+		resultDesc=self.copyCharDesc(resultDesc)
+		resultDesc.setName(charDesc.getName())
+		return resultDesc
+
+	def copyCharDesc(self, charDesc):
+		if charDesc.getOperator().getName()=='龜':
+			ansDesc=charDesc.copyDescription()
+			ansDesc.setOperator(charDesc.getOperator())
+			return ansDesc
+		ansDesc=self.emptyCharDescGenerator()
+		ansChildList=[]
+		for childDesc in charDesc.getCompList():
+			ansChilDesc=self.copyCharDesc(childDesc)
+			ansChildList.append(ansChilDesc)
+		ansDesc.setCompList(ansChildList)
+		ansDesc.setOperator(charDesc.getOperator())
+		return ansDesc
+
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
+
+	def rearrangeRecursively(self, charDesc):
+		if charDesc.isTemplate():
+			charDesc=self.getCharDescFromTemplate(charDesc)
+		for childDesc in charDesc.getCompList():
+			self.rearrangeRecursively(childDesc)
+		self.rearrangeDesc(charDesc)
+		return charDesc
 
 	@staticmethod
 	def getOperatorByName(operatorName):
 		return Operator.Operator(operatorName)
-
-#	def isAvailableOperation(self, operator):
-#		return Operator.Operator.isAvailableOperation(operator)
 
 	# 分成以下層級
 	# SpecialCase:	錯、龜、水

@@ -1,13 +1,42 @@
 
 import copy
 from .CharDesc import CharDesc
+
+class HanZiStructure:
+	def __init__(self, operator, nodeList, charInfo):
+		self.operator=operator
+		self.nodeList=nodeList
+		self.charInfo=charInfo
+
+	def getOperator(self):
+		return self.operator
+
+#	def setOperator(self, operator):
+#		self.operator=operator
+
+	def getNodeList(self):
+		return self.nodeList
+
+#	def setNodeList(self, nodeList):
+#		self.nodeList=nodeList
+
+	def getCharInfo(self):
+		return self.charInfo
+
+	def setCharInfo(self, charInfo):
+		self.charInfo=charInfo
+
+	def setStructure(self, operator, nodeList):
+		self.operator=operator
+		self.nodeList=nodeList
+
 class HanZiNode:
 	def __init__(self, charDesc, chInfo):
 #		self.charDesc=charDesc
 		self.flagExpanded=False
-		self.nodeList=[]
-		self.operator=charDesc.getOperator()
-		self.chInfo=chInfo
+
+		self.structureX=HanZiStructure(charDesc.getOperator(), [], chInfo)
+		self.structureList=[self.structureX]
 
 		self.isToShow=charDesc.isToShow()
 
@@ -18,23 +47,22 @@ class HanZiNode:
 		self.flagExpanded=flag
 
 	def setChInfo(self, charInfo):
-		self.chInfo=charInfo
+		self.getStructure().setCharInfo(charInfo)
 
 	def getChInfo(self):
-		return self.chInfo
+		return self.getStructure().getCharInfo()
 
 	def setStructure(self, operator, nodeList):
-		self.operator=operator
-		self.nodeList=nodeList
+		self.getStructure().setStructure(operator, nodeList)
+
+	def getStructure(self):
+		return self.structureList[0]
 
 	def getNodeList(self):
-		return self.nodeList
+		return self.getStructure().getNodeList()
 
 	def getOperator(self):
-		return self.operator
-
-#	def isToShow(self):
-#		return self.isToShow()
+		return self.getStructure().getOperator()
 
 	def getCode(self):
 		chinfo=self.getChInfo()

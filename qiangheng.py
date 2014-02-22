@@ -103,6 +103,8 @@ class QiangHeng:
 		for filename in filenamelist:
 			self.descMgr.loadFromXML(filename, fileencoding='utf-8-sig')
 
+		self.descMgr.adjustData()
+
 	def genIMMapping(self, targetCharList):
 		table=[]
 		for charName in targetCharList:

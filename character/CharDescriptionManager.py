@@ -10,11 +10,6 @@ from character import Operator
 
 class CharDescriptionManager:
 	def __init__(self, imModule, CharInfoGenerator):
-		# characterDB 放最原始、沒有擴展過的 CharDesc ，也就是從檔案讀出來的資料。
-		# descNetwork 放擴展過的，且各個 CharDesc 可能會彼此參照。
-		# 但 descNetwork 跟 characterDB 則是完全獨立。
-		# 在使用 descNetwork 前，要先呼叫 ConstructDescriptionNetwork()
-		# ConstructDescriptionNetwork() 會從 characterDB 建立 descNetwork
 		self.templateDB={}
 		self.characterDB={}
 
@@ -46,14 +41,6 @@ class CharDescriptionManager:
 
 		def charDescQueryer(charName):
 			charDesc=self.characterDB.get(charName)
-			if charDesc.isTemplate():
-				charDesc=self.getCharDescFromTemplate(charDesc)
-				charDesc=self.copyCharDesc(charDesc)
-				charDesc.setName(charName)
-			elif not charDesc.getOperator().isAvailableOperation():
-				print("<!-- 錯誤；不合法的運算 %s -->"%charDesc.getOperator())
-				return None
-
 			return charDesc
 
 		imName=imModule.IMInfo.IMName
@@ -178,6 +165,7 @@ class CharDescriptionManager:
 				templateName=node.get('名稱')
 				templateDesc=getDesc_Template(node)
 				self.templateDB[templateName]=templateDesc
+			self.operationMgr.setTemplateDB(self.templateDB)
 
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
@@ -188,40 +176,11 @@ class CharDescriptionManager:
 			comp.setAnonymous(charName.count("瑲珩匿名")>0)
 			self.characterDB[charName]=comp
 
+	def adjustData(self):
 		for charName in self.characterDB.keys():
-			srcDesc=self.charDescQueryer(charName)
-			self.rearrangeRecursively(srcDesc)
-
-	def getCharDescFromTemplate(self, charDesc):
-		charInfoGenerator=self.getCharInfoGenerator()
-		templateDesc=self.templateDB.get(charDesc.getTemplateName())
-		charDesc.setTemplateDesc(templateDesc)
-
-		resultDesc=charDesc.getCharDesc()
-		resultDesc.setName(charDesc.getName())
-
-		return resultDesc
-
-	def copyCharDesc(self, charDesc):
-		if charDesc.getOperator().getName()=='龜':
-			ansDesc=charDesc.copyDescription()
-			ansDesc.setOperator(charDesc.getOperator())
-			return ansDesc
-		ansDesc=self.emptyCharDescGenerator()
-		ansChildList=[]
-		for childDesc in charDesc.getCompList():
-			ansChilDesc=self.copyCharDesc(childDesc)
-			ansChildList.append(ansChilDesc)
-		ansDesc.setCompList(ansChildList)
-		ansDesc.setOperator(charDesc.getOperator())
-		return ansDesc
-
-	def rearrangeRecursively(self, charDesc):
-		self.charDescRearranger(charDesc)
-		for childDesc in charDesc.getCompList():
-			if childDesc.isTemplate():
-				childDesc=self.getCharDescFromTemplate(childDesc)
-			self.rearrangeRecursively(childDesc)
+			srcDesc=self.characterDB.get(charName)
+			charDesc=self.operationMgr.rearrangeRecursively(srcDesc)
+			self.characterDB[charName]=charDesc
 
 if __name__=='__main__':
 	pass
