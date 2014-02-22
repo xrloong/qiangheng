@@ -145,7 +145,7 @@ tarball-all:
 clean:
 	rm -rf tables/ tmp/ tarballs/ pixmaps
 	rm -f charinfo/*/CJK.old.txt
-	rm -f *.pyc im/*.pyc character/*.pyc
+	rm -f *.pyc im/*.pyc character/*.pyc operatorinfo/*.pyc
 	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log
 	rm -f charinfo/*/*.bak.txt charinfo/*/*.rst.txt
 	rm -f test/puretable/*
