@@ -158,7 +158,7 @@ python-fontforge:
 
 clean:
 	rm -rf $(ICON_PLATFORM_PATH)
-	rm -rf tables/ tmp/ tarballs/
+	rm -rf tables/ tmp/ tarballs/ font/qhdc.ttf
 	rm -f `find src -name "*.pyc"`
 	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log tex/*.pdf
 

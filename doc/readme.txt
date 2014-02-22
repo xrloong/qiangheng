@@ -42,6 +42,12 @@ Options:
 	utils/
 	xslt/
 
+== 動態組字說明 ==
+	動態組字命令如下：
+		make dc
+	其所使用的字根之字形描述為 qhdata/radix/CJK/dc.xml 。
+	其輸出為 tables/puretable/qhdc-standard.txt 。
+
 == 秀字程式說明 ==
 	秀字程式指令如下：
 		src/hanzitk.py -s -i tables/puretable/qhdc-standard.txt
@@ -55,8 +61,9 @@ Options:
 		二、以 fontforge/fontforge-20110222.patch 進行補行。
 		三、以 Python3 來組態與編譯，
 		四、產生連結檔 src/fontforge.so ，會連結到 fontforge/fontforge-20110222/.libs/libfontforge.so
+	此外，在執行前，應確認系統有安裝 Python3 的開發資源，如在 Ubuntu 上應安裝 python3-dev 套件。
 
-	產生字型檔指令如下，預設輸出檔為 qhdc.ttf ：
+	產生字型檔指令如下，預設輸出檔為 font/qhdc.ttf ：
 		src/hanzitk.py -g -i tables/puretable/qhdc-standard.txt
 
 == 程式架構說明 ==

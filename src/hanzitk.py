@@ -127,6 +127,9 @@ class RadicalManager:
 	def getFont(self, strIndex):
 		return self.fontDB.get(strIndex, "")
 
+	def getCharacters(self):
+		return self.fontDB.keys()
+
 def generateTTF(filename):
 	import fontforge
 
@@ -141,6 +144,7 @@ def generateTTF(filename):
 	start, end=0x4E00, 0x9FA6 # 全部
 
 	from canvas import TrueTypeGlyphHanZiCanvas
+	"""
 	for o in range(start, end+1):
 		g=f.createChar(o)
 		canvas=TrueTypeGlyphHanZiCanvas.TrueTypeGlyphHanZiCanvas(g, emsize, emsize)
@@ -151,6 +155,21 @@ def generateTTF(filename):
 
 		ct=rm.getFont(chr(o))
 		drawSystem.draw(ct, canvas=canvas)
+		"""
+
+	characters=sorted(rm.getCharacters())
+	print("總共有 %s 個字符"%len(characters))
+	for index, ch in enumerate(characters):
+		if index%100==0:
+			print("正在描繪 %s 到 %s 個字符"%(index*1, index+100))
+
+		o=ord(ch)
+		g=f.createChar(o)
+		canvas=TrueTypeGlyphHanZiCanvas.TrueTypeGlyphHanZiCanvas(g, emsize, emsize)
+		drawSystem=HanZiDrawingSystem(canvas)
+
+		ct=rm.getFont(ch)
+		drawSystem.draw(ct, canvas=canvas)
 
 	f.save(filename)
 	print('結束')
@@ -159,7 +178,7 @@ oparser = OptionParser()
 oparser.add_option("-s", action="store_true", dest="show_font", help="秀出字形", default=False)
 oparser.add_option("-g", action="store_true", dest="gen_font", help="產生字型檔", default=False)
 oparser.add_option("-i", "--in-fontfile", dest="fontfile", help="字型來源檔")
-oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔", default="qhdc.ttf")
+oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔", default="font/qhdc.ttf")
 (options, args) = oparser.parse_args()
 
 fontfile=options.fontfile

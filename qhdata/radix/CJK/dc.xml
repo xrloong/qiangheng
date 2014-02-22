@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <瑲珩 版本號="0.2">
+	<!--
+		版權宣告：
+		本檔所用的字形描述是由 "動態組字函式庫" 所提供的字型檔所擷取或轉換出來。
+		其原本授權條款為 " GNU自由文件授權條款"，故而相關修改應遵守其規範。
+
+		請參見動態組字函式庫（http://www.openfoundry.org/of/projects/690） 。
+		或參見魔法設計的藝術：漢字研究（http://magicdesign.blogspot.com/search/label/漢字研究）。
+	-->
+
 	<字符集>
 		<!--4E00-->
 		<字符 名稱="一" 註記="U+4E00">
