@@ -117,7 +117,11 @@ class DCRadixParser(RadixParser):
 		bottom=int(scopeDesc[6:8], 16)
 		scope=(left, top, right, bottom)
 
-		strokeDesc=l[2]
+		startPointDesc=l[2]
+		startX, startY=int(startPointDesc.split(',')[0]), int(startPointDesc.split(',')[1])
+		startPoint=(startX, startY)
+
+		strokeDesc=l[3]
 		parameterExpression = strokeDesc[1:-1]
 		parameterExpressionList = parameterExpression.split(',')
 
