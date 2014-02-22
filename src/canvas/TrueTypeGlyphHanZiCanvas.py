@@ -5,7 +5,7 @@ from . import HanZiCanvas
 
 class TrueTypeGlyphHanZiCanvas(HanZiCanvas.HanZiCanvas):
     def __init__(self, glyph, width, height):
-        draw.HanziCanvas.__init__(self, width, height)
+        HanZiCanvas.HanZiCanvas.__init__(self, width, height)
 
         self.glyph=glyph
         self.glyphPen=glyph.glyphPen()

@@ -131,13 +131,13 @@ def generateTTF(filename):
 
 	for o in range(start, end+1):
 		g=f.createChar(o)
-		canvas=TrueTypeGlyphHanziCanvas(g, emsize, emsize)
+		canvas=TrueTypeGlyphHanZiCanvas.TrueTypeGlyphHanZiCanvas(g, emsize, emsize)
 		drawSystem=HanZiDrawingSystem(canvas)
 
 		if o%256==0:
 			print("U+%04X"%o)
 
-		ct=rm.getDesc(unichr(o))
+		ct=rm.getFont(chr(o))
 		drawSystem.draw(ct, canvas=canvas)
 
 	f.save(filename)
