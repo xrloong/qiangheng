@@ -10,7 +10,7 @@ class OperatorInfo:
 	def getDirection(self):
 		return self.direction
 
-Arbitrary=OperatorInfo('+')
+Arbitrary=OperatorInfo('*')
 Surrounding=OperatorInfo('@')
 Horizontal=OperatorInfo('-')
 Vertical=OperatorInfo('|')
