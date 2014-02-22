@@ -145,7 +145,7 @@ class Writing:
 	def transform(self, pane):
 		pass
 
-class Stroke(Writing):
+class StrokeInfo(Writing):
 	STROKE_NAMES=[
 #		"XXXX",
 
@@ -174,33 +174,56 @@ class Stroke(Writing):
 	def __init__(self, contourPane, strokeName, actionList):
 		super().__init__(contourPane)
 
-		assert (strokeName in Stroke.STROKE_NAMES), "不認得的筆畫名稱: %s"%strokeName
-
-		self.setInstanceName(Stroke.DEFAULT_INSTANCE_NAME)
+		assert (strokeName in StrokeInfo.STROKE_NAMES), "不認得的筆畫名稱: %s"%strokeName
 
 		self.typeName=strokeName
 
 		self.actionList=actionList
 
-	def clone(self):
-		return Stroke(self.contourPane.clone(), self.typeName, self.actionList)
-
-	def getInstanceName(self):
-		return self.name
-
-	def setInstanceName(self, name):
-		self.name=name
-
 	def getTypeName(self):
 		return self.typeName
 
+	def getCodeList(self, pane):
+		codeList=[action.getCode(pane) for action in self.actionList]
+		return codeList
+
+class StrokeState:
+	def __init__(self, targetPane=Pane()):
+		self.targetPane=targetPane
+
+	def clone(self):
+		return StrokeState(self.targetPane.clone())
+
+	def getTargetPane(self):
+		return self.targetPane
+
+class Stroke(Writing):
+	def __init__(self, strokeInfo, state):
+		super().__init__(strokeInfo.contourPane)
+		self.strokeInfo=strokeInfo
+		self.state=state
+
+	@staticmethod
+	def fromData(contourPane, strokeName, actionList):
+		strokeInfo=StrokeInfo(contourPane, strokeName, actionList)
+		return Stroke(strokeInfo, StrokeState())
+
+	def clone(self):
+		return Stroke(self.strokeInfo, self.state.clone())
+
+	def getTypeName(self):
+		return self.strokeInfo.getTypeName()
+
 	def getCode(self):
-		codeList=[action.getCode(self.contourPane) for action in self.actionList]
+		newContourPane=self.strokeInfo.contourPane.clone()
+		self.state.getTargetPane().transformPane(newContourPane)
+
+		codeList=self.strokeInfo.getCodeList(newContourPane)
 		return ','.join(codeList)
 
 	# 多型
 	def transform(self, pane):
-		pane.transformPane(self.contourPane)
+		pane.transformPane(self.state.getTargetPane())
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):

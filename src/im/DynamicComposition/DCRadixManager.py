@@ -113,10 +113,9 @@ class DCRadixParser(RadixParser):
 			if len(description)>0 and description!='XXXX':
 				if description[0]=='(':
 					[strokeName, actionList]=self.parseStrokeNameAndAction(description)
-					stroke=Stroke(pane, strokeName, actionList)
+					stroke=Stroke.fromData(pane, strokeName, actionList)
 
 					strokeName=strokeNode.get(DCRadixParser.TAG_NAME, "瑲珩預設筆劃名")
-					stroke.setInstanceName(strokeName)
 
 					stroke.transform(countourPane)
 					strokeList.append(stroke)
