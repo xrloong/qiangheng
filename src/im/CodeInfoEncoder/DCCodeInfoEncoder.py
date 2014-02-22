@@ -1,5 +1,6 @@
 import sys
 from ..CodeInfo.DCCodeInfo import DCCodeInfo
+from ..CodeInfo.DCCodeInfo import StrokeAction
 from gear.CodeInfoEncoder import CodeInfoEncoder
 from gear import Operator
 import copy
@@ -12,8 +13,14 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		codeInfo=DCCodeInfo(isSupportCharacterCode, isSupportRadixCode)
-		codeInfo.setRadixCodeProperties(propDict)
+		actionList=[]
+
+		description=propDict.get('資訊表示式', '')
+		if len(description)>0 and description!='XXXX':
+			descriptionList=description.split(',')
+			actionList=[StrokeAction(d) for d in descriptionList]
+
+		codeInfo=DCCodeInfo(actionList, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

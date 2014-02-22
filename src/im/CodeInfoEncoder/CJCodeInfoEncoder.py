@@ -7,8 +7,15 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		codeInfo=CJCodeInfo(isSupportCharacterCode, isSupportRadixCode)
-		codeInfo.setRadixCodeProperties(propDict)
+
+		_cj_single=propDict.get('獨體編碼')
+		_cj_rtlist=[]
+		str_rtlist=propDict.get('資訊表示式')
+		direction='*'
+		if str_rtlist!=None:
+			_cj_rtlist=[str_rtlist]
+
+		codeInfo=CJCodeInfo(_cj_single, direction, _cj_rtlist, isSupportCharacterCode, isSupportRadixCode)
 
 		direction='*'
 		rtlist=codeInfo.getRtList()

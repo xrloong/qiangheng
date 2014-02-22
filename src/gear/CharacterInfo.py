@@ -1,4 +1,5 @@
 from . import CodeMappingInfo
+from state import StateManager
 
 class CharacterInfo:
 	def __init__(self, charName, freq):
@@ -8,9 +9,10 @@ class CharacterInfo:
 	def setCodeInfoList(self, codeInfoList):
 		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
 
+		codeInfoEncoder=StateManager.codeInfoEncoder
 		codeList=[]
 		for codeInfo in codeInfoList:
-			characterCode=codeInfo.characterCode
+			characterCode=codeInfoEncoder.interprettCharacterCode(codeInfo)
 			variance=codeInfo.variance
 			if characterCode:
 				codeList.append([characterCode, variance])

@@ -10,8 +10,12 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		codeInfo=ARCodeInfo(isSupportCharacterCode, isSupportRadixCode)
-		codeInfo.setRadixCodeProperties(propDict)
+		codeList=None
+		str_rtlist=propDict.get('資訊表示式')
+		if str_rtlist!=None:
+			codeList=str_rtlist.split('|')
+			codeList=list(map(lambda x: x.split(','), codeList))
+		codeInfo=ARCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

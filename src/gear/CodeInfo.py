@@ -40,9 +40,6 @@ class CodeInfo:
 	def isSupportRadixCode(self):
 		return self._isSupportRadixCode
 
-	def setRadixCodeProperties(self, propDict):
-		pass
-
 	def getCodeVarianceType(self):
 		return self.codeVariance
 

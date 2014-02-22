@@ -1,17 +1,10 @@
 from gear.CodeInfo import CodeInfo
 
 class DCCodeInfo(CodeInfo):
-	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+	def __init__(self, actionList, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
-	def setRadixCodeProperties(self, propDict):
-		self.actionList=[]
-
-		description=propDict.get('資訊表示式', '')
-		if len(description)>0 and description!='XXXX':
-			descriptionList=description.split(',')
-			actionList=[StrokeAction(d) for d in descriptionList]
-			self.actionList=actionList
+		self.actionList=actionList
 
 	@property
 	def characterCode(self):

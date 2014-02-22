@@ -84,21 +84,13 @@ class BSCodeInfo(CodeInfo):
 		RADIX_M1_E2_E1:'m',
 	}
 
-	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+	def __init__(self, singleCode, codeList, spcode, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
-		self._bs_code_list=None
-		self._bs_spcode=None
+		self._bs_code_list=codeList
+		self._bs_spcode=spcode
 
-		self._bs_single=None
-
-	def setRadixCodeProperties(self, propDict):
-		self._bs_single=propDict.get('獨體編碼')
-		str_incode=propDict.get('資訊表示式')
-		str_spcode=propDict.get('嘸蝦米補碼')
-		if str_incode!=None and str_spcode!=None:
-			_code_list=str_incode.split(',')
-			self.setBSProp(_code_list, str_spcode)
+		self._bs_single=singleCode
 
 	@property
 	def characterCode(self):

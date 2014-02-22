@@ -10,8 +10,13 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		codeInfo=DYCodeInfo(isSupportCharacterCode, isSupportRadixCode)
-		codeInfo.setRadixCodeProperties(propDict)
+		str_rtlist=propDict.get('資訊表示式')
+		codeList=None
+		if str_rtlist!=None:
+			codeList=str_rtlist.split('|')
+			codeList=list(map(lambda x: x.split(','), codeList))
+
+		codeInfo=DYCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

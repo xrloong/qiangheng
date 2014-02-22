@@ -30,11 +30,13 @@ class CodeInfoEncoder:
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
 		codeInfo=CodeInfo(isSupportCharacterCode, isSupportRadixCode)
-		codeInfo.setRadixCodeProperties(propDict)
 		return codeInfo
 
 	def generateDefaultCodeInfo(self):
 		return self.generateCodeInfo({})
+
+	def interprettCharacterCode(self, codeInfo):
+		return codeInfo.characterCode
 
 	def encode(self, operator, codeInfoList):
 		codeInfo=self.setByComps(operator, codeInfoList)

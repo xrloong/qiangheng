@@ -10,8 +10,14 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		codeInfo=BSCodeInfo(isSupportCharacterCode, isSupportRadixCode)
-		codeInfo.setRadixCodeProperties(propDict)
+		_bs_single=propDict.get('獨體編碼')
+		str_incode=propDict.get('資訊表示式')
+		str_spcode=propDict.get('嘸蝦米補碼')
+		_code_list=None
+		if str_incode!=None and str_spcode!=None:
+			_code_list=str_incode.split(',')
+
+		codeInfo=BSCodeInfo(_bs_single, _code_list, str_spcode, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

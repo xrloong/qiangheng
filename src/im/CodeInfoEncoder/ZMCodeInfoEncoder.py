@@ -8,8 +8,17 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		codeInfo=ZMCodeInfo(isSupportCharacterCode, isSupportRadixCode)
-		codeInfo.setRadixCodeProperties(propDict)
+		extra_code=propDict.get('補充資訊')
+		str_rtlist=propDict.get('資訊表示式')
+
+		zm_code=''
+		zm_extra=extra_code
+		zm_single=propDict.get('獨體編碼')
+		rtlist=[]
+		if str_rtlist!=None:
+			rtlist=str_rtlist.split(',')
+
+		codeInfo=ZMCodeInfo(zm_single, rtlist, zm_extra, isSupportCharacterCode, isSupportRadixCode)
 
 		rtlist=codeInfo.getRtList()
 		zmCode=self.computeCharacterCode(rtlist)

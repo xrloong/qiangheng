@@ -4,10 +4,6 @@ class GXCodeInfo(CodeInfo):
 	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
-	def setRadixCodeProperties(self, propDict):
-		characterCode=propDict.get('資訊表示式', '')
-		self.setCharacterCode(characterCode)
-
 	@property
 	def characterCode(self):
 		return self.getCharacterCode()

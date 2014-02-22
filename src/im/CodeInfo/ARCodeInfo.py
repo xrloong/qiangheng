@@ -113,17 +113,10 @@ class ARCodeInfo(CodeInfo):
 		RADIX_EXTEND_6_UP_9_BOTTOM_1_BUTTOM:'n',
 	}
 
-	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+	def __init__(self, codeList=None, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
-		self._codeList=None
-
-	def setRadixCodeProperties(self, propDict):
-		str_rtlist=propDict.get('資訊表示式')
-		if str_rtlist!=None:
-			codeList=str_rtlist.split('|')
-			codeList=list(map(lambda x: x.split(','), codeList))
-			self.setCodeList(codeList)
+		self._codeList=codeList
 
 	@property
 	def characterCode(self):

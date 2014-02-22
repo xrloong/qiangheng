@@ -1,22 +1,19 @@
 from gear.CodeInfo import CodeInfo
 
 class CJCodeInfo(CodeInfo):
-	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+	def __init__(self, singleCode, direction, radixList, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
-		self._cj_radix_list=None
-		self._cj_direction=None
-		self._cj_body=None
+		self._cj_radix_list=radixList
+		self._cj_rtlist=radixList
+		self._cj_direction=direction
+#		self._cj_body=None
 
-		self._cj_single=None
+		self._cj_single=singleCode
 
-	def setRadixCodeProperties(self, propDict):
-		self._cj_single=propDict.get('獨體編碼')
-		self._cj_rtlist=[]
-		str_rtlist=propDict.get('資訊表示式')
-		if str_rtlist!=None:
-			self.setCJProp('*', [str_rtlist])
-			self._cj_rtlist=[str_rtlist]
+#		cjBody=CJCodeInfo.computeBodyCode(rtlist, direction)
+#		cjTotal=CJCodeInfoEncoder.computeTotalCode(rtlist, direction).lower()
+#		self.setCharacter(cjTotal, cjBody)
 
 	@property
 	def characterCode(self):
