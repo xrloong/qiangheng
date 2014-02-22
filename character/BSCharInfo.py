@@ -1,8 +1,8 @@
 from .CharInfo import CharInfo
 
 class BSCharInfo(CharInfo):
-	def __init__(self, charname, prop):
-		super().__init__(charname, prop)
+	def __init__(self, prop):
+		super().__init__(prop)
 
 		self.setFlag=False
 

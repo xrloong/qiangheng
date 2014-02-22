@@ -4,10 +4,7 @@ class CharInfo:
 		def __init__(self):
 			pass
 
-	def __init__(self, charname, prop):
-		self.charname=charname
-
-		self.showFlag=False if len(self.charname)>1 else True
+	def __init__(self, prop):
 		self.setFlag=False
 
 	def __str__(self):
@@ -15,9 +12,6 @@ class CharInfo:
 
 	def __repr__(self):
 		return str(self)
-
-	def isToShow(self):
-		return self.showFlag
 
 	def isToSetTree(self):
 		# 若非空且之前没設過值

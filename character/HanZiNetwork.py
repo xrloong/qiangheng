@@ -1,8 +1,10 @@
 
+import copy
 from .CharDesc import CharDesc
 class HanZiNetwork:
-	def __init__(self, charDescGenerator, charDescRearranger, charDescQueryer):
+	def __init__(self, emptyCharInfoGenerator, charDescGenerator, charDescRearranger, charDescQueryer):
 		self.descNetwork={}
+		self.emptyCharInfoGenerator=emptyCharInfoGenerator
 		self.charDescGenerator=charDescGenerator
 		self.charDescRearranger=charDescRearranger
 		self.charDescQueryer=charDescQueryer
@@ -10,24 +12,41 @@ class HanZiNetwork:
 	def get(self, key, defaultValue=None):
 		return self.descNetwork.get(key, defaultValue)
 
+	def ConstructHanZiNetwork(self, charNameList):
+		for charName in charNameList:
+			self.addCharDesc(charName)
+
+#		for charName in charNameList:
+#			dstDesc=self.get(charName)
+#			srcDesc=self.charDescQueryer(charName)
+#			dstDesc.setChInfo(copy.copy(srcDesc.getChInfo()))
+
 	def addCharDesc(self, charName):
-		charDesc=self.charDescGenerator(charName)
+		dstDesc=self.charDescGenerator(charName)
 		srcDesc=self.charDescQueryer(charName)
 
-#		self.operatorMgr.rearrangeDesc(srcDesc)
+#		self.rearrangeRecursively(srcDesc)
+		self.expandCharDescInNetwork(dstDesc, srcDesc)
+#		self.charDescRearranger(charDesc)
+		self.rearrangeRecursively(dstDesc)
 
-		self.expandCharDescInNetwork(charDesc, srcDesc)
-		self.descNetwork[charName]=charDesc
+		self.descNetwork[charName]=dstDesc
+
+	def rearrangeRecursively(self, charDesc):
+		self.charDescRearranger(charDesc)
+		for childDesc in charDesc.getCompList():
+			self.rearrangeRecursively(childDesc)
 
 	def expandCharDescInNetwork(self, dstDesc, srcDesc):
 		# 擴展 dstDesc
 		# dstDesc 會被改變，而非產生新的 CharDesc
 
-		if not srcDesc.getOperator().isAvailableOperation():
-			print("<!-- 錯誤；不合法的運算 %s -->"%operator)
-			return None
-
-		dstDesc.copyInfoWithoutCompListFrom(srcDesc)
+		dstDesc.copyDescriptionFrom(srcDesc)
+		srcCharInfo=srcDesc.getChInfo()
+		if srcCharInfo==None:
+			dstDesc.setChInfo(self.emptyCharInfoGenerator())
+		else:
+			dstDesc.setChInfo(srcCharInfo)
 
 		compList=[]
 		for childSrcDesc in srcDesc.getCompList():
@@ -38,18 +57,18 @@ class HanZiNetwork:
 				self.expandCharDescInNetwork(childDstDesc, childSrcDesc)
 
 			else:
-				if childSrcDesc.name in self.descNetwork:
-					childDstDesc=self.descNetwork.get(childSrcDesc.name)
+				if childSrcDesc.getName() in self.descNetwork:
+					childDstDesc=self.descNetwork.get(childSrcDesc.getName())
 				else:
-					expandChildSrcDesc=self.charDescQueryer(childSrcDesc.name)
+					expandChildSrcDesc=self.charDescQueryer(childSrcDesc.getName())
 
-					childDstDesc=self.charDescGenerator(expandChildSrcDesc.name)
+					childDstDesc=self.charDescGenerator(expandChildSrcDesc.getName())
 
 					self.expandCharDescInNetwork(childDstDesc, expandChildSrcDesc)
-					self.descNetwork[childDstDesc.name]=childDstDesc
+					self.descNetwork[childDstDesc.getName()]=childDstDesc
 
 			compList.append(childDstDesc)
 		dstDesc.setCompList(compList)
 
-		self.charDescRearranger(dstDesc)
+#		self.charDescRearranger(dstDesc)
 

@@ -6,16 +6,19 @@ from character import Operator
 class CharDesc:
 	"""字符描述"""
 	countAnonymousName=0
-	def __init__(self, name, operator, compList, direction, description, chInfo):
+	def __init__(self, name, operator, compList, expression, chInfo):
 		self.name=name
 
 		self.operator=operator
 		self.compList=compList
 
-		self.description=description
+		self.expression=expression
 
 		# 字符的資訊，如在某種輸入法下如何拆碼
 		self.chInfo=chInfo
+
+		self.showFlag=False if len(self.name)>1 else True
+		self.anonymous=self.name.count("瑲珩匿名")>0
 
 	def __str__(self):
 		return '<{0}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)))
@@ -23,22 +26,18 @@ class CharDesc:
 	def __repr__(self):
 		return str(self)
 
-	def copyInfoWithoutCompListFrom(self, srcDesc):
-		self.name=srcDesc.name
-		srcOperator=srcDesc.getOperator()
-#		self.setOperatorAndDirection(srcOperator, srcDesc.getDirection())
-		self.setOperator(srcOperator)
-		self.description=srcDesc.description
-		self.setChInfo(copy.copy(srcDesc.getChInfo()))
+	def copyDescriptionFrom(self, srcDesc):
+		self.setName(srcDesc.getName())
+		self.setOperator(srcDesc.getOperator())
+		self.expression=srcDesc.expression
 
 	def setName(self, name):
 		self.name=name
+		self.showFlag=False if len(self.name)>1 else True
+		self.anonymous=self.name.count("瑲珩匿名")>0
 
 	def getName(self):
 		return self.name
-
-	def setOperatorAndDirection(self, operator, direction):
-		self.operator=operator
 
 	def setOperator(self, operator):
 		self.operator=operator
@@ -71,10 +70,25 @@ class CharDesc:
 		return name
 
 	def isAnonymous(self):
-		return self.name.count("瑲珩匿名")>0
+		return self.anonymous
+
+	def setAnonymous(self, anonymous):
+		self.anonymous=anonymous
 
 	def isTemplate(self):
 		return False
+
+	def isToShow(self):
+		return self.showFlag
+		return self.chInfo.isToShow()
+
+	def getCode(self):
+		chinfo=self.getChInfo()
+		code=chinfo.getCode()
+		if self.isToShow() and code:
+			return code
+		else:
+			return None
 
 	def setCharTree(self):
 		"""設定某一個字符所包含的部件的碼"""
@@ -91,20 +105,23 @@ class CharDesc:
 		chInfo.setByComps(infoList, self.getDirection())
 
 class TemplateCharDesc(CharDesc):
-	def __init__(self, name, templateName, argumentNameList):
-		self.name=name
+	def __init__(self, templateName, argumentNameList):
 		self.templateName=templateName
 		self.templateDesc=None
 		self.argumentNameList=argumentNameList
+		self.anonymous=True
 
 	def __str__(self):
-		return self.name
+		return self.templateName
 
 	def isTemplate(self):
 		return True
 
 	def getTemplateName(self):
 		return self.templateName
+
+	def setTemplateName(self, templateName):
+		self.templateName=templateName
 
 	def setTemplateDesc(self, templateDesc):
 		self.templateDesc=templateDesc
@@ -115,6 +132,13 @@ class TemplateCharDesc(CharDesc):
 	def getCharDesc(self):
 #		return self.charDesc
 		return self.templateDesc.getReplacedCharDesc(self.argumentNameList)
+
+	def copyDescriptionFrom(self, srcDesc):
+		self.setTemplateName(srcDesc.getTemplateName())
+		self.setTemplateDesc(self.templateDesc)
+		self.setCharDesc(self.getCharDesc())
+#		self.setOperator(srcDesc.getOperator())
+#		self.expression=srcDesc.expression
 
 if __name__=='__main__':
 	print(CharDesc('王', '(龜)', None))

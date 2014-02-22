@@ -27,12 +27,12 @@ class CharDescriptionManager:
 				return None
 
 			direction=operator.getDirection()
-			tmpCharInfo=CharInfoGenerator(charName, [])
-			charDesc=CharDesc(charName, operator, CompList, direction, expression, tmpCharInfo)
+			tmpCharInfo=CharInfoGenerator([])
+			charDesc=CharDesc(charName, operator, CompList, expression, tmpCharInfo)
 			return charDesc
 
 		def emptyCharInfoGenerator():
-			return CharInfoGenerator("[瑲珩預設]", [])
+			return CharInfoGenerator([])
 
 		def emptyCharDescGenerator():
 			anonymousName=CharDesc.generateNewAnonymousName()
@@ -45,6 +45,23 @@ class CharDescriptionManager:
 		def charDescQueryer(charName):
 			return self.characterDB.get(charName)
 
+		def charDescQueryer(charName):
+			charDesc=self.characterDB.get(charName)
+			if charDesc.isTemplate():
+				charDesc=self.getCharDescFromTemplate(charDesc)
+				charDesc.setName(charName)
+				chInfo=self.charInfoGenerator([])
+#				chInfo=self.emptyCharInfoGenerator()
+				charDesc.setChInfo(chInfo)
+
+			if charDesc.isTemplate():
+				pass
+			elif not charDesc.getOperator().isAvailableOperation():
+				print("<!-- 錯誤；不合法的運算 %s -->"%charDesc.getOperator())
+				return None
+
+			return charDesc
+
 		imName=imModule.IMInfo.IMName
 		self.operationMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
 
@@ -54,7 +71,7 @@ class CharDescriptionManager:
 		self.emptyCharDescGenerator=emptyCharDescGenerator
 
 		queryer=lambda charName: self.characterDB.get(charName)
-		self.hanziNetwork=HanZiNetwork(self.charDescGenerator, charDescRearranger, charDescQueryer)
+		self.hanziNetwork=HanZiNetwork(self.emptyCharInfoGenerator, self.charDescGenerator, charDescRearranger, charDescQueryer)
 
 	def keys(self):
 		return self.characterDB.keys()
@@ -90,7 +107,7 @@ class CharDescriptionManager:
 		def getDesc_AssembleChar(assembleChar):
 			l=[]
 			operator=assembleChar.get("運算")
-			filter_lambda=lambda x: x.tag in ["字根", "組字"]
+			filter_lambda=lambda x: x.tag in ["字根", "組字", "套用範本"]
 			targetChildNodes=filter(filter_lambda , list(assembleChar))
 			for node in targetChildNodes:
 				if node.tag=="字根":
@@ -98,6 +115,8 @@ class CharDescriptionManager:
 					l.append(charDescGenerator(name))
 				elif node.tag=="組字":
 					l.append(getDesc_AssembleChar(node))
+				elif node.tag=="套用範本":
+					l.append(getDesc_ApplyTemplate(node))
 				else:
 					pass
 
@@ -105,8 +124,7 @@ class CharDescriptionManager:
 			comp=charDescGenerator(anonymousName, [operator, l, '(龜)'])
 			return comp
 
-		def getDesc_CharacterX(charName, nodeCharacter):
-#			charName=nodeCharacter.get('名稱')
+		def getDesc_SubCharacter(nodeCharacter):
 			assembleChar=nodeCharacter.find("組字")
 			if assembleChar==None:
 				return None
@@ -119,35 +137,31 @@ class CharDescriptionManager:
 				if infoExpr: infoList.append(infoExpr)
 				if infoExtra: infoList.append(infoExtra)
 				
-			chInfo=charInfoGenerator(charName, infoList)
+			chInfo=charInfoGenerator(infoList)
 
 			comp=getDesc_AssembleChar(assembleChar)
-			comp.setName(charName)
 			comp.setChInfo(chInfo)
 
 			return comp
 
-		def getDesc_Character(nodeCharacter):
-			applyTemplate=nodeCharacter.find("套用範本")
-			charName=nodeCharacter.get('名稱')
-
+		def getDesc_ApplyTemplate(applyTemplate):
 			templateCharDesc=None
+
+			argumentNodeList=applyTemplate.find("引數列")
+			argumentNameList=getDesc_ArgumentList(argumentNodeList)
+
+			templateName=applyTemplate.get("範本名稱")
+			templateCharDesc=TemplateCharDesc(templateName, argumentNameList)
+
+			return templateCharDesc
+
+		def getDesc_CompleteCharacter(nodeCharacter):
+			applyTemplate=nodeCharacter.find("套用範本")
+
 			if applyTemplate!=None:
-				argumentNodeList=applyTemplate.find("引數列")
-				argumentNameList=getDesc_ArgumentList(argumentNodeList)
-
-				templateName=applyTemplate.get("範本名稱")
-				templateCharDesc=TemplateCharDesc(charName, templateName, argumentNameList)
-
-				comp=getDesc_CharacterX(charName, nodeCharacter)
-#				comp=getDesc_CharacterX(charName, applyTemplate)
-				if comp!=None:
-					templateCharDesc.setCharDesc(comp)
-
-				comp=templateCharDesc
+				comp=getDesc_ApplyTemplate(applyTemplate)
 			else:
-				comp=getDesc_CharacterX(charName, nodeCharacter)
-
+				comp=getDesc_SubCharacter(nodeCharacter)
 			return comp
 
 		def getDesc_ArgumentList(nodeArgument):
@@ -173,6 +187,7 @@ class CharDescriptionManager:
 
 			parameterNameList=getDesc_ParameterList(parameterNodeList)
 
+			chInfo=emptyCharInfoGenerator()
 			comp=getDesc_AssembleChar(assembleChar)
 			comp.setName(templateName)
 #			comp.setChInfo(chInfo)
@@ -188,35 +203,24 @@ class CharDescriptionManager:
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
 		for node in targetChildNodes:
-			comp=getDesc_Character(node)
-			self.characterDB[comp.getName()]=comp
+			comp=getDesc_CompleteCharacter(node)
+			charName=node.get('名稱')
+			comp.setName(charName)
+			comp.setAnonymous(charName.count("瑲珩匿名")>0)
+			self.characterDB[charName]=comp
+
+	def getCharDescFromTemplate(self, charDesc):
+		charInfoGenerator=self.getCharInfoGenerator()
+		templateDesc=self.templateDB.get(charDesc.getTemplateName())
+		charDesc.setTemplateDesc(templateDesc)
+
+		resultDesc=charDesc.getCharDesc()
+
+		return resultDesc
+
 
 	def ConstructDescriptionNetwork(self):
-#		# dirty Work
-#		# 需要先處理的 List
-#		dirtySpecialList=["彳", "亍", "亠", "[衣下]", ]
-#		for charName in dirtySpecialList+list(self.characterDB.keys()):
-
-#		for templateName in self.templateDB.keys():
-#			self.templateDB.get(templateName)
-
-		charInfoGenerator=self.getCharInfoGenerator()
-		for charName in self.characterDB.keys():
-			charDesc=self.characterDB.get(charName)
-			if charDesc.isTemplate():
-				templateDesc=self.templateDB.get(charDesc.getTemplateName())
-				charDesc.setTemplateDesc(templateDesc)
-				charDesc=charDesc.getCharDesc()
-				charDesc.setName(charName)
-				chInfo=charInfoGenerator(charName, [])
-				charDesc.setChInfo(chInfo)
-
-				self.characterDB[charName]=charDesc
-
-		for charName in self.characterDB.keys():
-			charDesc=self.charDescGenerator(charName)
-			srcDesc=self.characterDB.get(charName)
-			self.hanziNetwork.addCharDesc(charName)
+		self.hanziNetwork.ConstructHanZiNetwork(self.characterDB.keys())
 
 	def generateCode(self, charName):
 		expandDesc=self.hanziNetwork.get(charName, None)
@@ -224,12 +228,7 @@ class CharDescriptionManager:
 
 	def getCode(self, charName):
 		expandDesc=self.hanziNetwork.get(charName, None)
-		chinfo=expandDesc.getChInfo()
-		code=chinfo.getCode()
-		if chinfo.isToShow() and code:
-			return code
-		else:
-			return None
+		return expandDesc.getCode()
 
 if __name__=='__main__':
 	pass
