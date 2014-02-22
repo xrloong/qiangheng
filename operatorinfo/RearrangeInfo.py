@@ -137,19 +137,6 @@ class RearrangeInfoSquare:
 		charDesc.setCompList([tmpDesc, tmpDesc,])
 		charDesc.setOperatorAndDirection('志', ansDirection)
 
-class RearrangeInfoH2:
-	def __init__(self):
-		pass
-
-	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldCompList=charDesc.getCompList()
-
-		ansDirection='-'
-		x=oldCompList[0]
-		charDesc.setCompList([x, x,])
-		charDesc.setOperatorAndDirection('好', ansDirection)
-
 class RearrangeInfoGo:
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		self.descMgr=descMgr
@@ -205,26 +192,6 @@ class RearrangeInfoSpecial:
 		if x.getName() in ['辶', '廴']:
 			charDesc.setCompList([y, x])
 			charDesc.setOperatorAndDirection('龍', '*')
-
-class RearrangeInfoFrost:
-	def __init__(self):
-		pass
-
-	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldCompList=charDesc.getCompList()
-
-		ansDirection='|'
-		x=oldCompList[0]
-		y=oldCompList[1]
-		z=oldCompList[2]
-
-		tmpDesc=self.emptyCharDescGenerator()
-		tmpDesc.setCompList([y, z,])
-		tmpDesc.setOperatorAndDirection('好', '-')
-
-		charDesc.setCompList([x, tmpDesc,])
-		charDesc.setOperatorAndDirection('志', ansDirection)
 
 class RearrangeInfoFrost:
 	def __init__(self, emptyCharDescGenerator):
@@ -338,8 +305,4 @@ class RearrangeInfoLShapeSimpleRadical:
 			if x.getName() in ['辶', '廴']:
 				charDesc.setCompList([y, x])
 				charDesc.setOperatorAndDirection('龍', '*')
-
-RearrangeInfo.Order_01=RearrangeInfo([0, 1,])
-RearrangeInfo.Order_10=RearrangeInfo([1, 0,])
-RearrangeInfo.Order_012=RearrangeInfo([0, 1, 2])
 
