@@ -125,6 +125,14 @@ class CharDescriptionManager:
 
 			return comp
 
+		templateGroupNode=rootNode.find("範本集")
+		if None!=templateGroupNode:
+			targetChildNodes=templateGroupNode.findall("範本")
+			for node in targetChildNodes:
+				pass
+#				template=getDesc_Character(node)
+#				self[comp.getName()]=comp
+
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
 		for node in targetChildNodes:
