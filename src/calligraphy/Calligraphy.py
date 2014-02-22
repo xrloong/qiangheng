@@ -70,6 +70,9 @@ class StrokeInfo:
 
 	def getPoints(self):
 		startPoint = self.getStartPoint()
+		return self.computePoints(startPoint)
+
+	def computePoints(self, startPoint):
 		points=[(False, startPoint), ]
 		return pints + self.getTailPoints(points[-1][1])
 
@@ -189,7 +192,6 @@ class StrokeInfo:
 	def compute_豎撇(self, startPoint, w, hs, hp):
 		assert w>0 and hs>0 and hp>0
 
-		startPoint = self.getStartPoint()
 		midPoint1 = [startPoint[0], startPoint[1] + hs]
 		midPoint2 = [midPoint1[0], midPoint1[1] + hp]
 		endPoint = [midPoint2[0] - w, midPoint2[1]]
@@ -253,12 +255,11 @@ class StrokeInfo_點(StrokeInfo):
 		else:
 			return self.getTopRight()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w=paramList[0]
 		h=paramList[1]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_點(points[-1][1], w, h))
 		return points
@@ -275,12 +276,11 @@ class StrokeInfo_圈(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTop()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		a=paramList[0]
 		b=paramList[1]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_圈(points[-1][1], a, b))
 		return points
@@ -296,11 +296,10 @@ class StrokeInfo_橫(StrokeInfo):
 	def getStartPoint(self):
 		return self.getLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		return points
@@ -323,13 +322,12 @@ class StrokeInfo_橫鉤(StrokeInfo):
 		topLeft=self.getTopLeft()
 		return (topLeft[0]+max(0, w2-w1), topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_撇(points[-1][1], w2, h2))
@@ -347,12 +345,11 @@ class StrokeInfo_橫折(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_豎(points[-1][1], h2))
@@ -371,13 +368,12 @@ class StrokeInfo_橫折折(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 		w3=paramList[2]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_豎(points[-1][1], h2))
@@ -398,14 +394,13 @@ class StrokeInfo_橫折提(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 		w3=paramList[2]
 		h3=paramList[3]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_豎(points[-1][1], h2))
@@ -433,7 +428,7 @@ class StrokeInfo_橫折鉤(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+max(0, (w2+w3)-w1), topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
@@ -441,7 +436,6 @@ class StrokeInfo_橫折鉤(StrokeInfo):
 		w3=paramList[3]
 		h3=paramList[4]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_撇鉤之撇(points[-1][1], w2, h2))
@@ -462,7 +456,7 @@ class StrokeInfo_橫折彎(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
@@ -470,7 +464,6 @@ class StrokeInfo_橫折彎(StrokeInfo):
 		cr=paramList[3]
 #		h3=paramList[4]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_豎(points[-1][1], h2 - cr))
@@ -498,13 +491,12 @@ class StrokeInfo_橫撇(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+max(0, w2-w1), topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_撇(points[-1][1], w2, h2))
@@ -532,7 +524,7 @@ class StrokeInfo_橫斜彎鉤(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+(w2l-w1), topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
@@ -541,7 +533,6 @@ class StrokeInfo_橫斜彎鉤(StrokeInfo):
 		cr=paramList[4]
 		h3=paramList[5]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_撇曲(points[-1][1], w2l, w2r, h2, cr))
@@ -566,7 +557,7 @@ class StrokeInfo_橫折折折鉤(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
@@ -577,7 +568,6 @@ class StrokeInfo_橫折折折鉤(StrokeInfo):
 		w5=paramList[6]
 		h5=paramList[7]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_撇(points[-1][1], w2, h2))
@@ -600,14 +590,13 @@ class StrokeInfo_橫斜鉤(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
 		h3=paramList[3]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_斜鉤之斜(points[-1][1], w2, h2))
@@ -628,14 +617,13 @@ class StrokeInfo_橫折折折(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 		w3=paramList[2]
 		h4=paramList[3]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_豎(points[-1][1], h2))
@@ -654,11 +642,10 @@ class StrokeInfo_豎(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTop()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎(points[-1][1], h1))
 		return points
@@ -675,12 +662,11 @@ class StrokeInfo_豎折(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
 		w2=paramList[1]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎(points[-1][1], h1))
 		points.extend(self.compute_橫(points[-1][1], w2))
@@ -699,13 +685,12 @@ class StrokeInfo_豎提(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎(points[-1][1], h1))
 		points.extend(self.compute_提(points[-1][1], w2, h2))
@@ -724,13 +709,12 @@ class StrokeInfo_豎折折(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
 		w2=paramList[1]
 		h3=paramList[2]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎(points[-1][1], h1))
 		points.extend(self.compute_橫(points[-1][1], w2))
@@ -758,7 +742,7 @@ class StrokeInfo_豎折彎鉤(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0] + w1, topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
@@ -768,7 +752,6 @@ class StrokeInfo_豎折彎鉤(StrokeInfo):
 		w4=paramList[5]
 		h4=paramList[6]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		if w1>0:
 			points.extend(self.compute_撇(points[-1][1], w1, h1))
@@ -802,14 +785,13 @@ class StrokeInfo_豎彎鉤(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0], topLeft[1]+max(0, h2-h1))
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
 		w1=paramList[1]
 		cr=paramList[2]
 		h2=paramList[3]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎(points[-1][1], h1-cr))
 		points.extend(self.compute_曲(points[-1][1], cr))
@@ -835,13 +817,12 @@ class StrokeInfo_豎彎(StrokeInfo):
 
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		cr=paramList[2]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎(points[-1][1], h1))
 		points.extend(self.compute_曲(points[-1][1], cr))
@@ -861,7 +842,7 @@ class StrokeInfo_豎鉤(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopRight()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		h1=paramList[0]
 		w2=paramList[1]
@@ -874,7 +855,6 @@ class StrokeInfo_豎鉤(StrokeInfo):
 		wg=w2//2
 		hg=wg
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎撇(points[-1][1], wp, hs, hp))
 		points.extend(self.compute_鉤(points[-1][1], wg, hg))
@@ -893,13 +873,12 @@ class StrokeInfo_斜鉤(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		h2=paramList[2]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_斜鉤之斜(points[-1][1], w1, h1))
 		points.extend(self.compute_上(points[-1][1], h2))
@@ -926,14 +905,13 @@ class StrokeInfo_彎鉤(StrokeInfo):
 		topLeft=self.getTopLeft()
 		return (topLeft[0]+max(0,w2-w1), topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
 		h2=paramList[3]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_彎鉤之彎(points[-1][1], w1, h1))
 		points.extend(self.compute_鉤(points[-1][1], w2, h2))
@@ -960,14 +938,13 @@ class StrokeInfo_撇鉤(StrokeInfo):
 		topLeft=self.getTopLeft()
 		return (topLeft[0]-w1+w2, topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
 		h2=paramList[3]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_彎鉤之彎(points[-1][1], w1, h1))
 		points.extend(self.compute_鉤(points[-1][1], w2, h2))
@@ -985,12 +962,11 @@ class StrokeInfo_撇(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopRight()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_撇(points[-1][1], w1, h1))
 		return points
@@ -1013,14 +989,13 @@ class StrokeInfo_撇點(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+w1, topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
 		h2=paramList[3]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_撇(points[-1][1], w1, h1))
 		points.extend(self.compute_點(points[-1][1], w2, h2))
@@ -1044,14 +1019,13 @@ class StrokeInfo_撇橫(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+w1, topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
 		h2=paramList[3]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_撇(points[-1][1], w1, h1))
 		if h2>0:
@@ -1086,7 +1060,7 @@ class StrokeInfo_撇橫撇(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+w1+max(0, w3-w2), topLeft[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
@@ -1094,7 +1068,6 @@ class StrokeInfo_撇橫撇(StrokeInfo):
 		w3=paramList[3]
 		h3=paramList[4]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_撇(points[-1][1], w1, h1))
 		points.extend(self.compute_橫(points[-1][1], w2))
@@ -1113,7 +1086,7 @@ class StrokeInfo_豎撇(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopRight()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
@@ -1122,7 +1095,6 @@ class StrokeInfo_豎撇(StrokeInfo):
 		hp = h1 - (hs)
 		wp = w1
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎撇(points[-1][1], w1, hs, hp))
 		return points
@@ -1139,12 +1111,11 @@ class StrokeInfo_提(StrokeInfo):
 	def getStartPoint(self):
 		return self.getBottomLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_提(points[-1][1], w1, h1))
 		return points
@@ -1166,12 +1137,11 @@ class StrokeInfo_捺(StrokeInfo):
 		topRight = self.getTopRight()
 		return (topRight[0]-w1, topRight[1])
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_捺(points[-1][1], w1, h1))
 		return points
@@ -1192,12 +1162,11 @@ class StrokeInfo_臥捺(StrokeInfo):
 		left = self.getLeft()
 		return (left[0], left[1]-h1//2)
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_臥捺(points[-1][1], w1, h1))
 		return points
@@ -1220,14 +1189,13 @@ class StrokeInfo_提捺(StrokeInfo):
 		topLeft = self.getTopLeft()
 		return (topLeft[0], topLeft[1]+h1)
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
 		h2=paramList[3]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_提(points[-1][1], w1, h1))
 		points.extend(self.compute_捺(points[-1][1], w2, h2))
@@ -1246,13 +1214,12 @@ class StrokeInfo_橫捺(StrokeInfo):
 	def getStartPoint(self):
 		return self.getTopLeft()
 
-	def getPoints(self):
+	def computePoints(self, startPoint):
 		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
 
-		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_捺(points[-1][1], w2, h2))
