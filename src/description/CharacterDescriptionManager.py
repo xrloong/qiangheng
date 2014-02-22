@@ -119,6 +119,7 @@ class CharDescriptionManager:
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
 				structDesc.setExpandName(charName)
+				structDesc.setNodeName(charName)
 
 if __name__=='__main__':
 	pass

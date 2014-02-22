@@ -1,6 +1,7 @@
 import copy
 from state import StateManager
 from description.CodeType import CodeType
+from description.operator import Operator
 
 class HanZiCodeInfo:
 	def __init__(self, propDict, codeType,):
@@ -64,7 +65,7 @@ class HanZiStructure:
 		return self.nodeList
 
 	def appendCodeInfo(self, codeInfo):
-		return self.codeInfoList.append(codeInfo)
+		self.codeInfoList.append(codeInfo)
 
 	def getCodeInfoList(self):
 		return self.codeInfoList
@@ -102,6 +103,7 @@ class HanZiStructure:
 			return ansListList
 
 		infoListList=[]
+
 		for node in nodeList:
 			tmpCodeInfoList=node.getCodeInfoList()
 			codeInfoList=filter(lambda x: x.isSupportRadixCode(), tmpCodeInfoList)
@@ -110,11 +112,15 @@ class HanZiStructure:
 		return infoListList
 
 class HanZiNode:
-	def __init__(self):
+	def __init__(self, name):
+		self.name=name
 		self.structureList=[]
 
 	def addStructure(self, structure):
 		self.structureList.append(structure)
+
+	def setStructureList(self, structureList):
+		self.structureList=structureList
 
 	def getStructureListWithCondition(self):
 		return self.structureList
@@ -157,7 +163,11 @@ class DescriptionManagerToHanZiNetworkConverter:
 		sortedNameList=sorted(charNameList)
 
 		for charName in sortedNameList:
+			self.hanziNetwork.addNamedNode(charName)
+
+		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
+
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
 				self.recursivelyAddStructure(structDesc)
@@ -166,8 +176,10 @@ class DescriptionManagerToHanZiNetworkConverter:
 	def recursivelyAddStructure(self, structDesc):
 		hanziNetwork=self.hanziNetwork
 
-		hanziNetwork.addNode(structDesc.getHybridName())
-		if structDesc.isTurtle():
+		hanziNetwork.addNode(structDesc)
+		if structDesc.isLeaf():
+			hanziNetwork.setReferenLink(structDesc)
+		elif structDesc.isTurtle():
 			hanziNetwork.appendTurtleStruct(structDesc)
 		else:  
 			operator=structDesc.getOperator()
@@ -187,16 +199,28 @@ class HanZiNetwork:
 	def __init__(self):
 		self.nodeList=[]
 
-		self.structDescNameToNodeDict={}
+		self.structDescUniqueNameToNodeDict={}
+		self.structDescExpandNameToNodeDict={}
 
 	@staticmethod
 	def construct(descriptionManager):
 		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager)
 		return toHanZiNetworkConverter.constructDescriptionNetwork()
 
-	def addNode(self, nodeName):
-		if nodeName not in self.structDescNameToNodeDict:
-			self.structDescNameToNodeDict[nodeName]=HanZiNode()
+	def addNamedNode(self, name):
+		tmpNode=HanZiNode(name)
+		self.structDescUniqueNameToNodeDict[name]=tmpNode
+		self.structDescExpandNameToNodeDict[name]=tmpNode
+
+	def addNode(self, structDesc):
+		anonymousName=structDesc.getUniqueName()
+		if anonymousName not in self.structDescUniqueNameToNodeDict:
+			tmpNode=HanZiNode(anonymousName)
+			self.structDescUniqueNameToNodeDict[anonymousName]=tmpNode
+
+			expandName=structDesc.getExpandName()
+			if expandName not in self.structDescExpandNameToNodeDict:
+				self.structDescExpandNameToNodeDict[expandName]=tmpNode
 
 	def addLink(self, structDesc, operator, childDescList):
 		if len(childDescList)>0:
@@ -208,6 +232,20 @@ class HanZiNetwork:
 			structure.setToRadix()
 
 			dstNode.addStructure(structure)
+
+	def setReferenLink(self, structDesc):
+		# 需考慮如：'炎'、'焱'的例子，使用重複的部件，要連結到相同的節點且不重複。
+
+		leafNode=self.structDescUniqueNameToNodeDict.get(structDesc.getUniqueName())
+		rootNode=self.structDescExpandNameToNodeDict.get(structDesc.getExpandName())
+		operator = Operator.Operator('爲', '*')
+		childNodeList=[rootNode]
+		codeType=structDesc.getCodeType()
+		structure=HanZiStructure(codeType, operator, childNodeList)
+		structure.setToRadix()
+
+		structureList=[structure]
+		leafNode.setStructureList(structureList)
 
 	def appendTurtleStruct(self, structDesc):
 		dstNode=self.findNode(structDesc)
@@ -227,9 +265,14 @@ class HanZiNetwork:
 		dstNode.addStructure(structure)
 
 	def findNode(self, structDesc):
-		return self.structDescNameToNodeDict.get(structDesc.getHybridName())
+		if structDesc.isRoot():
+			return self.structDescExpandNameToNodeDict.get(structDesc.getExpandName())
+		elif structDesc.isLeaf():
+			return self.structDescUniqueNameToNodeDict.get(structDesc.getUniqueName())
+		else:
+			return self.structDescUniqueNameToNodeDict.get(structDesc.getUniqueName())
 
 	def getCodePropertiesList(self, charName):
-		charNode=self.structDescNameToNodeDict.get(charName)
+		charNode=self.structDescExpandNameToNodeDict.get(charName)
 		return charNode.getCodePropertiesList()
 

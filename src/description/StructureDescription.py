@@ -10,6 +10,8 @@ class StructureDescription:
 		self.name=StructureDescription.generateNewAnonymousName()
 		self.expandName=None
 
+		self.nodeName=None
+
 		self.operator=operator
 		self.compList=compList
 
@@ -56,8 +58,23 @@ class StructureDescription:
 	def getUniqueName(self):
 		return self.target.name
 
+	def setNodeName(self, nodeName):
+		self.target.nodeName=nodeName
+
+	def getNodeName(self):
+		return self.target.nodeName
+
 	def setExpandName(self, expandName):
 		self.target.expandName=expandName
+
+	def isNode(self):
+		return bool(self.target.getNodeName())
+
+	def isRoot(self):
+		return self.isExpandable() and self.isNode()
+
+	def isLeaf(self):
+		return self.isExpandable() and not self.isNode()
 
 	def getExpandName(self):
 		return self.target.expandName
