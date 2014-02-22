@@ -154,5 +154,10 @@ def main():
 	qiangheng=QiangHeng(options)
 
 if __name__ == "__main__":
-	main()
+#	main()
+	import profile
+	profile.run("main()", "prof.txt")
+	import pstats
+	p = pstats.Stats("prof.txt")
+	p.sort_stats("time").print_stats()
 

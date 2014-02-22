@@ -43,7 +43,7 @@ profile:
 	for im in $(IMLIST);\
 	do\
 		echo $$im;\
-		python3 -m profile src/qiangheng.py -q -c qhdata/config/$$im.xml > $(PROFILE_PATH)/$$im.txt;\
+		src/profiler.py -q -c qhdata/config/$$im.xml > $(PROFILE_PATH)/$$im.txt;\
 	done
 	touch $(XML_PATH)
 
