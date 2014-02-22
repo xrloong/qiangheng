@@ -96,19 +96,18 @@ class Parser:
 
 	def parse(data, name=''):
 		def parseCompDesc():
-			comp=chardesc.CharDesc('王', '(龜)', charinfo.CharInfo.NoneChar)
-
 			tkn=lexer.getNextToken()
 			if tkn.ttype != Token.leftParenthesis:
 				print("預期 (")
-				return chardesc.CharDesc.NoneDesc
+				return chardesc.CharDescriptionManager.getNoneDescription()
 
 			tnk=lexer.getNextToken() # op
 			if tnk.ttype == Token.hanzi or tnk.ttype == Token.htemplate:
-				comp.setOp(tnk.value)
+				operator=tnk.value
 			else:
+				operator=''
 				print("預期運算元")
-				return chardesc.CharDesc.NoneDesc
+				return chardesc.CharDescriptionManager.getNoneDescription()
 
 			# ' '
 			tnk=lexer.getNextToken()
@@ -117,17 +116,21 @@ class Parser:
 					tnk=lexer.getNextToken()
 				lexer.pushBackToken(tnk)
 
-				l=parseCompList()
+				compList=parseCompList()
 
-				if l is None:
-					return chardesc.CharDesc.NoneDesc
+				if compList is None:
+					return chardesc.CharDescriptionManager.getNoneDescription()
 				else:
-					comp.setCompList(l)
+					pass
 
 				tnk=lexer.getNextToken() # ')'
 				if tnk.ttype != Token.rightParenthesis:
 					print("預期 )")
 					return None
+			else:
+				compList=[]
+
+			comp=chardesc.CharDescriptionManager.generateDescription('王', [operator, compList, '(龜)'])
 
 			return comp
 
@@ -136,8 +139,7 @@ class Parser:
 			while True:
 				tnk=lexer.getNextToken()
 				if tnk.ttype==Token.hanzi or tnk.ttype==Token.radical:
-					comp=chardesc.CharDesc(tnk.value, '(龜)', charinfo.CharInfo.NoneChar)
-					comp.setOp('龜')
+					comp=chardesc.CharDescriptionManager.generateDescription(tnk.value)
 					l.append(comp)
 				elif tnk.ttype==Token.leftParenthesis:
 					lexer.pushBackToken(tnk)
@@ -155,13 +157,13 @@ class Parser:
 		lexer=Lexer(data)
 		comp=parseCompDesc()
 
-		if comp!=chardesc.CharDesc.NoneDesc:
+		if comp!=chardesc.CharDescriptionManager.getNoneDescription():
 			tnk=lexer.getNextToken() # none
 			if tnk.ttype == Token.none:
 				comp.setName(name)
 			else:
 				print("預期結尾")
-				comp=chardesc.CharDesc.NoneDesc
+				comp=chardesc.CharDescriptionManager.getNoneDescription()
 
 		return comp
 

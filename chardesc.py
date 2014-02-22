@@ -5,31 +5,36 @@ import copy
 
 class CharDesc:
 	"""字符描述"""
-	def __init__(self, name, description, chInfo):
+	def __init__(self, name, operator, compList, direction, description):
 		self.name=name
 
-		self.op='龜'
-		self.compList=[]
+		self.op=operator
+		self.compList=compList
+		self.direction=direction
 
 		self.description=description
 
 		# 字符的資訊，如在某種輸入法下如何拆碼
-		self.chInfo=chInfo
+		self.chInfo=charinfo.CharInfo.NoneChar
 
 	def setName(self, name):
 		self.name=name
 
-	def setOp(self, op):
+	def setOperatorAndDirection(self, op, direction):
+		self.direction=direction
 		self.op=op
+
+	def getOperator(self):
+		return self.op
+
+	def getDirection(self):
+		return self.direction
 
 	def setCompList(self, compList):
 		self.compList=compList
 
 	def getCompList(self):
 		return self.compList
-
-	def getDescription(self):
-		return self.getDescription
 
 	def setChInfo(self, chInfo):
 		self.chInfo=chInfo
@@ -43,44 +48,7 @@ class CharDesc:
 	def __repr__(self):
 		return str(self)
 
-	def setCharTree(self):
-		"""設定某一個字符所包含的部件的碼"""
-
-		chInfo=self.getChInfo()
-		if not chInfo.isToSetTree():
-			return
-
-		radixList=self.getCompList()
-		for tmpdesc in radixList:
-			tmpdesc.setCharTree()
-
-		infoList=[x.getChInfo() for x in radixList]
-		chInfo.setByComps(infoList, self.getDir())
-
-	def getDir(self):
-		"""傳回倉頡的結合方向"""
-
-		oldOperator=self.op
-
-		ansDir='+'
-		if oldOperator in ['龜']:
-			ansDir='+'
-		elif oldOperator in ['水']:
-#			ansDir='+'
-			ansDir=self.getCompList()[0].getDir()
-		elif oldOperator in ['回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			ansDir='+'
-		elif oldOperator in ['纂', '算', '志', '霜', '想', '爻', '卅', ]:
-			ansDir='|'
-		elif oldOperator in ['湘', '好', '怡', '穎', '林', '鑫', ]:
-			ansDir='-'
-		elif oldOperator in ['燚',]:
-			ansDir='+'
-		else:
-			ansDir='+'
-		return ansDir
-
-CharDesc.NoneDesc=CharDesc("", '', charinfo.CharInfo.NoneChar)
+CharDesc.NoneDesc=CharDesc("", '龜', [], '+', '(龜)')
 
 class CharDescriptionManager:
 	def __init__(self):
@@ -97,6 +65,41 @@ class CharDescriptionManager:
 
 	def get(self, key, value=None):
 		return self.descDB.get(key, value)
+
+	@staticmethod
+	def generateDescription(charName, structInfo=['龜', [], '(龜)']):
+		operator, CompList, expression=structInfo
+		direction=CharDescriptionManager.computeDirection(operator)
+		charDesc=CharDesc(charName, operator, CompList, direction, expression)
+		return charDesc
+
+	@staticmethod
+	def getNoneDescription():
+		return CharDesc.NoneDesc
+
+	@staticmethod
+	def computeDirection(oldOperator):
+		"""計算部件的結合方向"""
+
+		ansDir='+'
+		if oldOperator in ['龜']:
+			ansDir='+'
+		elif oldOperator in ['水']:
+			# 暫時不會執行這段，且還在重構中
+			pass
+#			ansDir='+'
+#			ansDir=self.getCompList()[0].getDirection()
+		elif oldOperator in ['回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
+			ansDir='+'
+		elif oldOperator in ['纂', '算', '志', '霜', '想', '爻', '卅', ]:
+			ansDir='|'
+		elif oldOperator in ['湘', '好', '怡', '穎', '林', '鑫', ]:
+			ansDir='-'
+		elif oldOperator in ['燚',]:
+			ansDir='+'
+		else:
+			ansDir='+'
+		return ansDir
 
 	def getExpandDescriptionByName(self, charName):
 		charDesc=copy.copy(self.get(charName, None))
@@ -127,7 +130,8 @@ class CharDescriptionManager:
 
 	def rearrangeDesc(self, charDesc):
 		[newOp, newCompList]=self.getRearrangedOpAndCompList(charDesc)
-		charDesc.setOp(newOp)
+		direction=CharDescriptionManager.computeDirection(newOp)
+		charDesc.setOperatorAndDirection(newOp, direction)
 
 		# deepcopy 可以防止動到 descDB 的內容
 		# 但不用 deepcopy 則快很多
@@ -146,7 +150,7 @@ class CharDescriptionManager:
 		newOperator='龜'
 		newCompList=[]
 
-		oldOperator=ch.operator
+		oldOperator=charDesc.getOperator()
 		nameCompList=[x.name for x in charDesc.getCompList()]
 
 		if oldOperator in ['龜']:
@@ -209,6 +213,20 @@ class CharDescriptionManager:
 			newOperator='龜'
 			newCompList=[]
 		return [newOperator, newCompList]
+
+	def setCharTree(self, charDesc):
+		"""設定某一個字符所包含的部件的碼"""
+
+		chInfo=charDesc.getChInfo()
+		if not chInfo.isToSetTree():
+			return
+
+		radixList=charDesc.getCompList()
+		for tmpdesc in radixList:
+			self.setCharTree(tmpdesc)
+
+		infoList=[x.getChInfo() for x in radixList]
+		chInfo.setByComps(infoList, charDesc.getDirection())
 
 if __name__=='__main__':
 	print(CharDesc.NoneDesc)

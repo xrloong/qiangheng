@@ -58,7 +58,7 @@ class NoneIM:
 				if expandDesc==None:
 					continue
 
-				expandDesc.setCharTree()
+				self.descMgr.setCharTree(expandDesc)
 
 				chinfo=expandDesc.getChInfo()
 				code=chinfo.getCode()

@@ -2,15 +2,13 @@
 class CharInfo:
 	def __init__(self, charname, parseans, prop):
 		self.charname=charname
-		self.operator=parseans[0]
 		self.operandlist=parseans[1]
 
 		self.showFlag=False if len(self.charname)>1 else True
 		self.noneFlag=True
 
 	def __str__(self):
-		return "{{ {0}|{1},{2} }}".format(self.charname, self.operator, self.operandlist)
-		return self.charname
+		return "{{ {0}|{2} }}".format(self.charname, self.operandlist)
 
 	def __repr__(self):
 		return str(self)
@@ -120,7 +118,8 @@ class CJCharInfo(CharInfo):
 	def getCode(self):
 		if self.cj: return self.cj
 
-	def computeHeadTailCode(self, code, headCount):
+	@staticmethod
+	def computeHeadTailCode(code, headCount):
 		frontCode=code[:headCount]
 		rearCode=code[headCount:]
 
@@ -136,47 +135,50 @@ class CJCharInfo(CharInfo):
 
 		return frontCode+tailCode
 
-	def computeHeadCode(self, code):
-		headCode=self.computeHeadTailCode(code, 1)
+	@staticmethod
+	def computeHeadCode(code):
+		headCode=CJCharInfo.computeHeadTailCode(code, 1)
 		return headCode
 
-	def computeBodyCode(self, codeList):
+	@staticmethod
+	def computeBodyCode(codeList):
 		bodyCode=''
 		if len(codeList)==0:
 			bodyCode=''
 		elif len(codeList)==1:
-			bodyCode=self.computeHeadTailCode(codeList[0], 2)
+			bodyCode=CJCharInfo.computeHeadTailCode(codeList[0], 2)
 		else:
 			tmpCodeList=codeList
 
-			tmpHeadCode=self.computeHeadCode(tmpCodeList[0])
+			tmpHeadCode=CJCharInfo.computeHeadCode(tmpCodeList[0])
 			tmpCodeList=tmpCodeList[1:]
 
 			if len(tmpHeadCode)==2:
 				if len(tmpCodeList)>0:
-					tmpBodyCode=self.computeHeadTailCode(tmpCodeList[-1], 0)
+					tmpBodyCode=CJCharInfo.computeHeadTailCode(tmpCodeList[-1], 0)
 				else:
 					tmpBodyCode=''
 			elif len(tmpHeadCode)==1:
-				tmpHeadCode2=self.computeHeadCode(tmpCodeList[0])
+				tmpHeadCode2=CJCharInfo.computeHeadCode(tmpCodeList[0])
 				tmpCodeList=tmpCodeList[1:]
 
 				if len(tmpCodeList)>0:
-					tmpBodyCode2=self.computeHeadTailCode(tmpCodeList[-1], 0)
+					tmpBodyCode2=CJCharInfo.computeHeadTailCode(tmpCodeList[-1], 0)
 				else:
 					tmpBodyCode2=''
-				tmpBodyCode=self.computeHeadTailCode(tmpHeadCode2+tmpBodyCode2, 1)
+				tmpBodyCode=CJCharInfo.computeHeadTailCode(tmpHeadCode2+tmpBodyCode2, 1)
 			else:
 				# 理論上錯誤
 				tmpBodyCode=''
 			bodyCode=tmpHeadCode+tmpBodyCode
 		return bodyCode
 
-	def computeTotalCode(self, codeList):
+	@staticmethod
+	def computeTotalCode(codeList):
 		if len(codeList)==1:
-			totalCode=self.computeHeadTailCode(codeList[0], 3)
+			totalCode=CJCharInfo.computeHeadTailCode(codeList[0], 3)
 		elif len(codeList)>1:
-			totalCode=self.computeHeadCode(codeList[0])+self.computeBodyCode(codeList[1:])
+			totalCode=CJCharInfo.computeHeadCode(codeList[0])+CJCharInfo.computeBodyCode(codeList[1:])
 		else:
 			totalCode=''
 		return totalCode
