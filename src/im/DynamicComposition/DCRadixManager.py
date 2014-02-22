@@ -111,19 +111,12 @@ class DCRadixParser(RadixParser):
 
 			descriptionRegion=strokeNode.get(DCRadixParser.TAG_SCOPE)
 			countourPane=self.parsePane(descriptionRegion)
-			if len(description)>0 and description!='XXXX':
-				if description[0]=='(':
-					strokeExpression=strokeNode.attrib.get(DCRadixParser.ATTRIB_STROKE_EXPRESSION, '')
-					stroke=Stroke.fromStrokeExpression(pane, strokeExpression)
 
-					stroke.transform(countourPane)
-					strokeList.append(stroke)
-				else:
-					strokeGroupName=description
-					strokeGroup=self.findStrokeGroup(strokeGroupName)
-					tmpStrokeGroup=strokeGroup.clone()
-					tmpStrokeGroup.transform(countourPane)
-					strokeList.extend(tmpStrokeGroup.getStrokeList())
+			strokeExpression=strokeNode.attrib.get(DCRadixParser.ATTRIB_STROKE_EXPRESSION, '')
+			stroke=Stroke.fromStrokeExpression(pane, strokeExpression)
+
+			stroke.transform(countourPane)
+			strokeList.append(stroke)
 		strokeGroup=StrokeGroup(pane, strokeList)
 		return strokeGroup
 
