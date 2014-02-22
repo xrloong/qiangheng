@@ -51,7 +51,9 @@ class CJCharInfo(CharInfo):
 		for tmpchinfo in complist:
 			tmpDirCode, tmpRadixList=tmpchinfo.getCJProp()
 #			if tmpDirCode=='*':
-			if tmpDirCode in ['*', '@']:
+			if direction=='$':
+				ansRadixList.extend(tmpRadixList)
+			elif tmpDirCode in ['*', '@']:
 				ansRadixList.append(tmpchinfo._cj_body)
 			elif tmpDirCode==direction:
 				# 同向
