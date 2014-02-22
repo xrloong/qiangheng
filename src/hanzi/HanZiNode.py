@@ -108,6 +108,10 @@ class HanZiStructure:
 
 		return infoListList
 
+	def printAllCodeInfo(self):
+		for codeInfo in self.getCodeInfoList():
+			pass
+
 class HanZiNode:
 	def __init__(self, name):
 		self.name=name
@@ -127,6 +131,7 @@ class HanZiNode:
 
 	def getCodeInfoList(self):
 		structureList=self.getStructureListWithCondition()
+
 		return sum(map(lambda s: s.getCodeInfoList(), structureList), [])
 
 	def getCodePropertiesList(self):
@@ -139,6 +144,7 @@ class HanZiNode:
 			codeProp=codeInfo.getCodeProperties()
 			if codeProp:
 				codeList.append(codeProp)
+
 		return codeList
 
 	def setNodeTree(self):
@@ -152,6 +158,11 @@ class HanZiNode:
 				childNode.setNodeTree()
 
 			structure.setCompositions()
+
+	def printAllCodeInfoInStructure(self):
+		structureList=self.getStructureListWithCondition()
+		for struct in structureList:
+			struct.printAllCodeInfo()
 
 class HanZiWrapperNode:
 	def __init__(self, targetNode, expression):
