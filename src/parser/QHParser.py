@@ -90,25 +90,25 @@ class QHParser:
 		for node in structureNodes:
 			replaceInfo=self.getDesc_Template_Structure(node)
 			replaceInfoList.append(replaceInfo)
-		[condition, comp]=replaceInfoList[0]
 
-		return TemplateDescription(templateName, replaceInfoList, parameterNameList)
+		return TemplateDescription(templateName, parameterNameList, replaceInfoList)
+
+	def getDesc_TurtleCharacter(self, nodeCharacter):
+		assembleChar=nodeCharacter
+		infoDict=None
+		codeInfo=assembleChar.find("編碼資訊")
+		if codeInfo is not None:
+			infoDict=codeInfo.attrib
+
+		turtle=TurtleStructureDescription(infoDict)
+		turtle.setStructureProperties(assembleChar.attrib)
+		return turtle
 
 	def getDesc_TurtleCharacterList(self, nodeCharacter):
 		assembleCharList=nodeCharacter.findall("組字")
-		infoDictList=[]
 		turtleList=[]
 		for assembleChar in assembleCharList:
-			infoDict=None
-			codeInfo=assembleChar.find("編碼資訊")
-			if codeInfo is not None:
-				infoDict=codeInfo.attrib
-
-			infoDictList.append(infoDict)
-
-			turtle=TurtleStructureDescription(infoDict)
-			turtle.setStructureProperties(assembleChar.attrib)
-
+			turtle=self.getDesc_TurtleCharacter(assembleChar)
 			turtleList.append(turtle)
 		return turtleList
 

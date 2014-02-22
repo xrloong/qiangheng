@@ -22,7 +22,7 @@ class TemplateCondition:
 class TemplateDescription:
 	"""字符描述"""
 	countAnonymousName=0
-	def __init__(self, name, replaceInfoList, parameterList):
+	def __init__(self, name, parameterList, replaceInfoList):
 		self.name=name
 
 		[condition, charDesc]=replaceInfoList[0]
