@@ -114,7 +114,8 @@ class StrokeInfo:
 	def compute_捺(self, startPoint, w, h):
 		assert w>0 and h>0
 		cPoint = [startPoint[0] + w//2, startPoint[1] + h//2]
-		midPoint = (cPoint[0] - h//3, cPoint[1] + w//3)
+		scale = max(3, w/h*2, h/w*2)
+		midPoint = (cPoint[0] - h//scale, cPoint[1] + w//scale)
 		endPoint = (startPoint[0] + w, startPoint[1] + h)
 		return [(True, midPoint),
 			(False, endPoint), ]
@@ -1555,7 +1556,7 @@ class Stroke(Writing):
 
 		startPoint=self.startPoint
 		points=self.strokeInfo.computePoints(startPoint)
-		newPoints = [(isCurve, toValid(pane.transformPoint(point))) for (isCurve, point) in points]
+		newPoints = [(isCurve, pane.transformPoint(point)) for (isCurve, point) in points]
 		return newPoints
 
 	def computeScope(self):

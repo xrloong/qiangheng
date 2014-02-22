@@ -71,7 +71,15 @@ class DCCodeInfo(CodeInfo):
 					pointExpressionList.append("0001{0[0]:02X}{0[1]:02X}".format(point[1]))
 			return ",".join(pointExpressionList)
 
-		return encodePoints(stroke.getPoints())
+		def toValid(point):
+			x, y = point
+			newX = max(0, min(0xFF, x))
+			newY = max(0, min(0xFF, y))
+			return (newX, newY)
+
+		points=stroke.getPoints()
+		newPoints = [(isCurve, toValid(point)) for (isCurve, point) in points]
+		return encodePoints(newPoints)
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
