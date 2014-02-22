@@ -1,12 +1,14 @@
 from .CJCodeInfo import CJCodeInfo
 from ..base.CodeInfoEncoder import CodeInfoEncoder
+from .CJLump import CJLump
+import sys
 
 class CJCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateDefaultCodeInfo(self, direction, ansRadixList):
-		return CJCodeInfo.generateDefaultCodeInfo(direction, ansRadixList)
+	def generateDefaultCodeInfo(self, direction, cjLumpList):
+		return CJCodeInfo.generateDefaultCodeInfo(direction, cjLumpList)
 
 	def isAvailableOperation(self, codeInfoList):
 		return True
@@ -15,67 +17,67 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
 		direction='*'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 		direction='*'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
 		"""運算 "東" """
 		direction='$'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
 		direction='*'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 
 	def encodeAsSilkworm(self, codeInfoList):
 		direction='|'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
 		direction='-'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsLoop(self, codeInfoList):
 		direction='@'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 
 	def encodeAsMu(self, codeInfoList):
 		direction='$'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsZuo(self, codeInfoList):
 		direction='$'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsJia(self, codeInfoList):
 		direction='$'
-		ansRadixList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, ansRadixList)
+		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 
@@ -92,38 +94,37 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def convertCodeInfoListToRadixList(self, direction, codeInfoList):
-		ansRadixList=[]
+		ansLumpList=[]
 		for tmpCodeInfo in codeInfoList:
 			tmpDirCode=tmpCodeInfo.getDirection()
-			tmpRadixList=tmpCodeInfo.getRtList()
+			tmpRadixList=tmpCodeInfo.getLumpList()
 			if direction=='$':
-				ansRadixList.extend(tmpRadixList)
-			elif tmpDirCode in ['*', '@']:
-				ansRadixList.append(tmpCodeInfo.getBodyCode())
+				ansLumpList.extend(tmpCodeInfo.getLumpList())
+			elif tmpDirCode in ['@']:
+				tmpCJLump=CJLump.generateContainer(tmpCodeInfo.getLumpList())
+				ansLumpList.append(tmpCJLump)
+			elif tmpDirCode in ['*']:
+				tmpCJLump=CJLump.generateBody(tmpCodeInfo.getLumpList())
+				ansLumpList.append(tmpCJLump)
 			elif tmpDirCode==direction:
 				# 同向
-				ansRadixList.extend(tmpRadixList)
+				ansLumpList.extend(tmpCodeInfo.getLumpList())
 			else:
 				# 不同向
-				ansRadixList.append(tmpCodeInfo.getBodyCode())
-
-		return ansRadixList
+				tmpCJLump=CJLump.generateBody(tmpCodeInfo.getLumpList())
+				ansLumpList.append(tmpCJLump)
+		return ansLumpList
 
 	def encodeAsYin(self, codeInfoList):
 		"""運算 "胤" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
-		if firstCodeInfo.getRtList()[0]==CJCodeInfo.RADIX_儿:
-			radix_丨=self.generateDefaultCodeInfo('*', [CJCodeInfo.RADIX_丨])
-
-			radix_乚=self.generateDefaultCodeInfo('*', [CJCodeInfo.RADIX_乚])
-			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_乚])
+		if firstCodeInfo.getSpecialRadix()==CJCodeInfo.RADIX_儿:
+			codeInfo=self.encodeAsGoose([CJCodeInfo.CODE_INFO_丨, secondCodeInfo, CJCodeInfo.CODE_INFO_乚])
 			return codeInfo
-		elif firstCodeInfo.getRtList()[0]==CJCodeInfo.RADIX_丨丨:
-			# work around
-			radix_丨=self.generateDefaultCodeInfo('*', [CJCodeInfo.RADIX_丨])
-			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_丨])
+		elif firstCodeInfo.getSpecialRadix()==CJCodeInfo.RADIX_丨丨:
+			codeInfo=self.encodeAsGoose([CJCodeInfo.CODE_INFO_丨, secondCodeInfo, CJCodeInfo.CODE_INFO_丨])
 			return codeInfo
 		else:
 			return self.encodeAsInvalidate(codeInfoList)

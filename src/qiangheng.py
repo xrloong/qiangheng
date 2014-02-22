@@ -126,6 +126,7 @@ class QiangHeng:
 
 	def genIMMapping(self):
 		characterFilter=lambda charName: (len(charName)==1)
+#		targetCharacterList=[]
 		targetCharacterList=filter(characterFilter, self.descMgr.getAllCharacters())
 		table=[]
 		for charName in sorted(targetCharacterList):

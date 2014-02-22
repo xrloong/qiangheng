@@ -1,6 +1,12 @@
-import Constant
-from .CJCodeInfo import CJCodeInfo
 from ..base.RadixManager import RadixManager
+from state import StateManager
+from .CJCodeInfo import CJCodeInfo
+from .CJLump import CJLump
+import Constant
+
+import re
+import sys
+
 class CJRadixManager(RadixManager):
 	def __init__(self, codeInfoEncoder):
 		RadixManager.__init__(self, codeInfoEncoder)
@@ -22,16 +28,41 @@ class CJRadixManager(RadixManager):
 		direction='*'
 		singleCode=infoDict.get('獨體編碼')
 		rtlist=[]
-		str_rtlist=infoDict.get('資訊表示式')
-		if str_rtlist!=None:
-			rtlist=str_rtlist.split(CJCodeInfo.RADIX_SEPERATOR)
+		description=infoDict.get('資訊表示式')
 
-		if str_rtlist in CJCodeInfo.radixToCodeDict:
-			# work around
-			direction=CJCodeInfo.radixToCodeDict[str_rtlist][0]
-
-		cjBody=CJCodeInfo.computeBodyCode(rtlist, direction)
-		codeInfo=CJCodeInfo(singleCode, direction, rtlist, cjBody)
+		if description==CJCodeInfo.RADIX_儿:
+			codeInfo=StateManager.getCodeInfoManager().codeInfoEncoder.encodeAsGoose(
+				[CJCodeInfo.CODE_INFO_丿, CJCodeInfo.CODE_INFO_乚])
+			codeInfo.setSpecialRadix(CJCodeInfo.RADIX_儿)
+		elif description==CJCodeInfo.RADIX_丨丨:
+			codeInfo=StateManager.getCodeInfoManager().codeInfoEncoder.encodeAsGoose(
+				[CJCodeInfo.CODE_INFO_丨, CJCodeInfo.CODE_INFO_丨])
+			codeInfo.setSpecialRadix(CJCodeInfo.RADIX_丨丨)
+		else:
+			cjLumpList=self.parseCJLumpList(description)
+			codeInfo=CJCodeInfo(singleCode, direction, cjLumpList)
 
 		return codeInfo
 
+	def parseCJLumpList(self, description):
+		cjLumpList=[]
+
+		if description!=None:
+			matchResult=re.match("(\w*)(\[(\w*)\](\w*))?", description)
+			groups=matchResult.groups()
+			frontCode=groups[0]
+			tailingSurround=groups[2]
+			rearCode=groups[3]
+			if tailingSurround==None:
+				tailingSurround=""
+
+			matchResult=re.match("([A-Z]*)([a-z]*)", tailingSurround)
+			groups=matchResult.groups()
+
+			containerCode=groups[0]
+			interiorCode=groups[1]
+
+			cjLump=CJLump.generate(frontCode, containerCode, interiorCode)
+			cjLumpList.append(cjLump)
+
+		return cjLumpList
