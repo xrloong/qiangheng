@@ -16,11 +16,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, strokeGroup):
 		return DCCodeInfo.generateDefaultCodeInfo(strokeGroup)
 
-	def generateDefaultStrokeGroup(self, strokeList):
-		pane=Pane.DEFAULT_PANE
-		strokeGroup=StrokeGroup(pane, strokeList)
-		return self.generateDefaultCodeInfo(strokeGroup)
-
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getStrokeList())>0, codeInfoList))
 		return isAllWithCode
@@ -69,6 +64,10 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
 		return codeInfo
+
+	def encodeAsEqual(self, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		return copy.deepcopy(firstCodeInfo)
 
 	def encodeAsLoop(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
@@ -134,12 +133,22 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(2, 2)
+		extraPane=firstCodeInfo.getExtraPane()
+		assert extraPane!=None, "extraPane 不應為 None %s %s"%(str(firstCodeInfo), str(secondCodeInfo))
+		if extraPane!=None:
+			newStrokeGroupList=[]
+			firstStrokeGroup=copy.deepcopy(firstCodeInfo.getStrokeGroup())
+			newStrokeGroupList.append(firstStrokeGroup)
+			secondStrokeGroup=copy.deepcopy(secondCodeInfo.getStrokeGroup())
+			secondStrokeGroup.transform(extraPane)
+			newStrokeGroupList.append(secondStrokeGroup)
+		else:
+			nCount=len(codeInfoList)
+			helper=DCGridHelper(2, 2)
 
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 1, 0, 1))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 1, 1, 1, 1))
+			newStrokeGroupList=[]
+			newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 1, 0, 1))
+			newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 1, 1, 1, 1))
 		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
 
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)

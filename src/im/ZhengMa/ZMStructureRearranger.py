@@ -8,7 +8,7 @@ class ZMStructureRearranger(StructureRearranger):
 		if operator.getName()=='範焤':
 			compList=structDesc.getCompList()
 			childStructDesc=compList[0]
-			if childStructDesc.getReferenceExpression() in ['厭', '辰', '麻']:
+			if childStructDesc.getReferenceExpression() in ['辰', '廣']:
 				structDesc.setOperator(Operator.OperatorLiao)
 
 		return False
