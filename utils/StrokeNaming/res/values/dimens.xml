@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<dimen name="stroke_view_width">200px</dimen>
+	<dimen name="stroke_view_height">200px</dimen>
+</resources>
+
