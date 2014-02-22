@@ -32,7 +32,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	def interprettCharacterCode(self, codeInfo):
 		descriptionList=[x.getCode() for x in codeInfo.getActionList()]
-		return RADIX_SEPERATOR.join(descriptionList)
+		return DCCodeInfoEncoder.RADIX_SEPERATOR.join(descriptionList)
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getActionList())>0, codeInfoList))
@@ -258,6 +258,20 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(thirdCodeInfo, helper, 0, 2, 0, 2))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 0, 1, 1))
 		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 2, 2, 1, 1))
+
+		codeInfo=self.generateDefaultCodeInfo(newActionList)
+		return codeInfo
+
+	def encodeAsYin(self, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[-1]
+
+		nCount=len(codeInfoList)
+		helper=DCGridHelper(3, 3)
+
+		newActionList=[]
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(firstCodeInfo, helper, 0, 2, 0, 2))
+		newActionList.extend(DCCodeInfoEncoder.computeNewActionList(secondCodeInfo, helper, 0, 2, 0, 2))
 
 		codeInfo=self.generateDefaultCodeInfo(newActionList)
 		return codeInfo

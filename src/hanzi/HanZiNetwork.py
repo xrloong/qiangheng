@@ -104,6 +104,7 @@ class HanZiNetwork:
 
 	def setNodeTreeByOrder(self, nameList):
 		for name in nameList:
+#			print(name, file=sys.stderr)
 			node=self.nodeDict.get(name)
 			node.setNodeTree()
 
