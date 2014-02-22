@@ -20,7 +20,7 @@ class YamlWriter:
 		keyMappingSet={"按鍵對應集":l}
 
 		l=[]
-		for x in sorted(codeMappingInfoList, key=lambda y: y.getKey()):
+		for x in codeMappingInfoList:
 			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "頻率":x.getFrequency(), "類型":x.getVariance()}
 			l.append(attrib)
 		codeMappingSet={"對應集":l}

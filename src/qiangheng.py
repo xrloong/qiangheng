@@ -38,6 +38,9 @@ class QiangHeng:
 		self.hanziNetwork=HanZiNetwork.construct(self.descMgr)
 
 		codeMappingInfoList=self.genIMMapping()
+#		sortedCodeMappingInfoList=codeMappingInfoList
+		sortedCodeMappingInfoList=sorted(codeMappingInfoList, key=lambda y: y.getKey())
+
 		if isToOutput:
 			if isFormatXML:
 				from writer import XmlWriter
@@ -57,7 +60,7 @@ class QiangHeng:
 			writer = QuietWriter.QuietWriter()
 
 		imInfo=imPackage.IMInfo()
-		writer.write(imInfo, codeMappingInfoList)
+		writer.write(imInfo, sortedCodeMappingInfoList)
 
 	def genIMMapping(self):
 		characterFilter=lambda charName: (len(charName)==1)
