@@ -126,13 +126,7 @@ class ShowHanziWidget():
 
 	def byKnownChar(self):
 		string=self.entryInput.get()
-
-		def_char=rm.getFont(string)
-
-		def_list=[]
-		for i in range(int(len(def_char)/8)):
-			def_list.append(def_char[i*8:(i+1)*8])
-
+		def_list=rm.getFont(string)
 		self.dh.draw(def_list)
 
 class RadicalManager:
@@ -140,7 +134,7 @@ class RadicalManager:
 		self.fontDB={}
 		self.strokeCount={}
 
-		fontfile='font/xr.fnt'
+		fontfile='_dc.xxxx'
 
 		for line in open(fontfile).readlines():
 			line=line.strip()
@@ -148,12 +142,15 @@ class RadicalManager:
 				continue
 			else:
 				ll=line.split('\t')
-				if len(ll)>=3:
-					self.setFont(ll[1], ll[2])
+
+				if len(ll)>=2:
+					def_char=ll[0]
+					def_list=def_char.split(',')
+
+					self.setFont(ll[1], def_list)
 
 	def setFont(self, strIndex, f):
 		self.fontDB[strIndex]=f
-#		self.setStrokeCount(strIndex, len(f)/8)
 
 	def getFont(self, strIndex):
 		return self.fontDB.get(strIndex, "")

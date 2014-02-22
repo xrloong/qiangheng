@@ -2,8 +2,11 @@ import sys
 from ..CodeInfo.DCCodeInfo import DCCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
 from gear import Operator
+import copy
 
 class DCCodeInfoEncoder(CodeInfoEncoder):
+	WIDTH=256
+	HEIGHT=256
 	def __init__(self):
 		pass
 
@@ -12,28 +15,30 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def setByComps(self, codeInfo, operator, codeInfoList):
-		return
-		isAllWithCode=all(map(lambda x: len(x.getCharacterCode())==4, codeInfoList))
+		isAllWithCode=all(map(lambda x: len(x.getActionList())>0, codeInfoList))
 		if isAllWithCode:
 			if Operator.OperatorTurtle.equals(operator):
 				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+#				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorLoong.equals(operator):
 				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+#				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorEast.equals(operator):
 				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+#				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
 
-			elif Operator.OperatorEqual.equals(operator):
-				FCCodeInfoEncoder.encodeAsEqual(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorLoop.equals(operator):
-				FCCodeInfoEncoder.encodeAsLoop(codeInfo, operator, codeInfoList)
+#			elif Operator.OperatorEqual.equals(operator):
+#				FCCodeInfoEncoder.encodeAsEqual(codeInfo, operator, codeInfoList)
+#			elif Operator.OperatorLoop.equals(operator):
+#				FCCodeInfoEncoder.encodeAsLoop(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorSilkworm.equals(operator):
-				FCCodeInfoEncoder.encodeAsSilkworm(codeInfo, operator, codeInfoList)
+				DCCodeInfoEncoder.encodeAsSilkworm(codeInfo, operator, codeInfoList)
+#				DCCodeInfoEncoder.encodeAsConcatenate(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorGoose.equals(operator):
-				FCCodeInfoEncoder.encodeAsGoose(codeInfo, operator, codeInfoList)
+				DCCodeInfoEncoder.encodeAsGoose(codeInfo, operator, codeInfoList)
+#				DCCodeInfoEncoder.encodeAsConcatenate(codeInfo, operator, codeInfoList)
 
+				"""
 			elif Operator.OperatorQi.equals(operator):
 				FCCodeInfoEncoder.encodeAsQi(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorLiao.equals(operator):
@@ -53,13 +58,22 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 				FCCodeInfoEncoder.encodeAsJian(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorJia.equals(operator):
 				FCCodeInfoEncoder.encodeAsJia(codeInfo, operator, codeInfoList)
+				"""
 
 			else:
-				FCCodeInfoEncoder.encodeAsTurtle(codeInfo, operator, codeInfoList)
+#				DCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+				DCCodeInfoEncoder.encodeAsConcatenate(codeInfo, operator, codeInfoList)
+
+	@staticmethod
+	def encodeAsConcatenate(codeInfo, operator, codeInfoList):
+		actionList=[]
+		for tmpCodeInfo in codeInfoList:
+			actionList.extend(copy.deepcopy(tmpCodeInfo.getActionList()))
+		codeInfo.setActionList(actionList)
 
 	@staticmethod
 	def encodeAsInvalidate(codeInfo, operator, codeInfoList):
-		codeInfo.setCode('X', 'X', 'X', 'X')
+		codeInfo.setActionList([])
 
 	@staticmethod
 	def encodeAsEqual(codeInfo, operator, codeInfoList):
@@ -91,23 +105,47 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	@staticmethod
 	def encodeAsSilkworm(codeInfo, operator, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
+		nCount=len(codeInfoList)
+		xScale=1
+		yScale=1./nCount
 
-		grid=FCGrid()
-		grid.setAsTop_Bottom(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+		xOffset=0
+		yOffset=0
+		offset=DCCodeInfoEncoder.HEIGHT/nCount
+
+		newActionList=[]
+		for tmpCodeInfo in codeInfoList:
+			for tmpAction in tmpCodeInfo.getActionList():
+				action=copy.deepcopy(tmpAction)
+				action.scale(xScale, yScale)
+				action.translate(xOffset, yOffset)
+
+				newActionList.append(action)
+
+			yOffset+=offset
+		codeInfo.setActionList(newActionList)
 
 	@staticmethod
 	def encodeAsGoose(codeInfo, operator, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
+		nCount=len(codeInfoList)
+		xScale=1./nCount
+		yScale=1
 
-		grid=FCGrid()
-		grid.setAsLeft_Right(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
+		xOffset=0
+		yOffset=0
+		offset=DCCodeInfoEncoder.WIDTH/nCount
+
+		newActionList=[]
+		for tmpCodeInfo in codeInfoList:
+			for tmpAction in tmpCodeInfo.getActionList():
+				action=copy.deepcopy(tmpAction)
+				action.scale(xScale, yScale)
+				action.translate(xOffset, yOffset)
+
+				newActionList.append(action)
+
+			xOffset+=offset
+		codeInfo.setActionList(newActionList)
 
 	@staticmethod
 	def encodeAsQi(codeInfo, operator, codeInfoList):
