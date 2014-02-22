@@ -38,9 +38,6 @@ class CJLump:
 	def isHeadWithOne(self):
 		return (len(self.getCodeAsHead())==1)
 
-	def getCodeAsHeadHead(self):
-		return self.getCode(1, 0)
-
 	def getCodeAsHead(self):
 		return self.getCode(1, 1)
 
