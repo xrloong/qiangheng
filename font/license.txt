@@ -1,0 +1,3 @@
+single.fnt 為從 "魔法設計的藝術" （http://magicdesign.blogspot.com/search/label/漢字研究） 而來。
+其原本授權條款為 " GNU自由文件授權條款"，故而相關修改應遵守其規範。
+
