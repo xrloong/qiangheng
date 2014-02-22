@@ -21,6 +21,9 @@ class Operator:
 	def getRearrangeInfo(self):
 		return self.rearrangeInfo
 
+	def isBuiltin(self):
+		return False
+
 class BuiltinOperator(Operator):
 	def __init__(self, name, direction, rearrangeInfo):
 		Operator.__init__(self, name, direction)
@@ -28,6 +31,9 @@ class BuiltinOperator(Operator):
 
 	def getRearrangeInfo(self):
 		return self.rearrangeInfo
+
+	def isBuiltin(self):
+		return True
 
 class TemplateOperator(Operator):
 	def __init__(self, name, direction):
@@ -59,10 +65,10 @@ OperatorLiao=BuiltinOperator('廖', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorZai=BuiltinOperator('載', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorSheng=BuiltinOperator('聖', '*', RearrangeInfo.RearrangeInfoSame())
 
-OperatorTong=BuiltinOperator('起', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorHan=BuiltinOperator('廖', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorQu=BuiltinOperator('載', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorZuo=BuiltinOperator('聖', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorTong=BuiltinOperator('同', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorHan=BuiltinOperator('函', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorQu=BuiltinOperator('區', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorZuo=BuiltinOperator('左', '*', RearrangeInfo.RearrangeInfoSame())
 
 OperatorYan=BuiltinOperator('衍', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorZhong=BuiltinOperator('衷', '*', RearrangeInfo.RearrangeInfoSame())

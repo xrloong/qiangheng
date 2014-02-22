@@ -16,6 +16,21 @@ class OperatorManager:
 			'蚕':Operator.OperatorSilkworm,
 			'鴻':Operator.OperatorGoose,
 			'回':Operator.OperatorLoop,
+
+			'起':Operator.OperatorQi,
+			'廖':Operator.OperatorLiao,
+			'載':Operator.OperatorZai,
+			'聖':Operator.OperatorSheng,
+
+			'同':Operator.OperatorTong,
+			'函':Operator.OperatorHan,
+			'區':Operator.OperatorQu,
+			'左':Operator.OperatorZuo,
+
+			'衍':Operator.OperatorYan,
+			'衷':Operator.OperatorZhong,
+			'瓥':Operator.OperatorLi,
+			'粦':Operator.OperatorLin,
 		}
 		self.templateOperatorDict={
 		}
@@ -54,9 +69,6 @@ class OperatorManager:
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
 
-	def isBuiltinOperator(self, operator):
-		return operator.getName() in self.builtinOperatorDict
-
 	def rearrangeRecursively(self, charDesc):
 		self.rearrangeDesc(charDesc)
 		for childDesc in charDesc.getCompList():
@@ -70,6 +82,6 @@ class OperatorManager:
 		if rearrangeInfo!=None:
 			rearrangeInfo.rearrange(charDesc)
 			operator=charDesc.getOperator()
-			if not self.isBuiltinOperator(operator):
+			if not operator.isBuiltin():
 				self.rearrangeDesc(charDesc)
 
