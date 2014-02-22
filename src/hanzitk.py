@@ -61,21 +61,31 @@ class ShowHanziWidget():
 		frame=tkinter.Frame(master)
 		frame.pack()
 
+		self.labelInput=tkinter.Label(frame, text='字符')
+		self.labelInput.grid(row=0, column=0)
+
 		self.entryInput=tkinter.Entry(frame)
-		self.entryInput.grid(row=0, column=0)
+		self.entryInput.grid(row=0, column=1)
 		self.entryInput.insert(0, '王')
 
 		self.buttonInputOK=tkinter.Button(frame, text='確定', command=self.byKnownChar)
-		self.buttonInputOK.grid(row=0, column=1)
+		self.buttonInputOK.grid(row=0, column=2)
+
+#		self.buttonInputOK=tkinter.Button(frame, text='清除', command=self.clearEntry)
+#		self.buttonInputOK.grid(row=0, column=3)
 
 		self.canvasHanzi=tkinter.Canvas(master=frame, width=self.canvasW, height=self.canvasH)
-		self.canvasHanzi.grid(row=3, columnspan=2)
+		self.canvasHanzi.grid(row=3, columnspan=3)
 
 		from canvas import TkHanZiCanvas
 		canvas=TkHanZiCanvas.TkHanZiCanvas(self.canvasHanzi, self.canvasW, self.canvasH)
 		self.dh=HanZiDrawingSystem(canvas)
 
-#		self.byKnownChar()
+		self.byKnownChar()
+
+	def clearEntry(self):
+		length=len(self.entryInput.get())
+		self.entryInput.delete(0, length)
 
 	def genTTF(self):
 		filename=self.ttfFilename.get()
@@ -87,10 +97,10 @@ class ShowHanziWidget():
 
 
 	def byKnownChar(self):
-#		string=self.entryInput.get()
-#		def_list=self.rm.getFont(string)
 		string=self.entryInput.get()
-		def_list=string.split(",")
+		def_list=self.rm.getFont(string)
+#		string=self.entryInput.get()
+#		def_list=string.split(",")
 		self.dh.draw(def_list)
 
 class RadicalManager:
