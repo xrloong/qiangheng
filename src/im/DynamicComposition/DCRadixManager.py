@@ -34,6 +34,6 @@ class DCRadixManager(RadixManager):
 				stroke=Stroke(d)
 				strokeList.append(stroke)
 
-		codeInfo=DCCodeInfo(strokeList)
+		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeList)
 		return codeInfo
 

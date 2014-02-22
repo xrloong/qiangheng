@@ -4,6 +4,7 @@ from .Boshiamy import BoshiamyInfo
 from .CangJie import CangJieInfo
 from .DaYi import DaYiInfo
 from .DynamicComposition import DynamicCompositionInfo
+from .StrokeOrder import StrokeOrderInfo
 from .FourCorner import FourCornerInfo
 from .GuiXie import GuiXieInfo
 from .ZhengMa import ZhengMaInfo
@@ -29,6 +30,8 @@ class IMMgr:
 			imName='鄭碼'
 		elif imName in ['動', '動組', '動態組字', 'dynamiccomposition', 'dc',]:
 			imName='動組'
+		elif imName in ['筆順', 'strokeorder', 'so',]:
+			imName='筆順'
 		elif imName in ['四', '四角', '四角號碼', 'fourcorner', 'fc',]:
 			imName='四角'
 		elif imName in ['庋', '庋㩪', '中國字庋㩪', 'guixie', 'gx',]:
@@ -50,6 +53,8 @@ class IMMgr:
 			imModule=ZhengMaInfo
 		elif imName == '動組':
 			imModule=DynamicCompositionInfo
+		elif imName == '筆順':
+			imModule=StrokeOrderInfo
 		elif imName == '四角':
 			imModule=FourCornerInfo
 		elif imName == '庋㩪':
