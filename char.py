@@ -25,7 +25,10 @@ class Char:
 
 	@cj.setter
 	def cj(self, code):
-		self._cangjie=code
+		if code=='XXXX':
+			self._cangjie=None
+		else:
+			self._cangjie=code
 
 	@property
 	def ar(self):
@@ -33,7 +36,10 @@ class Char:
 
 	@ar.setter
 	def ar(self, code):
-		self._array=code
+		if code=='XXXX':
+			self._array=None
+		else:
+			self._array=code
 
 	@property
 	def dy(self):
@@ -41,7 +47,10 @@ class Char:
 
 	@dy.setter
 	def dy(self, code):
-		self._dy=code
+		if code=='XXXX':
+			self._dy=None
+		else:
+			self._dy=code
 
 	@property
 	def bs(self):
@@ -49,7 +58,10 @@ class Char:
 
 	@bs.setter
 	def bs(self, code):
-		self._bs=code
+		if code=='XXXX':
+			self._bs=None
+		else:
+			self._bs=code
 
 	@property
 	def zm(self):
@@ -57,7 +69,10 @@ class Char:
 
 	@zm.setter
 	def zm(self, code):
-		self._zm=code
+		if code=='XXXX':
+			self._zm=None
+		else:
+			self._zm=code
 
 if __name__=='__main__':
 	c=Char('王', ['(龜)', 'kn', 'sl', '/c', 'k', 'l', 'qy', '12'])

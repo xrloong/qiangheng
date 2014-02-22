@@ -47,20 +47,35 @@ for line in f.readlines():
 imchoices=['倉', '行', '易', '無', '鄭']
 choice=imchoices[1]
 
-codelist=[]
+table=[]
 if choice=='倉':
-	print(chdict['王'].cj)
+	for chname, ch in chdict.items():
+		if ch.cj:
+			table.append([ch.cj, chname])
+	for x in sorted(table): print(*x, sep='\t')
 	im.CangJie()
 elif choice=='行':
-	print(chdict['王'].ar)
+	for chname, ch in chdict.items():
+		if ch.ar:
+			table.append([ch.ar, chname])
+	for x in sorted(table): print(*x, sep='\t')
 	im.Array()
 elif choice=='易':
-	print(chdict['王'].dy)
+	for chname, ch in chdict.items():
+		if ch.dy:
+			table.append([ch.dy, chname])
+	for x in sorted(table): print(*x, sep='\t')
 	im.DaYi()
 elif choice=='無':
-	print(chdict['王'].bs)
+	for chname, ch in chdict.items():
+		if ch.bs:
+			table.append([ch.bs, chname])
+	for x in sorted(table): print(*x, sep='\t')
 	im.Boshiamy()
 elif choice=='鄭':
-	print(chdict['王'].zm)
+	for chname, ch in chdict.items():
+		if ch.zm:
+			table.append([ch.zm, chname])
+	for x in sorted(table): print(*x, sep='\t')
 	im.ZhengMa()
 
