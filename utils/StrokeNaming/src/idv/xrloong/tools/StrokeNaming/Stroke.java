@@ -52,7 +52,6 @@ public class Stroke {
 				mPath.moveTo(x, y);
 				break;
 			case 1:
-				mPath.lineTo(x, y);
 				if(isCurve)
 				{
 					Point p1 = pointList.get(numPoints-2);
