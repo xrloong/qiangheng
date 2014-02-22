@@ -78,9 +78,9 @@ OperatorZhong=BuiltinOperator('衷', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorGridShape=BuiltinOperator('瓥', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorTriangleShape=BuiltinOperator('粦', '*', RearrangeInfo.RearrangeInfoSame())
 
-OperatorMu=BuiltinOperator('畞', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorZuo=BuiltinOperator('㘴', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorMu=BuiltinOperator('畞', '$', RearrangeInfo.RearrangeInfoSame())
+OperatorZuo=BuiltinOperator('㘴', '$', RearrangeInfo.RearrangeInfoSame())
 OperatorYou=BuiltinOperator('幽', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorJian=BuiltinOperator('繭', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorJia=BuiltinOperator('夾', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorJia=BuiltinOperator('夾', '$', RearrangeInfo.RearrangeInfoSame())
 
