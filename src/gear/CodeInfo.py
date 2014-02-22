@@ -42,25 +42,18 @@ class CodeInfo:
 	def getCodeVarianceType(self):
 		return self.codeVariance
 
-	def getCodeProperties(self):
-		characterCode=self.characterCode
-		if characterCode:
-			return [characterCode, self.codeVariance.getVarianceByString()]
-		else:
-			return []
-
 	def setDataEmpty(self):
 		pass
 
 	def setSingleDataEmpty(self):
 		pass
 
-	def multiCodeVarianceType(self, codeVariance):
+	def multiplyCodeVarianceType(self, codeVariance):
 		self.codeVariance.multi(codeVariance)
 
 	@property
-	def code(self):
-		return self.characterCode
+	def variance(self):
+		return self.codeVariance.getVarianceByString()
 
 	@property
 	def characterCode(self):

@@ -72,6 +72,6 @@ OperatorZuo=BuiltinOperator('左', '*', RearrangeInfo.RearrangeInfoSame())
 
 OperatorYan=BuiltinOperator('衍', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorZhong=BuiltinOperator('衷', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorLi=BuiltinOperator('瓥', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorLin=BuiltinOperator('粦', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorGridShape=BuiltinOperator('瓥', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorTriangleShape=BuiltinOperator('粦', '*', RearrangeInfo.RearrangeInfoSame())
 

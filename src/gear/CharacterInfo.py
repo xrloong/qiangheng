@@ -10,9 +10,10 @@ class CharacterInfo:
 
 		codeList=[]
 		for codeInfo in codeInfoList:
-			codeProp=codeInfo.getCodeProperties()
-			if codeProp:
-				codeList.append(codeProp)
+			characterCode=codeInfo.characterCode
+			variance=codeInfo.variance
+			if characterCode:
+				codeList.append([characterCode, variance])
 
 		self.codePropList=codeList
 

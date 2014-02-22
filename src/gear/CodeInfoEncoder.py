@@ -11,7 +11,7 @@ class CodeInfoEncoder:
 	def encode(self, codeInfo, operator, codeInfoList):
 		for childCodeInfo in codeInfoList:
 			codeVariance=childCodeInfo.getCodeVarianceType()
-			codeInfo.codeVariance.multi(codeVariance)
+			codeInfo.multiplyCodeVarianceType(codeVariance)
 
 		self.setByComps(codeInfo, operator, codeInfoList)
 
