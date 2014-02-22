@@ -110,6 +110,7 @@ U+4E92	互	(龜)	+mvnm
 U+4E93	亓	(龜)	|m,ml
 U+4E94	五	(龜)	+mdm
 U+4E95	井	(龜)	+tt
+U+4E98	亘	(龜)	|m,a,m
 U+4E99	亙	(龜)	+mbm
 U+4E9A	亚	(龜)	+mtc
 U+4E9C	亜	(龜)	+mllm
@@ -368,6 +369,7 @@ U+5449	呉	(龜)	|r,vn,c
 U+544A	告	(龜)	|hg,r
 U+5468	周	(龜)	+Bgr
 U+547D	命	(龜)	|o,m,rl
+U+54BC	咼	(龜)	+bnB,r
 U+54C0	哀	(龜)	|y,r,hv
 U+54C9	哉	(龜)	+jir
 U+54E5	哥	(龜)	+mrnr
@@ -526,6 +528,7 @@ U+5B77	孷	(龜)	|jk,mnd
 U+5B78	學	(龜)	|hb,nd
 U+5B80	宀	(龜)	+j=ib
 U+5B90	宐	(龜)	|j,ni,m
+U+5B9A	定	(龜)	|j,myo
 U+5B9F	実	(龜)	|j,qk
 U+5BBA	宺	(龜)	|j,r,mlu
 U+5BBB	宻	(龜)	|j,eic,u
@@ -1336,6 +1339,7 @@ U+85AB	薫	(龜)	|t,hjwg,f
 U+8609	蘉	(龜)	|t,Wll,b,osme
 U+8644	虄	(龜)	|t,lihem
 U+864D	虍	(龜)	+yp
+U+864E	虎	(龜)	+yp,hu
 U+8650	虐	(龜)	+yp,sm
 U+8652	虒	(龜)	+h,ypu
 U+865B	虛	(龜)	+yp,tm
@@ -1373,6 +1377,7 @@ U+883D	蠽	(龜)	|fgi,lilmi
 U+883F	蠿	(龜)	|si,lilmi
 U+8840	血	(龜)	+hbt
 U+884B	衋	(龜)	|lq,mama,hbt
+U+884C	行	(好 彳亍)
 U+8858	衘	(龜)	-ho,omym,mmn
 U+885E	衞	(龜)	-ho,dmrmb,mmn
 U+885F	衟	(龜)	-ho,vvmbu,mmn
@@ -1784,16 +1789,13 @@ U+9FA0	龠	(龜)	|o,m,rrr,Bt
 [峄右]	[峄右]	(龜)	|e,q
 [棃上]	[棃上]	(龜)	-hd,hsh
 [官下]	[官下]	(龜)	+rlr
-[定下]	[定下]	(龜)	+myo
 [無上]	[無上]	(龜)	+ot
 [巛一]	[巛一]	(龜)	+vvvm
 [服右]	[服右]	(龜)	+sle
 ##
 [縄右]	[縄右]	(龜)	+wlu
-[渇右]	[渇右]	(龜)	|a,pp
 [脜右]	[脜右]	(龜)	+mbu
 [后上]	[后上]	(龜)	+hm
-[蚩上]	[蚩上]	(龜)	|u,m
 ##
 [當蓋]	[當蓋]	(龜)	+fb
 [桟右]	[桟右]	(龜)	+iq
