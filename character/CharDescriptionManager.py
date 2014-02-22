@@ -7,7 +7,6 @@ from .CharInfo import CharInfo
 from .OperatorManager import OperatorManager
 from xml.etree import ElementTree
 from character import Operator
-from .HanZiNetwork import HanZiNetwork
 
 class CharDescriptionManager:
 	def __init__(self, imModule, CharInfoGenerator):
@@ -67,8 +66,6 @@ class CharDescriptionManager:
 		self.charDescQueryer=charDescQueryer
 		self.charDescRearranger=charDescRearranger
 
-		self.hanziNetwork=HanZiNetwork(self.emptyCharInfoGenerator, charDescQueryer)
-
 	def keys(self):
 		return self.characterDB.keys()
 
@@ -83,6 +80,9 @@ class CharDescriptionManager:
 
 	def getEmptyCharDescGenerator(self):
 		return self.emptyCharDescGenerator
+
+	def getCharDescQueryer(self):
+		return self.charDescQueryer
 
 	def loadFromXML(self, filename, fileencoding='utf-8-sig'):
 		f=open(filename, encoding=fileencoding)
@@ -186,6 +186,10 @@ class CharDescriptionManager:
 			comp.setAnonymous(charName.count("瑲珩匿名")>0)
 			self.characterDB[charName]=comp
 
+		for charName in self.characterDB.keys():
+			srcDesc=self.charDescQueryer(charName)
+			self.rearrangeRecursively(srcDesc)
+
 	def getCharDescFromTemplate(self, charDesc):
 		charInfoGenerator=self.getCharInfoGenerator()
 		templateDesc=self.templateDB.get(charDesc.getTemplateName())
@@ -210,20 +214,10 @@ class CharDescriptionManager:
 		ansDesc.setOperator(charDesc.getOperator())
 		return ansDesc
 
-	def constructDescriptionNetwork(self):
-		for charName in self.characterDB.keys():
-			srcDesc=self.charDescQueryer(charName)
-			self.rearrangeRecursively(srcDesc)
-
-		self.hanziNetwork.constructHanZiNetwork(self.characterDB.keys())
-
 	def rearrangeRecursively(self, charDesc):
 		self.charDescRearranger(charDesc)
 		for childDesc in charDesc.getCompList():
 			self.rearrangeRecursively(childDesc)
-
-	def getCode(self, charName):
-		return self.hanziNetwork.getCode(charName)
 
 if __name__=='__main__':
 	pass
