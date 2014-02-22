@@ -36,7 +36,8 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsLoop(self, codeInfo, codeInfoList):
 		"""運算 "回" """
-		self.encodeAsZai(codeInfo, codeInfoList)
+		dyCode=DYCodeInfoEncoder.computeDaYiCodeForGe(codeInfoList)
+		codeInfo.setCodeList([dyCode])
 
 	def encodeAsTong(self, codeInfo, codeInfoList):
 		"""運算 "同" """

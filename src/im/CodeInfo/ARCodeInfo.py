@@ -4,22 +4,30 @@ class ARCodeInfo(CodeInfo):
 	def setRadixCodeProperties(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
-			self.setARProp(str_rtlist)
+			codeList=str_rtlist.split('|')
+			self.setCodeList(codeList)
 
 	@property
 	def characterCode(self):
-		return self._ar_incode
+		return self.getMainCode()
 
 	def setDataEmpty(self):
-		self._ar_incode=None
+		pass
 
 	def setSingleDataEmpty(self):
 		pass
 
-	def setARProp(self, ar_incode):
-		if ar_incode!=None:
-			self._ar_incode=ar_incode
+	def isInstallmentEncoded(self):
+		return len(self._codeList)>1
 
-	def getARProp(self):
-		return self._ar_incode
+	def setCodeList(self, codeList):
+		self._codeList=codeList
+
+	def getMainCode(self):
+		if self._codeList != None:
+			return "".join(self._codeList)
+		return None
+
+	def getInstallmentCode(self, index):
+		return self._codeList[index]
 
