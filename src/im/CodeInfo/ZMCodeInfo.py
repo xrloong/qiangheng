@@ -15,7 +15,7 @@ class ZMCodeInfo(CodeInfo):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 		self._zm_code=''
-		self._zm_rtlist=rtList
+		self._codeList=rtList
 
 		self._zm_extra=extraCode
 		self._zm_single=singleCode
@@ -26,9 +26,18 @@ class ZMCodeInfo(CodeInfo):
 	def getExtraCode(self):
 		return self._zm_extra
 
-	def getZMProp(self):
-		return self._zm_rtlist
-
 	def getRtList(self):
-		return self._zm_rtlist
+		return self.getMainCodeList()
+
+
+	def isInstallmentEncoded(self):
+		return len(self._codeList)>1
+
+	def getMainCodeList(self):
+		if self._codeList != None:
+			return sum(self._codeList, [])
+		return None
+
+	def getInstallmentCode(self, index):
+		return self._codeList[index]
 

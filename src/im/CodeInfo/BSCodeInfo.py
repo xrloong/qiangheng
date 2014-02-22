@@ -84,14 +84,29 @@ class BSCodeInfo(CodeInfo):
 	def __init__(self, singletonCode, codeList, supplementCode, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
-		self._bs_code_list=codeList
+#		self._bs_code_list=codeList
 		self._bs_spcode=supplementCode
 
 		self._bs_singleton=singletonCode
+		self._codeList=codeList
 
 	def getSingletonCode(self):
 		return self._bs_singleton
 
-	def getBSProp(self):
-		return [self._bs_code_list, self._bs_spcode]
+	def getBSCodeList(self):
+		return self.getMainCodeList()
+
+	def getBSSupplement(self):
+		return self._bs_spcode
+
+	def isInstallmentEncoded(self):
+		return len(self._codeList)>1
+
+	def getMainCodeList(self):
+		if self._codeList != None:
+			return sum(self._codeList, [])
+		return None
+
+	def getInstallmentCode(self, index):
+		return self._codeList[index]
 

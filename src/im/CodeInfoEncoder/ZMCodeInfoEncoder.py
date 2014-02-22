@@ -3,6 +3,9 @@ from gear.CodeInfoEncoder import CodeInfoEncoder
 from gear import Operator
 
 class ZMCodeInfoEncoder(CodeInfoEncoder):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	def __init__(self):
 		pass
 
@@ -13,16 +16,18 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
 		extra_code=propDict.get('補充資訊')
-		str_rtlist=propDict.get('資訊表示式')
+		strCodeList=propDict.get('資訊表示式')
 
 		zm_code=''
 		zm_extra=extra_code
 		zm_single=propDict.get('獨體編碼')
-		rtlist=[]
-		if str_rtlist!=None:
-			rtlist=str_rtlist.split(',')
+		codeList=[]
+		if strCodeList!=None:
+#			rtlist=str_rtlist.split(',')
+			codeList=strCodeList.split(ZMCodeInfoEncoder.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(ZMCodeInfoEncoder.RADIX_SEPERATOR), codeList))
 
-		codeInfo=ZMCodeInfo(zm_single, rtlist, zm_extra, isSupportCharacterCode, isSupportRadixCode)
+		codeInfo=ZMCodeInfo(zm_single, codeList, zm_extra, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def interprettCharacterCode(self, codeInfo):
@@ -42,7 +47,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		return sum([ZMCodeInfo.radixToCodeDict.get(radix, [radix]) for radix in radixList], [])
 
 	def isAvailableOperation(self, codeInfoList):
-		isAllWithCode=codeInfoList and all(map(lambda x: x.getZMProp(), codeInfoList))
+		isAllWithCode=codeInfoList and all(map(lambda x: x.getRtList(), codeInfoList))
 		return isAllWithCode
 
 	def encodeAsTurtle(self, codeInfoList):
@@ -53,10 +58,10 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
-		rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
+		rtlist=sum(map(lambda c: c.getRtList(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		codeInfo=self.generateDefaultCodeInfo(rtlist)
+		codeInfo=self.generateDefaultCodeInfo([rtlist])
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
@@ -87,8 +92,15 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 
 		newCodeInfoList=codeInfoList
 		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_彳 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_亍:
-			newCodeInfo=self.generateDefaultCodeInfo([ZMCodeInfo.RADIX_行])
+			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_行]])
 			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		return codeInfo
+
+
+	def encodeAsTong(self, codeInfoList):
+		"""運算 "同" """
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
@@ -107,11 +119,29 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsLiang(self, codeInfoList):
 		"""運算 "㒳" """
 
-		rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
+		rtlist=sum(map(lambda c: c.getRtList(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		codeInfo=self.generateDefaultCodeInfo(rtlist[:1])
+		codeInfo=self.generateDefaultCodeInfo([rtlist[:1]])
 		return codeInfo
+
+	def getMergedCodeInfoListAsForGe(self, codeInfoList):
+		# 贏
+		if len(codeInfoList)<=1:
+			print("錯誤：", file=sys.stderr)
+			return codeInfoList
+		else:
+			firstCodeInfo=codeInfoList[0]
+			if firstCodeInfo.isInstallmentEncoded():
+				frontMainCode=firstCodeInfo.getInstallmentCode(0)
+				rearMainCode=firstCodeInfo.getInstallmentCode(1)
+
+				# 第一個的補碼不影響結果
+				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
+				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
+				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
+			else:
+				return codeInfoList
 
 	def computeCharacterCode(self, rtlist):
 		ans=''

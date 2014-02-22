@@ -5,6 +5,7 @@ from ..CodeInfo.BSCodeInfo import BSCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
 
 class BSCodeInfoEncoder(CodeInfoEncoder):
+	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
 	def __init__(self):
@@ -22,14 +23,16 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 
 		codeList=None
 		if strCodeList!=None:
-			codeList=strCodeList.split(BSCodeInfoEncoder.RADIX_SEPERATOR)
+			codeList=strCodeList.split(BSCodeInfoEncoder.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(BSCodeInfoEncoder.RADIX_SEPERATOR), codeList))
 
 		codeInfo=BSCodeInfo(singletonCode, codeList, supplementCode, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
 	def interprettCharacterCode(self, codeInfo):
 		singletonCode=codeInfo.getSingletonCode()
-		[codeList, supplementCode]=codeInfo.getBSProp()
+		codeList=codeInfo.getBSCodeList()
+		supplementCode=codeInfo.getBSSupplement()
 
 		if singletonCode:
 			return singletonCode
@@ -45,7 +48,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 				return code
 
 	def isAvailableOperation(self, codeInfoList):
-		isAllWithCode=all(map(lambda x: x.getBSProp()[0], codeInfoList))
+		isAllWithCode=all(map(lambda x: x.getBSCodeList(), codeInfoList))
 		return isAllWithCode
 
 	def encodeAsTurtle(self, codeInfoList):
@@ -56,11 +59,11 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
-		bslist=list(map(lambda c: c.getBSProp()[0], codeInfoList))
+		bslist=list(map(lambda c: c.getBSCodeList(), codeInfoList))
 		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(bslist)
-		bs_spcode=codeInfoList[-1].getBSProp()[1]
+		bs_spcode=codeInfoList[-1].getBSSupplement()
 
-		codeInfo=self.generateDefaultCodeInfo(bs_code_list, bs_spcode)
+		codeInfo=self.generateDefaultCodeInfo([bs_code_list], bs_spcode)
 		return codeInfo
 
 	def encodeAsEast(self, codeInfoList):
@@ -75,24 +78,24 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsSilkworm(self, codeInfoList):
 		"""運算 "蚕" """
-		bsCodeList=list(map(lambda c: c.getBSProp()[0], codeInfoList))
+		bsCodeList=list(map(lambda c: c.getBSCodeList(), codeInfoList))
 		tmpBsCodeList=BSCodeInfoEncoder.mergeRadixAsSilkworm(bsCodeList)
 
 		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(tmpBsCodeList)
-		bs_spcode=codeInfoList[-1].getBSProp()[1]
+		bs_spcode=codeInfoList[-1].getBSSupplement()
 
-		codeInfo=self.generateDefaultCodeInfo(bs_code_list, bs_spcode)
+		codeInfo=self.generateDefaultCodeInfo([bs_code_list], bs_spcode)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
-		"""運算 "蚕" """
-		bsCodeList=list(map(lambda c: c.getBSProp()[0], codeInfoList))
+		"""運算 "鴻" """
+		bsCodeList=list(map(lambda c: c.getBSCodeList(), codeInfoList))
 		tmpBsCodeList=BSCodeInfoEncoder.mergeRadixAsGoose(bsCodeList)
 
 		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(tmpBsCodeList)
-		bs_spcode=codeInfoList[-1].getBSProp()[1]
+		bs_spcode=codeInfoList[-1].getBSSupplement()
 
-		codeInfo=self.generateDefaultCodeInfo(bs_code_list, bs_spcode)
+		codeInfo=self.generateDefaultCodeInfo([bs_code_list], bs_spcode)
 		return codeInfo
 
 	def encodeAsHan(self, codeInfoList):
@@ -101,6 +104,12 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		return codeInfo
+
+	def encodeAsTong(self, codeInfoList):
+		"""運算 "同" """
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
@@ -123,6 +132,26 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
+
+	def getMergedCodeInfoListAsForGe(self, codeInfoList):
+		# 贏
+		if len(codeInfoList)<=1:
+			print("錯誤：", file=sys.stderr)
+			return codeInfoList
+		else:
+			firstCodeInfo=codeInfoList[0]
+			if firstCodeInfo.isInstallmentEncoded():
+				frontMainCode=firstCodeInfo.getInstallmentCode(0)
+				rearMainCode=firstCodeInfo.getInstallmentCode(1)
+
+				bs_spcode=firstCodeInfo.getBSSupplement()
+
+				# 第一個的補碼不影響結果
+				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode], bs_spcode)
+				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode], bs_spcode)
+				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
+			else:
+				return codeInfoList
 
 	@staticmethod
 	def computeBoshiamyCode(bsCodeList):
