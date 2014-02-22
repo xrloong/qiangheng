@@ -22,6 +22,26 @@ class NoneIM:
 
 	def __init__(self):
 		self.keyMaps=[]
+		self.nameDict={
+				'cn':'空',
+				'tw':'空',
+				'hk':'空',
+				'en':'None',
+				}
+		self.iconfile="empty.png"
+		self.maxkeylength=0
+
+	def getName(self, localization):
+		return self.nameDict.get(localization, "")
+
+	def getIconFileName(self):
+		return self.iconfile
+
+	def getMaxKeyLength(self):
+		return self.maxkeylength
+
+	def getKeyList(self):
+		return "".join(list(zip(*self.keyMaps))[0])
 
 	def setTable(self, tb):
 		self.tb=tb
@@ -157,6 +177,14 @@ class CangJie(NoneIM):
 			['y', '卜',],
 			['z', '符',],
 			]
+		self.nameDict={
+				'cn':'仓颉',
+				'tw':'倉頡',
+				'hk':'倉頡',
+				'en':'CangJie',
+				}
+		self.iconfile="CangJie.png"
+		self.maxkeylength=5
 
 	def getCode(self, ch):
 		if ch.cj:
@@ -307,17 +335,15 @@ class Array(NoneIM):
 			['/', '0v',],
 			[';', '0-',],
 			[',', '8v',],
-			['1', '１',],
-			['2', '２',],
-			['3', '３',],
-			['4', '４',],
-			['5', '５',],
-			['6', '６',],
-			['7', '７',],
-			['8', '８',],
-			['9', '９',],
-			['0', '０',],
 			]
+		self.nameDict={
+				'cn':'行列',
+				'tw':'行列',
+				'hk':'行列',
+				'en':'Array',
+				}
+		self.iconfile="Array.png"
+		self.maxkeylength=4
 
 	def getCode(self, ch):
 		if ch.ar:
@@ -404,6 +430,14 @@ class DaYi(NoneIM):
 			['Y', '火',],
 			['Z', '心',],
 			]
+		self.nameDict={
+				'cn':'大易',
+				'tw':'大易',
+				'hk':'大易',
+				'en':'DaYi',
+				}
+		self.iconfile="DaYi.png"
+		self.maxkeylength=4
 
 	def getCode(self, ch):
 		if ch.dy:
@@ -484,6 +518,14 @@ class Boshiamy(NoneIM):
 			['y', 'Ｙ',],
 			['z', 'Ｚ',],
 			]
+		self.nameDict={
+				'cn':'呒蝦米',
+				'tw':'嘸蝦米',
+				'hk':'嘸蝦米',
+				'en':'Boshiamy',
+				}
+		self.iconfile="Boshiamy.png"
+		self.maxkeylength=4
 
 	def getCode(self, ch):
 		if ch.bs:
@@ -588,7 +630,14 @@ class ZhengMa(NoneIM):
 			['y', 'Ｙ',],
 			['z', 'Ｚ',],
 			]
-
+		self.nameDict={
+				'cn':'郑码',
+				'tw':'鄭碼',
+				'hk':'鄭碼',
+				'nn':'Boshiamy',
+				}
+		self.iconfile="ZhengMa.png"
+		self.maxkeylength=4
 
 	def getCode(self, ch):
 		if ch.zm:

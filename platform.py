@@ -1,3 +1,4 @@
+import uuid, datetime
 
 class NonePlatform:
 
@@ -41,66 +42,39 @@ class ScimPlatform(NonePlatform):
             '\nEND_CHAR_PROMPTS_DEFINITION\n'
 
     def genHeader(self):
-	    return """SCIM_Generic_Table_Phrase_Library_TEXT
-VERSION_1_0
-
-BEGIN_DEFINITION
-
-UUID = {{ uuid }}
-
-SERIAL_NUMBER = {{ datestamp }}
-
-ICON = @SCIM_ICONDIR@/CangJie.png
-
-NAME = {{ SRF.name }}
-
-NAME.zh_CN = {{ SRF.name_cn }}
-NAME.zh_TW = {{ SRF.name_tw }}
-NAME.zh_HK = {{ SRF.name_hk }}
-
-LANGUAGES = zh_TW,zh_HK,zh_CN,zh_SG
-
-STATUS_PROMPT = 中
-
-KEYBOARD_LAYOUT = US_Default
-
-AUTO_SELECT = FALSE
-
-AUTO_WILDCARD = TRUE
-
-AUTO_COMMIT = FALSE
-
-AUTO_SPLIT = TRUE
-
-DYNAMIC_ADJUST = FALSE
-
-AUTO_FILL = FALSE
-
-ALWAYS_SHOW_LOOKUP = TRUE
-
-DEF_FULL_WIDTH_PUNCT = TRUE
-
-DEF_FULL_WIDTH_LETTER = FALSE
-
-MAX_KEY_LENGTH = 5
-
-VALID_INPUT_CHARS = abcdefghijklmnopqrstuvwxyz
-
-MULTI_WILDCARD_CHAR = *
-
-SPLIT_KEYS = quoteright
-
-COMMIT_KEYS = space
-
-FORWARD_KEYS = Return
-
-SELECT_KEYS = 1,2,3,4,5,6,7,8,9,0
-
-PAGE_UP_KEYS = Page_Up,comma,minus
-
-PAGE_DOWN_KEYS = Page_Down,period,equal
-
-"""+self.genKeyMappings()+"END_DEFINITION\n"
+	    return "SCIM_Generic_Table_Phrase_Library_TEXT\n" \
+	    + "VERSION_1_0\n\n" \
+	    + "BEGIN_DEFINITION\n\n" \
+	    + "UUID = %s\n\n"%str(uuid.uuid4()) \
+	    + "SERIAL_NUMBER = %s\n\n"%datetime.date.today().strftime("%Y%m%d") \
+	    + "ICON = @SCIM_ICONDIR@/%s\n\n"%self.im.getIconFileName() \
+	    + "NAME = %s\n\n"%self.im.getName('en') \
+	    + "NAME.zh_CN = %s\n\n"%self.im.getName('cn') \
+	    + "NAME.zh_TW = %s\n\n"%self.im.getName('tw') \
+	    + "NAME.zh_HK = %s\n\n"%self.im.getName('hk') \
+	    + "LANGUAGES = zh_TW,zh_HK,zh_CN,zh_SG\n\n" \
+	    + "STATUS_PROMPT = 中\n\n" \
+	    + "KEYBOARD_LAYOUT = US_Default\n\n" \
+	    + "AUTO_SELECT = FALSE\n\n" \
+	    + "AUTO_WILDCARD = TRUE\n\n" \
+	    + "AUTO_COMMIT = FALSE\n\n" \
+	    + "AUTO_SPLIT = TRUE\n\n" \
+	    + "DYNAMIC_ADJUST = FALSE\n\n" \
+	    + "AUTO_FILL = FALSE\n\n" \
+	    + "ALWAYS_SHOW_LOOKUP = TRUE\n\n" \
+	    + "DEF_FULL_WIDTH_PUNCT = TRUE\n\n" \
+	    + "DEF_FULL_WIDTH_LETTER = FALSE\n\n" \
+	    + "MAX_KEY_LENGTH = %s\n\n"%self.im.getMaxKeyLength() \
+	    + "VALID_INPUT_CHARS = %s\n\n"%self.im.getKeyList() \
+	    + "MULTI_WILDCARD_CHAR = *\n\n" \
+	    + "SPLIT_KEYS = quoteright\n\n" \
+	    + "COMMIT_KEYS = space\n\n" \
+	    + "FORWARD_KEYS = Return\n\n" \
+	    + "SELECT_KEYS = 1,2,3,4,5,6,7,8,9,0\n\n" \
+	    + "PAGE_UP_KEYS = Page_Up,comma,minus\n\n" \
+	    + "PAGE_DOWN_KEYS = Page_Down,period,equal\n\n" \
+	    + self.genKeyMappings() \
+	    + "END_DEFINITION\n"
 
 class GcinPlatform(NonePlatform):
     def __init__(self, im):
@@ -117,13 +91,13 @@ class GcinPlatform(NonePlatform):
             '\n%keyname end\n'
 
     def genHeader(self):
-	    return """# 瑲珩
-%gen_inp
-%ename {{ SRF.name_en }}
-%cname {{ SRF.name_tw }}
-%selkey 1234567890
-%space_style 4
-"""+self.genKeyMappings()
+	    return "# 瑲珩\n" \
+	    + "%%gen_inp\n" \
+	    + "%%ename %s\n"%self.im.getName('en') \
+	    + "%%cname %s\n"%self.im.getName('tw') \
+	    + "%%selkey 1234567890\n" \
+	    + "%%space_style 4\n" \
+	    + self.genKeyMappings()
 
 class MSimPlatform(NonePlatform):
     def __init__(self, im):
