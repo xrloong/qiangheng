@@ -16,9 +16,7 @@ class HanZiStructure:
 class HanZiUnitStructure(HanZiStructure):
 	def __init__(self, codeType, codeInfoProperties):
 		codeInfo=HanZiCodeInfo.HanZiCodeInfo(codeInfoProperties, codeType)
-
 		self.codeInfoList=[codeInfo]
-		self.codeType=codeType
 
 	def getNodeList(self):
 		return []
@@ -30,38 +28,41 @@ class HanZiUnitStructure(HanZiStructure):
 		pass
 
 class HanZiWrapperStructure(HanZiStructure):
-	def __init__(self, targetNode, expression):
-		self.targetNode=targetNode
+	def __init__(self, referenceNode, expression):
+		self.referenceNode=referenceNode
 		self.expression=expression
 
 	def getCodeInfoList(self):
 		return self.getTargetNode().getCodeInfoList()
 
 	def getNodeList(self):
-		return [self.targetNode]
+		return [self.referenceNode]
 
 	def setCompositions(self):
-		structList=self.targetNode.getStructureListWithCondition()
-		struct=structList[0]
+		struct=self.getTargetStructure()
 		struct.setCompositions()
+
+	def getTargetStructure(self):
+		struct=self.referenceNode.getFirstStructure()
+		return struct
 
 	def getTargetNode(self):
 		tempList=self.expression.split(".")
 		if(len(tempList)>1):
 			index=int(tempList[1])
 
-			structList=self.targetNode.getStructureListWithCondition()
-			struct=structList[0]
+			struct=self.getTargetStructure()
 			nodeList=struct.getNodeList()
 
 			return nodeList[index]
 		else:
-			return self.targetNode
+			return self.referenceNode
 
 class HanZiAssemblageStructure(HanZiStructure):
 	def __init__(self, codeType, operator, nodeList):
 		self.operator=operator
 		self.nodeList=nodeList
+		self.structureList=map(lambda node: node.getFirstStructure(), nodeList)
 
 		self.codeInfoList=[]
 		self.codeType=codeType
@@ -80,8 +81,7 @@ class HanZiAssemblageStructure(HanZiStructure):
 
 		self.flagIsSet=True
 
-		nodeList=self.nodeList
-		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(nodeList)
+		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(self.structureList)
 
 		for infoList in infoListList:
 			codeInfo=HanZiCodeInfo.HanZiCodeInfo({}, self.codeType)
@@ -90,7 +90,7 @@ class HanZiAssemblageStructure(HanZiStructure):
 			self.codeInfoList.append(codeInfo)
 
 	@staticmethod
-	def getAllCodeInfoListFromNodeList(nodeList):
+	def getAllCodeInfoListFromNodeList(structureList):
 		def combineList(infoListList, infoListOfNode):
 			if len(infoListList)==0:
 				ansListList=[]
@@ -106,8 +106,8 @@ class HanZiAssemblageStructure(HanZiStructure):
 
 		infoListList=[]
 
-		for node in nodeList:
-			tmpCodeInfoList=node.getCodeInfoList()
+		for structure in structureList:
+			tmpCodeInfoList=structure.getCodeInfoList()
 			codeInfoList=filter(lambda x: x.isSupportRadixCode(), tmpCodeInfoList)
 			infoListList=combineList(infoListList, codeInfoList)
 

@@ -19,6 +19,13 @@ class HanZiNode:
 	def getStructureListWithCondition(self):
 		return self.structureList
 
+	def getFirstStructure(self):
+		structureList=self.getStructureListWithCondition()
+		if len(structureList)>0:
+			return structureList[0]
+		else:
+			return None
+
 	def getCodeInfoList(self):
 		structureList=self.getStructureListWithCondition()
 

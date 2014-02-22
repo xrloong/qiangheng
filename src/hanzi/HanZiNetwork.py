@@ -95,14 +95,14 @@ class HanZiNetwork:
 	def addLink(self, structDesc):
 		operator=structDesc.getOperator()
 		childDescList=structDesc.getCompList()
-		if len(childDescList)>0:
-			childNodeList=[self.findNode(childDesc) for childDesc in childDescList]
 
-			codeType=structDesc.getCodeType()
-			structure=HanZiStructure.HanZiAssemblageStructure(codeType, operator, childNodeList)
+		childNodeList=[self.findNode(childDesc) for childDesc in childDescList]
 
-			dstNode=self.findNode(structDesc)
-			dstNode.addStructure(structure)
+		codeType=structDesc.getCodeType()
+		structure=HanZiStructure.HanZiAssemblageStructure(codeType, operator, childNodeList)
+
+		dstNode=self.findNode(structDesc)
+		dstNode.addStructure(structure)
 
 	def findNode(self, structDesc):
 		if structDesc.isRoot():
