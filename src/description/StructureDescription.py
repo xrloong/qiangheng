@@ -3,7 +3,7 @@
 import sys
 import copy
 import Constant
-from gear.CodeVarianceType import CodeVarianceType
+from gear.CodeVarianceType import CodeVarianceTypeFactory
 
 class StructureDescription:
 	"""字符描述"""
@@ -18,7 +18,7 @@ class StructureDescription:
 		self.operator=operator
 		self.compList=compList
 
-		self.codeVariance=CodeVarianceType()
+		self.codeVariance=CodeVarianceTypeFactory.generate()
 
 	def __str__(self):
 		return '<{0}={1}|({2})>'.format(self.getReferenceExpression(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
@@ -46,7 +46,8 @@ class StructureDescription:
 
 	def setStructureProperties(self, structProp):
 		codeVarianceString=structProp.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
-		self.target.getCodeVarianceType().setVarianceByString(codeVarianceString)
+		codeVarianceType=CodeVarianceTypeFactory.generateByString(codeVarianceString)
+		self.setCodeVarianceType(codeVarianceType)
 
 	def getCodeVarianceType(self):
 		return self.target.codeVariance

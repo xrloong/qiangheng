@@ -3,6 +3,8 @@ from . import RearrangeInfo
 import sys
 
 class OperatorManager:
+	# 使用享元模式
+
 	def __init__(self, imPackage):
 		self.templateDB={}
 

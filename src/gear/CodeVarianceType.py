@@ -4,6 +4,7 @@ class CodeVarianceType:
 	CODE_TYPE_STANDARD=0
 	CODE_TYPE_SIMPLIFIED=1
 	CODE_TYPE_TOLERANT=2
+
 	codeVarianceDict={
 		CODE_TYPE_STANDARD:Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD,
 		CODE_TYPE_SIMPLIFIED:Constant.VALUE_CODE_VARIANCE_TYPE_SIMPLIFIED,
@@ -16,27 +17,43 @@ class CodeVarianceType:
 		Constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT:CODE_TYPE_TOLERANT,
 	}
 
-	def __init__(self):
-		self.codeVariance=CodeVarianceType.CODE_TYPE_STANDARD
-
-	def setVariance(self, codeVariance):
+	def __init__(self, codeVariance):
 		self.codeVariance=codeVariance
+		self.codeVarianceString=CodeVarianceType.codeVarianceDict.get(codeVariance)
+
+	def __mul__(self, other):
+		codeVariance=self.getVariance()
+		if codeVariance<other.getVariance():
+			codeVariance=other.getVariance()
+		return CodeVarianceTypeFactory.generate(codeVariance)
 
 	def getVariance(self):
 		return self.codeVariance
 
-	def setVarianceByString(self, codeVarianceString):
-		codeVariance=CodeVarianceType.codeVarianceStringDict.get(codeVarianceString, CodeVarianceType.CODE_TYPE_STANDARD)
-		self.setVariance(codeVariance)
-
 	def getVarianceByString(self):
-		codeVariance=self.getVariance()
-		codeVarianceString=CodeVarianceType.codeVarianceDict.get(codeVariance)
-		return codeVarianceString
+		return self.codeVarianceString
 
-	def multi(self, xType):
-		codeVariance=self.getVariance()
-		if codeVariance<xType.getVariance():
-			codeVariance=xType.getVariance()
-		self.setVariance(codeVariance)
+class CodeVarianceTypeFactory:
+	# 使用享元模式
+
+	def __init__(self):
+		codeVarianceTypeStandard=CodeVarianceType(CodeVarianceType.CODE_TYPE_STANDARD)
+		codeVarianceTypeSimplified=CodeVarianceType(CodeVarianceType.CODE_TYPE_SIMPLIFIED)
+		codeVarianceTypeTolerant=CodeVarianceType(CodeVarianceType.CODE_TYPE_TOLERANT)
+		self.codeVarianceTypeDict={
+			CodeVarianceType.CODE_TYPE_STANDARD : codeVarianceTypeStandard,
+			CodeVarianceType.CODE_TYPE_SIMPLIFIED : codeVarianceTypeSimplified,
+			CodeVarianceType.CODE_TYPE_TOLERANT : codeVarianceTypeTolerant,
+		}
+
+	@staticmethod
+	def generate(codeVarianceType=CodeVarianceType.CODE_TYPE_STANDARD):
+		return CodeVarianceTypeFactory._factory.codeVarianceTypeDict[codeVarianceType]
+
+	@staticmethod
+	def generateByString(codeVarianceString):
+		codeVariance=CodeVarianceType.codeVarianceStringDict.get(codeVarianceString, CodeVarianceType.CODE_TYPE_STANDARD)
+		return CodeVarianceTypeFactory.generate(codeVariance)
+
+CodeVarianceTypeFactory._factory=CodeVarianceTypeFactory()
 

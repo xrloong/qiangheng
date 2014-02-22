@@ -4,7 +4,7 @@ from .CodeInfoEncoder import CodeInfoEncoder
 import Constant
 from xml.etree import ElementTree
 from ..gear import OperatorManager
-from gear.CodeVarianceType import CodeVarianceType
+from gear.CodeVarianceType import CodeVarianceTypeFactory
 
 class RadixParser:
 	TAG_CODE_INFORMATION='編碼資訊'
@@ -150,8 +150,7 @@ class RadixDescriptionManager:
 
 class RadixCodeInfoDescription:
 	def __init__(self, elementCodeInfo):
-		self.codeVariance=CodeVarianceType()
-#		self.elementCodeInfo=elementCodeInfo
+		self.codeVariance=CodeVarianceTypeFactory.generate()
 		self.codeElementCodeInfo=elementCodeInfo.find(RadixParser.TAG_CODE)
 
 		self.setupCodeAttribute(elementCodeInfo)
@@ -172,7 +171,7 @@ class RadixCodeInfoDescription:
 		self._isSupportRadixCode=isSupportRadixCode
 
 	def setCodeVarianceType(self, codeVarianceString):
-		self.codeVariance.setVarianceByString(codeVarianceString)
+		self.codeVariance=CodeVarianceTypeFactory.generateByString(codeVarianceString)
 
 	def getCodeVarianceType(self):
 		return self.codeVariance

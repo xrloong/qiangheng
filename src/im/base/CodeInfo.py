@@ -1,8 +1,8 @@
-from gear.CodeVarianceType import CodeVarianceType
+from gear.CodeVarianceType import CodeVarianceTypeFactory
 
 class CodeInfo:
 	def __init__(self):
-		self.codeVariance=CodeVarianceType()
+		self.codeVariance=CodeVarianceTypeFactory.generate()
 		self._isSupportCharacterCode=True
 		self._isSupportRadixCode=True
 
@@ -57,7 +57,8 @@ class CodeInfo:
 		return self.codeVariance
 
 	def multiplyCodeVarianceType(self, codeVariance):
-		self.codeVariance.multi(codeVariance)
+		self.codeVariance=self.codeVariance*codeVariance
+#		self.codeVariance.multi(codeVariance)
 
 	@property
 	def variance(self):
