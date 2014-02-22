@@ -66,7 +66,11 @@ class StructureDescription:
 		return self.target.referenceExpression
 
 	def getReferenceName(self):
-		return self.target.referenceExpression
+		expression=self.target.referenceExpression
+		if expression:
+			return expression.split(".")[0]
+		else:
+			return expression
 
 	def setRootName(self, rootName):
 		self.target.rootName=rootName

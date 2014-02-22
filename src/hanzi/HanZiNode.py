@@ -151,25 +151,39 @@ class HanZiNode:
 			structure.setCompositions()
 
 class HanZiWrapperNode:
-	def __init__(self, targetNode):
+	def __init__(self, targetNode, expression):
 		self.targetNode=targetNode
+		self.expression=expression
 
-	def addStructure(self, structure):
-		self.targetNode.addStructure(structure)
+	def getTargetNode(self):
+		tempList=self.expression.split(".")
+		if(len(tempList)>1):
+			index=int(tempList[1])
 
-	def setStructureList(self, structureList):
-		self.targetNode.setStructureList(structureList)
+			structList=self.targetNode.getStructureListWithCondition()
+			struct=structList[0]
+			nodeList=struct.getNodeList()
+
+			return nodeList[index]
+		else:
+			return self.targetNode
+
+#	def addStructure(self, structure):
+#		self.getTargetNode().addStructure(structure)
+
+#	def setStructureList(self, structureList):
+#		self.getTargetNode().setStructureList(structureList)
 
 	def getStructureListWithCondition(self):
-		return self.targetNode.getStructureListWithCondition()
+		return self.getTargetNode().getStructureListWithCondition()
 
 	def getCodeInfoList(self):
-		return self.targetNode.getCodeInfoList()
+		return self.getTargetNode().getCodeInfoList()
 
 	def getCodePropertiesList(self):
-		return self.targetNode.getCodePropertiesList()
+		return self.getTargetNode().getCodePropertiesList()
 
 	def setNodeTree(self):
-		return self.targetNode.setNodeTree()
+		return self.getTargetNode().setNodeTree()
 
 
