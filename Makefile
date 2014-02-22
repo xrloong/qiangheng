@@ -18,8 +18,9 @@ ICON_PATH	=	icons/ pixmaps/
 
 all: puretable
 
-puretable: $(PURETABLE_PATH)
+#puretable: $(PURETABLE_PATH)
 $(PURETABLE_PATH):
+puretable:
 	mkdir -p $(PURETABLE_PATH)
 	touch $(PURETABLE_PATH)
 	for im in $(IMLIST);\

@@ -173,8 +173,13 @@ class RearrangementManager:
 		elif oldOperator=='鑫':
 			ansDirection='|'
 			x=oldCompList[0]
-			charDesc.setCompList([x, x, x,])
-			charDesc.setOperatorAndDirection('湘', ansDirection)
+
+			tmpDesc=self.emptyCharDescGenerator()
+			tmpDesc.setCompList([x, x,])
+			tmpDesc.setOperatorAndDirection('好', '-')
+
+			charDesc.setCompList([x, tmpDesc,])
+			charDesc.setOperatorAndDirection('志', ansDirection)
 		elif oldOperator=='卌':
 			ansDirection='-'
 			x=oldCompList[0]
