@@ -116,4 +116,6 @@ class OperatorManager_ZM(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp()
+#		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical()
+
 
