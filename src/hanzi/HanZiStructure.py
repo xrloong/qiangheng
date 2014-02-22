@@ -3,16 +3,28 @@ from . import HanZiCodeInfo
 
 class HanZiStructure:
 	def __init__(self):
-		pass
-
-	def getStructureList(self):
-		return []
+		self.flagIsSet=False
 
 	def getCodeInfoList(self):
 		return []
 
+	def getStructureList(self):
+		return []
+
 	def setCompositions(self):
 		pass
+
+	def setStructureTree(self):
+		if self.flagIsSet:
+			return
+
+		self.flagIsSet=True
+
+		structureList=self.getStructureList()
+		for structure in structureList:
+			structure.setStructureTree()
+
+		self.setCompositions()
 
 	def printAllCodeInfo(self):
 		for codeInfo in self.getCodeInfoList():
@@ -20,26 +32,27 @@ class HanZiStructure:
 
 class HanZiUnitStructure(HanZiStructure):
 	def __init__(self, codeType, codeInfoProperties):
+		HanZiStructure.__init__(self)
+
 		codeInfo=HanZiCodeInfo.HanZiCodeInfo(codeInfoProperties, codeType)
 		self.codeInfoList=[codeInfo]
 
-	def getStructureList(self):
-		return []
-
 	def getCodeInfoList(self):
 		return self.codeInfoList
+
+	def getStructureList(self):
+		return []
 
 	def setCompositions(self):
 		pass
 
 class HanZiWrapperStructure(HanZiStructure):
 	def __init__(self, referenceNode, expression):
+		HanZiStructure.__init__(self)
+
 		self.referenceNode=referenceNode
 		self.expression=expression
 		self.codeInfoList=[]
-
-	def getStructureList(self):
-		return self.getTargetStructureList()
 
 	def getCodeInfoList(self):
 		codeInfoList=[]
@@ -47,16 +60,7 @@ class HanZiWrapperStructure(HanZiStructure):
 			codeInfoList.extend(structure.getCodeInfoList())
 		return codeInfoList
 
-	def setCompositions(self):
-		self.referenceNode.setNodeTree()
-
-	def getReferenceNode(self):
-		return self.referenceNode
-
-	def getExpression(self):
-		return self.expression
-
-	def getTargetStructureList(self):
+	def getStructureList(self):
 		tempList=self.expression.split(".")
 		if(len(tempList)>1):
 			referenceName=tempList[0]
@@ -66,32 +70,27 @@ class HanZiWrapperStructure(HanZiStructure):
 			structureList=self.referenceNode.getStructureList()
 		return structureList
 
+	def setCompositions(self):
+		self.referenceNode.setNodeTree()
+
 class HanZiAssemblageStructure(HanZiStructure):
 	def __init__(self, codeType, operator, structureList):
+		HanZiStructure.__init__(self)
+
 		self.operator=operator
 		self.structureList=structureList
 
 		self.codeInfoList=[]
 		self.codeType=codeType
 
-		self.flagIsSet=False
+	def getCodeInfoList(self):
+		return self.codeInfoList
 
 	def getStructureList(self):
 		return self.structureList
 
-	def getCodeInfoList(self):
-		return self.codeInfoList
-
 	def setCompositions(self):
-		if self.flagIsSet:
-			return
-
-		self.flagIsSet=True
-
-		structureList=self.structureList
-		for structure in structureList:
-			structure.setCompositions()
-
+		structureList=self.getStructureList()
 		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(structureList)
 
 		for infoList in infoListList:

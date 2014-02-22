@@ -33,10 +33,6 @@ class HanZiNode:
 				subStructureList.append(structureList[index])
 		return subStructureList
 
-	def getFirstStructure(self):
-		structureList=self.getStructureListWithCondition()
-		return structureList[0]
-
 	def getCodeInfoList(self):
 		structureList=self.getStructureListWithCondition()
 
@@ -59,10 +55,7 @@ class HanZiNode:
 		structureList=self.getStructureListWithCondition()
 
 		for structure in structureList:
-			structure.setCompositions()
-
-	def setCompositions(self):
-		self.setNodeTree()
+			structure.setStructureTree()
 
 	def printAllCodeInfoInStructure(self):
 		structureList=self.getStructureListWithCondition()
