@@ -1,7 +1,4 @@
 
-import character.Operator as Operator
-import character.OperatorManager
-
 class RearrangeInfo:
 	def __init__(self, order):
 		sameOrder=range(len(order))
@@ -27,108 +24,102 @@ class RearrangeInfoSame:
 		pass
 
 class RearrangeInfoH2:
-	def __init__(self):
-		pass
+	def __init__(self, OperatorH2):
+		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='好'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansOperator=self.operatorH2
 		x=oldCompList[0]
 		charDesc.setCompList([x, x,])
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoH3:
-	def __init__(self):
-		pass
+	def __init__(self, OperatorH3):
+		self.operatorH3=OperatorH3
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='湘'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansOperator=self.operatorH3
 		x=oldCompList[0]
 		charDesc.setCompList([x, x, x,])
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoH4:
-	def __init__(self):
-		pass
+	def __init__(self, OperatorH4):
+		self.operatorH4=OperatorH4
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='膷'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansOperator=self.operatorH4
 		x=oldCompList[0]
 		charDesc.setCompList([x, x, x, x,])
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoV2:
-	def __init__(self):
-		pass
+	def __init__(self, OperatorV2):
+		self.operatorV2=OperatorV2
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='志'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansOperator=self.operatorV2
 		x=oldCompList[0]
 		charDesc.setCompList([x, x,])
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoV3:
-	def __init__(self):
-		pass
+	def __init__(self, OperatorV3):
+		self.operatorV3=OperatorV3
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='志'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansOperator=self.operatorV3
 		x=oldCompList[0]
 		charDesc.setCompList([x, x, x,])
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoV4:
-	def __init__(self):
-		pass
+	def __init__(self, OperatorV4):
+		self.operatorV4=OperatorV4
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='纂'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansOperator=self.operatorV4
 		x=oldCompList[0]
 		charDesc.setCompList([x, x, x, x,])
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoTriangle:
-	def __init__(self, emptyCharDescGenerator):
+	def __init__(self, emptyCharDescGenerator, OperatorH2, OperatorV2):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
+		self.operatorV2=OperatorV2
+		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='志'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
-		ansTmpOperatorName='好'
-		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
+		ansOperator=self.operatorV2
+		ansTmpOperator=self.operatorH2
 		x=oldCompList[0]
 
 		tmpDesc=self.emptyCharDescGenerator()
@@ -139,18 +130,18 @@ class RearrangeInfoTriangle:
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoSquare:
-	def __init__(self, emptyCharDescGenerator):
+	def __init__(self, emptyCharDescGenerator, OperatorH2, OperatorV2):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
+		self.operatorV2=OperatorV2
+		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='志'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
-		ansTmpOperatorName='好'
-		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
+		ansOperator=self.operatorV2
+		ansTmpOperator=self.operatorH2
 		x=oldCompList[0]
 
 		tmpDesc=self.emptyCharDescGenerator()
@@ -160,37 +151,19 @@ class RearrangeInfoSquare:
 		charDesc.setCompList([tmpDesc, tmpDesc,])
 		charDesc.setOperator(ansOperator)
 
-class RearrangeInfoSpecial:
-	def __init__(self):
-		pass
-
-	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
-		oldCompList=charDesc.getCompList()
-
-		ansOperatorName='龍'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
-		x=oldCompList[0]
-		y=oldCompList[1]
-
-		if x.getName() in ['辶', '廴']:
-			charDesc.setCompList([y, x])
-			charDesc.setOperator(ansOperatorName)
-
 class RearrangeInfoFrost:
-	def __init__(self, emptyCharDescGenerator):
+	def __init__(self, emptyCharDescGenerator, OperatorH2, OperatorV2):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
+		self.operatorV2=OperatorV2
+		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='志'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
-		ansTmpOperatorName='好'
-		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
+		ansOperator=self.operatorV2
+		ansTmpOperator=self.operatorH2
 		x=oldCompList[0]
 		y=oldCompList[1]
 		z=oldCompList[2]
@@ -203,18 +176,18 @@ class RearrangeInfoFrost:
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoThink:
-	def __init__(self, emptyCharDescGenerator):
+	def __init__(self, emptyCharDescGenerator, OperatorH2, OperatorV2):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
+		self.operatorV2=OperatorV2
+		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='志'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
-		ansTmpOperatorName='好'
-		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
+		ansOperator=self.operatorV2
+		ansTmpOperator=self.operatorH2
 		x=oldCompList[0]
 		y=oldCompList[1]
 		z=oldCompList[2]
@@ -227,18 +200,18 @@ class RearrangeInfoThink:
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoHappy:
-	def __init__(self, emptyCharDescGenerator):
+	def __init__(self, emptyCharDescGenerator, OperatorH2, OperatorV2):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
+		self.operatorV2=OperatorV2
+		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='好'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
-		ansTmpOperatorName='志'
-		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
+		ansOperator=self.operatorH2
+		ansTmpOperator=self.operatorV2
 		x=oldCompList[0]
 		y=oldCompList[1]
 		z=oldCompList[2]
@@ -251,18 +224,18 @@ class RearrangeInfoHappy:
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoSmart:
-	def __init__(self, emptyCharDescGenerator):
+	def __init__(self, emptyCharDescGenerator, OperatorH2, OperatorV2):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
+		self.operatorV2=OperatorV2
+		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansOperatorName='好'
-		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
-		ansTmpOperatorName='志'
-		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
+		ansOperator=self.operatorH2
+		ansTmpOperator=self.operatorV2
 		x=oldCompList[0]
 		y=oldCompList[1]
 		z=oldCompList[2]
@@ -275,38 +248,34 @@ class RearrangeInfoSmart:
 		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoSurroundingOpenUp:
-	def __init__(self):
-		pass
+	def __init__(self, OperatorLoong):
+		self.operatorLoong=OperatorLoong
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		if oldOperatorName=='函':
-			ansOperatorName='龍'
-			ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
-			x=oldCompList[0]
-			y=oldCompList[1]
-			charDesc.setCompList([y, x])
-			charDesc.setOperator(ansOperator)
+		ansOperator=self.operatorLoong
+		x=oldCompList[0]
+		y=oldCompList[1]
+		charDesc.setCompList([y, x])
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoLShapeSimpleRadical:
-	def __init__(self):
-		pass
+	def __init__(self, OperatorLoong):
+		self.operatorLoong=OperatorLoong
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		if oldOperatorName=='起':
-			ansOperatorName='龍'
-			ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
-			x=oldCompList[0]
-			y=oldCompList[1]
+		ansOperator=self.operatorLoong
+		x=oldCompList[0]
+		y=oldCompList[1]
 
-			if x.getName() in ['辶', '廴']:
-				charDesc.setCompList([y, x])
-				charDesc.setOperator(ansOperator)
+		if x.getName() in ['辶', '廴']:
+			charDesc.setCompList([y, x])
+			charDesc.setOperator(ansOperator)
 
