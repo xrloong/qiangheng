@@ -2,8 +2,6 @@
 # coding=utf8
 
 from optparse import OptionParser
-from canvas import TkHanZiCanvas
-from canvas import TrueTypeGlyphHanZiCanvas
 from gear.shape import *
 
 
@@ -73,6 +71,7 @@ class ShowHanziWidget():
 		self.canvasHanzi=tkinter.Canvas(master=frame, width=self.canvasW, height=self.canvasH)
 		self.canvasHanzi.grid(row=3, columnspan=2)
 
+		from canvas import TkHanZiCanvas
 		canvas=TkHanZiCanvas.TkHanZiCanvas(self.canvasHanzi, self.canvasW, self.canvasH)
 		self.dh=HanZiDrawingSystem(canvas)
 
@@ -131,6 +130,7 @@ def generateTTF(filename):
 
 	start, end=0x4E00, 0x9FA6 # 全部
 
+	from canvas import TrueTypeGlyphHanZiCanvas
 	for o in range(start, end+1):
 		g=f.createChar(o)
 		canvas=TrueTypeGlyphHanZiCanvas.TrueTypeGlyphHanZiCanvas(g, emsize, emsize)
