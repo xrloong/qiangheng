@@ -27,8 +27,8 @@ class OperatorManager:
 
 			'衍':Operator.OperatorYan,
 			'衷':Operator.OperatorZhong,
-			'瓥':Operator.OperatorGridShape,
-			'粦':Operator.OperatorTriangleShape,
+			'瓥':Operator.OperatorLi,
+			'粦':Operator.OperatorLin,
 
 			'畞':Operator.OperatorMu,
 			'㘴':Operator.OperatorZuo,

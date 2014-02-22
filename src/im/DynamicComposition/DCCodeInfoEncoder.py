@@ -82,6 +82,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
 
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
+
+		codeInfo.setExtraPane(firstCodeInfo.getExtraPane())
 		return codeInfo
 
 	def encodeAsSilkworm(self, codeInfoList):
@@ -94,6 +96,9 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
 
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
+
+		lastCodeInfo=codeInfoList[-1]
+		codeInfo.setExtraPane(copy.deepcopy(lastCodeInfo.getExtraPane()))
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
@@ -108,25 +113,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
 		return codeInfo
 
-	def encodeAsQi(self, codeInfoList):
-		if len(codeInfoList)<2:
-			return self.encodeAsInvalidate(codeInfoList)
-
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(2, 2)
-
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 1, 0, 1))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 1, 1, 0, 0))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-		return codeInfo
-
-	def encodeAsLiao(self, codeInfoList):
+	def encodeByEmbed(self, codeInfoList):
 		if len(codeInfoList)<2:
 			return self.encodeAsInvalidate(codeInfoList)
 
@@ -148,35 +135,22 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
 		return codeInfo
 
-	def encodeAsZai(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
+	def encodeAsQi(self, codeInfoList):
+		return self.encodeByEmbed(codeInfoList)
 
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(2, 2)
+	def encodeAsLiao(self, codeInfoList):
+		codeInfo=self.encodeByEmbed(codeInfoList)
 
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 1, 0, 1))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 0, 0, 1, 1))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
+		lastCodeInfo=codeInfoList[-1]
+		codeInfo.setExtraPane(copy.deepcopy(lastCodeInfo.getExtraPane()))
 		return codeInfo
+
+	def encodeAsZai(self, codeInfoList):
+		return self.encodeByEmbed(codeInfoList)
 
 	def encodeAsDou(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
+		return self.encodeByEmbed(codeInfoList)
 
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(2, 2)
-
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 1, 0, 1))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 0, 0, 0, 0))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-		return codeInfo
 
 	def encodeAsMu(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
