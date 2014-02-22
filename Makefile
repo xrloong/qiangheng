@@ -1,6 +1,6 @@
 
 VERSION	=	0.20
-IMLIST	=	cj ar dy bs zm
+IMLIST	=	ar bs cj dy fc zm
 PLATFORM_LIST	=	puretable scim gcin msim
 TABLES_PATH	=	tables
 PURETABLE_PATH	=	$(TABLES_PATH)/puretable
