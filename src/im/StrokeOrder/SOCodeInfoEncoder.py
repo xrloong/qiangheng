@@ -11,6 +11,6 @@ class SOCodeInfoEncoder(DCCodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateDefaultCodeInfo(self, strokeList):
-		return SOCodeInfo.generateDefaultCodeInfo(strokeList)
+	def generateDefaultCodeInfo(self, strokeList, region=[0, 0, 0xFF, 0xFF]):
+		return SOCodeInfo.generateDefaultCodeInfo(strokeList, region)
 
