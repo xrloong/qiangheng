@@ -25,6 +25,15 @@ class CJStructureRearranger(StructureRearranger):
 				structDesc.setOperator(Operator.OperatorGoose)
 				structDesc.setCompList([tmpStructDesc_丨]+compList[1:-1]+[tmpStructDesc_乚])
 
+		if operator.getName()=='範威' and len(compList)>=1:
+			firstStructDesc=compList[0]
+
+			tmpStructDesc_戊=self.generateStructureDescriptionWithName('戊')
+			tmpStructDesc_一=self.generateStructureDescriptionWithName('一')
+			tmpStructDesc_一女=self.generateStructureDescription(['範志', [tmpStructDesc_一, firstStructDesc]])
+			structDesc.setOperator(Operator.OperatorTong)
+			structDesc.setCompList([tmpStructDesc_戊, tmpStructDesc_一女])
+
 	def getRearrangeListFanFu(self):
 		rearrangeList=['厭', '辰', '麻']
 		return rearrangeList

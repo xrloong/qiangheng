@@ -40,7 +40,7 @@ class ARStructureRearranger(StructureRearranger):
 		if operator.getName()=='蚕' and lenCompList>=2:
 			self.rearrangeForSilkworm(structDesc)
 
-		if operator.getName()=='範載' and lenCompList>=2:
+		if operator.getName() in ['範載', '範同'] and lenCompList>=2:
 			self.rearrangeForZai(structDesc)
 
 		if operator.getName()=='範湘' and lenCompList>=2:
@@ -53,7 +53,8 @@ class ARStructureRearranger(StructureRearranger):
 			['戈', '呈', ['[一口]', '王', '[特戈]']],
 			['戈', '[口天]', ['[一口]', '天', '[特戈]']],
 			['戈', '[特㦽]', ['[一口]', '[一巛]', '[特戈]']],
-			['戈', '口', ['[一口]', '[特戈]']],
+
+			['戌', '口', ['厂', '[一口]', '[特戈]']],
 			]
 		return rearrangeList
 
