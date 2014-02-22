@@ -77,9 +77,30 @@ class TemplateDescription:
 			for comp in charDesc.getCompList():
 				replaceCharDesc(comp)
 
-			argumentDesc=parameterToArgumentMapping.get(charDesc.getReferenceName())
+#			argumentDesc=parameterToArgumentMapping.get(charDesc.getReferenceName())
+			argumentDesc=getWantedReplaceDescription(charDesc)
 			if argumentDesc!=None:
 				charDesc.replacedBy(argumentDesc)
+
+		def getWantedReplaceDescription(charDesc):
+			referenceName=charDesc.getReferenceName()
+			targetArgumentDesc=parameterToArgumentMapping.get(referenceName)
+			referenceExpression=charDesc.getReferenceExpression()
+
+#			argumentDesc=copy.deepcopy(targetArgumentDesc)
+			argumentDesc=None
+			if targetArgumentDesc:
+				argumentDesc=targetArgumentDesc.copyDeeply()
+				argumentReferenceName=argumentDesc.getReferenceName()
+				argumentReferenceExpression=argumentDesc.getReferenceName()
+				if referenceExpression and argumentReferenceExpression and referenceExpression.count(".")>0 and argumentReferenceExpression.count(".")==0:
+					expList=referenceExpression.split(".")
+					expList[0]=argumentReferenceName
+					newExpression=".".join(expList)
+					argumentDesc.setReferenceExpression(newExpression)
+				elif referenceExpression and argumentReferenceExpression and referenceExpression.count(".")==0 and argumentReferenceExpression.count(".")>0:
+					pass
+				return argumentDesc
 
 		def getMatchedStructureDescription(parameterToArgumentNameMapping):
 			targetCharDesc=None
@@ -101,6 +122,7 @@ class TemplateDescription:
 		targetStructureDescription=getMatchedStructureDescription(parameterToArgumentNameMapping)
 		replaceCharDesc(targetStructureDescription)
 		charDesc.replacedBy(targetStructureDescription)
+
 
 if __name__=='__main__':
 	print(TemplateDescription('王', '(龜)', None))

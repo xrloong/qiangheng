@@ -1,4 +1,5 @@
 from . import Operator
+import sys
 
 class RearrangeInfoSame:
 	def __init__(self):

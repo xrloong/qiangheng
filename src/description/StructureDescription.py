@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import copy
 from description.CodeType import CodeType
 
@@ -19,7 +20,7 @@ class StructureDescription:
 		self.codeType=CodeType()
 
 	def __str__(self):
-		return '<{0}={1}|({2})>'.format(self.getReferenceName(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
+		return '<{0}={1}|({2})>'.format(self.getReferenceExpression(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
 
 	def __repr__(self):
 		return str(self)

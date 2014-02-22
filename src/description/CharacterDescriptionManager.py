@@ -110,6 +110,7 @@ class CharDescriptionManager:
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
 				self.operationMgr.rearrangeRecursively(structDesc)
+#			print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 if __name__=='__main__':
 	pass

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import sys
+
 from xml.etree import ElementTree
 from im import IMMgr
 from description import CharacterDescriptionManager
@@ -106,7 +108,7 @@ class QiangHeng:
 		targetCharacterList=filter(characterFilter, self.descMgr.getAllCharacters())
 		table=[]
 		for charName in sorted(targetCharacterList):
-#			print("<-- %s -->"%charName)
+#			print("<-- %s -->"%charName, sys.stderr)
 			codePropList=self.hanziNetwork.getCodePropertiesList(charName)
 			freq=self.descMgr.queryCharacterFrequency(charName)
 			for code, type in codePropList:
