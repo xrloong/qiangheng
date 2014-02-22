@@ -33,7 +33,7 @@ xml:
 	for im in $(IMLIST);\
 	do\
 		echo $$im;\
-		time src/qiangheng.py -c qhdata/config/$$im.xml --xml |\
+		time src/qiangheng.py -c qhdata/config/$$im.xml --format xml |\
 			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
 	done
 	touch $(XML_PATH)

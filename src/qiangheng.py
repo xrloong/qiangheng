@@ -13,12 +13,16 @@ from hanzi.HanZiNetwork import HanZiNetwork
 class QiangHeng:
 	def __init__(self, options):
 		configFile=options.config_file
-		xml_format=options.xml_format
-		quiet=options.quiet
+
+		output_format=options.output_format
+		isFormatXML=(output_format=='xml')
+		isFormatTXT=(output_format=='text')
+		isFormatQuiet=(output_format=='quiet')
+
+		quiet=options.quiet or isFormatQuiet
 		isToOutput=not quiet
 
 		configList=ConfigParser.ConfigParser().readConfig(configFile)
-#		configList=self.readConfig(configFile)
 		[imProp, toTemplateList, toComponentList, toCodeList]=configList
 
 		imPackage=IMMgr.getIMPackage(imProp)
@@ -34,9 +38,12 @@ class QiangHeng:
 
 		codeMappingInfoList=self.genIMMapping()
 		if isToOutput:
-			if xml_format:
+			if isFormatXML:
 				from writer import XMLWriter
 				writer = XMLWriter.XMLWriter()
+			elif isFormatTXT:
+				from writer import TXTWriter
+				writer = TXTWriter.TXTWriter()
 			else:
 				from writer import TXTWriter
 				writer = TXTWriter.TXTWriter()
@@ -62,8 +69,7 @@ class QiangHeng:
 def main():
 	oparser = OptionParser()
 	oparser.add_option("-c", "--config", dest="config_file", help="輸入法設定檔", default="qhdata/config/default.xml")
-	oparser.add_option("--xml", action="store_true", dest="xml_format")
-	oparser.add_option("--text", action="store_false", dest="xml_format")
+	oparser.add_option("--format", type="choice", choices=["xml", "text", "quiet"], dest="output_format", help="輸出格式，可能的選項有：xml、text、quiet", default="text")
 	oparser.add_option("-q", "--quiet", action="store_true", dest="quiet")
 	(options, args) = oparser.parse_args()
 
