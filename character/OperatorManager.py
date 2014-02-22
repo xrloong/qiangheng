@@ -106,6 +106,18 @@ class OperatorManager:
 		self.rearrangeDesc(charDesc)
 		return charDesc
 
+	"""
+	def rearrangeRecursively(self, charDesc):
+		if self.isTemplateOperator(charDesc.getOperator()):
+			charDesc=self.getCharDescFromTemplate(charDesc)
+			charDesc=self.rearrangeRecursively(charDesc)
+		for childDesc in charDesc.getCompList():
+			newChildDesc=self.rearrangeRecursively(childDesc)
+			childDesc.setHanger(newChildDesc.getHanger())
+		self.rearrangeDesc(charDesc)
+		return charDesc
+		"""
+
 	def getOperatorByName(self, operatorName):
 		return Operator.Operator(operatorName)
 

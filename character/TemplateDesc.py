@@ -31,6 +31,7 @@ class TemplateDesc:
 
 	def getReplacedCharDesc(self, argumentList):
 		tempDesc=self.charDesc.copyDeeply()
+		tempDesc.setExpandName(self.charDesc.getExpandName())
 		mappingDict={}
 		if len(argumentList)==len(self.parameterList):
 			pairList=zip(self.parameterList, argumentList)
@@ -43,6 +44,7 @@ class TemplateDesc:
 		argumentDesc=mappingDict.get(charDesc.getExpandName())
 		if argumentDesc!=None:
 			argumentName=argumentDesc.getExpandName()
+			charDesc.setHanger(argumentDesc.getHanger().copyDeeply())
 			charDesc.setExpandName(argumentName)
 
 		for comp in charDesc.getCompList():

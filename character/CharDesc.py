@@ -23,20 +23,20 @@ class CharDesc:
 		return str(self)
 
 	def setPropDict(self, propDict):
-		self.propDict=propDict
+		self.target.propDict=propDict
 
 	def getPropDict(self):
-		return self.propDict
+		return self.target.propDict
 
 	def copyDescription(self):
 		copyCharDesc=CharDesc(self.getOperator(), [])
 		copyCharDesc.setExpandName(self.getExpandName())
 		return copyCharDesc
 
-	def copyDeeply(self, isWithSameExpandName=True):
+	def copyDeeply(self):
 		ansChildList=[]
 		for childDesc in self.getCompList():
-			ansChilDesc=childDesc.copyDeeply(False)
+			ansChilDesc=childDesc.copyDeeply()
 			ansChildList.append(ansChilDesc)
 
 		if self.getOperator().getName()=='龜':
@@ -44,12 +44,12 @@ class CharDesc:
 		else:
 			ansDesc=CharDesc(self.getOperator(), ansChildList)
 
-		if isWithSameExpandName:
-			ansDesc.setExpandName(self.getExpandName())
+#		if isWithSameExpandName:
+#			ansDesc.setExpandName(self.getExpandName())
 		return ansDesc
 
 	def getUniqueName(self):
-		return self.name
+		return self.target.name
 
 	def getHybridName(self):
 		if self.isExpandable():
@@ -58,25 +58,29 @@ class CharDesc:
 			return self.getUniqueName()
 
 	def setExpandName(self, expandName):
-		self.expandName=expandName
+		self.target.expandName=expandName
 
 	def getExpandName(self):
-		return self.expandName
+		return self.target.expandName
 
 	def isExpandable(self):
-		return bool(self.getExpandName())
+		return bool(self.target.getExpandName())
 
 	def setOperator(self, operator):
-		self.operator=operator
+		self.target.operator=operator
 
 	def getOperator(self):
-		return self.operator
+		return self.target.operator
 
 	def setCompList(self, compList):
-		self.compList=compList
+		self.target.compList=compList
 
 	def getCompList(self):
-		return self.compList
+		return self.target.compList
+
+	@property
+	def target(self):
+		return self
 
 	# 匿名結構是指沒有對應到名字的部分。
 	# 若定義 夠=(好 (爻 夕)句) ，則 (爻 夕) 的部分為匿名
@@ -91,8 +95,9 @@ class HangerCharDesc(CharDesc):
 	def __init__(self, operator, compList):
 		self.hangerCharDesc=CharDesc(operator, compList)
 
-	def setPropDict(self, propDict):
-		return self.hangerCharDesc.setPropDict(propDict)
+	@property
+	def target(self):
+		return self.getHanger()
 
 	def getHanger(self):
 		return self.hangerCharDesc
@@ -100,40 +105,13 @@ class HangerCharDesc(CharDesc):
 	def setHanger(self, hangerCharDesc):
 		self.hangerCharDesc=hangerCharDesc
 
-	def getPropDict(self):
-		return self.hangerCharDesc.getPropDict()
-
 	def copyDescription(self):
 		return HangerCharDesc(self.getOperator(), [])
 
-	def copyDeeply(self, isWithSameExpandName=True):
+	def copyDeeply(self):
 		hangerCharDesc=HangerCharDesc(self.getOperator(), self.getCompList())
 		hangerCharDesc.setHanger(self.getHanger().copyDeeply())
 		return hangerCharDesc
-
-	def getUniqueName(self):
-		return self.hangerCharDesc.getUniqueName()
-
-	def setExpandName(self, expandName):
-		return self.hangerCharDesc.setExpandName(expandName)
-
-	def getExpandName(self):
-		return self.hangerCharDesc.getExpandName()
-
-	def isExpandable(self):
-		return self.hangerCharDesc.isExpandable()
-
-	def setOperator(self, operator):
-		return self.hangerCharDesc.setOperator(operator)
-
-	def getOperator(self):
-		return self.hangerCharDesc.getOperator()
-
-	def setCompList(self, compList):
-		return self.hangerCharDesc.setCompList(compList)
-
-	def getCompList(self):
-		return self.hangerCharDesc.getCompList()
 
 if __name__=='__main__':
 	print(CharDesc('王', '(龜)', None))
