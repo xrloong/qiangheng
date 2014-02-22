@@ -58,7 +58,6 @@ class HanZiAssemblageStructure(HanZiStructure):
 	def __init__(self, codeType, operator, nodeList):
 		self.operator=operator
 		self.nodeList=nodeList
-		self.structureList=map(lambda node: node.getFirstStructure(), nodeList)
 
 		self.codeInfoList=[]
 		self.codeType=codeType
@@ -77,7 +76,8 @@ class HanZiAssemblageStructure(HanZiStructure):
 
 		self.flagIsSet=True
 
-		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(self.structureList)
+		structureList=sum(map(lambda node: node.getStructureList(), self.nodeList), [])
+		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(structureList)
 
 		for infoList in infoListList:
 			codeInfo=HanZiCodeInfo.HanZiCodeInfo({}, self.codeType)

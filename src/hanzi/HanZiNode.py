@@ -16,15 +16,27 @@ class HanZiNode:
 	def setStructureList(self, structureList):
 		self.structureList=structureList
 
+	def getStructureList(self):
+		return self.structureList
+
 	def getStructureListWithCondition(self):
 		return self.structureList
 
-	def getFirstStructure(self):
-		structureList=self.getStructureListWithCondition()
-		if len(structureList)>0:
-			return structureList[0]
-		else:
-			return None
+	def getSubNodeList(self, index):
+		subNodeList=[]
+		for structure in self.structureList[:1]:
+			nodeList=structure.getNodeList()
+			subNode=nodeList[index]
+			subNodeList.append(subNode)
+		return subNodeList
+
+	def getSubStructureList(self, index):
+		subStructureList=[]
+		subNodeList=self.getSubNodeList(index)
+		for subNode in subNodeList:
+			structureList=subNode.getStructureListWithCondition()
+			subStructureList.extend(structureList)
+		return subStructureList
 
 	def getCodeInfoList(self):
 		structureList=self.getStructureListWithCondition()

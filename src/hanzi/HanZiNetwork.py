@@ -15,6 +15,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 		charNameList=self.descriptionManager.getAllCharacters()
 		sortedNameList=sorted(charNameList)
 
+		# 加入如 "相" "[漢右]" 的節點。
 		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
 			characterProperty=charDesc.getCharacterProperty()
@@ -48,13 +49,13 @@ class DescriptionManagerToHanZiNetworkConverter:
 		expression=wrapperStructuer.getExpression()
 		tempList=expression.split(".")
 		if(len(tempList)>1):
+			referenceName=tempList[0]
 			index=int(tempList[1])
-			referenceNode=wrapperStructuer.getReferenceNode()
-			structure=referenceNode.getFirstStructure()
+			referenceNode=self.hanziNetwork.structDescUniqueNameToNodeDict.get(referenceName)
+			targetNode=self.hanziNetwork.structDescUniqueNameToNodeDict.get(expression)
+			targetNode.setStructureList(referenceNode.getSubStructureList(index))
+			return targetNode
 
-			nodeList=structure.getNodeList()
-
-			return nodeList[index]
 		else:
 			return wrapperStructuer.referenceNode
 
@@ -97,15 +98,16 @@ class HanZiNetwork:
 		hanziNetwork=toHanZiNetworkConverter.constructDescriptionNetwork()
 		hanziNetwork.setCompositionsOfAllNodes()
 		return hanziNetwork
- 
+
 	def setCompositionsOfAllNodes(self):
 		for node in self.structDescExpandNameToNodeDict.values():
 			node.setNodeTree()
 
 	def addNamedNode(self, name, characterProperty):
-		tmpNode=HanZiNode.HanZiNode(name, characterProperty)
-		self.structDescUniqueNameToNodeDict[name]=tmpNode
-		self.structDescExpandNameToNodeDict[name]=tmpNode
+		if name not in self.structDescUniqueNameToNodeDict:
+			tmpNode=HanZiNode.HanZiNode(name, characterProperty)
+			self.structDescUniqueNameToNodeDict[name]=tmpNode
+			self.structDescExpandNameToNodeDict[name]=tmpNode
 
 	def addAnonymousNode(self, structDesc):
 		anonymousName=structDesc.getUniqueName()
@@ -114,17 +116,23 @@ class HanZiNetwork:
 			self.structDescUniqueNameToNodeDict[anonymousName]=tmpNode
 
 	def addNode(self, structDesc):
-		self.addAnonymousNode(structDesc)
 		if structDesc.isLeaf():
+			expression=structDesc.getReferenceExpression()
+			self.addNamedNode(expression, None)
+			self.addAnonymousNode(structDesc)
 			self.addReferenceLink(structDesc)
 		elif structDesc.isTurtle():
+			self.addAnonymousNode(structDesc)
 			self.addUnitLink(structDesc)
 		else:
+			self.addAnonymousNode(structDesc)
 			self.addLink(structDesc)
 
 	def addReferenceLink(self, structDesc):
 		expression=structDesc.getReferenceExpression()
-		rootNode=self.structDescExpandNameToNodeDict.get(structDesc.getReferenceName())
+		name=structDesc.getReferenceName()
+#		rootNode=self.structDescExpandNameToNodeDict.get(name)
+		rootNode=self.structDescExpandNameToNodeDict.get(expression)
 
 		structure=HanZiStructure.HanZiWrapperStructure(rootNode, expression)
 
