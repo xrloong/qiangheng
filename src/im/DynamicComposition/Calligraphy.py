@@ -108,25 +108,24 @@ class Pane:
 		left=self.getLeft()
 		top=self.getTop()
 
-		xScale=self.getHScale()
-		yScale=self.getVScale()
+		hScale=self.getHScale()
+		vScale=self.getVScale()
 
-		newX=int(x*xScale)+left
-		newY=int(y*yScale)+top
+		newX=int(x*hScale)+left
+		newY=int(y*vScale)+top
 
 		return (newX, newY)
 
-	def transform(self, pane):
-		vScale=pane.getVScale()
-		hScale=pane.getHScale()
-		paneLeft=pane.getLeft()
-		paneTop=pane.getTop()
+	def transformPane(self, pane):
+		(left, top)=self.transformPoint((pane.left, pane.top))
+		(right, bottom)=self.transformPoint((pane.right, pane.bottom))
 
-		self.left=int(self.left*hScale+paneLeft)
-		self.right=int(self.right*hScale+paneLeft)
-		self.top=int(self.top*vScale+paneTop)
-		self.bottom=int(self.bottom*vScale+paneTop)
-		self.setup()
+		pane.left=left
+		pane.top=top
+		pane.right=right
+		pane.bottom=bottom
+
+		pane.setup()
 
 Pane.DEFAULT_PANE=Pane()
 
@@ -200,7 +199,7 @@ class Stroke(Writing):
 
 	# 多型
 	def transform(self, pane):
-		self.contourPane.transform(pane)
+		pane.transformPane(self.contourPane)
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
