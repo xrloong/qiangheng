@@ -1,0 +1,15 @@
+瑲珩使用拓樸排序，然而這並非為必要。
+拓樸排序使用 topsort (http://pypi.python.org/pypi/topsort)，
+其原始授權為 LGPL 。
+此外， topsort 使用 rad_util ，
+其授權為 MIT/X11 。
+
+在本程式中，拓樸排序並非為必要，只是用來判斷字形描述是否形成迴圈。
+拓樸排序相關程式碼在 src/hanzi/HanZiNetwork.py 中的
+DescriptionManagerToHanZiNetworkConverter.getSortedNameList() 。
+
+
+font/single.fnt 為從 "魔法設計的藝術"
+（http://magicdesign.blogspot.com/search/label/漢字研究） 而來。
+其原本授權條款為 " GNU自由文件授權條款"，故而相關修改應遵守其規範。
+
