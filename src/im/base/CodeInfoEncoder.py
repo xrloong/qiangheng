@@ -184,8 +184,16 @@ class CodeInfoEncoder:
 		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
+	def convertCodeInfoListOfZuoOrder(self, codeInfoList):
+		# 㘴的參數順序為：土、口、人（大部分到小部件）。
+		# 但大部分的輸入法順序為：口、人、土。
+
+		tmpCodeInfoList=codeInfoList[1:]+codeInfoList[:1]
+		return tmpCodeInfoList
+
 	def encodeAsZuo(self, codeInfoList):
 		"""運算 "㘴" """
+		codeInfoList=self.convertCodeInfoListOfZuoOrder(codeInfoList)
 		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 

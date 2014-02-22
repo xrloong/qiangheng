@@ -70,6 +70,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsZuo(self, codeInfoList):
 		direction='$'
+		codeInfoList=self.convertCodeInfoListOfZuoOrder(codeInfoList)
 		cjLumpList=self.convertCodeInfoListToRadixList(direction, codeInfoList)
 		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo

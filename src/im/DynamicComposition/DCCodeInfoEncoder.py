@@ -155,9 +155,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_MU_1, DCCodeInfo.PANE_NAME_MU_2])
 
 	def encodeAsZuo(self, codeInfoList):
-		# 以 "㘴" 來說 first: 口，second: 人，third: 土
-		tmpCodeInfoList=codeInfoList[-1:]+codeInfoList[:-1]
-		return self.encodeByEmbed(tmpCodeInfoList, [DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
+		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
 
 	def encodeAsYou(self, codeInfoList):
 		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_YOU_1, DCCodeInfo.PANE_NAME_YOU_2])

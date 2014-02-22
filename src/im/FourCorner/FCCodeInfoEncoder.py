@@ -127,13 +127,12 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsZuo(self, codeInfoList):
-		# 以 "㘴" 來說 first: 口，second: 人，third: 土
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 
 		grid=FCGrid()
-		grid.setAsBottom_TopLeft_TopRight(thirdCodeInfo, firstCodeInfo, secondCodeInfo)
+		grid.setAsBottom_TopLeft_TopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
 		codeInfo=self.generateDefaultCodeInfo(corners)
