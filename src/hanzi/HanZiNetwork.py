@@ -94,7 +94,13 @@ class HanZiNetwork:
 	@staticmethod
 	def construct(descriptionManager):
 		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager)
-		return toHanZiNetworkConverter.constructDescriptionNetwork()
+		hanziNetwork=toHanZiNetworkConverter.constructDescriptionNetwork()
+		hanziNetwork.setCompositionsOfAllNodes()
+		return hanziNetwork
+ 
+	def setCompositionsOfAllNodes(self):
+		for node in self.structDescExpandNameToNodeDict.values():
+			node.setNodeTree()
 
 	def addNamedNode(self, name, characterProperty):
 		tmpNode=HanZiNode.HanZiNode(name, characterProperty)

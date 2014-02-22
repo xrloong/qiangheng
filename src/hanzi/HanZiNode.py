@@ -32,8 +32,6 @@ class HanZiNode:
 		return sum(map(lambda s: s.getCodeInfoList(), structureList), [])
 
 	def getCodePropertiesList(self):
-		self.setNodeTree()
-
 		codeList=[]
 		tmpCodeInfoList=self.getCodeInfoList()
 		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), tmpCodeInfoList)
@@ -58,9 +56,6 @@ class HanZiNode:
 
 	def setCompositions(self):
 		self.setNodeTree()
-#		for structure in structureList:
-#			structure.setCompositions()
-#		self.setCompositions()
 
 	def printAllCodeInfoInStructure(self):
 		structureList=self.getStructureListWithCondition()
