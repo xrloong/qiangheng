@@ -177,12 +177,14 @@ class DescriptionManagerToHanZiNetworkConverter:
 	def recursivelyAddStructure(self, structDesc):
 		hanziNetwork=self.hanziNetwork
 
-		hanziNetwork.addNode(structDesc)
 		if structDesc.isLeaf():
-			hanziNetwork.setReferenLink(structDesc)
+#			hanziNetwork.addNode(structDesc)
+			hanziNetwork.addReferenceNode(structDesc)
 		elif structDesc.isTurtle():
-			hanziNetwork.appendTurtleStruct(structDesc)
-		else:  
+#			hanziNetwork.addNode(structDesc)
+			hanziNetwork.addTurtleStruct(structDesc)
+		else:
+			hanziNetwork.addNode(structDesc)
 			operator=structDesc.getOperator()
 			childDescList=structDesc.getCompList()
 
@@ -219,19 +221,9 @@ class HanZiNetwork:
 			tmpNode=HanZiNode(anonymousName)
 			self.structDescUniqueNameToNodeDict[anonymousName]=tmpNode
 
-	def addLink(self, structDesc, operator, childDescList):
-		if len(childDescList)>0:
-			childNodeList=[self.findNode(childDesc) for childDesc in childDescList]
-			dstNode=self.findNode(structDesc)
-
-			codeType=structDesc.getCodeType()
-			structure=HanZiStructure(codeType, operator, childNodeList)
-			structure.setToRadix()
-
-			dstNode.addStructure(structure)
-
-	def setReferenLink(self, structDesc):
+	def addReferenceNode(self, structDesc):
 		# 需考慮如：'炎'、'焱'的例子，使用重複的部件，要連結到相同的節點且不重複。
+		self.addNode(structDesc)
 
 		leafNode=self.structDescUniqueNameToNodeDict.get(structDesc.getUniqueName())
 		rootNode=self.structDescExpandNameToNodeDict.get(structDesc.getReferenceName())
@@ -244,7 +236,9 @@ class HanZiNetwork:
 		structureList=[structure]
 		leafNode.setStructureList(structureList)
 
-	def appendTurtleStruct(self, structDesc):
+	def addTurtleStruct(self, structDesc):
+		self.addNode(structDesc)
+
 		dstNode=self.findNode(structDesc)
 
 		codeType=structDesc.getCodeType()
@@ -260,6 +254,17 @@ class HanZiNetwork:
 		structure.setToComponent()
 
 		dstNode.addStructure(structure)
+
+	def addLink(self, structDesc, operator, childDescList):
+		if len(childDescList)>0:
+			childNodeList=[self.findNode(childDesc) for childDesc in childDescList]
+			dstNode=self.findNode(structDesc)
+
+			codeType=structDesc.getCodeType()
+			structure=HanZiStructure(codeType, operator, childNodeList)
+			structure.setToRadix()
+
+			dstNode.addStructure(structure)
 
 	def findNode(self, structDesc):
 		if structDesc.isRoot():
