@@ -46,7 +46,6 @@ class BoshiamyInfo(IMInfo):
 IMInfo=BoshiamyInfo
 
 radixParser=BSRadixManager.BSRadixParser(IMInfo.IMName)
-radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass

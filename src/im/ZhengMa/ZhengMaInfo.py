@@ -46,7 +46,6 @@ class ZhengMaInfo(IMInfo):
 IMInfo=ZhengMaInfo
 
 radixParser=ZMRadixManager.ZMRadixParser(IMInfo.IMName)
-radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass

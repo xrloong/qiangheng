@@ -30,7 +30,6 @@ class StrokeOrderInfo(IMInfo):
 IMInfo=StrokeOrderInfo
 
 radixParser=SORadixManager.SORadixParser(IMInfo.IMName)
-radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass

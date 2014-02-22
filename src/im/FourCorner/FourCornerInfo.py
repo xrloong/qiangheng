@@ -30,7 +30,6 @@ class FourCornerInfo(IMInfo):
 IMInfo=FourCornerInfo
 
 radixParser=FCRadixManager.FCRadixParser(IMInfo.IMName)
-radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass

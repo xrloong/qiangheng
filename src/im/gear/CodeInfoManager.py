@@ -1,6 +1,7 @@
 
 class CodeInfoManager:
-	def __init__(self, radixManager):
+	def __init__(self, radixParser):
+		radixManager=radixParser.getRadixManager()
 		self.radixManager=radixManager
 		self.codeInfoEncoder=radixManager.getEncoder()
 

@@ -42,10 +42,9 @@ class ARRadixParser(RadixParser):
 	def convertRadixDescToCodeInfoByReference(self, radixDesc):
 		nameList=radixDesc.getRadixNameList()
 		for radixName in nameList:
-			if radixName not in self.converter.radixCodeInfoDB:
-				radixDesc=self.radixDescDB.get(radixName)
+			radixDesc=self.radixDescDB.get(radixName)
 
-				self.converter.convertRadixDescIntoDB(radixName, radixDesc)
+			self.converter.convertRadixDescIntoDB(radixName, radixDesc)
 
 		codeList=[]
 		for radixName in nameList:

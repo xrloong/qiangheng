@@ -31,7 +31,6 @@ class IMInfo:
 		return "".join(list(zip(*self.keyMaps))[0])
 
 radixParser=RadixManager.RadixParser(IMInfo.IMName)
-radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass

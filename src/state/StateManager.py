@@ -1,6 +1,7 @@
 
 # 視此模式為獨體模式（Singleton）。
 from im.gear import CodeInfoManager
+from im.gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 __state_IMModule=None
 characterDescriptionRearrangerGenerator=None
@@ -16,10 +17,11 @@ def setIMModule(imModule):
 
 	__state_IMModule=imModule
 
-	radixManager=imModule.radixManager
+	radixParser=imModule.radixParser
+	radixManager=radixParser.getRadixManager()
 
-	characterDescriptionRearrangerGenerator=radixManager.getCharacterDescriptionRearrangerGenerator()
-	codeInfoManager=CodeInfoManager.CodeInfoManager(radixManager)
+	characterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
+	codeInfoManager=CodeInfoManager.CodeInfoManager(radixParser)
 
 def getIMModule():
 	return __state_IMModule

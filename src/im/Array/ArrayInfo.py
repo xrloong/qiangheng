@@ -50,7 +50,6 @@ class ArrayInfo(IMInfo):
 IMInfo=ArrayInfo
 
 radixParser=ARRadixManager.ARRadixParser(IMInfo.IMName)
-radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass

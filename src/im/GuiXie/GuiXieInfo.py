@@ -30,7 +30,6 @@ class GuiXieInfo(IMInfo):
 IMInfo=GuiXieInfo
 
 radixParser=GXRadixManager.GXRadixParser(IMInfo.IMName)
-radixManager=radixParser.getRadixManager()
 
 if __name__=='__main__':
 	pass
