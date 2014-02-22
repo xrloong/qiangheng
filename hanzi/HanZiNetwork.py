@@ -1,6 +1,4 @@
-
 import copy
-from .CharDesc import CharDesc
 
 class HanZiStructure:
 	def __init__(self, operator, nodeList, codeInfo):

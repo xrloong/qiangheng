@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import copy
-from character import Operator
 
 class CharDesc:
 	"""字符描述"""

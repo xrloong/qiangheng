@@ -1,5 +1,4 @@
-from .CharDesc import CharDesc
-from character import Operator
+from . import Operator
 
 class RearrangeInfoSame:
 	def __init__(self):

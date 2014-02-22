@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from xml.etree import ElementTree
-from im.IMMgr import IMMgr
-from character.CharDescriptionManager import CharDescriptionManager
-from character.HanZiNetwork import HanZiNetwork
+from im import IMMgr
+from description import CharDescriptionManager
+from hanzi import HanZiNetwork
 
 from optparse import OptionParser
 
@@ -31,10 +31,10 @@ class QiangHeng:
 
 	def initManager(self, imModule):
 		ciGenerator=imModule.CodeInfoGenerator
-		self.descMgr=CharDescriptionManager(imModule)
+		self.descMgr=CharDescriptionManager.CharDescriptionManager(imModule)
 
 		charDescQueryer=self.descMgr.getCharDescQueryer()
-		self.hanziNetwork=HanZiNetwork(ciGenerator)
+		self.hanziNetwork=HanZiNetwork.HanZiNetwork(ciGenerator)
 
 	def readConfig(self, configFile):
 		f=open(configFile, encoding='utf-8-sig')
@@ -199,7 +199,7 @@ class QiangHeng:
 		else:
 			imName='空'
 
-		imModule=IMMgr.getIMModule(imName)
+		imModule=IMMgr.IMMgr.getIMModule(imName)
 		return imModule
 
 oparser = OptionParser()

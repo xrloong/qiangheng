@@ -4,9 +4,8 @@ from .CharDesc import CharDesc
 from .CharDesc import HangerCharDesc
 from .TemplateDesc import TemplateDesc
 from .TemplateDesc import TemplateCondition
-from .OperatorManager import OperatorManager
+from .operator import OperatorManager
 from xml.etree import ElementTree
-from character import Operator
 
 class CharDescriptionManager:
 	def __init__(self, imModule):
@@ -34,7 +33,7 @@ class CharDescriptionManager:
 			return charDescList
 
 		imName=imModule.IMInfo.IMName
-		self.operationMgr=OperatorManager(self)
+		self.operationMgr=OperatorManager.OperatorManager(self)
 
 		self.charDescGenerator=CharDescGenerator
 		self.charDescQueryer=charDescQueryer
