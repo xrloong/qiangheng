@@ -5,7 +5,6 @@ from xml.etree import ElementTree
 from im.IMMgr import IMMgr
 from character.CharDescriptionManager import CharDescriptionManager
 from character.HanZiNetwork import HanZiNetwork
-#from character.OperatorManager import OperatorManager
 
 from optparse import OptionParser
 
@@ -35,8 +34,6 @@ class QiangHeng:
 
 		charDescQueryer=self.descMgr.getCharDescQueryer()
 		self.hanziNetwork=HanZiNetwork(ciGenerator)
-
-#		self.operationMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
 
 	def readDesc(self, dirCharInfoRoot, dirIM):
 		filenamelist=[
@@ -78,8 +75,6 @@ class QiangHeng:
 			self.recursivelyAddNode(childSrcDesc)
 
 	def recursivelyAddLink(self, srcDesc):
-		dstNode=self.hanziNetwork.findNodeByCharDesc(srcDesc)
-
 		operator=srcDesc.getOperator()
 		childDescList=srcDesc.getCompList()
 
@@ -139,9 +134,7 @@ class QiangHeng:
 	def genIMMapping(self, targetCharList):
 		table=[]
 		for charName in targetCharList:
-			charNode=self.hanziNetwork.findNodeByName(charName)
-
-			codeList=charNode.getCodeList()
+			codeList=self.hanziNetwork.getCodeList(charName)
 			for code in codeList:
 				table.append([code, charName])
 		return table

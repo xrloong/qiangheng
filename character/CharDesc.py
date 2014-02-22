@@ -6,8 +6,11 @@ from character import Operator
 class CharDesc:
 	"""字符描述"""
 	countAnonymousName=0
-	def __init__(self, name, operator, compList):
+	def __init__(self, operator, compList):
+		name=CharDesc.generateNewAnonymousName()
+
 		self.name=name
+		self.expandName=None
 
 		self.operator=operator
 		self.compList=compList
@@ -16,8 +19,7 @@ class CharDesc:
 		self.propDict=None
 
 	def __str__(self):
-#		return '<{0}={1}>'.format(self.name, self.operator.getName())
-		return '<{0}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)))
+		return '<{0}={1}|({2})>'.format(self.getName(), self.operator.getName(), ",".join(map(str, self.compList)))
 
 	def __repr__(self):
 		return str(self)
@@ -29,13 +31,31 @@ class CharDesc:
 		return self.propDict
 
 	def copyDescription(self):
-		return CharDesc(self.getName(), self.getOperator(), [])
+		copyCharDesc=CharDesc(self.getOperator(), [])
+		copyCharDesc.setName(self.getName())
+		copyCharDesc.setExpandName(self.getExpandName())
+		return copyCharDesc
 
 	def setName(self, name):
 		self.name=name
 
 	def getName(self):
 		return self.name
+
+	def getName(self):
+		if self.isExpandable():
+			return self.getExpandName()
+		else:
+			return self.name
+
+	def setExpandName(self, expandName):
+		self.expandName=expandName
+
+	def getExpandName(self):
+		return self.expandName
+
+	def isExpandable(self):
+		return bool(self.getExpandName())
 
 	def setOperator(self, operator):
 		self.operator=operator
@@ -57,18 +77,6 @@ class CharDesc:
 		name="[瑲珩匿名-{0}]".format(CharDesc.countAnonymousName)
 		CharDesc.countAnonymousName+=1
 		return name
-
-class EmptyCharDesc(CharDesc):
-#	def __init__(self, name, operator, compList):
-#		CharDesc.__init__(self, name, operator, compList)
-	def __init__(self):
-		self.propDict=None
-
-	def setPropDict(self, propDict):
-		self.propDict=propDict
-
-	def getPropDict(self):
-		return self.propDict
 
 if __name__=='__main__':
 	print(CharDesc('王', '(龜)', None))

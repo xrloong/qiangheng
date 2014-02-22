@@ -42,9 +42,9 @@ class TemplateDesc:
 		return tempDesc
 
 	def replaceCharDesc(self, charDesc, mappingDict):
-		argumentName=mappingDict.get(charDesc.getName())
+		argumentName=mappingDict.get(charDesc.getExpandName())
 		if argumentName!=None:
-			charDesc.setName(argumentName)
+			charDesc.setExpandName(argumentName)
 
 		for comp in charDesc.getCompList():
 			self.replaceCharDesc(comp, mappingDict)

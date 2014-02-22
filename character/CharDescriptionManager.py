@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from .CharDesc import CharDesc
-from .CharDesc import EmptyCharDesc
 from .TemplateDesc import TemplateDesc
 from .OperatorManager import OperatorManager
 from xml.etree import ElementTree
@@ -12,57 +11,33 @@ class CharDescriptionManager:
 		self.templateDB={}
 		self.characterDB={}
 
-		def CharDescGenerator(charName, structInfo=['龜', []]):
+		def CharDescGenerator(structInfo=['龜', []]):
 			operatorName, CompList=structInfo
 			operator=self.operatorGenerator(operatorName)
 
 			if len(operatorName)>1:
 				# 暫時以運算名稱的字數來區分是否為範本
-				charDesc=CharDesc(charName, operator, CompList)
+				charDesc=CharDesc(operator, CompList)
 				return charDesc
 			else:
 				if operator.isAvailableOperation():
-					charDesc=CharDesc(charName, operator, CompList)
+					charDesc=CharDesc(operator, CompList)
 				else:
 					charDesc=None
 			return charDesc
-
-		def CharDescGenerator(charName, structInfo=['龜', []]):
-#			if structInfo==None:
-#				charDesc=EmptyCharDesc()
-#				return charDesc
-
-			operatorName, CompList=structInfo
-			operator=self.operatorGenerator(operatorName)
-
-			if len(operatorName)>1:
-				# 暫時以運算名稱的字數來區分是否為範本
-				charDesc=CharDesc(charName, operator, CompList)
-				return charDesc
-			else:
-				if operator.isAvailableOperation():
-					charDesc=CharDesc(charName, operator, CompList)
-				else:
-					charDesc=None
-			return charDesc
-
-		def emptyCharDescGenerator():
-			anonymousName=CharDesc.generateNewAnonymousName()
-			return CharDescGenerator(anonymousName)
-
 
 		def charDescRearranger(charDesc):
 			return self.operationMgr.rearrangeDesc(charDesc)
 
 		def charDescQueryer(charName):
-			charDesc=self.characterDB.get(charName)
+			charDescList=self.characterDB.get(charName)
+			charDesc=charDescList[0]
 			return charDesc
 
 		imName=imModule.IMInfo.IMName
-		self.operationMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
+		self.operationMgr=imModule.OperatorManager(self, CharDescGenerator)
 
 		self.charDescGenerator=CharDescGenerator
-		self.emptyCharDescGenerator=emptyCharDescGenerator
 		self.charDescQueryer=charDescQueryer
 		self.charDescRearranger=charDescRearranger
 
@@ -73,9 +48,6 @@ class CharDescriptionManager:
 
 	def getCharDescGenerator(self):
 		return self.charDescGenerator
-
-	def getEmptyCharDescGenerator(self):
-		return self.emptyCharDescGenerator
 
 	def getCharDescQueryer(self):
 		return self.charDescQueryer
@@ -92,7 +64,6 @@ class CharDescriptionManager:
 	def loadByParsingXML__0_1(self, rootNode):
 		# 用於 0.1 版
 		charDescGenerator=self.getCharDescGenerator()
-		emptyCharDescGenerator=self.getEmptyCharDescGenerator()
 
 		def getDesc_AssembleChar(assembleChar):
 			l=[]
@@ -102,17 +73,18 @@ class CharDescriptionManager:
 			for node in targetChildNodes:
 				if node.tag=="字根":
 					name=node.get("置換")
-					l.append(charDescGenerator(name))
+					charDesc=charDescGenerator()
+					charDesc.setExpandName(name)
+					l.append(charDesc)
 				elif node.tag=="組字":
 					l.append(getDesc_AssembleChar(node))
 				else:
 					pass
 
-			anonymousName=CharDesc.generateNewAnonymousName()
 			if operatorName:
-				comp=charDescGenerator(anonymousName, [operatorName, l])
+				comp=charDescGenerator([operatorName, l])
 			else:
-				comp=charDescGenerator(anonymousName)
+				comp=charDescGenerator()
 
 			codeInfo=assembleChar.find("編碼資訊")
 			if codeInfo is not None:
@@ -122,17 +94,16 @@ class CharDescriptionManager:
 			return comp
 
 		def getDesc_SubCharacter(nodeCharacter):
-			assembleChar=nodeCharacter.find("組字")
-			if assembleChar==None:
-				return None
+			assembleCharList=nodeCharacter.findall("組字")
+			compList=[]
+			for assembleChar in assembleCharList:
+				comp=getDesc_AssembleChar(assembleChar)
+				compList.append(comp)
+			return compList
 
-			comp=getDesc_AssembleChar(assembleChar)
-
-			return comp
-
-		def getDesc_CompleteCharacter(nodeCharacter):
-			comp=getDesc_SubCharacter(nodeCharacter)
-			return comp
+		def getDesc_CompleteCharacterList(nodeCharacter):
+			compList=getDesc_SubCharacter(nodeCharacter)
+			return compList
 
 		def getDesc_ArgumentList(nodeArgument):
 			argumentList=[]
@@ -173,16 +144,21 @@ class CharDescriptionManager:
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
 		for node in targetChildNodes:
-			comp=getDesc_CompleteCharacter(node)
+			compList=getDesc_CompleteCharacterList(node)
+			comp=compList[0]
 			charName=node.get('名稱')
-			comp.setName(charName)
-			self.characterDB[charName]=comp
+			comp.setExpandName(charName)
+			self.characterDB[charName]=compList
 
 	def adjustData(self):
 		for charName in self.characterDB.keys():
-			srcDesc=self.characterDB.get(charName)
-			charDesc=self.operationMgr.rearrangeRecursively(srcDesc)
-			self.characterDB[charName]=charDesc
+			srcDescList=self.characterDB.get(charName)
+			l=[]
+#			srcDesc=self.charDescQueryer(charName)
+			for srcDesc in srcDescList:
+				charDesc=self.operationMgr.rearrangeRecursively(srcDesc)
+				l.append(charDesc)
+			self.characterDB[charName]=l
 
 if __name__=='__main__':
 	pass

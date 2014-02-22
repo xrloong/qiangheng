@@ -132,3 +132,6 @@ class HanZiNetwork:
 		ansNode=self.findNodeByName(charName)
 		return ansNode
 
+	def getCodeList(self, charName):
+		charNode=self.findNodeByName(charName)
+		return charNode.getCodeList()
