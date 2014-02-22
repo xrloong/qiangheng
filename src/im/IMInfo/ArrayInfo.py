@@ -1,5 +1,7 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import ARCodeInfo
+from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class ArrayInfo(IMInfo):
 	"行列輸入法"
@@ -49,6 +51,9 @@ class ArrayInfo(IMInfo):
 
 IMInfo=ArrayInfo
 CodeInfoGenerator=ARCodeInfo.ARCodeInfo
+
+codeInfoEncoder=CodeInfoEncoder()
+CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':
 	pass

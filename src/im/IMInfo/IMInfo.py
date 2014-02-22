@@ -1,4 +1,6 @@
 from gear.CodeInfo import CodeInfo
+from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class IMInfo:
 	"輸入法"
@@ -31,6 +33,9 @@ class IMInfo:
 		return "".join(list(zip(*self.keyMaps))[0])
 
 CodeInfoGenerator=CodeInfo
+
+codeInfoEncoder=CodeInfoEncoder()
+CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':
 	pass

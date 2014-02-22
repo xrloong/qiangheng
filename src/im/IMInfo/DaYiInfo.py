@@ -1,5 +1,7 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import DYCodeInfo
+from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class DaYiInfo(IMInfo):
 	"大易輸入法"
@@ -59,6 +61,9 @@ class DaYiInfo(IMInfo):
 
 IMInfo=DaYiInfo
 CodeInfoGenerator=DYCodeInfo.DYCodeInfo
+
+codeInfoEncoder=CodeInfoEncoder()
+CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':
 	pass

@@ -1,5 +1,7 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import BSCodeInfo
+from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class BoshiamyInfo(IMInfo):
 	"嘸蝦米輸入法"
@@ -45,6 +47,9 @@ class BoshiamyInfo(IMInfo):
 
 IMInfo=BoshiamyInfo
 CodeInfoGenerator=BSCodeInfo.BSCodeInfo
+
+codeInfoEncoder=CodeInfoEncoder()
+CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':
 	pass

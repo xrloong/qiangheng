@@ -1,5 +1,7 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import ZMCodeInfo
+from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class ZhengMaInfo(IMInfo):
 	"鄭碼輸入法"
@@ -45,6 +47,9 @@ class ZhengMaInfo(IMInfo):
 
 IMInfo=ZhengMaInfo
 CodeInfoGenerator=ZMCodeInfo.ZMCodeInfo
+
+codeInfoEncoder=CodeInfoEncoder()
+CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':
 	pass

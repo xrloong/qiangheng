@@ -95,7 +95,8 @@ class HanZiAssemblageStructure(HanZiStructure):
 
 		for infoList in infoListList:
 			codeInfo=StateManager.codeInfoGenerator({}, self.codeVariance)
-			codeInfo.setCompositions(self.operator, infoList)
+#			codeInfo.encode(self.operator, infoList)
+			StateManager.codeInfoEncoder.encode(codeInfo, self.operator, infoList)
 
 			self.codeInfoList.append(codeInfo)
 

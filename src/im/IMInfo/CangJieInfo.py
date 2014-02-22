@@ -1,5 +1,7 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import CJCodeInfo
+from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class CangJieInfo(IMInfo):
 	"倉頡輸入法"
@@ -45,6 +47,9 @@ class CangJieInfo(IMInfo):
 
 IMInfo=CangJieInfo
 CodeInfoGenerator=CJCodeInfo.CJCodeInfo
+
+codeInfoEncoder=CodeInfoEncoder()
+CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':
 	pass

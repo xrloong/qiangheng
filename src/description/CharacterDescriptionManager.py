@@ -4,6 +4,7 @@ import sys
 from .CharacterDescription import CharacterDescription
 from gear import OperatorManager
 from parser import QHParser
+from state import StateManager
 from xml.etree import ElementTree
 
 class CharDescriptionManager:
@@ -84,12 +85,13 @@ class CharDescriptionManager:
 			origCharDesc.extendStructureList(charDesc.getStructureList())
 
 	def adjustData(self):
+		charDescRearranger=StateManager.characterDescriptionRearrangerGenerator(self.operationMgr)
 		for charName in self.characterDB.keys():
 #			print("name: %s"%charName, file=sys.stderr);
 			charDesc=self.characterDB.get(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
-				self.operationMgr.rearrangeRecursively(structDesc)
+				charDescRearranger.rearrangeRecursively(structDesc)
 #			print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 if __name__=='__main__':
