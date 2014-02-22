@@ -3,7 +3,7 @@
 
 from xml.etree import ElementTree
 from im import IMMgr
-from description import CharDescriptionManager
+from description import CharacterDescriptionManager
 from hanzi import HanZiNetwork
 
 from state import StateManager
@@ -34,7 +34,7 @@ class QiangHeng:
 			self.toTXT(characterMapping)
 
 	def initManager(self, imModule):
-		self.descMgr=CharDescriptionManager.CharDescriptionManager(imModule)
+		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(imModule)
 
 		self.hanziNetwork=HanZiNetwork.HanZiNetwork()
 
