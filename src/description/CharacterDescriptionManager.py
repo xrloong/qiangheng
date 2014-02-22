@@ -13,7 +13,7 @@ class CharDescriptionManager:
 		self.characterDB={}
 
 		def charDescQueryer(charName):
-			charDesc=self.characterDB.get(charName, [])
+			charDesc=self.characterDB.get(charName, None)
 			return charDesc
 
 		self.operationMgr=OperatorManager.OperatorManager(self)

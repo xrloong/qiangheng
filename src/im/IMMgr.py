@@ -4,6 +4,7 @@ from .IMInfo import BoshiamyInfo
 from .IMInfo import CangJieInfo
 from .IMInfo import DaYiInfo
 from .IMInfo import ZhengMaInfo
+from .IMInfo import SampleInfo
 
 class IMMgr:
 	def __init__(self):
@@ -23,6 +24,8 @@ class IMMgr:
 			imName='嘸蝦米'
 		elif imName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
 			imName='鄭碼'
+		elif imName in ['例', '範例', '範例輸入法', 'sample', 'sp',]:
+			imName='範例'
 		else:
 			imName='空'
 
@@ -36,6 +39,8 @@ class IMMgr:
 			imModule=BoshiamyInfo
 		elif imName == '鄭碼':
 			imModule=ZhengMaInfo
+		elif imName == '範例':
+			imModule=SampleInfo
 		else:
 			imModule=IMInfo
 
