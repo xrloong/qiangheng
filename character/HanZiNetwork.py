@@ -12,7 +12,7 @@ class HanZiNetwork:
 	def get(self, key, defaultValue=None):
 		return self.descNetwork.get(key, defaultValue)
 
-	def ConstructHanZiNetwork(self, charNameList):
+	def constructHanZiNetwork(self, charNameList):
 		for charName in charNameList:
 			self.addCharDesc(charName)
 

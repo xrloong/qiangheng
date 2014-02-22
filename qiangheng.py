@@ -73,7 +73,7 @@ def genFile(options):
 	descMgr=CharDescriptionManager(imModule, ciGenerator)
 
 	getDescDBFromXML(pathlist, descMgr)
-	descMgr.ConstructDescriptionNetwork()
+	descMgr.constructDescriptionNetwork()
 
 	if xml_format:
 		toXML(descMgr, imModule)
