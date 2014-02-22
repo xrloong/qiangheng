@@ -112,7 +112,7 @@ $(PURETABLE_PATH): $(XML_PATH)
 pdf: tex/qiangheng.pdf
 
 tex/qiangheng.pdf: tex/qiangheng.tex
-	cd tex; rm qiangheng.aux qiangheng.log
+	cd tex; rm -f qiangheng.aux qiangheng.log
 	cd tex; xelatex qiangheng.tex; xelatex qiangheng.tex
 
 all-icons:

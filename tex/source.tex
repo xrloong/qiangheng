@@ -1,0 +1,49 @@
+\chapter{原碼}
+
+目錄結構如下：
+
+\begin{minipage}{4cm}\dirtree{%
+.1 qiangheng.py.
+.1 canvas/.
+.1 description/.
+.1 gear/.
+.1 hanzi.
+.1 im/.
+.2 base/.
+.2 Array/.
+.2 Boshiamy/.
+.2 CangJie/.
+.2 DaYi/.
+.2 DynamicComposition/.
+.2 FourCorner/.
+.2 GuiXie/.
+.2 Sample/.
+.2 StrokeOrder/.
+.2 ZhengMa/.
+.1 parser/.
+.1 state/.
+.1 util/.
+}\end{minipage}
+
+
+其中，qiangheng.py 為主程式，是程式的進入點。
+
+要描述一個輸入法，需要定義：
+\begin{enumerate}
+\item[一、]IMInfo
+用於描述一個輸入法的資訊。
+
+\item[二、]CodeInfo
+一個輸入法為一個字符編碼所應包含的資訊。
+
+\item[三、]CodeInfoEncoder
+用於為不同結構的組字進行編碼。
+
+\item[四、]RadixParser
+各輸入法的剖析器。
+
+\item[五、]StructureRearranger
+用來為自行結構重新排列。
+
+\end{enumerate}
+
