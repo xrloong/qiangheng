@@ -4,22 +4,30 @@ class DYCodeInfo(CodeInfo):
 	def setRadixCodeProperties(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
-			self.setDYProp(str_rtlist)
+			codeList=str_rtlist.split('|')
+			self.setCodeList(codeList)
 
 	@property
 	def characterCode(self):
-		return self._dy_incode
+		return self.getMainCode()
 
 	def setDataEmpty(self):
-		self._dy_incode=None
+		pass
 
 	def setSingleDataEmpty(self):
 		pass
 
-	def setDYProp(self, dy_incode):
-		if dy_incode!=None:
-			self._dy_incode=dy_incode
+	def isInstallmentEncoded(self):
+		return len(self._codeList)>1
 
-	def getDYProp(self):
-		return self._dy_incode
+	def setCodeList(self, codeList):
+		self._codeList=codeList
+
+	def getMainCode(self):
+		if self._codeList != None:
+			return "".join(self._codeList)
+		return None
+
+	def getInstallmentCode(self, index):
+		return self._codeList[index]
 
