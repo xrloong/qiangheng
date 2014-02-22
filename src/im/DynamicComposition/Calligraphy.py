@@ -3,11 +3,6 @@ import sys
 import copy
 
 class StrokeAction:
-	def __init__(self, description):
-		self.action=int(description[0:4])
-		self.x=int(description[4:6], 16)
-		self.y=int(description[6:8], 16)
-
 	def __init__(self, action, x, y):
 		self.action=action
 		self.x=x
@@ -57,8 +52,8 @@ class Pane:
 		self.name="預設範圍"
 
 	def __deepcopy__(self, memo):
-		pane=Pane(copy.deepcopy([self.left, self.top, self.right, self.bottom], memo))
-		return pane
+		copy.deepcopy(None, memo)
+		return self
 
 	@property
 	def width(self):
@@ -73,19 +68,6 @@ class Pane:
 
 	def getName(self):
 		return self.name
-
-	def setByList(self, region):
-		[left, top, right, bottom]=region
-		self.left=left
-		self.top=top
-		self.right=right
-		self.bottom=bottom
-
-	def setByCorners(self, left, top, right, bottom):
-		self.left=left
-		self.top=top
-		self.right=right
-		self.bottom=bottom
 
 	def getAsList(self):
 		return [self.left, self.top, self.right, self.bottom]
