@@ -9,6 +9,7 @@ class DCRadixParser(RadixParser):
 	TAG_RADIX_SET='字根集'
 	TAG_RADIX='字根'
 	TAG_STROKE_GROUP='筆劃組'
+	TAG_GEOMETRY='幾何'
 	TAG_SCOPE='範圍'
 	TAG_STROKE='筆劃'
 	TAG_NAME='名稱'
@@ -39,10 +40,11 @@ class DCRadixParser(RadixParser):
 
 		strokeGroup=StrokeGroup()
 
-		descriptionRegion=infoDict.get(DCRadixParser.TAG_SCOPE, '')
-		region=self.parseRegion(descriptionRegion)
+		geometryNode=elementCodeInfo.find(DCRadixParser.TAG_GEOMETRY)
+		region=self.parseGeometry(geometryNode)
 
-		description=infoDict.get(DCRadixParser.ATTRIB_CODE_EXPRESSION, '')
+		strokeNode=elementCodeInfo.find(DCRadixParser.TAG_STROKE)
+		description=strokeNode.attrib.get(DCRadixParser.ATTRIB_CODE_EXPRESSION, '')
 		if len(description)>0 and description!='XXXX':
 			strokeDescriptionList=description.split(DCCodeInfo.STROKE_SEPERATOR)
 			strokeList=[]
@@ -81,11 +83,16 @@ class DCRadixParser(RadixParser):
 
 			self.radixDescriptionManager.addDescription(charName, radixDescription)
 
+	def parseGeometry(self, geometryNode):
+		descriptionRegion=geometryNode.get(DCRadixParser.TAG_SCOPE)
+		region=self.parseRegion(descriptionRegion)
+		return region
+
 	def parseStrokeGroup(self, strokeGroupNode):
 		strokeGroupName=strokeGroupNode.get(DCRadixParser.TAG_NAME)
 
-		descriptionRegion=strokeGroupNode.get(DCRadixParser.TAG_SCOPE)
-		region=self.parseRegion(descriptionRegion)
+		geometryNode=strokeGroupNode.find(DCRadixParser.TAG_GEOMETRY)
+		region=self.parseGeometry(geometryNode)
 
 		strokeGroup=self.parseStroke(region, strokeGroupNode)
 
