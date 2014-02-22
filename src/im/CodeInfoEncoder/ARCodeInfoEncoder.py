@@ -135,6 +135,23 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 
+	def encodeAsYin(self, codeInfoList):
+		"""運算 "胤" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+
+		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_EXTEND_2_CENTER_2:
+			tmpFrontCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_EXTEND_3_CENTER_2]])
+			tmpRearCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_EXTEND_2_CENTER_3]])
+			codeInfo=self.encodeAsGoose([tmpFrontCodeInfo, secondCodeInfo, tmpRearCodeInfo])
+			return codeInfo
+		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_EXTEND_3_UP:
+			tmpFrontCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_EXTEND_3_CENTER_2]])
+			tmpRearCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_EXTEND_3_CENTER_2]])
+			codeInfo=self.encodeAsGoose([tmpFrontCodeInfo, secondCodeInfo, tmpRearCodeInfo])
+			return codeInfo
+
+
 	@staticmethod
 	def computeArrayCodeForGenerality(codeInfoList, isWithMergeRadix=False):
 		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))

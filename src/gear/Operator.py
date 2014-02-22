@@ -87,3 +87,6 @@ OperatorLi=BuiltinOperator('瓥', RearrangeInfo.RearrangeInfoSame())
 OperatorLuan=BuiltinOperator('䜌', RearrangeInfo.RearrangeInfoSame())
 OperatorBan=BuiltinOperator('辦', RearrangeInfo.RearrangeInfoSame())
 
+# 暫時增加以簡少範本數
+OperatorYin=BuiltinOperator('胤', RearrangeInfo.RearrangeInfoSame())
+

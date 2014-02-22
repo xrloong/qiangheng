@@ -55,6 +55,12 @@ class ARCodeInfo(CodeInfo):
 	RADIX_EXTEND_5_BOTTOM='x:5v:1'	# 即廴
 	RADIX_EXTEND_6_BOTTOM='x:6v:1'	# 即辶
 	RADIX_EXTEND_2_CENTER='x:2-:1'	# 即[亾下]
+
+	RADIX_EXTEND_2_CENTER_2='x:2-:2'	# 即儿
+	RADIX_EXTEND_2_CENTER_3='x:2-:3'	# 即乚
+	RADIX_EXTEND_3_CENTER_2='x:3-:2'	# 即丨
+	RADIX_EXTEND_3_UP='x:3^:1'	# 即[丨丨]
+
 	radixToCodeDict={
 		RADIX_1_UP:'q',
 		RADIX_2_UP:'w',
@@ -111,6 +117,11 @@ class ARCodeInfo(CodeInfo):
 		RADIX_EXTEND_6_UP_9_BOTTOM:'y.',
 		RADIX_EXTEND_1_BOTTOM:'z',
 		RADIX_EXTEND_6_UP_9_BOTTOM_1_BUTTOM:'n',
+
+		RADIX_EXTEND_2_CENTER_2:'s',
+		RADIX_EXTEND_2_CENTER_3:'s',
+		RADIX_EXTEND_3_CENTER_2:'d',
+		RADIX_EXTEND_3_UP:'e',
 	}
 
 	def __init__(self, codeList=None, isSupportCharacterCode=True, isSupportRadixCode=True):

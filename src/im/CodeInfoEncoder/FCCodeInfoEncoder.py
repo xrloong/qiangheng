@@ -200,6 +200,16 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo(corners)
 		return codeInfo
 
+	def encodeAsYin(self, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		lastCodeInfo=codeInfoList[-1]
+		grid=FCGrid()
+		grid.setAsOut_In(firstCodeInfo, lastCodeInfo)
+		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
+		corners=[top_left, top_right, bottom_left, bottom_right]
+		codeInfo=self.generateDefaultCodeInfo(corners)
+		return codeInfo
+
 class FCBrick:
 	TYPE_INVALIDATE=0
 	TYPE_STROKE=1

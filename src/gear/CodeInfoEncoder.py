@@ -105,6 +105,9 @@ class CodeInfoEncoder:
 			elif Operator.OperatorLi.equals(operator):
 				codeInfo=self.encodeAsLi(codeInfoList)
 
+			elif Operator.OperatorYin.equals(operator):
+				codeInfo=self.encodeAsYin(codeInfoList)
+
 			else:
 				codeInfo=self.encodeAsInvalidate(codeInfoList)
 		return codeInfo
@@ -266,5 +269,13 @@ class CodeInfoEncoder:
 		bottomCodeInfo=self.encodeAsGoose([thirdCodeInfo, fourthCodeInfo])
 
 		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
+		return codeInfo
+
+	def encodeAsYin(self, codeInfoList):
+		"""運算 "胤" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+
+		codeInfo=self.encodeAsLoong([firstCodeInfo, secondCodeInfo])
 		return codeInfo
 
