@@ -9,9 +9,19 @@ oparser.add_option("-g", "--gen", dest="imname", help="輸入法名稱", default
 oparser.add_option("-s", "--style", dest="style", help="表格格式", default="scim")
 (options, args) = oparser.parse_args()
 
-filename='U4E00-U9FA6.txt'
+filenamelist=[
+#		'charinfo/Bopomofo.txt',
+#		'charinfo/BopomofoExt.txt',
+#		'charinfo/CJKpunct.txt',
+#		'charinfo/FullASCIIpunct.txt',
+		'charinfo/U4E00-U9FA6.txt',
+#		'charinfo/U3400-U4DB5.txt',
+#		'charinfo/U20000-U2A6DF.txt.txt',
+#		'charinfo/Hiragana.txt',
+#		'charinfo/Katakana.txt',
+#		'charinfo/Verticalpunct.txt',
+]
 fileencoding='utf-8'
-f=open(filename, encoding=fileencoding)
 
 def checkgrammar(g):
 	if g[0]=='(' and g[-1]==')':
@@ -39,17 +49,20 @@ def checkgrammar(g):
 
 chlist=[]
 chdict={}
-for line in f.readlines():
-	l=line.strip()
-	if not l: continue
-	elif l[0]=='#': continue
-	ll=l.split('\t')
-	if len(ll)>=3:
-		if not checkgrammar(ll[2]):
-			print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
-		else:
-			chlist.append(ll[1])
-			chdict[ll[1]]=char.Char(ll[1], ll[2:])
+
+for filename in filenamelist:
+	f=open(filename, encoding=fileencoding)
+	for line in f.readlines():
+		l=line.strip()
+		if not l: continue
+		elif l[0]=='#': continue
+		ll=l.split('\t')
+		if len(ll)>=3:
+			if not checkgrammar(ll[2]):
+				print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
+			else:
+				chlist.append(ll[1])
+				chdict[ll[1]]=char.Char(ll[1], ll[2:])
 
 def genTable(chdict, options):
 	choice=options.imname
