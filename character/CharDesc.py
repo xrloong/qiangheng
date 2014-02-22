@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import copy
+from character import Operator
 
 class CharDesc:
 	"""字符描述"""
@@ -8,9 +9,8 @@ class CharDesc:
 	def __init__(self, name, operator, compList, direction, description, chInfo):
 		self.name=name
 
-		self.op=operator
+		self.operator=operator
 		self.compList=compList
-		self.direction=direction
 
 		self.description=description
 
@@ -18,14 +18,16 @@ class CharDesc:
 		self.chInfo=chInfo
 
 	def __str__(self):
-		return '<{0}={1}|({2})>'.format(self.name, self.op, ",".join(map(str, self.compList)))
+		return '<{0}={1}|({2})>'.format(self.name, self.operator.getName(), ",".join(map(str, self.compList)))
 
 	def __repr__(self):
 		return str(self)
 
 	def copyInfoWithoutCompListFrom(self, srcDesc):
 		self.name=srcDesc.name
-		self.setOperatorAndDirection(srcDesc.getOperator(), srcDesc.getDirection())
+		srcOperator=srcDesc.getOperator()
+#		self.setOperatorAndDirection(srcOperator, srcDesc.getDirection())
+		self.setOperator(srcOperator)
 		self.description=srcDesc.description
 		self.setChInfo(copy.copy(srcDesc.getChInfo()))
 
@@ -35,15 +37,17 @@ class CharDesc:
 	def getName(self):
 		return self.name
 
-	def setOperatorAndDirection(self, op, direction):
-		self.direction=direction
-		self.op=op
+	def setOperatorAndDirection(self, operator, direction):
+		self.operator=operator
+
+	def setOperator(self, operator):
+		self.operator=operator
 
 	def getOperator(self):
-		return self.op
+		return self.operator
 
 	def getDirection(self):
-		return self.direction
+		return self.operator.getDirection()
 
 	def setCompList(self, compList):
 		self.compList=compList

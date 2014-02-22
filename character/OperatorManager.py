@@ -1,41 +1,14 @@
 from operatorinfo import OperatorInfo
 from operatorinfo.RearrangeInfo import *
 from .CharDesc import CharDesc
+
+def getOperatorByName(name):
+	return OperatorManager.getOperatorByName(name)
+
 class OperatorManager:
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		self.emptyCharDescGenerator=emptyCharDescGenerator
 		self.descMgr=descMgr
-
-		self.directionInfoList={
-			'龜':OperatorInfo.Arbitrary,
-			'龍':OperatorInfo.Arbitrary,
-			'纂':OperatorInfo.Vertical,
-			'算':OperatorInfo.Vertical,
-			'志':OperatorInfo.Vertical,
-			'霜':OperatorInfo.Vertical,
-			'想':OperatorInfo.Vertical,
-			'爻':OperatorInfo.Vertical,
-			'卅':OperatorInfo.Vertical,
-			'蚕':OperatorInfo.Vertical,
-			'湘':OperatorInfo.Horizontal,
-			'好':OperatorInfo.Horizontal,
-			'怡':OperatorInfo.Horizontal,
-			'穎':OperatorInfo.Horizontal,
-			'林':OperatorInfo.Horizontal,
-			'鑫':OperatorInfo.Horizontal,
-			'鴻':OperatorInfo.Horizontal,
-			'載':OperatorInfo.Arbitrary,
-			'廖':OperatorInfo.Arbitrary,
-			'起':OperatorInfo.Arbitrary,
-			'夾':OperatorInfo.Arbitrary,
-			'燚':OperatorInfo.Arbitrary,
-			'回':OperatorInfo.Surrounding,
-			'同':OperatorInfo.Surrounding,
-			'函':OperatorInfo.Surrounding,
-			'區':OperatorInfo.Surrounding,
-			'左':OperatorInfo.Surrounding,
-#			'水':OperatorInfo.Arbitrary,
-		}
 
 		self.rearrangeInfoDict={
 			'龜':RearrangeInfoSame(),
@@ -69,18 +42,13 @@ class OperatorManager:
 			'圭':RearrangeInfoV4(),
 			'燚':RearrangeInfoSquare(self.emptyCharDescGenerator),
 		}
-		self.availableOperation=[
-			'龜', '水', '錯', '龍',
-			'夾',
-			'起', '廖', '載', '聖',
-			'霜', '想', '怡', '穎',
-			'回', '同', '函', '區', '左',
-			'好', '志', '算', '湘', '纂', '膷',
-			'林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',
-		]
 
-	def isAvailableOperation(self, operatorName):
-		return (operatorName in self.availableOperation)
+	@staticmethod
+	def getOperatorByName(operatorName):
+		return Operator.Operator(operatorName)
+
+#	def isAvailableOperation(self, operator):
+#		return Operator.Operator.isAvailableOperation(operator)
 
 	# 分成以下層級
 	# SpecialCase:	錯、龜、水
@@ -92,16 +60,12 @@ class OperatorManager:
 	# TowLayer:	霜、想、怡、穎
 	# Repeate:	林、爻、卅、丰、卌、圭、燚
 	def rearrangeDesc(self, charDesc):
-		rearrangeInfo=self.rearrangeInfoDict.get(charDesc.getOperator())
+		operator=charDesc.getOperator()
+		operatorName=operator.getName()
+		rearrangeInfo=self.rearrangeInfoDict.get(operatorName)
 
 		if rearrangeInfo!=None:
 			rearrangeInfo.rearrange(charDesc)
-
-	def computeDirection(self, oldOperator):
-		"""計算部件的結合方向"""
-
-		directionInfo=self.directionInfoList.get(oldOperator, OperatorInfo.Arbitrary)
-		return directionInfo.getDirection()
 
 class OperatorManager_AR(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):

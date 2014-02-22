@@ -6,10 +6,12 @@ from .TemplateDesc import TemplateDesc
 from .CharInfo import CharInfo
 from .OperatorManager import OperatorManager
 from xml.etree import ElementTree
+from character import Operator
 
 class CharDescriptionManager:
 	NoneInfo=CharInfo('[瑲珩預設]', [])
-	NoneDesc=CharDesc("", '龜', [], '*', '(龜)', NoneInfo)
+	operator=OperatorManager.getOperatorByName('龜')
+	NoneDesc=CharDesc("", operator, [], '*', '(龜)', NoneInfo)
 
 	def __init__(self, imModule, CharInfoGenerator):
 		# characterDB 放最原始、沒有擴展過的 CharDesc ，也就是從檔案讀出來的資料。
@@ -22,13 +24,13 @@ class CharDescriptionManager:
 		self.descNetwork={}
 
 		def CharDescGenerator(charName, structInfo=['龜', [], '(龜)']):
-			operator, CompList, expression=structInfo
-#			direction=RearrangementManager.computeDirection(operator)
-			if not self.operationMgr.isAvailableOperation(operator):
-				print("<!-- 錯誤；不合法的運算 %s -->"%operator)
+			operatorName, CompList, expression=structInfo
+			operator=OperatorManager.getOperatorByName(operatorName)
+			if not operator.isAvailableOperation():
+				print("<!-- 錯誤；不合法的運算 %s -->"%operatorName)
 				return None
 
-			direction=self.operationMgr.computeDirection(operator)
+			direction=operator.getDirection()
 			tmpCharInfo=CharInfoGenerator(charName, [])
 			charDesc=CharDesc(charName, operator, CompList, direction, expression, tmpCharInfo)
 			return charDesc
@@ -223,6 +225,11 @@ class CharDescriptionManager:
 	def expandCharDescInNetwork(self, dstDesc, srcDesc):
 		# 擴展 dstDesc
 		# dstDesc 會被改變，而非產生新的 CharDesc
+
+		if not srcDesc.getOperator().isAvailableOperation():
+			print("<!-- 錯誤；不合法的運算 %s -->"%operator)
+			return None
+
 		dstDesc.copyInfoWithoutCompListFrom(srcDesc)
 
 		compList=[]

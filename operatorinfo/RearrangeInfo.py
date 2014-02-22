@@ -1,4 +1,7 @@
 
+import character.Operator as Operator
+import character.OperatorManager
+
 class RearrangeInfo:
 	def __init__(self, order):
 		sameOrder=range(len(order))
@@ -29,12 +32,14 @@ class RearrangeInfoH2:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='-'
+		ansOperatorName='好'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
 		x=oldCompList[0]
 		charDesc.setCompList([x, x,])
-		charDesc.setOperatorAndDirection('好', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoH3:
 	def __init__(self):
@@ -42,12 +47,14 @@ class RearrangeInfoH3:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='-'
+		ansOperatorName='湘'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
 		x=oldCompList[0]
 		charDesc.setCompList([x, x, x,])
-		charDesc.setOperatorAndDirection('湘', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoH4:
 	def __init__(self):
@@ -55,12 +62,14 @@ class RearrangeInfoH4:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='-'
+		ansOperatorName='膷'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
 		x=oldCompList[0]
 		charDesc.setCompList([x, x, x, x,])
-		charDesc.setOperatorAndDirection('膷', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoV2:
 	def __init__(self):
@@ -68,12 +77,14 @@ class RearrangeInfoV2:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='|'
+		ansOperatorName='志'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
 		x=oldCompList[0]
 		charDesc.setCompList([x, x,])
-		charDesc.setOperatorAndDirection('志', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoV3:
 	def __init__(self):
@@ -81,12 +92,14 @@ class RearrangeInfoV3:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='|'
+		ansOperatorName='志'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
 		x=oldCompList[0]
 		charDesc.setCompList([x, x, x,])
-		charDesc.setOperatorAndDirection('志', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoV4:
 	def __init__(self):
@@ -94,12 +107,14 @@ class RearrangeInfoV4:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='|'
+		ansOperatorName='纂'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
 		x=oldCompList[0]
 		charDesc.setCompList([x, x, x, x,])
-		charDesc.setOperatorAndDirection('纂', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoTriangle:
 	def __init__(self, emptyCharDescGenerator):
@@ -107,17 +122,21 @@ class RearrangeInfoTriangle:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='|'
+		ansOperatorName='志'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansTmpOperatorName='好'
+		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
 		x=oldCompList[0]
 
 		tmpDesc=self.emptyCharDescGenerator()
 		tmpDesc.setCompList([x, x,])
-		tmpDesc.setOperatorAndDirection('好', '-')
+		tmpDesc.setOperator(ansTmpOperator)
 
 		charDesc.setCompList([x, tmpDesc,])
-		charDesc.setOperatorAndDirection('志', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoSquare:
 	def __init__(self, emptyCharDescGenerator):
@@ -125,17 +144,21 @@ class RearrangeInfoSquare:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='|'
+		ansOperatorName='志'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansTmpOperatorName='好'
+		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
 		x=oldCompList[0]
 
 		tmpDesc=self.emptyCharDescGenerator()
 		tmpDesc.setCompList([x, x,])
-		tmpDesc.setOperatorAndDirection('好', '-')
+		tmpDesc.setOperator(ansTmpOperator)
 
 		charDesc.setCompList([tmpDesc, tmpDesc,])
-		charDesc.setOperatorAndDirection('志', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoSpecial:
 	def __init__(self):
@@ -143,15 +166,17 @@ class RearrangeInfoSpecial:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='*'
+		ansOperatorName='龍'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
 		x=oldCompList[0]
 		y=oldCompList[1]
 
 		if x.getName() in ['辶', '廴']:
 			charDesc.setCompList([y, x])
-			charDesc.setOperatorAndDirection('龍', '*')
+			charDesc.setOperator(ansOperatorName)
 
 class RearrangeInfoFrost:
 	def __init__(self, emptyCharDescGenerator):
@@ -159,19 +184,23 @@ class RearrangeInfoFrost:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='|'
+		ansOperatorName='志'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansTmpOperatorName='好'
+		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
 		x=oldCompList[0]
 		y=oldCompList[1]
 		z=oldCompList[2]
 
 		tmpDesc=self.emptyCharDescGenerator()
 		tmpDesc.setCompList([y, z,])
-		tmpDesc.setOperatorAndDirection('好', '-')
+		tmpDesc.setOperator(ansTmpOperator)
 
 		charDesc.setCompList([x, tmpDesc,])
-		charDesc.setOperatorAndDirection('志', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoThink:
 	def __init__(self, emptyCharDescGenerator):
@@ -179,19 +208,23 @@ class RearrangeInfoThink:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='|'
+		ansOperatorName='志'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansTmpOperatorName='好'
+		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
 		x=oldCompList[0]
 		y=oldCompList[1]
 		z=oldCompList[2]
 
 		tmpDesc=self.emptyCharDescGenerator()
 		tmpDesc.setCompList([x, y,])
-		tmpDesc.setOperatorAndDirection('好', '-')
+		tmpDesc.setOperator(ansTmpOperator)
 
 		charDesc.setCompList([tmpDesc, z,])
-		charDesc.setOperatorAndDirection('志', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoHappy:
 	def __init__(self, emptyCharDescGenerator):
@@ -199,19 +232,23 @@ class RearrangeInfoHappy:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='-'
+		ansOperatorName='好'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansTmpOperatorName='志'
+		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
 		x=oldCompList[0]
 		y=oldCompList[1]
 		z=oldCompList[2]
 
 		tmpDesc=self.emptyCharDescGenerator()
 		tmpDesc.setCompList([y, z,])
-		tmpDesc.setOperatorAndDirection('志', '|')
+		tmpDesc.setOperator(ansTmpOperator)
 
 		charDesc.setCompList([x, tmpDesc,])
-		charDesc.setOperatorAndDirection('好', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoSmart:
 	def __init__(self, emptyCharDescGenerator):
@@ -219,19 +256,23 @@ class RearrangeInfoSmart:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='-'
+		ansOperatorName='好'
+		ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
+		ansTmpOperatorName='志'
+		ansTmpOperator=character.OperatorManager.getOperatorByName(ansTmpOperatorName)
 		x=oldCompList[0]
 		y=oldCompList[1]
 		z=oldCompList[2]
 
 		tmpDesc=self.emptyCharDescGenerator()
 		tmpDesc.setCompList([x, y,])
-		tmpDesc.setOperatorAndDirection('志', '|')
+		tmpDesc.setOperator(ansTmpOperator)
 
 		charDesc.setCompList([tmpDesc, z,])
-		charDesc.setOperatorAndDirection('好', ansDirection)
+		charDesc.setOperator(ansOperator)
 
 class RearrangeInfoSurroundingOpenUp:
 	def __init__(self):
@@ -239,14 +280,16 @@ class RearrangeInfoSurroundingOpenUp:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		if oldOperator=='函':
-			ansDirection='@'
+		if oldOperatorName=='函':
+			ansOperatorName='龍'
+			ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
 			x=oldCompList[0]
 			y=oldCompList[1]
 			charDesc.setCompList([y, x])
-			charDesc.setOperatorAndDirection('龍', '@')
+			charDesc.setOperator(ansOperator)
 
 class RearrangeInfoLShapeSimpleRadical:
 	def __init__(self):
@@ -254,15 +297,16 @@ class RearrangeInfoLShapeSimpleRadical:
 
 	def rearrange(self, charDesc):
 		oldOperator=charDesc.getOperator()
+		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
-		ansDirection='*'
-		if oldOperator=='起':
-			ansDirection='*'
+		if oldOperatorName=='起':
+			ansOperatorName='龍'
+			ansOperator=character.OperatorManager.getOperatorByName(ansOperatorName)
 			x=oldCompList[0]
 			y=oldCompList[1]
 
 			if x.getName() in ['辶', '廴']:
 				charDesc.setCompList([y, x])
-				charDesc.setOperatorAndDirection('龍', '*')
+				charDesc.setOperator(ansOperator)
 
