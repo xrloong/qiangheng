@@ -39,6 +39,17 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		"""運算 "爲" """
 		self.encodeAsLoong(codeInfo, codeInfoList)
 
+
+	def encodeAsYou(self, codeInfo, codeInfoList):
+		"""運算 "幽" """
+
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+		thirdCodeInfo=codeInfoList[2]
+
+		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
+		self.encodeAsLoong(codeInfo, newCodeInfoList)
+
 	def encodeAsLiang(self, codeInfo, codeInfoList):
 		"""運算 "㒳" """
 
