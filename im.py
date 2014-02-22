@@ -25,6 +25,9 @@ class NoneIM:
 			# 若非空且之前没設過值
 			return (not self.isNone) and (not self.isSeted)
 
+		def setByComps(self, complist):
+			pass
+
 		@property
 		def isNone(self):
 			# 是否為空
@@ -87,7 +90,15 @@ class NoneIM:
 		pass
 
 	def setCharTree(self, ch):
-		pass
+		if not ch.isToSetTree():
+			return
+
+		complist=self.getAllComp(ch)
+
+		for tmpch in complist:
+			self.setCharTree(tmpch)
+
+		ch.setByComps(complist)
 
 	def getAllComp(self, ch):
 #		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
@@ -322,6 +333,13 @@ class Array(NoneIM):
 		def getARProp(self):
 			return self._ar_incode
 
+		def setByComps(self, complist):
+			arlist=list(map(lambda c: c.getARProp(), complist))
+			if complist and all(arlist):
+				cat="".join(arlist)
+				ar=cat[:3]+cat[-1] if len(cat)>4 else cat
+				self.setARProp(ar)
+
 		@property
 		def ar(self):
 			return self._ar_incode
@@ -376,21 +394,6 @@ class Array(NoneIM):
 		if ch.ar:
 			return ch.ar
 
-	def setCharTree(self, ch):
-		if not ch.isToSetTree():
-			return
-
-		complist=self.getAllComp(ch)
-
-		for tmpch in complist:
-			self.setCharTree(tmpch)
-
-		arlist=list(map(lambda c: c.getARProp(), complist))
-		if complist and all(arlist):
-			cat="".join(arlist)
-			ar=cat[:3]+cat[-1] if len(cat)>4 else cat
-			ch.setARProp(ar)
-
 class DaYi(NoneIM):
 	"大易輸入法"
 
@@ -411,6 +414,13 @@ class DaYi(NoneIM):
 
 		def getDYProp(self):
 			return self._dy_incode
+
+		def setByComps(self, complist):
+			dylist=list(map(lambda c: c.getDYProp(), complist))
+			if complist and all(dylist):
+				cat="".join(dylist)
+				dy=cat[:3]+cat[-1] if len(cat)>4 else cat
+				self.setDYProp(dy)
 
 		@property
 		def dy(self):
@@ -476,21 +486,6 @@ class DaYi(NoneIM):
 		if ch.dy:
 			return ch.dy
 
-	def setCharTree(self, ch):
-		if not ch.isToSetTree():
-			return
-
-		complist=self.getAllComp(ch)
-
-		for tmpch in complist:
-			self.setCharTree(tmpch)
-
-		dylist=list(map(lambda c: c.getDYProp(), complist))
-		if complist and all(dylist):
-			cat="".join(dylist)
-			dy=cat[:3]+cat[-1] if len(cat)>4 else cat
-			ch.setDYProp(dy)
-
 class Boshiamy(NoneIM):
 	"嘸蝦米輸入法"
 
@@ -514,6 +509,14 @@ class Boshiamy(NoneIM):
 
 		def getBSProp(self):
 			return [self._bs_incode, self._bs_spcode]
+
+		def setByComps(self, complist):
+			bslist=list(map(lambda c: c.getBSProp()[0], complist))
+			if complist and all(bslist):
+				cat="".join(bslist)
+				bs_incode=(cat[:3]+cat[-1]) if len(cat)>4 else cat
+				bs_spcode=complist[-1].getBSProp()[1]
+				self.setBSProp(bs_incode, bs_spcode)
 
 		@property
 		def bs(self):
@@ -570,22 +573,6 @@ class Boshiamy(NoneIM):
 		if ch.bs:
 			return ch.bs
 
-	def setCharTree(self, ch):
-		if not ch.isToSetTree():
-			return
-
-		complist=self.getAllComp(ch)
-
-		for tmpch in complist:
-			self.setCharTree(tmpch)
-
-		bslist=list(map(lambda c: c.getBSProp()[0], complist))
-		if complist and all(bslist):
-			cat="".join(bslist)
-			bs_incode=(cat[:3]+cat[-1]) if len(cat)>4 else cat
-			bs_spcode=complist[-1].getBSProp()[1]
-			ch.setBSProp(bs_incode, bs_spcode)
-
 class ZhengMa(NoneIM):
 	"鄭碼輸入法"
 
@@ -609,6 +596,13 @@ class ZhengMa(NoneIM):
 
 		def getZMProp(self):
 			return self._zm_rtlist
+
+		def setByComps(self, complist):
+			if all(complist):
+				rtlist=sum(map(lambda c: c.getZMProp(), complist), [])
+				if complist and all(rtlist):
+					rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
+					self.setZMProp(rtlist)
 
 		@property
 		def zm(self):
@@ -687,21 +681,6 @@ class ZhengMa(NoneIM):
 	def getCode(self, ch):
 		if ch.zm:
 			return ch.zm
-
-	def setCharTree(self, ch):
-		if not ch.isToSetTree():
-			return
-
-		complist=self.getAllComp(ch)
-
-		for tmpch in complist:
-			self.setCharTree(tmpch)
-
-		if all(complist):
-			rtlist=sum(map(lambda c: c.getZMProp(), complist), [])
-			if complist and all(rtlist):
-				rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-				ch.setZMProp(rtlist)
 
 if __name__=='__main__':
 	pass
