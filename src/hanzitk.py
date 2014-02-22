@@ -3,6 +3,7 @@
 
 from optparse import OptionParser
 from gear.shape import *
+import re
 
 
 class HanZiDrawingSystem():
@@ -114,7 +115,7 @@ class ShowHanziWidget():
 #		string=self.entryInput.get()
 #		def_list=self.rm.getFont(string)
 		string=self.entryInput.get()
-		def_list=string.split(",")
+		def_list=re.split(',|;', string)
 		self.dh.draw(def_list)
 		self.dh.drawFrame()
 
@@ -132,7 +133,7 @@ class RadicalManager:
 
 				if len(ll)>=2:
 					def_char=ll[0]
-					def_list=def_char.split(',')
+					def_list=re.split(',|;', def_char)
 
 					self.setFont(ll[1], def_list)
 

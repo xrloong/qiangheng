@@ -54,7 +54,7 @@ class DCCodeInfo(CodeInfo):
 	def toCode(self):
 		strokeList=self.getStrokeGroup().getStrokeList()
 		codeList=[self.encodeStroke(stroke) for stroke in strokeList]
-		return ','.join(codeList)
+		return ';'.join(codeList)
 
 	def encodeStroke(self, stroke):
 		def encodePoints(points):
