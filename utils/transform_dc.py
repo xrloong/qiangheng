@@ -18,23 +18,11 @@ def main():
 			post=sre.group(4)
 #			print('%s資訊表示式="(%s)%s"%s'%(pre, name, exp, post))
 #			print('{0}資訊表示式="({1}){2}"{3}'.format(pre, name, exp, post))
-			genStroke(name, exp)
-#		else:
-#			print(l)
-
-def main():
-	pattern = '(.*)資訊表示式="\((.*)\)(.*)"(.*)'
-	r=re.compile(pattern)
-	for filename in ["qhdata/radix/CJK/dc.xml", "qhdata/radix/CJK-A/dc.xml", ]:
-		for line in open(filename):
-			l = line.strip('\n')
-			sre=r.search(l)
-			if sre:
-				pre=sre.group(1)
-				name=sre.group(2)
-				exp=sre.group(3)
-				post=sre.group(4)
-				genStroke(name, exp)
+			strokeComputer=genStroke(name, exp)
+			newStrokeInfo = "{0};{1[0]:02X}{1[1]:02X}{1[2]:02X}{1[3]:02X};{2}".format(name, strokeComputer.getNewScope(), strokeComputer.getInfo())
+			print(re.sub(pattern, '\\1資訊表示式="(%s)%s" 筆劃資訊="%s"\\4'%(name, strokeComputer.getNewExp(), newStrokeInfo), l))
+		else:
+			print(l)
 
 class BaseCurveComputer:
 	def __init__(self, name, exp):
@@ -1761,13 +1749,14 @@ def genStroke(name, exp):
 	}
 	clsComputer = computerDict.get(name, InvalidCurveComputer)
 	computer = clsComputer(name, exp)
-	print(
-		"{0:02X}{1:02X},{2:02X}{3:02X}".format(*computer.getScope()),
-		"{0:02X}{1:02X},{2:02X}{3:02X}".format(*computer.getNewScope()),
-#		"{0:02X}{1:02X},{2:02X}{3:02X}".format(*computer.getStartEnd()),
-		computer.getNewExp(), exp,
-		computer.getInfo(),
-		)
+#	print(
+#		"{0:02X}{1:02X},{2:02X}{3:02X}".format(*computer.getScope()),
+#		"{0:02X}{1:02X},{2:02X}{3:02X}".format(*computer.getNewScope()),
+##		"{0:02X}{1:02X},{2:02X}{3:02X}".format(*computer.getStartEnd()),
+#		computer.getNewExp(), exp,
+#		computer.getInfo(),
+#		)
+	return computer
 
 main()
 
