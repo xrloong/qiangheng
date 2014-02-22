@@ -14,7 +14,9 @@ class DescriptionManagerToHanZiNetworkConverter:
 		sortedNameList=sorted(charNameList)
 
 		for charName in sortedNameList:
-			self.hanziNetwork.addNamedNode(charName)
+			charDesc=self.queryDescription(charName)
+			characterProperty=charDesc.getCharacterProperty()
+			self.hanziNetwork.addNamedNode(charName, characterProperty)
 
 		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
@@ -59,8 +61,8 @@ class HanZiNetwork:
 		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager)
 		return toHanZiNetworkConverter.constructDescriptionNetwork()
 
-	def addNamedNode(self, name):
-		tmpNode=HanZiNode.HanZiNode(name)
+	def addNamedNode(self, name, characterProperty):
+		tmpNode=HanZiNode.HanZiNode(name, characterProperty)
 		self.structDescUniqueNameToNodeDict[name]=tmpNode
 		self.structDescExpandNameToNodeDict[name]=tmpNode
 
@@ -118,5 +120,9 @@ class HanZiNetwork:
 
 	def getCodePropertiesList(self, charName):
 		charNode=self.structDescExpandNameToNodeDict.get(charName)
-		return charNode.getCodePropertiesList()
+		charProp=charNode.getCharacterProperty()
+		freq=charProp.getFrequency()
+
+		codePropList=charNode.getCodePropertiesList()
+		return map(lambda codeAndType: codeAndType+[freq], codePropList)
 

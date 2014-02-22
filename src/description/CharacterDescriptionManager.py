@@ -59,10 +59,12 @@ class CharDescriptionManager:
 		for charDesc in charDescList:
 			charName=charDesc.getName()
 			if charName in self.characterDB:
-				origCharDesc=self.characterDB.get(charName, None)
+				characterProperty=charDesc.getCharacterProperty()
+				origCharDesc=self.characterDB.get(charName)
 				origCharDesc.setStructureList(charDesc.getStructureList())
 				origCharDesc.updateCharacterProperty(charDesc.getCharacterProperty())
 			else:
+				characterProperty=charDesc.getCharacterProperty()
 				self.characterDB[charName]=charDesc
 
 
@@ -73,19 +75,6 @@ class CharDescriptionManager:
 		templateDB=self.parser.loadTemplateByParsingXML(rootNode)
 		self.templateDB.update(templateDB)
 		self.operationMgr.setTemplateDB(self.templateDB)
-
-	def loadCodeInfoFromXML(self, filename, fileencoding='utf-8-sig'):
-		f=open(filename, encoding=fileencoding)
-		xmlNode=ElementTree.parse(f)
-		rootNode=xmlNode.getroot()
-
-		turtleInfoList=self.parser.loadCodeInfoByParsingXML(rootNode)
-		for [charName, compList, propDict] in turtleInfoList:
-			charDesc=self.characterDB.get(charName, None)
-			if charDesc==None:
-				charDesc=CharacterDescription(charName)
-				self.characterDB[charName]=charDesc
-			charDesc.extendStructureList(compList)
 
 	def loadCodeInfoFromXML(self, filename, fileencoding='utf-8-sig'):
 		f=open(filename, encoding=fileencoding)

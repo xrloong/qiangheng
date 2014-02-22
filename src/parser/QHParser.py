@@ -1,5 +1,6 @@
 import sys
 
+from description.CharacterProperty import CharacterProperty
 from description.CharacterDescription import CharacterDescription
 from description.StructureDescription import HangerStructureDescription
 from description.StructureDescription import TurtleStructureDescription
@@ -121,11 +122,10 @@ class QHParser:
 		for node in targetChildNodes:
 			charName=node.get('名稱')
 			structureList=self.getDesc_TurtleCharacterList(node)
-			charProperties=node.attrib
 
-			charDesc=CharacterDescription(charName)
+			charProp=CharacterProperty(node.attrib)
+			charDesc=CharacterDescription(charName, charProp)
 			charDesc.setStructureList(structureList)
-			charDesc.updateCharacterProperty(charProperties)
 
 			charDescList.append(charDesc)
 		return charDescList
@@ -151,11 +151,10 @@ class QHParser:
 		for node in targetChildNodes:
 			structureList=self.getDesc_StructureList(node)
 			charName=node.get('名稱')
-			charProperties=node.attrib
 
-			charDesc=CharacterDescription(charName)
+			charProp=CharacterProperty(node.attrib)
+			charDesc=CharacterDescription(charName, charProp)
 			charDesc.setStructureList(structureList)
-			charDesc.updateCharacterProperty(charProperties)
 
 			charDescList.append(charDesc)
 		return charDescList

@@ -103,15 +103,13 @@ class QiangHeng:
 		print(table)
 
 	def genIMMapping(self):
-
 		characterFilter=lambda charName: (len(charName)==1)
 		targetCharacterList=filter(characterFilter, self.descMgr.getAllCharacters())
 		table=[]
 		for charName in sorted(targetCharacterList):
 #			print("<-- %s -->"%charName, sys.stderr)
 			codePropList=self.hanziNetwork.getCodePropertiesList(charName)
-			freq=self.descMgr.queryCharacterFrequency(charName)
-			for code, type in codePropList:
+			for code, type, freq in codePropList:
 				table.append([code, charName, freq, type])
 		return table
 

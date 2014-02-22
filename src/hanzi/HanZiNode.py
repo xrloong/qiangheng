@@ -113,12 +113,16 @@ class HanZiStructure:
 			pass
 
 class HanZiNode:
-	def __init__(self, name):
+	def __init__(self, name, characterProperty=None):
 		self.name=name
 		self.structureList=[]
+		self.characterProperty=characterProperty
 
 	def getName(self):
 		return self.name
+
+	def getCharacterProperty(self):
+		return self.characterProperty
 
 	def addStructure(self, structure):
 		self.structureList.append(structure)
