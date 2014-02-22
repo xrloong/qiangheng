@@ -1,6 +1,6 @@
 ﻿== 2011/01/21 ==
 版本：0.21
-SVN: http://svn.openfoundry.org/qiangheng	???
+SVN: http://svn.openfoundry.org/qiangheng	327
 提供一字多碼的能力（容錯碼、快碼、簡碼）。
 支援字頻。字頻表是由 SCIM 的廣東拼音字碼表所擷取出來的。
 
