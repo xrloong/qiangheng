@@ -40,18 +40,21 @@ class QiangHeng:
 				'CJK.xml',
 		]
 
-		componentDir="component"+"/"+dirIM
+		componentDir="component"+"/"
+		componentMainDir=componentDir+"main/"
+		componentImDir=componentDir+dirIM
 
 		dirQHData=dirQHDataRoot + "/"
 		tmpfname=filenamelist[0]
 		radixDir="radix"+"/"+dirIM
 		toComponentList=[
 				dirQHData+'main/'+tmpfname,
-				dirQHData+componentDir+tmpfname,
+				dirQHData+componentMainDir+tmpfname,
+				dirQHData+componentImDir+tmpfname,
 #				dirQHData+radixDir+tmpfname,
 				]
 
-		templateDir=componentDir
+		templateDir=componentImDir
 		templateFileName='template.xml'
 		toTemplateList=[
 				dirQHData+'main/'+templateFileName,
