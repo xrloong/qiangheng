@@ -38,7 +38,7 @@ class Boshiamy(NoneIM):
 				'hk':'嘸蝦米',
 				'en':'Boshiamy',
 				}
-		self.iconfile="Boshiamy.png"
+		self.iconfile="qhbs.svg"
 		self.maxkeylength=4
 
 if __name__=='__main__':

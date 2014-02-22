@@ -42,7 +42,7 @@ class Array(NoneIM):
 				'hk':'行列',
 				'en':'Array',
 				}
-		self.iconfile="Array.png"
+		self.iconfile="qhar.svg"
 		self.maxkeylength=4
 
 if __name__=='__main__':

@@ -134,7 +134,7 @@ U+4EBC	亼	(龜)	ka
 U+4EBD	亽	(龜)	kh
 U+4EBE	亾	(龜)	ks
 U+4ECA	今	(龜)	khg
-U+4ECB	介	(龜)	k3
+U+4ECB	介	(龜)	ke
 U+4ED2	仒	(龜)	kh
 U+4EE4	令	(龜)	khb
 U+4EE5	以	(龜)	xk

@@ -52,7 +52,7 @@ class DaYi(NoneIM):
 				'hk':'大易',
 				'en':'DaYi',
 				}
-		self.iconfile="DaYi.png"
+		self.iconfile="qhdy.svg"
 		self.maxkeylength=4
 
 if __name__=='__main__':

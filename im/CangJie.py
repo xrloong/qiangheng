@@ -38,7 +38,7 @@ class CangJie(NoneIM):
 				'hk':'倉頡',
 				'en':'CangJie',
 				}
-		self.iconfile="CangJie.png"
+		self.iconfile="qhcj.svg"
 		self.maxkeylength=5
 
 if __name__=='__main__':

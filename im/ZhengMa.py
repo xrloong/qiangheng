@@ -36,9 +36,9 @@ class ZhengMa(NoneIM):
 				'cn':'郑码',
 				'tw':'鄭碼',
 				'hk':'鄭碼',
-				'nn':'Boshiamy',
+				'en':'ZhengMa',
 				}
-		self.iconfile="ZhengMa.png"
+		self.iconfile="qhzm.svg"
 		self.maxkeylength=4
 
 if __name__=='__main__':

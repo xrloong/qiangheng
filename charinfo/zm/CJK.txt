@@ -1696,7 +1696,7 @@ U+9E75	鹵	(龜)	id,j,o
 U+9E7D	鹽	(龜)	h,m,o,l
 U+9E7F	鹿	(龜)	tx
 U+9E81	麁	(龜)	r,tx
-U+9E97	麗	(龜)	a,l,l.tx
+U+9E97	麗	(龜)	a,l,l,tx
 U+9EA5	麥	(龜)	f,o,o,r
 U+9EA6	麦	(龜)	ci,rs
 U+9EC3	黃	(龜)	ea,k,o

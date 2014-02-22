@@ -165,8 +165,12 @@ def genFile(options):
 
 	if pf in ['scim']:
 		p=platform.ScimPlatform(inputMethod)
+	elif pf in ['ibus']:
+		p=platform.IBusPlatform(inputMethod)
 	elif pf in ['gcin']:
 		p=platform.GcinPlatform(inputMethod)
+	elif pf in ['ovim']:
+		p=platform.OVimPlatform(inputMethod)
 	elif pf in ['msim']:
 		p=platform.MSimPlatform(inputMethod)
 	elif pf in ['table']:

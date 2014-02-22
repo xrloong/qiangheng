@@ -4,6 +4,35 @@
 亦即建立每個字的結構描述，以一些基礎字根及字的字碼，並透過輸入法的演算法來自動產生所有
 字的字碼。
 
+== 安裝 ==
+IBus
+	輸入法檔案為 tables/ibus/*.db ，圖示檔為 icons/*.svg 。
+	選擇所要使用的輸入法，
+	將輸入法檔複製到 /usr/share/ibus-table/tables，將圖示檔複製到 /usr/share/ibus-table/icons 。
+
+	重新載入。
+
+SCIM
+	輸入法檔案為 tables/scim/*.bin ，圖示檔為 icons/*.bin 。
+	選擇所要使用的輸入法，
+	將輸入法檔複製到 /usr/share/scim/tables，將圖示檔複製到 /usr/share/scim/icons 。
+
+
+	重新登入。
+
+GCIN
+	輸入法檔案為 tables/gcin/*.gtab ，圖示檔為 pixmaps/*.png 。
+	選擇所要使用的輸入法，
+	將輸入法檔複製到 /usr/share/gcin/table，將圖示檔複製到 /usr/share/pixmaps/gcin 。
+	修改 /usr/share/gcin/table/gtab.list
+
+	重新執行。
+
+OVIM
+	香草輸入法(OpenVanilla)。
+	輸入法檔案為 tables/ovim/*.cin ，圖示檔為 pixmaps/*.png 。
+	未測試過。請依香草輸入法的方式將相關檔案放置至正確位置。
+
 == 原理說明 ==
 請參考 tex/principle.pdf
 
@@ -48,10 +77,12 @@ Options:
 
 == 檔案說明 ==
    README.txt		說明文件
-   U4E00-U9FA6.txt	字的結構描述
+   charinfo/		字的結構描述所在目錄
+   character/		字符類別
+   im/			處理輸入法相關的元件
    qiangheng.py		主程式
-   char.py		字符類別
-   im.py		輸入法類別
+   qhparse.py		字的結構描述的剖析元件
+   platform.py		處理於輸入法平台有關
 
 == 結構說明 ==
 每行定義一個字的結構。以 "叡" 字來做說明。
@@ -83,8 +114,12 @@ X, Y, Z 皆為漢字，其中， X 表運算子，Y 表運算元。以上例而�
 
 == 進度說明 ==
 倉頡、行列、大易、嘸蝦米和鄭碼的基本字集的拆碼已完成。
-可產生 U+4E00 - U+9FA5 中的編碼。
-其中，倉頡的規則較為複雜，對一些特別結構字，仍不能正確產生，如敶、毈、夠。
+
+目前能產生的字為 Unicode U+4E00 ~ U+9FA5 ，共 20902 字
+對於正確率，目前只有倉頡的部分與馬來西亞倉頡之友的比對過
+約有 187 個字是不符的
+其它輸入法仍有許多錯
+
 
 == 其它 ==
 字的結構可能有些冗餘
