@@ -94,6 +94,7 @@ class OperatorManager_AR(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		OperatorManager.__init__(self, descMgr, emptyCharDescGenerator)
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical()
+		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp()
 
 class OperatorManager_BS(OperatorManager):
 	def __init__(self, descMgr, emptyCharDescGenerator):
