@@ -23,7 +23,7 @@ class CodeInfoEncoder:
 		return codeInfo
 
 	def interprettCharacterCode(self, codeInfo):
-		return codeInfo.characterCode
+		return codeInfo.toCode()
 
 	def encode(self, operator, codeInfoList):
 		codeInfo=self.setByComps(operator, codeInfoList)

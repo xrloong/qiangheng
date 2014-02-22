@@ -13,14 +13,10 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateDefaultCodeInfo(self, strokeList):
-		codeInfo=DCCodeInfo(strokeList)
-		return codeInfo
+		return DCCodeInfo.generateDefaultCodeInfo(strokeList)
 
 	def generateCodeInfo(self, propDict):
 		return DCCodeInfo.generateCodeInfo(propDict)
-
-	def interprettCharacterCode(self, codeInfo):
-		return codeInfo.getCode()
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getStrokeList())>0, codeInfoList))

@@ -10,29 +10,10 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateDefaultCodeInfo(self, codeList, supplementCode):
-		codeInfo=BSCodeInfo(None, codeList, supplementCode)
-		return codeInfo
+		return BSCodeInfo.generateDefaultCodeInfo(codeList, supplementCode)
 
 	def generateCodeInfo(self, propDict):
 		return BSCodeInfo.generateCodeInfo(propDict)
-
-	def interprettCharacterCode(self, codeInfo):
-		singletonCode=codeInfo.getSingletonCode()
-		codeList=codeInfo.getBSCodeList()
-		supplementCode=codeInfo.getBSSupplement()
-
-		if singletonCode:
-			return singletonCode
-		if codeList==None or supplementCode==None:
-			return None
-		else:
-			code="".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], codeList))
-			if len(code)<3:
-				return code+supplementCode
-			elif len(code)>4:
-				return code[:3]+code[-1:]
-			else:
-				return code
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getBSCodeList(), codeInfoList))

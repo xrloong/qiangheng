@@ -10,6 +10,11 @@ class DCCodeInfo(CodeInfo):
 		self.strokeList=strokeList
 
 	@staticmethod
+	def generateDefaultCodeInfo(strokeList):
+		codeInfo=DCCodeInfo(strokeList)
+		return codeInfo
+
+	@staticmethod
 	def generateCodeInfo(propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
 		strokeList=[]
@@ -23,6 +28,9 @@ class DCCodeInfo(CodeInfo):
 
 		codeInfo=DCCodeInfo(strokeList, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
+
+	def toCode(self):
+		return self.getCode()
 
 	def getStrokeList(self):
 		return self.strokeList

@@ -50,7 +50,3 @@ class CodeInfo:
 	def variance(self):
 		return self.codeVariance.getVarianceByString()
 
-	@property
-	def characterCode(self):
-		return None
-

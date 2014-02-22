@@ -9,14 +9,10 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateDefaultCodeInfo(self, corners):
-		codeInfo=FCCodeInfo(corners)
-		return codeInfo
+		return FCCodeInfo.generateDefaultCodeInfo(corners)
 
 	def generateCodeInfo(self, propDict):
 		return FCCodeInfo.generateCodeInfo(propDict)
-
-	def interprettCharacterCode(self, codeInfo):
-		return "%s%s%s%s"%(codeInfo.getTopLeft(), codeInfo.getTopRight(), codeInfo.getBottomLeft(), codeInfo.getBottomRight())
 
 	def isAvailableOperation(self, codeInfoList):
 		return True

@@ -44,6 +44,11 @@ class FCCodeInfo(CodeInfo):
 		[self._top_left, self._top_right, self._bottom_left, self._bottom_right]=corners
 
 	@staticmethod
+	def generateDefaultCodeInfo(corners):
+		codeInfo=FCCodeInfo(corners)
+		return codeInfo
+
+	@staticmethod
 	def generateCodeInfo(propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
 		top_left=''
@@ -61,6 +66,9 @@ class FCCodeInfo(CodeInfo):
 		corners=[top_left, top_right, bottom_left, bottom_right]
 		codeInfo=FCCodeInfo(corners, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
+
+	def toCode(self):
+		return "%s%s%s%s"%(self.getTopLeft(), self.getTopRight(), self.getBottomLeft(), self.getBottomRight())
 
 	def getTopLeft(self):
 		return self._top_left

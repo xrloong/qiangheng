@@ -121,6 +121,11 @@ class ARCodeInfo(CodeInfo):
 		self._codeList=codeList
 
 	@staticmethod
+	def generateDefaultCodeInfo(codeList):
+		codeInfo=ARCodeInfo(codeList)
+		return codeInfo
+
+	@staticmethod
 	def generateCodeInfo(propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
 		codeList=None
@@ -131,6 +136,13 @@ class ARCodeInfo(CodeInfo):
 
 		codeInfo=ARCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
+
+	def toCode(self):
+		mainRadixList=self.getMainCodeList()
+		mainCodeList=list(map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList))
+		code="".join(mainCodeList)
+		return (code[:3]+code[-1] if len(code)>4 else code)
+
 
 	def isInstallmentEncoded(self):
 		return len(self._codeList)>1

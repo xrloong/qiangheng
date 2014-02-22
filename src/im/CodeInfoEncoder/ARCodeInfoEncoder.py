@@ -6,25 +6,14 @@ from gear.CodeInfoEncoder import CodeInfoEncoder
 from gear.CodeInfo import CodeInfo
 
 class ARCodeInfoEncoder(CodeInfoEncoder):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	def __init__(self):
 		pass
 
 	def generateDefaultCodeInfo(self, codeList):
-		codeInfo=ARCodeInfo(codeList)
-		return codeInfo
+		return ARCodeInfo.generateDefaultCodeInfo(codeList)
 
 	def generateCodeInfo(self, propDict):
 		return ARCodeInfo.generateCodeInfo(propDict)
-
-	def interprettCharacterCode(self, codeInfo):
-		mainRadixList=codeInfo.getMainCodeList()
-		mainCodeList=list(map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList))
-		code="".join(mainCodeList)
-		return (code[:3]+code[-1] if len(code)>4 else code)
-
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getMainCodeList(), codeInfoList))

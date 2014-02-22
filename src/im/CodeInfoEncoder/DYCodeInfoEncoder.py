@@ -10,17 +10,10 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateDefaultCodeInfo(self, codeList):
-		codeInfo=DYCodeInfo(codeList)
-		return codeInfo
+		return DYCodeInfo.generateDefaultCodeInfo(codeList)
 
 	def generateCodeInfo(self, propDict):
 		return DYCodeInfo.generateCodeInfo(propDict)
-
-	def interprettCharacterCode(self, codeInfo):
-		mainRadixList=codeInfo.getMainCodeList()
-		mainCodeList=list(map(lambda x: DYCodeInfo.radixToCodeDict[x], mainRadixList))
-		code="".join(mainCodeList)
-		return (code[:3]+code[-1:] if len(code)>4 else code)
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getMainCodeList(), codeInfoList))

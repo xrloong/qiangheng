@@ -5,6 +5,11 @@ class SPCodeInfo(CodeInfo):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 	@staticmethod
+	def generateDefaultCodeInfo(characterCode):
+		codeInfo=SPCodeInfo(characterCode)
+		return codeInfo
+
+	@staticmethod
 	def generateCodeInfo(propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
 		characterCode=propDict.get('資訊表示式', '')
@@ -12,10 +17,6 @@ class SPCodeInfo(CodeInfo):
 		codeInfo=SPCodeInfo(characterCode, isSupportCharacterCode, isSupportRadixCode)
 		return codeInfo
 
-	@property
-	def characterCode(self):
-		return self.getCharacterCode()
-
-	def getCharacterCode(self):
-		return self._characterCode
+	def toCode(self):
+		return ""
 
