@@ -103,10 +103,7 @@ class CJCharInfo(CharInfo):
 				# 不同向
 				ansRadixList.append(tmpchinfo._cj_body)
 
-		self._cj_direction=direction
-		self._cj_radix_list=ansRadixList
-#		self._cj_radix_list=[x.lower() for x in ansRadixList[:-1]]+ansRadixList[-1:]
-		self._cj_body=self.computeBodyCode(self._cj_radix_list)
+		self.setCJProp(direction+','.join(ansRadixList))
 
 	@property
 	def cj(self):
@@ -114,13 +111,11 @@ class CJCharInfo(CharInfo):
 			return self._cj_single
 		else:
 			return self.computeTotalCode(self._cj_radix_list).lower()
-#		return self._cj_incode.lower()
 
 	@property
 	def isSeted(self):
 		# 不是很多的判斷指標
 		return bool(self._cj_radix_list)
-#		return bool(self._cj_incode)
 
 	def getCode(self):
 		if self.cj: return self.cj
@@ -268,17 +263,19 @@ class BSCharInfo(CharInfo):
 		super().__init__(charname, parseans, prop)
 		self._bs_incode=None
 		self._bs_spcode=None
-		if len(prop)>=2:
-			self.setBSProp(prop[0], prop[1])
+		if len(prop)>=1:
+			self.setBSProp(prop[0])
 		self.noneFlag=False
 
-	def setBSProp(self, bs_incode, bs_spcode):
-		if bs_incode=='XXXX' or bs_spcode=='XXXX':
+	def setBSProp(self, bs_x_code):
+		bs_list=bs_x_code.split(',')
+
+		if len(bs_list)>=2 and bs_list[0] != 'XXXX' and bs_list[1]!='XXXX':
+			self._bs_incode=bs_list[0]
+			self._bs_spcode=bs_list[1]
+		else:
 			self._bs_incode=None
 			self._bs_spcode=None
-		else:
-			self._bs_incode=bs_incode
-			self._bs_spcode=bs_spcode
 
 	def getBSProp(self):
 		return [self._bs_incode, self._bs_spcode]
@@ -291,7 +288,7 @@ class BSCharInfo(CharInfo):
 			cat="".join(bslist)
 			bs_incode=(cat[:3]+cat[-1]) if len(cat)>4 else cat
 			bs_spcode=complist[-1].getBSProp()[1]
-			self.setBSProp(bs_incode, bs_spcode)
+			self.setBSProp(','.join([bs_incode, bs_spcode]))
 
 	@property
 	def bs(self):
