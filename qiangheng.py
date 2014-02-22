@@ -170,6 +170,7 @@ def genFile(options):
 
 	if method in ['動', '動態', '動態組碼', 'dynamic',]:
 		descMgr=getDescDBFromFile(pathlist, constructor)
+		descMgr.ConstructDescriptionNetwork()
 		z.setStruct(descMgr)
 	elif method in ['表', '表格', 'puretable', 'pt']:
 		cmtable=getTableFromFile(options.ptfile)

@@ -53,7 +53,8 @@ class NoneIM:
 		if self.method=='D':
 			table=[]
 			for chname in getTargetChars():
-				expandDesc=self.descMgr.getExpandDescriptionByName(chname)
+#				expandDesc=self.descMgr.getExpandDescriptionByName(chname)
+				expandDesc=self.descMgr.getExpandDescriptionByNameInNetwork(chname)
 
 				if expandDesc==None:
 					continue

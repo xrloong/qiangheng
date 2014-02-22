@@ -8,7 +8,7 @@ class CharInfo:
 		self.noneFlag=True
 
 	def __str__(self):
-		return "{{ {0}|{2} }}".format(self.charname, self.operandlist)
+		return "{{ {0}|{1} }}".format(self.charname, self.operandlist)
 
 	def __repr__(self):
 		return str(self)
@@ -112,7 +112,7 @@ class CJCharInfo(CharInfo):
 
 	@property
 	def isSeted(self):
-		# 不是很多的判斷指標
+		# 不是很好的判斷指標
 		return bool(self._cj_radix_list)
 
 	def getCode(self):

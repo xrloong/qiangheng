@@ -15,12 +15,20 @@ class CharDesc:
 		self.description=description
 
 		# 字符的資訊，如在某種輸入法下如何拆碼
-		self.chInfo=charinfo.CharInfo.NoneChar
+#		self.chInfo=charinfo.CharInfo.NoneChar
+		self.chInfo=copy.copy(charinfo.CharInfo.NoneChar)
+		self.chInfo.charname+=" abc "+name+" def"
 
 	def copyInfoFrom(self, srcDesc):
 		self.name=srcDesc.name
 		self.setOperatorAndDirection(srcDesc.getOperator(), srcDesc.getDirection())
 		self.compList=copy.copy(srcDesc.getCompList())
+		self.description=srcDesc.description
+		self.setChInfo(copy.copy(srcDesc.getChInfo()))
+
+	def copyInfoWithoutCompListFrom(self, srcDesc):
+		self.name=srcDesc.name
+		self.setOperatorAndDirection(srcDesc.getOperator(), srcDesc.getDirection())
 		self.description=srcDesc.description
 		self.setChInfo(copy.copy(srcDesc.getChInfo()))
 
@@ -59,6 +67,11 @@ CharDesc.NoneDesc=CharDesc("", '龜', [], '+', '(龜)')
 
 class CharDescriptionManager:
 	def __init__(self):
+		# descDB 放最原始、沒有擴展過的 CharDesc ，也就是從檔案讀出來的資料。
+		# descNetwork 放擴展過的，且各個 CharDesc 可能會彼此參照。
+		# 但 descNetwork 跟 descDB 則是完全獨立。
+		# 在使用 descNetwork 前，要先呼叫 ConstructDescriptionNetwork()
+		# ConstructDescriptionNetwork() 會從 descDB 建立 descNetwork
 		self.descDB={}
 		self.descNetwork={}
 
@@ -71,8 +84,49 @@ class CharDescriptionManager:
 	def keys(self):
 		return self.descDB.keys()
 
-	def get(self, key, value=None):
-		return self.descDB.get(key, value)
+	def ConstructDescriptionNetwork(self):
+		for charName, tmpCharDesc in self.descDB.items():
+			charDesc=CharDescriptionManager.generateDescription(charName)
+			if not charDesc: continue
+			self.descNetwork[charName]=charDesc
+			charDesc.copyInfoFrom(tmpCharDesc)
+
+		for charName, tmpCharDesc in self.descNetwork.items():
+			l=[]
+			for idvCharDesc in tmpCharDesc.getCompList():
+				c=self.descNetwork.get(idvCharDesc.name)
+				l.append(c)
+			tmpCharDesc.setCompList(l)
+			CharDescriptionManager.rearrangeDesc(tmpCharDesc)
+
+	def ConstructDescriptionNetwork(self):
+		for charName in self.descDB.keys():
+			if charName not in self.descNetwork:
+				charDesc=CharDescriptionManager.generateDescription(charName)
+				self.expandCharDescInNetwork(charDesc)
+				self.descNetwork[charName]=charDesc
+
+	def expandCharDescInNetwork(self, charDesc):
+		# 擴展 charDesc
+		# charDesc 會被改變，而非產生新的 CharDesc
+		if charDesc.name not in self.descNetwork:
+			tmpDesc=self.descDB.get(charDesc.name, None)
+			charDesc.copyInfoWithoutCompListFrom(tmpDesc)
+
+			compList=[]
+			for idxChdesc in tmpDesc.getCompList():
+				subDesc=self.descNetwork.get(idxChdesc.name)
+				if subDesc==None:
+					subDesc=CharDescriptionManager.generateDescription(idxChdesc.name)
+					self.expandCharDescInNetwork(subDesc)
+					self.descNetwork[subDesc.name]=subDesc
+				compList.append(subDesc)
+			charDesc.setCompList(compList)
+
+			CharDescriptionManager.rearrangeDesc(charDesc)
+
+	def getExpandDescriptionByNameInNetwork(self, charName):
+		return self.descNetwork.get(charName, None)
 
 	def getExpandDescriptionByName(self, charName):
 		charDesc=CharDescriptionManager.generateDescription(charName)
@@ -86,7 +140,7 @@ class CharDescriptionManager:
 		# 擴展 charDesc
 		# charDesc 會被改變，而非產生新的 CharDesc
 		if len(charDesc.getCompList())==0:
-			tmpDesc=self.get(charDesc.name, None)
+			tmpDesc=self.descDB.get(charDesc.name, None)
 			if len(tmpDesc.getCompList())==0:
 				pass
 			else:
@@ -217,7 +271,8 @@ class CharDescriptionManager:
 			newCompList=[]
 		return [newOperator, newCompList]
 
-	def setCharTree(self, charDesc):
+	@staticmethod
+	def setCharTree(charDesc):
 		"""設定某一個字符所包含的部件的碼"""
 
 		chInfo=charDesc.getChInfo()
@@ -226,7 +281,7 @@ class CharDescriptionManager:
 
 		radixList=charDesc.getCompList()
 		for tmpdesc in radixList:
-			self.setCharTree(tmpdesc)
+			CharDescriptionManager.setCharTree(tmpdesc)
 
 		infoList=[x.getChInfo() for x in radixList]
 		chInfo.setByComps(infoList, charDesc.getDirection())
