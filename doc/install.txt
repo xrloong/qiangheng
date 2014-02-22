@@ -1,0 +1,35 @@
+﻿IBus
+	輸入法檔案為 tables/ibus/*.db ，圖示檔為 icons/*.svg 。
+	選擇所要使用的輸入法，
+	將輸入法檔複製到 /usr/share/ibus-table/tables，將圖示檔複製到 /usr/share/ibus-table/icons 。
+
+	重新載入。
+
+SCIM
+	輸入法檔案為 tables/scim/*.bin ，圖示檔為 icons/*.bin 。
+	選擇所要使用的輸入法，
+	將輸入法檔複製到 /usr/share/scim/tables，將圖示檔複製到 /usr/share/scim/icons 。
+
+
+	重新登入。
+
+GCIN
+	輸入法檔案為 tables/gcin/*.gtab ，圖示檔為 pixmaps/*.png 。
+	選擇所要使用的輸入法，
+	將輸入法檔複製到 /usr/share/gcin/table，將圖示檔複製到 /usr/share/pixmaps/gcin 。
+	修改 /usr/share/gcin/table/gtab.list
+
+	重新執行。
+
+OVIM
+	香草輸入法(OpenVanilla)。
+	輸入法檔案為 tables/ovim/*.cin ，圖示檔為 pixmaps/*.png 。
+	未測試過。請依香草輸入法的方式將相關檔案放置至正確位置。
+
+MSIM
+	微軟視窗 IME。
+	輸入法檔案為 tables/msim/*.cin 。
+	請使用「通用輸入法編輯工具」。請點選「附屬應用程式」中的「通用輸入法編輯工具」。
+	依步驟完成安裝。
+	未測試過。請依香草輸入法的方式將相關檔案放置至正確位置。
+
