@@ -3,15 +3,22 @@ class NoneIM:
 	"輸入法"
 
 	class CharInfo:
-		def __init__(self, charname, prop):
+	#	NoneChar=CharInfo('[瑲珩預設空字符]', [], [])
+		def __init__(self, charname, parseans, prop):
 			self.charname=charname
-			self.structure=prop[0]
+			self.operator=parseans[0]
+			self.operandlist=parseans[1]
+
+			self.showflag=False if len(self.charname)>1 else True
 
 		def __str__(self):
 			return self.charname
 
 		def __repr__(self):
 			return str(self)
+
+		def isToShow(self):
+			return self.showflag
 
 	def __init__(self):
 		self.keyMaps=[]
@@ -30,7 +37,7 @@ class NoneIM:
 			for chname, ch in self.chdict.items():
 				self.setCharTree(ch)
 				code=self.getCode(ch)
-				if code:
+				if ch.isToShow() and code:
 					table.append([code, chname])
 				else:
 					pass
@@ -55,31 +62,34 @@ class NoneIM:
 #		'夾', '衍', '衷',]
 #		['纂', '膷',]
 		chdict=self.chdict
-		if ch.structure[1] in ['龜']:
+		if ch.operator in ['龜']:
 			return []
-		elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=chdict.get(ch.structure[3], None)
-			y=chdict.get(ch.structure[4], None)
+		elif ch.operator in ['水']:
+			x=chdict.get(ch.operandlist[0], None)
+			return [x]
+		elif ch.operator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
+			x=chdict.get(ch.operandlist[0], None)
+			y=chdict.get(ch.operandlist[1], None)
 			return [x, y]
-		elif ch.structure[1] in ['算', '湘', '霜', '想', '怡', '穎',]:
-			x=chdict.get(ch.structure[3], None)
-			y=chdict.get(ch.structure[4], None)
-			z=chdict.get(ch.structure[5], None)
+		elif ch.operator in ['算', '湘', '霜', '想', '怡', '穎',]:
+			x=chdict.get(ch.operandlist[0], None)
+			y=chdict.get(ch.operandlist[1], None)
+			z=chdict.get(ch.operandlist[2], None)
 			return [x, y, z]
-		elif ch.structure[1] in ['纂',]:
-			x=chdict.get(ch.structure[3], None)
-			y=chdict.get(ch.structure[4], None)
-			z=chdict.get(ch.structure[5], None)
-			w=chdict.get(ch.structure[6], None)
+		elif ch.operator in ['纂',]:
+			x=chdict.get(ch.operandlist[0], None)
+			y=chdict.get(ch.operandlist[1], None)
+			z=chdict.get(ch.operandlist[2], None)
+			w=chdict.get(ch.operandlist[3], None)
 			return [x, y, z, w]
-		elif ch.structure[1] in ['林', '爻']:
-			x=chdict.get(ch.structure[3], None)
+		elif ch.operator in ['林', '爻']:
+			x=chdict.get(ch.operandlist[0], None)
 			return [x, x]
-		elif ch.structure[1] in ['卅', '鑫']:
-			x=chdict.get(ch.structure[3], None)
+		elif ch.operator in ['卅', '鑫']:
+			x=chdict.get(ch.operandlist[0], None)
 			return [x, x, x]
-		elif ch.structure[1] in ['燚',]:
-			x=chdict.get(ch.structure[3], None)
+		elif ch.operator in ['燚',]:
+			x=chdict.get(ch.operandlist[0], None)
 			return [x, x, x, x]
 		else:
 			return []
@@ -88,12 +98,12 @@ class CangJie(NoneIM):
 	"倉頡輸入法"
 
 	class CJCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, prop):
-			NoneIM.CharInfo.__init__(self, charname, prop)
+		def __init__(self, charname, parseans, prop):
+			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
 			self._cj_incode=None	# 當獨體使用
 			self._cj_rtcode=None	# 當部件使用
-			if len(prop)>=3:
-				self.setCJProp(prop[1], prop[2])
+			if len(prop)>=2:
+				self.setCJProp(prop[0], prop[1])
 
 		def setCJProp(self, cj_incode, cj_rtcode):
 			if cj_incode=='XXXX':
@@ -157,43 +167,47 @@ class CangJie(NoneIM):
 		chdict=self.chdict
 		prelist=[]
 		postlist=[]
-		if ch.structure[1] in ['龜']:
+		if ch.operator in ['龜']:
 			prelist=[]
 			postlist=[]
-		elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=chdict.get(ch.structure[3], None)
-			y=chdict.get(ch.structure[4], None)
+		elif ch.operator in ['水']:
+			x=chdict.get(ch.operandlist[0], None)
+			prelist=[x]
+			postlist=[]
+		elif ch.operator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
+			x=chdict.get(ch.operandlist[0], None)
+			y=chdict.get(ch.operandlist[1], None)
 			prelist=[x]
 			postlist=[y]
-		elif ch.structure[1] in ['算', '湘', '霜', '怡',]:
-			x=chdict.get(ch.structure[3], None)
-			y=chdict.get(ch.structure[4], None)
-			z=chdict.get(ch.structure[5], None)
+		elif ch.operator in ['算', '湘', '霜', '怡',]:
+			x=chdict.get(ch.operandlist[0], None)
+			y=chdict.get(ch.operandlist[1], None)
+			z=chdict.get(ch.operandlist[2], None)
 			prelist=[x]
 			postlist=[y, z]
-		elif ch.structure[1] in ['想', '穎',]:
-			x=chdict.get(ch.structure[3], None)
-			y=chdict.get(ch.structure[4], None)
-			z=chdict.get(ch.structure[5], None)
+		elif ch.operator in ['想', '穎',]:
+			x=chdict.get(ch.operandlist[0], None)
+			y=chdict.get(ch.operandlist[1], None)
+			z=chdict.get(ch.operandlist[2], None)
 			prelist=[x, y]
 			postlist=[z]
-		elif ch.structure[1] in ['林', '爻']:
-			x=chdict.get(ch.structure[3], None)
+		elif ch.operator in ['林', '爻']:
+			x=chdict.get(ch.operandlist[0], None)
 			prelist=[x]
 			postlist=[x]
-		elif ch.structure[1] in ['卅', '鑫']:
-			x=chdict.get(ch.structure[3], None)
+		elif ch.operator in ['卅', '鑫']:
+			x=chdict.get(ch.operandlist[0], None)
 			prelist=[x]
 			postlist=[x, x]
-		elif ch.structure[1] in ['燚',]:
-			x=chdict.get(ch.structure[3], None)
+		elif ch.operator in ['燚',]:
+			x=chdict.get(ch.operandlist[0], None)
 			prelist=[x, x]
 			postlist=[x, x]
-		elif ch.structure[1] in ['纂',]:
-			x=chdict.get(ch.structure[3], None)
-			y=chdict.get(ch.structure[4], None)
-			z=chdict.get(ch.structure[5], None)
-			w=chdict.get(ch.structure[6], None)
+		elif ch.operator in ['纂',]:
+			x=chdict.get(ch.operandlist[0], None)
+			y=chdict.get(ch.operandlist[1], None)
+			z=chdict.get(ch.operandlist[2], None)
+			w=chdict.get(ch.operandlist[3], None)
 			prelist=[x]
 			postlist=[y, z, w]
 		else:
@@ -242,11 +256,11 @@ class Array(NoneIM):
 	"行列輸入法"
 
 	class ARCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, prop):
-			NoneIM.CharInfo.__init__(self, charname, prop)
+		def __init__(self, charname, parseans, prop):
+			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
 			self._ar_incode=None
-			if len(prop)>=2:
-				self.setARProp(prop[1])
+			if len(prop)>=1:
+				self.setARProp(prop[0])
 
 		def setARProp(self, ar_incode):
 			if ar_incode=='XXXX':
@@ -328,11 +342,11 @@ class DaYi(NoneIM):
 	"大易輸入法"
 
 	class DYCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, prop):
-			NoneIM.CharInfo.__init__(self, charname, prop)
+		def __init__(self, charname, parseans, prop):
+			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
 			self._dy_incode=None
-			if len(prop)>=2:
-				self.setDYProp(prop[1])
+			if len(prop)>=1:
+				self.setDYProp(prop[0])
 
 		def setDYProp(self, dy_incode):
 			if dy_incode=='XXXX':
@@ -414,12 +428,12 @@ class Boshiamy(NoneIM):
 	"嘸蝦米輸入法"
 
 	class BSCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, prop):
-			NoneIM.CharInfo.__init__(self, charname, prop)
+		def __init__(self, charname, parseans, prop):
+			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
 			self._bs_incode=None
 			self._bs_spcode=None
-			if len(prop)>=3:
-				self.setBSProp(prop[1], prop[2])
+			if len(prop)>=2:
+				self.setBSProp(prop[0], prop[1])
 
 		def setBSProp(self, bs_incode, bs_spcode):
 			if bs_incode=='XXXX' or bs_spcode=='XXXX':
@@ -495,13 +509,13 @@ class ZhengMa(NoneIM):
 	"鄭碼輸入法"
 
 	class ZMCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, prop):
-			NoneIM.CharInfo.__init__(self, charname, prop)
+		def __init__(self, charname, parseans, prop):
+			NoneIM.CharInfo.__init__(self, charname, parseans, prop)
 			self._zm_rtlist=[]
 			self._zm_incode=None
 			self._zm_tpcode=None
-			if len(prop)>=2:
-				str_rtlist=prop[1]
+			if len(prop)>=1:
+				str_rtlist=prop[0]
 				if str_rtlist=='XXXX':
 					self.setZMProp([])
 				else:

@@ -464,7 +464,6 @@ U+5831	報	(龜)	gjsle	gje
 U+5836	堶	(龜)	gkmb	gkb
 U+5841	塁	(龜)	wiog	wig
 U+584B	塋	(龜)	ffbg	ffg
-U+584C	塌	(龜)	gasm	gam
 U+584D	塍	(龜)	bfbg	bfg
 U+585E	塞	(龜)	jtcg	jtg
 U+5869	塩	(龜)	gort	got
@@ -851,7 +850,6 @@ U+63FA	揺	(龜)	qbmu	qbu
 # 6400
 U+6400	搀	(龜)	qnuy	qny
 U+6416	搖	(龜)	qbou	qbu
-U+6428	搨	(龜)	qasm	qam
 U+6434	搴	(龜)	jtcq	jtq
 U+643B	搻	(龜)	orqq	orq
 U+6442	摂	(龜)	qsjo	qso
@@ -1011,7 +1009,6 @@ U+69A3	榣	(龜)	dbou	dbu
 U+69AE	榮	(龜)	ffbd	ffd
 U+69B2	榲	(龜)	dwot	dwt
 U+69BA	榺	(龜)	bfqe	bfe
-U+69BB	榻	(龜)	dasm	dam
 U+69D6	槖	(龜)	gbmd	gbd
 U+69D8	様	(龜)	dtge	dte
 # 6A00
@@ -1076,7 +1073,6 @@ U+6BDA	毚	(龜)	nrpi	nri
 U+6BDB	毛	(龜)	hqu	hqu
 U+6BEB	毫	(龜)	yrbu	yru
 U+6BFB	毻	(龜)	kbhqu	kbu
-U+6BFE	毾	(龜)	amhqu	amu
 # 6C00
 U+6C02	氂	(龜)	jkmhu	jku
 U+6C0F	氏	(龜)	hvp	hvp
@@ -1127,7 +1123,6 @@ U+6E80	満	(龜)	etmb	etb
 U+6E91	溑	(龜)	efbo	efo
 U+6EA6	溦	(龜)	eunk	euk
 U+6EAB	溫	(龜)	ewot	ewt
-U+6EBB	溻	(龜)	easm	eam
 U+6EBC	溼	(龜)	emvg	emg
 U+6ECE	滎	(龜)	ffbe	ffe
 U+6ED5	滕	(龜)	bfqe	bfe
@@ -1383,7 +1378,6 @@ U+7963	祣	(龜)	ifohv	ifv
 U+796D	祭	(龜)	bommf	bof
 U+7972	祲	(龜)	ifsme	ife
 U+799C	禜	(龜)	ffbmf	fff
-U+79A2	禢	(龜)	ifasm	ifm
 U+79A4	禤	(龜)	ifwlm	ifm
 U+79B8	禸	(龜)	ib	ib
 U+79B9	禹	(龜)	hlib	hlb
@@ -1748,7 +1742,6 @@ U+8901	褁	(龜)	wdhv	wdv
 U+890E	褎	(龜)	yhdv	yhv
 U+890F	褏	(龜)	yhwv	yhv
 U+8912	褒	(龜)	yodv	yov
-U+891F	褟	(龜)	lasm	lam
 U+8922	褢	(龜)	yhiv	yhv
 U+892D	褭	(龜)	ysfv	ysv
 U+892E	褮	(龜)	ffbyv	ffv
@@ -1873,7 +1866,6 @@ U+8DC8	跈	(龜)	rmohh	rmh
 # 8E00
 U+8E28	踨	(龜)	rmooo	rmo
 U+8E47	蹇	(龜)	jcryo	jco
-U+8E4B	蹋	(龜)	rmasm	rmm
 U+8E52	蹒	(龜)	rmtmb	rmb
 U+8E63	蹣	(龜)	tmtlb	tmb
 U+8E6E	蹮	(龜)	rmmwu	rmu
@@ -1920,7 +1912,6 @@ U+9042	遂	(龜)	ytpo	yto
 U+9045	遅	(龜)	ystq	ysq
 U+9054	達	(龜)	ygtq	ygq
 U+9059	遙	(龜)	ybou	ybu
-U+9062	遢	(龜)	yasm	yam
 U+9063	遣	(龜)	ylmr	ylr
 U+9065	遥	(龜)	ybou	ybu
 U+9077	遷	(龜)	ymwu	ymu
@@ -1974,7 +1965,6 @@ U+933D	錽	(龜)	cmfe	cme
 U+9340	鍀	(龜)	cami	cai
 U+9350	鍐	(龜)	cuce	cue
 U+9373	鍳	(龜)	sic	sic
-U+9389	鎉	(龜)	casm	cam
 U+9390	鎐	(龜)	cbou	cbu
 U+9396	鎖	(龜)	cfbo	cfo
 U+939E	鎞	(龜)	chwp	chp
@@ -2007,13 +1997,11 @@ U+9578	镸	(龜)	smi	smi
 U+957F	长	(龜)	po	po
 U+9580	門	(龜)	an	an
 U+95C5	闅	(龜)	anbue	ane
-U+95D2	闒	(龜)	anasm	anm
 U+95D7	闗	(龜)	anvif	anf
 U+95D8	闘	(龜)	anmti	ani
 U+95DC	關	(龜)	anvit	ant
 U+95E8	门	(龜)	ls	ls
 # 9600
-U+9618	阘	(龜)	lsasm	lsm
 U+961C	阜	(龜)	hrj	hrj
 U+961D	阝	(龜)	nl	nl
 U+9641	陁	(龜)	nlopd	nld
@@ -2143,7 +2131,6 @@ U+9BEC	鯬	(龜)	hhnwf	hhf
 U+9BFC	鯼	(龜)	nfuce	nfe
 # 9C00
 U+9C16	鰖	(龜)	nfkmb	nfb
-U+9C28	鰨	(龜)	nfamm	nfm
 U+9C29	鰩	(龜)	nfbou	nfu
 U+9C2E	鰮	(龜)	nfwot	nft
 U+9C34	鰴	(龜)	houfk	hok
@@ -2152,7 +2139,6 @@ U+9C7C	鱼	(龜)	nwm	nwm
 U+9C8E	鲎	(龜)	fbnwm	fbm
 U+9C9D	鲝	(龜)	tqnwm	tqm
 U+9C9E	鲞	(龜)	fqnwm	fqm
-U+9CCE	鳎	(龜)	nmasm	nmm
 U+9CD0	鳐	(龜)	nmbou	nmu
 U+9CE5	鳥	(龜)	hayf	haf
 U+9CEC	鳬	(龜)	hayn	han

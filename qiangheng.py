@@ -28,29 +28,61 @@ filenamelist=[
 ]
 fileencoding='utf-8-sig'
 
-def checkgrammar(g):
+def parsestructure(g):
+	stacklist=[]
+	operandlist=[]
+	operator=None
 	if g[0]=='(' and g[-1]==')':
-		if len(g)==3 and g[1]=='龜':
-			return True
-		elif len(g)==5 and g[1] in ['林', '爻', '卅', '鑫', '燚']:
-#			['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
-			return True
-		elif len(g)==6 and g[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾',]:
-#			['好', '志',
-#			'回', '同', '函', '區', '左',
-#			'起', '廖', '載', '聖', '句',
-#			'夾', '衍', '衷',]
-			return True
-		elif len(g)==7 and g[1] in ['算', '湘', '霜', '想', '怡', '穎',]:
-			return True
-		elif len(g)==8 and g[1] in ['纂',]:
-#			['纂', '膷',]
-			return True
-		else:
-			return False
+		operator=g[1]
+		for i in g[2:]:
+			if i=='(':
+				pass
+			elif i==')':
+				pass
+			elif i=='[':
+				pass
+			elif i==']':
+				pass
+			elif i==' ':
+				continue
+			else:
+				operandlist.append(i)
+		return [operator, operandlist]
 	else:
-		return False
-	return True
+		return None
+
+def parsestructure(g):
+	stacklist=[]
+	operandlist=[]
+	operator=None
+	if g[0]=='(' and g[-1]==')':
+		operator=g[1]
+		i=3
+		while i<len(g):
+			if g[i]=='(':
+				i+=1
+			elif g[i]==')':
+				i+=1
+			elif g[i]=='[':
+				j=i+1
+				flag=True
+				while j<len(g) and g[j]!=']':
+					j+=1
+				if j<len(g) and g[j]==']':
+					operandlist.append(g[i:j+1])
+					i=j+1
+				else:
+					return None
+			elif g[i]==']':
+				i+=1
+			elif g[i]==' ':
+				i+=1
+			else:
+				operandlist.append(g[i])
+				i+=1
+		return [operator, operandlist]
+	else:
+		return None
 
 def getDynamicFromFile(filenamelist, CharConstructor):
 	chlist=[]
@@ -64,11 +96,12 @@ def getDynamicFromFile(filenamelist, CharConstructor):
 			elif l[0]=='#': continue
 			ll=l.split('\t')
 			if len(ll)>=3:
-				if not checkgrammar(ll[2]):
+				parseans=parsestructure(ll[2])
+				if not parseans:
 					print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
 				else:
-					chlist.append(ll[1])
-					chdict[ll[1]]=CharConstructor(ll[1], ll[2:])
+					operator, operandlist=parseans
+					chdict[ll[1]]=CharConstructor(ll[1], parseans, ll[3:])
 	return chdict
 
 def getTableFromFile(filename):

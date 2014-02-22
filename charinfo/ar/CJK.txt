@@ -464,7 +464,6 @@ U+5831	報	(龜)	rifb
 U+5836	堶	(龜)	rzqu
 U+5841	塁	(龜)	p,r
 U+584B	塋	(龜)	,,jr
-U+584C	塌	(龜)	rpbb
 U+584D	塍	(龜)	ukzr
 U+585E	塞	(龜)	nrkr
 U+5869	塩	(龜)	ro;u
@@ -851,7 +850,6 @@ U+63FA	揺	(龜)	o.ad
 # 6400
 U+6400	搀	(龜)	ojph
 U+6416	搖	(龜)	omod
-U+6428	搨	(龜)	opbb
 U+6434	搴	(龜)	nrko
 U+643B	搻	(龜)	i;oo
 U+6442	摂	(龜)	oae,
@@ -1011,7 +1009,6 @@ U+69A3	榣	(龜)	vmod
 U+69AE	榮	(龜)	jv
 U+69B2	榲	(龜)	v/u
 U+69BA	榺	(龜)	ukzv
-U+69BB	榻	(龜)	vpbb
 U+69D6	槖	(龜)	vgv
 U+69D8	様	(龜)	virc
 # 6A00
@@ -1076,7 +1073,6 @@ U+6BDA	毚	(龜)	j;qh
 U+6BDB	毛	(龜)	lq
 U+6BEB	毫	(龜)	y;jq
 U+6BFB	毻	(龜)	zquq
-U+6BFE	毾	(龜)	pbbq
 # 6C00
 U+6C02	氂	(龜)	av.q
 U+6C0F	氏	(龜)	oas
@@ -1127,7 +1123,6 @@ U+6E80	満	(龜)	crjd
 U+6E91	溑	(龜)	ccm
 U+6EA6	溦	(龜)	cda.
 U+6EAB	溫	(龜)	uc
-U+6EBB	溻	(龜)	cpbb
 U+6EBC	溼	(龜)	caxr
 U+6ECE	滎	(龜)	,,jc
 U+6ED5	滕	(龜)	ulzc
@@ -1383,7 +1378,6 @@ U+7963	祣	(龜)	yhok
 U+796D	祭	(龜)	maac
 U+7972	祲	(龜)	yhtb
 U+799C	禜	(龜)	,,jc
-U+79A2	禢	(龜)	yhpb
 U+79A4	禤	(龜)	yh/b
 U+79B8	禸	(龜)	m
 U+79B9	禹	(龜)	l;m
@@ -1718,7 +1712,7 @@ U+885E	衞	(龜)	.t;d
 U+885F	衟	(龜)	.wad
 U+8861	衡	(龜)	.uzd
 U+8863	衣	(龜)	ylx
-U+8864	衤	(龜)	yki
+U+8864	衤	(龜)	yk
 U+8868	表	(龜)	rlx
 U+886E	衮	(龜)	ykxx
 U+8870	衰	(龜)	ytdx
@@ -1748,7 +1742,6 @@ U+8901	褁	(龜)	pvlx
 U+890E	褎	(龜)	yolx
 U+890F	褏	(龜)	yopx
 U+8912	褒	(龜)	yo;x
-U+891F	褟	(龜)	ykpb
 U+8922	褢	(龜)	yoxx
 U+892D	褭	(龜)	yg,x
 U+892E	褮	(龜)	,,jx
@@ -1873,7 +1866,6 @@ U+8DC8	跈	(龜)	sk.
 # 8E00
 U+8E28	踨	(龜)	skkc
 U+8E47	蹇	(龜)	nrkc
-U+8E4B	蹋	(龜)	spbb
 U+8E52	蹒	(龜)	srjk
 U+8E63	蹣	(龜)	srjk
 U+8E6E	蹮	(龜)	sa/s
@@ -1920,7 +1912,6 @@ U+9042	遂	(龜)	i.n
 U+9045	遅	(龜)	bifn
 U+9054	達	(龜)	rifn
 U+9059	遙	(龜)	mofn
-U+9062	遢	(龜)	pbbn
 U+9063	遣	(龜)	;dan
 U+9065	遥	(龜)	.ofn
 U+9077	遷	(龜)	a/zn
@@ -1974,7 +1965,6 @@ U+933D	錽	(龜)	ia,.
 U+9340	鍀	(龜)	ipah
 U+9350	鍐	(龜)	i.d.
 U+9373	鍳	(龜)	qdti
-U+9389	鎉	(龜)	ipbb
 U+9390	鎐	(龜)	imod
 U+9396	鎖	(龜)	icm
 U+939E	鎞	(龜)	ilpq
@@ -2007,13 +1997,11 @@ U+9578	镸	(龜)	z
 U+957F	长	(龜)	qk
 U+9580	門	(龜)	e
 U+95C5	闅	(龜)	ejy.
-U+95D2	闒	(龜)	epbb
 U+95D7	闗	(龜)	exx,
 U+95D8	闘	(龜)	eqih
 U+95DC	關	(龜)	exxw
 U+95E8	门	(龜)	hj
 # 9600
-U+9618	阘	(龜)	hjpb
 U+961C	阜	(龜)	lef
 U+961D	阝	(龜)	t
 U+9641	陁	(龜)	togs
@@ -2143,7 +2131,6 @@ U+9BEC	鯬	(龜)	lvl,
 U+9BFC	鯼	(龜)	u,..
 # 9C00
 U+9C16	鰖	(龜)	u,zu
-U+9C28	鰨	(龜)	u,pb
 U+9C29	鰩	(龜)	u,md
 U+9C2E	鰮	(龜)	u,/u
 U+9C34	鰴	(龜)	u,d.
@@ -2152,7 +2139,6 @@ U+9C7C	鱼	(龜)	ua
 U+9C8E	鲎	(龜)	njua
 U+9C9D	鲝	(龜)	izua
 U+9C9E	鲞	(龜)	kzua
-U+9CCE	鳎	(龜)	uapb
 U+9CD0	鳐	(龜)	ua.d
 U+9CE5	鳥	(龜)	l,
 U+9CEC	鳬	(龜)	ls
