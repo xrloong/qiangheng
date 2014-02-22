@@ -1,8 +1,8 @@
-from state import StateManager
 import sys
 
 class RadixManager:
-	def __init__(self):
+	def __init__(self, codeInfoEncoder):
+		self.codeInfoEncoder=codeInfoEncoder
 		self.radixCodeInfoDB={}
 
 	def setTurtleInfoList(self, charDescList):
@@ -12,7 +12,7 @@ class RadixManager:
 				if structDesc.isTurtle():
 					codeVariance=structDesc.getCodeVarianceType()
 					codeInfoProperties=structDesc.getCodeInfoDict()
-					codeInfo=StateManager.codeInfoEncoder.generateCodeInfo(codeInfoProperties)
+					codeInfo=self.codeInfoEncoder.generateCodeInfo(codeInfoProperties)
 					codeInfo.multiplyCodeVarianceType(codeVariance)
 
 					radixCodeInfoList=self.radixCodeInfoDB.get(charName, [])

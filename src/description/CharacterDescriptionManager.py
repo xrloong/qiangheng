@@ -13,7 +13,8 @@ class CharDescriptionManager:
 		self.templateDB={}
 		self.characterDB={}
 
-		self.radixManager=RadixManager.RadixManager()
+#		self.radixDB={}
+		self.radixList=[]
 
 		def charDescQueryer(charName):
 			charDesc=self.characterDB.get(charName, None)
@@ -27,6 +28,9 @@ class CharDescriptionManager:
 
 	def getAllCharacters(self):
 		return self.characterDB.keys()
+
+	def getRadixList(self):
+		return self.radixList
 
 	def queryCharacterDescription(self, character):
 		return self.charDescQueryer(character)
@@ -78,8 +82,8 @@ class CharDescriptionManager:
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
 
-		turtleInfoList=self.parser.loadCodeInfoByParsingXML(rootNode)
-		self.radixManager.setTurtleInfoList(turtleInfoList)
+		radixInfoList=self.parser.loadCodeInfoByParsingXML(rootNode)
+		self.radixList.extend(radixInfoList)
 
 	def adjustData(self):
 		charDescRearranger=StateManager.characterDescriptionRearrangerGenerator(self.operationMgr)

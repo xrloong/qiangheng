@@ -9,6 +9,7 @@ from description import CharacterDescriptionManager
 from hanzi import HanZiNetwork
 from state import StateManager
 from optparse import OptionParser
+from gear import RadixManager
 
 class QiangHeng:
 	def __init__(self, options):
@@ -24,7 +25,8 @@ class QiangHeng:
 		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(imModule)
 		self.descMgr.loadData(toTemplateList, toComponentList, toCodeList)
 
-		StateManager.setRadixManager(self.descMgr.radixManager)
+		radixList=self.descMgr.getRadixList()
+		StateManager.radixManager.setTurtleInfoList(radixList)
 
 		self.hanziNetwork=HanZiNetwork.HanZiNetwork.construct(self.descMgr)
 

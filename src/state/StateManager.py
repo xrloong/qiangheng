@@ -1,5 +1,6 @@
 
 # 視此模式為獨體模式（Singleton）。
+from gear import RadixManager
 
 __state_IMModule=None
 codeInfoEncoder=None
@@ -13,17 +14,15 @@ def setIMModule(imModule):
 	global __state_IMModule
 	global codeInfoEncoder
 	global characterDescriptionRearrangerGenerator
+	global radixManager
 
 	__state_IMModule=imModule
 	codeInfoEncoder=imModule.codeInfoEncoder
 	characterDescriptionRearrangerGenerator=imModule.CharacterDescriptionRearrangerGenerator
-	radixManager=imModule.CharacterDescriptionRearrangerGenerator
+
+	radixManager=RadixManager.RadixManager(codeInfoEncoder)
 
 def getIMModule():
 	return __state_IMModule
 
-
-def setRadixManager(radixMgr):
-	global radixManager
-	radixManager=radixMgr
 
