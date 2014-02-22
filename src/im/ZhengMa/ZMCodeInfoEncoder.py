@@ -3,58 +3,64 @@ from ..base.CodeInfoEncoder import CodeInfoEncoder
 from ..base.CodeInfo import CodeInfo
 
 class ZMCodeInfoEncoder(CodeInfoEncoder):
-	def __init__(self):
-		pass
-
-	def generateDefaultCodeInfo(self, rtlist):
+	@classmethod
+	def generateDefaultCodeInfo(cls, rtlist):
 		return ZMCodeInfo.generateDefaultCodeInfo(rtlist)
 
-	def isAvailableOperation(self, codeInfoList):
+	@classmethod
+	def isAvailableOperation(cls, codeInfoList):
 		isAllWithCode=codeInfoList and all(map(lambda x: x.getRtList(), codeInfoList))
 		return isAllWithCode
 
-	def encodeAsTurtle(self, codeInfoList):
+	@classmethod
+	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsLoong(self, codeInfoList):
+	@classmethod
+	def encodeAsLoong(cls, codeInfoList):
 		"""運算 "龍" """
 
 		rtlist=sum(map(lambda c: c.getRtList(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		codeInfo=self.generateDefaultCodeInfo([rtlist])
+		codeInfo=cls.generateDefaultCodeInfo([rtlist])
 		return codeInfo
 
-	def encodeAsEast(self, codeInfoList):
+	@classmethod
+	def encodeAsEast(cls, codeInfoList):
 		"""運算 "東" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
+	@classmethod
+	def encodeAsEqual(cls, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
-	def encodeAsHan(self, codeInfoList):
+	@classmethod
+	def encodeAsHan(cls, codeInfoList):
 		"""運算 "爲" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
-	def encodeAsTong(self, codeInfoList):
+	@classmethod
+	def encodeAsTong(cls, codeInfoList):
 		"""運算 "同" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		newCodeInfoList=cls.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
-	def encodeAsYou(self, codeInfoList):
+	@classmethod
+	def encodeAsYou(cls, codeInfoList):
 		"""運算 "幽" """
 
 		firstCodeInfo=codeInfoList[0]
@@ -62,19 +68,21 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		thirdCodeInfo=codeInfoList[2]
 
 		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-	def encodeAsLiang(self, codeInfoList):
+	@classmethod
+	def encodeAsLiang(cls, codeInfoList):
 		"""運算 "㒳" """
 
 		rtlist=sum(map(lambda c: c.getRtList(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		codeInfo=self.generateDefaultCodeInfo([rtlist[:1]])
+		codeInfo=cls.generateDefaultCodeInfo([rtlist[:1]])
 		return codeInfo
 
-	def getMergedCodeInfoListAsForGe(self, codeInfoList):
+	@classmethod
+	def getMergedCodeInfoListAsForGe(cls, codeInfoList):
 		# 贏
 		if len(codeInfoList)<=1:
 			print("錯誤：", file=sys.stderr)
@@ -86,8 +94,8 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 				rearMainCode=firstCodeInfo.getInstallmentCode(1)
 
 				# 第一個的補碼不影響結果
-				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
-				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
+				frontCodeInfo=cls.generateDefaultCodeInfo([frontMainCode])
+				rearCodeInfo=cls.generateDefaultCodeInfo([rearMainCode])
 				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
 			else:
 				return codeInfoList

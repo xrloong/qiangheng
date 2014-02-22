@@ -7,66 +7,73 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
-	def __init__(self):
-		pass
-
-	def generateDefaultCodeInfo(self, codeList, supplementCode):
+	@classmethod
+	def generateDefaultCodeInfo(cls, codeList, supplementCode):
 		return BSCodeInfo.generateDefaultCodeInfo(codeList, supplementCode)
 
-	def isAvailableOperation(self, codeInfoList):
+	@classmethod
+	def isAvailableOperation(cls, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getBSCodeList(), codeInfoList))
 		return isAllWithCode
 
-	def encodeAsTurtle(self, codeInfoList):
+	@classmethod
+	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsLoong(self, codeInfoList):
+	@classmethod
+	def encodeAsLoong(cls, codeInfoList):
 		"""運算 "龍" """
 
 		bslist=list(map(lambda c: c.getBSCodeList(), codeInfoList))
 		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(bslist)
 		bs_spcode=codeInfoList[-1].getBSSupplement()
 
-		codeInfo=self.generateDefaultCodeInfo([bs_code_list], bs_spcode)
+		codeInfo=cls.generateDefaultCodeInfo([bs_code_list], bs_spcode)
 		return codeInfo
 
-	def encodeAsEast(self, codeInfoList):
+	@classmethod
+	def encodeAsEast(cls, codeInfoList):
 		"""運算 "東" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
+	@classmethod
+	def encodeAsEqual(cls, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsHan(self, codeInfoList):
+	@classmethod
+	def encodeAsHan(cls, codeInfoList):
 		"""運算 "函" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-	def encodeAsTong(self, codeInfoList):
+	@classmethod
+	def encodeAsTong(cls, codeInfoList):
 		"""運算 "同" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		newCodeInfoList=cls.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
-	def encodeAsZhe(self, codeInfoList):
+	@classmethod
+	def encodeAsZhe(cls, codeInfoList):
 		"""運算 "這" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
-		codeInfo=self.encodeAsLoong([secondCodeInfo, firstCodeInfo])
+		codeInfo=cls.encodeAsLoong([secondCodeInfo, firstCodeInfo])
 		return codeInfo
 
-	def encodeAsYou(self, codeInfoList):
+	@classmethod
+	def encodeAsYou(cls, codeInfoList):
 		"""運算 "幽" """
 
 		firstCodeInfo=codeInfoList[0]
@@ -74,10 +81,11 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		thirdCodeInfo=codeInfoList[2]
 
 		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-	def getMergedCodeInfoListAsForGe(self, codeInfoList):
+	@classmethod
+	def getMergedCodeInfoListAsForGe(cls, codeInfoList):
 		# 贏
 		if len(codeInfoList)<=1:
 			print("錯誤：", file=sys.stderr)
@@ -91,8 +99,8 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 				bs_spcode=firstCodeInfo.getBSSupplement()
 
 				# 第一個的補碼不影響結果
-				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode], bs_spcode)
-				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode], bs_spcode)
+				frontCodeInfo=cls.generateDefaultCodeInfo([frontMainCode], bs_spcode)
+				rearCodeInfo=cls.generateDefaultCodeInfo([rearMainCode], bs_spcode)
 				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
 			else:
 				return codeInfoList

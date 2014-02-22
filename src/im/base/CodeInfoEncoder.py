@@ -2,9 +2,6 @@ from .CodeInfo import CodeInfo
 from ..gear import Operator
 
 class CodeInfoEncoder:
-	def __init__(self):
-		pass
-
 	@staticmethod
 	def computeSupportingFromProperty(propDict):
 		return CodeInfo.computeSupportingFromProperty(propDict)
@@ -13,7 +10,8 @@ class CodeInfoEncoder:
 	def computeSupporting(hasCharacter, hasRadix):
 		return CodeInfo.computeSupporting(hasCharacter, hasRadix)
 
-	def generateDefaultCodeInfo(self):
+	@classmethod
+	def generateDefaultCodeInfo(cls):
 		return CodeInfo.generateDefaultCodeInfo()
 
 	def encode(self, operator, codeInfoList):
@@ -86,170 +84,198 @@ class CodeInfoEncoder:
 				codeInfo=self.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
-	def isAvailableOperation(self, codeInfoList):
+	@classmethod
+	def isAvailableOperation(cls, codeInfoList):
 		return True
 
 
-	def encodeAsInvalidate(self, codeInfoList):
+	@classmethod
+	def encodeAsInvalidate(cls, codeInfoList):
 		"""不合法的運算"""
 		return None
 
 
-	def encodeAsTurtle(self, codeInfoList):
+	@classmethod
+	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """
-		codeInfo=self.generateDefaultCodeInfo()
+		codeInfo=cls.generateDefaultCodeInfo()
 		return codeInfo
 
-	def encodeAsLoong(self, codeInfoList):
+	@classmethod
+	def encodeAsLoong(cls, codeInfoList):
 		"""運算 "龍" """
-		codeInfo=self.generateDefaultCodeInfo()
+		codeInfo=cls.generateDefaultCodeInfo()
 		return codeInfo
 
-	def encodeAsEast(self, codeInfoList):
+	@classmethod
+	def encodeAsEast(cls, codeInfoList):
 		"""運算 "東" """
-		codeInfo=self.generateDefaultCodeInfo()
+		codeInfo=cls.generateDefaultCodeInfo()
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
+	@classmethod
+	def encodeAsEqual(cls, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=self.generateDefaultCodeInfo()
+		codeInfo=cls.generateDefaultCodeInfo()
 		return codeInfo
 
 
-	def encodeAsSilkworm(self, codeInfoList):
+	@classmethod
+	def encodeAsSilkworm(cls, codeInfoList):
 		"""運算 "蚕" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsGoose(self, codeInfoList):
+	@classmethod
+	def encodeAsGoose(cls, codeInfoList):
 		"""運算 "鴻" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsLoop(self, codeInfoList):
+	@classmethod
+	def encodeAsLoop(cls, codeInfoList):
 		"""運算 "回" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
-	def encodeAsQi(self, codeInfoList):
+	@classmethod
+	def encodeAsQi(cls, codeInfoList):
 		"""運算 "起" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsZhe(self, codeInfoList):
+	@classmethod
+	def encodeAsZhe(cls, codeInfoList):
 		"""運算 "這" """
-		codeInfo=self.encodeAsQi(codeInfoList)
+		codeInfo=cls.encodeAsQi(codeInfoList)
 		return codeInfo
 
-	def encodeAsLiao(self, codeInfoList):
+	@classmethod
+	def encodeAsLiao(cls, codeInfoList):
 		"""運算 "廖" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsZai(self, codeInfoList):
+	@classmethod
+	def encodeAsZai(cls, codeInfoList):
 		"""運算 "載" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsDou(self, codeInfoList):
+	@classmethod
+	def encodeAsDou(cls, codeInfoList):
 		"""運算 "斗" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
-	def encodeAsTong(self, codeInfoList):
+	@classmethod
+	def encodeAsTong(cls, codeInfoList):
 		"""運算 "同" """
-		codeInfo=self.encodeAsLoop(codeInfoList)
+		codeInfo=cls.encodeAsLoop(codeInfoList)
 		return codeInfo
 
-	def encodeAsQu(self, codeInfoList):
+	@classmethod
+	def encodeAsQu(cls, codeInfoList):
 		"""運算 "區" """
-		codeInfo=self.encodeAsLoop(codeInfoList)
+		codeInfo=cls.encodeAsLoop(codeInfoList)
 		return codeInfo
 
-	def encodeAsHan(self, codeInfoList):
+	@classmethod
+	def encodeAsHan(cls, codeInfoList):
 		"""運算 "函" """
-		codeInfo=self.encodeAsLoop(codeInfoList)
+		codeInfo=cls.encodeAsLoop(codeInfoList)
 		return codeInfo
 
-	def encodeAsLeft(self, codeInfoList):
+	@classmethod
+	def encodeAsLeft(cls, codeInfoList):
 		"""運算 "左" """
-		codeInfo=self.encodeAsLoop(codeInfoList)
+		codeInfo=cls.encodeAsLoop(codeInfoList)
 		return codeInfo
 
 
-	def encodeAsMu(self, codeInfoList):
+	@classmethod
+	def encodeAsMu(cls, codeInfoList):
 		"""運算 "畞" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def convertCodeInfoListOfZuoOrder(self, codeInfoList):
+	@classmethod
+	def convertCodeInfoListOfZuoOrder(cls, codeInfoList):
 		# 㘴的參數順序為：土、口、人（大部分到小部件）。
 		# 但大部分的輸入法順序為：口、人、土。
 
 		tmpCodeInfoList=codeInfoList[1:]+codeInfoList[:1]
 		return tmpCodeInfoList
 
-	def encodeAsZuo(self, codeInfoList):
+	@classmethod
+	def encodeAsZuo(cls, codeInfoList):
 		"""運算 "㘴" """
-		codeInfoList=self.convertCodeInfoListOfZuoOrder(codeInfoList)
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfoList=cls.convertCodeInfoListOfZuoOrder(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsYou(self, codeInfoList):
+	@classmethod
+	def encodeAsYou(cls, codeInfoList):
 		"""運算 "幽" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsLiang(self, codeInfoList):
+	@classmethod
+	def encodeAsLiang(cls, codeInfoList):
 		"""運算 "㒳" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsJia(self, codeInfoList):
+	@classmethod
+	def encodeAsJia(cls, codeInfoList):
 		"""運算 "夾" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
-	def encodeAsLuan(self, codeInfoList):
+	@classmethod
+	def encodeAsLuan(cls, codeInfoList):
 		"""運算 "䜌" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
-		codeInfo=self.encodeAsGoose([secondCodeInfo, firstCodeInfo, secondCodeInfo])
+		codeInfo=cls.encodeAsGoose([secondCodeInfo, firstCodeInfo, secondCodeInfo])
 		return codeInfo
 
-	def encodeAsBan(self, codeInfoList):
+	@classmethod
+	def encodeAsBan(cls, codeInfoList):
 		"""運算 "辦" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
-		codeInfo=self.encodeAsGoose([firstCodeInfo, secondCodeInfo, firstCodeInfo])
+		codeInfo=cls.encodeAsGoose([firstCodeInfo, secondCodeInfo, firstCodeInfo])
 		return codeInfo
 
 
-	def encodeAsLin(self, codeInfoList):
+	@classmethod
+	def encodeAsLin(cls, codeInfoList):
 		"""運算 "粦" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 
 		topCodeInfo=firstCodeInfo
-		bottomCodeInfo=self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
+		bottomCodeInfo=cls.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
 
-		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
+		codeInfo=cls.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
 
-	def encodeAsLi(self, codeInfoList):
+	@classmethod
+	def encodeAsLi(cls, codeInfoList):
 		"""運算 "瓥" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 		fourthCodeInfo=codeInfoList[3]
 
-		topCodeInfo=self.encodeAsGoose([firstCodeInfo, secondCodeInfo])
-		bottomCodeInfo=self.encodeAsGoose([thirdCodeInfo, fourthCodeInfo])
+		topCodeInfo=cls.encodeAsGoose([firstCodeInfo, secondCodeInfo])
+		bottomCodeInfo=cls.encodeAsGoose([thirdCodeInfo, fourthCodeInfo])
 
-		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
+		codeInfo=cls.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
 

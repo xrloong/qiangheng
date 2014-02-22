@@ -3,33 +3,36 @@ from ..base.CodeInfoEncoder import CodeInfoEncoder
 from ..base.CodeInfo import CodeInfo
 
 class SPCodeInfoEncoder(CodeInfoEncoder):
-	def __init__(self):
-		pass
-
-	def generateDefaultCodeInfo(self, characterCode):
+	@classmethod
+	def generateDefaultCodeInfo(cls, characterCode):
 		return SPCodeInfo.generateDefaultCodeInfo(characterCode)
 
-	def isAvailableOperation(self, codeInfoList):
+	@classmethod
+	def isAvailableOperation(cls, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.toCode(), codeInfoList))
 		return isAllWithCode
 
-	def encodeAsTurtle(self, codeInfoList):
+	@classmethod
+	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsLoong(self, codeInfoList):
+	@classmethod
+	def encodeAsLoong(cls, codeInfoList):
 		"""運算 "龍" """
-		codeInfo=self.generateDefaultCodeInfo('YYYY')
+		codeInfo=cls.generateDefaultCodeInfo('YYYY')
 		return codeInfo
 
-	def encodeAsEast(self, codeInfoList):
+	@classmethod
+	def encodeAsEast(cls, codeInfoList):
 		"""運算 "東" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
+	@classmethod
+	def encodeAsEqual(cls, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 

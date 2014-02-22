@@ -5,50 +5,55 @@ from ..base.CodeInfo import CodeInfo
 import sys
 
 class FCCodeInfoEncoder(CodeInfoEncoder):
-	def __init__(self):
-		pass
-
-	def generateDefaultCodeInfo(self, corners):
+	@classmethod
+	def generateDefaultCodeInfo(cls, corners):
 		return FCCodeInfo.generateDefaultCodeInfo(corners)
 
-	def isAvailableOperation(self, codeInfoList):
+	@classmethod
+	def isAvailableOperation(cls, codeInfoList):
 		return True
 
-	def encodeAsTurtle(self, codeInfoList):
+	@classmethod
+	def encodeAsTurtle(cls, codeInfoList):
 		print("不合法的運算：龜", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		codeInfo=cls.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
-	def encodeAsLoong(self, codeInfoList):
+	@classmethod
+	def encodeAsLoong(cls, codeInfoList):
 		print("不合法的運算：龍", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		codeInfo=cls.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
-	def encodeAsEast(self, codeInfoList):
+	@classmethod
+	def encodeAsEast(cls, codeInfoList):
 		print("不合法的運算：東", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		codeInfo=cls.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
+	@classmethod
+	def encodeAsEqual(cls, codeInfoList):
 		targetCodeInfo=codeInfoList[0]
 		corners=[targetCodeInfo.getTopLeft(),
 			targetCodeInfo.getTopRight(),
 			targetCodeInfo.getBottomLeft(),
 			targetCodeInfo.getBottomRight() ]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsLoop(self, codeInfoList):
+	@classmethod
+	def encodeAsLoop(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 		grid=FCGrid()
 		grid.setAsOut_In(firstCodeInfo, lastCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsSilkworm(self, codeInfoList):
+	@classmethod
+	def encodeAsSilkworm(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -56,10 +61,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsTop_Bottom(firstCodeInfo, lastCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsGoose(self, codeInfoList):
+	@classmethod
+	def encodeAsGoose(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -67,10 +73,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsLeft_Right(firstCodeInfo, lastCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsQi(self, codeInfoList):
+	@classmethod
+	def encodeAsQi(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -78,10 +85,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsBottomLeft_TopRight(firstCodeInfo, lastCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsLiao(self, codeInfoList):
+	@classmethod
+	def encodeAsLiao(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -89,10 +97,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsTopLeft_BottomRight(firstCodeInfo, lastCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsZai(self, codeInfoList):
+	@classmethod
+	def encodeAsZai(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -100,10 +109,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsTopRight_BottomLeft(firstCodeInfo, lastCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsDou(self, codeInfoList):
+	@classmethod
+	def encodeAsDou(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -111,10 +121,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsBottomRight_TopLeft(firstCodeInfo, lastCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsMu(self, codeInfoList):
+	@classmethod
+	def encodeAsMu(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -123,10 +134,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsTop_BottomLeft_BottomRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsZuo(self, codeInfoList):
+	@classmethod
+	def encodeAsZuo(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -135,10 +147,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsBottom_TopLeft_TopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsYou(self, codeInfoList):
+	@classmethod
+	def encodeAsYou(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -147,10 +160,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsBottom_InTopLeft_InTopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsLiang(self, codeInfoList):
+	@classmethod
+	def encodeAsLiang(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -159,10 +173,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsTop_InBottomLeft_InBottomRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
-	def encodeAsJia(self, codeInfoList):
+	@classmethod
+	def encodeAsJia(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -171,7 +186,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		grid.setAsBottom_InTopLeft_InTopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo=cls.generateDefaultCodeInfo(corners)
 		return codeInfo
 
 class FCBrick:

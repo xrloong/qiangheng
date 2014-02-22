@@ -4,74 +4,82 @@ from ..base.CodeInfoEncoder import CodeInfoEncoder
 import sys
 
 class ARCodeInfoEncoder(CodeInfoEncoder):
-	def __init__(self):
-		pass
-
-	def generateDefaultCodeInfo(self, codeList):
+	@classmethod
+	def generateDefaultCodeInfo(cls, codeList):
 		return ARCodeInfo.generateDefaultCodeInfo(codeList)
 
-	def isAvailableOperation(self, codeInfoList):
+	@classmethod
+	def isAvailableOperation(cls, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getMainCodeList(), codeInfoList))
 		return isAllWithCode
 
 
-	def encodeAsTurtle(self, codeInfoList):
+	@classmethod
+	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsLoong(self, codeInfoList):
+	@classmethod
+	def encodeAsLoong(cls, codeInfoList):
 		"""運算 "龍" """
 
 		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
 		tmpArCodeList=arCodeList
 		arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
-		codeInfo=self.generateDefaultCodeInfo([arCode])
+		codeInfo=cls.generateDefaultCodeInfo([arCode])
 
 		return codeInfo
 
-	def encodeAsEast(self, codeInfoList):
+	@classmethod
+	def encodeAsEast(cls, codeInfoList):
 		"""運算 "東" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
+	@classmethod
+	def encodeAsEqual(cls, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
-	def encodeAsTong(self, codeInfoList):
+	@classmethod
+	def encodeAsTong(cls, codeInfoList):
 		"""運算 "同" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		newCodeInfoList=cls.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-	def encodeAsHan(self, codeInfoList):
+	@classmethod
+	def encodeAsHan(cls, codeInfoList):
 		"""運算 "函" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
-	def encodeAsZhe(self, codeInfoList):
+	@classmethod
+	def encodeAsZhe(cls, codeInfoList):
 		"""運算 "這" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
-		codeInfo=self.encodeAsLoong([secondCodeInfo, firstCodeInfo])
+		codeInfo=cls.encodeAsLoong([secondCodeInfo, firstCodeInfo])
 		return codeInfo
 
-	def encodeAsZai(self, codeInfoList):
+	@classmethod
+	def encodeAsZai(cls, codeInfoList):
 		"""運算 "載" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		newCodeInfoList=cls.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-	def encodeAsYou(self, codeInfoList):
+	@classmethod
+	def encodeAsYou(cls, codeInfoList):
 		"""運算 "幽" """
 
 		firstCodeInfo=codeInfoList[0]
@@ -79,15 +87,16 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		thirdCodeInfo=codeInfoList[2]
 
 		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		codeInfo=cls.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
-	def encodeAsLuan(self, codeInfoList):
+	@classmethod
+	def encodeAsLuan(cls, codeInfoList):
 		"""運算 "䜌" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
-		codeInfo=self.encodeAsLoong([firstCodeInfo, secondCodeInfo, secondCodeInfo])
+		codeInfo=cls.encodeAsLoong([firstCodeInfo, secondCodeInfo, secondCodeInfo])
 		return codeInfo
 
 
@@ -97,41 +106,45 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		arCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
 		return arCode
 
-	def getCodeInfoExceptLast(self, codeInfo):
+	@classmethod
+	def getCodeInfoExceptLast(cls, codeInfo):
 		mainCodeList=codeInfo.getMainCodeList()
 
 		if len(mainCodeList)>1:
-			tmpCodeInfo=self.generateDefaultCodeInfo([mainCodeList[:-1]])
+			tmpCodeInfo=cls.generateDefaultCodeInfo([mainCodeList[:-1]])
 		else:
 			tmpCodeInfo=None
 
 		return tmpCodeInfo
 
-	def getCodeInfoExceptFirst(self, codeInfo):
+	@classmethod
+	def getCodeInfoExceptFirst(cls, codeInfo):
 		mainCodeList=codeInfo.getMainCodeList()
 
 		if len(mainCodeList)>1:
-			tmpCodeInfo=self.generateDefaultCodeInfo([mainCodeList[1:]])
+			tmpCodeInfo=cls.generateDefaultCodeInfo([mainCodeList[1:]])
 		else:
 			tmpCodeInfo=None
 
 		return tmpCodeInfo
 
-	def convertMergedCode(self, firstCodeInfo, secondCodeInfo, firstRadix, secondRadix, targetRadix):
+	@classmethod
+	def convertMergedCode(cls, firstCodeInfo, secondCodeInfo, firstRadix, secondRadix, targetRadix):
 		firstMainCodeList=firstCodeInfo.getMainCodeList()
 		secondMainCodeList=secondCodeInfo.getMainCodeList()
 
 		if firstMainCodeList[-1]==firstRadix and secondMainCodeList[0]==secondRadix:
-			newFirstCodeInfo=self.getCodeInfoExceptLast(firstCodeInfo)
-			targetCodeInfo=self.generateDefaultCodeInfo([[targetRadix]])
-			newSecondCodeInfo=self.getCodeInfoExceptFirst(secondCodeInfo)
+			newFirstCodeInfo=cls.getCodeInfoExceptLast(firstCodeInfo)
+			targetCodeInfo=cls.generateDefaultCodeInfo([[targetRadix]])
+			newSecondCodeInfo=cls.getCodeInfoExceptFirst(secondCodeInfo)
 		else:
 			newFirstCodeInfo=firstCodeInfo
 			targetCodeInfo=None
 			newSecondCodeInfo=secondCodeInfo
 		return [newFirstCodeInfo, targetCodeInfo, newSecondCodeInfo]
 
-	def getMergedCodeInfoList(self, codeInfoList, mergeCodeInfoList):
+	@classmethod
+	def getMergedCodeInfoList(cls, codeInfoList, mergeCodeInfoList):
 		firstCodeInfo=None
 		secondCodeInfo=None
 
@@ -144,7 +157,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 				continue
 
 			for [firstRadix, secondRadix, targetRadix] in mergeCodeInfoList:
-				[newFirstCodeInfo, targetCodeInfo, newSecondCodeInfo,]=self.convertMergedCode(firstCodeInfo, secondCodeInfo, firstRadix, secondRadix, targetRadix)
+				[newFirstCodeInfo, targetCodeInfo, newSecondCodeInfo,]=cls.convertMergedCode(firstCodeInfo, secondCodeInfo, firstRadix, secondRadix, targetRadix)
 				if targetCodeInfo:
 					if newFirstCodeInfo:
 						newCodeInfoList.append(newFirstCodeInfo)
@@ -159,7 +172,8 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 		return newCodeInfoList
 
-	def getMergedCodeInfoListAsForGe(self, codeInfoList):
+	@classmethod
+	def getMergedCodeInfoListAsForGe(cls, codeInfoList):
 		# 如 咸、戎
 		if len(codeInfoList)<=1:
 			print("錯誤：", file=sys.stderr)
@@ -170,8 +184,8 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 				frontMainCode=firstCodeInfo.getInstallmentCode(0)
 				rearMainCode=firstCodeInfo.getInstallmentCode(1)
 
-				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
-				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
+				frontCodeInfo=cls.generateDefaultCodeInfo([frontMainCode])
+				rearCodeInfo=cls.generateDefaultCodeInfo([rearMainCode])
 				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
 			else:
 				return codeInfoList

@@ -8,8 +8,6 @@ import sys
 import copy
 
 class SOCodeInfoEncoder(DCCodeInfoEncoder):
-	def __init__(self):
-		pass
-
-	def generateDefaultCodeInfo(self, strokeGroup):
+	@classmethod
+	def generateDefaultCodeInfo(cls, strokeGroup):
 		return SOCodeInfo.generateDefaultCodeInfo(strokeGroup)
