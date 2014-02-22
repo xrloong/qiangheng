@@ -85,7 +85,7 @@ def parsestructure(g):
 	else:
 		return None
 
-def getDynamicFromFile(filenamelist, CharConstructor):
+def getDescDBFromFile(filenamelist, CharConstructor):
 	chlist=[]
 	descDB={}
 
@@ -104,7 +104,7 @@ def getDynamicFromFile(filenamelist, CharConstructor):
 					operator, operandlist=parseans
 					chInfo=CharConstructor(ll[1], parseans, ll[3:])
 					descDB[ll[1]]=chardesc.CharDesc(ll[1], ll[2], chInfo)
-	return descDB
+	return descDB, chlist
 
 def getTableFromFile(filename):
 	t=[]
@@ -161,7 +161,7 @@ def genFile(options):
 		z=im.NoneIM()
 
 	if method in ['動', '動態', '動態組碼', 'dynamic',]:
-		descDB=getDynamicFromFile(pathlist, constructor)
+		descDB, chlist=getDescDBFromFile(pathlist, constructor)
 		z.setStruct(descDB)
 	elif method in ['表', '表格', 'puretable', 'pt']:
 		cmtable=getTableFromFile(options.ptfile)
