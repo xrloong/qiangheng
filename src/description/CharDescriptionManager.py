@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from .CharacterDescription import CharacterDescription
-from .StructureDescription import StructureDescription
+#from .StructureDescription import StructureDescription
 from .StructureDescription import HangerStructureDescription
 from .TemplateDesc import TemplateDesc
 from .TemplateDesc import TemplateCondition
@@ -107,6 +107,7 @@ class CharDescriptionManager:
 				else:
 					pass
 
+			propDict=assembleChar.attrib
 			if operatorName:
 				comp=structDescGenerator([operatorName, l])
 			else:
@@ -119,6 +120,9 @@ class CharDescriptionManager:
 			compList=[]
 			for assembleChar in assembleCharList:
 				comp=getDesc_AssembleChar(assembleChar)
+
+				comp.setStructureProperties(assembleChar.attrib)
+
 				compList.append(comp)
 			return compList
 
@@ -254,7 +258,9 @@ class CharDescriptionManager:
 			charDesc=self.characterDB.get(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
+				backupCodeType=structDesc.getCodeType()
 				self.operationMgr.rearrangeRecursively(structDesc)
+				structDesc.setCodeType(backupCodeType)
 
 if __name__=='__main__':
 	pass

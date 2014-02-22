@@ -1,5 +1,6 @@
 import copy
 from state import StateManager
+from description.CodeType import CodeType
 
 class HanZiStructure:
 	def __init__(self, operator, nodeList):
@@ -7,8 +8,12 @@ class HanZiStructure:
 		self.nodeList=nodeList
 
 		self.codeInfoList=[]
+		self.codeType=CodeType()
 
 		self.flagIsSet=True
+
+	def setCodeType(self, codeType):
+		self.codeType=codeType
 
 	def setToRadix(self):
 		self.flagIsSet=False
@@ -43,6 +48,8 @@ class HanZiStructure:
 		for infoList in infoListList:
 			codeInfo=StateManager.codeInfoGenerator({})
 			codeInfo.setCompositions(self.getOperator(), infoList)
+			codeInfo.multiCodeType(self.codeType)
+
 			self.appendCodeInfo(codeInfo)
 
 	def getAllCodeInfoList(self, nodeList):
@@ -124,22 +131,24 @@ class HanZiNetwork:
 
 		return ansNode
 
-	def addLink(self, charDesc, operator, childDescList):
+	def addLink(self, structDesc, operator, childDescList):
 		if len(childDescList)>0:
 			childNodeList=[self.findNodeByCharDesc(childDesc) for childDesc in childDescList]
-			dstNode=self.findNodeByCharDesc(charDesc)
+			dstNode=self.findNodeByCharDesc(structDesc)
 
 			structure=HanZiStructure(operator, childNodeList)
+			structure.setCodeType(structDesc.getCodeType())
 			structure.setToRadix()
 
 			dstNode.addStructure(structure)
 
-	def appendNodeInfo(self, charDesc, propDict):
-		dstNode=self.findNodeByCharDesc(charDesc)
+	def appendNodeInfo(self, structDesc, propDict):
+		dstNode=self.findNodeByCharDesc(structDesc)
 
 		codeInfo=StateManager.codeInfoGenerator(propDict)
 		structure=HanZiStructure(None, [])
 		structure.appendCodeInfo(codeInfo)
+		structure.setCodeType(structDesc.getCodeType())
 		structure.setToComponent()
 
 		dstNode.addStructure(structure)

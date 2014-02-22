@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import copy
+from description.CodeType import CodeType
 
 class StructureDescription:
 	"""字符描述"""
@@ -12,8 +13,7 @@ class StructureDescription:
 		self.operator=operator
 		self.compList=compList
 
-		# 字符的資訊，如在某種輸入法下如何拆碼
-		self.propDict=None
+		self.codeType=CodeType()
 
 	def __str__(self):
 		return '<{0}={1}|({2})>'.format(self.getHybridName(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
@@ -24,6 +24,7 @@ class StructureDescription:
 	def copyDescription(self):
 		copyStructureDescription=StructureDescription(self.getOperator(), [])
 		copyStructureDescription.setExpandName(self.getExpandName())
+		copyStructureDescription.setCodeType(self.getCodeType())
 		return copyStructureDescription
 
 	def copyDeeply(self):
@@ -40,6 +41,16 @@ class StructureDescription:
 #		if isWithSameExpandName:
 #			ansDesc.setExpandName(self.getExpandName())
 		return ansDesc
+
+	def setStructureProperties(self, structProp):
+		codeTypeString=structProp.get("類型", "標準")
+		self.target.getCodeType().setTypeString(codeTypeString)
+
+	def getCodeType(self):
+		return self.target.codeType
+
+	def setCodeType(self, codeType):
+		self.target.codeType=codeType
 
 	def getUniqueName(self):
 		return self.target.name

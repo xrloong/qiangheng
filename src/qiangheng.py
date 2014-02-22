@@ -119,13 +119,13 @@ class QiangHeng:
 		for childSrcDesc in srcDesc.getCompList():
 			self.recursivelyAddNode(childSrcDesc)
 
-	def recursivelyAddLink(self, srcDesc):
-		operator=srcDesc.getOperator()
-		childDescList=srcDesc.getCompList()
+	def recursivelyAddLink(self, structDesc):
+		operator=structDesc.getOperator()
+		childDescList=structDesc.getCompList()
 
-		self.hanziNetwork.addLink(srcDesc, operator, childDescList)
+		self.hanziNetwork.addLink(structDesc, operator, childDescList)
 
-		for childSrcDesc in srcDesc.getCompList():
+		for childSrcDesc in structDesc.getCompList():
 			self.recursivelyAddLink(childSrcDesc)
 
 	def toXML(self, imInfo):

@@ -1,24 +1,11 @@
+from description.CodeType import CodeType
+
 class CodeInfo:
-	CODE_TYPE_STANDARD=0
-	CODE_TYPE_SIMPLIFIED=1
-	CODE_TYPE_TOLERANT=2
-	codeTypeDict={
-		CODE_TYPE_STANDARD:"標準",
-		CODE_TYPE_SIMPLIFIED:"簡快",
-		CODE_TYPE_TOLERANT:"容錯",
-	}
-
-	codeTypeStringDict={
-		"標準":CODE_TYPE_STANDARD,
-		"簡快":CODE_TYPE_SIMPLIFIED,
-		"容錯":CODE_TYPE_TOLERANT,
-	}
-
 	def __init__(self, propDict={}):
 		self.setDataEmpty()
 		self.setSingleDataEmpty()
 
-		self.codeType=CodeInfo.CODE_TYPE_STANDARD
+		self.codeType=CodeType()
 		self.setCodeTypeProperties(propDict)
 		self.setRadixCodeProperties(propDict)
 
@@ -34,17 +21,14 @@ class CodeInfo:
 	def setCodeTypeProperties(self, propDict):
 		typeString=propDict.get('類型')
 		if typeString:
-			self.codeType=CodeInfo.codeTypeStringDict.get(typeString)
+			self.codeType.setTypeString(typeString)
 
 	def setCompositions(self, operator, complist):
 		# 計算倉頡碼時，需要知道此字的組成方向
 		# 計算行列、大易、嘸蝦米及鄭碼時，不需要知道此字的組成方向
-		codeType=self.getCodeType()
 		for codeInfo in complist:
-			tmpCodeType=codeInfo.getCodeType()
-			if tmpCodeType>codeType:
-				codeType=tmpCodeType
-		self.codeType=codeType
+			codeType=codeInfo.getCodeType()
+			self.codeType.multi(codeType)
 
 		self.setByComps(operator, complist)
 
@@ -57,7 +41,7 @@ class CodeInfo:
 	def getCodeProperties(self):
 		characterCode=self.characterCode
 		if characterCode:
-			return [characterCode, CodeInfo.codeTypeDict.get(self.codeType)]
+			return [characterCode, self.codeType.getTypeString()]
 		else:
 			return []
 
@@ -66,6 +50,9 @@ class CodeInfo:
 
 	def setSingleDataEmpty(self):
 		pass
+
+	def multiCodeType(self, codeType):
+		self.codeType.multi(codeType)
 
 	@property
 	def code(self):
