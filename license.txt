@@ -9,7 +9,11 @@
 DescriptionManagerToHanZiNetworkConverter.getSortedNameList() 。
 
 
-font/single.fnt 為從 "魔法設計的藝術"
-（http://magicdesign.blogspot.com/search/label/漢字研究） 而來。
+
+ qhdata/radix/CJK/dc.xml 所用的字形描述是由 "動態組字函式庫" 所提供的
+字型檔所擷取或轉換出來。
 其原本授權條款為 " GNU自由文件授權條款"，故而相關修改應遵守其規範。
+
+請參見動態組字函式庫（http://www.openfoundry.org/of/projects/690） 。
+或參見魔法設計的藝術：漢字研究（http://magicdesign.blogspot.com/search/label/漢字研究）。
 
