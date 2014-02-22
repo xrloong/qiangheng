@@ -119,8 +119,6 @@ class QHParser:
 		for node in targetChildNodes:
 			charName=node.get('名稱')
 			turtleList=self.getDesc_TurtleCharacterList(node)
-			for turtle in turtleList:
-				turtle.setExpandName(charName)
 
 			turtleInfoList.append([charName, turtleList, node.attrib])
 		return turtleInfoList
@@ -146,8 +144,6 @@ class QHParser:
 		for node in targetChildNodes:
 			compList=self.getDesc_CompleteCharacterList(node)
 			charName=node.get('名稱')
-			for comp in compList:
-				comp.setExpandName(charName)
 
 			nodeInfoList.append([charName, compList, node.attrib])
 		return nodeInfoList

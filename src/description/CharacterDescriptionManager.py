@@ -49,6 +49,7 @@ class CharDescriptionManager:
 
 		for filename in toCodeList:
 			self.loadCodeInfoFromXML(filename, fileencoding='utf-8-sig')
+		self.setAllExpandName()
 
 
 	def loadFromXML(self, filename, fileencoding='utf-8-sig'):
@@ -85,7 +86,6 @@ class CharDescriptionManager:
 				charDesc=CharacterDescription(charName)
 				self.characterDB[charName]=charDesc
 			charDesc.extendStructureList(compList)
-#			charDesc.updateProperty(propDict)
 
 	def adjustData(self):
 		self.operationMgr.adjustTemplate()
@@ -94,9 +94,14 @@ class CharDescriptionManager:
 			charDesc=self.characterDB.get(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
-				backupCodeType=structDesc.getCodeType()
 				self.operationMgr.rearrangeRecursively(structDesc)
-				structDesc.setCodeType(backupCodeType)
+
+	def setAllExpandName(self):
+		for charName in self.characterDB.keys():
+			charDesc=self.characterDB.get(charName)
+			structDescList=charDesc.getStructureList()
+			for structDesc in structDescList:
+				structDesc.setExpandName(charName)
 
 if __name__=='__main__':
 	pass
