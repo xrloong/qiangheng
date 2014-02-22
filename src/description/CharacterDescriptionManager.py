@@ -61,12 +61,18 @@ class CharacterDescriptionManager:
 	def queryChildren(self, charDesc):
 		return charDesc.getCompList()
 
+	def queryStructureList(self, charDesc):
+		return charDesc.getStructureList()
+
 	def adjustData(self, structureRearranger):
 		for charName in self.characterDB.keys():
 #			print("name: %s"%charName, file=sys.stderr);
 			charDesc=self.characterDB.get(charName)
-			structureRearranger.rearrangeOn(charDesc)
-#			print("name: %s %s"%(charName, structDesc), file=sys.stderr);
+
+			structDescList=charDesc.getStructureList()
+			for structDesc in structDescList:
+				structureRearranger.rearrangeOn(structDesc)
+#				print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 if __name__=='__main__':
 	pass

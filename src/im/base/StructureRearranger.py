@@ -13,10 +13,8 @@ class StructureRearranger:
 		return self.operatorGenerator
 
 
-	def rearrangeOn(self, charDesc):
-		structDescList=charDesc.getStructureList()
-		for structDesc in structDescList:
-			self.rearrangeRecursively(structDesc)
+	def rearrangeOn(self, structDesc):
+		self.rearrangeRecursively(structDesc)
 
 	def rearrangeRecursively(self, structDesc):
 		self.rearrangeDesc(structDesc)
@@ -25,20 +23,21 @@ class StructureRearranger:
 		return structDesc
 
 	def rearrangeDesc(self, structDesc):
-		if self.rearrangeSpecial(structDesc):
-			pass
-		else:
-			operator=structDesc.getOperator()
-			if not operator.isBuiltin():
-				rearrangeInfo=operator.getRearrangeInfo()
+		self.rearrangeSpecial(structDesc)
 
-				if rearrangeInfo!=None:
-					rearrangeInfo.rearrange(structDesc)
-					operator=structDesc.getOperator()
-					self.rearrangeDesc(structDesc)
+		operator=structDesc.getOperator()
+		while not operator.isBuiltin():
+			rearrangeInfo=operator.getRearrangeInfo()
+
+			if rearrangeInfo!=None:
+				rearrangeInfo.rearrange(structDesc)
+				self.rearrangeDesc(structDesc)
+				operator=structDesc.getOperator()
+			else:
+				break
 
 	def rearrangeSpecial(self, structDesc):
-		return False
+		pass
 
 
 

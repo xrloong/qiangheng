@@ -34,7 +34,7 @@ class TemplateDescription:
 	def setParameterList(self, parameterList):
 		self.parameterList=parameterList
 
-	def rearrange(self, charDesc):
+	def rearrange(self, structDesc):
 		def getMapping(parameterList, argumentList):
 			parameterToArgumentMapping={}
 			parameterToArgumentNameMapping={}
@@ -52,19 +52,19 @@ class TemplateDescription:
 		# 需要先替換兒子，才可以進行自己的替換。
 		# 否則，如：條=(範翛 木)=(範湘 亻丨(志 夂木))
 		# 而 '木' 會被誤判為湘的參數。
-		def replaceCharDesc(charDesc):
-			for comp in charDesc.getCompList():
+		def replaceCharDesc(structDesc):
+			for comp in structDesc.getCompList():
 				replaceCharDesc(comp)
 
-#			argumentDesc=parameterToArgumentMapping.get(charDesc.getReferenceName())
-			argumentDesc=getWantedReplaceDescription(charDesc)
+#			argumentDesc=parameterToArgumentMapping.get(structDesc.getReferenceName())
+			argumentDesc=getWantedReplaceDescription(structDesc)
 			if argumentDesc!=None:
-				charDesc.replacedBy(argumentDesc)
+				structDesc.replacedBy(argumentDesc)
 
-		def getWantedReplaceDescription(charDesc):
-			referenceName=charDesc.getReferenceName()
+		def getWantedReplaceDescription(structDesc):
+			referenceName=structDesc.getReferenceName()
 			targetArgumentDesc=parameterToArgumentMapping.get(referenceName)
-			referenceExpression=charDesc.getReferenceExpression()
+			referenceExpression=structDesc.getReferenceExpression()
 
 			argumentDesc=None
 			if targetArgumentDesc:
@@ -92,14 +92,14 @@ class TemplateDescription:
 			tempDesc=targetCharDesc.clone()
 			return tempDesc
 
-		argumentList=charDesc.getCompList()
+		argumentList=structDesc.getCompList()
 		parameterList=self.parameterList
 		mappings=getMapping(parameterList, argumentList)
 		(parameterToArgumentMapping, parameterToArgumentNameMapping)=mappings
 
 		targetStructureDescription=getMatchedStructureDescription(parameterToArgumentNameMapping)
 		replaceCharDesc(targetStructureDescription)
-		charDesc.replacedBy(targetStructureDescription)
+		structDesc.replacedBy(targetStructureDescription)
 
 
 if __name__=='__main__':

@@ -25,8 +25,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
-
-			structDescList=charDesc.getStructureList()
+			structDescList=self.descriptionManager.queryStructureList(charDesc)
 			for structDesc in structDescList:
 				structDesc.setRootName(charName)
 				self.recursivelyAddStructure(structDesc)
