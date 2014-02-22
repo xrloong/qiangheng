@@ -6,6 +6,8 @@
 \XeTeXlinebreaklocale ``zh''
 \XeTeXlinebreakskip = 0pt plus 1pt
 
+\usepackage{amsmath}
+
 \def\tac{\textasciicircum}
 \title{瑲珩}
 \author{王湘叡}
@@ -64,21 +66,58 @@
 
 同樣也是以``曉''為例。
 \begin{tabular}{llll}
-日  & D & P(0\tac) \\
-土  & F & R(4\tac) \\
-垚  & FFF & RRR(4\tac4\tac4\tac) \\
-兀  & EQ & AS(1-2-)\\
-堯  & FFFQ & RRRS(4\tac4\tac4\tac2-) \\
-曉  & DFFQ & PRRS(0\tac4\tac4\tac2-) \\
+字  & 行列碼 & 大易碼\\
+日  & P(0\tac) & D\\
+土  & R(4\tac) & F\\
+垚  & RRR(4\tac4\tac4\tac) & FFF\\
+兀  & AS(1-2-) & EQ\\
+堯  & RRRS(4\tac4\tac4\tac2-) & FFFQ\\
+曉  & PRRS(0\tac4\tac4\tac2-) & DFFQ\\
 \end{tabular}
+
+如果用``.行''和``.易''來表示一個字的行列碼和大易碼，
+且 $(\mbox{丙}=\mbox{甲}+\mbox{乙})$
+我們可以用
+\begin{subequations}
+  \begin{align}
+  \mbox{丙}_{\mbox{行}}&=\mbox{取前三後一}(\mbox{甲}_{\mbox{行}}+\mbox{乙}_{\mbox{行}})\\
+  \mbox{丙}_{\mbox{易}}&=\mbox{取前三後一}(\mbox{甲}_{\mbox{易}}+\mbox{乙}_{\mbox{易}})
+  \end{align}
+\end{subequations}
+來計算
 
 \section{嘸蝦米}
 嘸蝦米的規則亦為前三後一，但不同的是，嘸蝦米多了一個補碼規定
 －－若取碼不足兩碼，則要根據最後一筆劃添加補碼。
+為此，為嘸蝦米添加一個屬性：
+用``嘸''、``.嘸補'' 表示一個字的嘸蝦米碼和補碼，
+函數``\mbox{補}(X, Y)'' 則會根據 $X$ 的長度是否小於等於二碼來決定是否附加 $Y$
+則
+\begin{subequations}
+  \begin{align}
+  \mbox{丙}_{\mbox{嘸補}}&=\mbox{乙}_{\mbox{嘸補}}\\
+  \mbox{丙}_{\mbox{嘸}}&=\mbox{補}(\mbox{取前三後一}(\mbox{甲}_{\mbox{嘸}}+\mbox{乙}_{\mbox{嘸}}),
+                          \mbox{丙}_{\mbox{嘸補}})
+  \end{align}
+\end{subequations}
 \section{倉頡}
 倉頡的規則分為整體字和組合字。
 整體字若不足四碼則全取，否則取首、二、三、末碼。
 若為組合字，
+``倉本''表示當成本字的倉頡碼。
+``倉部''表示當成部件的倉頡碼。
+
+\begin{subequations}
+  \begin{align}
+  \mbox{丙}_{\mbox{倉本}}&=\mbox{首尾}(\mbox{甲}_{\mbox{倉部}})
+      + \mbox{首二尾}({\mbox{乙}_{\mbox{倉部}}})\\
+  \mbox{丙}_{\mbox{倉部}}&= \mbox{首二尾}(
+      \mbox{首尾}(\mbox{甲}_{\mbox{倉部}})
+      + \mbox{首尾}(\mbox{甲}_{\mbox{倉部}})
+      )
+  \end{align}
+\end{subequations}
+
 \section{鄭碼}
 鄭碼的規則
 鄭碼的部件大多為二碼字，對一些常用的部件則為一碼
@@ -92,4 +131,41 @@
   三基根字 & \\
   四基根字 & \\
 \end{tabular}
+``鄭''表示一個字的鄭碼。
+``鄭根串''表示一個字的字根串列。
+``鄭根數''表示一個字可以拆成幾個字個。
+``鄭首''表示一個字首個字根的碼數。
+
+\begin{subequations}
+  \begin{align}
+  \mbox{丙}_{\mbox{鄭根串}} &= \mbox{甲}_{\mbox{鄭根串}} + \mbox{乙}_{\mbox{鄭根串}} \\
+%  \mbox{丙}_{\mbox{鄭根數}} &= \max(4, \mbox{甲}_{\mbox{鄭根}} + \mbox{乙}_{\mbox{鄭根}} )\\
+  \mbox{丙}_{\mbox{鄭根數}} &= \max(4, \mbox{丙}_{\mbox{鄭根數}} )\\
+  \mbox{丙}_{\mbox{鄭首}} &= \mbox{甲}_{\mbox{鄭首}}\\
+  \mbox{丙}_{\mbox{鄭}} &= \mbox{丙}_{\mbox{鄭根串}}[0][0:2]+\mbox{丙}_{\mbox{鄭根串}}[-1][:]
+      if \mbox{丙}_{\mbox{鄭根數}}==2 \\
+  \mbox{丙}_{\mbox{鄭}} &=
+      \mbox{丙}_{\mbox{鄭根串}}[0][0:2]
+      +\mbox{丙}_{\mbox{鄭根串}}[-2][-1]
+      +\mbox{丙}_{\mbox{鄭根串}}[-1][-1]
+      if \mbox{丙}_{\mbox{鄭根數}}==3 and \mbox{丙}_{\mbox{鄭首}}==2 \\
+  \mbox{丙}_{\mbox{鄭}} &=
+      \mbox{丙}_{\mbox{鄭根串}}[0][0]
+      +\mbox{丙}_{\mbox{鄭根串}}[-2][-1]
+      +\max(2, \mbox{丙}_{\mbox{鄭根串}}[-1][:])
+      if \mbox{丙}_{\mbox{鄭根數}}==3 and \mbox{丙}_{\mbox{鄭首}}==1 \\
+  \mbox{丙}_{\mbox{鄭}} &= \mbox{丙}_{\mbox{鄭根串}}[0][0]
+      + \mbox{丙}_{\mbox{鄭根串}}[2][0]
+      + \mbox{丙}_{\mbox{鄭根串}}[-2][0]
+      + \mbox{丙}_{\mbox{鄭根串}}[-1][0]
+      if \mbox{丙}_{\mbox{鄭根數}}==4 and \mbox{丙}_{\mbox{鄭首}}==1\\
+  \mbox{丙}_{\mbox{鄭}} &= \mbox{丙}_{\mbox{鄭根串}}[0][0:2]
+      + \mbox{丙}_{\mbox{鄭根串}}[-2][0]
+      + \mbox{丙}_{\mbox{鄭根串}}[-1][0]
+      if \mbox{丙}_{\mbox{鄭根數}}==4 and \mbox{丙}_{\mbox{鄭首}}==2\\
+  \mbox{丙}_{\mbox{鄭}} &= \mbox{丙}_{\mbox{鄭根串}}[0][0:3]+\mbox{丙}_{\mbox{鄭根串}}[-1][:]
+      if \mbox{丙}_{\mbox{鄭根數}}==4 and \mbox{丙}_{\mbox{鄭首}}==3\\
+  \end{align}
+\end{subequations}
+
 \end{document}
