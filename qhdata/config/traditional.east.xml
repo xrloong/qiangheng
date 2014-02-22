@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<瑲珩 版本號="0.2">
+	<設定檔 資料目錄="qhdata/">
+		<匯入 檔案="config/main.east.xml" />
+
+		<部件 檔案="style/standard.xml" />
+		<部件 檔案="style/traditional.xml" />
+	</設定檔>
+</瑲珩>
+

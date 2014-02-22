@@ -4,7 +4,7 @@
 		<輸入法 名稱="倉頡" 版本="五" 標準="瑲珩" />
 	</設定>
 	<設定檔 資料目錄="qhdata/">
-		<匯入 檔案="config/traditional.xml" />
+		<匯入 檔案="config/traditional.east.xml" />
 
 		<範本 檔案="template/cj.xml" />
 

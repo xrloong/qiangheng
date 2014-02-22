@@ -20,11 +20,12 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 			elif Operator.OperatorLoong.equals(operator):
 				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
 				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+			elif Operator.OperatorEast.equals(operator):
+				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
+				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
 
 			elif Operator.OperatorEqual.equals(operator):
 				FCCodeInfoEncoder.encodeAsEqual(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorEast.equals(operator):
-				FCCodeInfoEncoder.encodeAsEast(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorLoop.equals(operator):
 				FCCodeInfoEncoder.encodeAsLoop(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorSilkworm.equals(operator):
