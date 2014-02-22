@@ -1,6 +1,5 @@
 import re
 import sys
-import copy
 
 class Point:
 	def __init__(self, x, y):

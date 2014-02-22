@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import copy
 import Constant
 from gear.CodeVarianceType import CodeVarianceTypeFactory
 
@@ -26,8 +25,8 @@ class StructureDescription:
 	def __repr__(self):
 		return str(self)
 
-	def __deepcopy__(self, memo):
-		compList=copy.deepcopy(self.getCompList(), memo)
+	def clone(self):
+		compList=[c.clone() for c in self.getCompList()]
 		structureDescription=StructureDescription.generate(self.getOperator(), compList)
 
 		if self.getOperator().getName()=='龜':
@@ -110,9 +109,6 @@ class HangerStructureDescription:
 	def __init__(self, targetDescription):
 		self.targetDescription=targetDescription
 
-	def __deepcopy__(self, memo):
-		return HangerStructureDescription(copy.deepcopy(self.target))
-
 	@staticmethod
 	def generate(operator, compList):
 		targetDescription=StructureDescription(operator, compList)
@@ -123,7 +119,7 @@ class HangerStructureDescription:
 		return self.targetDescription
 
 	def clone(self):
-		return copy.deepcopy(self)
+		return HangerStructureDescription(self.target.clone())
 
 	def replacedBy(self, newStructureDescription):
 		self.targetDescription=newStructureDescription.target
