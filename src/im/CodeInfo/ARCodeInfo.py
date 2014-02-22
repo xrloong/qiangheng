@@ -35,31 +35,25 @@ class ARCodeInfo(CodeInfo):
 	RADIX_9_BOTTOM='9v'
 	RADIX_0_BOTTOM='0v'
 
-	RADIX_EXTEND_1_UP='x:1^:1'	# 即[一口]，豆的上部
-	RADIX_EXTEND_1_CENTER='x:1-:1'	# 即一，可用來合併字根，末的序列為 '4v,1-' ，但在 '唜' 中，不做合併用。
-	RADIX_EXTEND_0_CENTER='x:0-:1'	# 即口，可用來合併字根
-	RADIX_EXTEND_4_BOTTOM='x:4v:1'	# 即[士冖]，壹的上部
-	RADIX_EXTEND_4_UP='x:4^:1'	# 即士，可用來合併字根
-	RADIX_EXTEND_7_CENTER='x:7-:1'	# 即冖，可用來合併字根
-	RADIX_EXTEND_9_UP='x:9^:1'	# 即[特微]，由彳、山、一所組成
-	RADIX_EXTEND_9_BOTTOM='x:9v:1'	# 即彳，可用來合併字根
-	RADIX_EXTEND_3_CENTER='x:3-:1'	# 即山，可用來合併字根
-	RADIX_EXTEND_3_CENTER_1_CENTER='x:3-:1-:1'	# 即[山一]，[特微]的右半部
+	RADIX_一口='$一口'
+	RADIX_一='$一'
+	RADIX_口='$口'
+	RADIX_士冖='$士冖'
+	RADIX_士='$士'
+	RADIX_冖='$冖'
+	RADIX_彳山一='$彳山一'
+	RADIX_彳='$彳'
+	RADIX_山='$山'
+	RADIX_山一='$山一'
 
-#	RADIX_EXTEND_6_UP='x:6^:1'	# 即亠，可用來合併字根
-#	RADIX_EXTEND_9_BOTTOM_2='x:9v:2'	# 即乂
-	RADIX_EXTEND_6_UP_9_BOTTOM='x:6^:9v:1'	# 即文
-	RADIX_EXTEND_1_BOTTOM='x:1v:1'	# 即厂
-	RADIX_EXTEND_6_UP_9_BOTTOM_1_BUTTOM='x:6^:9v:1v'	# 即[文厂]
+	RADIX_文='$文'
+	RADIX_厂='$厂'
+	RADIX_文厂='$文厂'
 
-	RADIX_EXTEND_5_BOTTOM='x:5v:1'	# 即廴
-	RADIX_EXTEND_6_BOTTOM='x:6v:1'	# 即辶
-	RADIX_EXTEND_2_CENTER='x:2-:1'	# 即[亾下]
-
-	RADIX_EXTEND_2_CENTER_2='x:2-:2'	# 即儿
-	RADIX_EXTEND_2_CENTER_3='x:2-:3'	# 即乚
-	RADIX_EXTEND_3_CENTER_2='x:3-:2'	# 即丨
-	RADIX_EXTEND_3_UP='x:3^:1'	# 即[丨丨]
+	RADIX_儿='$儿'
+	RADIX_乚='$乚'
+	RADIX_丨='$丨'
+	RADIX_丨丨='$丨丨'
 
 	radixToCodeDict={
 		RADIX_1_UP:'q',
@@ -95,33 +89,27 @@ class ARCodeInfo(CodeInfo):
 		RADIX_9_BOTTOM:'.',
 		RADIX_0_BOTTOM:'/',
 
-		RADIX_EXTEND_1_UP:'q',
-		RADIX_EXTEND_1_CENTER:'a',
-		RADIX_EXTEND_0_CENTER:';',
+		RADIX_一口:'q',
+		RADIX_一:'a',
+		RADIX_口:';',
 
-		RADIX_EXTEND_4_BOTTOM:'v',
-		RADIX_EXTEND_4_UP:'r',
-		RADIX_EXTEND_7_CENTER:'j',
+		RADIX_士冖:'v',
+		RADIX_士:'r',
+		RADIX_冖:'j',
 
-		RADIX_EXTEND_5_BOTTOM:'b',
-		RADIX_EXTEND_6_BOTTOM:'n',
-		RADIX_EXTEND_2_CENTER:'s',
+		RADIX_彳山一:'o',
+		RADIX_彳:'.',
+		RADIX_山:'d',
+		RADIX_山一:'da',
 
-		RADIX_EXTEND_9_UP:'o',
-		RADIX_EXTEND_9_BOTTOM:'.',
-		RADIX_EXTEND_3_CENTER:'d',
-		RADIX_EXTEND_3_CENTER_1_CENTER:'da',
+		RADIX_文:'y.',
+		RADIX_厂:'z',
+		RADIX_文厂:'n',
 
-#		RADIX_EXTEND_6_UP:'y',
-#		RADIX_EXTEND_9_BOTTOM_2:'.',
-		RADIX_EXTEND_6_UP_9_BOTTOM:'y.',
-		RADIX_EXTEND_1_BOTTOM:'z',
-		RADIX_EXTEND_6_UP_9_BOTTOM_1_BUTTOM:'n',
-
-		RADIX_EXTEND_2_CENTER_2:'s',
-		RADIX_EXTEND_2_CENTER_3:'s',
-		RADIX_EXTEND_3_CENTER_2:'d',
-		RADIX_EXTEND_3_UP:'e',
+		RADIX_儿:'s',
+		RADIX_乚:'s',
+		RADIX_丨:'d',
+		RADIX_丨丨:'e',
 	}
 
 	def __init__(self, codeList=None, isSupportCharacterCode=True, isSupportRadixCode=True):

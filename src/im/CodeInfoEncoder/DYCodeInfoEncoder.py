@@ -145,8 +145,8 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 			dyCodePrev=tmpDyCodeList[i]
 			dyCodeNext=tmpDyCodeList[i+1]
 			if len(dyCodePrev)>0 and len(dyCodeNext)>0:
-				if dyCodePrev[-1]==DYCodeInfo.RADIX_EXTEND_H1 and dyCodeNext[0]==DYCodeInfo.RADIX_EXTEND_E1:
-					tmpDyCodeList[i]=dyCodePrev[:-1]+[DYCodeInfo.RADIX_EXTEND_H2]
+				if dyCodePrev[-1]==DYCodeInfo.RADIX_厂 and dyCodeNext[0]==DYCodeInfo.RADIX_一:
+					tmpDyCodeList[i]=dyCodePrev[:-1]+[DYCodeInfo.RADIX_厂一]
 					tmpDyCodeList[i+1]=dyCodeNext[1:]
 
 		# 合併字根後，有些字根列可能為空，如：戓

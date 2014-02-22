@@ -42,9 +42,9 @@ class DYCodeInfo(CodeInfo):
 	RADIX_SEMICOLON=';'
 	RADIX_SLASH='/'
 
-	RADIX_EXTEND_E1='e1'	# 即一
-	RADIX_EXTEND_H1='h1'	# 即厂
-	RADIX_EXTEND_H2='h2'	# 威的前三筆
+	RADIX_一='$一'
+	RADIX_厂='$厂'
+	RADIX_厂一='$厂一'
 
 	radixToCodeDict={
 		RADIX_A:'a',
@@ -88,9 +88,9 @@ class DYCodeInfo(CodeInfo):
 		RADIX_SEMICOLON:';',
 		RADIX_SLASH:'/',
 
-		RADIX_EXTEND_E1:'e',
-		RADIX_EXTEND_H1:'h',
-		RADIX_EXTEND_H2:'h',
+		RADIX_一:'e',
+		RADIX_厂:'h',
+		RADIX_厂一:'h',
 	}
 
 	def __init__(self, codeList, isSupportCharacterCode=True, isSupportRadixCode=True):

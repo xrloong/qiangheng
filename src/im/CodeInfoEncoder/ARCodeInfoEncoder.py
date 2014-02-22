@@ -140,14 +140,14 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
-		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_EXTEND_2_CENTER_2:
-			tmpFrontCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_EXTEND_3_CENTER_2]])
-			tmpRearCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_EXTEND_2_CENTER_3]])
+		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_儿:
+			tmpFrontCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
+			tmpRearCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_乚]])
 			codeInfo=self.encodeAsGoose([tmpFrontCodeInfo, secondCodeInfo, tmpRearCodeInfo])
 			return codeInfo
-		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_EXTEND_3_UP:
-			tmpFrontCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_EXTEND_3_CENTER_2]])
-			tmpRearCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_EXTEND_3_CENTER_2]])
+		if firstCodeInfo.getMainCodeList()[0]==ARCodeInfo.RADIX_丨丨:
+			tmpFrontCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
+			tmpRearCodeInfo=self.generateDefaultCodeInfo([[ARCodeInfo.RADIX_丨]])
 			codeInfo=self.encodeAsGoose([tmpFrontCodeInfo, secondCodeInfo, tmpRearCodeInfo])
 			return codeInfo
 
@@ -198,17 +198,17 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 			arCodePrev=tmpArCodeList[i]
 			arCodeNext=tmpArCodeList[i+1]
 			if len(arCodePrev)>0 and len(arCodeNext)>0:
-				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_1_CENTER and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_0_CENTER:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_1_UP]
+				if arCodePrev[-1]==ARCodeInfo.RADIX_一 and arCodeNext[0]==ARCodeInfo.RADIX_口:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_一口]
 					tmpArCodeList[i+1]=arCodeNext[1:]
-				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_4_UP and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_7_CENTER:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_4_BOTTOM]
+				if arCodePrev[-1]==ARCodeInfo.RADIX_士 and arCodeNext[0]==ARCodeInfo.RADIX_冖:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_士冖]
 					tmpArCodeList[i+1]=arCodeNext[1:]
-				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_3_CENTER and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_1_CENTER:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_3_CENTER_1_CENTER]
+				if arCodePrev[-1]==ARCodeInfo.RADIX_山 and arCodeNext[0]==ARCodeInfo.RADIX_一:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_山一]
 					tmpArCodeList[i+1]=arCodeNext[1:]
-				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_6_UP_9_BOTTOM and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_1_BOTTOM:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_6_UP_9_BOTTOM_1_BUTTOM]
+				if arCodePrev[-1]==ARCodeInfo.RADIX_文 and arCodeNext[0]==ARCodeInfo.RADIX_厂:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_文厂]
 					tmpArCodeList[i+1]=arCodeNext[1:]
 
 		# 合併字根後，有些字根列可能為空，如：戓
@@ -225,8 +225,8 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 			arCodePrev=tmpArCodeList[i]
 			arCodeNext=tmpArCodeList[i+1]
 			if len(arCodePrev)>0 and len(arCodeNext)>0:
-				if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_9_BOTTOM and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_3_CENTER_1_CENTER:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_9_UP]
+				if arCodePrev[-1]==ARCodeInfo.RADIX_彳 and arCodeNext[0]==ARCodeInfo.RADIX_山一:
+					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_彳山一]
 					tmpArCodeList[i+1]=arCodeNext[1:]
 
 		# 合併字根後，有些字根列可能為空，如：戓

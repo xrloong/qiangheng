@@ -139,8 +139,8 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 			bsCodePrev=tmpBsCodeList[i]
 			bsCodeNext=tmpBsCodeList[i+1]
 			if len(bsCodePrev)>0 and len(bsCodeNext)>0:
-				if bsCodePrev[-1]==BSCodeInfo.RADIX_E2 and bsCodeNext[0]==BSCodeInfo.RADIX_E1:
-					tmpBsCodeList[i]=bsCodePrev[:-1]+[BSCodeInfo.RADIX_E2_E1]
+				if bsCodePrev[-1]==BSCodeInfo.RADIX_山 and bsCodeNext[0]==BSCodeInfo.RADIX_一:
+					tmpBsCodeList[i]=bsCodePrev[:-1]+[BSCodeInfo.RADIX_山一]
 					tmpBsCodeList[i+1]=bsCodeNext[1:]
 
 		# 合併字根後，有些字根列可能為空，如：戓
@@ -157,8 +157,8 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 			bsCodePrev=tmpBsCodeList[i]
 			bsCodeNext=tmpBsCodeList[i+1]
 			if len(bsCodePrev)>0 and len(bsCodeNext)>0:
-				if bsCodePrev[0]==BSCodeInfo.RADIX_M1 and bsCodeNext[0]==BSCodeInfo.RADIX_E2_E1:
-					tmpBsCodeList[i]=[BSCodeInfo.RADIX_M1_E2_E1]+bsCodePrev[1:]
+				if bsCodePrev[0]==BSCodeInfo.RADIX_丿丿 and bsCodeNext[0]==BSCodeInfo.RADIX_山一:
+					tmpBsCodeList[i]=[BSCodeInfo.RADIX_丿丿_山一]+bsCodePrev[1:]
 					tmpBsCodeList[i+1]=bsCodeNext[1:]
 
 		# 合併字根後，有些字根列可能為空，如：戓
