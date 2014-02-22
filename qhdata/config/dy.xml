@@ -13,9 +13,7 @@
 		<部件 檔案="main/CJK.xml" />
 		<部件 檔案="main/CJK-A.xml" />
 		<部件 檔案="component/CJK/main.xml" />
-<!--
 		<部件 檔案="component/CJK-A/main.xml" />
--->
 
 		<部件 檔案="style/standard.xml" />
 		<部件 檔案="style/traditional.xml" />
