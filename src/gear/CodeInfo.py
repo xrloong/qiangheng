@@ -1,18 +1,40 @@
 from .CodeVarianceType import CodeVarianceType
 
 class CodeInfo:
-	def __init__(self, propDict={}):
+	def __init__(self, propDict, codeVariance):
 		self.setDataEmpty()
 		self.setSingleDataEmpty()
 
 		self.codeVariance=CodeVarianceType()
+		self.codeVariance.multi(codeVariance)
+#		self.codeVariance=codeVariance
+
 		self.setRadixCodeProperties(propDict)
+
+		hasCharacter=bool("字符碼" in propDict)
+		hasRadix=bool("字根碼" in propDict)
+		if hasCharacter or hasRadix:
+			self._isSupportCharacterCode=False
+			self._isSupportRadixCode=False
+			if hasCharacter:
+				self._isSupportCharacterCode=True
+			if hasRadix:
+				self._isSupportRadixCode=True
+		else:
+			self._isSupportCharacterCode=True
+			self._isSupportRadixCode=True
 
 	def __str__(self):
 		return "{{{0}}}".format(self.getCode())
 
 	def __repr__(self):
 		return str(self)
+
+	def isSupportCharacterCode(self):
+		return self._isSupportCharacterCode
+
+	def isSupportRadixCode(self):
+		return self._isSupportRadixCode
 
 	def setRadixCodeProperties(self, propDict):
 		pass

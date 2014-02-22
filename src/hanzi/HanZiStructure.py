@@ -1,5 +1,5 @@
 import sys
-from . import HanZiCodeInfo
+from state import StateManager
 
 class HanZiStructure:
 	def __init__(self):
@@ -34,7 +34,7 @@ class HanZiUnitStructure(HanZiStructure):
 	def __init__(self, codeVariance, codeInfoProperties):
 		HanZiStructure.__init__(self)
 
-		codeInfo=HanZiCodeInfo.HanZiCodeInfo(codeInfoProperties, codeVariance)
+		codeInfo=StateManager.codeInfoGenerator(codeInfoProperties, codeVariance)
 		self.codeInfoList=[codeInfo]
 
 	def getCodeInfoList(self):
@@ -94,7 +94,7 @@ class HanZiAssemblageStructure(HanZiStructure):
 		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(structureList)
 
 		for infoList in infoListList:
-			codeInfo=HanZiCodeInfo.HanZiCodeInfo({}, self.codeVariance)
+			codeInfo=StateManager.codeInfoGenerator({}, self.codeVariance)
 			codeInfo.setCompositions(self.operator, infoList)
 
 			self.codeInfoList.append(codeInfo)
