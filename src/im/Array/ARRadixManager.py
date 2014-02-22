@@ -38,22 +38,18 @@ class ARRadixParser(RadixParser):
 
 	def convertRadixDescToCodeInfoByReference(self, radixDesc):
 		nameList=radixDesc.getRadixNameList()
-		for radixName in nameList:
-			radixDesc=self.radixDescDB.get(radixName)
-
-			self.convertRadixDescIntoDB(radixName, radixDesc)
 
 		codeList=[]
 		for radixName in nameList:
-			radixInfo=self.getMainRadixCodeInfo(radixName)
+			radixDesc=self.radixDescriptionManager.getReferenceDescription(radixName)
+			radixCodeInfoList=self.convertRadixDescToCodeInfoList(radixDesc)
+
+			radixInfo=radixCodeInfoList[0]
 			radixCodeList=radixInfo.getMainCodeList()
 			codeList.append(radixCodeList)
 
 		codeInfo=ARCodeInfo(codeList)
 		return codeInfo
-
-	def getMainRadixCodeInfo(self, radixName):
-		return self.getRadixCodeInfoList(radixName)[0]
 
 class ARRadixCodeInfoDescription(RadixCodeInfoDescription):
 	def __init__(self, elementCodeInfo):

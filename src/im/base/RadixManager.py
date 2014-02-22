@@ -13,19 +13,18 @@ class RadixParser:
 		self.codeInfoEncoder=codeInfoEncoder
 
 		self.radixCodeInfoDB={}
-		self.radixDescDB={}
 
+		self.radixDescriptionManager=RadixDescriptionManager()
 
 	def loadRadix(self, radixFileList):
-		self.parseRadixDescriptionList(radixFileList)
-		return self.radixCodeInfoDB
+		self.parse(radixFileList)
+
+		self.convert()
+		return self.radixDescriptionManager.getCodeInfoDB()
 
 
 	def getEncoder(self):
 		return self.codeInfoEncoder
-
-	def getRadixCodeInfoList(self, radixName):
-		return self.radixCodeInfoDB.get(radixName)
 
 
 	def setCodeInfoAttribute(self, codeInfo, radixInfo):
@@ -34,21 +33,21 @@ class RadixParser:
 		isSupportRadixCode=radixInfo.isSupportRadixCode()
 		codeInfo.setCodeInfoAttribute(codeVariance, isSupportCharacterCode, isSupportRadixCode)
 
-	def setRadixDescriptionList(self, radixDescList):
-		for [charName, radixDesc] in radixDescList:
-			self.radixDescDB[charName]=radixDesc
+	def convert(self):
+		radixDescList=self.radixDescriptionManager.getList()
 
 		for [charName, radixDesc] in radixDescList:
-			self.convertRadixDescIntoDB(charName, radixDesc)
+			radixCodeInfoList=self.convertRadixDescToCodeInfoList(radixDesc)
+			self.radixDescriptionManager.addCodeInfoList(charName, radixCodeInfoList)
 
-	def convertRadixDescIntoDB(self, charName, radixDesc):
+	def convertRadixDescToCodeInfoList(self, radixDesc):
 		radixCodeInfoList=[]
 		tmpRadixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
 		for radixInfo in tmpRadixCodeInfoList:
 			codeInfo=self.convertRadixDescToCodeInfo(radixInfo)
 			if codeInfo:
 				radixCodeInfoList.append(codeInfo)
-		self.radixCodeInfoDB[charName]=radixCodeInfoList
+		return radixCodeInfoList
 
 	# 多型
 	def convertElementToRadixInfo(self, elementCodeInfo):
@@ -69,47 +68,33 @@ class RadixParser:
 		self.setCodeInfoAttribute(codeInfo, radixDesc)
 		return codeInfo
 
-	def parseRadixDescriptionList(self, toRadixList):
-		allRadixDescriptionList=[]
+	def parse(self, toRadixList):
 		for filename in toRadixList:
-			radixDescriptionList=self.parseRadixFromXML(filename, fileencoding=Constant.FILE_ENCODING)
-			allRadixDescriptionList.extend(radixDescriptionList)
+			self.parseRadixFromXML(filename)
 
-		radixDescriptionList=allRadixDescriptionList
-		tmpDict={}
-		for [charName, radixDesc] in radixDescriptionList:
-			if charName in tmpDict:
-				tmpRadixDesc=tmpDict.get(charName)
-			else:
-				tmpRadixDesc=RadixDescription([])
-			tmpRadixDesc.mergeRadixDescription(radixDesc)
-			tmpDict[charName]=tmpRadixDesc
-
-		allRadixDescriptionList=list(tmpDict.items())
-
-		self.setRadixDescriptionList(allRadixDescriptionList)
-
-	def parseRadixFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
-		f=open(filename, encoding=fileencoding)
+	def parseRadixFromXML(self, filename):
+		f=open(filename, encoding=Constant.FILE_ENCODING)
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
 
-		self.checkFileType(rootNode)
-		self.checkInputMethod(rootNode)
+		fileType=self.parseFileType(rootNode)
+		assert fileType==Constant.TAG_FILE_TYPE_RADIX, \
+			"文字類型錯誤，預期為＜字根＞，實際為＜%s＞。"%(fileType)
 
-		radixInfoList=self.parseRadixInfo(rootNode)
-		return radixInfoList
+		nameInputMethod=self.parseInputMethod(rootNode)
+		assert nameInputMethod==self.nameInputMethod, \
+			"輸入法錯誤，預期為＜%s＞，實際為＜%s＞。"%(self.nameInputMethod, nameInputMethod)
+
+		self.parseRadixInfo(rootNode)
 
 	def parseRadixInfo(self, rootNode):
 		characterSetNode=rootNode.find(Constant.TAG_CHARACTER_SET)
 		characterNodeList=characterSetNode.findall(Constant.TAG_CHARACTER)
-		radixInfoList=[]
 		for characterNode in characterNodeList:
 			charName=characterNode.get(Constant.TAG_NAME)
-			radixInfoSet=self.parseRadixDescription(characterNode)
+			radixDescription=self.parseRadixDescription(characterNode)
 
-			radixInfoList.append([charName, radixInfoSet])
-		return radixInfoList
+			self.radixDescriptionManager.addDescription(charName, radixDescription)
 
 	def parseRadixDescription(self, nodeCharacter):
 		elementCodeInfoList=nodeCharacter.findall(Constant.TAG_CODE_INFORMATION)
@@ -120,15 +105,43 @@ class RadixParser:
 		return RadixDescription(radixCodeInfoDescList)
 
 
-	def checkFileType(self, rootNode):
+	def parseFileType(self, rootNode):
 		fileType=rootNode.get(Constant.TAG_FILE_TYPE)
-		assert fileType==Constant.TAG_FILE_TYPE_RADIX, \
-			"文字類型錯誤，預期為＜字根＞，實際為＜%s＞。"%(fileType)
+		return fileType
 
-	def checkInputMethod(self, rootNode):
+	def parseInputMethod(self, rootNode):
 		nameInputMethod=rootNode.get(Constant.TAG_INPUT_METHOD)
-		assert nameInputMethod==self.nameInputMethod, \
-			"輸入法錯誤，預期為＜%s＞，實際為＜%s＞。"%(self.nameInputMethod, nameInputMethod)
+		return nameInputMethod
+
+class RadixDescriptionManager:
+	def __init__(self):
+		self.descriptionDict={}
+		self.radixCodeInfoDB={}
+		self.radixDescDB={}
+
+	def addCodeInfoList(self, charName, radixCodeInfoList):
+		self.radixCodeInfoDB[charName]=radixCodeInfoList
+
+	def getCodeInfoList(self, charName):
+		return self.radixCodeInfoDB[charName]
+
+	def getCodeInfoDB(self):
+		return self.radixCodeInfoDB
+
+	def addDescription(self, charName, description):
+		if charName in self.descriptionDict:
+			tmpRadixDesc=self.descriptionDict.get(charName)
+		else:
+			tmpRadixDesc=RadixDescription([])
+		tmpRadixDesc.mergeRadixDescription(description)
+		self.descriptionDict[charName]=tmpRadixDesc
+		self.radixDescDB[charName]=tmpRadixDesc
+
+	def getList(self):
+		return list(self.descriptionDict.items())
+
+	def getReferenceDescription(self, radixName):
+		return self.radixDescDB[radixName]
 
 class RadixCodeInfoDescription:
 	def __init__(self, elementCodeInfo):
