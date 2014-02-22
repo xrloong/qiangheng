@@ -73,7 +73,8 @@ class CharDescriptionManager:
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
 		templateDB=self.parser.loadTemplateByParsingXML(rootNode)
-		self.operationMgr.setTemplateDB(templateDB)
+		self.templateDB.update(templateDB)
+		self.operationMgr.setTemplateDB(self.templateDB)
 
 	def loadCodeInfoFromXML(self, filename, fileencoding='utf-8-sig'):
 		f=open(filename, encoding=fileencoding)
