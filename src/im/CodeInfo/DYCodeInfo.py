@@ -42,6 +42,10 @@ class DYCodeInfo(CodeInfo):
 	RADIX_SEMICOLON=';'
 	RADIX_SLASH='/'
 
+	RADIX_EXTEND_E1='e1'
+	RADIX_EXTEND_H1='h1'
+	RADIX_EXTEND_H2='h2'
+
 	radixToCodeDict={
 		RADIX_A:'a',
 		RADIX_B:'b',
@@ -83,6 +87,10 @@ class DYCodeInfo(CodeInfo):
 		RADIX_COMMA:',',
 		RADIX_SEMICOLON:';',
 		RADIX_SLASH:'/',
+
+		RADIX_EXTEND_E1:'e',
+		RADIX_EXTEND_H1:'h',
+		RADIX_EXTEND_H2:'h',
 	}
 
 	def setRadixCodeProperties(self, propDict):

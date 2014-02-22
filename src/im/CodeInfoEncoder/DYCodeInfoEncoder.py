@@ -1,4 +1,5 @@
 import sys
+import copy
 
 from ..CodeInfo.DYCodeInfo import DYCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
@@ -112,8 +113,27 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 				restMainCode=DYCodeInfoEncoder.computeDaYiCode(codeInfoList[1:])
 
 				dyCodeList=[frontMainCode, restMainCode, rearMainCode]
-				dyCode=DYCodeInfoEncoder.computeDaYiCodeByCodeList(dyCodeList)
+
+				tmpDyCodeList=DYCodeInfoEncoder.mergeRadixAsSilkworm(dyCodeList)
+				dyCode=DYCodeInfoEncoder.computeDaYiCodeByCodeList(tmpDyCodeList)
 			else:
 				dyCode=DYCodeInfoEncoder.computeDaYiCode(codeInfoList)
 		return dyCode
 
+	@staticmethod
+	def mergeRadixAsSilkworm(dyCodeList):
+		tmpDyCodeList=copy.copy(dyCodeList)
+
+		numDyCode=len(tmpDyCodeList)
+		for i in range(numDyCode-1):
+			dyCodePrev=tmpDyCodeList[i]
+			dyCodeNext=tmpDyCodeList[i+1]
+			if len(dyCodePrev)>0 and len(dyCodeNext)>0:
+				if dyCodePrev[-1]==DYCodeInfo.RADIX_EXTEND_H1 and dyCodeNext[0]==DYCodeInfo.RADIX_EXTEND_E1:
+					tmpDyCodeList[i]=dyCodePrev[:-1]+[DYCodeInfo.RADIX_EXTEND_H2]
+					tmpDyCodeList[i+1]=dyCodeNext[1:]
+
+		# 合併字根後，有些字根列可能為空，如：戓
+		tmpDyCodeList=filter(lambda x: len(x)>0, tmpDyCodeList)
+
+		return tmpDyCodeList

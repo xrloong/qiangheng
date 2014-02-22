@@ -181,6 +181,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 		return tmpArCodeList
 
+	@staticmethod
 	def mergeRadixAsGoose(arCodeList):
 		tmpArCodeList=copy.copy(arCodeList)
 
