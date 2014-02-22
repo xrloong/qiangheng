@@ -69,6 +69,35 @@ class CharDesc:
 	def isAnonymous(self):
 		return self.name.count("瑲珩匿名")>0
 
+	def isTemplate(self):
+		return False
+
+class TemplateCharDesc(CharDesc):
+	def __init__(self, name, templateName, argumentNameList):
+		self.name=name
+		self.templateName=templateName
+		self.templateDesc=None
+		self.argumentNameList=argumentNameList
+
+	def __str__(self):
+		return self.name
+
+	def isTemplate(self):
+		return True
+
+	def getTemplateName(self):
+		return self.templateName
+
+	def setTemplateDesc(self, templateDesc):
+		self.templateDesc=templateDesc
+
+	def setCharDesc(self, charDesc):
+		self.charDesc=charDesc
+
+	def getCharDesc(self):
+#		return self.charDesc
+		return self.templateDesc.getReplacedCharDesc(self.argumentNameList)
+
 if __name__=='__main__':
 	print(CharDesc('王', '(龜)', None))
 
