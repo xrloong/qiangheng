@@ -32,7 +32,7 @@ class HanZiStructure:
 		self.operator=operator
 		self.nodeList=nodeList
 
-	def setByComps(self):
+	def setCompositions(self):
 		if self.flagIsSet:
 			return
 		self.flagIsSet=True
@@ -40,18 +40,9 @@ class HanZiStructure:
 		nodeList=self.nodeList
 		infoListList=self.getAllCodeInfoList(nodeList)
 
-		quantity=StateManager.getQuantity()
-
-		if quantity==StateManager.STATE_QUANTITY_NONE:
-			infoListList=[]
-		elif quantity==StateManager.STATE_QUANTITY_ONE:
-			infoListList=infoListList[:1]
-		elif quantity==StateManager.STATE_QUANTITY_MULTIPLE:
-			infoListList=infoListList
-
 		for infoList in infoListList:
 			codeInfo=StateManager.codeInfoGenerator({})
-			codeInfo.setByComps(self.getOperator(), infoList)
+			codeInfo.setCompositions(self.getOperator(), infoList)
 			self.appendCodeInfo(codeInfo)
 
 	def getAllCodeInfoList(self, nodeList):
@@ -108,21 +99,12 @@ class HanZiNode:
 
 		structureList=self.getStructureListWithCondition()
 
-		quantity=StateManager.getQuantity()
-
-		if quantity==StateManager.STATE_QUANTITY_NONE:
-			structureList=[]
-		elif quantity==StateManager.STATE_QUANTITY_ONE:
-			structureList=structureList[:1]
-		elif quantity==StateManager.STATE_QUANTITY_MULTIPLE:
-			structureList=structureList
-
 		for structure in structureList:
 			radixList=structure.getNodeList()
 			for childNode in radixList:
 				childNode.setNodeTree()
 
-			structure.setByComps()
+			structure.setCompositions()
 
 class HanZiNetwork:
 	def __init__(self):

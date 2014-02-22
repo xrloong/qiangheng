@@ -1,8 +1,6 @@
 
 VERSION	=	0.20
 IMLIST	=	cj ar dy bs zm
-IMLIST_ONE	=	cj-one ar-one dy-one bs-one zm-one
-IMLIST_MULTIPLE	=	cj-multiple ar-multiple dy-multiple bs-multiple zm-multiple
 PLATFORM_LIST	=	puretable scim gcin msim
 TABLES_PATH	=	tables
 PURETABLE_PATH	=	$(TABLES_PATH)/puretable
@@ -34,7 +32,7 @@ xml:
 	for im in $(IMLIST);\
 	do\
 		echo $$im;\
-		time src/qiangheng.py -c qhdata/config/$$im-multiple.xml --xml |\
+		time src/qiangheng.py -c qhdata/config/$$im.xml --xml |\
 			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
 	done
 	touch $(XML_PATH)

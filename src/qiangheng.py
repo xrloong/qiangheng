@@ -47,18 +47,6 @@ class QiangHeng:
 		imNode=configNode.find('輸入法')
 		imProp=imNode.attrib
 
-		codingMethod=configNode.find('拆碼方式')
-		quantityStr=codingMethod.get('數量')
-		if quantityStr=='無':
-			quantity=StateManager.STATE_QUANTITY_NONE
-		elif quantityStr=='一':
-			quantity=StateManager.STATE_QUANTITY_ONE
-		elif quantityStr=='多':
-			quantity=StateManager.STATE_QUANTITY_MULTIPLE
-		else:
-			quantity=StateManager.STATE_QUANTITY_NONE
-		StateManager.setQuantity(quantity)
-
 		configFileNode=rootNode.find('設定檔')
 		templateNodeList=configFileNode.findall('範本')
 		componentNodeList=configFileNode.findall('部件')
