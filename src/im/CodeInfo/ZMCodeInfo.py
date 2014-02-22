@@ -1,7 +1,7 @@
 from .CodeInfo import CodeInfo
 
 class ZMCodeInfo(CodeInfo):
-	def setPropDict(self, propDict):
+	def setRadixCodeProperties(self, propDict):
 		extra_code=propDict.get('補充資訊')
 		str_rtlist=propDict.get('資訊表示式')
 
@@ -19,7 +19,7 @@ class ZMCodeInfo(CodeInfo):
 				self.setZMProp(rtlist)
 
 	@property
-	def code(self):
+	def characterCode(self):
 		if self._zm_single:
 			return self._zm_single
 

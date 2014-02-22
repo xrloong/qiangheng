@@ -3,7 +3,7 @@ class CodeInfo:
 		self.setDataEmpty()
 		self.setSingleDataEmpty()
 
-		self.setPropDict(propDict)
+		self.setRadixCodeProperties(propDict)
 
 	def __str__(self):
 		return "{{{0}}}".format(self.getCode())
@@ -11,7 +11,7 @@ class CodeInfo:
 	def __repr__(self):
 		return str(self)
 
-	def setPropDict(self, propDict):
+	def setRadixCodeProperties(self, propDict):
 		pass
 
 	def setByComps(self, operator, complist):
@@ -21,12 +21,25 @@ class CodeInfo:
 		pass
 
 	def getCode(self):
-		code=self.code
-		if code: return code
+		characterCode=self.characterCode
+		if characterCode:
+			return characterCode
 
 	def setDataEmpty(self):
 		pass
 
 	def setSingleDataEmpty(self):
 		pass
+
+	@property
+	def code(self):
+		return self.characterCode
+
+	@property
+	def characterCode(self):
+		return None
+
+	@property
+	def radixCode(self):
+		return None
 

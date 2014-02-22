@@ -66,7 +66,6 @@ class HanZiStructure:
 					for codeInfo in infoListOfNode:
 						ansListList.append(infoList+[codeInfo])
 
-#				ansListList=[infoList+[codeInfo] for infoList in infoListList for codeInfo in infoListOfNode]
 			return ansListList
 
 		infoListList=[]
@@ -177,12 +176,7 @@ class HanZiNetwork:
 		ansNode=self.findNodeByCharDesc(charDesc)
 		return ansNode
 
-	def getCodeList(self, charDesc):
-		charNode=self.findNodeByCharDesc(charDesc)
-		return charNode.getCodeList()
-
 	def getCodeList(self, charName):
 		charNode=self.srcDescNameToNodeDict.get(charName)
-#		charNode=self.findNodeByCharDesc(charDesc)
 		return charNode.getCodeList()
 

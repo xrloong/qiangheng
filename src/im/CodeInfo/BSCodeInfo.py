@@ -1,7 +1,7 @@
 from .CodeInfo import CodeInfo
 
 class BSCodeInfo(CodeInfo):
-	def setPropDict(self, propDict):
+	def setRadixCodeProperties(self, propDict):
 		self._bs_single=propDict.get('獨體編碼')
 		str_incode=propDict.get('資訊表示式')
 		str_spcode=propDict.get('嘸蝦米補碼')
@@ -17,7 +17,7 @@ class BSCodeInfo(CodeInfo):
 			self.setBSProp(bs_incode, bs_spcode)
 
 	@property
-	def code(self):
+	def characterCode(self):
 		if self._bs_incode==None or self._bs_spcode==None:
 			return None
 		if self._bs_single:

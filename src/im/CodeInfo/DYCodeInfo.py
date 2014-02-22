@@ -1,7 +1,7 @@
 from .CodeInfo import CodeInfo
 
 class DYCodeInfo(CodeInfo):
-	def setPropDict(self, propDict):
+	def setRadixCodeProperties(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
 			self.setDYProp(str_rtlist)
@@ -14,7 +14,7 @@ class DYCodeInfo(CodeInfo):
 			self.setDYProp(dy)
 
 	@property
-	def code(self):
+	def characterCode(self):
 		return self._dy_incode
 
 	def setDataEmpty(self):

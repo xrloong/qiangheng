@@ -21,12 +21,6 @@ class StructureDescription:
 	def __repr__(self):
 		return str(self)
 
-	def setPropDict(self, propDict):
-		self.target.propDict=propDict
-
-	def getPropDict(self):
-		return self.target.propDict
-
 	def copyDescription(self):
 		copyStructureDescription=StructureDescription(self.getOperator(), [])
 		copyStructureDescription.setExpandName(self.getExpandName())

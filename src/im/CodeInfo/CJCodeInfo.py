@@ -1,7 +1,7 @@
 from .CodeInfo import CodeInfo
 
 class CJCodeInfo(CodeInfo):
-	def setPropDict(self, propDict):
+	def setRadixCodeProperties(self, propDict):
 		self._cj_single=propDict.get('獨體編碼')
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
@@ -29,7 +29,7 @@ class CJCodeInfo(CodeInfo):
 		self.setCJProp(direction, ansRadixList)
 
 	@property
-	def code(self):
+	def characterCode(self):
 		if self._cj_single:
 			return self._cj_single
 		else:

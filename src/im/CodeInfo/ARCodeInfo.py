@@ -1,7 +1,7 @@
 from .CodeInfo import CodeInfo
 
 class ARCodeInfo(CodeInfo):
-	def setPropDict(self, propDict):
+	def setRadixCodeProperties(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
 			self.setARProp(str_rtlist)
@@ -14,7 +14,7 @@ class ARCodeInfo(CodeInfo):
 			self.setARProp(ar)
 
 	@property
-	def code(self):
+	def characterCode(self):
 		return self._ar_incode
 
 	def setDataEmpty(self):
