@@ -28,12 +28,6 @@ class CharDescriptionManager:
 			charDesc=self.characterDB.get(charName, [])
 			return charDesc
 
-		def structDescQueryer(charName):
-			charDesc=self.charDescQueryer(charName)
-			structDescList=charDesc.getStructureList()
-			structDesc=structDescList[0]
-			return structDescList
-
 		def charPropQueryer(charName):
 			codeInfoDictList=self.propertyDB.get(charName, [])
 			return codeInfoDictList
@@ -42,7 +36,6 @@ class CharDescriptionManager:
 		self.operationMgr=OperatorManager.OperatorManager(self)
 
 		self.structDescGenerator=structDescGenerator
-		self.structDescQueryer=structDescQueryer
 		self.charDescQueryer=charDescQueryer
 		self.charDescRearranger=charDescRearranger
 		self.charPropQueryer=charPropQueryer
@@ -55,8 +48,11 @@ class CharDescriptionManager:
 	def getStructDescGenerator(self):
 		return self.structDescGenerator
 
-	def getStructDescQueryer(self):
-		return self.structDescQueryer
+#	def getStructDescQueryer(self):
+#		return self.structDescQueryer
+
+	def getCharDescQueryer(self):
+		return self.charDescQueryer
 
 	def getCharPropQueryer(self):
 		return self.charPropQueryer
@@ -137,8 +133,15 @@ class CharDescriptionManager:
 			charName=node.get('名稱')
 			for comp in compList:
 				comp.setExpandName(charName)
-#			self.characterDB[charName]=compList
-			self.characterDB[charName]=CharacterDescription(charName, compList)
+
+			charDesc=self.characterDB.get(charName, None)
+			if charDesc==None:
+				charDesc=CharacterDescription(charName)
+				self.characterDB[charName]=charDesc
+			charDesc.setStructureList(compList)
+			charDesc.updateProperty(node.attrib)
+				
+#			self.characterDB[charName]=CharacterDescription(charName, compList)
 
 	def loadTemplateByParsingXML__0_2(self, rootNode):
 		# 用於 0.2 版
@@ -247,7 +250,6 @@ class CharDescriptionManager:
 	def adjustData(self):
 		self.operationMgr.adjustTemplate()
 
-#		charDescQueryer=self.getCharDescQueryer()
 		for charName in self.characterDB.keys():
 			charDesc=self.characterDB.get(charName)
 			structDescList=charDesc.getStructureList()

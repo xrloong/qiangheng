@@ -98,25 +98,28 @@ class QiangHeng:
 	def constructDescriptionNetwork(self):
 		charNameList=self.descMgr.keys()
 		hanziNetwork=self.hanziNetwork
-		structDescQueryer=self.descMgr.getStructDescQueryer()
+		charDescQueryer=self.descMgr.getCharDescQueryer()
 		sortedNameList=sorted(charNameList)
 
 		for charName in sortedNameList:
 			hanziNetwork.addNode(charName)
 
 		for charName in sortedNameList:
-			structDescList=structDescQueryer(charName)
+			charDesc=charDescQueryer(charName)
+			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
 				self.recursivelyAddNode(structDesc)
 
 		for charName in sortedNameList:
-			structDescList=structDescQueryer(charName)
+			charDesc=charDescQueryer(charName)
+			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
 				self.recursivelyAddLink(structDesc)
 
 		charPropQueryer=self.descMgr.getCharPropQueryer()
 		for charName in sortedNameList:
-			structDescList=structDescQueryer(charName)
+			charDesc=charDescQueryer(charName)
+			structDescList=charDesc.getStructureList()
 			srcPropList=charPropQueryer(charName)
 			for structDesc in structDescList:
 				for srcProp in srcPropList:
@@ -168,7 +171,7 @@ class QiangHeng:
 		targetCharList=self.descMgr.keys()
 		cm=self.genIMMapping(targetCharList)
 		for x in sorted(cm):
-			ElementTree.SubElement(charGroup, "對應", attrib={"按鍵序列":x[0], "字符":x[1]})
+			ElementTree.SubElement(charGroup, "對應", attrib={"按鍵序列":x[0], "字符":x[1], "頻率":x[2]})
 		xmlNode=ElementTree.ElementTree(rootNode)
 		ElementTree.dump(xmlNode)
 #		xmlNode.write(sys.stdout)
@@ -191,12 +194,16 @@ class QiangHeng:
 			self.descMgr.loadCodeInfoFromXML(filename, fileencoding='utf-8-sig')
 
 	def genIMMapping(self, targetCharList):
+		charDescQueryer=self.descMgr.getCharDescQueryer()
+
 		table=[]
 		for charName in sorted(targetCharList):
 #			print("<-- %s -->"%charName)
 			codeList=self.hanziNetwork.getCodeList(charName)
+			charDesc=charDescQueryer(charName)
+			freq=charDesc.getFrequency()
 			for code in codeList:
-				table.append([code, charName])
+				table.append([code, charName, freq])
 		return table
 
 oparser = OptionParser()

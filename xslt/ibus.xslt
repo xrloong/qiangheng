@@ -219,8 +219,12 @@
     <xsl:value-of select="@按鍵序列"/>
     <xsl:value-of select="$tab"/>
     <xsl:value-of select="@字符"/>
-    <xsl:value-of select="$tab"/>
-    <xsl:text>1000</xsl:text>
+
+    <xsl:if test="@頻率">
+      <xsl:value-of select="$tab"/>
+      <xsl:value-of select="@頻率"/>
+    </xsl:if>
+
     <xsl:value-of select="$newline"/>
   </xsl:template>
 

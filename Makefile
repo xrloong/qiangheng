@@ -148,6 +148,7 @@ gen-release: gen-multiple
 	echo "$(IMLIST_MULTIPLE)"
 	for im in $(IMLIST_MULTIPLE);\
 		do cp $(PURETABLE_PATH)/qh$$im.txt $(PURETABLE_PATH)/qh$${im%-multiple}.txt;\
+		cp $(XML_PATH)/qh$$im.xml $(XML_PATH)/qh$${im%-multiple}.xml;\
 	done
 
 gen-multiple:
