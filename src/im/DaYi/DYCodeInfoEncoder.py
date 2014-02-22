@@ -92,12 +92,6 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=cls.encodeAsLoong([firstCodeInfo, secondCodeInfo, secondCodeInfo])
 		return codeInfo
 
-	@staticmethod
-	def computeDaYiCodeByCodeList(dyCodeList):
-		cat=sum(dyCodeList, [])
-		dyCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
-		return dyCode
-
 	@classmethod
 	def getCodeInfoExceptLast(cls, codeInfo):
 		mainCodeList=codeInfo.getMainCodeList()
@@ -152,3 +146,10 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
 			else:
 				return codeInfoList
+
+	@staticmethod
+	def computeDaYiCodeByCodeList(dyCodeList):
+		cat=sum(dyCodeList, [])
+		dyCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
+		return dyCode
+

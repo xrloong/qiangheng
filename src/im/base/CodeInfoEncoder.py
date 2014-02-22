@@ -2,86 +2,75 @@ from .CodeInfo import CodeInfo
 from ..gear import Operator
 
 class CodeInfoEncoder:
-	@staticmethod
-	def computeSupportingFromProperty(propDict):
-		return CodeInfo.computeSupportingFromProperty(propDict)
-
-	@staticmethod
-	def computeSupporting(hasCharacter, hasRadix):
-		return CodeInfo.computeSupporting(hasCharacter, hasRadix)
-
 	@classmethod
 	def generateDefaultCodeInfo(cls):
 		return CodeInfo.generateDefaultCodeInfo()
 
-	def encode(self, operator, codeInfoList):
-		codeInfo=self.setByComps(operator, codeInfoList)
-		return codeInfo
-
-	def setByComps(self, operator, codeInfoList):
+	@classmethod
+	def setByComps(cls, operator, codeInfoList):
 		codeInfo=None
 
-		isAvailable=self.isAvailableOperation(codeInfoList)
+		isAvailable=cls.isAvailableOperation(codeInfoList)
 		if isAvailable:
 			if Operator.OperatorTurtle.equals(operator):
-				codeInfo=self.encodeAsTurtle(codeInfoList)
+				codeInfo=cls.encodeAsTurtle(codeInfoList)
 			elif Operator.OperatorLoong.equals(operator):
-				codeInfo=self.encodeAsLoong(codeInfoList)
+				codeInfo=cls.encodeAsLoong(codeInfoList)
 			elif Operator.OperatorEast.equals(operator):
-				codeInfo=self.encodeAsEast(codeInfoList)
+				codeInfo=cls.encodeAsEast(codeInfoList)
 			elif Operator.OperatorEqual.equals(operator):
-				codeInfo=self.encodeAsEqual(codeInfoList)
+				codeInfo=cls.encodeAsEqual(codeInfoList)
 
 			elif Operator.OperatorSilkworm.equals(operator):
-				codeInfo=self.encodeAsSilkworm(codeInfoList)
+				codeInfo=cls.encodeAsSilkworm(codeInfoList)
 			elif Operator.OperatorGoose.equals(operator):
-				codeInfo=self.encodeAsGoose(codeInfoList)
+				codeInfo=cls.encodeAsGoose(codeInfoList)
 			elif Operator.OperatorLoop.equals(operator):
-				codeInfo=self.encodeAsLoop(codeInfoList)
+				codeInfo=cls.encodeAsLoop(codeInfoList)
 
 			elif Operator.OperatorQi.equals(operator):
-				codeInfo=self.encodeAsQi(codeInfoList)
+				codeInfo=cls.encodeAsQi(codeInfoList)
 			elif Operator.OperatorZhe.equals(operator):
-				codeInfo=self.encodeAsZhe(codeInfoList)
+				codeInfo=cls.encodeAsZhe(codeInfoList)
 			elif Operator.OperatorLiao.equals(operator):
-				codeInfo=self.encodeAsLiao(codeInfoList)
+				codeInfo=cls.encodeAsLiao(codeInfoList)
 			elif Operator.OperatorZai.equals(operator):
-				codeInfo=self.encodeAsZai(codeInfoList)
+				codeInfo=cls.encodeAsZai(codeInfoList)
 			elif Operator.OperatorDou.equals(operator):
-				codeInfo=self.encodeAsDou(codeInfoList)
+				codeInfo=cls.encodeAsDou(codeInfoList)
 
 			elif Operator.OperatorTong.equals(operator):
-				codeInfo=self.encodeAsTong(codeInfoList)
+				codeInfo=cls.encodeAsTong(codeInfoList)
 			elif Operator.OperatorQu.equals(operator):
-				codeInfo=self.encodeAsQu(codeInfoList)
+				codeInfo=cls.encodeAsQu(codeInfoList)
 			elif Operator.OperatorHan.equals(operator):
-				codeInfo=self.encodeAsHan(codeInfoList)
+				codeInfo=cls.encodeAsHan(codeInfoList)
 			elif Operator.OperatorLeft.equals(operator):
-				codeInfo=self.encodeAsLeft(codeInfoList)
+				codeInfo=cls.encodeAsLeft(codeInfoList)
 
 			elif Operator.OperatorMu.equals(operator):
-				codeInfo=self.encodeAsMu(codeInfoList)
+				codeInfo=cls.encodeAsMu(codeInfoList)
 			elif Operator.OperatorZuo.equals(operator):
-				codeInfo=self.encodeAsZuo(codeInfoList)
+				codeInfo=cls.encodeAsZuo(codeInfoList)
 			elif Operator.OperatorYou.equals(operator):
-				codeInfo=self.encodeAsYou(codeInfoList)
+				codeInfo=cls.encodeAsYou(codeInfoList)
 			elif Operator.OperatorLiang.equals(operator):
-				codeInfo=self.encodeAsLiang(codeInfoList)
+				codeInfo=cls.encodeAsLiang(codeInfoList)
 			elif Operator.OperatorJia.equals(operator):
-				codeInfo=self.encodeAsJia(codeInfoList)
+				codeInfo=cls.encodeAsJia(codeInfoList)
 
 			elif Operator.OperatorLuan.equals(operator):
-				codeInfo=self.encodeAsLuan(codeInfoList)
+				codeInfo=cls.encodeAsLuan(codeInfoList)
 			elif Operator.OperatorBan.equals(operator):
-				codeInfo=self.encodeAsBan(codeInfoList)
+				codeInfo=cls.encodeAsBan(codeInfoList)
 
 			elif Operator.OperatorLin.equals(operator):
-				codeInfo=self.encodeAsLin(codeInfoList)
+				codeInfo=cls.encodeAsLin(codeInfoList)
 			elif Operator.OperatorLi.equals(operator):
-				codeInfo=self.encodeAsLi(codeInfoList)
+				codeInfo=cls.encodeAsLi(codeInfoList)
 
 			else:
-				codeInfo=self.encodeAsInvalidate(codeInfoList)
+				codeInfo=cls.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
 	@classmethod

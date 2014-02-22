@@ -100,12 +100,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 
-	@staticmethod
-	def computeArrayCodeByCodeList(arCodeList):
-		cat=sum(arCodeList, [])
-		arCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
-		return arCode
-
 	@classmethod
 	def getCodeInfoExceptLast(cls, codeInfo):
 		mainCodeList=codeInfo.getMainCodeList()
@@ -189,4 +183,10 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
 			else:
 				return codeInfoList
+
+	@staticmethod
+	def computeArrayCodeByCodeList(arCodeList):
+		cat=sum(arCodeList, [])
+		arCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
+		return arCode
 

@@ -32,6 +32,6 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 	@classmethod
 	def encodeAsEqual(cls, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 

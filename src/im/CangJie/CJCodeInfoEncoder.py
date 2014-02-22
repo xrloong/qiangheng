@@ -104,8 +104,8 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=cls.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
 
-	@classmethod
-	def convertCodeInfoListToRadixList(cls, direction, codeInfoList):
+	@staticmethod
+	def convertCodeInfoListToRadixList(direction, codeInfoList):
 		ansLumpList=[]
 		for tmpCodeInfo in codeInfoList:
 			tmpDirCode=tmpCodeInfo.getDirection()

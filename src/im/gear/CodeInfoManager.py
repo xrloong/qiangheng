@@ -2,9 +2,9 @@
 class CodeInfoManager:
 	def __init__(self, imPackage):
 		imName=imPackage.IMInfo.IMName
-		codeInfoEncoder=imPackage.CodeInfoEncoder()
+		codeInfoEncoder=imPackage.CodeInfoEncoder
 		self.radixParser=imPackage.RadixParser(imName, codeInfoEncoder)
-		self.codeInfoEncoder=imPackage.CodeInfoEncoder()
+		self.codeInfoEncoder=imPackage.CodeInfoEncoder
 		self.radixCodeInfoDB={}
 
 
