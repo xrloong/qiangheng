@@ -2,9 +2,6 @@ from operatorinfo.RearrangeInfo import *
 from .CharDesc import CharDesc
 from character import Operator
 
-def getOperatorByName(name):
-	return OperatorManager.getOperatorByName(name)
-
 class OperatorManager:
 	def __init__(self, descMgr, emptyCharDescGenerator):
 		self.emptyCharDescGenerator=emptyCharDescGenerator

@@ -28,8 +28,6 @@ class RearrangeInfoH2:
 		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorH2
@@ -42,8 +40,6 @@ class RearrangeInfoH3:
 		self.operatorH3=OperatorH3
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorH3
@@ -56,8 +52,6 @@ class RearrangeInfoH4:
 		self.operatorH4=OperatorH4
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorH4
@@ -70,8 +64,6 @@ class RearrangeInfoV2:
 		self.operatorV2=OperatorV2
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorV2
@@ -84,8 +76,6 @@ class RearrangeInfoV3:
 		self.operatorV3=OperatorV3
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorV3
@@ -98,8 +88,6 @@ class RearrangeInfoV4:
 		self.operatorV4=OperatorV4
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorV4
@@ -114,8 +102,6 @@ class RearrangeInfoTriangle:
 		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorV2
@@ -136,8 +122,6 @@ class RearrangeInfoSquare:
 		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorV2
@@ -158,8 +142,6 @@ class RearrangeInfoFrost:
 		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorV2
@@ -182,8 +164,6 @@ class RearrangeInfoThink:
 		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorV2
@@ -206,8 +186,6 @@ class RearrangeInfoHappy:
 		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorH2
@@ -230,8 +208,6 @@ class RearrangeInfoSmart:
 		self.operatorH2=OperatorH2
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorH2
@@ -252,8 +228,6 @@ class RearrangeInfoSurroundingOpenUp:
 		self.operatorLoong=OperatorLoong
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorLoong
@@ -267,8 +241,6 @@ class RearrangeInfoLShapeSimpleRadical:
 		self.operatorLoong=OperatorLoong
 
 	def rearrange(self, charDesc):
-		oldOperator=charDesc.getOperator()
-		oldOperatorName=oldOperator.getName()
 		oldCompList=charDesc.getCompList()
 
 		ansOperator=self.operatorLoong

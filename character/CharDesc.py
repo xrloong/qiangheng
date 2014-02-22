@@ -76,6 +76,20 @@ class CharDesc:
 	def isTemplate(self):
 		return False
 
+	def setCharTree(self):
+		"""設定某一個字符所包含的部件的碼"""
+
+		chInfo=self.getChInfo()
+		if not chInfo.isToSetTree():
+			return
+
+		radixList=self.getCompList()
+		for tmpdesc in radixList:
+			tmpdesc.setCharTree()
+
+		infoList=[x.getChInfo() for x in radixList]
+		chInfo.setByComps(infoList, self.getDirection())
+
 class TemplateCharDesc(CharDesc):
 	def __init__(self, name, templateName, argumentNameList):
 		self.name=name

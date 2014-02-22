@@ -7,12 +7,9 @@ from .CharInfo import CharInfo
 from .OperatorManager import OperatorManager
 from xml.etree import ElementTree
 from character import Operator
+from .HanZiNetwork import HanZiNetwork
 
 class CharDescriptionManager:
-	NoneInfo=CharInfo('[瑲珩預設]', [])
-	operator=OperatorManager.getOperatorByName('龜')
-	NoneDesc=CharDesc("", operator, [], '*', '(龜)', NoneInfo)
-
 	def __init__(self, imModule, CharInfoGenerator):
 		# characterDB 放最原始、沒有擴展過的 CharDesc ，也就是從檔案讀出來的資料。
 		# descNetwork 放擴展過的，且各個 CharDesc 可能會彼此參照。
@@ -21,7 +18,6 @@ class CharDescriptionManager:
 		# ConstructDescriptionNetwork() 會從 characterDB 建立 descNetwork
 		self.templateDB={}
 		self.characterDB={}
-		self.descNetwork={}
 
 		def CharDescGenerator(charName, structInfo=['龜', [], '(龜)']):
 			operatorName, CompList, expression=structInfo
@@ -42,6 +38,13 @@ class CharDescriptionManager:
 			anonymousName=CharDesc.generateNewAnonymousName()
 			return CharDescGenerator(anonymousName)
 
+
+		def charDescRearranger(charDesc):
+			return self.operationMgr.rearrangeDesc(charDesc)
+
+		def charDescQueryer(charName):
+			return self.characterDB.get(charName)
+
 		imName=imModule.IMInfo.IMName
 		self.operationMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
 
@@ -49,6 +52,9 @@ class CharDescriptionManager:
 		self.charDescGenerator=CharDescGenerator
 		self.emptyCharInfoGenerator=emptyCharInfoGenerator
 		self.emptyCharDescGenerator=emptyCharDescGenerator
+
+		queryer=lambda charName: self.characterDB.get(charName)
+		self.hanziNetwork=HanZiNetwork(self.charDescGenerator, charDescRearranger, charDescQueryer)
 
 	def keys(self):
 		return self.characterDB.keys()
@@ -64,15 +70,6 @@ class CharDescriptionManager:
 
 	def getEmptyCharDescGenerator(self):
 		return self.emptyCharDescGenerator
-
-	@staticmethod
-	def getNoneInfo():
-		return CharDescriptionManager.NoneInfo
-
-	@staticmethod
-	def getNoneDescription():
-		return CharDescriptionManager.NoneDesc
-
 
 	def loadFromXML(self, filename, fileencoding='utf-8-sig'):
 		f=open(filename, encoding=fileencoding)
@@ -217,62 +214,22 @@ class CharDescriptionManager:
 				self.characterDB[charName]=charDesc
 
 		for charName in self.characterDB.keys():
-			if charName not in self.descNetwork:
-				charDesc=self.charDescGenerator(charName)
-				self.expandCharDescInNetwork(charDesc, self.characterDB.get(charName))
-				self.descNetwork[charName]=charDesc
+			charDesc=self.charDescGenerator(charName)
+			srcDesc=self.characterDB.get(charName)
+			self.hanziNetwork.addCharDesc(charName)
 
-	def expandCharDescInNetwork(self, dstDesc, srcDesc):
-		# 擴展 dstDesc
-		# dstDesc 會被改變，而非產生新的 CharDesc
+	def generateCode(self, charName):
+		expandDesc=self.hanziNetwork.get(charName, None)
+		expandDesc.setCharTree()
 
-		if not srcDesc.getOperator().isAvailableOperation():
-			print("<!-- 錯誤；不合法的運算 %s -->"%operator)
+	def getCode(self, charName):
+		expandDesc=self.hanziNetwork.get(charName, None)
+		chinfo=expandDesc.getChInfo()
+		code=chinfo.getCode()
+		if chinfo.isToShow() and code:
+			return code
+		else:
 			return None
-
-		dstDesc.copyInfoWithoutCompListFrom(srcDesc)
-
-		compList=[]
-		for childSrcDesc in srcDesc.getCompList():
-			if childSrcDesc.isAnonymous():
-				# 若是為匿名結構，無法用名字查出結構，直接複製
-				anonymousName=CharDesc.generateNewAnonymousName()
-				childDstDesc=self.charDescGenerator(anonymousName)
-				self.expandCharDescInNetwork(childDstDesc, childSrcDesc)
-
-			else:
-				if childSrcDesc.name in self.descNetwork:
-					childDstDesc=self.descNetwork.get(childSrcDesc.name)
-				else:
-					expandChildSrcDesc=self.characterDB.get(childSrcDesc.name)
-
-					childDstDesc=self.charDescGenerator(expandChildSrcDesc.name)
-
-					self.expandCharDescInNetwork(childDstDesc, expandChildSrcDesc)
-					self.descNetwork[childDstDesc.name]=childDstDesc
-
-			compList.append(childDstDesc)
-		dstDesc.setCompList(compList)
-
-		self.operationMgr.rearrangeDesc(dstDesc)
-
-	def getExpandDescriptionByNameInNetwork(self, charName):
-		return self.descNetwork.get(charName, None)
-
-	@staticmethod
-	def setCharTree(charDesc):
-		"""設定某一個字符所包含的部件的碼"""
-
-		chInfo=charDesc.getChInfo()
-		if not chInfo.isToSetTree():
-			return
-
-		radixList=charDesc.getCompList()
-		for tmpdesc in radixList:
-			CharDescriptionManager.setCharTree(tmpdesc)
-
-		infoList=[x.getChInfo() for x in radixList]
-		chInfo.setByComps(infoList, charDesc.getDirection())
 
 if __name__=='__main__':
 	pass
