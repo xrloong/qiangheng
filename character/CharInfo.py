@@ -5,12 +5,10 @@ class CharInfo:
 			pass
 
 	def __init__(self, propDict={}):
-		self.setFlag=False
+		self.setDataEmpty()
+		self.setSingleDataEmpty()
 
 		self.setPropDict(propDict)
-
-	def setPropDict(self, propDict):
-		pass
 
 	def __str__(self):
 #		return "{{{0}}}".format(self.charname)
@@ -19,9 +17,8 @@ class CharInfo:
 	def __repr__(self):
 		return str(self)
 
-	def isToSetTree(self):
-		# 若非空且之前没設過值
-		return (not self.setFlag)
+	def setPropDict(self, propDict):
+		pass
 
 	def setByComps(self, operator, complist):
 		# 多型
@@ -30,6 +27,22 @@ class CharInfo:
 		pass
 
 	def getCode(self):
-		#多型
-		return ""
+		code=self.code
+		if code: return code
+
+	def setDataEmpty(self):
+		self.dataInitialized=False
+
+	def setSingleDataEmpty(self):
+		pass
+
+	def setDataInitialized(self):
+		self.dataInitialized=True
+
+	def isDataInitialized(self):
+		return self.dataInitialized
+
+	def isToSetTree(self):
+		# 若非空且之前没設過值
+		return (not self.isDataInitialized())
 

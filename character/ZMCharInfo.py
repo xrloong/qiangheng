@@ -1,34 +1,15 @@
 from .CharInfo import CharInfo
 
 class ZMCharInfo(CharInfo):
-	def __init__(self, propDict={}):
-		super().__init__(propDict)
-
-		self.setFlag=False
-
-		self._zm_rtlist=[]
-
-		self.setPropDict(propDict)
-
 	def setPropDict(self, propDict):
 		extra_code=propDict.get('補充資訊')
 		str_rtlist=propDict.get('資訊表示式')
 
+		self._zm_extra=extra_code
 		self._zm_single=propDict.get('獨體編碼')
 		if str_rtlist!=None:
-			rtlist=[]
-			if str_rtlist!='XXXX':
-				rtlist=str_rtlist.split(',')
-			self.setZMProp(rtlist, extra_code)
-
-	def setZMProp(self, zm_rtlist, zm_extra=None):
-		self._zm_rtlist=zm_rtlist
-		self._zm_extra=zm_extra
-
-		self.setFlag=True
-
-	def getZMProp(self):
-		return self._zm_rtlist
+			rtlist=str_rtlist.split(',')
+			self.setZMProp(rtlist)
 
 	def setByComps(self, operator, complist):
 		if all(complist):
@@ -38,7 +19,7 @@ class ZMCharInfo(CharInfo):
 				self.setZMProp(rtlist)
 
 	@property
-	def zm(self):
+	def code(self):
 		if self._zm_single:
 			return self._zm_single
 
@@ -74,7 +55,19 @@ class ZMCharInfo(CharInfo):
 			ans+=self._zm_extra
 		return ans
 
-	def getCode(self):
-		if self.zm:
-			return self.zm
+	def setDataEmpty(self):
+		CharInfo.setDataEmpty(self)
+		self._zm_rtlist=None
+
+	def setSingleDataEmpty(self):
+		self._zm_extra=None
+		self._zm_single=None
+
+	def setZMProp(self, zm_rtlist):
+		if zm_rtlist!=None:
+			self.setDataInitialized()
+			self._zm_rtlist=zm_rtlist
+
+	def getZMProp(self):
+		return self._zm_rtlist
 

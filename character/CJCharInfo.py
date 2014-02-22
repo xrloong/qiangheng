@@ -1,35 +1,11 @@
 from .CharInfo import CharInfo
 
 class CJCharInfo(CharInfo):
-	def __init__(self, propDict={}):
-		super().__init__(propDict)
-
-		self.setFlag=False
-
-		self._cj_direction=None	# 組件的方向
-		self._cj_single=None	# 當此字為獨體時的碼。
-		self._cj_body=None	# 當此字為字身時的碼。
-		self._cj_radix_list=[]	# 組件
-
-		self.setPropDict(propDict)
-
 	def setPropDict(self, propDict):
 		self._cj_single=propDict.get('獨體編碼')
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
 			self.setCJProp('*', [str_rtlist])
-
-	def setCJProp(self, dir_code, codeList):
-		radix_list=[]
-
-		self._cj_radix_list=codeList
-		self._cj_direction=dir_code
-		self._cj_body=self.computeBodyCode(self._cj_radix_list, dir_code)
-
-		self.setFlag=True
-
-	def getCJProp(self):
-		return [self._cj_direction, self._cj_radix_list]
 
 	def setByComps(self, operator, complist):
 		# 計算倉頡碼時，需要知道此字的組成方向
@@ -53,14 +29,30 @@ class CJCharInfo(CharInfo):
 		self.setCJProp(direction, ansRadixList)
 
 	@property
-	def cj(self):
+	def code(self):
 		if self._cj_single:
 			return self._cj_single
 		else:
 			return CJCharInfo.computeTotalCode(self._cj_radix_list, self._cj_direction).lower()
 
-	def getCode(self):
-		if self.cj: return self.cj
+	def setDataEmpty(self):
+		CharInfo.setDataEmpty(self)
+		self._cj_radix_list=None
+		self._cj_direction=None
+		self._cj_body=None
+
+	def setSingleDataEmpty(self):
+		self._cj_single=None
+
+	def setCJProp(self, dir_code, codeList):
+		if dir_code!=None and codeList!=None:
+			self.setDataInitialized()
+			self._cj_radix_list=codeList
+			self._cj_direction=dir_code
+			self._cj_body=self.computeBodyCode(self._cj_radix_list, dir_code)
+
+	def getCJProp(self):
+		return [self._cj_direction, self._cj_radix_list]
 
 	@staticmethod
 	def computeHeadTailCode(code, headCount):
