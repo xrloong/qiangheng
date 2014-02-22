@@ -19,7 +19,7 @@ class TemplateCondition:
 	def getOperand2(self):
 		return self.operand2
 
-class TemplateDesc:
+class TemplateDescription:
 	"""字符描述"""
 	countAnonymousName=0
 	def __init__(self, name, replaceInfoList, parameterList):
@@ -98,5 +98,5 @@ class TemplateDesc:
 			charDesc.replacedBy(argumentDesc)
 
 if __name__=='__main__':
-	print(TemplateDesc('王', '(龜)', None))
+	print(TemplateDescription('王', '(龜)', None))
 

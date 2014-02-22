@@ -1,7 +1,7 @@
 from description.StructureDescription import HangerStructureDescription
 from description.StructureDescription import TurtleStructureDescription
-from description.TemplateDesc import TemplateDesc
-from description.TemplateDesc import TemplateCondition
+from description.TemplateDescription import TemplateDescription
+from description.TemplateDescription import TemplateCondition
 
 class QHParser:
 	def __init__(self, operatorGenerator):
@@ -91,7 +91,7 @@ class QHParser:
 			replaceInfoList.append(replaceInfo)
 		[condition, comp]=replaceInfoList[0]
 
-		return TemplateDesc(templateName, replaceInfoList, parameterNameList)
+		return TemplateDescription(templateName, replaceInfoList, parameterNameList)
 
 	def getDesc_TurtleCharacterList(self, nodeCharacter):
 		assembleCharList=nodeCharacter.findall("組字")
