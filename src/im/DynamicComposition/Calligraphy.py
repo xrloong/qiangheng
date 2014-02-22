@@ -141,7 +141,7 @@ class StrokeObject:
 		assert (w>0 and h>0)
 		return [(False, (startPoint[0] - w, startPoint[1] + h))]
 
-	def compute_趯(self, startPoint, w, h):
+	def compute_鉤(self, startPoint, w, h):
 		assert w>0 and h>0
 		return [ (False, (startPoint[0] - w, startPoint[1] - h)), ]
 
@@ -411,7 +411,7 @@ class StrokeObject_橫折鉤(StrokeObject):
 		points=[(False, startPoint), ]
 		points.extend(self.compute_橫(points[-1][1], w1))
 		points.extend(self.compute_撇鉤之撇(points[-1][1], w2, h2))
-		points.extend(self.compute_趯(points[-1][1], w3, h3))
+		points.extend(self.compute_鉤(points[-1][1], w3, h3))
 		return points
 
 class StrokeObject_橫折彎鉤(StrokeObject):
@@ -546,7 +546,7 @@ class StrokeObject_橫撇橫折鉤(StrokeObject):
 		points.extend(self.compute_撇(points[-1][1], w2, h2))
 		points.extend(self.compute_橫(points[-1][1], w3))
 		points.extend(self.compute_撇鉤之撇(points[-1][1], w4, h4))
-		points.extend(self.compute_趯(points[-1][1], w5, h5))
+		points.extend(self.compute_鉤(points[-1][1], w5, h5))
 		return points
 
 class StrokeObject_橫斜鉤(StrokeObject):
@@ -734,7 +734,7 @@ class StrokeObject_豎橫折鉤(StrokeObject):
 			points.extend(self.compute_豎(points[-1][1], h1))
 		points.extend(self.compute_橫(points[-1][1], w2))
 		points.extend(self.compute_撇鉤之撇(points[-1][1], w3, h3))
-		points.extend(self.compute_趯(points[-1][1], w4, h4))
+		points.extend(self.compute_鉤(points[-1][1], w4, h4))
 		return points
 
 class StrokeObject_豎曲鉤(StrokeObject):
@@ -830,7 +830,7 @@ class StrokeObject_豎鉤(StrokeObject):
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_豎撇(points[-1][1], wp, hs, hp))
-		points.extend(self.compute_趯(points[-1][1], wg, hg))
+		points.extend(self.compute_鉤(points[-1][1], wg, hg))
 		return points
 
 class StrokeObject_斜鉤(StrokeObject):
@@ -887,7 +887,7 @@ class StrokeObject_彎鉤(StrokeObject):
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_彎鉤之彎(points[-1][1], w1, h1))
-		points.extend(self.compute_趯(points[-1][1], w2, h2))
+		points.extend(self.compute_鉤(points[-1][1], w2, h2))
 		return points
 
 class StrokeObject_撇鉤(StrokeObject):
@@ -920,7 +920,7 @@ class StrokeObject_撇鉤(StrokeObject):
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		points.extend(self.compute_彎鉤之彎(points[-1][1], w1, h1))
-		points.extend(self.compute_趯(points[-1][1], w2, h2))
+		points.extend(self.compute_鉤(points[-1][1], w2, h2))
 		return points
 
 class StrokeObject_撇(StrokeObject):
@@ -944,7 +944,7 @@ class StrokeObject_撇(StrokeObject):
 		points.extend(self.compute_撇(points[-1][1], w1, h1))
 		return points
 
-class StrokeObject_撇頓點(StrokeObject):
+class StrokeObject_撇點(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
 		assert len(l)==4
@@ -1228,7 +1228,7 @@ StrokeObjectMap = {
 	"撇鉤": StrokeObject_撇鉤,
 
 	"撇": StrokeObject_撇,
-	"撇頓點": StrokeObject_撇頓點,
+	"撇頓點": StrokeObject_撇點,
 	"撇橫": StrokeObject_撇橫,
 	"撇挑": StrokeObject_撇橫,
 	"撇折": StrokeObject_撇橫,
