@@ -7,25 +7,11 @@ class CodeInfoEncoder:
 
 	@staticmethod
 	def computeSupportingFromProperty(propDict):
-		hasCharacter=bool("字符碼" in propDict)
-		hasRadix=bool("字根碼" in propDict)
-
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupporting(hasCharacter, hasRadix)
-		return [isSupportCharacterCode, isSupportRadixCode]
+		return CodeInfo.computeSupportingFromProperty(propDict)
 
 	@staticmethod
 	def computeSupporting(hasCharacter, hasRadix):
-		if hasCharacter or hasRadix:
-			isSupportCharacterCode=False
-			isSupportRadixCode=False
-			if hasCharacter:
-				isSupportCharacterCode=True
-			if hasRadix:
-				isSupportRadixCode=True
-		else:
-			isSupportCharacterCode=True
-			isSupportRadixCode=True
-		return [isSupportCharacterCode, isSupportRadixCode]
+		return CodeInfo.computeSupporting(hasCharacter, hasRadix)
 
 	def generateCodeInfo(self, propDict):
 		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)

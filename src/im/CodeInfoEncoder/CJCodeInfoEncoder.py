@@ -1,10 +1,8 @@
 from ..CodeInfo.CJCodeInfo import CJCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CodeInfo import CodeInfo
 
 class CJCodeInfoEncoder(CodeInfoEncoder):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	def __init__(self):
 		pass
 
@@ -15,14 +13,14 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
 
 		direction='*'
 		singleCode=propDict.get('獨體編碼')
 		rtlist=[]
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
-			rtlist=str_rtlist.split(CJCodeInfoEncoder.RADIX_SEPERATOR)
+			rtlist=str_rtlist.split(CJCodeInfo.RADIX_SEPERATOR)
 
 		cjBody=CJCodeInfoEncoder.computeBodyCode(rtlist, direction)
 		codeInfo=CJCodeInfo(singleCode, direction, rtlist, cjBody, isSupportCharacterCode, isSupportRadixCode)

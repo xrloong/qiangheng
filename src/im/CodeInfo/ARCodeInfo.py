@@ -2,6 +2,9 @@ import sys
 from gear.CodeInfo import CodeInfo
 
 class ARCodeInfo(CodeInfo):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	RADIX_1_UP='1^'
 	RADIX_2_UP='2^'
 	RADIX_3_UP='3^'
@@ -116,6 +119,18 @@ class ARCodeInfo(CodeInfo):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 		self._codeList=codeList
+
+	@staticmethod
+	def generateCodeInfo(propDict):
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
+		codeList=None
+		str_rtlist=propDict.get('資訊表示式')
+		if str_rtlist!=None:
+			codeList=str_rtlist.split(ARCodeInfo.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(ARCodeInfo.RADIX_SEPERATOR), codeList))
+
+		codeInfo=ARCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
+		return codeInfo
 
 	def isInstallmentEncoded(self):
 		return len(self._codeList)>1

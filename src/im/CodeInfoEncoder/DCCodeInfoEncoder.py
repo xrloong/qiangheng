@@ -2,13 +2,11 @@ import sys
 from ..CodeInfo.DCCodeInfo import DCCodeInfo
 from ..CodeInfo.DCCodeInfo import Stroke
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CodeInfo import CodeInfo
 from gear import Operator
 import copy
 
 class DCCodeInfoEncoder(CodeInfoEncoder):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	WIDTH=256
 	HEIGHT=256
 	def __init__(self):
@@ -19,18 +17,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		strokeList=[]
-		description=propDict.get('資訊表示式', '')
-		if len(description)>0 and description!='XXXX':
-			strokeDescriptionList=description.split(';')
-			strokeList=[]
-			for d in strokeDescriptionList:
-				stroke=Stroke(d)
-				strokeList.append(stroke)
-
-		codeInfo=DCCodeInfo(strokeList, isSupportCharacterCode, isSupportRadixCode)
-		return codeInfo
+		return DCCodeInfo.generateCodeInfo(propDict)
 
 	def interprettCharacterCode(self, codeInfo):
 		return codeInfo.getCode()

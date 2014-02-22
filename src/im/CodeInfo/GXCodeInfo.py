@@ -7,3 +7,11 @@ class GXCodeInfo(CodeInfo):
 	def getCharacterCode(self):
 		return self._characterCode
 
+	@staticmethod
+	def generateCodeInfo(propDict):
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
+		characterCode=propDict.get('資訊表示式', '')
+
+		codeInfo=GXCodeInfo(characterCode, isSupportCharacterCode, isSupportRadixCode)
+		return codeInfo
+

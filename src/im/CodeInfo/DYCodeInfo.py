@@ -1,6 +1,9 @@
 from gear.CodeInfo import CodeInfo
 
 class DYCodeInfo(CodeInfo):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	RADIX_A='a'
 	RADIX_B='b'
 	RADIX_C='c'
@@ -97,6 +100,19 @@ class DYCodeInfo(CodeInfo):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 		self._codeList=codeList
+
+	@staticmethod
+	def generateCodeInfo(propDict):
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
+		strCodeList=propDict.get('資訊表示式')
+
+		codeList=None
+		if strCodeList!=None:
+			codeList=strCodeList.split(DYCodeInfo.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(DYCodeInfo.RADIX_SEPERATOR), codeList))
+
+		codeInfo=DYCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
+		return codeInfo
 
 	def isInstallmentEncoded(self):
 		return len(self._codeList)>1

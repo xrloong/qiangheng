@@ -1,6 +1,7 @@
 import sys
 from ..CodeInfo.FCCodeInfo import FCCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CodeInfo import CodeInfo
 from gear import Operator
 
 class FCCodeInfoEncoder(CodeInfoEncoder):
@@ -12,29 +13,10 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		top_left=''
-		top_right=''
-		bottom_left=''
-		bottom_right=''
-
-		characterCode=propDict.get('資訊表示式', '')
-		if len(characterCode)==4:
-			top_left=characterCode[0]
-			top_right=characterCode[1]
-			bottom_left=characterCode[2]
-			bottom_right=characterCode[3]
-
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=FCCodeInfo(corners, isSupportCharacterCode, isSupportRadixCode)
-		return codeInfo
+		return FCCodeInfo.generateCodeInfo(propDict)
 
 	def interprettCharacterCode(self, codeInfo):
 		return "%s%s%s%s"%(codeInfo.getTopLeft(), codeInfo.getTopRight(), codeInfo.getBottomLeft(), codeInfo.getBottomRight())
-
-#	def isAvailableOperation(self, codeInfoList):
-#		isAllWithCode=all(map(lambda x: len(self.generateDefaultCodeInfo(x))==4, codeInfoList))
-#		return isAllWithCode
 
 	def isAvailableOperation(self, codeInfoList):
 		return True

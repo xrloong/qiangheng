@@ -3,11 +3,9 @@ import copy
 
 from ..CodeInfo.BSCodeInfo import BSCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CodeInfo import CodeInfo
 
 class BSCodeInfoEncoder(CodeInfoEncoder):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	def __init__(self):
 		pass
 
@@ -16,18 +14,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		singletonCode=propDict.get('獨體編碼')
-		strCodeList=propDict.get('資訊表示式')
-		supplementCode=propDict.get('嘸蝦米補碼')
-
-		codeList=None
-		if strCodeList!=None:
-			codeList=strCodeList.split(BSCodeInfoEncoder.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(BSCodeInfoEncoder.RADIX_SEPERATOR), codeList))
-
-		codeInfo=BSCodeInfo(singletonCode, codeList, supplementCode, isSupportCharacterCode, isSupportRadixCode)
-		return codeInfo
+		return BSCodeInfo.generateCodeInfo(propDict)
 
 	def interprettCharacterCode(self, codeInfo):
 		singletonCode=codeInfo.getSingletonCode()

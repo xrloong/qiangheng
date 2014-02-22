@@ -3,6 +3,7 @@ import copy
 
 from ..CodeInfo.ARCodeInfo import ARCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CodeInfo import CodeInfo
 
 class ARCodeInfoEncoder(CodeInfoEncoder):
 	INSTALLMENT_SEPERATOR='|'
@@ -16,15 +17,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		codeList=None
-		str_rtlist=propDict.get('資訊表示式')
-		if str_rtlist!=None:
-			codeList=str_rtlist.split(ARCodeInfoEncoder.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(ARCodeInfoEncoder.RADIX_SEPERATOR), codeList))
-
-		codeInfo=ARCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
-		return codeInfo
+		return ARCodeInfo.generateCodeInfo(propDict)
 
 	def interprettCharacterCode(self, codeInfo):
 		mainRadixList=codeInfo.getMainCodeList()

@@ -3,11 +3,9 @@ import copy
 
 from ..CodeInfo.DYCodeInfo import DYCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CodeInfo import CodeInfo
 
 class DYCodeInfoEncoder(CodeInfoEncoder):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	def __init__(self):
 		pass
 
@@ -16,16 +14,7 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		strCodeList=propDict.get('資訊表示式')
-
-		codeList=None
-		if strCodeList!=None:
-			codeList=strCodeList.split(DYCodeInfoEncoder.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(DYCodeInfoEncoder.RADIX_SEPERATOR), codeList))
-
-		codeInfo=DYCodeInfo(codeList, isSupportCharacterCode, isSupportRadixCode)
-		return codeInfo
+		return DYCodeInfo.generateCodeInfo(propDict)
 
 	def interprettCharacterCode(self, codeInfo):
 		mainRadixList=codeInfo.getMainCodeList()

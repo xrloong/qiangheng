@@ -1,11 +1,9 @@
 from ..CodeInfo.ZMCodeInfo import ZMCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CodeInfo import CodeInfo
 from gear import Operator
 
 class ZMCodeInfoEncoder(CodeInfoEncoder):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	def __init__(self):
 		pass
 
@@ -14,21 +12,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		extra_code=propDict.get('補充資訊')
-		strCodeList=propDict.get('資訊表示式')
-
-		zm_code=''
-		zm_extra=extra_code
-		zm_single=propDict.get('獨體編碼')
-		codeList=[]
-		if strCodeList!=None:
-#			rtlist=str_rtlist.split(',')
-			codeList=strCodeList.split(ZMCodeInfoEncoder.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(ZMCodeInfoEncoder.RADIX_SEPERATOR), codeList))
-
-		codeInfo=ZMCodeInfo(zm_single, codeList, zm_extra, isSupportCharacterCode, isSupportRadixCode)
-		return codeInfo
+		return ZMCodeInfo.generateCodeInfo(propDict)
 
 	def interprettCharacterCode(self, codeInfo):
 		singletonCode=codeInfo.getSingletonCode()

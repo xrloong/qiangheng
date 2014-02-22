@@ -1,5 +1,6 @@
 from ..CodeInfo.GXCodeInfo import GXCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CodeInfo import CodeInfo
 
 class GXCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
@@ -10,15 +11,10 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		characterCode=propDict.get('資訊表示式', '')
-
-		codeInfo=GXCodeInfo(characterCode, isSupportCharacterCode, isSupportRadixCode)
-		return codeInfo
+		return GXCodeInfo.generateCodeInfo(propDict)
 
 	def interprettCharacterCode(self, codeInfo):
 		return codeInfo.getCharacterCode()
-
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getCharacterCode(), codeInfoList))

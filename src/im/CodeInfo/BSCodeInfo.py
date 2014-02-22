@@ -1,6 +1,9 @@
 from gear.CodeInfo import CodeInfo
 
 class BSCodeInfo(CodeInfo):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	RADIX_A='a'
 	RADIX_B='b'
 	RADIX_C='c'
@@ -84,11 +87,25 @@ class BSCodeInfo(CodeInfo):
 	def __init__(self, singletonCode, codeList, supplementCode, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
-#		self._bs_code_list=codeList
 		self._bs_spcode=supplementCode
 
 		self._bs_singleton=singletonCode
 		self._codeList=codeList
+
+	@staticmethod
+	def generateCodeInfo(propDict):
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(propDict)
+		singletonCode=propDict.get('獨體編碼')
+		strCodeList=propDict.get('資訊表示式')
+		supplementCode=propDict.get('嘸蝦米補碼')
+
+		codeList=None
+		if strCodeList!=None:
+			codeList=strCodeList.split(BSCodeInfo.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(BSCodeInfo.RADIX_SEPERATOR), codeList))
+
+		codeInfo=BSCodeInfo(singletonCode, codeList, supplementCode, isSupportCharacterCode, isSupportRadixCode)
+		return codeInfo
 
 	def getSingletonCode(self):
 		return self._bs_singleton

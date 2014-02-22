@@ -1,5 +1,6 @@
 from ..CodeInfo.SPCodeInfo import SPCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
+from gear.CodeInfo import CodeInfo
 
 class SPCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
@@ -10,11 +11,7 @@ class SPCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def generateCodeInfo(self, propDict):
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
-		characterCode=propDict.get('資訊表示式', '')
-
-		codeInfo=SPCodeInfo(characterCode, isSupportCharacterCode, isSupportRadixCode)
-		return codeInfo
+		return SPCodeInfo.generateCodeInfo(propDict)
 
 	def interprettCharacterCode(self, codeInfo):
 		return codeInfo.getCharacterCode()
