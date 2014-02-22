@@ -43,36 +43,36 @@ class Char:
 
 	@property
 	def dy(self):
-		return self._dy
+		return self._dayi
 
 	@dy.setter
 	def dy(self, code):
 		if code=='XXXX':
-			self._dy=None
+			self._dayi=None
 		else:
-			self._dy=code
+			self._dayi=code
 
 	@property
 	def bs(self):
-		return self._bs
+		return self._boshiamy
 
 	@bs.setter
 	def bs(self, code):
 		if code=='XXXX':
-			self._bs=None
+			self._boshiamy=None
 		else:
-			self._bs=code
+			self._boshiamy=code
 
 	@property
 	def zm(self):
-		return self._zm
+		return self._zhengma
 
 	@zm.setter
 	def zm(self, code):
 		if code=='XXXX':
-			self._zm=None
+			self._zhengma=None
 		else:
-			self._zm=code
+			self._zhengma=code
 
 if __name__=='__main__':
 	c=Char('王', ['(龜)', 'kn', 'sl', '/c', 'k', 'l', 'qy', '12'])
