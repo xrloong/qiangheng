@@ -11,7 +11,7 @@ all:
 	done
 
 tarball: all
-	cd ..; tar cjf qiangheng-$(VERSION).tar.bz2 qiangheng
+	cd ..; tar cjf qiangheng-$(VERSION).tar.bz2 --no-recursion `find qiangheng | egrep -v ".svn"`
 
 clean:
 	rm -f *.pyc *~ scim/* gcin/* uime/*
