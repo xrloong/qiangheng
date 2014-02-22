@@ -1,6 +1,6 @@
 #from xml.etree import ElementTree as ET
-from xml.etree import cElementTree as ET
-#import lxml.etree as ET
+#from xml.etree import cElementTree as ET
+import lxml.etree as ET
 #import lxml.objectify as ET
 
 class XMLWriter:
@@ -36,7 +36,7 @@ class XMLWriter:
 			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "頻率":x.getFrequency(), "類型":x.getVariance()}
 			ET.SubElement(charGroup, "對應", attrib)
 		xmlNode=ET.ElementTree(rootNode)
-#		print(ET.tounicode(xmlNode, pretty_print=True))
-		ET.dump(xmlNode)
+		print(ET.tounicode(xmlNode, pretty_print=True))
+#		ET.dump(xmlNode)
 #		xmlNode.write(sys.stdout, encoding="unicode")
 
