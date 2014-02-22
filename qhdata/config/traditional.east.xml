@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<瑲珩 版本號="0.2">
+<瑲珩 版本號="0.3">
 	<設定檔 資料目錄="qhdata/">
 		<匯入 檔案="config/main.east.xml" />
 

@@ -102,8 +102,8 @@ class QHParser:
 			turtleList.append(turtle)
 		return turtleList
 
-	def loadCodeInfoByParsingXML__0_2(self, rootNode):
-		# 用於 0.2 版
+	def loadCodeInfoByParsingXML__0_3(self, rootNode):
+		# 用於 0.3 版
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
 		charDescList=[]
@@ -118,8 +118,8 @@ class QHParser:
 			charDescList.append(charDesc)
 		return charDescList
 
-	def loadTemplateByParsingXML__0_2(self, rootNode):
-		# 用於 0.2 版
+	def loadTemplateByParsingXML__0_3(self, rootNode):
+		# 用於 0.3 版
 		templateGroupNode=rootNode.find("範本集")
 		templateDB={}
 		if None!=templateGroupNode:
@@ -130,8 +130,8 @@ class QHParser:
 				templateDB[templateName]=templateDesc
 		return templateDB
 
-	def loadCharDescriptionByParsingXML__0_2(self, rootNode):
-		# 用於 0.2 版
+	def loadCharDescriptionByParsingXML__0_3(self, rootNode):
+		# 用於 0.3 版
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
 
@@ -150,21 +150,21 @@ class QHParser:
 	def loadCodeInfoByParsingXML(self, node):
 		version=node.get('版本號')
 		propertyDB={}
-		if version=='0.2':
-			charDescList=self.loadCodeInfoByParsingXML__0_2(node)
+		if version=='0.3':
+			charDescList=self.loadCodeInfoByParsingXML__0_3(node)
 		return charDescList
 
 	def loadTemplateByParsingXML(self, node):
 		version=node.get('版本號')
 		templateDB={}
-		if version=='0.2':
-			templateDB=self.loadTemplateByParsingXML__0_2(node)
+		if version=='0.3':
+			templateDB=self.loadTemplateByParsingXML__0_3(node)
 		return templateDB
 
 	def loadCharDescriptionByParsingXML(self, node):
 		version=node.get('版本號')
 		charDescList=[]
-		if version=='0.2':
-			charDescList=self.loadCharDescriptionByParsingXML__0_2(node)
+		if version=='0.3':
+			charDescList=self.loadCharDescriptionByParsingXML__0_3(node)
 		return charDescList
 

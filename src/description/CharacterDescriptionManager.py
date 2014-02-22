@@ -3,6 +3,7 @@
 import sys
 from .CharacterDescription import CharacterDescription
 from gear import OperatorManager
+from gear import RadixManager
 from parser import QHParser
 from state import StateManager
 from xml.etree import ElementTree
@@ -11,6 +12,8 @@ class CharDescriptionManager:
 	def __init__(self, imModule):
 		self.templateDB={}
 		self.characterDB={}
+
+		self.radixManager=RadixManager.RadixManager()
 
 		def charDescQueryer(charName):
 			charDesc=self.characterDB.get(charName, None)
@@ -83,6 +86,8 @@ class CharDescriptionManager:
 				origCharDesc=charDesc
 				self.characterDB[charName]=charDesc
 			origCharDesc.extendStructureList(charDesc.getStructureList())
+
+			self.radixManager.addRadixInfo(charName, charDesc)
 
 	def adjustData(self):
 		charDescRearranger=StateManager.characterDescriptionRearrangerGenerator(self.operationMgr)
