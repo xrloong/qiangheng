@@ -1,4 +1,22 @@
-﻿== 2010/3/6 ==
+﻿== 2010/3/19 ==
+自由軟體鑄造場的 SVN 發生問題，只備份到版本號 126 。
+原本版本號 127 到 138 所做的改變則一次加入為新的版本號 127 。
+
+== 2010/3/18 ==
+版本：0.08
+SVN: http://svn.openfoundry.org/qiangheng	138
+
+修正部分字形的結構表示。
+以馬來西亞倉頡之友的檔案為比較對象，其官網為：
+http://www.chinesecj.com/newsoftware/index.php
+下載位置為：
+http://www.chinesecj.com/download/cj5-21000.zip
+
+已知錯誤：
+嘸蝦米的數字一至十會產生補碼，尚未處理。
+倉頡的特徵碼在特殊情況下會有問題，如譶。目前約有 187 仍與倉頡之友的不符合。
+
+== 2010/3/6 ==
 版本：0.07
 SVN: http://svn.openfoundry.org/qiangheng	122
 

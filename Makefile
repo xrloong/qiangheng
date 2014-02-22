@@ -35,7 +35,8 @@ tarball: all tex/principle.pdf
 	tar cjf ../qiangheng-$(VERSION).tar.bz2 --exclude-vcs -C .. qiangheng
 
 clean:
-	rm -f *.pyc *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log
+	rm -f *.pyc im/*.pyc character/*.pyc
+	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log
 	rm -f charinfo/*/*.bak.txt charinfo/*/*.rst.txt
 	rm -f test/puretable/*
 

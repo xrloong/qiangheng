@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import charinfo
-import chardesc
+from character.CharDescriptionManager import CharDescriptionManager
+from character.CharDesc import CharDesc
 
 class Token:
 	none=0
@@ -94,12 +94,12 @@ class Parser:
 	def __init__(self):
 		pass
 
-	def parse(data, name=''):
+	def parse(data, name, CharInfoConstructor):
 		def parseCompDesc():
 			tkn=lexer.getNextToken()
 			if tkn.ttype != Token.leftParenthesis:
 				print("預期 (")
-				return chardesc.CharDescriptionManager.getNoneDescription()
+				return CharDescriptionManager.getNoneDescription()
 
 			tnk=lexer.getNextToken() # op
 			if tnk.ttype == Token.hanzi or tnk.ttype == Token.htemplate:
@@ -107,7 +107,7 @@ class Parser:
 			else:
 				operator=''
 				print("預期運算元")
-				return chardesc.CharDescriptionManager.getNoneDescription()
+				return CharDescriptionManager.getNoneDescription()
 
 			# ' '
 			tnk=lexer.getNextToken()
@@ -119,7 +119,7 @@ class Parser:
 				compList=parseCompList()
 
 				if compList is None:
-					return chardesc.CharDescriptionManager.getNoneDescription()
+					return CharDescriptionManager.getNoneDescription()
 				else:
 					pass
 
@@ -130,7 +130,8 @@ class Parser:
 			else:
 				compList=[]
 
-			comp=chardesc.CharDescriptionManager.generateDescription('王', [operator, compList, '(龜)'])
+			anonymousName=CharDesc.generateNewAnonymousName()
+			comp=CharDescriptionManager.generateDescription(anonymousName, [operator, compList, '(龜)'])
 
 			return comp
 
@@ -139,12 +140,14 @@ class Parser:
 			while True:
 				tnk=lexer.getNextToken()
 				if tnk.ttype==Token.hanzi or tnk.ttype==Token.radical:
-					comp=chardesc.CharDescriptionManager.generateDescription(tnk.value)
+					comp=CharDescriptionManager.generateDescription(tnk.value)
 					l.append(comp)
 				elif tnk.ttype==Token.leftParenthesis:
 					lexer.pushBackToken(tnk)
+					chInfo=CharInfoConstructor()
 					tmpcomp=parseCompDesc()
 					if tmpcomp:
+						tmpcomp.setChInfo(chInfo)
 						l.append(tmpcomp)
 					else:
 						l=None
@@ -157,13 +160,13 @@ class Parser:
 		lexer=Lexer(data)
 		comp=parseCompDesc()
 
-		if comp!=chardesc.CharDescriptionManager.getNoneDescription():
+		if comp!=CharDescriptionManager.getNoneDescription():
 			tnk=lexer.getNextToken() # none
 			if tnk.ttype == Token.none:
 				comp.setName(name)
 			else:
 				print("預期結尾")
-				comp=chardesc.CharDescriptionManager.getNoneDescription()
+				comp=CharDescriptionManager.getNoneDescription()
 
 		return comp
 

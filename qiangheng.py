@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-import im
-import platform
-import chardesc
-import qhparser
+from im.IMMgr import IMMgr
 
-import charinfo
+import platform
+from character.CharDescriptionManager import CharDescriptionManager
+import qhparser
 
 from optparse import OptionParser
 oparser = OptionParser()
@@ -16,18 +15,6 @@ oparser.add_option("-p", "--platform", dest="platform", help="目標平台", def
 oparser.add_option("--dir-charinfo", dest="dir_charinfo", help="結構所在的目錄", default="charinfo")
 (options, args) = oparser.parse_args()
 
-filenamelist=[
-#		'charinfo/Bopomofo.txt',
-#		'charinfo/BopomofoExt.txt',
-#		'charinfo/CJKpunct.txt',
-#		'charinfo/FullASCIIpunct.txt',
-		'charinfo/CJK.txt',
-#		'charinfo/U3400-U4DB5.txt',
-#		'charinfo/U20000-U2A6DF.txt.txt',
-#		'charinfo/Hiragana.txt',
-#		'charinfo/Katakana.txt',
-#		'charinfo/Verticalpunct.txt',
-]
 filenamelist=[
 		'CJK.txt',
 ]
@@ -89,9 +76,9 @@ def parsestructure(g):
 	else:
 		return None
 
-def getDescDBFromFile(filenamelist, CharConstructor):
-	descMgr={}
-	descMgr=chardesc.CharDescriptionManager()
+def getDescDBFromFile(filenamelist, descMgr):
+	charInfoGenerator=descMgr.getCharInfoGenerator()
+	anonyCharInfoGenerator=descMgr.getAnonymousCharInfoGenerator()
 
 	for filename in filenamelist:
 		f=open(filename, encoding=fileencoding)
@@ -106,11 +93,10 @@ def getDescDBFromFile(filenamelist, CharConstructor):
 					print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
 				else:
 					operator, operandlist=parseans
-					chInfo=CharConstructor(ll[1], parseans, ll[3:])
-					comp=qhparser.Parser.parse(ll[2], ll[1])
+					chInfo=charInfoGenerator(ll[1], ll[3:])
+					comp=qhparser.Parser.parse(ll[2], ll[1], anonyCharInfoGenerator)
 					comp.setChInfo(chInfo)
 					descMgr[ll[1]]=comp
-	return descMgr
 
 def getTableFromFile(filename):
 	t=[]
@@ -125,69 +111,62 @@ def genFile(options):
 	choice=options.imname
 	method=options.method
 
-	dirchar=options.dir_charinfo + "/"
-
-	tmpfname=filenamelist[0]
 	if choice in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
-		constructor=charinfo.CJCharInfo
-		pathlist=[
-				dirchar+'main/'+tmpfname,
-				dirchar+'cj/'+tmpfname,
-				]
-		z=im.CangJie()
+		imDirPath='cj/'
+		imName='倉頡'
 	elif choice in ['行', '行列', '行列輸入法', 'array', 'ar',]:
-		constructor=charinfo.ARCharInfo
-		pathlist=[
-				dirchar+'main/'+tmpfname,
-				dirchar+'ar/'+tmpfname,
-				]
-		z=im.Array()
+		imDirPath='ar/'
+		imName='行列'
 	elif choice in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
-		constructor=charinfo.DYCharInfo
-		pathlist=[
-				dirchar+'main/'+tmpfname,
-				dirchar+'dy/'+tmpfname,
-				]
-		z=im.DaYi()
+		imDirPath='dy/'
+		imName='大易'
 	elif choice in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
-		constructor=charinfo.BSCharInfo
-		pathlist=[
-				dirchar+'main/'+tmpfname,
-				dirchar+'bs/'+tmpfname,
-				]
-		z=im.Boshiamy()
+		imDirPath='bs/'
+		imName='嘸蝦米'
 	elif choice in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
-		constructor=charinfo.ZMCharInfo
+		imDirPath='zm/'
+		imName='鄭碼'
+	else:
+		imName='空'
+
+	dirchar=options.dir_charinfo + "/"
+	tmpfname=filenamelist[0]
+	if imName=='空':
+		pathlist=[]
+	else:
 		pathlist=[
 				dirchar+'main/'+tmpfname,
-				dirchar+'zm/'+tmpfname,
+				dirchar+imDirPath+tmpfname,
 				]
-		z=im.ZhengMa()
-	else:
-		constructor=charinfo.CharInfo
-		pathlist=[]
-		z=im.NoneIM()
+
+	inputMethod=IMMgr.getIM(imName)
+	constructor=IMMgr.getCharInfoGenerator(imName)
 
 	if method in ['動', '動態', '動態組碼', 'dynamic',]:
-		descMgr=getDescDBFromFile(pathlist, constructor)
+		def AnonymouseCharInfoGenerator():
+			return constructor("XXXX", [])
+
+		descMgr=CharDescriptionManager(constructor)
+		getDescDBFromFile(pathlist, descMgr)
 		descMgr.ConstructDescriptionNetwork()
-		z.setStruct(descMgr)
+
+		inputMethod.setStruct(descMgr)
 	elif method in ['表', '表格', 'puretable', 'pt']:
 		cmtable=getTableFromFile(options.ptfile)
-		z.setTable(cmtable)
+		inputMethod.setTable(cmtable)
 	else:
-		z.setTable([])
+		inputMethod.setTable([])
 
 	if pf in ['scim']:
-		p=platform.ScimPlatform(z)
+		p=platform.ScimPlatform(inputMethod)
 	elif pf in ['gcin']:
-		p=platform.GcinPlatform(z)
+		p=platform.GcinPlatform(inputMethod)
 	elif pf in ['msim']:
-		p=platform.MSimPlatform(z)
+		p=platform.MSimPlatform(inputMethod)
 	elif pf in ['table']:
-		p=platform.NonePlatform(z)
+		p=platform.NonePlatform(inputMethod)
 	else:
-		p=platform.NonePlatform(z)
+		p=platform.NonePlatform(inputMethod)
 
 	# 產生檔頭
 	header=p.genHeader()
@@ -195,7 +174,7 @@ def genFile(options):
 	if header: print(header)
 	if p.strBeginTable: print(p.strBeginTable)
 
-	table=p.genCodeMappingsTable(z.genIMMapping())
+	table=p.genCodeMappingsTable(inputMethod.genIMMapping())
 	if table: print(table)
 #	for x in sorted(table): print(*x, sep='\t')
 
