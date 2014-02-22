@@ -60,68 +60,105 @@ class CangJie(NoneIM):
 		if ch.cj:
 			return ch.cj
 
+	def getCJPrePostList(self, ch, chdict):
+		"""傳回倉頡的字首及字尾的部件串列"""
+		prelist=[]
+		postlist=[]
+		if ch.structure[1] in ['龜']:
+			prelist=[]
+			postlist=[]
+		elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起']:
+			x=chdict.get(ch.structure[3], None)
+			y=chdict.get(ch.structure[4], None)
+			prelist=[x]
+			postlist=[y]
+		elif ch.structure[1] in ['算', '湘', '霜', '怡',]:
+			x=chdict.get(ch.structure[3], None)
+			y=chdict.get(ch.structure[4], None)
+			z=chdict.get(ch.structure[5], None)
+			prelist=[x]
+			postlist=[y, z]
+		elif ch.structure[1] in ['想', '穎',]:
+			x=chdict.get(ch.structure[3], None)
+			y=chdict.get(ch.structure[4], None)
+			z=chdict.get(ch.structure[5], None)
+			prelist=[x, y]
+			postlist=[z]
+		elif ch.structure[1] in ['林', '爻']:
+			x=chdict.get(ch.structure[3], None)
+			prelist=[x]
+			postlist=[x]
+		elif ch.structure[1] in ['卅', '鑫']:
+			x=chdict.get(ch.structure[3], None)
+			prelist=[x]
+			postlist=[x, x]
+		elif ch.structure[1] in ['燚',]:
+			x=chdict.get(ch.structure[3], None)
+			prelist=[x, x]
+			postlist=[x, x]
+		else:
+			prelist=[]
+			postlist=[]
+		return [prelist, postlist]
+
 	def setCharTree(self, ch, chdict):
-		if ch.ar:
+		"""設定某一個字符所包含的部件的碼"""
+
+		if ch.cj:
+			# 如果有值，代表事先指定或之前設定過。
 			return
 
-		complist=self.getAllComp(ch, chdict)
+		def getCJPrefixCode(prelist):
+			"""計算倉頡字首的碼"""
 
-		for tmpch in complist:
+			# 字首最多取兩碼
+			if len(prelist)==1:
+				# 如果字首只有一個部件
+				tmpcode=prelist[0].cj
+				if len(tmpcode)<=2:
+					# 字首小於或剛好二個碼就全取
+					return tmpcode
+				else:
+					# 字首有超過二個碼就首碼及尾碼
+					return tmpcode[0]+tmpcode[-1]
+			else:
+				# 如果字首有超過一個部件，則取首部件的首碼及尾部件的尾碼
+				return prelist[0].cj[0]+prelist[-1].cj[-1]
+
+		def getCJPostfixCode(postlist):
+			"""計算倉頡字身的碼"""
+
+			# 字身最多取三碼
+			if len(postlist)==1:
+				# 如果字身只有一個部件
+				tmpcode=postlist[0].cj
+				if len(tmpcode)<=3:
+					# 字身只有三個碼就全取
+					return tmpcode
+				else:
+					# 字身有超過三個碼就首碼、次碼及尾碼
+					return tmpcode[0:2]+tmpcode[-1]
+			else:
+				# 如果字身有超過一個部件
+				tmpcode=postlist[0].cj
+				if len(tmpcode)==1:
+					# 如果次字首有只有一個碼
+					# 則取次字首的全碼及次字身的尾碼及尾碼
+					return tmpcode+getCJPrefixCode(postlist[1:])
+				else:
+					# 如果次字首有有超過一個碼
+					# 則取次字首的首碼及尾碼及最後部件的尾碼
+					return tmpcode[0]+tmpcode[-1]+postlist[-1].cj[-1]
+
+		[prefixlist, postfixlist]=self.getCJPrePostList(ch, chdict)
+
+		tmplist=prefixlist+postfixlist
+		for tmpch in tmplist:
 			self.setCharTree(tmpch, chdict)
 
-		def getLstcode(chlist):
-			return chlist[-1].cj[-1]
-
-		def getFstLstcode(chlist):
-			if len(chlist)==1:
-				cjcode=chlist[0].cj
-				if len(cjcode)==1:
-					return cjcode[0]
-				elif len(cjcode)>=2:
-					return cjcode[0]+cjcode[-1]
-			elif len(chlist)>=2:
-				return chlist[0].cj[0]+chlist[-1].cj[-1]
-
-		def getFstSndLstcode(chlist):
-			if len(chlist)==1:
-				cjcode=chlist[0].cj
-				if len(cjcode)<=2:
-					return cjcode
-				elif len(cjcode)>=3:
-					return cjcode[0:2]+cjcode[-1]
-			elif len(chlist)>=2:
-				flcode=getFstLstcode(chlist)
-				if len(flcode)==1:
-					return flcode+getFstLstcode(chlist[1:])
-				else:
-					return flcode+getLstcode(chlist[1:])
-		cjlist=list(map(lambda c: c.cj, complist))
-
-		if complist and all(cjlist):
-			if ch.structure[1] in ['龜']:
-				cjcode=ch.cj
-			elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起']:
-				x=chdict.get(ch.structure[3], None)
-				y=chdict.get(ch.structure[4], None)
-				cjcode=getFstLstcode([x])+getFstSndLstcode([y])
-			elif ch.structure[1] in ['算', '湘', '霜', '想', '怡', '穎',]:
-				x=chdict.get(ch.structure[3], None)
-				y=chdict.get(ch.structure[4], None)
-				z=chdict.get(ch.structure[5], None)
-				cjcode=getFstLstcode([x])+getFstSndLstcode([y, z])
-			elif ch.structure[1] in ['林', '爻']:
-				x=chdict.get(ch.structure[3], None)
-				cjcode=getFstLstcode([x])+getFstSndLstcode([x])
-			elif ch.structure[1] in ['卅', '鑫']:
-				x=chdict.get(ch.structure[3], None)
-				cjcode=getFstLstcode([x])+getFstSndLstcode([x, x, x])
-			elif ch.structure[1] in ['燚',]:
-				x=chdict.get(ch.structure[3], None)
-				cjcode=getFstLstcode([x, x])+getFstSndLstcode([x, x])
-			else:
-				cjcode=""
-			if cjcode:
-				ch.cj=cjcode
+		if prefixlist and postfixlist and all(tmplist) and all(map(lambda ch: ch.cj, tmplist)):
+			cjcode=getCJPrefixCode(prefixlist)+getCJPostfixCode(postfixlist)
+			ch.cj=cjcode
 
 class Array(NoneIM):
 	"行列輸入法"
