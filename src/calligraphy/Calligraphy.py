@@ -99,16 +99,16 @@ class StrokeInfo:
 		return extremeValue
 
 	def computeLeft(self):
-		return max(0, StrokeInfo.computeExtreme(self.getPoints(), min, quadratic.solveMin, lambda p: p[0])-1)
+		return StrokeInfo.computeExtreme(self.getPoints(), min, quadratic.solveMin, lambda p: p[0])
 
 	def computeRight(self):
-		return min(0xFF, StrokeInfo.computeExtreme(self.getPoints(), max, quadratic.solveMax, lambda p: p[0])+1)
+		return StrokeInfo.computeExtreme(self.getPoints(), max, quadratic.solveMax, lambda p: p[0])
 
 	def computeTop(self):
-		return max(0, StrokeInfo.computeExtreme(self.getPoints(), min, quadratic.solveMin, lambda p: p[1])-1)
+		return StrokeInfo.computeExtreme(self.getPoints(), min, quadratic.solveMin, lambda p: p[1])
 
 	def computeBottom(self):
-		return min(0xFF, StrokeInfo.computeExtreme(self.getPoints(), max, quadratic.solveMax, lambda p: p[1])+1)
+		return StrokeInfo.computeExtreme(self.getPoints(), max, quadratic.solveMax, lambda p: p[1])
 
 	def compute_點(self, startPoint, w, h):
 		assert h>0
@@ -136,7 +136,7 @@ class StrokeInfo:
 			]
 
 	def compute_橫(self, startPoint, w):
-		assert w>0
+#		assert w>0
 		return [(False, (startPoint[0]+w, startPoint[1])), ]
 
 	def compute_豎(self, startPoint, h):
@@ -1443,6 +1443,18 @@ class Stroke(Writing):
 	def transform(self, pane):
 		pane.transformPane(self.state.getTargetPane())
 
+	def computeLeft(self):
+		return self.strokeInfo.computeLeft()
+
+	def computeRight(self):
+		return self.strokeInfo.computeRight()
+
+	def computeTop(self):
+		return self.strokeInfo.computeTop()
+
+	def computeBottom(self):
+		return self.strokeInfo.computeBottom()
+
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
 		super().__init__(contourPane)
@@ -1463,4 +1475,16 @@ class StrokeGroup(Writing):
 	def transform(self, pane):
 		for stroke in self.strokeList:
 			stroke.transform(pane)
+
+	def computeLeft(self):
+		return min([s.strokeInfo.computeLeft() for s in self.strokeList])
+
+	def computeRight(self):
+		return max([s.strokeInfo.computeRight() for s in self.strokeList])
+
+	def computeTop(self):
+		return min([s.strokeInfo.computeTop() for s in self.strokeList])
+
+	def computeBottom(self):
+		return max([s.strokeInfo.computeBottom() for s in self.strokeList])
 
