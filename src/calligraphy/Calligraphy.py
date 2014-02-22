@@ -1,6 +1,9 @@
 import re
 import sys
 
+from . import quadratic
+import math
+
 class StrokeInfo:
 	def __init__(self, name, scope, parameterList):
 		self.name = name
@@ -69,6 +72,43 @@ class StrokeInfo:
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
 		return pints + self.getTailPoints(points[-1][1])
+
+	@staticmethod
+	def computeExtreme(points, extreme, solveExtreme, retrieveValue):
+		firstPointPair = points[0]
+		prevPoint = firstPointPair[1]
+		midPoint = None
+
+		extremeValue = retrieveValue(prevPoint)
+		for p in points[1:]:
+			isCurve = p[0]
+			currPoint = p[1]
+
+			extremeValue = extreme(extremeValue, retrieveValue(currPoint))
+			if isCurve:
+				midPoint=currPoint
+			else:
+				if midPoint:
+					s0, s1, s2 = retrieveValue(prevPoint), retrieveValue(midPoint), retrieveValue(currPoint)
+					tmpExtremeValue = solveExtreme(s0, s1, s2)
+					extremeValue = extreme(extremeValue, tmpExtremeValue)
+
+				prevPoint=currPoint
+				midPoint=None
+
+		return extremeValue
+
+	def computeLeft(self):
+		return max(0, StrokeInfo.computeExtreme(self.getPoints(), min, quadratic.solveMin, lambda p: p[0])-1)
+
+	def computeRight(self):
+		return min(0xFF, StrokeInfo.computeExtreme(self.getPoints(), max, quadratic.solveMax, lambda p: p[0])+1)
+
+	def computeTop(self):
+		return max(0, StrokeInfo.computeExtreme(self.getPoints(), min, quadratic.solveMin, lambda p: p[1])-1)
+
+	def computeBottom(self):
+		return min(0xFF, StrokeInfo.computeExtreme(self.getPoints(), max, quadratic.solveMax, lambda p: p[1])+1)
 
 	def compute_點(self, startPoint, w, h):
 		assert h>0
