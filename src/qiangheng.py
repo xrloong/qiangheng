@@ -3,7 +3,7 @@
 
 import sys
 
-from xml.etree import ElementTree
+from xml.etree import ElementTree as ET
 from optparse import OptionParser
 from state import StateManager
 from im.IMMgr import IMMgr
@@ -44,7 +44,7 @@ class QiangHeng:
 
 	def readConfig(self, configFileName):
 		f=open(configFileName, encoding='utf-8-sig')
-		xmlNode=ElementTree.parse(f)
+		xmlNode=ET.parse(f)
 		rootNode=xmlNode.getroot()
 
 		configNode=rootNode.find('設定')
@@ -58,7 +58,7 @@ class QiangHeng:
 
 	def getConfigFiles(self, configFileName):
 		f=open(configFileName, encoding='utf-8-sig')
-		xmlNode=ElementTree.parse(f)
+		xmlNode=ET.parse(f)
 		rootNode=xmlNode.getroot()
 		configFileNode=rootNode.find('設定檔')
 
@@ -96,10 +96,10 @@ class QiangHeng:
 	def toXML(self, imInfo, codeMappingInfoList):
 		keyMaps=imInfo.getKeyMaps()
 
-		rootNode=ElementTree.Element("輸入法")
+		rootNode=ET.Element("輸入法")
 
 		# 名稱
-		nameNode=ElementTree.SubElement(rootNode, "輸入法名稱",
+		nameNode=ET.SubElement(rootNode, "輸入法名稱",
 			attrib={
 				"EN":imInfo.getName('en'),
 				"TW":imInfo.getName('tw'),
@@ -109,23 +109,23 @@ class QiangHeng:
 				})
 
 		# 屬性
-		propertyNode=ElementTree.SubElement(rootNode, "屬性",
+		propertyNode=ET.SubElement(rootNode, "屬性",
 			attrib={
 				"最大按鍵數":"%s"%imInfo.getMaxKeyLength()
 				})
 
 		# 按鍵與顯示的對照表
-		keyMapsNode=ElementTree.SubElement(rootNode, "按鍵對應集")
+		keyMapsNode=ET.SubElement(rootNode, "按鍵對應集")
 		for key, disp in keyMaps:
-			ElementTree.SubElement(keyMapsNode, "按鍵對應", attrib={"按鍵":key, "顯示":disp})
+			ET.SubElement(keyMapsNode, "按鍵對應", attrib={"按鍵":key, "顯示":disp})
 
 		# 對照表
-		charGroup=ElementTree.SubElement(rootNode, "對應集")
+		charGroup=ET.SubElement(rootNode, "對應集")
 		for x in sorted(codeMappingInfoList, key=lambda y: y.getKey()):
 			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "頻率":x.getFrequency(), "類型":x.getVariance()}
-			ElementTree.SubElement(charGroup, "對應", attrib)
-		xmlNode=ElementTree.ElementTree(rootNode)
-		ElementTree.dump(xmlNode)
+			ET.SubElement(charGroup, "對應", attrib)
+		xmlNode=ET.ElementTree(rootNode)
+		ET.dump(xmlNode)
 #		xmlNode.write(sys.stdout)
 
 	def toTXT(self, codeMappingInfoList):

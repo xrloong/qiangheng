@@ -3,7 +3,7 @@
 import sys
 from .CharacterDescription import CharacterDescription
 from parser import QHParser
-from xml.etree import ElementTree
+from xml.etree import ElementTree as ET
 import Constant
 
 class CharacterDescriptionManager:
@@ -48,7 +48,7 @@ class CharacterDescriptionManager:
 
 	def loadFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
 		f=open(filename, encoding=fileencoding)
-		xmlNode=ElementTree.parse(f)
+		xmlNode=ET.parse(f)
 		rootNode=xmlNode.getroot()
 		charDescList=self.parser.loadCharDescriptionByParsingXML(rootNode)
 		for charDesc in charDescList:
@@ -65,7 +65,7 @@ class CharacterDescriptionManager:
 
 	def loadTemplateFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
 		f=open(filename, encoding=fileencoding)
-		xmlNode=ElementTree.parse(f)
+		xmlNode=ET.parse(f)
 		rootNode=xmlNode.getroot()
 		return self.parser.loadTemplateByParsingXML(rootNode)
 
