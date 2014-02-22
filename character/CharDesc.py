@@ -97,20 +97,18 @@ class HangerCharDesc(CharDesc):
 
 	@property
 	def target(self):
-		return self.getHanger()
-
-	def getHanger(self):
 		return self.hangerCharDesc
 
-	def setHanger(self, hangerCharDesc):
-		self.hangerCharDesc=hangerCharDesc
+	def replacedBy(self, newCharDesc):
+		self.hangerCharDesc=newCharDesc.target
 
 	def copyDescription(self):
 		return HangerCharDesc(self.getOperator(), [])
 
 	def copyDeeply(self):
+		newTarget=self.target.copyDeeply()
 		hangerCharDesc=HangerCharDesc(self.getOperator(), self.getCompList())
-		hangerCharDesc.setHanger(self.getHanger().copyDeeply())
+		hangerCharDesc.replacedBy(newTarget)
 		return hangerCharDesc
 
 if __name__=='__main__':

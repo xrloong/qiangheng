@@ -31,7 +31,6 @@ class TemplateDesc:
 
 	def getReplacedCharDesc(self, argumentList):
 		tempDesc=self.charDesc.copyDeeply()
-		tempDesc.setExpandName(self.charDesc.getExpandName())
 		mappingDict={}
 		if len(argumentList)==len(self.parameterList):
 			pairList=zip(self.parameterList, argumentList)
@@ -39,6 +38,13 @@ class TemplateDesc:
 			mappingDict=dict(pairList)
 		self.replaceCharDesc(tempDesc, mappingDict)
 		return tempDesc
+
+	def rearrange(self, charDesc):
+		compList=charDesc.getCompList()
+		resultDesc=self.getReplacedCharDesc(compList)
+		resultDesc.setExpandName(charDesc.getExpandName())
+
+		charDesc.replacedBy(resultDesc)
 
 	# 需要先替換兒子，才可以進行自己的替換。
 	# 否則，如：條=(範翛 木)=(範湘 亻丨(志 夂木))
@@ -49,9 +55,7 @@ class TemplateDesc:
 
 		argumentDesc=mappingDict.get(charDesc.getExpandName())
 		if argumentDesc!=None:
-			argumentName=argumentDesc.getExpandName()
-			charDesc.setHanger(argumentDesc.getHanger().copyDeeply())
-			charDesc.setExpandName(argumentName)
+			charDesc.replacedBy(argumentDesc)
 
 if __name__=='__main__':
 	print(TemplateDesc('王', '(龜)', None))
