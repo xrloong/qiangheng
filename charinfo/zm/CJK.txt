@@ -902,7 +902,7 @@ U+6B7A	歺	(龜)	id,rs
 U+6B7F	歿	(龜)	a,r,y,x
 U+6B87	殇	(龜)	a,r,y,o
 U+6BB3	殳	(龜)	qx
-U+6BB5	段	(龜)	n,c,q,x
+U+6BB5	段	(龜)	n,c,qx
 U+6BB7	殷	(龜)	pd,y,q
 U+6BBC	殼	(龜)	b,w,q,q
 U+6BBF	殿	(龜)	xm,o,q

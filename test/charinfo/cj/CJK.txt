@@ -63,7 +63,7 @@ U+67EC	柬	(龜)	dwf	dwf
 U+6BB3	殳	(龜)	hne	hne
 U+6BB5	段	(龜)	hjhne	hje
 U+6C34	水	(龜)	e	e
-U+6C35	氵	(龜)	e	e
+U+6C35	氵	(龜)	ym	e
 U+6C36	氶	(龜)	ne	ne
 U+6C37	氷	(龜)	ie	ie
 U+6C38	永	(龜)	ine	ine

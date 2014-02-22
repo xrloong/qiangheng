@@ -11,12 +11,12 @@ bjqs	陳
 bll	亾
 bn	人
 ca	夕
-ca	多
+cca	多
 cl	七
-cno	夠
-cpi	卶
+ccno	夠
+ccp	卶
 csa	东
-cyo	夡
+ccyo	夡
 dae	丒
 dapa	卵
 dapu	毈
@@ -26,7 +26,7 @@ dba	刅
 dnx	刄
 dp	刀
 ea	爫
-ee	一
+e	一
 ee	丑
 enb	丙
 eri	丌
@@ -54,10 +54,10 @@ lp	丆
 me	且
 nds	解
 ne	角
-noc	够
+nocc	够
 noo	句
 ny	勹
-oca	哆
+occ	哆
 oo	口
 paa	卪
 pbj	阜
@@ -69,7 +69,7 @@ qaa	专
 qx	丈
 ri	刂
 rux	殳
-se	三
+s	三
 sj	牛
 sj	牜
 sl	世

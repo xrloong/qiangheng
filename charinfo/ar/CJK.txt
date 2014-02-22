@@ -25,7 +25,7 @@ U+4E18	丘	(龜)	oa
 U+4E19	丙	(龜)	ajk
 U+4E1A	业	(龜)	ca
 U+4E1C	东	(龜)	qc
-U+4E1D	丝	(龜)	wwa
+U+4E1D	丝	(龜)	sssa
 U+4E1F	丟	(龜)	lrx
 U+4E21	両	(龜)	ajd
 U+4E22	丢	(龜)	lrx
@@ -307,7 +307,7 @@ U+536C	卬	(龜)	oj
 U+536F	卯	(龜)	olj
 U+5370	印	(龜)	oj
 U+5373	即	(龜)	bj
-U+5375	卵	(龜)	olhh
+U+5375	卵	(龜)	ohdh
 U+5377	卷	(龜)	kzgs
 U+5378	卸	(龜)	ofaj
 U+537F	卿	(龜)	olbj
@@ -902,7 +902,7 @@ U+6B7A	歺	(龜)	em
 U+6B7F	歿	(龜)	amsb
 U+6B87	殇	(龜)	amo.
 U+6BB3	殳	(龜)	sb
-U+6BB5	段	(龜)	ss
+U+6BB5	段	(龜)	osb
 U+6BB7	殷	(龜)	ltlb
 U+6BBC	殼	(龜)	vasb
 U+6BBF	殿	(龜)	brkb

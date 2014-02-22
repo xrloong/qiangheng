@@ -924,7 +924,7 @@ U+6C11	民	(龜)	tvp	tvp
 U+6C14	气	(龜)	omn	on
 U+6C18	氘	(龜)	onll	onl
 U+6C34	水	(龜)	e	e
-U+6C35	氵	(龜)	e	e
+U+6C35	氵	(龜)	ym	e
 U+6C36	氶	(龜)	ne	ne
 U+6C37	氷	(龜)	ie	ie
 U+6C38	永	(龜)	ine	ine

@@ -61,7 +61,7 @@ U+6771	東	(龜)	f,k
 U+67EC	柬	(龜)	f,lk
 # 6800
 U+6BB3	殳	(龜)	qx
-U+6BB5	段	(龜)	n,c,q,x
+U+6BB5	段	(龜)	n,c,qx
 U+6C34	水	(龜)	kv
 U+6C35	氵	(龜)	v
 U+6C36	氶	(龜)	x,kv
