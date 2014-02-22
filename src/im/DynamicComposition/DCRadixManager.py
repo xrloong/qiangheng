@@ -131,7 +131,7 @@ class DCRadixParser(RadixParser):
 		parameterList = clsStrokeInfo.parseExpression(parameterExpressionList)
 		strokeInfo = clsStrokeInfo(name, parameterList)
 
-		return Stroke(scope, strokeInfo)
+		return Stroke(scope, startPoint, strokeInfo)
 
 	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)

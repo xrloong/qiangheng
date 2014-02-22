@@ -1532,10 +1532,11 @@ class StrokeState:
 		return self.targetPane
 
 class Stroke(Writing):
-	def __init__(self, scope, strokeInfo, state=StrokeState()):
+	def __init__(self, scope, startPoint, strokeInfo, state=StrokeState()):
 		super().__init__(Pane())
 
 		self.scope=scope
+		self.startPoint=startPoint
 		self.strokeInfo=strokeInfo
 		self.state=state
 
@@ -1552,7 +1553,7 @@ class Stroke(Writing):
 		self.centerY = self.top + self.height//2
 
 	def clone(self):
-		return Stroke(self.scope, self.strokeInfo, self.state.clone())
+		return Stroke(self.scope, self.startPoint, self.strokeInfo, self.state.clone())
 
 	def getTypeName(self):
 		return self.strokeInfo.getTypeName()
@@ -1579,24 +1580,10 @@ class Stroke(Writing):
 
 		strokeState=self.getState()
 		pane=strokeState.getTargetPane()
-#		tmpPoints=self.strokeInfo.getPoints()
 
-		points=self.strokeInfo.computePoints((0, 0))
-		drawing=StrokeDrawing(points)
-		left, top, right, bottom = drawing.computeScope()
-		left-=1
-		top-=1
-		right+=1
-		bottom+=1
-		width=right-left
-		height=bottom-top
-		tmpPoints=[
-			(isCurve,
-			((x-left)*self.width/width+self.left, (y-top)*self.height/height+self.top)
-			)
-			for (isCurve, (x, y)) in points]
-
-		newPoints = [(isCurve, toValid(pane.transformPoint(point))) for (isCurve, point) in tmpPoints]
+		startPoint=self.startPoint
+		points=self.strokeInfo.computePoints(startPoint)
+		newPoints = [(isCurve, toValid(pane.transformPoint(point))) for (isCurve, point) in points]
 		return newPoints
 
 	def computeScope(self):
