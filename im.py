@@ -5,31 +5,45 @@ class NoneIM:
 	def __init__(self):
 		self.keyMaps=[]
 
-	def genIMMapping(self, chdict):
-		table=[]
-		for chname, ch in chdict.items():
-			self.setCharTree(ch, chdict)
-			code=self.getCode(ch)
-			if code:
-				table.append([code, chname])
-			else:
-				pass
-#				print("Debug", chname)
+	def setTable(self, tb):
+		self.tb=tb
+		self.method='T'
+
+	def setStruct(self, chdict):
+		self.chdict=chdict
+		self.method='D'
+
+	def genIMMapping(self):
+		if self.method=='D':
+			table=[]
+			for chname, ch in self.chdict.items():
+				self.setCharTree(ch)
+				code=self.getCode(ch)
+				if code:
+					table.append([code, chname])
+				else:
+					pass
+#					print("Debug", chname)
+		elif self.method=='T':
+			table=self.tb
+		else:
+			table=[]
 		return table
 
 	def getCode(self, ch):
 		pass
 
-	def setCharTree(self, ch, chdict):
+	def setCharTree(self, ch):
 		pass
 
-	def getAllComp(self, ch, chdict):
+	def getAllComp(self, ch):
 #		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
 #		['好', '志',
 #		'回', '同', '函', '區', '左',
 #		'起', '廖', '載', '聖', '句',
 #		'夾', '衍', '衷',]
 #		['纂', '膷',]
+		chdict=self.chdict
 		if ch.structure[1] in ['龜']:
 			return []
 		elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
@@ -96,8 +110,9 @@ class CangJie(NoneIM):
 		if ch.cj:
 			return ch.cj
 
-	def getCJPrePostList(self, ch, chdict):
+	def getCJPrePostList(self, ch):
 		"""傳回倉頡的字首及字尾的部件串列"""
+		chdict=self.chdict
 		prelist=[]
 		postlist=[]
 		if ch.structure[1] in ['龜']:
@@ -137,7 +152,7 @@ class CangJie(NoneIM):
 			postlist=[]
 		return [prelist, postlist]
 
-	def setCharTree(self, ch, chdict):
+	def setCharTree(self, ch):
 		"""設定某一個字符所包含的部件的碼"""
 
 		if ch.cj:
@@ -186,11 +201,11 @@ class CangJie(NoneIM):
 					# 則取次字首的首碼及尾碼及最後部件的尾碼
 					return tmpcode[0]+tmpcode[-1]+postlist[-1].cj[-1]
 
-		[prefixlist, postfixlist]=self.getCJPrePostList(ch, chdict)
+		[prefixlist, postfixlist]=self.getCJPrePostList(ch)
 
 		tmplist=prefixlist+postfixlist
 		for tmpch in tmplist:
-			self.setCharTree(tmpch, chdict)
+			self.setCharTree(tmpch)
 
 		if prefixlist and postfixlist and all(tmplist) and all(map(lambda ch: ch.cj, tmplist)):
 			cjcode=getCJPrefixCode(prefixlist)+getCJPostfixCode(postfixlist)
@@ -247,14 +262,14 @@ class Array(NoneIM):
 		if ch.ar:
 			return ch.ar
 
-	def setCharTree(self, ch, chdict):
+	def setCharTree(self, ch):
 		if ch.ar:
 			return
 
-		complist=self.getAllComp(ch, chdict)
+		complist=self.getAllComp(ch)
 
 		for tmpch in complist:
-			self.setCharTree(tmpch, chdict)
+			self.setCharTree(tmpch)
 
 		arlist=list(map(lambda c: c.ar, complist))
 		if complist and all(arlist):
@@ -316,14 +331,14 @@ class DaYi(NoneIM):
 		if ch.dy:
 			return ch.dy
 
-	def setCharTree(self, ch, chdict):
+	def setCharTree(self, ch):
 		if ch.dy:
 			return
 
-		complist=self.getAllComp(ch, chdict)
+		complist=self.getAllComp(ch)
 
 		for tmpch in complist:
-			self.setCharTree(tmpch, chdict)
+			self.setCharTree(tmpch)
 
 		dylist=list(map(lambda c: c.dy, complist))
 		if complist and all(dylist):
@@ -370,14 +385,14 @@ class Boshiamy(NoneIM):
 		if ch.bscode:
 			return ch.bscode
 
-	def setCharTree(self, ch, chdict):
+	def setCharTree(self, ch):
 		if ch.bs:
 			return
 
-		complist=self.getAllComp(ch, chdict)
+		complist=self.getAllComp(ch)
 
 		for tmpch in complist:
-			self.setCharTree(tmpch, chdict)
+			self.setCharTree(tmpch)
 
 		bslist=list(map(lambda c: c.bs, complist))
 		if complist and all(bslist):
@@ -426,14 +441,14 @@ class ZhengMa(NoneIM):
 		if ch.zm:
 			return ch.zm
 
-	def setCharTree(self, ch, chdict):
+	def setCharTree(self, ch):
 		if ch.zm:
 			return
 
-		complist=self.getAllComp(ch, chdict)
+		complist=self.getAllComp(ch)
 
 		for tmpch in complist:
-			self.setCharTree(tmpch, chdict)
+			self.setCharTree(tmpch)
 
 		def codeToList(code, type):
 			if not code or not type:

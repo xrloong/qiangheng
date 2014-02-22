@@ -50,10 +50,14 @@ Usage: qiangheng.py [options]
 
 Options:
   -h, --help            show this help message and exit
-  -g IMNAME, --gen=IMNAME
+  -t PTFILE, --pure-table-file=PTFILE
+                        表格名稱
+  -i IMNAME, --im=IMNAME
                         輸入法名稱
-  -s STYLE, --style=STYLE
-                        表格格式
+  -m METHOD, --method=METHOD
+                        産生的方式
+  -p PLATFORM, --platform=PLATFORM
+                        目標平台
 
 其中的 IMNAME 可以為：
 	['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]
@@ -62,9 +66,17 @@ Options:
 	['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]
 	['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]
 
-其中的 STYLE 可以為：
-	['scim', 'gcin', 'msim',]
+其中的 METHOD 可以為：
+        ['動', '動態', '動態組碼', 'dynamic',]
+        ['表', '表格', 'puretable', 'pt']
+
+其中的 PLATFORM 可以為：
+	['scim', 'gcin', 'msim', 'puretable']
 	msim 用於微軟視窗作業系統上的 uimetool
+
+其中的 PTFILE 為：
+	當 METHOD 為 ['表', '表格', 'puretable', 'pt'] 時，所使用檔名
+
 
 == 檔案說明 ==
    README.txt		說明文件

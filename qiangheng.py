@@ -6,8 +6,10 @@ import platform
 
 from optparse import OptionParser
 oparser = OptionParser()
-oparser.add_option("-g", "--gen", dest="imname", help="輸入法名稱", default="倉頡")
-oparser.add_option("-s", "--style", dest="style", help="表格格式", default="scim")
+oparser.add_option("-t", "--pure-table-file", dest="ptfile", help="表格名稱")
+oparser.add_option("-i", "--im", dest="imname", help="輸入法名稱", default="倉頡")
+oparser.add_option("-m", "--method", dest="method", help="産生的方式", default="動態")
+oparser.add_option("-p", "--platform", dest="platform", help="目標平台", default="puretable")
 (options, args) = oparser.parse_args()
 
 filenamelist=[
@@ -48,26 +50,37 @@ def checkgrammar(g):
 		return False
 	return True
 
-chlist=[]
-chdict={}
+def getDynamicFromFile(filenamelist):
+	chlist=[]
+	chdict={}
 
-for filename in filenamelist:
-	f=open(filename, encoding=fileencoding)
-	for line in f.readlines():
-		l=line.strip()
-		if not l: continue
-		elif l[0]=='#': continue
-		ll=l.split('\t')
-		if len(ll)>=3:
-			if not checkgrammar(ll[2]):
-				print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
-			else:
-				chlist.append(ll[1])
-				chdict[ll[1]]=char.Char(ll[1], ll[2:])
+	for filename in filenamelist:
+		f=open(filename, encoding=fileencoding)
+		for line in f.readlines():
+			l=line.strip()
+			if not l: continue
+			elif l[0]=='#': continue
+			ll=l.split('\t')
+			if len(ll)>=3:
+				if not checkgrammar(ll[2]):
+					print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
+				else:
+					chlist.append(ll[1])
+					chdict[ll[1]]=char.Char(ll[1], ll[2:])
+	return chdict
 
-def genFile(chdict, options):
-	style=options.style
+def getTableFromFile(filename):
+	t=[]
+	if filename:
+		f=open(filename, encoding=fileencoding)
+		for line in f.readlines():
+			t.append(line.split())
+	return t
+
+def genFile(options):
+	pf=options.platform
 	choice=options.imname
+	method=options.method
 
 	if choice in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
 		z=im.CangJie()
@@ -82,12 +95,23 @@ def genFile(chdict, options):
 	else:
 		z=im.NoneIM()
 
-	if style in ['scim']:
+	if method in ['動', '動態', '動態組碼', 'dynamic',]:
+		chdict=getDynamicFromFile(filenamelist)
+		z.setStruct(chdict)
+	elif method in ['表', '表格', 'puretable', 'pt']:
+		cmtable=getTableFromFile(options.ptfile)
+		z.setTable(cmtable)
+	else:
+		z.setTable([])
+
+	if pf in ['scim']:
 		p=platform.ScimPlatform(z)
-	elif style in ['gcin']:
+	elif pf in ['gcin']:
 		p=platform.GcinPlatform(z)
-	elif style in ['msim']:
+	elif pf in ['msim']:
 		p=platform.MSimPlatform(z)
+	elif pf in ['table']:
+		p=platform.NonePlatform(z)
 	else:
 		p=platform.NonePlatform(z)
 
@@ -97,11 +121,11 @@ def genFile(chdict, options):
 	if header: print(header)
 	if p.strBeginTable: print(p.strBeginTable)
 
-	table=p.genCodeMappingsTable(z.genIMMapping(chdict))
+	table=p.genCodeMappingsTable(z.genIMMapping())
 	if table: print(table)
 #	for x in sorted(table): print(*x, sep='\t')
 
 	if p.strEndTable: print(p.strEndTable)
 
 
-genFile(chdict, options)
+genFile(options)
