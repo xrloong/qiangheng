@@ -6,10 +6,12 @@ class CJStructureRearranger(StructureRearranger):
 	def rearrangeSpecial(self, structDesc):
 		operator=structDesc.getOperator()
 		if operator.getName()=='範焤':
-			compList=structDesc.getCompList()
-			childStructDesc=compList[0]
-			if childStructDesc.getReferenceExpression() in ['厭', '辰', '麻']:
-				structDesc.setOperator(Operator.OperatorLiao)
+			self.rearrangeForFanFu(structDesc)
 
 		return False
+
+	def getRearrangeListFanFu(self):
+		rearrangeList=['厭', '辰', '麻']
+		return rearrangeList
+
 

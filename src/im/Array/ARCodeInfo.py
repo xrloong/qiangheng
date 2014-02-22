@@ -54,14 +54,6 @@ class ARCodeInfo(CodeInfo):
 	RADIX_厂='$厂'
 	RADIX_文厂='$文厂'
 
-	RADIX_儿='$儿'
-	RADIX_乚='$乚'
-	RADIX_丨='$丨'
-	RADIX_丿='$丿'
-	RADIX_丨丨='$丨丨'
-	RADIX_丨丿='$丨丿'
-	RADIX_丿丨='$丿丨'
-
 	radixToCodeDict={
 		RADIX_1_UP:'q',
 		RADIX_2_UP:'w',
@@ -112,14 +104,6 @@ class ARCodeInfo(CodeInfo):
 		RADIX_文:'y.',
 		RADIX_厂:'z',
 		RADIX_文厂:'n',
-
-		RADIX_儿:'s',
-		RADIX_乚:'s',
-		RADIX_丨:'d',
-		RADIX_丿:'l',
-		RADIX_丨丨:'e',
-		RADIX_丨丿:'hl',
-		RADIX_丿丨:'e',
 	}
 
 	def __init__(self, codeList=[]):

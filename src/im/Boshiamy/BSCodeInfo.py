@@ -1,9 +1,6 @@
 from ..base.CodeInfo import CodeInfo
 
 class BSCodeInfo(CodeInfo):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	RADIX_A='a'
 	RADIX_B='b'
 	RADIX_C='c'
@@ -36,13 +33,6 @@ class BSCodeInfo(CodeInfo):
 	RADIX_山一='$山$一'
 	RADIX_丿丿='$丿丿'
 	RADIX_丿丿_山一='$丿丿$山$一'
-	RADIX_丨='$丨'
-	RADIX_丿='$丿'
-	RADIX_乚='$乚'
-	RADIX_丨丨='$丨丨'
-	RADIX_丨丿='$丨丿'
-	RADIX_丿丨='$丿丨'
-	RADIX_儿='$儿'
 	RADIX_厂='$厂'
 	RADIX_厂一='$厂一'
 
@@ -91,13 +81,6 @@ class BSCodeInfo(CodeInfo):
 		RADIX_山一:'ee',
 		RADIX_丿丿:'m',
 		RADIX_丿丿_山一:'m',
-		RADIX_丨:'i',
-		RADIX_丿:'p',
-		RADIX_乚:'l',
-		RADIX_丨丨:'r',
-		RADIX_丨丿:'r',
-		RADIX_丿丨:'r',
-		RADIX_儿:'r',
 		RADIX_厂:'l',
 		RADIX_厂一:'f',
 	}

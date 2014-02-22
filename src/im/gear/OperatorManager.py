@@ -49,6 +49,7 @@ class OperatorManager:
 
 		self.operatorGenerator=operatorGenerator
 		self.structureRearranger=imPackage.StructureRearranger()
+		self.structureRearranger.setOperatorGenerator(operatorGenerator)
 
 
 	def addTemplateOperatorIfNotExist(self, templateName):

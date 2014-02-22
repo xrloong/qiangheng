@@ -47,65 +47,12 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 
-	def encodeAsSilkworm(self, codeInfoList):
-		"""運算 "蚕" """
-
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-
-		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_一 and secondCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_畏下:
-			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_辰下]])
-			codeInfo=self.encodeAsLoong([newCodeInfo])
-		else:
-			newCodeInfoList=codeInfoList
-			codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
-	def encodeAsGoose(self, codeInfoList):
-		"""運算 "鴻" """
-
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-
-		newCodeInfoList=codeInfoList
-		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_彳 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_亍:
-			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_行]])
-			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
-		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丿 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_乚:
-			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_儿]])
-			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
-		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丨 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丨:
-			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_丨丨]])
-			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
-		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丨 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丿:
-			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_丨丿]])
-			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
-		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丿 and lastCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_丨:
-			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_丿丨]])
-			newCodeInfoList=[newCodeInfo]+codeInfoList[1:-1]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
-
 	def encodeAsTong(self, codeInfoList):
 		"""運算 "同" """
 		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-
-	def encodeAsLiao(self, codeInfoList):
-		"""運算 "廖" """
-
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-
-		newCodeInfoList=codeInfoList
-		if firstCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_厂 and secondCodeInfo.getRtList()[0]==ZMCodeInfo.RADIX_辰下:
-			newCodeInfo=self.generateDefaultCodeInfo([[ZMCodeInfo.RADIX_辰]])
-			newCodeInfoList=[newCodeInfo]+codeInfoList[2:]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
 
 	def encodeAsYou(self, codeInfoList):
 		"""運算 "幽" """

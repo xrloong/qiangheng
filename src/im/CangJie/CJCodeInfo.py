@@ -4,9 +4,6 @@ from .CJLump import CJLump
 import sys
 
 class CJCodeInfo(CodeInfo):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	def __init__(self, singleCode, direction, cjLumpList):
 		CodeInfo.__init__(self)
 

@@ -4,6 +4,9 @@ from ..base.RadixManager import RadixParser
 
 
 class ZMRadixParser(RadixParser):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 	ATTRIB_SINGLE_CODE='獨體編碼'
 	ATTRIB_SUPPLEMENTARY_CODE='補充資訊'
@@ -28,8 +31,8 @@ class ZMRadixParser(RadixParser):
 		zm_single=infoDict.get(ZMRadixParser.ATTRIB_SINGLE_CODE)
 		codeList=[]
 		if strCodeList!=None:
-			codeList=strCodeList.split(ZMCodeInfo.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(ZMCodeInfo.RADIX_SEPERATOR), codeList))
+			codeList=strCodeList.split(ZMRadixParser.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(ZMRadixParser.RADIX_SEPERATOR), codeList))
 
 		codeInfo=ZMCodeInfo(zm_single, codeList, zm_extra)
 		return codeInfo

@@ -3,6 +3,9 @@ from .DYCodeInfoEncoder import DYCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 
 class DYRadixParser(RadixParser):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 
 	# 多型
@@ -21,8 +24,8 @@ class DYRadixParser(RadixParser):
 
 		codeList=None
 		if strCodeList!=None:
-			codeList=strCodeList.split(DYCodeInfo.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(DYCodeInfo.RADIX_SEPERATOR), codeList))
+			codeList=strCodeList.split(DYRadixParser.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(DYRadixParser.RADIX_SEPERATOR), codeList))
 
 		codeInfo=DYCodeInfo(codeList)
 		return codeInfo

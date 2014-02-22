@@ -1,9 +1,6 @@
 from ..base.CodeInfo import CodeInfo
 
 class DYCodeInfo(CodeInfo):
-	INSTALLMENT_SEPERATOR='|'
-	RADIX_SEPERATOR=','
-
 	RADIX_A='a'
 	RADIX_B='b'
 	RADIX_C='c'
@@ -101,13 +98,6 @@ class DYCodeInfo(CodeInfo):
 		RADIX_一:'e',
 		RADIX_厂:'h',
 		RADIX_厂一:'h',
-		RADIX_丨:'1',
-		RADIX_丿:'/',
-		RADIX_乚:'c',
-		RADIX_丨丨:'11',
-		RADIX_丨丿:'11',
-		RADIX_丿丨:'11',
-		RADIX_儿:'q',
 	}
 
 	def __init__(self, codeList):

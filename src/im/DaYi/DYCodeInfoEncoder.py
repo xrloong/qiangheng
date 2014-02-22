@@ -39,30 +39,6 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	def encodeAsGoose(self, codeInfoList):
-		"""運算 "鴻" """
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-
-		if firstCodeInfo.getMainCodeList()[0]==DYCodeInfo.RADIX_丿 and lastCodeInfo.getMainCodeList()[0]==DYCodeInfo.RADIX_乚:
-			newCodeInfo=self.generateDefaultCodeInfo([[DYCodeInfo.RADIX_儿]])
-			codeInfo=self.encodeAsGoose([newCodeInfo]+codeInfoList[1:-1])
-			return codeInfo
-		if firstCodeInfo.getMainCodeList()[0]==DYCodeInfo.RADIX_丨 and lastCodeInfo.getMainCodeList()[0]==DYCodeInfo.RADIX_丨:
-			newCodeInfo=self.generateDefaultCodeInfo([[DYCodeInfo.RADIX_丨丨]])
-			codeInfo=self.encodeAsGoose([newCodeInfo]+codeInfoList[1:-1])
-			return codeInfo
-		if firstCodeInfo.getMainCodeList()[0]==DYCodeInfo.RADIX_丨 and lastCodeInfo.getMainCodeList()[0]==DYCodeInfo.RADIX_丿:
-			newCodeInfo=self.generateDefaultCodeInfo([[DYCodeInfo.RADIX_丨丿]])
-			codeInfo=self.encodeAsGoose([newCodeInfo]+codeInfoList[1:-1])
-			return codeInfo
-		if firstCodeInfo.getMainCodeList()[0]==DYCodeInfo.RADIX_丿 and lastCodeInfo.getMainCodeList()[0]==DYCodeInfo.RADIX_丨:
-			newCodeInfo=self.generateDefaultCodeInfo([[DYCodeInfo.RADIX_丿丨]])
-			codeInfo=self.encodeAsGoose([newCodeInfo]+codeInfoList[1:-1])
-			return codeInfo
-		codeInfo=self.encodeAsLoong(codeInfoList)
-		return codeInfo
-
 	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """
 		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)

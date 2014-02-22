@@ -4,6 +4,9 @@ from ..base.RadixManager import RadixParser
 from ..base.RadixManager import RadixCodeInfoDescription
 
 class ARRadixParser(RadixParser):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 	TAG_SUB_RADIX='子字根'
 	ATTRIB_USE_RADIX='使用'
@@ -32,8 +35,8 @@ class ARRadixParser(RadixParser):
 
 		str_rtlist=infoDict.get(ARRadixParser.ATTRIB_CODE_EXPRESSION)
 		if str_rtlist!=None:
-			codeList=str_rtlist.split(ARCodeInfo.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(ARCodeInfo.RADIX_SEPERATOR), codeList))
+			codeList=str_rtlist.split(ARRadixParser.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(ARRadixParser.RADIX_SEPERATOR), codeList))
 
 		codeInfo=ARCodeInfo(codeList)
 		return codeInfo

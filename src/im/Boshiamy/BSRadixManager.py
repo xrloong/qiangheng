@@ -3,6 +3,9 @@ from .BSCodeInfoEncoder import BSCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 
 class BSRadixParser(RadixParser):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 	ATTRIB_SINGLE_CODE='獨體編碼'
 	ATTRIB_SUPPLEMENTARY_CODE='嘸蝦米補碼'
@@ -25,8 +28,8 @@ class BSRadixParser(RadixParser):
 
 		codeList=None
 		if strCodeList!=None:
-			codeList=strCodeList.split(BSCodeInfo.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(BSCodeInfo.RADIX_SEPERATOR), codeList))
+			codeList=strCodeList.split(BSRadixParser.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(BSRadixParser.RADIX_SEPERATOR), codeList))
 
 		codeInfo=BSCodeInfo(singletonCode, codeList, supplementCode)
 		return codeInfo

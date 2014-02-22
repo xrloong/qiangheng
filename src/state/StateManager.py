@@ -13,14 +13,12 @@ def __init__(self):
 def setIMPackage(imPackage):
 	global __state_IMPackage
 	global codeInfoManager
-	global structureRearranger
 	global operationManager
 
 	__state_IMPackage=imPackage
 
 	codeInfoManager=CodeInfoManager(imPackage)
 
-	structureRearranger=imPackage.StructureRearranger()
 	operationManager=OperatorManager(imPackage)
 
 def getCodeInfoManager():
