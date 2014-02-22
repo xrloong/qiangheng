@@ -50,8 +50,6 @@ class CharDescriptionManager:
 
 		for filename in toCodeList:
 			self.loadCodeInfoFromXML(filename, fileencoding='utf-8-sig')
-		self.setAllExpandName()
-
 
 	def loadFromXML(self, filename, fileencoding='utf-8-sig'):
 		f=open(filename, encoding=fileencoding)
@@ -112,14 +110,6 @@ class CharDescriptionManager:
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
 				self.operationMgr.rearrangeRecursively(structDesc)
-
-	def setAllExpandName(self):
-		for charName in self.characterDB.keys():
-			charDesc=self.characterDB.get(charName)
-			structDescList=charDesc.getStructureList()
-			for structDesc in structDescList:
-				structDesc.setExpandName(charName)
-				structDesc.setNodeName(charName)
 
 if __name__=='__main__':
 	pass

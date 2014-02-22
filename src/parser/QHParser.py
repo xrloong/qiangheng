@@ -21,7 +21,7 @@ class QHParser:
 	def getDesc_Radix(self, node):
 		name=node.get("置換")
 		structDesc=self.generateStructureDescription()
-		structDesc.setExpandName(name)
+		structDesc.setReferenceExpression(name)
 		return structDesc
 
 	def getDesc_AssembleChar(self, assembleChar):

@@ -8,9 +8,10 @@ class StructureDescription:
 	countAnonymousName=0
 	def __init__(self, operator, compList):
 		self.name=StructureDescription.generateNewAnonymousName()
-		self.expandName=None
+		self.referenceExpression=None
 
-		self.nodeName=None
+		self.rootName=None
+		self.flagIsRoot=False
 
 		self.operator=operator
 		self.compList=compList
@@ -18,7 +19,7 @@ class StructureDescription:
 		self.codeType=CodeType()
 
 	def __str__(self):
-		return '<{0}={1}|({2})>'.format(self.getExpandName(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
+		return '<{0}={1}|({2})>'.format(self.getReferenceName(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
 
 	def __repr__(self):
 		return str(self)
@@ -28,7 +29,7 @@ class StructureDescription:
 
 	def copyDescription(self):
 		copyStructureDescription=StructureDescription(self.getOperator(), [])
-		copyStructureDescription.setExpandName(self.getExpandName())
+		copyStructureDescription.setReferenceExpression(self.getReferenceExpression())
 		copyStructureDescription.setCodeType(self.getCodeType())
 		return copyStructureDescription
 
@@ -58,35 +59,26 @@ class StructureDescription:
 	def getUniqueName(self):
 		return self.target.name
 
-	def setNodeName(self, nodeName):
-		self.target.nodeName=nodeName
+	def setReferenceExpression(self, referenceExpression):
+		self.target.referenceExpression=referenceExpression
 
-	def getNodeName(self):
-		return self.target.nodeName
+	def getReferenceExpression(self):
+		return self.target.referenceExpression
 
-	def setExpandName(self, expandName):
-		self.target.expandName=expandName
+	def getReferenceName(self):
+		return self.target.referenceExpression
 
-	def isNode(self):
-		return bool(self.target.getNodeName())
+	def setRootName(self, rootName):
+		self.target.rootName=rootName
+
+	def getRootName(self):
+		return self.target.rootName
 
 	def isRoot(self):
-		return self.isExpandable() and self.isNode()
+		return bool(self.target.getRootName())
 
 	def isLeaf(self):
-		return self.isExpandable() and not self.isNode()
-
-	def getExpandName(self):
-		return self.target.expandName
-
-	def isExpandable(self):
-		return bool(self.target.getExpandName())
-
-	def getHybridName(self):
-		if self.isExpandable():
-			return self.getExpandName()
-		else:
-			return self.getUniqueName()
+		return bool(self.target.getReferenceName())
 
 	def setOperator(self, operator):
 		self.target.operator=operator

@@ -60,7 +60,7 @@ class TemplateDescription:
 			parameterToArgumentMapping={}
 			parameterToArgumentNameMapping={}
 			if len(argumentList)==len(parameterList):
-				argumentNameList=map(lambda x: x.getExpandName(), argumentList)
+				argumentNameList=map(lambda x: x.getReferenceName(), argumentList)
 				pairList=zip(parameterList, argumentList)
 				namePairList=zip(parameterList, argumentNameList)
 
@@ -77,7 +77,7 @@ class TemplateDescription:
 			for comp in charDesc.getCompList():
 				replaceCharDesc(comp)
 
-			argumentDesc=parameterToArgumentMapping.get(charDesc.getExpandName())
+			argumentDesc=parameterToArgumentMapping.get(charDesc.getReferenceName())
 			if argumentDesc!=None:
 				charDesc.replacedBy(argumentDesc)
 

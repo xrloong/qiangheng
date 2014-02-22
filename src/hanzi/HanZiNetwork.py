@@ -170,6 +170,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
+				structDesc.setRootName(charName)
 				self.recursivelyAddStructure(structDesc)
 		return self.hanziNetwork
 
@@ -218,10 +219,6 @@ class HanZiNetwork:
 			tmpNode=HanZiNode(anonymousName)
 			self.structDescUniqueNameToNodeDict[anonymousName]=tmpNode
 
-			expandName=structDesc.getExpandName()
-			if expandName not in self.structDescExpandNameToNodeDict:
-				self.structDescExpandNameToNodeDict[expandName]=tmpNode
-
 	def addLink(self, structDesc, operator, childDescList):
 		if len(childDescList)>0:
 			childNodeList=[self.findNode(childDesc) for childDesc in childDescList]
@@ -237,7 +234,7 @@ class HanZiNetwork:
 		# 需考慮如：'炎'、'焱'的例子，使用重複的部件，要連結到相同的節點且不重複。
 
 		leafNode=self.structDescUniqueNameToNodeDict.get(structDesc.getUniqueName())
-		rootNode=self.structDescExpandNameToNodeDict.get(structDesc.getExpandName())
+		rootNode=self.structDescExpandNameToNodeDict.get(structDesc.getReferenceName())
 		operator = Operator.Operator('爲', '*')
 		childNodeList=[rootNode]
 		codeType=structDesc.getCodeType()
@@ -266,7 +263,7 @@ class HanZiNetwork:
 
 	def findNode(self, structDesc):
 		if structDesc.isRoot():
-			return self.structDescExpandNameToNodeDict.get(structDesc.getExpandName())
+			return self.structDescExpandNameToNodeDict.get(structDesc.getRootName())
 		elif structDesc.isLeaf():
 			return self.structDescUniqueNameToNodeDict.get(structDesc.getUniqueName())
 		else:
