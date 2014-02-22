@@ -10,57 +10,13 @@ from state import StateManager
 
 from optparse import OptionParser
 
-class QiangHeng:
-	def __init__(self, options):
-		configFile=options.config_file
-		xml_format=options.xml_format
+class DescriptionManagerToHanZiNetworkConverter:
+	def __init__(self, descMgr, hanziNetwork):
+		self.descMgr=descMgr
+		self.hanziNetwork=hanziNetwork
 
-		configList=self.readConfig(configFile)
-		[imProp, toTemplateList, toComponentList, toCodeList]=configList
-		imModule=IMMgr.IMMgr.getIMModule(imProp)
-
-		self.initManager(imModule)
-
-		self.descMgr.loadData(toTemplateList, toComponentList, toCodeList)
-
+	def run(self):
 		self.constructDescriptionNetwork()
-
-		if xml_format:
-			imInfo=imModule.IMInfo()
-			self.toXML(imInfo)
-		else:
-			self.toTXT()
-
-	def initManager(self, imModule):
-		self.descMgr=CharDescriptionManager.CharDescriptionManager(imModule)
-
-		self.hanziNetwork=HanZiNetwork.HanZiNetwork()
-
-		StateManager.setIMModule(imModule)
-
-	def readConfig(self, configFile):
-		f=open(configFile, encoding='utf-8-sig')
-		xmlNode=ElementTree.parse(f)
-		rootNode=xmlNode.getroot()
-
-		configNode=rootNode.find('設定')
-		imNode=configNode.find('輸入法')
-		imProp=imNode.attrib
-
-		configFileNode=rootNode.find('設定檔')
-		templateNodeList=configFileNode.findall('範本')
-		componentNodeList=configFileNode.findall('部件')
-		radixNodeList=configFileNode.findall('字根')
-
-		rootDirPrefix=configFileNode.get('資料目錄')
-
-		toComponentList=[rootDirPrefix+node.get('檔案') for node in componentNodeList]
-		toTemplateList=[rootDirPrefix+node.get('檔案') for node in templateNodeList]
-		toCodeList=[rootDirPrefix+node.get('檔案') for node in radixNodeList]
-
-
-		return [imProp, toTemplateList, toComponentList, toCodeList]
-
 
 	def constructDescriptionNetwork(self):
 		charNameList=self.getAllCharacters()
@@ -100,6 +56,65 @@ class QiangHeng:
 
 		for childSrcDesc in structDesc.getCompList():
 			self.recursivelyAddLink(childSrcDesc)
+
+	def getAllCharacters(self):
+		return self.descMgr.getAllCharacters()
+
+	def queryDescription(self, characterName):
+		return self.descMgr.queryCharacterDescription(characterName)
+
+class QiangHeng:
+	def __init__(self, options):
+		configFile=options.config_file
+		xml_format=options.xml_format
+
+		configList=self.readConfig(configFile)
+		[imProp, toTemplateList, toComponentList, toCodeList]=configList
+		imModule=IMMgr.IMMgr.getIMModule(imProp)
+
+		self.initManager(imModule)
+
+		self.descMgr.loadData(toTemplateList, toComponentList, toCodeList)
+
+		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(self.descMgr, self.hanziNetwork)
+		toHanZiNetworkConverter.run()
+
+		if xml_format:
+			imInfo=imModule.IMInfo()
+			self.toXML(imInfo)
+		else:
+			self.toTXT()
+
+	def initManager(self, imModule):
+		self.descMgr=CharDescriptionManager.CharDescriptionManager(imModule)
+
+		self.hanziNetwork=HanZiNetwork.HanZiNetwork()
+
+		StateManager.setIMModule(imModule)
+
+	def readConfig(self, configFile):
+		f=open(configFile, encoding='utf-8-sig')
+		xmlNode=ElementTree.parse(f)
+		rootNode=xmlNode.getroot()
+
+		configNode=rootNode.find('設定')
+		imNode=configNode.find('輸入法')
+		imProp=imNode.attrib
+
+		configFileNode=rootNode.find('設定檔')
+		templateNodeList=configFileNode.findall('範本')
+		componentNodeList=configFileNode.findall('部件')
+		radixNodeList=configFileNode.findall('字根')
+
+		rootDirPrefix=configFileNode.get('資料目錄')
+
+		toComponentList=[rootDirPrefix+node.get('檔案') for node in componentNodeList]
+		toTemplateList=[rootDirPrefix+node.get('檔案') for node in templateNodeList]
+		toCodeList=[rootDirPrefix+node.get('檔案') for node in radixNodeList]
+
+
+		return [imProp, toTemplateList, toComponentList, toCodeList]
+
 
 	def toXML(self, imInfo):
 		keyMaps=imInfo.getKeyMaps()
