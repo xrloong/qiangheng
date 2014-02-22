@@ -1,0 +1,124 @@
+\chapter{正確性}
+為了確認此方法的正確性，於是選擇了統一碼的 U+4E00 至 U+9FA5 等二零九零二個漢字。
+比較的來源為：
+
+\begin{tabular}[t]{ll}
+行列 & 行列輸入法的家(http://www.array.com.tw/BOX/BOX5.htm)。\\
+嘸蝦米 & 泰瑞的世界(http://terryhung.pixnet.net/blog/post/24885025)。\\
+倉頡 & 馬來西亞倉頡之友(http://www.chinesecj.com/newsoftware/index2.php?Type=code)。\\
+大易 & GCIN 的大易字碼表。\\
+鄭碼 & 很抱歉，忘了從何處得到的碼表。\\
+\end{tabular}
+
+比較方法：\\
+由於行列輸入法對於簡體字、或罕用字根有另外處理（簡體字要在編碼後加 i ，罕用字根則可能會重複編碼）。本次比較則忽視這種差異。
+
+由於大易輸入法沒有支援簡體字，所以比較結果是沒有考慮簡體字的。
+
+此外，暫不考慮容錯碼。亦即，只要瑲珩能產生一種正碼的編碼，即算對。
+
+以下列出與原輸入碼不同者：\\
+行列：\\
+\begin{tabular}[t]{lll}
+字符 & 瑲珩編碼 & 原輸入法編碼\\
+孶 & ['fxxf'] & ['yxyfi']\\
+簔 & ['lyax'] & ['lytxi']\\
+\end{tabular}
+
+嘸蝦米：\\
+\begin{tabular}[t]{lll}
+字符 & 瑲珩編碼 & 原輸入法編碼\\
+乀 & ['nn'] & ['bn', 'yy', ',ei']\\
+俨 & ['pefl'] & ['poop', 'pop', 'popv', 'pox', 'poxv']\\
+共 & ['rbn'] & ['rb', 'rba']\\
+剱 & ['acda'] & ['acdx', 'aood', 'aoodr', 'aoox', 'aooxr', 'ddx', 'dod', 'dox']\\
+只 & ['obn'] & ['oba', 'rsx', 'vux', 'vxx', 'vxxv']\\
+坙 & ['esy'] & ['isi', 'isiv', 'isy']\\
+嬢 & ['gljk'] & ['gdjk', 'gln', 'glnv', 'glok', 'glokv']\\
+崅 & ['ene'] & ['ennq']\\
+捑 & ['jdld'] & ['jdkd', 'jdvd', 'jmad']\\
+枩 & ['tbu'] & ['dbu', 'du']\\
+柺 & ['gzj'] & ['ton']\\
+橓 & ['tens'] & ['tcns', 'tenc']\\
+欟 & ['tror'] & ['jror', 'trmr', 'trmrv']\\
+涙 & ['wfd'] & ['wfad', 'wfadv', 'wmo', 'wmos']\\
+濏 & ['wkkp'] & ['wkkh', 'wkkx']\\
+煈 & ['frc'] & ['crc', 'crcr']\\
+璱 & ['kkkp'] & ['kkkh', 'kkkx']\\
+畐 & ['eoq'] & ['ioq']\\
+礻 & ['rsa'] & ['rs', ',rs']\\
+穯 & ['hyoo'] & ['hjoo', 'hwoo', 'hwoor']\\
+窰 & ['nbeu'] & ['nbbfv', 'nbee', 'nbeer', 'nbeev', 'nbeuv', 'nbue', 'nbuev', 'nbuu', 'nbuuv', 'nrbfv', 'nree', 'nreev', 'nreuv', 'nrue', 'nruev', 'nruu', 'nruuv']\\
+繤 & ['rmds'] & ['rdds']\\
+繤 & ['rmds'] & ['rdds']\\
+羋 & ['yizq'] & ['bbq', 'iyzg', 'rqj', 'yizg', 'yvq', 'yzq']\\
+艸 & ['eei'] & ['eeiv', 'eej', 'eejr', 'eejv', ',ee']\\
+藈 & ['rmjn'] & ['rmjd', 'rmk']\\
+蝆 & ['cyiq'] & ['crj', 'cyig', 'cyzq']\\
+襅 & ['vqjq'] & ['vqj', 'vqrj', 'vqrq']\\
+豣 & ['eqgg'] & ['eqbg', 'eqbk', 'eqpg', 'eqpgv']\\
+趆 & ['yzxe'] & ['yzx', 'yzxs']\\
+鐞 & ['aeia'] & ['aea', 'aeav', 'afia']\\
+闅 & ['mmzu'] & ['mmw', 'mmwv']\\
+飋 & ['rckp'] & ['rckh', 'rckx']\\
+騤 & ['mfjn'] & ['mfjd', 'mfk', 'mfkr']\\
+龑 & ['luln'] & ['aed', 'aedv', 'agn', 'agnr', 'apd', 'apdv', 'luld']\\
+\end{tabular}
+
+
+倉頡：\\
+\begin{tabular}[t]{lll}
+字符 & 瑲珩編碼 & 原輸入法編碼\\
+嬔 & ['vnim'] & ['vnum']\\
+嬤 & ['vidi'] & ['vici']\\
+孶 & ['tind'] & ['yind']\\
+憄 & ['hmp'] & ['hvp']\\
+榝 & ['dkce'] & ['dkde']\\
+濓 & ['eyhc'] & ['eytc']\\
+耉 & ['jkmr'] & ['jkyr']\\
+鋋 & ['cnkv'] & ['cnkm']\\
+\end{tabular}
+
+
+大易：\\
+\begin{tabular}[t]{lll}
+忁 & ['edwx'] & ['eowa', 'eowx']\\
+敻 & ['nmbx'] & ['n43x', 'nmax']\\
+梊 & ['ghei'] & ['ihei']\\
+榖 & ['fmex'] & ['fmvx']\\
+溹 & ['xsmt'] & ['xft']\\
+潃 & ['xexj'] & ['xa1j']\\
+瀍 & ['xcdf'] & ['xc4f']\\
+簭 & ['/rao'] & ['/fao']\\
+纏 & ['tcdf'] & ['th4f', 'tc4f', 'tcf', 'thf']\\
+翇 & ['bbs.'] & ['bbsx']\\
+茿 & ['urq.'] & ['urc.', 'urcs']\\
+銔 & ['0h9s'] & ['0eu1']\\
+銢 & ['0eex'] & ['0.x']\\
+閺 & ['6dkx'] & ['6dl']\\
+闅 & ['639x'] & ['63kx']\\
+隙 & ['ptdt'] & ['pt/t', 'ptt']\\
+餩 & ['a;aa'] & ['a;8a']\\
+驫 & ['bbb'] & ['hhh']\\
+麉 & ['esec'] & ['v1vc']\\
+\end{tabular}
+
+
+鄭碼：\\
+\begin{tabular}[t]{lll}
+字符 & 瑲珩編碼 & 原輸入法編碼\\
+乀 & ['saa'] & ['ydaa']\\
+嚺 & ['jlug'] & ['jlgw', 'jugw', 'jwug']\\
+圕 & ['jdxk'] & ['jdbk']\\
+幵 & ['aeae'] & ['agae']\\
+栞 & ['aeef'] & ['agef']\\
+樧 & ['fofq'] & ['fosq']\\
+櫣 & ['fewf'] & ['fefw', 'fwef']\\
+獡 & ['qmru'] & ['qmzu']\\
+緖 & ['zbs'] & ['zbm', 'zbma']\\
+郉 & ['aeey'] & ['agey']\\
+鑝 & ['perc'] & ['pecw', 'pwrc']\\
+鬭 & ['ccbp'] & ['ccap']\\
+\end{tabular}
+
+
