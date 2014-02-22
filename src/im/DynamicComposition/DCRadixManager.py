@@ -50,7 +50,7 @@ class DCRadixParser(RadixParser):
 			description=strokeNode.attrib.get(DCRadixParser.ATTRIB_CODE_EXPRESSION, '')
 			if len(description)>0 and description!='XXXX':
 				if description[0]=='(':
-					stroke=Stroke(description, pane)
+					stroke=Stroke(pane, description)
 					strokeList.append(stroke)
 				else:
 					strokeGroupName=description
@@ -60,7 +60,6 @@ class DCRadixParser(RadixParser):
 
 		strokeGroup=StrokeGroup(pane, strokeList)
 
-		pane=strokeGroup.getPane()
 		strokeGroup=strokeGroup.getStrokeList()
 		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeList, pane)
 		return codeInfo
@@ -103,7 +102,7 @@ class DCRadixParser(RadixParser):
 		strokeNodeList=strokeGroupNode.findall(DCRadixParser.TAG_STROKE)
 		for strokeNode in strokeNodeList:
 			codeExpression=strokeNode.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
-			stroke=Stroke(codeExpression, pane)
+			stroke=Stroke(pane, codeExpression)
 
 			strokeName=strokeNode.get(DCRadixParser.TAG_NAME)
 			stroke.setInstanceName(strokeName)

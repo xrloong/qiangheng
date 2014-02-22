@@ -60,7 +60,22 @@ class Pane:
 
 Pane.DEFAULT_PANE=Pane()
 
-class Stroke:
+class Writing:
+	def __init__(self, contourPane):
+		self.boundaryPane=Pane.DEFAULT_PANE
+		self.contourPane=contourPane
+
+	def getBoundaryPane(self):
+		return self.boundaryPane
+
+	def getContourPane(self):
+		return self.contourPane
+
+	# 多型
+	def transform(self, pane):
+		pass
+
+class Stroke(Writing):
 	STROKE_NAMES=[
 #		"XXXX",
 
@@ -86,7 +101,9 @@ class Stroke:
 
 	DEFAULT_INSTANCE_NAME='瑲珩預設筆劃名'
 
-	def __init__(self, description, pane):
+	def __init__(self, pane, description):
+		Writing.__init__(self, pane)
+
 		matchResult=re.match("\((.*)\)(.*)", description)
 
 		self.setInstanceName(Stroke.DEFAULT_INSTANCE_NAME)
@@ -102,12 +119,6 @@ class Stroke:
 		descriptionList=strokeDescription.split(',')
 		self.actionList=[StrokeAction(d) for d in descriptionList]
 
-		[left, top, right, bottom]=pane.getAsList()
-		self.left=left
-		self.top=top
-		self.right=right
-		self.bottomm=bottom
-
 	def getInstanceName(self):
 		return self.name
 
@@ -120,10 +131,6 @@ class Stroke:
 	def getCode(self):
 		codeList=[x.getCode() for x in self.actionList]
 		return ','.join(codeList)
-
-	def transform(self, left, top, right, bottom):
-		for action in self.actionList:
-			action.transform(xScale, yScale)
 
 	def scale(self, xScale, yScale):
 		for action in self.actionList:
@@ -164,22 +171,12 @@ class StrokeAction:
 		self.x=int(self.x+xOffset)
 		self.y=int(self.y+yOffset)
 
-class StrokeGroup:
-	def __init__(self, pane=Pane.DEFAULT_PANE, strokeList=[]):
-		self.pane=pane
-		self.strokeList=strokeList
+class StrokeGroup(Writing):
+	def __init__(self, pane, strokeList):
+		Writing.__init__(self, pane)
 
-	def getPane(self):
-		return self.pane
+		self.strokeList=strokeList
 
 	def getStrokeList(self):
 		return self.strokeList
-
-	def parseRegion(self, descriptionRegion):
-		left=int(descriptionRegion[0:2], 16)
-		top=int(descriptionRegion[2:4], 16)
-		right=int(descriptionRegion[4:6], 16)
-		bottom=int(descriptionRegion[6:8], 16)
-		pane=Pane([left, top, right, bottom])
-		return pane.getAsList()
 
