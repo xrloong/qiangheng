@@ -25,12 +25,16 @@ class Stroke:
 		"圓",	# 例子：㔔
 	]
 
+	DEFAULT_INSTANCE_NAME='瑲珩預設筆劃名'
+
 	def __init__(self, description, region):
 		matchResult=re.match("\((.*)\)(.*)", description)
 
+		self.setInstanceName(Stroke.DEFAULT_INSTANCE_NAME)
+
 		groups=matchResult.groups()
 		strokeName=groups[0]
-		self.name=strokeName
+		self.typeName=strokeName
 		if strokeName not in Stroke.STROKE_NAMES:
 			print("不認得的筆畫名稱: %s"%strokeName, file=sys.stderr)
 
@@ -45,8 +49,14 @@ class Stroke:
 		self.right=right
 		self.bottomm=bottom
 
-	def getName(self):
+	def getInstanceName(self):
 		return self.name
+
+	def setInstanceName(self, name):
+		self.name=name
+
+	def getTypeName(self):
+		return self.typeName
 
 	def getCode(self):
 		codeList=[x.getCode() for x in self.actionList]

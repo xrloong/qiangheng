@@ -15,6 +15,6 @@ class SOCodeInfo(DCCodeInfo):
 		return codeInfo
 
 	def getCode(self):
-		codeList=[stroke.getName() for stroke in self.strokeList]
+		codeList=[stroke.getTypeName() for stroke in self.strokeList]
 		return ','.join(codeList)
 
