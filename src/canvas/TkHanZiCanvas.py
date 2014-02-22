@@ -20,8 +20,10 @@ class TkHanZiCanvas(HanZiCanvas.HanZiCanvas):
 	def moveTo(self, p):
 		self.setLastPoint(p)
 
-	def lineTo(self, p):
-		self.canvas.create_line(self.lastp[0], self.lastp[1], p[0], p[1], self.drawoption)
+	def lineTo(self, p, drawoption=None):
+		if drawoption==None:
+			drawoption=self.drawoption
+		self.canvas.create_line(self.lastp[0], self.lastp[1], p[0], p[1], drawoption)
 		self.lastp=p
 
 	def qCurveTo(self, cp, p):

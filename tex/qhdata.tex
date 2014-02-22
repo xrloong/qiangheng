@@ -259,24 +259,48 @@ AAAA 為 0000, 0001, 0002 。0000為起始，0001為畫到，0002則為曲線的
 一個字符是由許多部件構成，而彼此所佔空間的比例將影響美觀。
 因此空間分配很重要。
 
-有些簡單的結構組合，如上下結合或左右結合。
+有些為較複雜的結構組合，如左下－右上。
+如：床=广+木
 
-有些則為較複雜的結構組合，如左下－右上。於是增加了一個可以用來表示空間的資訊。
+\begin{center}
+\includegraphics[scale=0.25]{picture/yan.png}
+\end{center}
+
+\begin{center}
+\includegraphics[scale=0.25]{picture/mu.png}
+\end{center}
+
+而兩者組合後的結果如下：
+\begin{center}
+\includegraphics[scale=0.25]{picture/chuang_bad.png}
+\end{center}
+
+於是，在描述字形時，同時描述一些空間描述。
+\begin{center}
+\includegraphics[scale=0.25]{picture/yan_extend.png}
+\end{center}
+紅色框的部份則是放置其他字符所能使用的範圍。
+
 \listXML\begin{lstlisting}
-	<字符 名稱="廴" 註記="U+5EF4">
+	<字符 名稱="广" 註記="U+5E7F">
 		<編碼資訊>
 			<編碼>
-				<補充範圍 名稱="起">
-					<幾何 範圍="5000FFBF"/>
+				<補充範圍 名稱="廖">
+					<幾何 範圍="3040FFFF"/>
 				</補充範圍>
 				<筆劃組>
 					<幾何 範圍="0000FFFF"/>
-					<筆劃 範圍="0000FFFF" 資訊表示式="(橫撇)00001619,00015419,0001296B"/>
-					<筆劃 範圍="0000FFFF" 資訊表示式="(橫撇)00002C64,00015864,000242AC,00010AF4"/>
-					<筆劃 範圍="0000FFFF" 資訊表示式="(捺)00001D86,000245F4,0001EBF4"/>
+					<筆劃 範圍="0000FFFF" 資訊表示式="(點)00007318,00018635"/>
+					<筆劃 範圍="0000FFFF" 資訊表示式="(橫)00002D37,0001E037"/>
+					<筆劃 範圍="0000FFFF" 資訊表示式="(豎撇)00002C37,00022FD5,00010FEB"/>
 				</筆劃組>
 			</編碼>
 		</編碼資訊>
 	</字符>
 \end{lstlisting}
+
+兩者組合後的結果如下：
+\begin{center}
+\includegraphics[scale=0.25]{picture/chuang_good.png}
+\end{center}
 

@@ -51,6 +51,20 @@ class HanZiDrawingSystem():
         canvas.clear()
         self.drawCharacter(canvas, shape, def_list)
 
+    def drawFrame(self):
+        canvas=self.canvas
+        shape=Rectangle(0, 0, canvas.width, canvas.height)
+        canvas.moveTo(self.convert(shape, [0, 0]))
+        canvas.lineTo(self.convert(shape, [0, 0x100]))
+        canvas.lineTo(self.convert(shape, [0x100, 0x100]))
+        canvas.lineTo(self.convert(shape, [0x100, 0]))
+        canvas.lineTo(self.convert(shape, [0, 0]))
+
+    def convert(self, shape, point):
+        [ x, y, cw, ch, ]=[ shape.x, shape.y, shape.w, shape.h, ]
+        [tx, ty]=point
+        return (x + tx*cw/self.dw, y + ty*ch/self.dh)
+
 class ShowHanziWidget():
 	def __init__(self, master, rm):
 		self.rm=rm
@@ -102,6 +116,7 @@ class ShowHanziWidget():
 		string=self.entryInput.get()
 		def_list=string.split(",")
 		self.dh.draw(def_list)
+		self.dh.drawFrame()
 
 class RadicalManager:
 	def __init__(self, fontfile):
