@@ -11,23 +11,23 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=FCCodeInfo(propDict, codeVariance)
 		return codeInfo
 
-	def isAvailableOperation(self, operator, codeInfoList):
+	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getCharacterCode())==4, codeInfoList))
 		return isAllWithCode
 
-	def encodeAsTurtle(self, codeInfo, operator, codeInfoList):
-		print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-		self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+	def encodeAsTurtle(self, codeInfo, codeInfoList):
+		print("不合法的運算：龜", file=sys.stderr)
+		self.encodeAsInvalidate(codeInfo, codeInfoList)
 
-	def encodeAsLoong(self, codeInfo, operator, codeInfoList):
-		print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-		self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+	def encodeAsLoong(self, codeInfo, codeInfoList):
+		print("不合法的運算：龍", file=sys.stderr)
+		self.encodeAsInvalidate(codeInfo, codeInfoList)
 
-	def encodeAsEast(self, codeInfo, operator, codeInfoList):
-		print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-		self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+	def encodeAsEast(self, codeInfo, codeInfoList):
+		print("不合法的運算：東", file=sys.stderr)
+		self.encodeAsInvalidate(codeInfo, codeInfoList)
 
-	def encodeAsEqual(self, codeInfo, operator, codeInfoList):
+	def encodeAsEqual(self, codeInfo, codeInfoList):
 		targetCodeInfo=codeInfoList[0]
 		codeInfo.setCode(
 			targetCodeInfo.getTopLeft(),
@@ -35,7 +35,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 			targetCodeInfo.getBottomLeft(),
 			targetCodeInfo.getBottomRight())
 
-	def encodeAsLoop(self, codeInfo, operator, codeInfoList):
+	def encodeAsLoop(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 		grid=FCGrid()
@@ -43,7 +43,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsSilkworm(self, codeInfo, operator, codeInfoList):
+	def encodeAsSilkworm(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -52,7 +52,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsGoose(self, codeInfo, operator, codeInfoList):
+	def encodeAsGoose(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -61,7 +61,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsQi(self, codeInfo, operator, codeInfoList):
+	def encodeAsQi(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -70,7 +70,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsLiao(self, codeInfo, operator, codeInfoList):
+	def encodeAsLiao(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -79,7 +79,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsZai(self, codeInfo, operator, codeInfoList):
+	def encodeAsZai(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -88,7 +88,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsDou(self, codeInfo, operator, codeInfoList):
+	def encodeAsDou(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -97,7 +97,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsMu(self, codeInfo, operator, codeInfoList):
+	def encodeAsMu(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -107,7 +107,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsZuo(self, codeInfo, operator, codeInfoList):
+	def encodeAsZuo(self, codeInfo, codeInfoList):
 		# 以 "㘴" 來說 first: 口，second: 人，third: 土
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
@@ -118,7 +118,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsYou(self, codeInfo, operator, codeInfoList):
+	def encodeAsYou(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -128,7 +128,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsLiang(self, codeInfo, operator, codeInfoList):
+	def encodeAsLiang(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -138,7 +138,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	def encodeAsJia(self, codeInfo, operator, codeInfoList):
+	def encodeAsJia(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]

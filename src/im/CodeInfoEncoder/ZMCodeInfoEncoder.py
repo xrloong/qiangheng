@@ -13,33 +13,41 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo.setCharacterCode(zmCode)
 		return codeInfo
 
-	def isAvailableOperation(self, operator, codeInfoList):
-		return all(codeInfoList)
+	def isAvailableOperation(self, codeInfoList):
+		isAllWithCode=codeInfoList and all(map(lambda x: x.getZMProp(), codeInfoList))
+		return isAllWithCode
 
-	def encodeAsTurtle(self, codeInfo, operator, codeInfoList):
+	def encodeAsTurtle(self, codeInfo, codeInfoList):
 		"""運算 "龜" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsLoong(self, codeInfo, operator, codeInfoList):
+	def encodeAsLoong(self, codeInfo, codeInfoList):
 		"""運算 "龍" """
 
 		rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
-		if codeInfoList and all(rtlist):
-			rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-			zmCode=self.computeCharacterCode(rtlist)
-			if Operator.OperatorLiang.equals(operator):
-				codeInfo.setZMProp(rtlist[:1])
-			else:
-				codeInfo.setZMProp(rtlist)
-			codeInfo.setCharacterCode(zmCode)
 
-	def encodeAsEast(self, codeInfo, operator, codeInfoList):
+		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
+		zmCode=self.computeCharacterCode(rtlist)
+		codeInfo.setZMProp(rtlist)
+		codeInfo.setCharacterCode(zmCode)
+
+	def encodeAsEast(self, codeInfo, codeInfoList):
 		"""運算 "東" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsEqual(self, codeInfo, operator, codeInfoList):
+	def encodeAsEqual(self, codeInfo, codeInfoList):
 		"""運算 "爲" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
+
+	def encodeAsLiang(self, codeInfo, codeInfoList):
+		"""運算 "㒳" """
+
+		rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
+
+		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
+		zmCode=self.computeCharacterCode(rtlist)
+		codeInfo.setZMProp(rtlist[:1])
+		codeInfo.setCharacterCode(zmCode)
 
 	def computeCharacterCode(self, rtlist):
 		ans=''

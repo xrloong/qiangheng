@@ -17,145 +17,145 @@ class CodeInfoEncoder:
 		self.setByComps(codeInfo, operator, codeInfoList)
 
 	def setByComps(self, codeInfo, operator, codeInfoList):
-		isAvailable=self.isAvailableOperation(operator, codeInfoList)
+		isAvailable=self.isAvailableOperation(codeInfoList)
 		if isAvailable:
 			if Operator.OperatorTurtle.equals(operator):
-				self.encodeAsTurtle(codeInfo, operator, codeInfoList)
+				self.encodeAsTurtle(codeInfo, codeInfoList)
 			elif Operator.OperatorLoong.equals(operator):
-				self.encodeAsLoong(codeInfo, operator, codeInfoList)
+				self.encodeAsLoong(codeInfo, codeInfoList)
 			elif Operator.OperatorEast.equals(operator):
-				self.encodeAsEast(codeInfo, operator, codeInfoList)
+				self.encodeAsEast(codeInfo, codeInfoList)
 			elif Operator.OperatorEqual.equals(operator):
-				self.encodeAsEqual(codeInfo, operator, codeInfoList)
+				self.encodeAsEqual(codeInfo, codeInfoList)
 
 			elif Operator.OperatorSilkworm.equals(operator):
-				self.encodeAsSilkworm(codeInfo, operator, codeInfoList)
+				self.encodeAsSilkworm(codeInfo, codeInfoList)
 			elif Operator.OperatorGoose.equals(operator):
-				self.encodeAsGoose(codeInfo, operator, codeInfoList)
+				self.encodeAsGoose(codeInfo, codeInfoList)
 			elif Operator.OperatorLoop.equals(operator):
-				self.encodeAsLoop(codeInfo, operator, codeInfoList)
+				self.encodeAsLoop(codeInfo, codeInfoList)
 
 			elif Operator.OperatorQi.equals(operator):
-				self.encodeAsQi(codeInfo, operator, codeInfoList)
+				self.encodeAsQi(codeInfo, codeInfoList)
 			elif Operator.OperatorLiao.equals(operator):
-				self.encodeAsLiao(codeInfo, operator, codeInfoList)
+				self.encodeAsLiao(codeInfo, codeInfoList)
 			elif Operator.OperatorZai.equals(operator):
-				self.encodeAsZai(codeInfo, operator, codeInfoList)
+				self.encodeAsZai(codeInfo, codeInfoList)
 			elif Operator.OperatorDou.equals(operator):
-				self.encodeAsDou(codeInfo, operator, codeInfoList)
+				self.encodeAsDou(codeInfo, codeInfoList)
 
 			elif Operator.OperatorTong.equals(operator):
-				self.encodeAsTong(codeInfo, operator, codeInfoList)
+				self.encodeAsTong(codeInfo, codeInfoList)
 			elif Operator.OperatorQu.equals(operator):
-				self.encodeAsQu(codeInfo, operator, codeInfoList)
+				self.encodeAsQu(codeInfo, codeInfoList)
 			elif Operator.OperatorHan.equals(operator):
-				self.encodeAsHan(codeInfo, operator, codeInfoList)
+				self.encodeAsHan(codeInfo, codeInfoList)
 			elif Operator.OperatorLeft.equals(operator):
-				self.encodeAsLeft(codeInfo, operator, codeInfoList)
+				self.encodeAsLeft(codeInfo, codeInfoList)
 
 			elif Operator.OperatorMu.equals(operator):
-				self.encodeAsMu(codeInfo, operator, codeInfoList)
+				self.encodeAsMu(codeInfo, codeInfoList)
 			elif Operator.OperatorZuo.equals(operator):
-				self.encodeAsZuo(codeInfo, operator, codeInfoList)
+				self.encodeAsZuo(codeInfo, codeInfoList)
 			elif Operator.OperatorYou.equals(operator):
-				self.encodeAsYou(codeInfo, operator, codeInfoList)
+				self.encodeAsYou(codeInfo, codeInfoList)
 			elif Operator.OperatorLiang.equals(operator):
-				self.encodeAsLiang(codeInfo, operator, codeInfoList)
+				self.encodeAsLiang(codeInfo, codeInfoList)
 			elif Operator.OperatorJia.equals(operator):
-				self.encodeAsJia(codeInfo, operator, codeInfoList)
+				self.encodeAsJia(codeInfo, codeInfoList)
 
 			else:
-				self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+				self.encodeAsInvalidate(codeInfo, codeInfoList)
 
-	def isAvailableOperation(self, operator, codeInfoList):
+	def isAvailableOperation(self, codeInfoList):
 		return True
 
-	def encodeAsInvalidate(self, codeInfo, operator, codeInfoList):
+	def encodeAsInvalidate(self, codeInfo, codeInfoList):
 		"""不合法的運算"""
 		pass
 
 
-	def encodeAsTurtle(self, codeInfo, operator, codeInfoList):
+	def encodeAsTurtle(self, codeInfo, codeInfoList):
 		"""運算 "龜" """
 		pass
 
-	def encodeAsLoong(self, codeInfo, operator, codeInfoList):
+	def encodeAsLoong(self, codeInfo, codeInfoList):
 		"""運算 "龍" """
 		pass
 
-	def encodeAsEast(self, codeInfo, operator, codeInfoList):
+	def encodeAsEast(self, codeInfo, codeInfoList):
 		"""運算 "東" """
 		pass
 
-	def encodeAsEqual(self, codeInfo, operator, codeInfoList):
+	def encodeAsEqual(self, codeInfo, codeInfoList):
 		"""運算 "爲" """
 		pass
 
 
-	def encodeAsSilkworm(self, codeInfo, operator, codeInfoList):
+	def encodeAsSilkworm(self, codeInfo, codeInfoList):
 		"""運算 "蚕" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsGoose(self, codeInfo, operator, codeInfoList):
+	def encodeAsGoose(self, codeInfo, codeInfoList):
 		"""運算 "鴻" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsLoop(self, codeInfo, operator, codeInfoList):
+	def encodeAsLoop(self, codeInfo, codeInfoList):
 		"""運算 "回" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
 
-	def encodeAsQi(self, codeInfo, operator, codeInfoList):
+	def encodeAsQi(self, codeInfo, codeInfoList):
 		"""運算 "起" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsLiao(self, codeInfo, operator, codeInfoList):
+	def encodeAsLiao(self, codeInfo, codeInfoList):
 		"""運算 "廖" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsZai(self, codeInfo, operator, codeInfoList):
+	def encodeAsZai(self, codeInfo, codeInfoList):
 		"""運算 "載" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsDou(self, codeInfo, operator, codeInfoList):
+	def encodeAsDou(self, codeInfo, codeInfoList):
 		"""運算 "斗" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
 
-	def encodeAsTong(self, codeInfo, operator, codeInfoList):
+	def encodeAsTong(self, codeInfo, codeInfoList):
 		"""運算 "同" """
-		self.encodeAsLoop(codeInfo, operator, codeInfoList)
+		self.encodeAsLoop(codeInfo, codeInfoList)
 
-	def encodeAsQu(self, codeInfo, operator, codeInfoList):
+	def encodeAsQu(self, codeInfo, codeInfoList):
 		"""運算 "區" """
-		self.encodeAsLoop(codeInfo, operator, codeInfoList)
+		self.encodeAsLoop(codeInfo, codeInfoList)
 
-	def encodeAsHan(self, codeInfo, operator, codeInfoList):
+	def encodeAsHan(self, codeInfo, codeInfoList):
 		"""運算 "函" """
-		self.encodeAsLoop(codeInfo, operator, codeInfoList)
+		self.encodeAsLoop(codeInfo, codeInfoList)
 
-	def encodeAsLeft(self, codeInfo, operator, codeInfoList):
+	def encodeAsLeft(self, codeInfo, codeInfoList):
 		"""運算 "左" """
-		self.encodeAsLoop(codeInfo, operator, codeInfoList)
+		self.encodeAsLoop(codeInfo, codeInfoList)
 
 
-	def encodeAsMu(self, codeInfo, operator, codeInfoList):
+	def encodeAsMu(self, codeInfo, codeInfoList):
 		"""運算 "畞" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsZuo(self, codeInfo, operator, codeInfoList):
+	def encodeAsZuo(self, codeInfo, codeInfoList):
 		"""運算 "㘴" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsYou(self, codeInfo, operator, codeInfoList):
+	def encodeAsYou(self, codeInfo, codeInfoList):
 		"""運算 "幽" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsLiang(self, codeInfo, operator, codeInfoList):
+	def encodeAsLiang(self, codeInfo, codeInfoList):
 		"""運算 "㒳" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 
-	def encodeAsJia(self, codeInfo, operator, codeInfoList):
+	def encodeAsJia(self, codeInfo, codeInfoList):
 		"""運算 "夾" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeAsLoong(codeInfo, codeInfoList)
 

@@ -14,7 +14,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=DCCodeInfo(propDict, codeVariance)
 		return codeInfo
 
-	def isAvailableOperation(self, operator, codeInfoList):
+	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getActionList())>0, codeInfoList))
 		return isAllWithCode
 
@@ -36,25 +36,25 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			newActionList.append(action)
 		return newActionList
 
-	def encodeAsConcatenate(self, codeInfo, operator, codeInfoList):
+	def encodeAsConcatenate(self, codeInfo, codeInfoList):
 		actionList=[]
 		for tmpCodeInfo in codeInfoList:
 			actionList.extend(copy.deepcopy(tmpCodeInfo.getActionList()))
 		codeInfo.setActionList(actionList)
 
-	def encodeAsTurtle(self, codeInfo, operator, codeInfoList):
-		print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-		self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+	def encodeAsTurtle(self, codeInfo, codeInfoList):
+		print("不合法的運算：龜", file=sys.stderr)
+		self.encodeAsInvalidate(codeInfo, codeInfoList)
 
-	def encodeAsLoong(self, codeInfo, operator, codeInfoList):
-		print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-		self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+	def encodeAsLoong(self, codeInfo, codeInfoList):
+		print("不合法的運算：龍", file=sys.stderr)
+		self.encodeAsInvalidate(codeInfo, codeInfoList)
 
-	def encodeAsEast(self, codeInfo, operator, codeInfoList):
-		print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-		self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+	def encodeAsEast(self, codeInfo, codeInfoList):
+		print("不合法的運算：東", file=sys.stderr)
+		self.encodeAsInvalidate(codeInfo, codeInfoList)
 
-	def encodeAsEqual(self, codeInfo, operator, codeInfoList):
+	def encodeAsEqual(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 
 		nCount=len(codeInfoList)
@@ -65,7 +65,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsLoop(self, codeInfo, operator, codeInfoList):
+	def encodeAsLoop(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[-1]
 
@@ -78,7 +78,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsSilkworm(self, codeInfo, operator, codeInfoList):
+	def encodeAsSilkworm(self, codeInfo, codeInfoList):
 		nCount=len(codeInfoList)
 		helper=DCGridHelper(1, nCount)
 
@@ -88,7 +88,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsGoose(self, codeInfo, operator, codeInfoList):
+	def encodeAsGoose(self, codeInfo, codeInfoList):
 		nCount=len(codeInfoList)
 		helper=DCGridHelper(nCount, 1)
 
@@ -98,7 +98,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsQi(self, codeInfo, operator, codeInfoList):
+	def encodeAsQi(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
@@ -111,7 +111,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsLiao(self, codeInfo, operator, codeInfoList):
+	def encodeAsLiao(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
@@ -124,7 +124,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsZai(self, codeInfo, operator, codeInfoList):
+	def encodeAsZai(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
@@ -137,7 +137,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsDou(self, codeInfo, operator, codeInfoList):
+	def encodeAsDou(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
@@ -150,7 +150,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsMu(self, codeInfo, operator, codeInfoList):
+	def encodeAsMu(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -165,7 +165,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsZuo(self, codeInfo, operator, codeInfoList):
+	def encodeAsZuo(self, codeInfo, codeInfoList):
 		# 以 "㘴" 來說 first: 口，second: 人，third: 土
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
@@ -181,7 +181,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsYou(self, codeInfo, operator, codeInfoList):
+	def encodeAsYou(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -196,7 +196,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsLiang(self, codeInfo, operator, codeInfoList):
+	def encodeAsLiang(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -211,7 +211,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo.setActionList(newActionList)
 
-	def encodeAsJia(self, codeInfo, operator, codeInfoList):
+	def encodeAsJia(self, codeInfo, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]

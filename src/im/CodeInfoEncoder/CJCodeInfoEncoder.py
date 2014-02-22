@@ -16,18 +16,10 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 		return codeInfo
 
-	def isAvailableOperation(self, operator, codeInfoList):
+	def isAvailableOperation(self, codeInfoList):
 		return True
 
-	def encodeAsTurtle(self, codeInfo, operator, codeInfoList):
-		"""運算 "龜" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
-
-	def encodeAsLoong(self, codeInfo, operator, codeInfoList):
-		"""運算 "龍" """
-
-		direction=operator.getDirection()
-
+	def encodeInternal(self, codeInfo, direction, codeInfoList):
 		ansRadixList=[]
 		for tmpCodeInfo in codeInfoList:
 			tmpDirCode, tmpRadixList=tmpCodeInfo.getCJProp()
@@ -49,13 +41,42 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 			cjTotal=CJCodeInfoEncoder.computeTotalCode(ansRadixList, direction).lower()
 			codeInfo.setCharacter(cjTotal, cjBody)
 
-	def encodeAsEast(self, codeInfo, operator, codeInfoList):
-		"""運算 "東" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
 
-	def encodeAsEqual(self, codeInfo, operator, codeInfoList):
+	def encodeAsTurtle(self, codeInfo, codeInfoList):
+		"""運算 "龜" """
+		self.encodeInternal(codeInfo, '*', codeInfoList)
+
+	def encodeAsLoong(self, codeInfo, codeInfoList):
+		"""運算 "龍" """
+		self.encodeInternal(codeInfo, '*', codeInfoList)
+
+	def encodeAsEast(self, codeInfo, codeInfoList):
+		"""運算 "東" """
+		self.encodeInternal(codeInfo, '$', codeInfoList)
+
+	def encodeAsEqual(self, codeInfo, codeInfoList):
 		"""運算 "爲" """
-		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+		self.encodeInternal(codeInfo, '*', codeInfoList)
+
+
+	def encodeAsSilkworm(self, codeInfo, codeInfoList):
+		self.encodeInternal(codeInfo, '|', codeInfoList)
+
+	def encodeAsGoose(self, codeInfo, codeInfoList):
+		self.encodeInternal(codeInfo, '-', codeInfoList)
+
+	def encodeAsLoop(self, codeInfo, codeInfoList):
+		self.encodeInternal(codeInfo, '@', codeInfoList)
+
+
+	def encodeAsMu(self, codeInfo, codeInfoList):
+		self.encodeInternal(codeInfo, '$', codeInfoList)
+
+	def encodeAsZuo(self, codeInfo, codeInfoList):
+		self.encodeInternal(codeInfo, '$', codeInfoList)
+
+	def encodeAsJia(self, codeInfo, codeInfoList):
+		self.encodeInternal(codeInfo, '$', codeInfoList)
 
 	@staticmethod
 	def computeHeadTailCode(code, headCount):

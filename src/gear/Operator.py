@@ -56,9 +56,10 @@ class TemplateOperator(Operator):
 # 錯
 
 OperatorTurtle=BuiltinOperator('龜', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorEqual=BuiltinOperator('爲', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorLoong=BuiltinOperator('龍', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorEast=BuiltinOperator('東', '$', RearrangeInfo.RearrangeInfoSame())
+OperatorEqual=BuiltinOperator('爲', '*', RearrangeInfo.RearrangeInfoSame())
+
 OperatorSilkworm=BuiltinOperator('蚕', '|', RearrangeInfo.RearrangeInfoSame())
 OperatorGoose=BuiltinOperator('鴻', '-', RearrangeInfo.RearrangeInfoSame())
 OperatorLoop=BuiltinOperator('回', '@', RearrangeInfo.RearrangeInfoSame())
