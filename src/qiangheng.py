@@ -102,16 +102,11 @@ class QiangHeng:
 			charDesc=charDescQueryer(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
-				self.recursivelyAddLink(structDesc)
+				if structDesc.isTurtle():
+					hanziNetwork.appendTurtleStruct(structDesc)
+				else:
+					self.recursivelyAddLink(structDesc)
 
-		charPropQueryer=self.descMgr.getCharPropQueryer()
-		for charName in sortedNameList:
-			charDesc=charDescQueryer(charName)
-			structDescList=charDesc.getStructureList()
-			srcPropList=charPropQueryer(charName)
-			for structDesc in structDescList:
-				for srcProp in srcPropList:
-					hanziNetwork.appendNodeInfo(structDesc, srcProp)
 
 	def recursivelyAddNode(self, srcDesc):
 		self.hanziNetwork.addOrFindNodeByCharDesc(srcDesc)

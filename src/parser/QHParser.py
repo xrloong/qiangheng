@@ -1,4 +1,5 @@
 from description.StructureDescription import HangerStructureDescription
+from description.StructureDescription import TurtleStructureDescription
 from description.TemplateDesc import TemplateDesc
 from description.TemplateDesc import TemplateCondition
 
@@ -92,9 +93,10 @@ class QHParser:
 
 		return TemplateDesc(templateName, replaceInfoList, parameterNameList)
 
-	def getDesc_CodeInfoList(self, nodeCharacter):
+	def getDesc_TurtleCharacterList(self, nodeCharacter):
 		assembleCharList=nodeCharacter.findall("組字")
 		infoDictList=[]
+		turtleList=[]
 		for assembleChar in assembleCharList:
 			infoDict=None
 			codeInfo=assembleChar.find("編碼資訊")
@@ -102,18 +104,26 @@ class QHParser:
 				infoDict=codeInfo.attrib
 
 			infoDictList.append(infoDict)
-		return infoDictList
+
+			turtle=TurtleStructureDescription(infoDict)
+			turtle.setStructureProperties(assembleChar.attrib)
+
+			turtleList.append(turtle)
+		return turtleList
 
 	def loadCodeInfoByParsingXML__0_2(self, rootNode):
 		# 用於 0.2 版
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
-		propertyDB={}
+		turtleInfoList=[]
 		for node in targetChildNodes:
 			charName=node.get('名稱')
-			codeInfoDictList=self.getDesc_CodeInfoList(node)
-			propertyDB[charName]=codeInfoDictList
-		return propertyDB
+			turtleList=self.getDesc_TurtleCharacterList(node)
+			for turtle in turtleList:
+				turtle.setExpandName(charName)
+
+			turtleInfoList.append([charName, turtleList, node.attrib])
+		return turtleInfoList
 
 	def loadTemplateByParsingXML__0_2(self, rootNode):
 		# 用於 0.2 版

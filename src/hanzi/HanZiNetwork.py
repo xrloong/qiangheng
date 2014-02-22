@@ -142,13 +142,15 @@ class HanZiNetwork:
 
 			dstNode.addStructure(structure)
 
-	def appendNodeInfo(self, structDesc, propDict):
+	def appendTurtleStruct(self, structDesc):
 		dstNode=self.findNodeByCharDesc(structDesc)
 
-		codeInfo=StateManager.codeInfoGenerator(propDict)
+		codeType=structDesc.getCodeType()
+		codeInfo=StateManager.codeInfoGenerator(structDesc.getCodeInfoDict())
+		codeInfo.multiCodeType(codeType)
 		structure=HanZiStructure(None, [])
 		structure.appendCodeInfo(codeInfo)
-		structure.setCodeType(structDesc.getCodeType())
+		structure.setCodeType(codeType)
 		structure.setToComponent()
 
 		dstNode.addStructure(structure)

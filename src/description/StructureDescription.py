@@ -21,6 +21,9 @@ class StructureDescription:
 	def __repr__(self):
 		return str(self)
 
+	def isTurtle(self):
+		return False
+
 	def copyDescription(self):
 		copyStructureDescription=StructureDescription(self.getOperator(), [])
 		copyStructureDescription.setExpandName(self.getExpandName())
@@ -114,6 +117,17 @@ class HangerStructureDescription(StructureDescription):
 		hangerStructureDescription=HangerStructureDescription(self.getOperator(), self.getCompList())
 		hangerStructureDescription.replacedBy(newTarget)
 		return hangerStructureDescription
+
+class TurtleStructureDescription(StructureDescription):
+	def __init__(self, codeInfoDict):
+		StructureDescription.__init__(self, None, [])
+		self.codeInfoDict=codeInfoDict
+
+	def getCodeInfoDict(self):
+		return self.codeInfoDict
+
+	def isTurtle(self):
+		return True
 
 if __name__=='__main__':
 	print(StructureDescription('王', '(龜)', None))

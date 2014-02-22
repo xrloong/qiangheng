@@ -6,7 +6,6 @@ class CodeInfo:
 		self.setSingleDataEmpty()
 
 		self.codeType=CodeType()
-		self.setCodeTypeProperties(propDict)
 		self.setRadixCodeProperties(propDict)
 
 	def __str__(self):
@@ -17,11 +16,6 @@ class CodeInfo:
 
 	def setRadixCodeProperties(self, propDict):
 		pass
-
-	def setCodeTypeProperties(self, propDict):
-		typeString=propDict.get('類型')
-		if typeString:
-			self.codeType.setTypeString(typeString)
 
 	def setCompositions(self, operator, complist):
 		# 計算倉頡碼時，需要知道此字的組成方向

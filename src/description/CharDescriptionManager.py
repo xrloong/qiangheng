@@ -9,7 +9,6 @@ class CharDescriptionManager:
 	def __init__(self, imModule):
 		self.templateDB={}
 		self.characterDB={}
-		self.propertyDB={}
 
 		def charDescRearranger(charDesc):
 			return self.operationMgr.rearrangeDesc(charDesc)
@@ -18,16 +17,11 @@ class CharDescriptionManager:
 			charDesc=self.characterDB.get(charName, [])
 			return charDesc
 
-		def charPropQueryer(charName):
-			codeInfoDictList=self.propertyDB.get(charName, [])
-			return codeInfoDictList
-
 		imName=imModule.IMInfo.IMName
 		self.operationMgr=OperatorManager.OperatorManager(self)
 
 		self.charDescQueryer=charDescQueryer
 		self.charDescRearranger=charDescRearranger
-		self.charPropQueryer=charPropQueryer
 
 		self.operatorGenerator=self.operationMgr.getOperatorGenerator()
 
@@ -38,9 +32,6 @@ class CharDescriptionManager:
 
 	def getCharDescQueryer(self):
 		return self.charDescQueryer
-
-	def getCharPropQueryer(self):
-		return self.charPropQueryer
 
 	def loadFromXML(self, filename, fileencoding='utf-8-sig'):
 		f=open(filename, encoding=fileencoding)
@@ -68,9 +59,15 @@ class CharDescriptionManager:
 		f=open(filename, encoding=fileencoding)
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
-		propertyDB=self.parser.loadCodeInfoByParsingXML(rootNode)
-		self.propertyDB.update(propertyDB)
 
+		turtleInfoList=self.parser.loadCodeInfoByParsingXML(rootNode)
+		for [charName, compList, propDict] in turtleInfoList:
+			charDesc=self.characterDB.get(charName, None)
+			if charDesc==None:
+				charDesc=CharacterDescription(charName)
+				self.characterDB[charName]=charDesc
+			charDesc.setStructureList(compList)
+			charDesc.updateProperty(propDict)
 
 	def adjustData(self):
 		self.operationMgr.adjustTemplate()
