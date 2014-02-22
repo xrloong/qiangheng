@@ -11,8 +11,9 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=DCCodeInfo()
-		codeInfo.setInit(propDict)
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
+		codeInfo=DCCodeInfo(isSupportCharacterCode, isSupportRadixCode)
+		codeInfo.setRadixCodeProperties(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

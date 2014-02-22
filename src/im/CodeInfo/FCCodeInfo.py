@@ -39,8 +39,8 @@ class FCCodeInfo(CodeInfo):
 		CORNER_BOTTOM_RIGHT,
 	]
 
-	def __init__(self):
-		CodeInfo.__init__(self)
+	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 	def setRadixCodeProperties(self, propDict):
 		self._top_left=''

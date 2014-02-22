@@ -1,8 +1,8 @@
 from gear.CodeInfo import CodeInfo
 
 class CJCodeInfo(CodeInfo):
-	def __init__(self):
-		CodeInfo.__init__(self)
+	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 		self._cj_radix_list=None
 		self._cj_direction=None

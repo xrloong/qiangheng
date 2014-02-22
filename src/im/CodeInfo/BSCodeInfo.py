@@ -84,8 +84,8 @@ class BSCodeInfo(CodeInfo):
 		RADIX_M1_E2_E1:'m',
 	}
 
-	def __init__(self):
-		CodeInfo.__init__(self)
+	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 		self._bs_code_list=None
 		self._bs_spcode=None

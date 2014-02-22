@@ -1,24 +1,32 @@
 from .CodeVarianceType import CodeVarianceType
 
 class CodeInfo:
-	def __init__(self):
+	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
 		self.codeVariance=CodeVarianceType()
+		self._isSupportCharacterCode=isSupportCharacterCode
+		self._isSupportRadixCode=isSupportRadixCode
 
-	def setInit(self, propDict):
-		self.setRadixCodeProperties(propDict)
-
+	@staticmethod
+	def computeSupportingFromProperty(propDict):
 		hasCharacter=bool("字符碼" in propDict)
 		hasRadix=bool("字根碼" in propDict)
+
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupporting(hasCharacter, hasRadix)
+		return [isSupportCharacterCode, isSupportRadixCode]
+
+	@staticmethod
+	def computeSupporting(hasCharacter, hasRadix):
 		if hasCharacter or hasRadix:
-			self._isSupportCharacterCode=False
-			self._isSupportRadixCode=False
+			isSupportCharacterCode=False
+			isSupportRadixCode=False
 			if hasCharacter:
-				self._isSupportCharacterCode=True
+				isSupportCharacterCode=True
 			if hasRadix:
-				self._isSupportRadixCode=True
+				isSupportRadixCode=True
 		else:
-			self._isSupportCharacterCode=True
-			self._isSupportRadixCode=True
+			isSupportCharacterCode=True
+			isSupportRadixCode=True
+		return [isSupportCharacterCode, isSupportRadixCode]
 
 	def __str__(self):
 		return "{{{0}}}".format(self.getCode())

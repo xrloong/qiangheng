@@ -1,8 +1,8 @@
 from gear.CodeInfo import CodeInfo
 
 class ZMCodeInfo(CodeInfo):
-	def __init__(self):
-		CodeInfo.__init__(self)
+	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 		self._zm_rtlist=None
 

@@ -9,8 +9,9 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=ARCodeInfo()
-		codeInfo.setInit(propDict)
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
+		codeInfo=ARCodeInfo(isSupportCharacterCode, isSupportRadixCode)
+		codeInfo.setRadixCodeProperties(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

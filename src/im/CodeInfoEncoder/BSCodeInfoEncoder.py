@@ -9,8 +9,9 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=BSCodeInfo()
-		codeInfo.setInit(propDict)
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
+		codeInfo=BSCodeInfo(isSupportCharacterCode, isSupportRadixCode)
+		codeInfo.setRadixCodeProperties(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

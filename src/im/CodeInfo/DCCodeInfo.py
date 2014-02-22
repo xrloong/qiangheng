@@ -1,8 +1,8 @@
 from gear.CodeInfo import CodeInfo
 
 class DCCodeInfo(CodeInfo):
-	def __init__(self):
-		CodeInfo.__init__(self)
+	def __init__(self, isSupportCharacterCode=True, isSupportRadixCode=True):
+		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
 	def setRadixCodeProperties(self, propDict):
 		self.actionList=[]

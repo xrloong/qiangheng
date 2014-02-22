@@ -6,8 +6,9 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=GXCodeInfo()
-		codeInfo.setInit(propDict)
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfoEncoder.computeSupportingFromProperty(propDict)
+		codeInfo=GXCodeInfo(isSupportCharacterCode, isSupportRadixCode)
+		codeInfo.setRadixCodeProperties(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
