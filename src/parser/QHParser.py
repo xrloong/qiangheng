@@ -1,8 +1,17 @@
+from description.StructureDescription import HangerStructureDescription
 from description.TemplateDesc import TemplateDesc
 from description.TemplateDesc import TemplateCondition
 
 class QHParser:
-	def __init__(self, structDescGenerator):
+	def __init__(self, operatorGenerator):
+		def structDescGenerator(structInfo=['龜', []]):
+			operatorName, CompList=structInfo
+			operator=self.operatorGenerator(operatorName)
+
+			structDesc=HangerStructureDescription(operator, CompList)
+			return structDesc
+
+		self.operatorGenerator=operatorGenerator
 		self.structDescGenerator=structDescGenerator
 
 	def getDesc_AssembleChar(self, assembleChar):

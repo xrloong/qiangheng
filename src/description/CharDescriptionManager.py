@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
 from .CharacterDescription import CharacterDescription
-#from .StructureDescription import StructureDescription
-from .StructureDescription import HangerStructureDescription
-#from .TemplateDesc import TemplateDesc
-#from .TemplateDesc import TemplateCondition
 from .operator import OperatorManager
 from parser import QHParser
 from xml.etree import ElementTree
@@ -14,13 +10,6 @@ class CharDescriptionManager:
 		self.templateDB={}
 		self.characterDB={}
 		self.propertyDB={}
-
-		def structDescGenerator(structInfo=['龜', []]):
-			operatorName, CompList=structInfo
-			operator=self.operatorGenerator(operatorName)
-
-			structDesc=HangerStructureDescription(operator, CompList)
-			return structDesc
 
 		def charDescRearranger(charDesc):
 			return self.operationMgr.rearrangeDesc(charDesc)
@@ -33,17 +22,16 @@ class CharDescriptionManager:
 			codeInfoDictList=self.propertyDB.get(charName, [])
 			return codeInfoDictList
 
-		self.parser=QHParser.QHParser(structDescGenerator)
-
 		imName=imModule.IMInfo.IMName
 		self.operationMgr=OperatorManager.OperatorManager(self)
 
-		self.structDescGenerator=structDescGenerator
 		self.charDescQueryer=charDescQueryer
 		self.charDescRearranger=charDescRearranger
 		self.charPropQueryer=charPropQueryer
 
 		self.operatorGenerator=self.operationMgr.getOperatorGenerator()
+
+		self.parser=QHParser.QHParser(self.operationMgr.getOperatorGenerator())
 
 	def keys(self):
 		return self.characterDB.keys()
