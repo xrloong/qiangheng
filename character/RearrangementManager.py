@@ -6,23 +6,24 @@ class RearrangementManager:
 		self.descMgr=descMgr
 
 	# 分成以下層級
-	# 錯
-	# SpecialCase:	龜、水、龍
-	# 橫、縱
-	# Base:		好、志、湘、算、纂、膷、回、同、區、函、左、句
+	# SpecialCase:	錯、龜、水
+	# 橫、縱：鴻：不定個數橫向組同，蚕：不定個數縱向組合，龍：不定個數的組同。
+	# Base:		好、志、湘、算、纂、膷
+	# Surrounding:	回、同、區、函、左
 	# LShape:	廖、載、聖、起
-	# SpecialShape:	夾、衍、衷
-	# SecondLayer:	霜、想、怡、穎
+	# Insertion:	夾、衍、衷
+	# TowLayer:	霜、想、怡、穎
 	# Repeate:	林、爻、卅、丰、卌、圭、燚
 	def rearrangeDesc(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldCompList=charDesc.getCompList()
 
 		self.rearrangeRepeate(charDesc)
-		self.rearrangeSecondLayer(charDesc)
-		self.rearrangeSpecialShape(charDesc)
+		self.rearrangeTowLayer(charDesc)
+		self.rearrangeInsertion(charDesc)
 		self.rearrangeLShape(charDesc)
 		self.rearrangeSpecialCase(charDesc)
+		self.rearrangeSurrounding(charDesc)
 		self.rearrangeBase(charDesc)
 
 	def rearrangeSpecialCase(self, charDesc):
@@ -33,16 +34,16 @@ class RearrangementManager:
 			pass
 		elif oldOperator=='水':
 			pass
+		elif oldOperator=='錯':
+			pass
 		else:
 			pass
 
-	def rearrangeSpecialShape(self, charDesc):
+	def rearrangeInsertion(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldCompList=charDesc.getCompList()
 
-		if oldOperator=='句':
-			ansDirection='+'
-		elif oldOperator=='夾':
+		if oldOperator=='夾':
 			ansDirection='+'
 		elif oldOperator=='衍':
 			ansDirection='-'
@@ -98,7 +99,7 @@ class RearrangementManager:
 		else:
 			pass
 
-	def rearrangeSecondLayer(self, charDesc):
+	def rearrangeTowLayer(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldCompList=charDesc.getCompList()
 
@@ -152,15 +153,11 @@ class RearrangementManager:
 			charDesc.setOperatorAndDirection('好', ansDirection)
 		pass
 
-	def rearrangeBase(self, charDesc):
+	def rearrangeSurrounding(self, charDesc):
 		oldOperator=charDesc.getOperator()
 		oldCompList=charDesc.getCompList()
 
-		if oldOperator=='好':
-			ansDirection='-'
-		elif oldOperator=='志':
-			ansDirection='-'
-		elif oldOperator=='回':
+		if oldOperator=='回':
 			ansDirection='@'
 		elif oldOperator=='同':
 			ansDirection='@'
@@ -170,6 +167,17 @@ class RearrangementManager:
 			ansDirection='@'
 		elif oldOperator=='左':
 			ansDirection='@'
+		else:
+			pass
+
+	def rearrangeBase(self, charDesc):
+		oldOperator=charDesc.getOperator()
+		oldCompList=charDesc.getCompList()
+
+		if oldOperator=='好':
+			ansDirection='-'
+		elif oldOperator=='志':
+			ansDirection='-'
 		elif oldOperator=='算':
 			ansDirection='|'
 		elif oldOperator=='湘':
@@ -246,14 +254,18 @@ class RearrangementManager:
 			ansDir='+'
 		elif oldOperator in ['龍']:
 			ansDir='+'
+		elif oldOperator in ['鴻']:
+			ansDir='-'
+		elif oldOperator in ['蚕']:
+			ansDir='|'
 		elif oldOperator in ['水']:
 			# 暫時不會執行這段，且還在重構中
 			pass
 #			ansDir='+'
 #			ansDir=self.getCompList()[0].getDirection()
-		elif oldOperator in ['回', '同', '函', '區', ]:
+		elif oldOperator in ['回', '同', '函', '區', '左']:
 			ansDir='@'
-		elif oldOperator in ['載', '廖', '起', '句', '夾']:
+		elif oldOperator in ['載', '廖', '起', '夾']:
 			ansDir='+'
 		elif oldOperator in ['纂', '算', '志', '霜', '想', '爻', '卅', ]:
 			ansDir='|'
