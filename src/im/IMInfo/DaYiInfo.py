@@ -1,8 +1,8 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import DYCodeInfo
 from ..CodeInfoEncoder import DYCodeInfoEncoder
+from ..RadixManager import DYRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
-from gear import RadixManager
 
 class DaYiInfo(IMInfo):
 	"大易輸入法"
@@ -66,7 +66,7 @@ CodeInfoGenerator=DYCodeInfo.DYCodeInfo
 codeInfoEncoder=DYCodeInfoEncoder.DYCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
-radixManager=RadixManager.RadixManager(codeInfoEncoder)
+radixManager=DYRadixManager.DYRadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

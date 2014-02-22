@@ -1,8 +1,8 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import ZMCodeInfo
 from ..CodeInfoEncoder import ZMCodeInfoEncoder
+from ..RadixManager import ZMRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
-from gear import RadixManager
 
 class ZhengMaInfo(IMInfo):
 	"鄭碼輸入法"
@@ -52,7 +52,7 @@ CodeInfoGenerator=ZMCodeInfo.ZMCodeInfo
 codeInfoEncoder=ZMCodeInfoEncoder.ZMCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
-radixManager=RadixManager.RadixManager(codeInfoEncoder)
+radixManager=ZMRadixManager.ZMRadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

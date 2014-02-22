@@ -1,8 +1,8 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import SPCodeInfo
 from ..CodeInfoEncoder import SPCodeInfoEncoder
+from ..RadixManager import SPRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
-from gear import RadixManager
 
 class SampleInfo(IMInfo):
 	"範例輸入法"
@@ -52,7 +52,7 @@ CodeInfoGenerator=SPCodeInfo.SPCodeInfo
 codeInfoEncoder=SPCodeInfoEncoder.SPCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
-radixManager=RadixManager.RadixManager(codeInfoEncoder)
+radixManager=SPRadixManager.SPRadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

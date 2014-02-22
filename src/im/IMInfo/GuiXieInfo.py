@@ -1,8 +1,8 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import GXCodeInfo
 from ..CodeInfoEncoder import GXCodeInfoEncoder
+from ..RadixManager import GXRadixManager
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
-from gear import RadixManager
 
 class GuiXieInfo(IMInfo):
 	"中國字庋㩪"
@@ -36,7 +36,7 @@ CodeInfoGenerator=GXCodeInfo.GXCodeInfo
 codeInfoEncoder=GXCodeInfoEncoder.GXCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
-radixManager=RadixManager.RadixManager(codeInfoEncoder)
+radixManager=GXRadixManager.GXRadixManager(codeInfoEncoder)
 
 if __name__=='__main__':
 	pass
