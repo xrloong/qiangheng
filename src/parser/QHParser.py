@@ -103,22 +103,6 @@ class QHParser:
 			turtleList.append(turtle)
 		return turtleList
 
-	def loadCodeInfoByParsingXML__0_3(self, rootNode):
-		# 用於 0.3 版
-		charGroupNode=rootNode.find(Constant.TAG_CHARACTER_SET)
-		targetChildNodes=charGroupNode.findall(Constant.TAG_CHARACTER)
-		charDescList=[]
-		for node in targetChildNodes:
-			charName=node.get(Constant.TAG_NAME)
-			structureList=self.getDesc_TurtleCharacterList(node)
-
-			charProp=CharacterProperty(node.attrib)
-			charDesc=CharacterDescription(charName, charProp)
-			charDesc.setStructureList(structureList)
-
-			charDescList.append(charDesc)
-		return charDescList
-
 	def loadTemplateByParsingXML__0_3(self, rootNode):
 		# 用於 0.3 版
 		templateGroupNode=rootNode.find(Constant.TAG_TEMPLATE_SET)
@@ -146,13 +130,6 @@ class QHParser:
 			charDesc.setStructureList(structureList)
 
 			charDescList.append(charDesc)
-		return charDescList
-
-	def loadCodeInfoByParsingXML(self, node):
-		version=node.get(Constant.TAG_VERSION)
-		propertyDB={}
-		if version=='0.3':
-			charDescList=self.loadCodeInfoByParsingXML__0_3(node)
 		return charDescList
 
 	def loadTemplateByParsingXML(self, node):
