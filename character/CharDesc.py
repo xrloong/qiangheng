@@ -19,7 +19,7 @@ class CharDesc:
 		self.propDict=None
 
 	def __str__(self):
-		return '<{0}={1}|({2})>'.format(self.getName(), self.operator.getName(), ",".join(map(str, self.compList)))
+		return '<{0}={1}|({2})>'.format(self.getHybridName(), self.operator.getName(), ",".join(map(str, self.compList)))
 
 	def __repr__(self):
 		return str(self)
@@ -32,9 +32,19 @@ class CharDesc:
 
 	def copyDescription(self):
 		copyCharDesc=CharDesc(self.getOperator(), [])
-		copyCharDesc.setName(self.getName())
 		copyCharDesc.setExpandName(self.getExpandName())
 		return copyCharDesc
+
+	def copyDeeply(self):
+		if self.getOperator().getName()=='龜':
+			ansDesc=self.copyDescription()
+			return ansDesc
+		ansChildList=[]
+		for childDesc in self.getCompList():
+			ansChilDesc=childDesc.copyDeeply()
+			ansChildList.append(ansChilDesc)
+		ansDesc=CharDesc(self.getOperator(), ansChildList)
+		return ansDesc
 
 	def setName(self, name):
 		self.name=name
@@ -42,7 +52,7 @@ class CharDesc:
 	def getName(self):
 		return self.name
 
-	def getName(self):
+	def getHybridName(self):
 		if self.isExpandable():
 			return self.getExpandName()
 		else:

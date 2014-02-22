@@ -35,7 +35,7 @@ class CharDescriptionManager:
 			return charDesc
 
 		imName=imModule.IMInfo.IMName
-		self.operationMgr=imModule.OperatorManager(self, CharDescGenerator)
+		self.operationMgr=imModule.OperatorManager(self)
 
 		self.charDescGenerator=CharDescGenerator
 		self.charDescQueryer=charDescQueryer

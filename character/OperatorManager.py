@@ -32,13 +32,12 @@ class RearrangeInfoLShapeSimpleRadical:
 		x=oldCompList[0]
 		y=oldCompList[1]
 
-		if x.getName() in ['辶', '廴']:
+		if x.getHybridName() in ['辶', '廴']:
 			charDesc.setCompList([y, x])
 			charDesc.setOperator(ansOperator)
 
 class OperatorManager:
-	def __init__(self, descMgr, charDescGenerator):
-		self.charDescGenerator=charDescGenerator
+	def __init__(self, descMgr):
 		self.descMgr=descMgr
 		self.templateDB={}
 
@@ -87,23 +86,9 @@ class OperatorManager:
 
 		resultDesc=templateDesc.getReplacedCharDesc(compList)
 
-		resultDesc=self.copyCharDesc(resultDesc)
-		resultDesc.setName(charDesc.getName())
+		resultDesc=resultDesc.copyDeeply()
+		resultDesc.setExpandName(charDesc.getExpandName())
 		return resultDesc
-
-	def copyCharDesc(self, charDesc):
-		if charDesc.getOperator().getName()=='龜':
-			ansDesc=charDesc.copyDescription()
-			ansDesc.setOperator(charDesc.getOperator())
-			return ansDesc
-		ansDesc=self.charDescGenerator()
-		ansChildList=[]
-		for childDesc in charDesc.getCompList():
-			ansChilDesc=self.copyCharDesc(childDesc)
-			ansChildList.append(ansChilDesc)
-		ansDesc.setCompList(ansChildList)
-		ansDesc.setOperator(charDesc.getOperator())
-		return ansDesc
 
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
@@ -144,36 +129,36 @@ class OperatorManager:
 			rearrangeInfo.rearrange(charDesc)
 
 class OperatorManager_AR(OperatorManager):
-	def __init__(self, descMgr, charDescGenerator):
-		OperatorManager.__init__(self, descMgr, charDescGenerator)
+	def __init__(self, descMgr):
+		OperatorManager.__init__(self, descMgr)
 		operatorLoong=self.getOperatorByName('龍')
 
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical(operatorLoong)
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp(operatorLoong)
 
 class OperatorManager_BS(OperatorManager):
-	def __init__(self, descMgr, charDescGenerator):
-		OperatorManager.__init__(self, descMgr, charDescGenerator)
+	def __init__(self, descMgr):
+		OperatorManager.__init__(self, descMgr)
 		operatorLoong=self.getOperatorByName('龍')
 
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp(operatorLoong)
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical(operatorLoong)
 
 class OperatorManager_CJ(OperatorManager):
-	def __init__(self, descMgr, charDescGenerator):
-		OperatorManager.__init__(self, descMgr, charDescGenerator)
+	def __init__(self, descMgr):
+		OperatorManager.__init__(self, descMgr)
 
 class OperatorManager_DY(OperatorManager):
-	def __init__(self, descMgr, charDescGenerator):
-		OperatorManager.__init__(self, descMgr, charDescGenerator)
+	def __init__(self, descMgr):
+		OperatorManager.__init__(self, descMgr)
 		operatorLoong=self.getOperatorByName('龍')
 
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp(operatorLoong)
 		self.rearrangeInfoDict['起']=RearrangeInfoLShapeSimpleRadical(operatorLoong)
 
 class OperatorManager_ZM(OperatorManager):
-	def __init__(self, descMgr, charDescGenerator):
-		OperatorManager.__init__(self, descMgr, charDescGenerator)
+	def __init__(self, descMgr):
+		OperatorManager.__init__(self, descMgr)
 		operatorLoong=self.getOperatorByName('龍')
 
 		self.rearrangeInfoDict['函']=RearrangeInfoSurroundingOpenUp(operatorLoong)

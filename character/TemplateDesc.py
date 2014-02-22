@@ -30,7 +30,7 @@ class TemplateDesc:
 		return self.parameterList
 
 	def getReplacedCharDesc(self, argumentList):
-		argumentNameList=[charDesc.getName() for charDesc in argumentList]
+		argumentNameList=[charDesc.getHybridName() for charDesc in argumentList]
 
 		tempDesc=copy.deepcopy(self.charDesc)
 		pairList=[]

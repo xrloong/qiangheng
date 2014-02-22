@@ -91,7 +91,7 @@ class HanZiNetwork:
 		self.emptyCharInfoGenerator=emptyCharInfoGenerator
 
 	def isInNetwork(self, srcDesc):
-		srcName=srcDesc.getName()
+		srcName=srcDesc.getHybridName()
 		return srcName in self.srcDescNameToNodeDict.keys()
 
 	def addNode(self, charName, charDesc):
@@ -121,11 +121,11 @@ class HanZiNetwork:
 		return self.srcDescNameToNodeDict.get(charName)
 
 	def findNodeByCharDesc(self, charDesc):
-		return self.findNodeByName(charDesc.getName())
+		return self.findNodeByName(charDesc.getHybridName())
 
 	def addOrFindNodeByCharDesc(self, charDesc):
 		ansNode=None
-		charName=charDesc.getName()
+		charName=charDesc.getHybridName()
 		if not self.isInNetwork(charDesc):
 			self.addNode(charName, charDesc)
 
