@@ -1,13 +1,38 @@
 from gear.CodeInfo import CodeInfo
 
 class DCCodeInfo(CodeInfo):
-	def __init__(self, actionList, isSupportCharacterCode=True, isSupportRadixCode=True):
+	def __init__(self, strokeList, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
 
-		self.actionList=actionList
+		self.strokeList=strokeList
+
+	def getStrokeList(self):
+		return self.strokeList
+
+	def getCode(self):
+		codeList=[stroke.getCode() for stroke in self.strokeList]
+		return ','.join(codeList)
+		return ';'.join(codeList)
+
+class Stroke:
+	def __init__(self, description):
+		descriptionList=description.split(',')
+		self.actionList=[StrokeAction(d) for d in descriptionList]
 
 	def getActionList(self):
 		return self.actionList
+
+	def getCode(self):
+		codeList=[x.getCode() for x in self.actionList]
+		return ','.join(codeList)
+
+	def scale(self, xScale, yScale):
+		for action in self.actionList:
+			action.scale(xScale, yScale)
+
+	def translate(self, xOffset, yOffset):
+		for action in self.actionList:
+			action.translate(xOffset, yOffset)
 
 class StrokeAction:
 	def __init__(self, description):
