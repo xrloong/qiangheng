@@ -34,7 +34,7 @@ class QiangHeng:
 		self.descMgr=CharDescriptionManager(imModule)
 
 		charDescQueryer=self.descMgr.getCharDescQueryer()
-		self.hanziNetwork=HanZiNetwork(charDescQueryer, ciGenerator)
+		self.hanziNetwork=HanZiNetwork(ciGenerator)
 
 #		self.operationMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
 
@@ -54,7 +54,42 @@ class QiangHeng:
 		self.getDescDBFromXML(pathlist)
 
 	def constructDescriptionNetwork(self):
-		self.hanziNetwork.constructHanZiNetwork(self.descMgr.keys())
+		charNameList=self.descMgr.keys()
+		hanziNetwork=self.hanziNetwork
+		charDescQueryer=self.descMgr.getCharDescQueryer()
+		sortedNameList=sorted(charNameList)
+
+		for charName in sortedNameList:
+			srcDesc=charDescQueryer(charName)
+			hanziNetwork.addNode(charName, srcDesc)
+
+		for charName in sortedNameList:
+			srcDesc=charDescQueryer(charName)
+			self.recursivelyAddNode(srcDesc)
+
+		for charName in sortedNameList:
+			srcDesc=charDescQueryer(charName)
+			self.recursivelyAddLink(srcDesc)
+
+	def recursivelyAddNode(self, srcDesc):
+		self.hanziNetwork.addOrFindNodeByCharDesc(srcDesc)
+
+		for childSrcDesc in srcDesc.getCompList():
+			self.recursivelyAddNode(childSrcDesc)
+
+	def recursivelyAddLink(self, srcDesc):
+		dstNode=self.hanziNetwork.findNodeByCharDesc(srcDesc)
+
+		operator=srcDesc.getOperator()
+		childNodeList=[]
+		for childSrcDesc in srcDesc.getCompList():
+			childNode=self.hanziNetwork.findNodeByCharDesc(childSrcDesc)
+			childNodeList.append(childNode)
+
+		self.hanziNetwork.addLink(srcDesc, operator, childNodeList)
+
+		for childSrcDesc in srcDesc.getCompList():
+			self.recursivelyAddLink(childSrcDesc)
 
 	def toXML(self, imInfo):
 		keyMaps=imInfo.getKeyMaps()

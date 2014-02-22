@@ -94,7 +94,7 @@ class HanZiNode:
 			structure.setByComps()
 
 class HanZiNetwork:
-	def __init__(self, charDescQueryer, charInfoGenerator):
+	def __init__(self, charInfoGenerator):
 		self.nodeList=[]
 
 		self.descNetwork={}
@@ -104,51 +104,36 @@ class HanZiNetwork:
 			return charInfoGenerator({})
 
 		self.emptyCharInfoGenerator=emptyCharInfoGenerator
-		self.charDescQueryer=charDescQueryer
-
-	def constructHanZiNetwork(self, charNameList):
-		sortedNameList=sorted(charNameList)
-
-		for charName in sortedNameList:
-			srcDesc=self.charDescQueryer(charName)
-			self.recursivelyAddNode(srcDesc)
-
-		for charName in sortedNameList:
-			srcDesc=self.charDescQueryer(charName)
-			self.recursivelyAddLink(srcDesc)
-
-		for charName in sortedNameList:
-			srcDesc=self.charDescQueryer(charName)
-			dstNode=self.findNodeByCharDesc(srcDesc)
-
-			srcPropDict=srcDesc.getPropDict()
-			if srcPropDict:
-				dstNode.getChInfo().setPropDict(srcPropDict)
-
-	def recursivelyAddNode(self, srcDesc):
-		dstNode=self.addOrFindNodeByCharDesc(srcDesc)
-
-		for childSrcDesc in srcDesc.getCompList():
-			self.recursivelyAddNode(childSrcDesc)
-
-	def recursivelyAddLink(self, srcDesc):
-		dstNode=self.findNodeByCharDesc(srcDesc)
-
-		childNodeList=[]
-		for childSrcDesc in srcDesc.getCompList():
-			childNode=self.findNodeByCharDesc(childSrcDesc)
-			childNodeList.append(childNode)
-
-		if len(childNodeList)>0:
-			operator=srcDesc.getOperator()
-			dstNode.setStructure(operator, childNodeList)
-
-		for childSrcDesc in srcDesc.getCompList():
-			self.recursivelyAddLink(childSrcDesc)
 
 	def isInNetwork(self, srcDesc):
 		srcName=srcDesc.getName()
 		return srcName in self.srcDescNameToNodeDict.keys()
+
+	def addNode(self, charName, charDesc):
+		dstDesc=charDesc.copyDescription()
+
+		chInfo=self.emptyCharInfoGenerator()
+
+		srcPropDict=charDesc.getPropDict()
+		if srcPropDict:
+			chInfo.setPropDict(srcPropDict)
+
+		ansNode=HanZiNode(dstDesc, chInfo)
+
+		self.srcDescNameToNodeDict[charName]=ansNode
+
+		return ansNode
+
+	def addLink(self, charDesc, operator, childNodeList):
+		if len(childNodeList)>0:
+			dstNode=self.findNodeByCharDesc(charDesc)
+			dstNode.setStructure(operator, childNodeList)
+
+	def findNodeByName(self, charName):
+		return self.srcDescNameToNodeDict.get(charName)
+
+	def findNodeByCharDesc(self, charDesc):
+		return self.findNodeByName(charDesc.getName())
 
 	def addOrFindNodeByCharDesc(self, charDesc):
 		ansNode=None
@@ -158,23 +143,6 @@ class HanZiNetwork:
 
 		ansNode=self.findNodeByName(charName)
 		return ansNode
-
-	def addNode(self, charName, charDesc):
-		dstDesc=charDesc.copyDescription()
-
-		chInfo=self.emptyCharInfoGenerator()
-
-		ansNode=HanZiNode(dstDesc, chInfo)
-
-		self.srcDescNameToNodeDict[charName]=ansNode
-
-		return ansNode
-
-	def findNodeByName(self, charName):
-		return self.srcDescNameToNodeDict.get(charName)
-
-	def findNodeByCharDesc(self, charDesc):
-		return self.findNodeByName(charDesc.getName())
 
 	def getCodeList(self, charName):
 		charNode=self.findNodeByName(charName)
