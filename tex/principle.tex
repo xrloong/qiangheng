@@ -13,6 +13,25 @@
 \title{瑲珩}
 \author{王湘叡}
 
+\newcommand\qhchar[1]{\mbox{#1}}
+
+\newcommand\qhstroke[1]{\qhchar{#1}_{\mbox{筆}}}
+
+\newcommand\qhar[1]{\qhchar{#1}_{\mbox{行}}}
+\newcommand\qharrule{\mbox{取}_{\mbox{前三後一}}}
+\newcommand\qhdy[1]{\qhchar{#1}_{\mbox{易}}}
+\newcommand\qhdyrule{\mbox{取}_{\mbox{前三後一}}}
+\newcommand\qhbs[1]{\qhchar{#1}_{\mbox{嘸}}}
+\newcommand\qhbscomp[1]{\qhchar{#1}_{\mbox{嘸補}}}
+\newcommand\qhbstemp[1]{\qhchar{#1}_{\mbox{嘸暫}}}
+\newcommand\qhzm[1]{\qhchar{#1}_{\mbox{鄭}}}
+\newcommand\qhzmlist[1]{\qhchar{#1}_{\mbox{鄭串}}}
+\newcommand\qhcj[1]{\qhchar{#1}_{\mbox{倉}}}
+\newcommand\qhcjlist[1]{\qhchar{#1}_{\mbox{倉串}}}
+\newcommand\qhcjdir[1]{\qhchar{#1}_{\mbox{倉向}}}
+\newcommand\qhcjbody[1]{\qhchar{#1}_{\mbox{倉身}}}
+\newcommand\qhcjmerge[2]{\oplus_{\qhchar{#1}}(#2)}
+
 \begin{document}
 \maketitle{}
 
@@ -52,7 +71,7 @@
 如果考慮了這個特性，我們可以採用另一個方法：\\
 因為\\
 \[
-  \mbox{``曉''}=\mbox{``日''}+\mbox{``堯''}
+  \qhchar{``曉''}=\qhchar{``日''}+\qhchar{``堯''}
 \]
 若已經知道``日''為四劃而``堯''為十二劃，則只要用加法就可得到``曉''為十六劃了。%
 
@@ -60,12 +79,12 @@
 我們一樣可以採用類似的方法。
 因為\\
 \[
-  \mbox{``堯''}=\mbox{``垚''}+\mbox{``兀''}
+  \qhchar{``堯''}=\qhchar{``垚''}+\qhchar{``兀''}
 \]
 也就是如果事先已經知道``垚''為九劃和``兀''為三劃，則用加法就可得到十二劃。
 同樣地，考慮到\\
 \[
-  \mbox{``垚''}=\mbox{``土''}\times 3
+  \qhchar{``垚''}=\qhchar{``土''}\times 3
 \]
 也就是，如果事先已經知道``土''為三劃，則只要用乘法就可得到``垚''為九劃。
 
@@ -95,6 +114,12 @@
 我們就可以自動算出全部的值。
 自動化的好處還有標準統一，如果有一些標準改了，也可快速重新計算。
 
+\begin{subequations}
+  \begin{align}
+  \qhstroke{字} &= \text{筆劃數}\\
+  \qhstroke{丙} &= \qhstroke{甲} + \qhstroke{乙}\
+  \end{align}
+\end{subequations}
 
 如果我們的目標不是計算``筆劃數''，而是創造字形，這個方法一樣可以適用，這就是``動態組字''的範疇。
 如果我們的目標不是計算``筆劃數''，而是輸入碼，這個方法一樣可以適用，這就是本計劃的範疇。
@@ -171,22 +196,22 @@
 \end{tabular}
 
 \subsection{遞迴式}
-分別使用``$\mbox{字}_{\mbox{行}}$''和``$\mbox{字}_{\mbox{易}}$''來表示一個字的行列碼與大易碼。\\
-如$\mbox{``曉''}_{\mbox{行}}$=``PRRS''、$\mbox{``曉''}_{\mbox{易}}$=``DFFQ''。
+分別使用$\qhar{字}$和$\qhdy{字}$來表示一個字的行列碼與大易碼。\\
+如 $\qhar{曉}$ =``PRRS''、$\qhdy{曉}$=``DFFQ''。
 \begin{subequations}
   \begin{align}
-  \mbox{字}_{\mbox{行}} &= 行列碼\\
-  \mbox{字}_{\mbox{易}} &= 大易碼\\
+  \qhar{字} &= 行列碼\\
+  \qhdy{字} &= 大易碼\\
   甲 \oplus 乙 &= 取(甲+乙)的前三後一碼
   \end{align}
 \end{subequations}
 
-若$(\mbox{丙}=\mbox{甲}+\mbox{乙})$
+若$(\qhchar{丙}=\qhchar{甲}+\qhchar{乙})$
 其遞迴算式為：
 \begin{subequations}
   \begin{align}
-  \mbox{丙}_{\mbox{行}}&=\mbox{取}_{\mbox{前三後一}}(\mbox{甲}_{\mbox{行}} \oplus \mbox{乙}_{\mbox{行}})\\
-  \mbox{丙}_{\mbox{易}}&=\mbox{取}_{\mbox{前三後一}}(\mbox{甲}_{\mbox{易}} \oplus \mbox{乙}_{\mbox{易}})
+  \qhar{丙}&=\qharrule{}(\qhar{甲} \oplus \qhar{乙})\\
+  \qhdy{丙}&=\qhdyrule{}(\qhdy{甲} \oplus \qhdy{乙})
   \end{align}
 \end{subequations}
 
@@ -202,33 +227,33 @@
 為此，為嘸蝦米添加一個屬性：
 用``嘸''、``.嘸補'' 表示一個字的嘸蝦米碼和補碼，\\
 \subsection{遞迴式}
-使用``$\mbox{字}_{\mbox{嘸補}}$''來表示一個字的嘸蝦米補碼。
-使用``$\mbox{字}_{\mbox{嘸}}$''來表示一個字的嘸蝦米碼。
-$\mbox{``垚''}_{\mbox{嘸}}=YYY$\\
-$\mbox{``兀''}_{\mbox{嘸補}}=L$\\
+使用``$\qhbscomp{字}$''來表示一個字的嘸蝦米補碼。
+使用``$\qhbs{字}$''來表示一個字的嘸蝦米碼。
+$\qhbs{垚}=YYY$\\
+$\qhbscomp{兀}=L$\\
 則
 \begin{subequations}
   \begin{align}
-  \mbox{字}_{\mbox{嘸}} &= 嘸蝦米碼\\
-  \mbox{字}_{\mbox{嘸補}} &= 嘸蝦米補碼\\
-  \mbox{字}_{\mbox{嘸暫}} &= 嘸蝦米暫時碼，即沒有補碼\\
-  \mbox{字}_{\mbox{嘸}} &=
+  \qhbs{字} &= 嘸蝦米碼\\
+  \qhbscomp{字} &= 嘸蝦米補碼\\
+  \qhbstemp{字} &= 嘸蝦米暫時碼，即沒有補碼\\
+  \qhbs{字} &=
       \left\{\begin{array}{ll}
-        \mbox{字}_{\mbox{嘸暫}}
-           & \mbox{若$\mbox{字}_{\mbox{嘸暫}} \geq $三碼}\\
-        \mbox{字}_{\mbox{嘸暫}}+\mbox{字}_{\mbox{嘸補}}
-           & \mbox{若$\mbox{丙}_{\mbox{嘸暫}} \leq $二碼}
+        \qhbstemp{字}
+           & \text{若$\qhbstemp{字} \geq $三碼}\\
+        \qhbstemp{字}+\qhbscomp{字}
+           & \text{若$\qhbstemp{丙} \leq $二碼}
       \end{array}\right.\\
   甲 \oplus 乙 &= 取(甲+乙)的前三後一碼\\
   \end{align}
 \end{subequations}
 
-若$(\mbox{丙}=\mbox{甲}+\mbox{乙})$
+若$(\qhchar{丙}=\qhchar{甲}+\qhchar{乙})$
 其遞迴算式為：
 \begin{subequations}
   \begin{align}
-  \mbox{丙}_{\mbox{嘸補}}&=\mbox{乙}_{\mbox{嘸補}}\\
-  \mbox{丙}_{\mbox{嘸暫}}&=\mbox{甲}_{\mbox{嘸暫}} \oplus \mbox{乙}_{\mbox{嘸暫}}\\
+  \qhbscomp{丙}&=\qhbscomp{乙}\\
+  \qhbstemp{丙}&=\qhbstemp{甲} \oplus \qhbscomp{乙}\\
   \end{align}
 \end{subequations}
 
@@ -247,21 +272,21 @@ $\mbox{``兀''}_{\mbox{嘸補}}=L$\\
 不過，鄭碼會用到的字根最多只有頭兩個和尾兩個，總共最多四個。
 
 \subsection{遞迴式}
-使用``$\mbox{字}_{\mbox{鄭串}}$''來表示一個字的字根串列。
-如$\mbox{``曉''}_{\mbox{鄭串}}=[\mbox{``日''}, \mbox{``土''}, \mbox{``土''}, \mbox{兀}]$\\
+使用``$\qhzmlist{字}$''來表示一個字的字根串列。
+如$\qhzmlist{曉}=[\qhchar{``日''}, \qhchar{``土''}, \qhchar{``土''}, \qhchar{兀}]$\\
 
 \begin{subequations}
   \begin{align}
-    \mbox{字}_{\mbox{鄭串}} &= 表示一個字的鄭碼字根串列。\\
+    \qhzmlist{字} &= 表示一個字的鄭碼字根串列。\\
     甲 \oplus 乙 &= 取(甲+乙)的鄭碼字根串列的前二後二。
   \end{align}
 \end{subequations}
 
-若$(\mbox{丙}=\mbox{甲}+\mbox{乙})$
+若$(\qhchar{丙}=\qhchar{甲}+\qhchar{乙})$
 其遞迴算式為：
 \begin{subequations}
   \begin{align}
-  \mbox{丙}_{\mbox{鄭串}} &= \mbox{甲}_{\mbox{鄭串}} \oplus \mbox{乙}_{\mbox{鄭串}} \\
+  \qhzmlist{丙} &= \qhzmlist{甲} \oplus \qhzmlist{乙} \\
   \end{align}
 \end{subequations}
 
@@ -307,25 +332,25 @@ $\mbox{``兀''}_{\mbox{嘸補}}=L$\\
 \subsection{遞迴式}
 \begin{subequations}
   \begin{align}
-    \mbox{字}_{\mbox{倉串}} &= 表示一個字的倉頡碼字根串列。\\
-    \mbox{字}_{\mbox{倉向}} &= 表示一個字的字根組成方向。\\
-    \mbox{字}_{\mbox{倉身}} &= 表示一個字當另一個字的字身時的倉頡碼。\\
+    \qhcjlist{字} &= 表示一個字的倉頡碼字根串列。\\
+    \qhcjdir{字} &= 表示一個字的字根組成方向。\\
+    \qhcjbody{字} &= 表示一個字當另一個字的字身時的倉頡碼。\\
   \end{align}
 \end{subequations}
 
-如$\mbox{``曉''}_{\mbox{倉串}}=[\mbox{``日''}, \mbox{``土''}, \mbox{``土''}, \mbox{``山''}]$\\
-如$\mbox{``曉''}_{\mbox{倉向}}=`-'$\\
-如$\mbox{``曉''}_{\mbox{倉身}}=[\mbox{``日''}, \mbox{``土''}, \mbox{``山''}]$\\
+如$\qhcjlist{``曉''}=[\qhchar{``日''}, \qhchar{``土''}, \qhchar{``土''}, \qhchar{``山''}]$\\
+如$\qhcjdir{``曉''}=`-'$\\
+如$\qhcjbody{``曉''}=[\qhchar{``日''}, \qhchar{``土''}, \qhchar{``山''}]$\\
 \begin{subequations}
   \begin{align}
-    \oplus_{\mbox{字}}(甲) &=
+    \qhcjmerge{字}{甲} &=
       \left\{\begin{array}{ll}
-        \mbox{甲}_{\mbox{倉串}}
-           & \mbox{若$\mbox{甲}_{\mbox{倉向}} = \mbox{字}_{\mbox{倉向}}$}\\
-        $[$ \mbox{甲}_{\mbox{倉身}} $]$
-           & \mbox{若$\mbox{甲}_{\mbox{倉向}} \neq \mbox{字}_{\mbox{倉向}}$}
+        \qhcjlist{甲}
+           & \text{若$\qhcjdir{甲} = \qhcjdir{字}$}\\
+        $[$ \qhcjbody{甲} $]$
+           & \text{若$\qhcjbody{甲} \neq \qhcjbody{字}$}
       \end{array}\right.\\
-  \mbox{丙}_{\mbox{倉串}} &= \oplus_{\mbox{丙}}(甲) + \oplus_{\mbox{丙}}(乙)\\
+  \qhcjbody{丙} &= \qhcjmerge{丙}{甲} + \qhcjmerge{丙}{乙}\\
   \end{align}
 \end{subequations}
 
@@ -333,10 +358,10 @@ $\mbox{``兀''}_{\mbox{嘸補}}=L$\\
 倉頡對於字根的取碼有特殊規定。
 若字本身為輔助字根，則不能直接取碼。
 
-如``氵''為``水''的輔助字根，``工''為``一''的輔助字助。
-在``江''時，其倉頡碼為``水一''
-但若``氵''當獨立字時，則要取碼``卜一''
-若``工''當獨立字時，則要取碼``一中一''
+%如``氵''為``水''的輔助字根，``工''為``一''的輔助字助。
+%在``江''時，其倉頡碼為``水一''
+%但若``氵''當獨立字時，則要取碼``卜一''
+%若``工''當獨立字時，則要取碼``一中一''
 
 \subsection{注意事項}
 
