@@ -3,13 +3,23 @@ from state import StateManager
 from description.CodeType import CodeType
 
 class HanZiCodeInfo:
-	def __init__(self, propDict, codeType, _isSupportCharacterCode=True, _isSupportRadixCode=True):
+	def __init__(self, propDict, codeType,):
 		codeInfo=StateManager.codeInfoGenerator(propDict)
 		self.codeInfo=codeInfo
 		self.codeInfo.multiCodeType(codeType)
 
-		self._isSupportCharacterCode=_isSupportCharacterCode
-		self._isSupportRadixCode=_isSupportRadixCode
+		hasCharacter=bool("字符碼" in propDict)
+		hasRadix=bool("字根碼" in propDict)
+		if hasCharacter or hasRadix:
+			self._isSupportCharacterCode=False
+			self._isSupportRadixCode=False
+			if hasCharacter:
+				self._isSupportCharacterCode=True
+			if hasRadix:
+				self._isSupportRadixCode=True
+		else:
+			self._isSupportCharacterCode=True
+			self._isSupportRadixCode=True
 
 	def isSupportCharacterCode(self):
 		return self._isSupportCharacterCode
@@ -180,9 +190,7 @@ class HanZiNetwork:
 		codeType=structDesc.getCodeType()
 		structure=HanZiStructure(codeType, None, [])
 
-		codeInfo=HanZiCodeInfo(codeInfoProperties, codeType, True, False)
-		structure.appendCodeInfo(codeInfo)
-		codeInfo=HanZiCodeInfo(codeInfoProperties, codeType, False, True)
+		codeInfo=HanZiCodeInfo(codeInfoProperties, codeType)
 		structure.appendCodeInfo(codeInfo)
 
 		structure.setToComponent()

@@ -18,10 +18,10 @@ class BSCodeInfo(CodeInfo):
 
 	@property
 	def characterCode(self):
-		if self._bs_incode==None or self._bs_spcode==None:
-			return None
 		if self._bs_single:
 			return self._bs_single
+		if self._bs_incode==None or self._bs_spcode==None:
+			return None
 		elif len(self._bs_incode)<3:
 			return self._bs_incode+self._bs_spcode
 		else:
