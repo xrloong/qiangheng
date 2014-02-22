@@ -4,7 +4,6 @@ from .CodeInfoEncoder import CodeInfoEncoder
 import Constant
 from xml.etree import ElementTree
 from ..gear import OperatorManager
-from ..gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 from gear.CodeVarianceType import CodeVarianceType
 
 class RadixParser:

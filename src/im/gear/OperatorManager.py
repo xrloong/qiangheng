@@ -2,10 +2,8 @@ from . import Operator
 from . import RearrangeInfo
 import sys
 
-
 class OperatorManager:
-	def __init__(self, descMgr):
-		self.descMgr=descMgr
+	def __init__(self):
 		self.templateDB={}
 
 		self.builtinOperatorDict={
@@ -75,19 +73,24 @@ class OperatorManager:
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
 
-	def rearrangeRecursively(self, charDesc):
-		self.rearrangeDesc(charDesc)
-		for childDesc in charDesc.getCompList():
-			self.rearrangeRecursively(childDesc)
-		return charDesc
+	def rearrangeOn(self, charDesc):
+		structDescList=charDesc.getStructureList()
+		for structDesc in structDescList:
+			self.rearrangeRecursively(structDesc)
 
-	def rearrangeDesc(self, charDesc):
-		operator=charDesc.getOperator()
+	def rearrangeRecursively(self, structDesc):
+		self.rearrangeDesc(structDesc)
+		for childDesc in structDesc.getCompList():
+			self.rearrangeRecursively(childDesc)
+		return structDesc
+
+	def rearrangeDesc(self, structDesc):
+		operator=structDesc.getOperator()
 		rearrangeInfo=operator.getRearrangeInfo()
 
 		if rearrangeInfo!=None:
-			rearrangeInfo.rearrange(charDesc)
-			operator=charDesc.getOperator()
+			rearrangeInfo.rearrange(structDesc)
+			operator=structDesc.getOperator()
 			if not operator.isBuiltin():
-				self.rearrangeDesc(charDesc)
+				self.rearrangeDesc(structDesc)
 

@@ -2,11 +2,10 @@
 
 import sys
 from .CharacterDescription import CharacterDescription
-from im.gear import OperatorManager
 from parser import QHParser
-from state import StateManager
 from xml.etree import ElementTree
 import Constant
+from im.base import StructureRearranger
 
 class CharDescriptionManager:
 	def __init__(self):
@@ -17,11 +16,11 @@ class CharDescriptionManager:
 			charDesc=self.characterDB.get(charName, None)
 			return charDesc
 
-		self.operationMgr=OperatorManager.OperatorManager(self)
-
 		self.charDescQueryer=charDescQueryer
 
-		self.parser=QHParser.QHParser(self.operationMgr.getOperatorGenerator())
+		self.structurRearranger=StructureRearranger()
+
+		self.parser=QHParser.QHParser(self.structurRearranger.getOperatorGenerator())
 
 	def getAllCharacters(self):
 		return self.characterDB.keys()
@@ -38,6 +37,8 @@ class CharDescriptionManager:
 	def loadData(self, toTemplateList, toComponentList):
 		for filename in toTemplateList:
 			self.loadTemplateFromXML(filename, fileencoding=Constant.FILE_ENCODING)
+
+		self.structurRearranger.setTemplateDB(self.templateDB)
 
 		for filename in toComponentList:
 			self.loadFromXML(filename, fileencoding=Constant.FILE_ENCODING)
@@ -66,16 +67,12 @@ class CharDescriptionManager:
 		rootNode=xmlNode.getroot()
 		templateDB=self.parser.loadTemplateByParsingXML(rootNode)
 		self.templateDB.update(templateDB)
-		self.operationMgr.setTemplateDB(self.templateDB)
 
 	def adjustData(self):
-		charDescRearranger=StateManager.characterDescriptionRearrangerGenerator(self.operationMgr)
 		for charName in self.characterDB.keys():
 #			print("name: %s"%charName, file=sys.stderr);
 			charDesc=self.characterDB.get(charName)
-			structDescList=charDesc.getStructureList()
-			for structDesc in structDescList:
-				charDescRearranger.rearrangeRecursively(structDesc)
+			self.structurRearranger.rearrangeOn(charDesc)
 #			print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 if __name__=='__main__':
