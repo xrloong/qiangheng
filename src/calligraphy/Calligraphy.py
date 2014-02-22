@@ -158,7 +158,7 @@ class StrokeInfo:
 	def compute_捺(self, startPoint, w, h):
 		assert w>0 and h>0
 		cPoint = [startPoint[0] + w//2, startPoint[1] + h//2]
-		midPoint = (max(0, cPoint[0] - h//3), min(0xFF, cPoint[1] + w//3))
+		midPoint = (cPoint[0] - h//3, cPoint[1] + w//3)
 		endPoint = (startPoint[0] + w, startPoint[1] + h)
 		return [(True, midPoint),
 			(False, endPoint), ]
@@ -179,7 +179,7 @@ class StrokeInfo:
 		endPoint = [startPoint[0] + w, startPoint[1] + h]
 		cPoint = [startPoint[0] + halfW, startPoint[1] + halfH]
 		midPoint1 = [startPoint[0]+halfW//2+halfH//4, startPoint[1]+halfH//2-halfW//4]
-		midPoint2 = [cPoint[0]+halfW//2-halfH//4, min(0xFF, cPoint[1]+halfH//2+halfW//4)]
+		midPoint2 = [cPoint[0]+halfW//2-halfH//4, cPoint[1]+halfH//2+halfW//4]
 		return [(True, midPoint1),
 			(False, cPoint),
 			(True, midPoint2),
@@ -200,7 +200,7 @@ class StrokeInfo:
 	def compute_彎鉤之彎(self, startPoint, w1, h1):
 		assert h1>0
 		cPoint = [startPoint[0] + w1//2, startPoint[1] + h1//2]
-		midPoint1 = [min(0xFF, cPoint[0] + h1//2), max(0, cPoint[1] - w1//2)]
+		midPoint1 = [cPoint[0] + h1//2, cPoint[1] - w1//2]
 		midPoint2 = [startPoint[0] + w1, startPoint[1] + h1]
 		return [(True, midPoint1),
 			(False, midPoint2),
