@@ -171,26 +171,29 @@ class DescriptionManagerToHanZiNetworkConverter:
 			charDesc=self.queryDescription(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
-				if structDesc.isTurtle():
-					hanziNetwork.appendTurtleStruct(structDesc)
-				else:  
-					self.recursivelyAddLink(structDesc)
+				self.recursivelyAddLink(structDesc)
 
 
 	def recursivelyAddNode(self, structDesc):
-		self.hanziNetwork.addNode(structDesc)
+		if structDesc.isExpandable():
+			self.hanziNetwork.addNamedNode(structDesc.getExpandName())
+		else:
+			self.hanziNetwork.addAnonymousNode(structDesc.getUniqueName())
 
 		for childSrcDesc in structDesc.getCompList():
 			self.recursivelyAddNode(childSrcDesc)
 
 	def recursivelyAddLink(self, structDesc):
-		operator=structDesc.getOperator()
-		childDescList=structDesc.getCompList()
+		if structDesc.isTurtle():
+			self.hanziNetwork.appendTurtleStruct(structDesc)
+		else:  
+			operator=structDesc.getOperator()
+			childDescList=structDesc.getCompList()
 
-		self.hanziNetwork.addLink(structDesc, operator, childDescList)
+			self.hanziNetwork.addLink(structDesc, operator, childDescList)
 
-		for childSrcDesc in structDesc.getCompList():
-			self.recursivelyAddLink(childSrcDesc)
+			for childSrcDesc in structDesc.getCompList():
+				self.recursivelyAddLink(childSrcDesc)
 
 	def queryDescription(self, characterName):
 		return self.descriptionManager.queryCharacterDescription(characterName)
@@ -211,16 +214,19 @@ class HanZiNetwork:
 	def isInNetwork(self, srcDesc):
 		return self.findNode(srcDesc)!=None
 
-	def addNode(self, structDesc):
-		ansNode=None
-		if not self.isInNetwork(structDesc):
-			ansNode=HanZiNode()
-		else:
-			ansNode=self.findNode(structDesc)
-		self.structDescUniqueNameToNodeDict[structDesc.getUniqueName()]=ansNode
-		self.structDescExpandNameToNodeDict[structDesc.getExpandName()]=ansNode
+	def addNamedNode(self, expandName):
+		if expandName not in self.structDescExpandNameToNodeDict:
+			self.structDescExpandNameToNodeDict[expandName]=HanZiNode()
 
-		return ansNode
+	def addAnonymousNode(self, anonymousName):
+		if anonymousName not in self.structDescUniqueNameToNodeDict:
+			self.structDescUniqueNameToNodeDict[anonymousName]=HanZiNode()
+
+	def addNode(self, structDesc):
+		if structDesc.isExpandable():
+			self.addNamedNode(structDesc.getExpandName())
+		else:
+			self.addAnonymousNode(structDesc.getUniqueName())
 
 	def addLink(self, structDesc, operator, childDescList):
 		if len(childDescList)>0:
