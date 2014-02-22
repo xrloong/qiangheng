@@ -166,9 +166,6 @@ class DescriptionManagerToHanZiNetworkConverter:
 		sortedNameList=sorted(charNameList)
 
 		for charName in sortedNameList:
-			hanziNetwork.addNode(charName)
-
-		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
 			structDescList=charDesc.getStructureList()
 			for structDesc in structDescList:
@@ -184,10 +181,10 @@ class DescriptionManagerToHanZiNetworkConverter:
 					self.recursivelyAddLink(structDesc)
 
 
-	def recursivelyAddNode(self, srcDesc):
-		self.hanziNetwork.addOrFindNodeByCharDesc(srcDesc)
+	def recursivelyAddNode(self, structDesc):
+		self.hanziNetwork.addNode(structDesc)
 
-		for childSrcDesc in srcDesc.getCompList():
+		for childSrcDesc in structDesc.getCompList():
 			self.recursivelyAddNode(childSrcDesc)
 
 	def recursivelyAddLink(self, structDesc):
@@ -216,14 +213,16 @@ class HanZiNetwork:
 		toHanZiNetworkConverter.run()
 
 	def isInNetwork(self, srcDesc):
-		srcName=srcDesc.getHybridName()
-		return srcName in self.srcDescNameToNodeDict.keys()
+		return self.findNodeByCharDesc(srcDesc)!=None
 
-	def addNode(self, charName):
-		ansNode=HanZiNode(charName)
+	def addNode(self, structDesc):
+		ansNode=None
+		if not self.isInNetwork(structDesc):
+			charName=structDesc.getHybridName()
+			ansNode=HanZiNode(charName)
+			self.srcDescNameToNodeDict[charName]=ansNode
 
-		self.srcDescNameToNodeDict[charName]=ansNode
-
+		ansNode=self.findNodeByCharDesc(structDesc)
 		return ansNode
 
 	def addLink(self, structDesc, operator, childDescList):
@@ -258,15 +257,6 @@ class HanZiNetwork:
 
 		hybridName=charDesc.getHybridName()
 		return self.srcDescNameToNodeDict.get(hybridName)
-
-	def addOrFindNodeByCharDesc(self, charDesc):
-		ansNode=None
-		charName=charDesc.getHybridName()
-		if not self.isInNetwork(charDesc):
-			self.addNode(charName)
-
-		ansNode=self.findNodeByCharDesc(charDesc)
-		return ansNode
 
 	def getCodePropertiesList(self, charName):
 		charNode=self.srcDescNameToNodeDict.get(charName)
