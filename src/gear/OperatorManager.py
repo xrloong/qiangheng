@@ -1,19 +1,6 @@
 from . import Operator
+from . import RearrangeInfo
 import sys
-
-class RearrangeInfoSame:
-	def __init__(self):
-		pass
-
-	def rearrange(self, charDesc):
-		pass
-
-class RearrangeInfoTemplate:
-	def __init__(self, templateDesc):
-		self.templateDesc=templateDesc
-
-	def rearrange(self, charDesc):
-		self.templateDesc.rearrange(charDesc)
 
 
 class OperatorManager:
@@ -21,54 +8,54 @@ class OperatorManager:
 		self.descMgr=descMgr
 		self.templateDB={}
 
-		self.rearrangeInfoDictForBuiltinOperator={
-			'龜':RearrangeInfoSame(),
-			'爲':RearrangeInfoSame(),
-			'龍':RearrangeInfoSame(),
-
-			'東':RearrangeInfoSame(),
-
-			'蚕':RearrangeInfoSame(),
-			'鴻':RearrangeInfoSame(),
-			'回':RearrangeInfoSame(),
-
-
-			'錯':RearrangeInfoSame(),
+		self.builtinOperatorDict={
+			'龜':Operator.OperatorTurtle,
+			'爲':Operator.OperatorEqual,
+			'龍':Operator.OperatorLoong,
+			'東':Operator.OperatorEast,
+			'蚕':Operator.OperatorSilkworm,
+			'鴻':Operator.OperatorGoose,
+			'回':Operator.OperatorLoop,
+		}
+		self.templateOperatorDict={
 		}
 
-		self.directionInfoList={
-			'龜':'*',
-			'爲':'*',
-			'龍':'*',
-
-			'東':'$',
-
-			'蚕':'|',
-			'鴻':'-',
-			'回':'@',
-
-			'錯':'*',
-		}
-
-		self.rearrangeInfoDictForTemplateOperator={}
 		def operatorGenerator(operatorName):
-			direction=self.directionInfoList.get(operatorName, '*')
-			return Operator.Operator(operatorName, direction)
+			if operatorName in self.builtinOperatorDict:
+				operator=self.builtinOperatorDict.get(operatorName)
+			else:
+				self.addTemplateOperatorIfNotExist(operatorName)
+				operator=self.findTemplateOperator(operatorName)
+			return operator
 
 		operatorLoong=operatorGenerator('龍')
 		self.operatorGenerator=operatorGenerator
 
+	def addTemplateOperatorIfNotExist(self, templateName):
+		if templateName in self.templateOperatorDict:
+			operator=self.templateOperatorDict[templateName]
+		else:
+			operator=Operator.TemplateOperator(templateName, '*')
+			self.templateOperatorDict[templateName]=operator
+
+	def findTemplateOperator(self, templateName):
+		templateOperator=self.templateOperatorDict.get(templateName)
+		return templateOperator
+
 	def setTemplateDB(self, templateDB):
 		self.templateDB=templateDB
 		for templateName, templateDesc in templateDB.items():
-			rearrangeInfoTemplate=RearrangeInfoTemplate(templateDesc)
-			self.rearrangeInfoDictForTemplateOperator[templateName]=rearrangeInfoTemplate
+			rearrangeInfoTemplate=RearrangeInfo.RearrangeInfoTemplate(templateDesc)
+
+			self.addTemplateOperatorIfNotExist(templateName)
+			templateOperator=self.findTemplateOperator(templateName)
+			templateOperator.setRearrangeInfo(rearrangeInfoTemplate)
 
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
 
-	def isTemplateOperator(self, operator):
-		return (operator.getName() in self.templateDB.keys())
+	def isBuiltinOperator(self, operator):
+		return operator.getName() in self.builtinOperatorDict
 
 	def rearrangeRecursively(self, charDesc):
 		self.rearrangeDesc(charDesc)
@@ -76,24 +63,13 @@ class OperatorManager:
 			self.rearrangeRecursively(childDesc)
 		return charDesc
 
-	def getOperatorByName(self, operatorName):
-		return self.operatorGenerator(operatorName)
-
 	def rearrangeDesc(self, charDesc):
 		operator=charDesc.getOperator()
-		rearrangeInfo=self.getRearrangeInfoByOperator(operator)
+		rearrangeInfo=operator.getRearrangeInfo()
 
 		if rearrangeInfo!=None:
 			rearrangeInfo.rearrange(charDesc)
 			operator=charDesc.getOperator()
-			if self.isTemplateOperator(operator):
+			if not self.isBuiltinOperator(operator):
 				self.rearrangeDesc(charDesc)
-
-	def getRearrangeInfoByOperator(self, operator):
-		operatorName=operator.getName()
-		if self.isTemplateOperator(operator):
-			rearrangeInfo=self.rearrangeInfoDictForTemplateOperator.get(operatorName)
-		else:
-			rearrangeInfo=self.rearrangeInfoDictForBuiltinOperator.get(operatorName)
-		return rearrangeInfo
 

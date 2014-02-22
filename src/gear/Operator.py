@@ -1,7 +1,10 @@
+from . import RearrangeInfo
+
 class Operator:
 	def __init__(self, name, direction):
 		self.name=name
 		self.direction=direction
+		self.rearrangeInfo=None
 
 	def __str__(self):
 		return "%s"%self.name
@@ -15,13 +18,24 @@ class Operator:
 	def getDirection(self):
 		return self.direction
 
-class BuiltinOperator:
-	def __init__(self, name, direction):
+	def getRearrangeInfo(self):
+		return self.rearrangeInfo
+
+class BuiltinOperator(Operator):
+	def __init__(self, name, direction, rearrangeInfo):
 		Operator.__init__(self, name, direction)
+		self.rearrangeInfo=rearrangeInfo
+
+	def getRearrangeInfo(self):
+		return self.rearrangeInfo
 
 class TemplateOperator(Operator):
-	def __init(self, templateDescription):
-		pass
+	def __init__(self, name, direction):
+		Operator.__init__(self, name, direction)
+		self.rearrangeInfo=None
+
+	def setRearrangeInfo(self, rearrangeInfo):
+		self.rearrangeInfo=rearrangeInfo
 
 # 龜
 # 爲
@@ -32,6 +46,26 @@ class TemplateOperator(Operator):
 # 衍衷瓥粦
 # 錯
 
-OperatorSilkWorm=BuiltinOperator('蚕', '|')
-OperatorGoose=BuiltinOperator('鴻', '-')
+OperatorTurtle=BuiltinOperator('龜', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorEqual=BuiltinOperator('爲', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorLoong=BuiltinOperator('龍', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorEast=BuiltinOperator('東', '$', RearrangeInfo.RearrangeInfoSame())
+OperatorSilkworm=BuiltinOperator('蚕', '|', RearrangeInfo.RearrangeInfoSame())
+OperatorGoose=BuiltinOperator('鴻', '-', RearrangeInfo.RearrangeInfoSame())
+OperatorLoop=BuiltinOperator('回', '@', RearrangeInfo.RearrangeInfoSame())
+
+OperatorQi=BuiltinOperator('起', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorLiao=BuiltinOperator('廖', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorZai=BuiltinOperator('載', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorSheng=BuiltinOperator('聖', '*', RearrangeInfo.RearrangeInfoSame())
+
+OperatorTong=BuiltinOperator('起', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorHan=BuiltinOperator('廖', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorQu=BuiltinOperator('載', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorZuo=BuiltinOperator('聖', '*', RearrangeInfo.RearrangeInfoSame())
+
+OperatorYan=BuiltinOperator('衍', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorZhong=BuiltinOperator('衷', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorLi=BuiltinOperator('瓥', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorLin=BuiltinOperator('粦', '*', RearrangeInfo.RearrangeInfoSame())
 
