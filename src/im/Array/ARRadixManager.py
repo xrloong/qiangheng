@@ -16,8 +16,6 @@ class ARRadixParser(RadixParser):
 			codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
 		else:
 			codeInfo=self.convertRadixDescToCodeInfoByReference(radixDesc)
-
-		self.setCodeInfoAttribute(codeInfo, radixDesc)
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
@@ -41,7 +39,7 @@ class ARRadixParser(RadixParser):
 
 		codeList=[]
 		for radixName in nameList:
-			radixDesc=self.radixDescriptionManager.getReferenceDescription(radixName)
+			radixDesc=self.getRadixDescription(radixName)
 			radixCodeInfoList=self.convertRadixDescToCodeInfoList(radixDesc)
 
 			radixInfo=radixCodeInfoList[0]

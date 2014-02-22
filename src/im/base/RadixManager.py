@@ -27,14 +27,12 @@ class RadixParser:
 		return self.codeInfoEncoder
 
 
-	def setCodeInfoAttribute(self, codeInfo, radixInfo):
-		codeVariance=radixInfo.getCodeVarianceType()
-		isSupportCharacterCode=radixInfo.isSupportCharacterCode()
-		isSupportRadixCode=radixInfo.isSupportRadixCode()
-		codeInfo.setCodeInfoAttribute(codeVariance, isSupportCharacterCode, isSupportRadixCode)
+	def getRadixDescription(self, radixName):
+		return self.radixDescriptionManager.getDescription(radixName)
+
 
 	def convert(self):
-		radixDescList=self.radixDescriptionManager.getList()
+		radixDescList=self.radixDescriptionManager.getDescriptionList()
 
 		for [charName, radixDesc] in radixDescList:
 			radixCodeInfoList=self.convertRadixDescToCodeInfoList(radixDesc)
@@ -44,10 +42,20 @@ class RadixParser:
 		radixCodeInfoList=[]
 		tmpRadixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
 		for radixInfo in tmpRadixCodeInfoList:
-			codeInfo=self.convertRadixDescToCodeInfo(radixInfo)
+			codeInfo=self.convertRadixDescToCodeInfoWithAttribute(radixInfo)
 			if codeInfo:
 				radixCodeInfoList.append(codeInfo)
 		return radixCodeInfoList
+
+	def convertRadixDescToCodeInfoWithAttribute(self, radixDesc):
+		codeInfo=self.convertRadixDescToCodeInfo(radixDesc)
+
+		codeVariance=radixDesc.getCodeVarianceType()
+		isSupportCharacterCode=radixDesc.isSupportCharacterCode()
+		isSupportRadixCode=radixDesc.isSupportRadixCode()
+		codeInfo.setCodeInfoAttribute(codeVariance, isSupportCharacterCode, isSupportRadixCode)
+
+		return codeInfo
 
 	# 多型
 	def convertElementToRadixInfo(self, elementCodeInfo):
@@ -64,8 +72,6 @@ class RadixParser:
 			infoDict=elementCodeInfo.attrib
 
 		codeInfo=CodeInfo()
-
-		self.setCodeInfoAttribute(codeInfo, radixDesc)
 		return codeInfo
 
 	def parse(self, toRadixList):
@@ -137,10 +143,10 @@ class RadixDescriptionManager:
 		self.descriptionDict[charName]=tmpRadixDesc
 		self.radixDescDB[charName]=tmpRadixDesc
 
-	def getList(self):
+	def getDescriptionList(self):
 		return list(self.descriptionDict.items())
 
-	def getReferenceDescription(self, radixName):
+	def getDescription(self, radixName):
 		return self.radixDescDB[radixName]
 
 class RadixCodeInfoDescription:

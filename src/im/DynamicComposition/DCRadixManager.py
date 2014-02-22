@@ -8,8 +8,6 @@ class DCRadixParser(RadixParser):
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
-
-		self.setCodeInfoAttribute(codeInfo, radixDesc)
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
