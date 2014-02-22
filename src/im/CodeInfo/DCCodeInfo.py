@@ -1,9 +1,30 @@
 import re
+import sys
 from gear.CodeInfo import CodeInfo
 
 class DCCodeInfo(CodeInfo):
 	INSTALLMENT_SEPERATOR='|'
+	STROKE_SEPERATOR=';'
 	RADIX_SEPERATOR=','
+
+	STROKE_NAMES=[
+		"XXXX",
+
+		"點", "長頓點",
+
+		"橫", "橫鉤", "橫折", "橫折橫",
+		"橫折鉤", "橫撇", "橫曲鉤",
+		"橫撇橫折鉤", "橫斜鉤",
+		"橫折橫折",
+
+		"豎", "豎折", "豎挑", "豎橫折",
+		"豎橫折鉤", "豎曲鉤", "豎鉤",
+		"臥鉤", "斜鉤", "彎鉤",
+
+		"撇", "撇頓點", "撇橫", "撇挑",
+		"撇折", "豎撇", "挑", "挑折",
+		"捺",
+	]
 
 	def __init__(self, strokeList, isSupportCharacterCode=True, isSupportRadixCode=True):
 		CodeInfo.__init__(self, isSupportCharacterCode, isSupportRadixCode)
@@ -21,7 +42,7 @@ class DCCodeInfo(CodeInfo):
 		strokeList=[]
 		description=propDict.get('資訊表示式', '')
 		if len(description)>0 and description!='XXXX':
-			strokeDescriptionList=description.split(';')
+			strokeDescriptionList=description.split(DCCodeInfo.STROKE_SEPERATOR)
 			strokeList=[]
 			for d in strokeDescriptionList:
 				stroke=Stroke(d)
@@ -39,14 +60,16 @@ class DCCodeInfo(CodeInfo):
 	def getCode(self):
 		codeList=[stroke.getCode() for stroke in self.strokeList]
 		return ','.join(codeList)
-		return ';'.join(codeList)
 
 class Stroke:
 	def __init__(self, description):
 		matchResult=re.match("\((.*)\)(.*)", description)
 
 		groups=matchResult.groups()
-		nameDescription=groups[0]
+		strokeName=groups[0]
+		if strokeName not in DCCodeInfo.STROKE_NAMES:
+			print("不認得的筆畫名稱: %s"%strokeName, file=sys.stderr)
+
 		strokeDescription=groups[1]
 
 		descriptionList=strokeDescription.split(',')
