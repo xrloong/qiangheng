@@ -38,3 +38,6 @@ Options:
 	utils/
 	xslt/
 
+== 程式架構說明 ==
+請參考 doc/qiangheng.dia （使用 Dia）。
+
