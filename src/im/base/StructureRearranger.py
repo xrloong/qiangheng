@@ -2,7 +2,7 @@ from im.gear import OperatorManager
 
 class StructureRearranger:
 	def __init__(self):
-		self.operationMgr=OperatorManager.OperatorManager()
+		pass
 
 	def rearrangeOn(self, charDesc):
 		structDescList=charDesc.getStructureList()
@@ -30,10 +30,4 @@ class StructureRearranger:
 
 	def rearrangeSpecial(self, structDesc):
 		return False
-
-	def setTemplateDB(self, templateDB):
-		self.operationMgr.setTemplateDB(templateDB)
-
-	def getOperatorGenerator(self):
-		return self.operationMgr.getOperatorGenerator()
 

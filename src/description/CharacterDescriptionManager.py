@@ -6,9 +6,8 @@ from parser import QHParser
 from xml.etree import ElementTree
 import Constant
 
-class CharDescriptionManager:
-	def __init__(self, structureRearranger):
-		self.templateDB={}
+class CharacterDescriptionManager:
+	def __init__(self, operationManager):
 		self.characterDB={}
 
 		def charDescQueryer(charName):
@@ -17,9 +16,9 @@ class CharDescriptionManager:
 
 		self.charDescQueryer=charDescQueryer
 
-		self.structurRearranger=structureRearranger
+		self.operationManager=operationManager
 
-		self.parser=QHParser.QHParser(self.structurRearranger.getOperatorGenerator())
+		self.parser=QHParser.QHParser(operationManager.getOperatorGenerator())
 
 	def getAllCharacters(self):
 		return self.characterDB.keys()
@@ -34,14 +33,18 @@ class CharDescriptionManager:
 
 
 	def loadData(self, toTemplateList, toComponentList):
+		templateDB={}
 		for filename in toTemplateList:
-			self.loadTemplateFromXML(filename, fileencoding=Constant.FILE_ENCODING)
+			tmpTemplateDB=self.loadTemplateFromXML(filename, fileencoding=Constant.FILE_ENCODING)
+			templateDB.update(tmpTemplateDB)
 
-		self.structurRearranger.setTemplateDB(self.templateDB)
+		self.operationManager.setTemplateDB(templateDB)
 
 		for filename in toComponentList:
 			self.loadFromXML(filename, fileencoding=Constant.FILE_ENCODING)
-		self.adjustData()
+
+		structureRearranger=self.operationManager.getStructureRearranger()
+		self.adjustData(structureRearranger)
 
 	def loadFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
 		f=open(filename, encoding=fileencoding)
@@ -64,14 +67,13 @@ class CharDescriptionManager:
 		f=open(filename, encoding=fileencoding)
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
-		templateDB=self.parser.loadTemplateByParsingXML(rootNode)
-		self.templateDB.update(templateDB)
+		return self.parser.loadTemplateByParsingXML(rootNode)
 
-	def adjustData(self):
+	def adjustData(self, structureRearranger):
 		for charName in self.characterDB.keys():
 #			print("name: %s"%charName, file=sys.stderr);
 			charDesc=self.characterDB.get(charName)
-			self.structurRearranger.rearrangeOn(charDesc)
+			structureRearranger.rearrangeOn(charDesc)
 #			print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 if __name__=='__main__':

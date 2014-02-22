@@ -3,7 +3,7 @@ from . import RearrangeInfo
 import sys
 
 class OperatorManager:
-	def __init__(self):
+	def __init__(self, imPackage):
 		self.templateDB={}
 
 		self.builtinOperatorDict={
@@ -47,8 +47,9 @@ class OperatorManager:
 				operator=self.findTemplateOperator(operatorName)
 			return operator
 
-		operatorLoong=operatorGenerator('龍')
 		self.operatorGenerator=operatorGenerator
+		self.structureRearranger=imPackage.StructureRearranger()
+
 
 	def addTemplateOperatorIfNotExist(self, templateName):
 		if templateName in self.templateOperatorDict:
@@ -72,4 +73,7 @@ class OperatorManager:
 
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
+
+	def getStructureRearranger(self):
+		return self.structureRearranger
 

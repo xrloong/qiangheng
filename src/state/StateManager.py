@@ -1,10 +1,11 @@
 
 # 視此模式為獨體模式（Singleton）。
-from im.gear import CodeInfoManager
+from im.gear.CodeInfoManager import CodeInfoManager
+from im.gear.OperatorManager import OperatorManager
 
 __state_IMPackage=None
 codeInfoManager=None
-structureRearranger=None
+operationManager=None
 
 def __init__(self):
 	pass
@@ -13,16 +14,18 @@ def setIMPackage(imPackage):
 	global __state_IMPackage
 	global codeInfoManager
 	global structureRearranger
+	global operationManager
 
 	__state_IMPackage=imPackage
 
-	codeInfoManager=CodeInfoManager.CodeInfoManager(imPackage)
+	codeInfoManager=CodeInfoManager(imPackage)
 
 	structureRearranger=imPackage.StructureRearranger()
+	operationManager=OperatorManager(imPackage)
 
 def getCodeInfoManager():
 	return codeInfoManager
 
-def getStructureRearranger():
-	return structureRearranger
+def getOperationManager():
+	return operationManager
 

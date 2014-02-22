@@ -4,11 +4,11 @@
 import sys
 
 from xml.etree import ElementTree
-from im import IMMgr
-from description import CharacterDescriptionManager
-from hanzi import HanZiNetwork
-from state import StateManager
 from optparse import OptionParser
+from state import StateManager
+from im.IMMgr import IMMgr
+from description.CharacterDescriptionManager import CharacterDescriptionManager
+from hanzi.HanZiNetwork import HanZiNetwork
 
 class QiangHeng:
 	def __init__(self, options):
@@ -18,16 +18,16 @@ class QiangHeng:
 		configList=self.readConfig(configFile)
 		[imProp, toTemplateList, toComponentList, toCodeList]=configList
 
-		imPackage=IMMgr.IMMgr.getIMPackage(imProp)
+		imPackage=IMMgr.getIMPackage(imProp)
 		StateManager.setIMPackage(imPackage)
 
 		StateManager.getCodeInfoManager().loadRadix(toCodeList)
 
-		structureRearranger=StateManager.getStructureRearranger()
-		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(structureRearranger)
+		operationManager=StateManager.getOperationManager()
+		self.descMgr=CharacterDescriptionManager(operationManager)
 		self.descMgr.loadData(toTemplateList, toComponentList)
 
-		self.hanziNetwork=HanZiNetwork.HanZiNetwork.construct(self.descMgr)
+		self.hanziNetwork=HanZiNetwork.construct(self.descMgr)
 
 		codeMappingInfoList=self.genIMMapping()
 		if xml_format:
