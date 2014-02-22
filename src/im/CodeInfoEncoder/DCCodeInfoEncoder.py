@@ -52,8 +52,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 				FCCodeInfoEncoder.encodeAsZuo(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorYou.equals(operator):
 				FCCodeInfoEncoder.encodeAsYou(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorJian.equals(operator):
-				FCCodeInfoEncoder.encodeAsJian(codeInfo, operator, codeInfoList)
+			elif Operator.OperatorLiang.equals(operator):
+				FCCodeInfoEncoder.encodeAsLiang(codeInfo, operator, codeInfoList)
 			elif Operator.OperatorJia.equals(operator):
 				FCCodeInfoEncoder.encodeAsJia(codeInfo, operator, codeInfoList)
 				"""
@@ -254,7 +254,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
 	@staticmethod
-	def encodeAsJian(codeInfo, operator, codeInfoList):
+	def encodeAsLiang(codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]

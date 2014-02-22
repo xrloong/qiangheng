@@ -81,6 +81,6 @@ OperatorTriangleShape=BuiltinOperator('粦', '*', RearrangeInfo.RearrangeInfoSam
 OperatorMu=BuiltinOperator('畞', '$', RearrangeInfo.RearrangeInfoSame())
 OperatorZuo=BuiltinOperator('㘴', '$', RearrangeInfo.RearrangeInfoSame())
 OperatorYou=BuiltinOperator('幽', '*', RearrangeInfo.RearrangeInfoSame())
-OperatorJian=BuiltinOperator('繭', '*', RearrangeInfo.RearrangeInfoSame())
+OperatorLiang=BuiltinOperator('㒳', '*', RearrangeInfo.RearrangeInfoSame())
 OperatorJia=BuiltinOperator('夾', '$', RearrangeInfo.RearrangeInfoSame())
 

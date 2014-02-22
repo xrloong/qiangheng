@@ -19,7 +19,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 			if codeInfoList and all(rtlist):
 				rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
 				zmCode=self.computeCharacterCode(rtlist)
-				if Operator.OperatorJian.equals(operator):
+				if Operator.OperatorLiang.equals(operator):
 					codeInfo.setZMProp(rtlist[:1])
 				else:
 					codeInfo.setZMProp(rtlist)

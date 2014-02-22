@@ -35,7 +35,7 @@ class OperatorManager:
 			'畞':Operator.OperatorMu,
 			'㘴':Operator.OperatorZuo,
 			'幽':Operator.OperatorYou,
-			'繭':Operator.OperatorJian,
+			'㒳':Operator.OperatorLiang,
 			'夾':Operator.OperatorJia,
 		}
 		self.templateOperatorDict={
