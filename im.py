@@ -90,18 +90,29 @@ class CangJie(NoneIM):
 	class CJCharInfo(NoneIM.CharInfo):
 		def __init__(self, charname, prop):
 			NoneIM.CharInfo.__init__(self, charname, prop)
-			self._cj_incode=None
-			if len(prop)>=2:
-				self.setCJProp(prop[1])
+			self._cj_incode=None	# 當獨體使用
+			self._cj_rtcode=None	# 當部件使用
+			if len(prop)>=3:
+				self.setCJProp(prop[1], prop[2])
 
-		def setCJProp(self, cj_incode):
+		def setCJProp(self, cj_incode, cj_rtcode):
 			if cj_incode=='XXXX':
 				self._cj_incode=None
 			else:
 				self._cj_incode=cj_incode
 
+			if cj_rtcode=='XXXX':
+#				self._cj_rtcode=None
+				# 目前先假設跟 _cj_incode 一樣
+				if cj_incode=='XXXX':
+					self._cj_rtcode=None
+				else:
+					self._cj_rtcode=cj_incode
+			else:
+				self._cj_rtcode=cj_rtcode
+
 		def getCJProp(self):
-			return self._cj_incode
+			return [self._cj_incode, self._cj_rtcode]
 
 		@property
 		def cj(self):
@@ -186,61 +197,39 @@ class CangJie(NoneIM):
 	def setCharTree(self, ch):
 		"""設定某一個字符所包含的部件的碼"""
 
-		if ch.getCJProp():
+		if ch.getCJProp()[0]:
 			# 如果有值，代表事先指定或之前設定過。
 			return
 
-		def getCJPrefixCode(prelist):
-			"""計算倉頡字首的碼"""
+		def CJCombideCode(first, second):
+			tmpfirst=first if len(first)<=2 else first[0]+first[-1]
+			tmpsecond=second if len(second)<=2 else second[0]+second[-1]
+			anscode=tmpfirst+tmpsecond
+			anscode=anscode if len(anscode)<=3 else anscode[0:2]+anscode[-1]
+			return anscode
 
-			# 字首最多取兩碼
-			if len(prelist)==1:
-				# 如果字首只有一個部件
-				tmpcode=prelist[0].getCJProp()
-				if len(tmpcode)<=2:
-					# 字首小於或剛好二個碼就全取
-					return tmpcode
-				else:
-					# 字首有超過二個碼就首碼及尾碼
-					return tmpcode[0]+tmpcode[-1]
-			else:
-				# 如果字首有超過一個部件，則取首部件的首碼及尾部件的尾碼
-				return prelist[0].getCJProp()[0]+prelist[-1].getCJProp()[-1]
+		def getCJRootCodeAsBody(rtcodelist):
+			tmpcode=rtcodelist[0]
+			tmpcode=tmpcode if len(tmpcode)<=3 else tmpcode[0:2]+tmpcode[-1]
+			for rtcode in rtcodelist[1:]:
+				tmpcode=CJCombideCode(tmpcode, rtcode)
+			return tmpcode
 
-		def getCJPostfixCode(postlist):
-			"""計算倉頡字身的碼"""
+		prelist, postlist=self.getCJPrePostList(ch)
+		complist=[prelist, postlist]
 
-			# 字身最多取三碼
-			if len(postlist)==1:
-				# 如果字身只有一個部件
-				tmpcode=postlist[0].getCJProp()
-				if len(tmpcode)<=3:
-					# 字身只有三個碼就全取
-					return tmpcode
-				else:
-					# 字身有超過三個碼就首碼、次碼及尾碼
-					return tmpcode[0:2]+tmpcode[-1]
-			else:
-				# 如果字身有超過一個部件
-				tmpcode=postlist[0].getCJProp()
-				if len(tmpcode)==1:
-					# 如果次字首有只有一個碼
-					# 則取次字首的全碼及次字身的尾碼及尾碼
-					return tmpcode+getCJPrefixCode(postlist[1:])
-				else:
-					# 如果次字首有有超過一個碼
-					# 則取次字首的首碼及尾碼及最後部件的尾碼
-					return tmpcode[0]+tmpcode[-1]+postlist[-1].getCJProp()[-1]
-
-		[prefixlist, postfixlist]=self.getCJPrePostList(ch)
-
-		tmplist=prefixlist+postfixlist
-		for tmpch in tmplist:
+		for tmpch in prelist+postlist:
 			self.setCharTree(tmpch)
 
-		if prefixlist and postfixlist and all(tmplist) and all(map(lambda ch: ch.getCJProp(), tmplist)):
-			cj=getCJPrefixCode(prefixlist)+getCJPostfixCode(postfixlist)
-			ch.setCJProp(cj)
+		cjlist=[list(map(lambda c: c.getCJProp()[1], prelist)),
+				list(map(lambda c: c.getCJProp()[1], postlist))]
+		if cjlist[0] and cjlist[1] and all(cjlist[0]) and all(cjlist[1]):
+			headcode=getCJRootCodeAsBody(cjlist[0])
+			headcode=headcode if len(headcode)<=2 else headcode[0]+headcode[-1]
+			bodycode=getCJRootCodeAsBody(cjlist[1])
+			cjcode=headcode+bodycode
+			cjbodycode=CJCombideCode(headcode, bodycode)
+			ch.setCJProp(cjcode, cjbodycode)
 
 class Array(NoneIM):
 	"行列輸入法"
