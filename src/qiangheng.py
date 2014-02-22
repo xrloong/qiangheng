@@ -3,7 +3,8 @@
 
 import sys
 
-from xml.etree import ElementTree as ET
+#from xml.etree import ElementTree as ET
+import lxml.etree as ET
 from optparse import OptionParser
 from state import StateManager
 from im.IMMgr import IMMgr
@@ -125,7 +126,8 @@ class QiangHeng:
 			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "頻率":x.getFrequency(), "類型":x.getVariance()}
 			ET.SubElement(charGroup, "對應", attrib)
 		xmlNode=ET.ElementTree(rootNode)
-		ET.dump(xmlNode)
+		print(ET.tounicode(xmlNode, pretty_print=True))
+#		ET.dump(xmlNode)
 #		xmlNode.write(sys.stdout)
 
 	def toTXT(self, codeMappingInfoList):

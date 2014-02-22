@@ -3,7 +3,8 @@
 import sys
 from .CharacterDescription import CharacterDescription
 from parser import QHParser
-from xml.etree import ElementTree as ET
+#from xml.etree import ElementTree as ET
+import lxml.etree as ET
 import Constant
 
 class CharacterDescriptionManager:

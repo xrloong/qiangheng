@@ -2,7 +2,8 @@ from .CodeInfo import CodeInfo
 from .CodeInfoEncoder import CodeInfoEncoder
 
 import Constant
-from xml.etree import ElementTree as ET
+#from xml.etree import ElementTree as ET
+import lxml.etree as ET
 from ..gear import OperatorManager
 from gear.CodeVarianceType import CodeVarianceTypeFactory
 
