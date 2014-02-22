@@ -10,59 +10,6 @@ from state import StateManager
 
 from optparse import OptionParser
 
-class DescriptionManagerToHanZiNetworkConverter:
-	def __init__(self, descMgr, hanziNetwork):
-		self.descMgr=descMgr
-		self.hanziNetwork=hanziNetwork
-
-	def run(self):
-		self.constructDescriptionNetwork()
-
-	def constructDescriptionNetwork(self):
-		charNameList=self.getAllCharacters()
-		hanziNetwork=self.hanziNetwork
-		sortedNameList=sorted(charNameList)
-
-		for charName in sortedNameList:
-			hanziNetwork.addNode(charName)
-
-		for charName in sortedNameList:
-			charDesc=self.queryDescription(charName)
-			structDescList=charDesc.getStructureList()
-			for structDesc in structDescList:
-				self.recursivelyAddNode(structDesc)
-
-		for charName in sortedNameList:
-			charDesc=self.queryDescription(charName)
-			structDescList=charDesc.getStructureList()
-			for structDesc in structDescList:
-				if structDesc.isTurtle():
-					hanziNetwork.appendTurtleStruct(structDesc)
-				else:
-					self.recursivelyAddLink(structDesc)
-
-
-	def recursivelyAddNode(self, srcDesc):
-		self.hanziNetwork.addOrFindNodeByCharDesc(srcDesc)
-
-		for childSrcDesc in srcDesc.getCompList():
-			self.recursivelyAddNode(childSrcDesc)
-
-	def recursivelyAddLink(self, structDesc):
-		operator=structDesc.getOperator()
-		childDescList=structDesc.getCompList()
-
-		self.hanziNetwork.addLink(structDesc, operator, childDescList)
-
-		for childSrcDesc in structDesc.getCompList():
-			self.recursivelyAddLink(childSrcDesc)
-
-	def getAllCharacters(self):
-		return self.descMgr.getAllCharacters()
-
-	def queryDescription(self, characterName):
-		return self.descMgr.queryCharacterDescription(characterName)
-
 class QiangHeng:
 	def __init__(self, options):
 		configFile=options.config_file
@@ -76,14 +23,15 @@ class QiangHeng:
 
 		self.descMgr.loadData(toTemplateList, toComponentList, toCodeList)
 
-		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(self.descMgr, self.hanziNetwork)
-		toHanZiNetworkConverter.run()
+		targetCharacterList=self.descMgr.getAllCharacters()
+		self.hanziNetwork.construct(self.descMgr, targetCharacterList)
 
+		characterMapping=self.genIMMapping(targetCharacterList)
 		if xml_format:
 			imInfo=imModule.IMInfo()
-			self.toXML(imInfo)
+			self.toXML(imInfo, characterMapping)
 		else:
-			self.toTXT()
+			self.toTXT(characterMapping)
 
 	def initManager(self, imModule):
 		self.descMgr=CharDescriptionManager.CharDescriptionManager(imModule)
@@ -116,7 +64,7 @@ class QiangHeng:
 		return [imProp, toTemplateList, toComponentList, toCodeList]
 
 
-	def toXML(self, imInfo):
+	def toXML(self, imInfo, characterMapping):
 		keyMaps=imInfo.getKeyMaps()
 
 		rootNode=ElementTree.Element("輸入法")
@@ -144,19 +92,15 @@ class QiangHeng:
 
 		# 對照表
 		charGroup=ElementTree.SubElement(rootNode, "對應集")
-		targetCharList=self.getAllCharacters()
-		cm=self.genIMMapping(targetCharList)
-		for x in sorted(cm):
+		for x in sorted(characterMapping):
 			attrib={"按鍵序列":x[0], "字符":x[1], "頻率":x[2], "類型":x[3]}
 			ElementTree.SubElement(charGroup, "對應", attrib)
 		xmlNode=ElementTree.ElementTree(rootNode)
 		ElementTree.dump(xmlNode)
 #		xmlNode.write(sys.stdout)
 
-	def toTXT(self):
-		targetCharList=self.getAllCharacters()
-		cm=self.genIMMapping(targetCharList)
-		table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x), cm)))
+	def toTXT(self, characterMapping):
+		table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x), characterMapping)))
 		print(table)
 
 	def genIMMapping(self, targetCharList):
@@ -165,17 +109,10 @@ class QiangHeng:
 		for charName in sorted(targetCharList):
 #			print("<-- %s -->"%charName)
 			codePropList=self.hanziNetwork.getCodePropertiesList(charName)
-			charDesc=self.queryDescription(charName)
-			freq=charDesc.getFrequency()
+			freq=self.descMgr.queryCharacterFrequency(charName)
 			for code, type in codePropList:
 				table.append([code, charName, freq, type])
 		return table
-
-	def getAllCharacters(self):
-		return self.descMgr.getAllCharacters()
-
-	def queryDescription(self, characterName):
-		return self.descMgr.queryCharacterDescription(characterName)
 
 oparser = OptionParser()
 oparser.add_option("-c", "--config", dest="config_file", help="輸入法設定檔", default="qhdata/config/default.xml")

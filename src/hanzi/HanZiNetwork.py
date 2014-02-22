@@ -151,12 +151,69 @@ class HanZiNode:
 
 			structure.setCompositions()
 
+class DescriptionManagerToHanZiNetworkConverter:
+	def __init__(self, descriptionManager, hanziNetwork, targetCharacterList):
+		self.descriptionManager=descriptionManager
+		self.hanziNetwork=hanziNetwork
+		self.targetCharacterList=targetCharacterList
+
+	def run(self):
+		self.constructDescriptionNetwork(self.targetCharacterList)
+
+	def constructDescriptionNetwork(self, targetCharacterList):
+		charNameList=targetCharacterList
+		hanziNetwork=self.hanziNetwork
+		sortedNameList=sorted(charNameList)
+
+		for charName in sortedNameList:
+			hanziNetwork.addNode(charName)
+
+		for charName in sortedNameList:
+			charDesc=self.queryDescription(charName)
+			structDescList=charDesc.getStructureList()
+			for structDesc in structDescList:
+				self.recursivelyAddNode(structDesc)
+
+		for charName in sortedNameList:
+			charDesc=self.queryDescription(charName)
+			structDescList=charDesc.getStructureList()
+			for structDesc in structDescList:
+				if structDesc.isTurtle():
+					hanziNetwork.appendTurtleStruct(structDesc)
+				else:  
+					self.recursivelyAddLink(structDesc)
+
+
+	def recursivelyAddNode(self, srcDesc):
+		self.hanziNetwork.addOrFindNodeByCharDesc(srcDesc)
+
+		for childSrcDesc in srcDesc.getCompList():
+			self.recursivelyAddNode(childSrcDesc)
+
+	def recursivelyAddLink(self, structDesc):
+		operator=structDesc.getOperator()
+		childDescList=structDesc.getCompList()
+
+		self.hanziNetwork.addLink(structDesc, operator, childDescList)
+
+		for childSrcDesc in structDesc.getCompList():
+			self.recursivelyAddLink(childSrcDesc)
+
+	def queryDescription(self, characterName):
+		return self.descriptionManager.queryCharacterDescription(characterName)
+
+
+
 class HanZiNetwork:
 	def __init__(self):
 		self.nodeList=[]
 
 		self.descNetwork={}
 		self.srcDescNameToNodeDict={}
+
+	def construct(self, descriptionManager, targetCharacterList):
+		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager, self, targetCharacterList)
+		toHanZiNetworkConverter.run()
 
 	def isInNetwork(self, srcDesc):
 		srcName=srcDesc.getHybridName()

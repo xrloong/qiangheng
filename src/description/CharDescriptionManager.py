@@ -33,6 +33,12 @@ class CharDescriptionManager:
 	def queryCharacterDescription(self, character):
 		return self.charDescQueryer(character)
 
+	def queryCharacterFrequency(self, character):
+		charDesc=self.queryCharacterDescription(character)
+		freq=charDesc.getFrequency()
+		return freq
+
+
 	def loadData(self, toTemplateList, toComponentList, toCodeList):
 		for filename in toTemplateList:
 			self.loadTemplateFromXML(filename, fileencoding='utf-8-sig')
