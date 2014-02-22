@@ -28,9 +28,14 @@
         </activity>
 
         <provider
-            android:name=".provider.StrokeProvider"
+            android:name=".provider.NamingStrokeProvider"
             android:exported="false"
-            android:authorities="idv.xrloong.tools.StrokeNaming" />
-    </application>
+            android:authorities="idv.xrloong.qiangheng.tools.NamingStroke" />
+
+        <provider
+            android:name=".provider.FindCommonComponentProvider"
+            android:exported="false"
+            android:authorities="idv.xrloong.qiangheng.tools.FindCommonComponent" />
+        </application>
 
 </manifest>

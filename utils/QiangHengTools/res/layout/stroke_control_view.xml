@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<idv.xrloong.qiangheng.tools.view.StrokeControlView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    >
+	    <Button
+			android:id="@+id/button_prev"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="前一個"
+	    	/>
+	    <EditText
+			android:id="@+id/edittext_data_id"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:inputType="number"
+		    android:text="1"
+	    	/>
+	    <Button
+			android:id="@+id/button_jump"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="跳至"
+	    	/>
+	    <Button
+			android:id="@+id/button_next"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="後一個"
+	    	/>
+	    </LinearLayout>
+
+	<idv.xrloong.qiangheng.tools.view.StrokeView
+		android:id="@+id/stroke_view"
+	    android:layout_width="@dimen/fcc_stroke_view_width" 
+	    android:layout_height="@dimen/fcc_stroke_view_height"
+	    android:background="@color/stroke_view_background"
+	    />
+</idv.xrloong.qiangheng.tools.view.StrokeControlView>

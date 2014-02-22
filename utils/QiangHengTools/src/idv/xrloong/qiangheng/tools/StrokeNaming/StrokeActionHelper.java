@@ -1,6 +1,6 @@
 package idv.xrloong.qiangheng.tools.StrokeNaming;
 
-import idv.xrloong.qiangheng.tools.provider.StrokeColumns;
+import idv.xrloong.qiangheng.tools.provider.StrokeActionColumns;
 import idv.xrloong.qiangheng.tools.util.Logger;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class StrokeActionHelper {
 	{
 		Logger.d(LOG_TAG, "query() +");
 
-		Uri strokeUri = StrokeColumns.CONTENT_URI;
+		Uri strokeUri = StrokeActionColumns.CONTENT_URI;
 		Uri queryUri = strokeUri;
 
 		ContentResolver contentResolver = context.getContentResolver();
@@ -30,10 +30,10 @@ public class StrokeActionHelper {
 		if(cursor!=null){
 			cursor.moveToFirst();
 			while(!cursor.isAfterLast()) {
-				int idxCharName = cursor.getColumnIndex(StrokeColumns.CHARACTER_NAME);
-				int idxStrokeNo = cursor.getColumnIndex(StrokeColumns.STROKE_NO);
-				int idxStrokeDescription = cursor.getColumnIndex(StrokeColumns.STROKE_DESCRIPTION);
-				int idxStrokeName = cursor.getColumnIndex(StrokeColumns.STROKE_NAME);
+				int idxCharName = cursor.getColumnIndex(StrokeActionColumns.CHARACTER_NAME);
+				int idxStrokeNo = cursor.getColumnIndex(StrokeActionColumns.STROKE_NO);
+				int idxStrokeDescription = cursor.getColumnIndex(StrokeActionColumns.STROKE_DESCRIPTION);
+				int idxStrokeName = cursor.getColumnIndex(StrokeActionColumns.STROKE_NAME);
 
 				String charName=cursor.getString(idxCharName);
 				int strokeNo=cursor.getInt(idxStrokeNo);
@@ -55,7 +55,7 @@ public class StrokeActionHelper {
 	{
 		Logger.d(LOG_TAG, "query() +");
 
-		Uri strokeUri = StrokeColumns.CONTENT_URI;
+		Uri strokeUri = StrokeActionColumns.CONTENT_URI;
 		Uri queryUri = ContentUris.withAppendedId(strokeUri, dataID);
 
 		ContentResolver contentResolver = context.getContentResolver();
@@ -65,10 +65,10 @@ public class StrokeActionHelper {
 		if(cursor!=null){
 			if(cursor.moveToFirst())
 			{
-				int idxCharName = cursor.getColumnIndex(StrokeColumns.CHARACTER_NAME);
-				int idxStrokeNo = cursor.getColumnIndex(StrokeColumns.STROKE_NO);
-				int idxStrokeDescription = cursor.getColumnIndex(StrokeColumns.STROKE_DESCRIPTION);
-				int idxStrokeName = cursor.getColumnIndex(StrokeColumns.STROKE_NAME);
+				int idxCharName = cursor.getColumnIndex(StrokeActionColumns.CHARACTER_NAME);
+				int idxStrokeNo = cursor.getColumnIndex(StrokeActionColumns.STROKE_NO);
+				int idxStrokeDescription = cursor.getColumnIndex(StrokeActionColumns.STROKE_DESCRIPTION);
+				int idxStrokeName = cursor.getColumnIndex(StrokeActionColumns.STROKE_NAME);
 
 				String charName=cursor.getString(idxCharName);
 				int strokeNo=cursor.getInt(idxStrokeNo);
@@ -84,14 +84,14 @@ public class StrokeActionHelper {
 	}
 
 	static void insert(Context context, StrokeItem strokeItem) {
-		Uri uri = StrokeColumns.CONTENT_URI;
+		Uri uri = StrokeActionColumns.CONTENT_URI;
 		ContentResolver contentResolver = context.getContentResolver();
 
 		ContentValues values = new ContentValues();
-		values.put(StrokeColumns.CHARACTER_NAME, strokeItem.charName);
-		values.put(StrokeColumns.STROKE_NO, strokeItem.strokeNo);
-		values.put(StrokeColumns.STROKE_NAME, strokeItem.strokeName);
-		values.put(StrokeColumns.STROKE_DESCRIPTION, strokeItem.strokeDescription);
+		values.put(StrokeActionColumns.CHARACTER_NAME, strokeItem.charName);
+		values.put(StrokeActionColumns.STROKE_NO, strokeItem.strokeNo);
+		values.put(StrokeActionColumns.STROKE_NAME, strokeItem.strokeName);
+		values.put(StrokeActionColumns.STROKE_DESCRIPTION, strokeItem.strokeDescription);
 
 		contentResolver.insert(uri, values);
 	}
@@ -100,17 +100,17 @@ public class StrokeActionHelper {
 	{
 		Logger.d(LOG_TAG, "bulkInsert() +");
 
-		Uri uri = StrokeColumns.CONTENT_URI;
+		Uri uri = StrokeActionColumns.CONTENT_URI;
 		ContentResolver contentResolver = context.getContentResolver();
 
 		List<ContentValues> valuesList = new ArrayList<ContentValues>();
 		for(StrokeItem strokeItem:itemList)
 		{
 			ContentValues values = new ContentValues();
-			values.put(StrokeColumns.CHARACTER_NAME, strokeItem.charName);
-			values.put(StrokeColumns.STROKE_NO, strokeItem.strokeNo);
-			values.put(StrokeColumns.STROKE_NAME, strokeItem.strokeName);
-			values.put(StrokeColumns.STROKE_DESCRIPTION, strokeItem.strokeDescription);
+			values.put(StrokeActionColumns.CHARACTER_NAME, strokeItem.charName);
+			values.put(StrokeActionColumns.STROKE_NO, strokeItem.strokeNo);
+			values.put(StrokeActionColumns.STROKE_NAME, strokeItem.strokeName);
+			values.put(StrokeActionColumns.STROKE_DESCRIPTION, strokeItem.strokeDescription);
 
 			valuesList.add(values);
 		}
@@ -123,12 +123,12 @@ public class StrokeActionHelper {
 	{
 		Logger.d(LOG_TAG, "update() +");
 
-		Uri strokeUri = StrokeColumns.CONTENT_URI;
+		Uri strokeUri = StrokeActionColumns.CONTENT_URI;
 		Uri updateUri = ContentUris.withAppendedId(strokeUri, id);
 
 		ContentResolver contentResolver = context.getContentResolver();
 		ContentValues values = new ContentValues();
-		values.put(StrokeColumns.STROKE_NAME, strokeName);
+		values.put(StrokeActionColumns.STROKE_NAME, strokeName);
 
 		contentResolver.update(updateUri, values, null, null);
 		Logger.d(LOG_TAG, "update() -");

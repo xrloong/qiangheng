@@ -1,8 +1,10 @@
 package idv.xrloong.qiangheng.tools.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import idv.xrloong.qiangheng.tools.R;
 import idv.xrloong.qiangheng.tools.util.Logger;
-import idv.xrloong.qiangheng.tools.widget.Stroke;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -13,27 +15,35 @@ import android.view.View;
 public class StrokeView extends View {
 	private static final String LOG_TAG = Logger.getLogTag(StrokeView.class);
 
-	private Stroke mStroke;
+	private IStrokeViewController mController = new IStrokeViewController() {
+		@Override
+		public IStrokeDrawable getStrokeDrawable() {
+			return new IStrokeDrawable() {
+
+				@Override
+				public List<Path> getPathList() {
+					return new ArrayList<Path>();
+				}
+			};
+		}
+	};
 	private Paint mPaintStroke;
 	private Paint paintBoundry;
 
 	public StrokeView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 
 		initBoundaryPaint();
 		initStrokePaint();
 	}
 
-	public void clear() {
-		mStroke = null;
-	}
+	public void setController(IStrokeViewController controller) {
+		Logger.d(LOG_TAG, "setController() +");
 
-	public void setStroke(Stroke stroke) {
-		Logger.d(LOG_TAG, "setStroke() +");
+		mController = controller;
+		invalidate();
 
-		mStroke = stroke;
-		this.invalidate();
+		Logger.d(LOG_TAG, "setController() -");
 	}
 
 	@Override
@@ -50,14 +60,29 @@ public class StrokeView extends View {
 		canvas.drawLine(right, top, right, bottom, paintBoundry);
 
 		canvas.save();
-		float sx = width * 1.f / Stroke.MAX_WIDTH;
-		float sy = height * 1.f / Stroke.MAX_HEIGHT;
+		float sx = width * 1.f / IStrokeDrawable.MAX_WIDTH;
+		float sy = height * 1.f / IStrokeDrawable.MAX_HEIGHT;
 		canvas.scale(sx, sy);
-		if (mStroke != null) {
-			Path path = mStroke.getPath();
-			canvas.drawPath(path, mPaintStroke);
-		}
+
+		drawAllStrokes(canvas);
+
 		canvas.restore();
+	}
+
+	private void drawAllStrokes(Canvas canvas) {
+		IStrokeDrawable strokeDrawable = mController.getStrokeDrawable();
+		drawStroke(canvas, strokeDrawable);
+	}
+
+	private void drawStroke(Canvas canvas, IStrokeDrawable drawableStroke) {
+		List<Path> pathList = drawableStroke.getPathList();
+		for(Path path : pathList) {
+			drawPath(canvas, path);
+		}
+	}
+
+	private void drawPath(Canvas canvas, Path path) {
+		canvas.drawPath(path, mPaintStroke);
 	}
 
 	private void initBoundaryPaint() {
@@ -67,8 +92,7 @@ public class StrokeView extends View {
 	}
 
 	private void initStrokePaint() {
-		int strokeColor = this.getContext().getResources().getColor(
-				R.color.stroke_color);
+		int strokeColor = this.getContext().getResources().getColor(R.color.stroke_color);
 
 		mPaintStroke = new Paint();
 		mPaintStroke.setStyle(Paint.Style.STROKE);

@@ -7,7 +7,7 @@ public class Logger {
 	private static final String LOG_PACKAGE = "QHTool";
 
 	public static final String getLogTag(Class<?> clz) {
-		return LOG_PACKAGE + clz.getSimpleName();
+		return LOG_PACKAGE + "." + clz.getSimpleName();
 	}
 
 	public static void e(String LogTag, String format, Object...  objects) {

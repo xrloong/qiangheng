@@ -2,10 +2,10 @@ package idv.xrloong.qiangheng.tools;
 
 import java.io.Serializable;
 
-import idv.xrloong.qiangheng.tools.QHToolContent;
 import idv.xrloong.qiangheng.tools.activity.FragmentActivity;
 import idv.xrloong.qiangheng.tools.fragment.FindCommonComponentFragment;
 import idv.xrloong.qiangheng.tools.fragment.StrokeNamingFragment;
+import idv.xrloong.qiangheng.tools.model.QHToolContent;
 import idv.xrloong.qiangheng.tools.util.Logger;
 import android.app.Fragment;
 import android.content.Context;

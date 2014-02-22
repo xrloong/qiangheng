@@ -1,9 +1,9 @@
 package idv.xrloong.qiangheng.tools.activity;
 
-import idv.xrloong.qiangheng.tools.QHToolContent;
 import idv.xrloong.qiangheng.tools.QHToolFactory;
 import idv.xrloong.qiangheng.tools.R;
 import idv.xrloong.qiangheng.tools.fragment.ItemListFragment;
+import idv.xrloong.qiangheng.tools.model.QHToolContent;
 import idv.xrloong.qiangheng.tools.util.Logger;
 import android.app.Activity;
 import android.app.Fragment;

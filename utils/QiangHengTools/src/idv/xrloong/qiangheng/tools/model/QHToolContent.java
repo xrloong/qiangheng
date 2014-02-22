@@ -1,5 +1,6 @@
-package idv.xrloong.qiangheng.tools;
+package idv.xrloong.qiangheng.tools.model;
 
+import idv.xrloong.qiangheng.tools.R;
 import idv.xrloong.qiangheng.tools.util.Logger;
 
 import java.util.ArrayList;

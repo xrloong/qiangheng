@@ -29,26 +29,6 @@
 		    android:layout_margin="10px"
 		    android:text="字符名"
 	    	/>
-	    <TextView
-			android:id="@+id/stroke_no"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_margin="10px"
-		    android:text="第幾筆"
-	    	/>
-	    <TextView
-			android:id="@+id/stroke_name"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_margin="10px"
-		    android:text="筆劃名"
-	    	/>
-	    </LinearLayout>
+	</LinearLayout>
 
-	<GridView
-		android:id="@+id/gridView"
-	    android:layout_width="fill_parent" 
-	    android:layout_height="fill_parent"
-	    android:numColumns="4"
-	    />
 </LinearLayout>

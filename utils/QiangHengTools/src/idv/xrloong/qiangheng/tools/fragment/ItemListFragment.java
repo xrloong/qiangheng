@@ -1,6 +1,6 @@
 package idv.xrloong.qiangheng.tools.fragment;
 
-import idv.xrloong.qiangheng.tools.QHToolContent;
+import idv.xrloong.qiangheng.tools.model.QHToolContent;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;

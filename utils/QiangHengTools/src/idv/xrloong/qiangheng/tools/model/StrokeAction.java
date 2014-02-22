@@ -1,6 +1,7 @@
-package idv.xrloong.qiangheng.tools.widget;
+package idv.xrloong.qiangheng.tools.model;
 
 import idv.xrloong.qiangheng.tools.util.Logger;
+import idv.xrloong.qiangheng.tools.view.IStrokeDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +9,13 @@ import java.util.List;
 import android.graphics.Path;
 import android.graphics.Point;
 
-public class Stroke {
-	private final static String LOG_TAG = Logger.getLogTag(Stroke.class);
-
-	public final static int MAX_WIDTH = 256;
-	public final static int MAX_HEIGHT = 256;
+public class StrokeAction implements IStrokeDrawable {
+	private final static String LOG_TAG = Logger.getLogTag(StrokeAction.class);
 
 	private String mName;
 	private Path mPath;
 
-	public Stroke(String description) {
+	public StrokeAction(String description) {
 		Logger.d(LOG_TAG, "Stroke()");
 
 		mPath=new Path();
@@ -31,9 +29,11 @@ public class Stroke {
 		return mName;
 	}
 
-	public Path getPath()
-	{
-		return mPath;
+	@Override
+	public List<Path> getPathList() {
+		List<Path> pathList = new ArrayList<Path>();
+		pathList.add(mPath);
+		return pathList;
 	}
 
 	private void setPath(String[] points)
@@ -47,7 +47,6 @@ public class Stroke {
 			int action =Integer.parseInt(d.substring(0, 4), 16);
 			int x=Integer.parseInt(d.substring(4, 6), 16);
 			int y=Integer.parseInt(d.substring(6, 8), 16);
-
 			Point p = new Point(x, y);
 			pointList.add(p);
 			int numPoints = pointList.size();

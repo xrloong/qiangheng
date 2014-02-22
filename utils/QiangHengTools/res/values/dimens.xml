@@ -2,5 +2,8 @@
 <resources>
 	<dimen name="stroke_view_width">200px</dimen>
 	<dimen name="stroke_view_height">200px</dimen>
+
+	<dimen name="fcc_stroke_view_width">200dp</dimen>
+	<dimen name="fcc_stroke_view_height">200dp</dimen>
 </resources>
 
