@@ -20,24 +20,18 @@ for line in infile:
 		comment=ET.Comment("%X"%codePoint)
 		characterSetNode.append(comment)
 
+	character=ET.SubElement(characterSetNode, "字符",
+		attrib={
+			"名稱" : chr(codePoint),
+			"註記" : "U+%X"%codePoint,
+		})
+
 	operator=l[1]
 	if operator=="XXXX":
-		pass
+		ET.SubElement(character, "組字")
 	elif operator=="龜":
-		character=ET.SubElement(characterSetNode, "字符",
-			attrib={
-				"名稱" : chr(codePoint),
-				"註記" : "U+%X"%codePoint,
-			})
-
 		ET.SubElement(character, "組字")
 	else:
-		character=ET.SubElement(characterSetNode, "字符",
-			attrib={
-				"名稱" : chr(codePoint),
-				"註記" : "U+%X"%codePoint,
-			})
-
 		assemble=ET.SubElement(character, "組字",
 			attrib={
 				"運算" : operator,

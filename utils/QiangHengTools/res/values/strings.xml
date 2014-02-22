@@ -11,8 +11,6 @@
 	<string name="menu_item_read_description">讀取筆劃描述</string>
 	<string name="menu_item_write_description">輸出筆劃描述</string>
 	
-	<string name="menu_item_init_ext_b">初始化擴充-B資料庫</string>
-	<string name="menu_item_write_txt_ext_b">產生文字檔(擴充-B資料庫)</string>
-	<string name="menu_item_read_txt_ext_b">讀入文字檔(擴充-B資料庫)</string>
-	<string name="menu_item_write_ext_b">輸出擴充-B</string>
+	<string name="menu_item_read_txt_ext_b">讀入文字檔</string>
+	<string name="menu_item_write_txt_ext_b">產生文字檔</string>
 </resources>

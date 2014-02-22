@@ -212,12 +212,6 @@ public class DecomposingExtentionBFragment extends Fragment {
 		boolean bResult = false;
 
 		switch(item.getItemId()) {
-/*
-		case R.id.menu_item_init_ext_b:
-			ExtentionBHelper.initExtB(getActivity(), CODE_POINT_START, CODE_POINT_END);
-			bResult = true;
-			break;
-*/
 		case R.id.menu_item_write_txt_ext_b:
 			generateTxt(getActivity());
 			bResult = true;
