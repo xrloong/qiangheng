@@ -1,6 +1,6 @@
 from ..base.CodeInfo import CodeInfo
-from .Calligraphy import Pane
-from .Calligraphy import StrokeGroup
+from calligraphy.Calligraphy import Pane
+from calligraphy.Calligraphy import StrokeGroup
 
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"

@@ -1,8 +1,8 @@
 from .DCCodeInfo import DCCodeInfo
 from ..base.CodeInfoEncoder import CodeInfoEncoder
 from ..base.CodeInfo import CodeInfo
-from .Calligraphy import Pane
-from .Calligraphy import StrokeGroup
+from calligraphy.Calligraphy import Pane
+from calligraphy.Calligraphy import StrokeGroup
 
 import sys
 
