@@ -17,8 +17,8 @@ class QiangHeng:
 
 		self.initManager(imModule)
 
-		dirCharInfoRoot=options.dir_charinfo
-		self.readDesc(dirCharInfoRoot, dirIM)
+		dirQHDataRoot=options.dir_qhdata
+		self.readDesc(dirQHDataRoot, dirIM)
 
 		self.constructDescriptionNetwork()
 
@@ -35,25 +35,25 @@ class QiangHeng:
 		charDescQueryer=self.descMgr.getCharDescQueryer()
 		self.hanziNetwork=HanZiNetwork(ciGenerator)
 
-	def readDesc(self, dirCharInfoRoot, dirIM):
+	def readDesc(self, dirQHDataRoot, dirIM):
 		filenamelist=[
 				'CJK.xml',
 		]
 
 		componentDir="component"+"/"+dirIM
 
-		dirCharInfo=dirCharInfoRoot + "/"
+		dirQHData=dirQHDataRoot + "/"
 		tmpfname=filenamelist[0]
 		radixDir="radix"+"/"+dirIM
 		toComponentList=[
-				dirCharInfo+'main/'+tmpfname,
-				dirCharInfo+componentDir+tmpfname,
-#				dirCharInfo+radixDir+tmpfname,
+				dirQHData+'main/'+tmpfname,
+				dirQHData+componentDir+tmpfname,
+#				dirQHData+radixDir+tmpfname,
 				]
 
 		radixDir="radix"+"/"+dirIM
 		toCodeList=[
-				dirCharInfo+radixDir+tmpfname,
+				dirQHData+radixDir+tmpfname,
 				]
 
 		self.getDescDBFromXML(toComponentList, toCodeList)
@@ -184,7 +184,7 @@ class QiangHeng:
 
 oparser = OptionParser()
 oparser.add_option("-i", "--im", dest="imname", help="輸入法名稱", default="倉頡")
-oparser.add_option("--dir-charinfo", dest="dir_charinfo", help="結構所在的目錄", default="charinfo")
+oparser.add_option("--dir-charinfo", dest="dir_qhdata", help="結構所在的目錄", default="qhdata")
 oparser.add_option("--xml", action="store_true", dest="xml_format")
 oparser.add_option("--text", action="store_false", dest="xml_format")
 (options, args) = oparser.parse_args()
