@@ -5,10 +5,9 @@ from .CharacterDescription import CharacterDescription
 from parser import QHParser
 from xml.etree import ElementTree
 import Constant
-from im.base import StructureRearranger
 
 class CharDescriptionManager:
-	def __init__(self):
+	def __init__(self, structureRearranger):
 		self.templateDB={}
 		self.characterDB={}
 
@@ -18,7 +17,7 @@ class CharDescriptionManager:
 
 		self.charDescQueryer=charDescQueryer
 
-		self.structurRearranger=StructureRearranger()
+		self.structurRearranger=structureRearranger
 
 		self.parser=QHParser.QHParser(self.structurRearranger.getOperatorGenerator())
 

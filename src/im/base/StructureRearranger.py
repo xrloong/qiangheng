@@ -5,7 +5,31 @@ class StructureRearranger:
 		self.operationMgr=OperatorManager.OperatorManager()
 
 	def rearrangeOn(self, charDesc):
-		self.operationMgr.rearrangeOn(charDesc)
+		structDescList=charDesc.getStructureList()
+		for structDesc in structDescList:
+			self.rearrangeRecursively(structDesc)
+
+	def rearrangeRecursively(self, structDesc):
+		self.rearrangeDesc(structDesc)
+		for childDesc in structDesc.getCompList():
+			self.rearrangeRecursively(childDesc)
+		return structDesc
+
+	def rearrangeDesc(self, structDesc):
+		if self.rearrangeSpecial(structDesc):
+			pass
+		else:
+			operator=structDesc.getOperator()
+			if not operator.isBuiltin():
+				rearrangeInfo=operator.getRearrangeInfo()
+
+				if rearrangeInfo!=None:
+					rearrangeInfo.rearrange(structDesc)
+					operator=structDesc.getOperator()
+					self.rearrangeDesc(structDesc)
+
+	def rearrangeSpecial(self, structDesc):
+		return False
 
 	def setTemplateDB(self, templateDB):
 		self.operationMgr.setTemplateDB(templateDB)

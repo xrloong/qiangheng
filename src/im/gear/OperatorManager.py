@@ -73,24 +73,3 @@ class OperatorManager:
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
 
-	def rearrangeOn(self, charDesc):
-		structDescList=charDesc.getStructureList()
-		for structDesc in structDescList:
-			self.rearrangeRecursively(structDesc)
-
-	def rearrangeRecursively(self, structDesc):
-		self.rearrangeDesc(structDesc)
-		for childDesc in structDesc.getCompList():
-			self.rearrangeRecursively(childDesc)
-		return structDesc
-
-	def rearrangeDesc(self, structDesc):
-		operator=structDesc.getOperator()
-		rearrangeInfo=operator.getRearrangeInfo()
-
-		if rearrangeInfo!=None:
-			rearrangeInfo.rearrange(structDesc)
-			operator=structDesc.getOperator()
-			if not operator.isBuiltin():
-				self.rearrangeDesc(structDesc)
-

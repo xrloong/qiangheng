@@ -23,7 +23,8 @@ class QiangHeng:
 
 		StateManager.getCodeInfoManager().loadRadix(toCodeList)
 
-		self.descMgr=CharacterDescriptionManager.CharDescriptionManager()
+		structureRearranger=StateManager.getStructureRearranger()
+		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(structureRearranger)
 		self.descMgr.loadData(toTemplateList, toComponentList)
 
 		self.hanziNetwork=HanZiNetwork.HanZiNetwork.construct(self.descMgr)
