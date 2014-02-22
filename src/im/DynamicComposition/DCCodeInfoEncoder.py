@@ -8,8 +8,6 @@ import sys
 import copy
 
 class DCCodeInfoEncoder(CodeInfoEncoder):
-	WIDTH=256
-	HEIGHT=256
 	def __init__(self):
 		pass
 
@@ -27,91 +25,18 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		pane=Pane.DEFAULT_PANE
 		return StrokeGroup(pane, resultStrokeList)
 
-	@staticmethod
-	def computeNewStrokeGroup(codeInfo, helper, xStart, xEnd, yStart, yEnd):
+	def splitLengthToList(self, length, weightList):
+		totalWeight=sum(weightList)
+		unitLength=length*1./totalWeight
 
-		region=helper.getBlock(xStart, xEnd, yStart, yEnd)
-		pane=Pane(region)
-
-		newStrokeGroup=copy.deepcopy(codeInfo.getStrokeGroup())
-		newStrokeGroup.transform(pane)
-		return newStrokeGroup
-
-	def encodeAsTurtle(self, codeInfoList):
-		print("不合法的運算：龜", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
-		return codeInfo
-
-	def encodeAsLoong(self, codeInfoList):
-		print("不合法的運算：龍", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
-		return codeInfo
-
-	def encodeAsEast(self, codeInfoList):
-		print("不合法的運算：東", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
-		return codeInfo
-
-	def encodeAsEqual(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(1, 1)
-
+		pointList=[]
 		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 0, 0, 0))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-		return codeInfo
-
-	def encodeAsEqual(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		return copy.deepcopy(firstCodeInfo)
-
-	def encodeAsLoop(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[-1]
-
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(3, 3)
-
-		newStrokeGroupList=[]
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(firstCodeInfo, helper, 0, 2, 0, 2))
-		newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(secondCodeInfo, helper, 1, 1, 1, 1))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-
-		codeInfo.setExtraPane(copy.deepcopy(firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)), DCCodeInfo.PANE_NAME_QI)
-		return codeInfo
-
-	def encodeAsSilkworm(self, codeInfoList):
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(1, nCount)
-
-		newStrokeGroupList=[]
-		for (index, tmpCodeInfo) in enumerate(codeInfoList):
-			newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(tmpCodeInfo, helper, 0, 0, index, index))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-
-		lastCodeInfo=codeInfoList[-1]
-		codeInfo.setExtraPane(copy.deepcopy(lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)), DCCodeInfo.PANE_NAME_QI)
-		return codeInfo
-
-	def encodeAsGoose(self, codeInfoList):
-		nCount=len(codeInfoList)
-		helper=DCGridHelper(nCount, 1)
-
-		newStrokeGroupList=[]
-		for (index, tmpCodeInfo) in enumerate(codeInfoList):
-			newStrokeGroupList.append(DCCodeInfoEncoder.computeNewStrokeGroup(tmpCodeInfo, helper, index, index, 0, 0))
-		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
-
-		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
-		return codeInfo
+		base=0
+		for weight in weightList:
+			pointList.append(int(base))
+			base=base+unitLength*weight
+		pointList.append(base)
+		return pointList
 
 	def encodeByEmbed(self, codeInfoList, paneNameList):
 		if len(codeInfoList)<2:
@@ -134,6 +59,79 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
 		return codeInfo
 
+	def encodeAsTurtle(self, codeInfoList):
+		print("不合法的運算：龜", file=sys.stderr)
+		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		return codeInfo
+
+	def encodeAsLoong(self, codeInfoList):
+		print("不合法的運算：龍", file=sys.stderr)
+		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		return codeInfo
+
+	def encodeAsEast(self, codeInfoList):
+		print("不合法的運算：東", file=sys.stderr)
+		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		return codeInfo
+
+	def encodeAsEqual(self, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+
+		newStrokeGroupList=[copy.deepcopy(firstCodeInfo.getStrokeGroup())]
+		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
+
+		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
+		return codeInfo
+
+	def encodeAsEqual(self, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		return copy.deepcopy(firstCodeInfo)
+
+	def encodeAsLoop(self, codeInfoList):
+		firstCodeInfo=codeInfoList[0]
+		codeInfo=self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_LOOP])
+		if firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
+			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, copy.deepcopy(firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)))
+		return codeInfo
+
+	def encodeAsSilkworm(self, codeInfoList):
+		weightList=list(map(lambda x: x.getStrokeCount()+1, codeInfoList))
+		pointList=self.splitLengthToList(Pane.HEIGHT, weightList)
+
+		newStrokeGroupList=[]
+		for [pointStart, pointEnd, codeInfo] in zip(pointList[:-1], pointList[1:], codeInfoList):
+			pane=Pane([0, pointStart, Pane.X_MAX, pointEnd])
+
+			newStrokeGroup=copy.deepcopy(codeInfo.getStrokeGroup())
+			newStrokeGroup.transform(pane)
+			newStrokeGroupList.append(newStrokeGroup)
+		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
+
+		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
+
+		lastCodeInfo=codeInfoList[-1]
+		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
+			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, copy.deepcopy(lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)))
+
+		return codeInfo
+
+	def encodeAsGoose(self, codeInfoList):
+		weightList=list(map(lambda x: x.getStrokeCount(), codeInfoList))
+		pointList=self.splitLengthToList(Pane.WIDTH, weightList)
+
+		newStrokeGroupList=[]
+		for [pointStart, pointEnd, codeInfo] in zip(pointList[:-1], pointList[1:], codeInfoList):
+			pane=Pane([pointStart, 0, pointEnd, Pane.Y_MAX])
+
+			newStrokeGroup=copy.deepcopy(codeInfo.getStrokeGroup())
+			newStrokeGroup.transform(pane)
+			newStrokeGroupList.append(newStrokeGroup)
+
+		newStrokeGroup=self.mergeStrokeGroupList(newStrokeGroupList)
+
+		codeInfo=self.generateDefaultCodeInfo(newStrokeGroup)
+		return codeInfo
+
 	def encodeAsQi(self, codeInfoList):
 		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_QI])
 
@@ -141,7 +139,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_LIAO])
 
 		lastCodeInfo=codeInfoList[-1]
-		codeInfo.setExtraPane(copy.deepcopy(lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)), DCCodeInfo.PANE_NAME_QI)
+		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
+			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, copy.deepcopy(lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)))
 		return codeInfo
 
 	def encodeAsZai(self, codeInfoList):
@@ -165,19 +164,4 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsJia(self, codeInfoList):
 		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
-
-class DCGridHelper:
-	WIDTH=256
-	HEIGHT=256
-
-	def __init__(self, xCount, yCount):
-		self.xCoordinate=[ int(DCGridHelper.WIDTH*i*1./xCount) for i in range(xCount+1)]
-		self.yCoordinate=[ int(DCGridHelper.HEIGHT*i*1./yCount) for i in range(yCount+1)]
-
-	def getBlock(self, xStart, xEnd, yStart, yEnd):
-		left=self.xCoordinate[xStart]
-		top=self.yCoordinate[yStart]
-		right=self.xCoordinate[xEnd+1]
-		bottom=self.yCoordinate[yEnd+1]
-		return [left, top, right, bottom]
 

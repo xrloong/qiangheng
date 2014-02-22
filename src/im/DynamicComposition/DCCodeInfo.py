@@ -4,6 +4,8 @@ from .Calligraphy import StrokeGroup
 
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"
+
+	PANE_NAME_LOOP="回"
 	PANE_NAME_QI="起"
 	PANE_NAME_LIAO="廖"
 	PANE_NAME_DAO="斗"
@@ -50,7 +52,7 @@ class DCCodeInfo(CodeInfo):
 		self.extraPaneDB=extranPaneDB
 		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=Pane.DEFAULT_PANE
 
-	def setExtraPane(self, extraPane, paneName):
+	def setExtraPane(self, paneName, extraPane):
 		self.extraPaneDB[paneName]=extraPane
 
 	def getExtraPane(self, paneName):
@@ -58,6 +60,9 @@ class DCCodeInfo(CodeInfo):
 
 	def getStrokeGroup(self):
 		return self.strokeGroup
+
+	def getStrokeCount(self):
+		return len(self.strokeGroup.getStrokeList())
 
 	def transform(self, pane):
 		self.strokeGroup.transform(pane)
