@@ -2,6 +2,7 @@ import copy
 from description.CodeType import CodeType
 from description.operator import Operator
 
+from . import HanZiStructure
 from . import HanZiNode
 
 class DescriptionManagerToHanZiNetworkConverter:
@@ -79,7 +80,7 @@ class HanZiNetwork:
 			rootNode=self.structDescExpandNameToNodeDict.get(structDesc.getReferenceName())
 
 			tmpNode=HanZiNode.HanZiNode(anonymousName)
-			tmpStructure=HanZiNode.HanZiWrapperStructure(rootNode, expression)
+			tmpStructure=HanZiStructure.HanZiWrapperStructure(rootNode, expression)
 			tmpNode.addStructure(tmpStructure)
 
 			self.structDescUniqueNameToNodeDict[anonymousName]=tmpNode
@@ -89,7 +90,7 @@ class HanZiNetwork:
 
 		codeType=structDesc.getCodeType()
 		codeInfoProperties=structDesc.getCodeInfoDict()
-		structure=HanZiNode.HanZiTurtleStructure(codeType, codeInfoProperties)
+		structure=HanZiStructure.HanZiTurtleStructure(codeType, codeInfoProperties)
 
 		dstNode=self.findNode(structDesc)
 		dstNode.addStructure(structure)
@@ -99,7 +100,7 @@ class HanZiNetwork:
 			childNodeList=[self.findNode(childDesc) for childDesc in childDescList]
 
 			codeType=structDesc.getCodeType()
-			structure=HanZiNode.HanZiStructure(codeType, operator, childNodeList)
+			structure=HanZiStructure.HanZiStructure(codeType, operator, childNodeList)
 
 			dstNode=self.findNode(structDesc)
 			dstNode.addStructure(structure)
