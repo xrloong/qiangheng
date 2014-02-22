@@ -56,14 +56,15 @@ class CharDescriptionManager:
 		f=open(filename, encoding=fileencoding)
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
-		nodeInfoList=self.parser.loadCharDescriptionByParsingXML(rootNode)
-		for [charName, compList, propDict] in nodeInfoList:
-			charDesc=self.characterDB.get(charName, None)
-			if charDesc==None:
-				charDesc=CharacterDescription(charName)
+		charDescList=self.parser.loadCharDescriptionByParsingXML(rootNode)
+		for charDesc in charDescList:
+			charName=charDesc.getName()
+			if charName in self.characterDB:
+				origCharDesc=self.characterDB.get(charName, None)
+				origCharDesc.setStructureList(charDesc.getStructureList())
+				origCharDesc.updateProperty(charDesc.getProperty())
+			else:
 				self.characterDB[charName]=charDesc
-			charDesc.setStructureList(compList)
-			charDesc.updateProperty(propDict)
 
 
 	def loadTemplateFromXML(self, filename, fileencoding='utf-8-sig'):

@@ -1,3 +1,6 @@
+import sys
+
+from description.CharacterDescription import CharacterDescription
 from description.StructureDescription import HangerStructureDescription
 from description.StructureDescription import TurtleStructureDescription
 from description.TemplateDescription import TemplateDescription
@@ -5,41 +8,43 @@ from description.TemplateDescription import TemplateCondition
 
 class QHParser:
 	def __init__(self, operatorGenerator):
-		def structDescGenerator(structInfo=['龜', []]):
-			operatorName, CompList=structInfo
-			operator=self.operatorGenerator(operatorName)
-
-			structDesc=HangerStructureDescription(operator, CompList)
-			return structDesc
-
 		self.operatorGenerator=operatorGenerator
-		self.structDescGenerator=structDescGenerator
+
+	def generateStructureDescription(self, structInfo=['龜', []]):
+		operatorName, CompList=structInfo
+		operator=self.operatorGenerator(operatorName)
+
+		structDesc=HangerStructureDescription(operator, CompList)
+		return structDesc
+
+	def getDesc_Radix(self, node):
+		name=node.get("置換")
+		structDesc=self.generateStructureDescription()
+		structDesc.setExpandName(name)
+		return structDesc
 
 	def getDesc_AssembleChar(self, assembleChar):
-		l=[]
-		operatorName=assembleChar.get("運算")
-		filter_lambda=lambda x: x.tag in ["字根", "組字", "套用範本"]
+		structDescList=[]
+		filter_lambda=lambda x: x.tag in ["字根", "組字"]
 		targetChildNodes=filter(filter_lambda , list(assembleChar))
 		for node in targetChildNodes:
 			if node.tag=="字根":
-				name=node.get("置換")
-				structDesc=self.structDescGenerator()
-				structDesc.setExpandName(name)
-				l.append(structDesc)
+				structDesc=self.getDesc_Radix(node)
 			elif node.tag=="組字":
-				l.append(self.getDesc_AssembleChar(node))
+				structDesc=self.getDesc_AssembleChar(node)
 			else:
-				pass
+				print("getDesc_AssembleChar: 預期外的標籤。", file=sys.stderr)
+			structDescList.append(structDesc)
 
-		propDict=assembleChar.attrib
+		operatorName=assembleChar.get("運算")
 		if operatorName:
-			comp=self.structDescGenerator([operatorName, l])
+			comp=self.generateStructureDescription([operatorName, structDescList])
 		else:
-			comp=self.structDescGenerator()
+			comp=self.generateStructureDescription()
 
 		return comp
 
-	def getDesc_SubCharacter(self, nodeCharacter):
+	def getDesc_StructureList(self, nodeCharacter):
 		assembleCharList=nodeCharacter.findall("組字")
 		compList=[]
 		for assembleChar in assembleCharList:
@@ -48,10 +53,6 @@ class QHParser:
 			comp.setStructureProperties(assembleChar.attrib)
 
 			compList.append(comp)
-		return compList
-
-	def getDesc_CompleteCharacterList(self, nodeCharacter):
-		compList=self.getDesc_SubCharacter(nodeCharacter)
 		return compList
 
 	def getDesc_ParameterList(self, nodeParameter):
@@ -142,10 +143,15 @@ class QHParser:
 
 		nodeInfoList=[]
 		for node in targetChildNodes:
-			compList=self.getDesc_CompleteCharacterList(node)
+			structureList=self.getDesc_StructureList(node)
 			charName=node.get('名稱')
+			charProperties=node.attrib
 
-			nodeInfoList.append([charName, compList, node.attrib])
+			charDesc=CharacterDescription(charName)
+			charDesc.setStructureList(structureList)
+			charDesc.updateProperty(charProperties)
+
+			nodeInfoList.append(charDesc)
 		return nodeInfoList
 
 	def loadCodeInfoByParsingXML(self, node):

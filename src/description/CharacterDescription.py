@@ -23,6 +23,9 @@ class CharacterDescription:
 	def setProperty(self, prop):
 		self.prop.update(prop)
 
+	def getProperty(self):
+		return self.prop
+
 	def updateProperty(self, prop):
 		self.prop.update(prop)
 		self.freq=self.prop.get('頻率', 0)
