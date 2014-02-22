@@ -59,7 +59,7 @@ U+4E37	丷	(龜)	ih	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E38	丸	(龜)	kni	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E39	丹	(龜)	by	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E3A	为	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E3B	主	(龜)	yg	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+4E3B	主	(龜)	yg	yf	kf	ak	e	sc	21
 U+4E3C	丼	(龜)	tti	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E3D	丽	(龜)	mbib	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E3E	举	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
@@ -89,15 +89,15 @@ U+4E55	乕	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E56	乖	(龜)	hjlp	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E57	乗	(龜)	hdt	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E58	乘	(龜)	hdlp	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E59	乙	(龜)	nu	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E5A	乚	(龜)	lu	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E5B	乛	(龜)	n	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E5C	乜	(龜)	pn	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E5D	九	(龜)	kn	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E5E	乞	(龜)	on	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E5F	也	(龜)	pd	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E60	习	(龜)	sim	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E61	乡	(龜)	vvh	sx	XXXX	XXXX	XXXX	XXXX	XXXX
+U+4E59	乙	(龜)	nu	s	c	z	l	yda	13
+U+4E5A	乚	(龜)	lu	s	c	l	l	zaaa	14
+U+4E5B	乛	(龜)	n	g	b	y	y	xaaa	14
+U+4E5C	乜	(龜)	pn	gs	XXXX	yl	l	yz	21
+U+4E5D	九	(龜)	kn	sl	/c	k	l	qy	12
+U+4E5E	乞	(龜)	on	os	2c	vz	l	mayd	22
+U+4E5F	也	(龜)	pd	gds	b1c	a	l	yi	12
+U+4E60	习	(龜)	sim	b	b	e	e	yt	12
+U+4E61	乡	(龜)	vvh	sx	t	w	p	zzm	21
 U+4E62	乢	(好 山乚)
 U+4E63	乣	(好 幺乚)
 U+4E64	乤	(志 下乙)
@@ -121,7 +121,7 @@ U+4E75	乵	(好 辛乚)
 U+4E76	乶	(志 甫乙)
 U+4E77	乷	(志 沙乙)
 U+4E78	乸	(起 也母)
-U+4E79	乹	(龜)	jju	fpfs	XXXX	XXXX	XXXX	XXXX	XXXX
+U+4E79	乹	(龜)	jju	fpfs	sdsc	jdjl	l	edez	42
 U+4E7A	乺	(志 所乙)
 U+4E7B	乻	(志 於乙)
 U+4E7C	乼	(志 注乙)
@@ -129,17 +129,17 @@ U+4E7D	乽	(志 者乙)
 U+4E7E	乾	(龜)	jjon	fpfs	sdsc	jdjz	l	edmy	42
 U+4E7F	乿	(龜)	bfu	.xs	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E80	亀	(龜)	nwlu	jpps	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E81	亁	(龜)	jjon	fpls	XXXX	XXXX	XXXX	XXXX	XXXX
+U+4E81	亁	(龜)	jjon	fpls	XXXX	XXXX	XXXX	edmy	42
 U+4E82	亂	(龜)	bbu	.bjs	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E83	亃	(好 粦乚)
 U+4E84	亄	(好 壹乚)
-U+4E85	亅	(龜)	n	d	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E86	了	(龜)	nn	gd	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E87	亇	(龜)	nn	jd	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E88	予	(龜)	ninn	bgd	XXXX	XXXX	XXXX	XXXX	XXXX
+U+4E85	亅	(龜)	n	d	j	i	i	iaaa	14
+U+4E86	了	(龜)	nn	gd	bj	w	i	y	11
+U+4E87	亇	(龜)	nn	jd	XXXX	ni	i	ri	21
+U+4E88	予	(龜)	ninn	bgd	bj	u	i	xsxi	31
 U+4E89	争	(龜)	nsd	jtd	XXXX	XXXX	XXXX	XXXX	XXXX
 U+4E8A	亊	(龜)	jfln	aktd	XXXX	XXXX	XXXX	XXXX	XXXX
-U+4E8B	事	(龜)	jll	qtd	XXXX	XXXX	XXXX	XXXX	XXXX
+U+4E8B	事	(龜)	jll	qtd	gor	jce	e	djxb	31
 U+4E8C	二	(龜)	mm	aa	ee	r	e	bd	12
 U+4E8D	亍	(龜)	mmn	aad	eej	ri	i	aai	21
 U+4E8E	于	(龜)	md	af	eg	u	j	ad	21
@@ -190,7 +190,7 @@ U+4EBA	人	(龜)	o	k	a	b	n	od	12
 U+4EBB	亻	(龜)	hl	k	a	p	i	n	11
 U+4EBC	亼	(龜)	om	ka	ae	be	e	oda	22
 U+4EBD	亽	(龜)	oi	kh	a.	ba	a	ods	22
-U+4EBE	亾	(龜)	ov	ks	XXXX	bl	l	odz	22
+U+4EBE	亾	(龜)	ov	ks	al	bl	l	odz	22
 U+4EBF	亿	(好 亻乙)
 U+4EC0	什	(好 亻十)
 U+4EC1	仁	(好 亻二)
@@ -2832,7 +2832,7 @@ U+58F9	壹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+58FA	壺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+58FB	壻	(好 土胥)
 U+58FC	壼	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+58FD	壽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+58FD	壽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bxjd	41
 U+58FE	壾	(好 壴巨)
 U+58FF	壿	(好 壴尊)
 # 5900
@@ -12826,7 +12826,7 @@ U+7FB9	羹	(志 羔美)
 U+7FBA	羺	(好 羊需)
 U+7FBB	羻	(好 羊慶)
 U+7FBC	羼	(廖 尸羴)
-U+7FBD	羽	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+7FBD	羽	(好 习习)
 U+7FBE	羾	(好 羽工)
 U+7FBF	羿	(志 羽廾)
 U+7FC0	翀	(好 羽中)
