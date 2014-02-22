@@ -11,8 +11,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateDefaultCodeInfo(self, strokeList):
-		return DCCodeInfo.generateDefaultCodeInfo(strokeList)
+	def generateDefaultCodeInfo(self, strokeList, region=[0, 0, 0xFF, 0xFF]):
+		return DCCodeInfo.generateDefaultCodeInfo(strokeList, region)
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getStrokeList())>0, codeInfoList))

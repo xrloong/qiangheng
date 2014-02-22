@@ -5,14 +5,20 @@ class DCCodeInfo(CodeInfo):
 	STROKE_SEPERATOR=';'
 	RADIX_SEPERATOR=','
 
-	def __init__(self, strokeList):
+	def __init__(self, strokeList, region):
 		CodeInfo.__init__(self)
 
 		self.strokeList=strokeList
+#		self.width, self.height=size
+		[left, top, right, bottom]=region
+		self.left=left
+		self.top=top
+		self.right=right
+		self.bottomm=bottom
 
 	@staticmethod
-	def generateDefaultCodeInfo(strokeList):
-		codeInfo=DCCodeInfo(strokeList)
+	def generateDefaultCodeInfo(strokeList, region=[0, 0, 0xFF, 0xFF]):
+		codeInfo=DCCodeInfo(strokeList, region)
 		return codeInfo
 
 	def toCode(self):

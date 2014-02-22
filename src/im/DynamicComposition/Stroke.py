@@ -3,7 +3,7 @@ import sys
 
 class Stroke:
 	STROKE_NAMES=[
-		"XXXX",
+#		"XXXX",
 
 		"點", "長頓點",
 
@@ -25,7 +25,7 @@ class Stroke:
 		"圓",	# 例子：㔔
 	]
 
-	def __init__(self, description):
+	def __init__(self, description, region):
 		matchResult=re.match("\((.*)\)(.*)", description)
 
 		groups=matchResult.groups()
@@ -39,12 +39,22 @@ class Stroke:
 		descriptionList=strokeDescription.split(',')
 		self.actionList=[StrokeAction(d) for d in descriptionList]
 
+		[left, top, right, bottom]=region
+		self.left=left
+		self.top=top
+		self.right=right
+		self.bottomm=bottom
+
 	def getName(self):
 		return self.name
 
 	def getCode(self):
 		codeList=[x.getCode() for x in self.actionList]
 		return ','.join(codeList)
+
+	def transform(self, left, top, right, bottom):
+		for action in self.actionList:
+			action.transform(xScale, yScale)
 
 	def scale(self, xScale, yScale):
 		for action in self.actionList:
@@ -60,8 +70,22 @@ class StrokeAction:
 		self.x=int(description[4:6], 16)
 		self.y=int(description[6:8], 16)
 
+		[left, top, right, bottom]=[0, 0, 0xFF, 0xFF]
+		self.left=left
+		self.top=top
+		self.right=right
+		self.bottomm=bottom
+
 	def getCode(self):
 		return "%04X%02X%02X"%(self.action, self.x, self.y)
+
+	def transform(self, left, top, right, bottom):
+		width=right-left
+		height=bottom-top
+		xScale=width/0xFF
+		yScale=height/0xFF
+		self.scale(xScale, yScale)
+		self.translate(left, top)
 
 	def scale(self, xScale, yScale):
 		self.x=int(self.x*xScale)
