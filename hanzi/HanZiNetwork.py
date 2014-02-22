@@ -59,7 +59,12 @@ class HanZiStructure:
 			if len(infoListList)==0:
 				ansListList=[infoListOfNode]
 			else:
-				ansListList=[infoList+[codeInfo] for infoList in infoListList for codeInfo in infoListOfNode]
+				ansListList=[]
+				for infoList in infoListList:
+					for codeInfo in infoListOfNode:
+						ansListList.append(infoList+[codeInfo])
+
+#				ansListList=[infoList+[codeInfo] for infoList in infoListList for codeInfo in infoListOfNode]
 			return ansListList
 
 		infoListList=[]

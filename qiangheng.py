@@ -34,7 +34,6 @@ class QiangHeng:
 	def initManager(self, imModule):
 		self.descMgr=CharDescriptionManager.CharDescriptionManager(imModule)
 
-		charDescQueryer=self.descMgr.getCharDescQueryer()
 		self.hanziNetwork=HanZiNetwork.HanZiNetwork()
 
 		StateManager.setIMModule(imModule)
@@ -117,9 +116,11 @@ class QiangHeng:
 		charPropQueryer=self.descMgr.getCharPropQueryer()
 		for charName in sortedNameList:
 			srcDesc=charDescQueryer(charName)
-			srcProp=charPropQueryer(charName)
-			if srcProp:
+			srcPropList=charPropQueryer(charName)
+			for srcProp in srcPropList:
 				hanziNetwork.appendNodeInfo(srcDesc, srcProp)
+#			if srcProp:
+#				hanziNetwork.appendNodeInfo(srcDesc, srcProp)
 
 	def recursivelyAddNode(self, srcDesc):
 		self.hanziNetwork.addOrFindNodeByCharDesc(srcDesc)
