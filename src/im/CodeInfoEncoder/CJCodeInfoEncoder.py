@@ -16,8 +16,16 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 		return codeInfo
 
-	def setByComps(self, codeInfo, operator, codeInfoList):
-		# 計算倉頡碼時，需要知道此字的組成方向
+	def isAvailableOperation(self, operator, codeInfoList):
+		return True
+
+	def encodeAsTurtle(self, codeInfo, operator, codeInfoList):
+		"""運算 "龜" """
+		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+
+	def encodeAsLoong(self, codeInfo, operator, codeInfoList):
+		"""運算 "龍" """
+
 		direction=operator.getDirection()
 
 		ansRadixList=[]
@@ -40,6 +48,14 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 			cjBody=self.computeBodyCode(ansRadixList, direction)
 			cjTotal=CJCodeInfoEncoder.computeTotalCode(ansRadixList, direction).lower()
 			codeInfo.setCharacter(cjTotal, cjBody)
+
+	def encodeAsEast(self, codeInfo, operator, codeInfoList):
+		"""運算 "東" """
+		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+
+	def encodeAsEqual(self, codeInfo, operator, codeInfoList):
+		"""運算 "爲" """
+		self.encodeAsLoong(codeInfo, operator, codeInfoList)
 
 	@staticmethod
 	def computeHeadTailCode(code, headCount):

@@ -13,17 +13,33 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo.setCharacterCode(zmCode)
 		return codeInfo
 
-	def setByComps(self, codeInfo, operator, codeInfoList):
-		if all(codeInfoList):
-			rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
-			if codeInfoList and all(rtlist):
-				rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-				zmCode=self.computeCharacterCode(rtlist)
-				if Operator.OperatorLiang.equals(operator):
-					codeInfo.setZMProp(rtlist[:1])
-				else:
-					codeInfo.setZMProp(rtlist)
-				codeInfo.setCharacterCode(zmCode)
+	def isAvailableOperation(self, operator, codeInfoList):
+		return all(codeInfoList)
+
+	def encodeAsTurtle(self, codeInfo, operator, codeInfoList):
+		"""運算 "龜" """
+		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+
+	def encodeAsLoong(self, codeInfo, operator, codeInfoList):
+		"""運算 "龍" """
+
+		rtlist=sum(map(lambda c: c.getZMProp(), codeInfoList), [])
+		if codeInfoList and all(rtlist):
+			rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
+			zmCode=self.computeCharacterCode(rtlist)
+			if Operator.OperatorLiang.equals(operator):
+				codeInfo.setZMProp(rtlist[:1])
+			else:
+				codeInfo.setZMProp(rtlist)
+			codeInfo.setCharacterCode(zmCode)
+
+	def encodeAsEast(self, codeInfo, operator, codeInfoList):
+		"""運算 "東" """
+		self.encodeAsLoong(codeInfo, operator, codeInfoList)
+
+	def encodeAsEqual(self, codeInfo, operator, codeInfoList):
+		"""運算 "爲" """
+		self.encodeAsLoong(codeInfo, operator, codeInfoList)
 
 	def computeCharacterCode(self, rtlist):
 		ans=''

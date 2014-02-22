@@ -11,57 +11,23 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=FCCodeInfo(propDict, codeVariance)
 		return codeInfo
 
-	def setByComps(self, codeInfo, operator, codeInfoList):
+	def isAvailableOperation(self, operator, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getCharacterCode())==4, codeInfoList))
-		if isAllWithCode:
-			if Operator.OperatorTurtle.equals(operator):
-				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorLoong.equals(operator):
-				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorEast.equals(operator):
-				print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
-				FCCodeInfoEncoder.encodeAsInvalidate(codeInfo, operator, codeInfoList)
+		return isAllWithCode
 
-			elif Operator.OperatorEqual.equals(operator):
-				FCCodeInfoEncoder.encodeAsEqual(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorLoop.equals(operator):
-				FCCodeInfoEncoder.encodeAsLoop(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorSilkworm.equals(operator):
-				FCCodeInfoEncoder.encodeAsSilkworm(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorGoose.equals(operator):
-				FCCodeInfoEncoder.encodeAsGoose(codeInfo, operator, codeInfoList)
+	def encodeAsTurtle(self, codeInfo, operator, codeInfoList):
+		print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
+		self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
 
-			elif Operator.OperatorQi.equals(operator):
-				FCCodeInfoEncoder.encodeAsQi(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorLiao.equals(operator):
-				FCCodeInfoEncoder.encodeAsLiao(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorZai.equals(operator):
-				FCCodeInfoEncoder.encodeAsZai(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorDou.equals(operator):
-				FCCodeInfoEncoder.encodeAsDou(codeInfo, operator, codeInfoList)
+	def encodeAsLoong(self, codeInfo, operator, codeInfoList):
+		print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
+		self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
 
-			elif Operator.OperatorMu.equals(operator):
-				FCCodeInfoEncoder.encodeAsMu(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorZuo.equals(operator):
-				FCCodeInfoEncoder.encodeAsZuo(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorYou.equals(operator):
-				FCCodeInfoEncoder.encodeAsYou(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorLiang.equals(operator):
-				FCCodeInfoEncoder.encodeAsLiang(codeInfo, operator, codeInfoList)
-			elif Operator.OperatorJia.equals(operator):
-				FCCodeInfoEncoder.encodeAsJia(codeInfo, operator, codeInfoList)
+	def encodeAsEast(self, codeInfo, operator, codeInfoList):
+		print("不合法的運算：%s"%operator.getName(), file=sys.stderr)
+		self.encodeAsInvalidate(codeInfo, operator, codeInfoList)
 
-			else:
-				FCCodeInfoEncoder.encodeAsTurtle(codeInfo, operator, codeInfoList)
-
-	@staticmethod
-	def encodeAsInvalidate(codeInfo, operator, codeInfoList):
-		codeInfo.setCode('X', 'X', 'X', 'X')
-
-	@staticmethod
-	def encodeAsEqual(codeInfo, operator, codeInfoList):
+	def encodeAsEqual(self, codeInfo, operator, codeInfoList):
 		targetCodeInfo=codeInfoList[0]
 		codeInfo.setCode(
 			targetCodeInfo.getTopLeft(),
@@ -69,8 +35,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 			targetCodeInfo.getBottomLeft(),
 			targetCodeInfo.getBottomRight())
 
-	@staticmethod
-	def encodeAsLoop(codeInfo, operator, codeInfoList):
+	def encodeAsLoop(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 		grid=FCGrid()
@@ -78,8 +43,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsSilkworm(codeInfo, operator, codeInfoList):
+	def encodeAsSilkworm(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -88,8 +52,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsGoose(codeInfo, operator, codeInfoList):
+	def encodeAsGoose(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -98,8 +61,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsQi(codeInfo, operator, codeInfoList):
+	def encodeAsQi(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -108,8 +70,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsLiao(codeInfo, operator, codeInfoList):
+	def encodeAsLiao(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -118,8 +79,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsZai(codeInfo, operator, codeInfoList):
+	def encodeAsZai(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -128,8 +88,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsDou(codeInfo, operator, codeInfoList):
+	def encodeAsDou(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		lastCodeInfo=codeInfoList[-1]
 
@@ -138,8 +97,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsMu(codeInfo, operator, codeInfoList):
+	def encodeAsMu(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -149,8 +107,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsZuo(codeInfo, operator, codeInfoList):
+	def encodeAsZuo(self, codeInfo, operator, codeInfoList):
 		# 以 "㘴" 來說 first: 口，second: 人，third: 土
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
@@ -161,8 +118,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsYou(codeInfo, operator, codeInfoList):
+	def encodeAsYou(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -172,8 +128,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsLiang(codeInfo, operator, codeInfoList):
+	def encodeAsLiang(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
@@ -183,8 +138,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
 		codeInfo.setCode(top_left, top_right, bottom_left, bottom_right)
 
-	@staticmethod
-	def encodeAsJia(codeInfo, operator, codeInfoList):
+	def encodeAsJia(self, codeInfo, operator, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
