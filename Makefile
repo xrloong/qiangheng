@@ -1,7 +1,8 @@
 
 VERSION	=	0.20
 IMLIST	=	cj ar dy bs zm
-TEST_IMLIST	=	cj ar dy bs zm
+IMLIST_ONE	=	cj-one ar-one dy-one bs-one zm-one
+IMLIST_MULTIPLE	=	cj-multiple ar-multiple dy-multiple bs-multiple zm-multiple
 PLATFORM_LIST	=	puretable scim gcin msim
 TABLES_PATH	=	tables
 PURETABLE_PATH	=	$(TABLES_PATH)/puretable
@@ -118,7 +119,7 @@ all-icons:
 
 tarballs: pre-tarballs pdf tarball-src tarball-all
 	make tarball-src VERSION=$(VERSION)
-	make xml
+	make gen-release
 	make imtables
 	make tarballs-platform VERSION=$(VERSION)
 	make tarball-all VERSION=$(VERSION)
@@ -143,10 +144,21 @@ tarballs-platform: all-icons
 tarball-all:
 	tar cjf $(TARBALLS_PATH)/qiangheng-$(VERSION).tar.bz2 --exclude-vcs --exclude=tarballs -C .. qiangheng
 
+gen-release: gen-multiple
+	echo "$(IMLIST_MULTIPLE)"
+	for im in $(IMLIST_MULTIPLE);\
+		do cp $(PURETABLE_PATH)/qh$$im.txt $(PURETABLE_PATH)/qh$${im%-multiple}.txt;\
+	done
+
+gen-multiple:
+	make xml puretable IMLIST="$(IMLIST_MULTIPLE)"
+
+gen-one:
+	make xml puretable IMLIST="$(IMLIST_ONE)"
+
 clean:
 	rm -rf $(ICON_PLATFORM_PATH)
 	rm -rf tables/ tmp/ tarballs/
 	rm -f `find src -name "*.pyc"`
 	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log tex/*.pdf
-	rm -f test/puretable/*
 

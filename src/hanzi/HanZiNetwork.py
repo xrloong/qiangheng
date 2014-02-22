@@ -44,9 +44,9 @@ class HanZiStructure:
 
 		if quantity==StateManager.STATE_QUANTITY_NONE:
 			infoListList=[]
-		elif quantity==StateManager.STATE_QUANTITY_FIRST:
+		elif quantity==StateManager.STATE_QUANTITY_ONE:
 			infoListList=infoListList[:1]
-		elif quantity==StateManager.STATE_QUANTITY_ALL:
+		elif quantity==StateManager.STATE_QUANTITY_MULTIPLE:
 			infoListList=infoListList
 
 		for infoList in infoListList:
@@ -113,9 +113,9 @@ class HanZiNode:
 
 		if quantity==StateManager.STATE_QUANTITY_NONE:
 			structureList=[]
-		elif quantity==StateManager.STATE_QUANTITY_FIRST:
+		elif quantity==StateManager.STATE_QUANTITY_ONE:
 			structureList=structureList[:1]
-		elif quantity==StateManager.STATE_QUANTITY_ALL:
+		elif quantity==StateManager.STATE_QUANTITY_MULTIPLE:
 			structureList=structureList
 
 		for structure in structureList:

@@ -52,9 +52,9 @@ class QiangHeng:
 		if quantityStr=='無':
 			quantity=StateManager.STATE_QUANTITY_NONE
 		elif quantityStr=='一':
-			quantity=StateManager.STATE_QUANTITY_FIRST
-		elif quantityStr=='全':
-			quantity=StateManager.STATE_QUANTITY_ALL
+			quantity=StateManager.STATE_QUANTITY_ONE
+		elif quantityStr=='多':
+			quantity=StateManager.STATE_QUANTITY_MULTIPLE
 		else:
 			quantity=StateManager.STATE_QUANTITY_NONE
 		StateManager.setQuantity(quantity)
