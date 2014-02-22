@@ -10,7 +10,7 @@ class CJCodeInfo(CodeInfo):
 		RADIX_丨:['*', ['l']],
 		RADIX_乚:['*', ['u']],
 		RADIX_丨丨:['-', ['l', 'l']],
-		RADIX_儿:['-', ['l', 'u']],
+		RADIX_儿:['-', ['h', 'u']],
 	}
 
 	def __init__(self, singleCode, direction, radixList, cjBody, isSupportCharacterCode=True, isSupportRadixCode=True):

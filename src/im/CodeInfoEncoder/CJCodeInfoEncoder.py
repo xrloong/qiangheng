@@ -2,6 +2,9 @@ from ..CodeInfo.CJCodeInfo import CJCodeInfo
 from gear.CodeInfoEncoder import CodeInfoEncoder
 
 class CJCodeInfoEncoder(CodeInfoEncoder):
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
 	def __init__(self):
 		pass
 
@@ -19,7 +22,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		rtlist=[]
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
-			rtlist=[str_rtlist]
+			rtlist=str_rtlist.split(CJCodeInfoEncoder.RADIX_SEPERATOR)
 
 		cjBody=CJCodeInfoEncoder.computeBodyCode(rtlist, direction)
 		codeInfo=CJCodeInfo(singleCode, direction, rtlist, cjBody, isSupportCharacterCode, isSupportRadixCode)
@@ -138,6 +141,27 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 		return ansRadixList
 
+	def encodeAsYin(self, codeInfoList):
+		"""運算 "胤" """
+		firstCodeInfo=codeInfoList[0]
+		secondCodeInfo=codeInfoList[1]
+
+		if firstCodeInfo.getRtList()[0]==CJCodeInfo.RADIX_儿:
+			radix_丨=self.generateDefaultCodeInfo('*', [CJCodeInfo.RADIX_丨])
+
+			radix_乚=self.generateDefaultCodeInfo('*', [CJCodeInfo.RADIX_乚])
+			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_乚])
+			return codeInfo
+#		elif firstCodeInfo.getRtList()[0]==CJCodeInfo.RADIX_丨 and firstCodeInfo.getRtList()[1]==CJCodeInfo.RADIX_丨:
+#		elif firstCodeInfo.getRtList()[0]==CJCodeInfo.RADIX_丨丨:
+		elif firstCodeInfo.getRtList()[0]=="l" and firstCodeInfo.getRtList()[1]=="l":
+			# work around
+			radix_丨=self.generateDefaultCodeInfo('*', [CJCodeInfo.RADIX_丨])
+			codeInfo=self.encodeAsGoose([radix_丨, secondCodeInfo, radix_丨])
+			return codeInfo
+		else:
+			return self.encodeAsInvalidate(codeInfoList)
+
 
 	@staticmethod
 	def computeHeadTailCode(code, headCount):
@@ -157,12 +181,18 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		return frontCode+tailCode
 
 	@staticmethod
+	def convertRadixListToCodeList(radixList):
+		return sum([CJCodeInfo.radixToCodeDict.get(radix, ['*', [radix]])[1] for radix in radixList], [])
+
+	@staticmethod
 	def computeHeadCode(code):
 		headCode=CJCodeInfoEncoder.computeHeadTailCode(code, 1)
 		return headCode
 
 	@staticmethod
 	def computeBodyCode(codeList, direction):
+		codeList=CJCodeInfoEncoder.convertRadixListToCodeList(codeList)
+
 		if direction=='$':
 			tmpCodeList=[CJCodeInfoEncoder.computeHeadTailCode(x, 3) for x in codeList]
 			tmpCode=''.join(tmpCodeList)
@@ -208,6 +238,8 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 	@staticmethod
 	def computeTotalCode(codeList, direction):
+		codeList=CJCodeInfoEncoder.convertRadixListToCodeList(codeList)
+
 		if direction=='$':
 			totalCode=CJCodeInfoEncoder.computeBodyCode(codeList, direction)
 		else:

@@ -6,10 +6,6 @@
 	<設定檔 資料目錄="qhdata/">
 		<匯入 檔案="config/traditional.xml" />
 
-<!--
-		<範本 檔案="template/gx.xml" />
--->
-
 		<部件 檔案="component/CJK/gx.xml" />
 		<部件 檔案="component/CJK-A/gx.xml" />
 

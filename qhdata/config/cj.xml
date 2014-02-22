@@ -6,8 +6,6 @@
 	<設定檔 資料目錄="qhdata/">
 		<匯入 檔案="config/traditional.east.xml" />
 
-		<範本 檔案="template/cj.xml" />
-
 		<部件 檔案="component/CJK/cj.xml" />
 		<部件 檔案="component/CJK-A/cj.xml" />
 

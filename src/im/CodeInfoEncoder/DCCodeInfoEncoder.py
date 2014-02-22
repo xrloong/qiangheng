@@ -6,6 +6,7 @@ from gear import Operator
 import copy
 
 class DCCodeInfoEncoder(CodeInfoEncoder):
+	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
 	WIDTH=256
@@ -31,7 +32,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	def interprettCharacterCode(self, codeInfo):
 		descriptionList=[x.getCode() for x in codeInfo.getActionList()]
-		return ','.join(descriptionList)
+		return RADIX_SEPERATOR.join(descriptionList)
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getActionList())>0, codeInfoList))

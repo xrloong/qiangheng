@@ -6,10 +6,6 @@
 	<設定檔 資料目錄="qhdata/">
 		<匯入 檔案="config/traditional.east.xml" />
 
-<!--
-		<範本 檔案="template/ar.xml" />
--->
-
 		<部件 檔案="component/CJK/ar.xml" />
 		<部件 檔案="component/CJK-A/ar.xml" />
 
