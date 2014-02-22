@@ -1,13 +1,7 @@
-from .CangJieInfo import CangJieInfo
-from .CJCodeInfoEncoder import CJCodeInfoEncoder
-from .CJRadixManager import CJRadixParser
-from .CJStructureRearranger import CJStructureRearranger
-
-IMInfo=CangJieInfo
-IMName=CangJieInfo.IMName
-CodeInfoEncoder=CJCodeInfoEncoder
-RadixParser=CJRadixParser
-StructureRearranger=CJStructureRearranger
+from .CangJieInfo import CangJieInfo as IMInfo
+from .CJCodeInfoEncoder import CJCodeInfoEncoder as CodeInfoEncoder
+from .CJRadixManager import CJRadixParser as RadixParser
+from .CJStructureRearranger import CJStructureRearranger as StructureRearranger
 
 if __name__=='__main__':
 	pass

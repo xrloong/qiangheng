@@ -16,9 +16,7 @@ def setIMPackage(imPackage):
 
 	__state_IMPackage=imPackage
 
-	codeInfoEncoder=imPackage.CodeInfoEncoder()
-	radixParser=imPackage.RadixParser(imPackage.IMName, codeInfoEncoder)
-	codeInfoManager=CodeInfoManager.CodeInfoManager(radixParser, codeInfoEncoder)
+	codeInfoManager=CodeInfoManager.CodeInfoManager(imPackage)
 
 	structureRearranger=imPackage.StructureRearranger()
 

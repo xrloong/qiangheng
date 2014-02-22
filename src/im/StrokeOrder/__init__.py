@@ -1,13 +1,7 @@
-from .StrokeOrderInfo import StrokeOrderInfo
-from .SOCodeInfoEncoder import SOCodeInfoEncoder
-from .SORadixManager import SORadixParser
-from ..base.StructureRearranger import StructureRearranger
-
-IMInfo=StrokeOrderInfo
-IMName=StrokeOrderInfo.IMName
-CodeInfoEncoder=SOCodeInfoEncoder
-RadixParser=SORadixParser
-StructureRearranger=StructureRearranger
+from .StrokeOrderInfo import StrokeOrderInfo as IMInfo
+from .SOCodeInfoEncoder import SOCodeInfoEncoder as CodeInfoEncoder
+from .SORadixManager import SORadixParser as RadixParser
+from ..base.StructureRearranger import StructureRearranger as StructureRearranger
 
 if __name__=='__main__':
 	pass

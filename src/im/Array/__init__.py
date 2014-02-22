@@ -1,13 +1,7 @@
-from .ArrayInfo import ArrayInfo
-from .ARCodeInfoEncoder import ARCodeInfoEncoder
-from .ARRadixManager import ARRadixParser
-from .ARStructureRearranger import ARStructureRearranger
-
-IMInfo=ArrayInfo
-IMName=ArrayInfo.IMName
-CodeInfoEncoder=ARCodeInfoEncoder
-RadixParser=ARRadixParser
-StructureRearranger=ARStructureRearranger
+from .ArrayInfo import ArrayInfo as IMInfo
+from .ARCodeInfoEncoder import ARCodeInfoEncoder as CodeInfoEncoder
+from .ARRadixManager import ARRadixParser as RadixParser
+from .ARStructureRearranger import ARStructureRearranger as StructureRearranger
 
 if __name__=='__main__':
 	pass

@@ -1,13 +1,7 @@
-from .FourCornerInfo import FourCornerInfo
-from .FCCodeInfoEncoder import FCCodeInfoEncoder
-from .FCRadixManager import FCRadixParser
-from .FCStructureRearranger import FCStructureRearranger
-
-IMInfo=FourCornerInfo
-IMName=FourCornerInfo.IMName
-CodeInfoEncoder=FCCodeInfoEncoder
-RadixParser=FCRadixParser
-StructureRearranger=FCStructureRearranger
+from .FourCornerInfo import FourCornerInfo as IMInfo
+from .FCCodeInfoEncoder import FCCodeInfoEncoder as CodeInfoEncoder
+from .FCRadixManager import FCRadixParser as RadixParser
+from .FCStructureRearranger import FCStructureRearranger as StructureRearranger
 
 if __name__=='__main__':
 	pass

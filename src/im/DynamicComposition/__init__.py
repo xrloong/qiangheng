@@ -1,13 +1,7 @@
-from .DynamicCompositionInfo import DynamicCompositionInfo
-from .DCCodeInfoEncoder import DCCodeInfoEncoder
-from .DCRadixManager import DCRadixParser
-from .DCStructureRearranger import DCStructureRearranger
-
-IMInfo=DynamicCompositionInfo
-IMName=DynamicCompositionInfo.IMName
-CodeInfoEncoder=DCCodeInfoEncoder
-RadixParser=DCRadixParser
-StructureRearranger=DCStructureRearranger
+from .DynamicCompositionInfo import DynamicCompositionInfo as IMInfo
+from .DCCodeInfoEncoder import DCCodeInfoEncoder as CodeInfoEncoder
+from .DCRadixManager import DCRadixParser as RadixParser
+from .DCStructureRearranger import DCStructureRearranger as StructureRearranger
 
 if __name__=='__main__':
 	pass
