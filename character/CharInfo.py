@@ -4,7 +4,7 @@ class CharInfo:
 		def __init__(self):
 			pass
 
-	def __init__(self, prop):
+	def __init__(self, propDict={}):
 		self.setFlag=False
 
 	def __str__(self):

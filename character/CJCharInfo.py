@@ -1,8 +1,8 @@
 from .CharInfo import CharInfo
 
 class CJCharInfo(CharInfo):
-	def __init__(self, prop):
-		super().__init__(prop)
+	def __init__(self, propDict={}):
+		super().__init__(propDict)
 
 		self.setFlag=False
 
@@ -11,11 +11,12 @@ class CJCharInfo(CharInfo):
 		self._cj_body=None	# 當此字為字身時的碼。
 		self._cj_radix_list=[]	# 組件
 
-		if len(prop)>=1:
-			self.setCJProp(prop[0])
+		self._cj_single=propDict.get('獨體編碼')
+		str_rtlist=propDict.get('資訊表示式')
+		if str_rtlist!=None:
+			self.setCJProp(str_rtlist)
 
 	def setCJProp(self, cj_info_code):
-		single_code=None
 		dir_code='*'
 		radix_list=[]
 
@@ -30,18 +31,9 @@ class CJCharInfo(CharInfo):
 
 				radix_list=x_code[1:].split(',')
 
-		if len(codeList)>1:
-			single_code=codeList[1]
-
 		self._cj_radix_list=radix_list
-		self._cj_single=single_code
 		self._cj_direction=dir_code
 		self._cj_body=self.computeBodyCode(self._cj_radix_list, dir_code)
-
-#		# 以下用來看哪些字的獨體碼無法自動產生
-#		totalCode=self.computeTotalCode(self._cj_radix_list)
-#		if cj_single.lower()!=totalCode.lower():
-#			print("XX", self, single_code, totalCode)
 
 		self.setFlag=True
 

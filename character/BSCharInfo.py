@@ -1,15 +1,18 @@
 from .CharInfo import CharInfo
 
 class BSCharInfo(CharInfo):
-	def __init__(self, prop):
-		super().__init__(prop)
+	def __init__(self, propDict={}):
+		super().__init__(propDict)
 
 		self.setFlag=False
 
 		self._bs_incode=None
 		self._bs_spcode=None
-		if len(prop)>=1:
-			self.setBSProp(prop[0])
+
+		self._bs_single=propDict.get('獨體編碼')
+		str_rtlist=propDict.get('資訊表示式')
+		if str_rtlist!=None:
+			self.setBSProp(str_rtlist)
 
 	def setBSProp(self, bs_x_code):
 		bs_list=bs_x_code.split(',')
@@ -38,7 +41,9 @@ class BSCharInfo(CharInfo):
 	def bs(self):
 		if self._bs_incode==None or self._bs_spcode==None:
 			return None
-		if len(self._bs_incode)<3:
+		if self._bs_single:
+			return self._bs_single
+		elif len(self._bs_incode)<3:
 			return self._bs_incode+self._bs_spcode
 		else:
 			return self._bs_incode

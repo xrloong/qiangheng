@@ -35,7 +35,7 @@ class CharDescriptionManager:
 			return charDesc
 
 		def emptyCharInfoGenerator():
-			return CharInfoGenerator([])
+			return CharInfoGenerator({})
 
 		def emptyCharDescGenerator():
 			anonymousName=CharDesc.generateNewAnonymousName()
@@ -125,14 +125,12 @@ class CharDescriptionManager:
 				return None
 
 			infoList=[]
+			infoDict={}
 			charInfo=nodeCharacter.find("編碼資訊")
 			if charInfo is not None:
-				infoExpr=charInfo.get('資訊表示式')
-				infoExtra=charInfo.get('補充資訊')
-				if infoExpr: infoList.append(infoExpr)
-				if infoExtra: infoList.append(infoExtra)
+				infoDict=charInfo.attrib
 				
-			chInfo=charInfoGenerator(infoList)
+			chInfo=charInfoGenerator(infoDict)
 
 			comp=getDesc_AssembleChar(assembleChar)
 			comp.setChInfo(chInfo)

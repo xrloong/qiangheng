@@ -1,14 +1,16 @@
 from .CharInfo import CharInfo
 
 class ARCharInfo(CharInfo):
-	def __init__(self, prop):
-		super().__init__(prop)
+	def __init__(self, propDict={}):
+		super().__init__(propDict)
 
 		self.setFlag=False
 
 		self._ar_incode=None
-		if len(prop)>=1:
-			self.setARProp(prop[0])
+
+		str_rtlist=propDict.get('資訊表示式')
+		if str_rtlist!=None:
+			self.setARProp(str_rtlist)
 
 	def setARProp(self, ar_incode):
 		if ar_incode=='XXXX':

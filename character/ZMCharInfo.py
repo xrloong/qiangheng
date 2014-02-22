@@ -1,22 +1,22 @@
 from .CharInfo import CharInfo
 
 class ZMCharInfo(CharInfo):
-	def __init__(self, prop):
-		super().__init__(prop)
+	def __init__(self, propDict={}):
+		super().__init__(propDict)
 
 		self.setFlag=False
 
 		self._zm_rtlist=[]
-		extra_code=None
-		if len(prop)>=2:
-			extra_code=prop[1]
 
-		if len(prop)>=1:
-			str_rtlist=prop[0]
-			if str_rtlist=='XXXX':
-				self.setZMProp([])
-			else:
-				self.setZMProp(str_rtlist.split(','), extra_code)
+		extra_code=propDict.get('補充資訊')
+		str_rtlist=propDict.get('資訊表示式')
+
+		self._zm_single=propDict.get('獨體編碼')
+		if str_rtlist!=None:
+			rtlist=[]
+			if str_rtlist!='XXXX':
+				rtlist=str_rtlist.split(',')
+			self.setZMProp(rtlist, extra_code)
 
 	def setZMProp(self, zm_rtlist, zm_extra=None):
 		self._zm_rtlist=zm_rtlist
@@ -36,6 +36,9 @@ class ZMCharInfo(CharInfo):
 
 	@property
 	def zm(self):
+		if self._zm_single:
+			return self._zm_single
+
 		ans=''
 		tmp_rtlist=self._zm_rtlist
 		if len(tmp_rtlist)==0:

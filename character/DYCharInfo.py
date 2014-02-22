@@ -1,15 +1,17 @@
 from .CharInfo import CharInfo
 
 class DYCharInfo(CharInfo):
-	def __init__(self, prop):
-		super().__init__(prop)
+	def __init__(self, propDict={}):
+		super().__init__(propDict)
 
 		self.setFlag=False
 
 		self._dy_incode=None
 		self._flag_seted=False
-		if len(prop)>=1:
-			self.setDYProp(prop[0])
+
+		str_rtlist=propDict.get('資訊表示式')
+		if str_rtlist!=None:
+			self.setDYProp(str_rtlist)
 
 	def setDYProp(self, dy_incode):
 		if dy_incode=='XXXX':
