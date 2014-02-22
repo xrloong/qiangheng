@@ -3,7 +3,7 @@ import re
 
 
 def main():
-	filename="qhdata/radix/CJK/dc.xml"
+	filename="dc.xml"
 #	filename="qhdata/radix/CJK-A/dc.xml"
 
 	pattern = '(.*)資訊表示式="\(([^"]*)\)([^"]*)"(.*)'
