@@ -2065,8 +2065,6 @@ U+97F1	韱	(龜)	od,k,a
 U+97F2	韲	(龜)	s,y,k,a
 # 9800
 U+9801	頁	(龜)	go
-U+9819	頙	(龜)	a,i,go
-U+981A	頚	(龜)	x,s,bg
 U+9824	頤	(龜)	h,go
 U+9827	頧	(龜)	m,y,go
 U+982F	頯	(龜)	rs,e,g
@@ -2145,7 +2143,6 @@ U+9BEC	鯬	(龜)	mf,m,r
 U+9BFC	鯼	(龜)	r,o,o,r
 # 9C00
 U+9C16	鰖	(龜)	r,g,b,q
-U+9C27	鰧	(龜)	q,u,r
 U+9C28	鰨	(龜)	r,k,y,y
 U+9C29	鰩	(龜)	r,p,e,z
 U+9C2E	鰮	(龜)	r,j,o,l
