@@ -2,9 +2,29 @@ from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 from .Stroke import Stroke
+from .Stroke import StrokeGroup
 import Constant
+import sys
 
 class DCRadixParser(RadixParser):
+	TAG_RADIX_SET='字根集'
+	TAG_RADIX='字根'
+	TAG_STROKE_GROUP='筆劃組'
+	TAG_SCOPE='範圍'
+	TAG_STROKE='筆劃'
+
+	TAG_CODE_INFORMATION='編碼資訊'
+	ATTRIB_CODE_EXPRESSION='資訊表示式'
+
+	TAG_CHARACTER_SET='字符集'
+	TAG_CHARACTER='字符'
+
+	TAG_NAME='名稱'
+
+	def __init__(self, nameInputMethod, codeInfoEncoder):
+		RadixParser.__init__(self, nameInputMethod, codeInfoEncoder)
+		self.strokeGroupDB={}
+
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
@@ -17,26 +37,79 @@ class DCRadixParser(RadixParser):
 		if elementCodeInfo is not None:
 			infoDict=elementCodeInfo.attrib
 
-		strokeList=[]
-		description=infoDict.get('資訊表示式', '')
-		region=[0, 0, 0xFF, 0xFF]
+		strokeGroup=StrokeGroup()
+
+		descriptionRegion=infoDict.get(DCRadixParser.TAG_SCOPE, '')
+		region=self.parseRegion(descriptionRegion)
+
+		description=infoDict.get(DCRadixParser.ATTRIB_CODE_EXPRESSION, '')
 		if len(description)>0 and description!='XXXX':
-			descriptionList=description.split('|')
-
-			descriptionRegion=descriptionList[0]
-			left=int(descriptionRegion[0:2], 16)
-			top=int(descriptionRegion[2:4], 16)
-			right=int(descriptionRegion[4:6], 16)
-			bottom=int(descriptionRegion[6:8], 16)
-			region=[left, top, right, bottom]
-
-			description=descriptionList[1]
 			strokeDescriptionList=description.split(DCCodeInfo.STROKE_SEPERATOR)
 			strokeList=[]
 			for d in strokeDescriptionList:
 				stroke=Stroke(d, region)
 				strokeList.append(stroke)
 
+			strokeGroup=StrokeGroup(region, strokeList)
+
+		region=strokeGroup.getRegion()
+		strokeGroup=strokeGroup.getStrokeList()
 		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeList, region)
 		return codeInfo
+
+	def parseRadixInfo(self, rootNode):
+		radixSetNode=rootNode.find(DCRadixParser.TAG_RADIX_SET)
+		if radixSetNode is not None:
+			radixNodeList=radixSetNode.findall(DCRadixParser.TAG_RADIX)
+			for radixNode in radixNodeList:
+				radixName=radixNode.get(Constant.TAG_NAME)
+				strokeGroupNodeList=radixNode.findall(DCRadixParser.TAG_STROKE_GROUP)
+				for strokeGroupNode in strokeGroupNodeList:
+					strokeGroup=self.parseStrokeGroup(strokeGroupNode)
+
+		characterSetNode=rootNode.find(DCRadixParser.TAG_CHARACTER_SET)
+		characterNodeList=characterSetNode.findall(DCRadixParser.TAG_CHARACTER)
+		for characterNode in characterNodeList:
+			charName=characterNode.get(Constant.TAG_NAME)
+			radixDescription=self.parseRadixDescription(characterNode)
+
+			self.radixDescriptionManager.addDescription(charName, radixDescription)
+
+	def parseStrokeGroup(self, strokeGroupNode):
+		strokeGroupName=strokeGroupNode.get(Constant.TAG_NAME)
+
+		descriptionRegion=strokeGroupNode.get(DCRadixParser.TAG_SCOPE)
+		region=self.parseRegion(descriptionRegion)
+
+		strokeGroup=self.parseStroke(region, strokeGroupNode)
+		return strokeGroup
+
+	def parseStroke(self, region, strokeGroupNode):
+		strokeList=[]
+		strokeNodeList=strokeGroupNode.findall(DCRadixParser.TAG_STROKE)
+		for strokeNode in strokeNodeList:
+			codeExpression=strokeNode.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
+			stroke=Stroke(codeExpression, region)
+
+			strokeName=strokeNode.get(Constant.TAG_NAME)
+			stroke.setInstanceName(strokeName)
+
+			strokeList.append(stroke)
+		strokeGroup=StrokeGroup(region, strokeList)
+		return strokeGroup
+
+	def parseRegion(self, descriptionRegion):
+		left=int(descriptionRegion[0:2], 16)
+		top=int(descriptionRegion[2:4], 16)
+		right=int(descriptionRegion[4:6], 16)
+		bottom=int(descriptionRegion[6:8], 16)
+		region=[left, top, right, bottom]
+		return region
+
+	def findStrokeGroup(self, strokeGroupName):
+		return self.strokeGroupDB.get(strokeGroupName)
+
+class RadixDescriptionManager:
+	def __init__(self):
+		pass
 

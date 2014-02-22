@@ -14,7 +14,7 @@ class RadixParser:
 
 		self.radixCodeInfoDB={}
 
-		self.radixDescriptionManager=RadixDescriptionManager()
+		self.radixDescriptionManager=self.createRadixDescriptionManager()
 
 	def loadRadix(self, radixFileList):
 		self.parse(radixFileList)
@@ -25,6 +25,10 @@ class RadixParser:
 
 	def getEncoder(self):
 		return self.codeInfoEncoder
+
+
+	def createRadixDescriptionManager(self):
+		return RadixDescriptionManager()
 
 
 	def getRadixDescription(self, radixName):

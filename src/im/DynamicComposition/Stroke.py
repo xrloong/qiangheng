@@ -2,6 +2,13 @@ import re
 import sys
 
 class Stroke:
+	WIDTH=0x100
+	HEIGHT=0x100
+	X_MAX=0xFF
+	Y_MAX=0xFF
+
+	DEFAULT_REGION=[0, 0, X_MAX, Y_MAX]
+
 	STROKE_NAMES=[
 #		"XXXX",
 
@@ -80,7 +87,7 @@ class StrokeAction:
 		self.x=int(description[4:6], 16)
 		self.y=int(description[6:8], 16)
 
-		[left, top, right, bottom]=[0, 0, 0xFF, 0xFF]
+		[left, top, right, bottom]=Stroke.DEFAULT_REGION
 		self.left=left
 		self.top=top
 		self.right=right
@@ -92,8 +99,8 @@ class StrokeAction:
 	def transform(self, left, top, right, bottom):
 		width=right-left
 		height=bottom-top
-		xScale=width/0xFF
-		yScale=height/0xFF
+		xScale=width/Stroke.WIDTH
+		yScale=height/Stroke.HEIGHT
 		self.scale(xScale, yScale)
 		self.translate(left, top)
 
@@ -104,4 +111,32 @@ class StrokeAction:
 	def translate(self, xOffset, yOffset):
 		self.x=int(self.x+xOffset)
 		self.y=int(self.y+yOffset)
+
+class StrokeGroup:
+	def __init__(self, region=Stroke.DEFAULT_REGION, strokeList=[]):
+		self.region=region
+		self.strokeList=strokeList
+
+	def getRegion(self):
+		return self.region
+
+	def getStrokeList(self):
+		return self.strokeList
+
+	def __init__X(self, regionExpression, codeExpressionList):
+		region=self.parseRegion(regionExpression)
+
+		strokeList=[]
+		for codeExpression in codeExpressionList:
+			stroke=Stroke(codeExpression, region)
+			strokeList.append(stroke)
+		self.strokeList=strokeList
+
+	def parseRegion(self, descriptionRegion):
+		left=int(descriptionRegion[0:2], 16)
+		top=int(descriptionRegion[2:4], 16)
+		right=int(descriptionRegion[4:6], 16)
+		bottom=int(descriptionRegion[6:8], 16)
+		region=[left, top, right, bottom]
+		return region
 
