@@ -123,9 +123,13 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 			for i in range(numArCode-1):
 				arCodePrev=tmpArCodeList[i]
 				arCodeNext=tmpArCodeList[i+1]
-				if len(arCodePrev)>0 and len(arCodeNext)>0 and arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_1_CENTER and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_0_CENTER:
-					tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_1_UP]
-					tmpArCodeList[i+1]=arCodeNext[1:]
+				if len(arCodePrev)>0 and len(arCodeNext)>0:
+					if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_1_CENTER and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_0_CENTER:
+						tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_1_UP]
+						tmpArCodeList[i+1]=arCodeNext[1:]
+					if arCodePrev[-1]==ARCodeInfo.RADIX_EXTEND_4_UP and arCodeNext[0]==ARCodeInfo.RADIX_EXTEND_7_CENTER:
+						tmpArCodeList[i]=arCodePrev[:-1]+[ARCodeInfo.RADIX_EXTEND_4_BOTTOM]
+						tmpArCodeList[i+1]=arCodeNext[1:]
 
 			# 合併字根後，有些字根列可能為空，如：戓
 			tmpArCodeList=filter(lambda x: len(x)>0, tmpArCodeList)

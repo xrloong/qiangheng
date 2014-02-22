@@ -36,8 +36,11 @@ class ARCodeInfo(CodeInfo):
 	RADIX_0_BOTTOM='0v'
 
 	RADIX_EXTEND_1_UP='x:1^:1'	# 即[一口]，豆的上部
-	RADIX_EXTEND_1_CENTER='x:1-:1'	# 即一，但可用來合併字根，末的序列為 '4v,1-' ，但在 '唜' 中，不做合併用。
-	RADIX_EXTEND_0_CENTER='x:0-:1'	# 即口，但可用來合併字根
+	RADIX_EXTEND_1_CENTER='x:1-:1'	# 即一，可用來合併字根，末的序列為 '4v,1-' ，但在 '唜' 中，不做合併用。
+	RADIX_EXTEND_0_CENTER='x:0-:1'	# 即口，可用來合併字根
+	RADIX_EXTEND_4_BOTTOM='x:4v:1'	# 即[士冖]，壹的上部
+	RADIX_EXTEND_4_UP='x:4^:1'	# 即士，可用來合併字根
+	RADIX_EXTEND_7_CENTER='x:7-:1'	# 即冖，可用來合併字根
 
 	RADIX_EXTEND_5_BOTTOM='x:5v:1'	# 即廴
 	RADIX_EXTEND_6_BOTTOM='x:6v:1'	# 即辶
@@ -79,6 +82,10 @@ class ARCodeInfo(CodeInfo):
 		RADIX_EXTEND_1_UP:'q',
 		RADIX_EXTEND_1_CENTER:'a',
 		RADIX_EXTEND_0_CENTER:';',
+
+		RADIX_EXTEND_4_BOTTOM:'v',
+		RADIX_EXTEND_4_UP:'r',
+		RADIX_EXTEND_7_CENTER:'j',
 
 		RADIX_EXTEND_5_BOTTOM:'b',
 		RADIX_EXTEND_6_BOTTOM:'n',
