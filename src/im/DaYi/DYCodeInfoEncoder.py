@@ -3,7 +3,6 @@ from ..base.CodeInfoEncoder import CodeInfoEncoder
 from ..base.CodeInfo import CodeInfo
 
 import sys
-import copy
 
 class DYCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):

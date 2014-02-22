@@ -1,7 +1,6 @@
 from ..base.CodeInfo import CodeInfo
 from .Calligraphy import Pane
 from .Calligraphy import StrokeGroup
-import copy
 
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"
@@ -80,7 +79,7 @@ class DCCodeInfo(CodeInfo):
 		strokeGroup=self.getStrokeGroup(strokeGroupName)
 		if strokeGroupName!=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT and strokeGroup==None:
 			strokeGroup=self.getStrokeGroup(DCCodeInfo.STROKE_GROUP_NAME_DEFAULT)
-		return copy.deepcopy(strokeGroup)
+		return strokeGroup.clone()
 
 	def getStrokeCount(self):
 		return len(self.getStrokeList())

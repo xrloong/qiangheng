@@ -4,7 +4,6 @@ from ..base.RadixManager import RadixParser
 from .Calligraphy import Pane
 from .Calligraphy import Stroke
 from .Calligraphy import StrokeGroup
-import copy
 
 class DCRadixParser(RadixParser):
 	TAG_RADIX_SET='字根集'
@@ -121,7 +120,7 @@ class DCRadixParser(RadixParser):
 				else:
 					strokeGroupName=description
 					strokeGroup=self.findStrokeGroup(strokeGroupName)
-					tmpStrokeGroup=copy.deepcopy(strokeGroup)
+					tmpStrokeGroup=strokeGroup.clone()
 					tmpStrokeGroup.transform(countourPane)
 					strokeList.extend(tmpStrokeGroup.getStrokeList())
 		strokeGroup=StrokeGroup(pane, strokeList)

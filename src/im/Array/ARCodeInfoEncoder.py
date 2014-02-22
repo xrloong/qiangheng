@@ -2,7 +2,6 @@ from .ARCodeInfo import ARCodeInfo
 from ..base.CodeInfoEncoder import CodeInfoEncoder
 
 import sys
-import copy
 
 class ARCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):

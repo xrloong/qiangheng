@@ -5,7 +5,6 @@ from .Calligraphy import Pane
 from .Calligraphy import StrokeGroup
 
 import sys
-import copy
 
 class DCCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
@@ -91,13 +90,13 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsEqual(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
-		return copy.deepcopy(firstCodeInfo)
+		return firstCodeInfo
 
 	def encodeAsLoop(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		codeInfo=self.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_LOOP], [DCCodeInfo.PANE_NAME_LOOP])
 		if firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, copy.deepcopy(firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)))
+			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
 	def encodeAsSilkworm(self, codeInfoList):
@@ -118,7 +117,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		lastCodeInfo=codeInfoList[-1]
 		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, copy.deepcopy(lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)))
+			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 
 		return codeInfo
 
@@ -148,7 +147,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		lastCodeInfo=codeInfoList[-1]
 		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, copy.deepcopy(lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI)))
+			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
 	def encodeAsZai(self, codeInfoList):

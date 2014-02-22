@@ -1,11 +1,21 @@
 import re
 import sys
+import copy
 
 class StrokeAction:
 	def __init__(self, description):
 		self.action=int(description[0:4])
 		self.x=int(description[4:6], 16)
 		self.y=int(description[6:8], 16)
+
+	def __init__(self, action, x, y):
+		self.action=action
+		self.x=x
+		self.y=y
+
+	def __deepcopy__(self, memo):
+		action=copy.deepcopy(self.action, memo)
+		return StrokeAction(action, self.x, self.y)
 
 	def getCode(self):
 		return "%04X%02X%02X"%(self.action, self.x, self.y)
@@ -45,6 +55,10 @@ class Pane:
 		self.bottom=bottom
 
 		self.name="預設範圍"
+
+	def __deepcopy__(self, memo):
+		pane=Pane(copy.deepcopy([self.left, self.top, self.right, self.bottom], memo))
+		return pane
 
 	@property
 	def width(self):
@@ -153,7 +167,10 @@ class Stroke(Writing):
 		strokeDescription=groups[1]
 
 		descriptionList=strokeDescription.split(',')
-		self.actionList=[StrokeAction(d) for d in descriptionList]
+		self.actionList=[StrokeAction(*self.convertActionDescriptionToList(d)) for d in descriptionList]
+
+	def convertActionDescriptionToList(self, description):
+		return [int(description[0:4]), int(description[4:6], 16), int(description[6:8], 16)]
 
 	def getInstanceName(self):
 		return self.name
@@ -182,10 +199,17 @@ class Stroke(Writing):
 			action.transform(pane)
 
 class StrokeGroup(Writing):
-	def __init__(self, pane, strokeList):
-		Writing.__init__(self, pane)
+	def __init__(self, contourPane, strokeList):
+		Writing.__init__(self, contourPane)
 
 		self.strokeList=strokeList
+
+	def __deepcopy__(self, memo):
+		strokeList=copy.deepcopy(self.strokeList, memo)
+		return StrokeGroup(self.contourPane, strokeList)
+
+	def clone(self):
+		return copy.deepcopy(self)
 
 	def getStrokeList(self):
 		return self.strokeList

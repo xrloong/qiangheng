@@ -2,7 +2,6 @@ from .BSCodeInfo import BSCodeInfo
 from ..base.CodeInfoEncoder import CodeInfoEncoder
 
 import sys
-import copy
 
 class BSCodeInfoEncoder(CodeInfoEncoder):
 	INSTALLMENT_SEPERATOR='|'
