@@ -91,16 +91,16 @@ class HanZiNode:
 		structureList=self.getStructureListWithCondition()
 		return sum(map(lambda s: s.getCodeInfoList(), structureList), [])
 
-	def getCodeList(self):
+	def getCodePropertiesList(self):
 		self.setNodeTree()
 
 		codeList=[]
 		if self.isToShow:
 			codeInfoList=self.getCodeInfoList()
 			for codeInfo in codeInfoList:
-				code=codeInfo.getCode()
-				if code:
-					codeList.append(code)
+				codeProp=codeInfo.getCodeProperties()
+				if codeProp:
+					codeList.append(codeProp)
 		return codeList
 
 	def setNodeTree(self):
@@ -176,7 +176,7 @@ class HanZiNetwork:
 		ansNode=self.findNodeByCharDesc(charDesc)
 		return ansNode
 
-	def getCodeList(self, charName):
+	def getCodePropertiesList(self, charName):
 		charNode=self.srcDescNameToNodeDict.get(charName)
-		return charNode.getCodeList()
+		return charNode.getCodePropertiesList()
 

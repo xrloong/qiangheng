@@ -171,7 +171,8 @@ class QiangHeng:
 		targetCharList=self.descMgr.keys()
 		cm=self.genIMMapping(targetCharList)
 		for x in sorted(cm):
-			ElementTree.SubElement(charGroup, "對應", attrib={"按鍵序列":x[0], "字符":x[1], "頻率":x[2]})
+			attrib={"按鍵序列":x[0], "字符":x[1], "頻率":x[2], "類型":x[3]}
+			ElementTree.SubElement(charGroup, "對應", attrib)
 		xmlNode=ElementTree.ElementTree(rootNode)
 		ElementTree.dump(xmlNode)
 #		xmlNode.write(sys.stdout)
@@ -199,11 +200,11 @@ class QiangHeng:
 		table=[]
 		for charName in sorted(targetCharList):
 #			print("<-- %s -->"%charName)
-			codeList=self.hanziNetwork.getCodeList(charName)
+			codePropList=self.hanziNetwork.getCodePropertiesList(charName)
 			charDesc=charDescQueryer(charName)
 			freq=charDesc.getFrequency()
-			for code in codeList:
-				table.append([code, charName, freq])
+			for code, type in codePropList:
+				table.append([code, charName, freq, type])
 		return table
 
 oparser = OptionParser()

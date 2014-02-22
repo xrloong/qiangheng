@@ -1,9 +1,19 @@
 class CodeInfo:
+	CODE_TYPE_STANDARD=0
+	CODE_TYPE_SIMPLIFIED=1
+	CODE_TYPE_TOLERANT=2
+	codeTypeDict={
+		CODE_TYPE_STANDARD:"標準",
+		CODE_TYPE_SIMPLIFIED:"簡快",
+		CODE_TYPE_TOLERANT:"容錯",
+	}
+
 	def __init__(self, propDict={}):
 		self.setDataEmpty()
 		self.setSingleDataEmpty()
 
 		self.setRadixCodeProperties(propDict)
+		self.codeType=CodeInfo.CODE_TYPE_STANDARD
 
 	def __str__(self):
 		return "{{{0}}}".format(self.getCode())
@@ -24,6 +34,13 @@ class CodeInfo:
 		characterCode=self.characterCode
 		if characterCode:
 			return characterCode
+
+	def getCodeProperties(self):
+		characterCode=self.characterCode
+		if characterCode:
+			return [characterCode, CodeInfo.codeTypeDict.get(self.codeType)]
+		else:
+			return []
 
 	def setDataEmpty(self):
 		pass

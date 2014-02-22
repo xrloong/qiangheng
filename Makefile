@@ -22,6 +22,7 @@ IBUS_ICON_PATH	=	icons/platform/ibus
 GCIN_ICON_PATH	=	icons/platform/gcin
 OVIM_ICON_PATH	=	icons/platform/ovim
 MSIM_ICON_PATH	=	icons/platform/msim
+RELEASE_TYPE_LIST	=	standard all
 
 .PHONY: xml tarballs all-icons
 
@@ -33,7 +34,7 @@ xml:
 	for im in $(IMLIST);\
 	do\
 		echo $$im;\
-		time src/qiangheng.py -c qhdata/config/$$im.xml --xml |\
+		time src/qiangheng.py -c qhdata/config/$$im-multiple.xml --xml |\
 			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
 	done
 	touch $(XML_PATH)
@@ -95,9 +96,12 @@ $(MSIM_PATH): $(XML_PATH)
 puretable: $(PURETABLE_PATH)
 $(PURETABLE_PATH): $(XML_PATH)
 	mkdir -p $(PURETABLE_PATH)
-	for im in $(IMLIST);\
+	for type in $(RELEASE_TYPE_LIST);\
 	do\
-		time xalan -xsl xslt/puretable.xslt -in $(XML_PATH)/qh$$im.xml -out $(PURETABLE_PATH)/qh$$im.txt;\
+		for im in $(IMLIST);\
+		do\
+			time xalan -xsl xslt/puretable-$$type.xslt -in $(XML_PATH)/qh$$im.xml -out $(PURETABLE_PATH)/qh$$im-$$type.txt;\
+		done;\
 	done
 	touch $(PURETABLE_PATH)
 
@@ -119,7 +123,7 @@ all-icons:
 
 tarballs: pre-tarballs pdf tarball-src tarball-all
 	make tarball-src VERSION=$(VERSION)
-	make gen-release
+	make xml puretable
 	make imtables
 	make tarballs-platform VERSION=$(VERSION)
 	make tarball-all VERSION=$(VERSION)
@@ -143,19 +147,6 @@ tarballs-platform: all-icons
 
 tarball-all:
 	tar cjf $(TARBALLS_PATH)/qiangheng-$(VERSION).tar.bz2 --exclude-vcs --exclude=tarballs -C .. qiangheng
-
-gen-release: gen-multiple
-	echo "$(IMLIST_MULTIPLE)"
-	for im in $(IMLIST_MULTIPLE);\
-		do cp $(PURETABLE_PATH)/qh$$im.txt $(PURETABLE_PATH)/qh$${im%-multiple}.txt;\
-		cp $(XML_PATH)/qh$$im.xml $(XML_PATH)/qh$${im%-multiple}.xml;\
-	done
-
-gen-multiple:
-	make xml puretable IMLIST="$(IMLIST_MULTIPLE)"
-
-gen-one:
-	make xml puretable IMLIST="$(IMLIST_ONE)"
 
 clean:
 	rm -rf $(ICON_PLATFORM_PATH)
