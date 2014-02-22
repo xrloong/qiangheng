@@ -27,9 +27,7 @@ class ZMCharInfo(CharInfo):
 	def getZMProp(self):
 		return self._zm_rtlist
 
-	def setByComps(self, complist, direction):
-		# 計算鄭碼時，不需要知道此字的組成方向
-
+	def setByComps(self, operator, complist):
 		if all(complist):
 			rtlist=sum(map(lambda c: c.getZMProp(), complist), [])
 			if complist and all(rtlist):

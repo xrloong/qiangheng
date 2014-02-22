@@ -17,7 +17,7 @@ class CharInfo:
 		# 若非空且之前没設過值
 		return (not self.setFlag)
 
-	def setByComps(self, complist, direction):
+	def setByComps(self, operator, complist):
 		# 多型
 		# 計算倉頡碼時，需要知道此字的組成方向
 		# 計算行列、大易、嘸蝦米及鄭碼時，不需要知道此字的組成方向

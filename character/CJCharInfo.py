@@ -48,8 +48,9 @@ class CJCharInfo(CharInfo):
 	def getCJProp(self):
 		return [self._cj_direction, self._cj_radix_list]
 
-	def setByComps(self, complist, direction):
+	def setByComps(self, operator, complist):
 		# 計算倉頡碼時，需要知道此字的組成方向
+		direction=operator.getDirection()
 
 		ansRadixList=[]
 		for tmpchinfo in complist:

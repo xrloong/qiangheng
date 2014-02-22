@@ -16,18 +16,19 @@ class HanZiNetwork:
 		for charName in charNameList:
 			self.addCharDesc(charName)
 
-#		for charName in charNameList:
-#			dstDesc=self.get(charName)
-#			srcDesc=self.charDescQueryer(charName)
-#			dstDesc.setChInfo(copy.copy(srcDesc.getChInfo()))
+	def getAllNode(self):
+		# 目前未實作
+		return None
+
+	def findNodeByDescription(self, charDesc):
+		# 目前即為傳入值
+		return charDesc
 
 	def addCharDesc(self, charName):
-		dstDesc=self.charDescGenerator(charName)
 		srcDesc=self.charDescQueryer(charName)
 
 #		self.rearrangeRecursively(srcDesc)
-		self.expandCharDescInNetwork(dstDesc, srcDesc)
-#		self.charDescRearranger(charDesc)
+		dstDesc=self.expandCharDescInNetwork(srcDesc)
 		self.rearrangeRecursively(dstDesc)
 
 		self.descNetwork[charName]=dstDesc
@@ -37,11 +38,12 @@ class HanZiNetwork:
 		for childDesc in charDesc.getCompList():
 			self.rearrangeRecursively(childDesc)
 
-	def expandCharDescInNetwork(self, dstDesc, srcDesc):
+	def expandCharDescInNetwork(self, srcDesc):
 		# 擴展 dstDesc
 		# dstDesc 會被改變，而非產生新的 CharDesc
 
-		dstDesc.copyDescriptionFrom(srcDesc)
+		dstDesc=srcDesc.copyDescription()
+
 		srcCharInfo=srcDesc.getChInfo()
 		if srcCharInfo==None:
 			dstDesc.setChInfo(self.emptyCharInfoGenerator())
@@ -54,7 +56,7 @@ class HanZiNetwork:
 				# 若是為匿名結構，無法用名字查出結構，直接複製
 				anonymousName=CharDesc.generateNewAnonymousName()
 				childDstDesc=self.charDescGenerator(anonymousName)
-				self.expandCharDescInNetwork(childDstDesc, childSrcDesc)
+				childDstDesc=self.expandCharDescInNetwork(childSrcDesc)
 
 			else:
 				if childSrcDesc.getName() in self.descNetwork:
@@ -64,11 +66,27 @@ class HanZiNetwork:
 
 					childDstDesc=self.charDescGenerator(expandChildSrcDesc.getName())
 
-					self.expandCharDescInNetwork(childDstDesc, expandChildSrcDesc)
+					childDstDesc=self.expandCharDescInNetwork(expandChildSrcDesc)
 					self.descNetwork[childDstDesc.getName()]=childDstDesc
 
 			compList.append(childDstDesc)
 		dstDesc.setCompList(compList)
 
-#		self.charDescRearranger(dstDesc)
+		return dstDesc
+
+	def setCharTree(self, targetNode):
+		"""設定某一個字符所包含的部件的碼"""
+
+		radixList=targetNode.getCompList()
+		for childNode in radixList:
+			self.setCharTree(childNode)
+
+		targetNode.setByComps(radixList)
+
+	def getCode(self, charName):
+		expandDesc=self.get(charName, None)
+
+		targetNode=self.findNodeByDescription(expandDesc)
+		self.setCharTree(targetNode)
+		return targetNode.getCode()
 

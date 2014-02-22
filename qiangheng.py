@@ -25,7 +25,6 @@ def getDescDBFromXML(filenamelist, descMgr):
 def genIMMapping(descMgr, targetCharList):
 	table=[]
 	for chname in targetCharList:
-		descMgr.generateCode(chname)
 		code=descMgr.getCode(chname)
 		if code:
 			table.append([code, chname])

@@ -26,9 +26,7 @@ class BSCharInfo(CharInfo):
 	def getBSProp(self):
 		return [self._bs_incode, self._bs_spcode]
 
-	def setByComps(self, complist, direction):
-		# 計算嘸蝦米碼時，不需要知道此字的組成方向
-
+	def setByComps(self, operator, complist):
 		bslist=list(map(lambda c: c.getBSProp()[0], complist))
 		if complist and all(bslist):
 			cat="".join(bslist)

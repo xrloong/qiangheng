@@ -21,9 +21,7 @@ class ARCharInfo(CharInfo):
 	def getARProp(self):
 		return self._ar_incode
 
-	def setByComps(self, complist, direction):
-		# 計算行列碼時，不需要知道此字的組成方向
-
+	def setByComps(self, operator, complist):
 		arlist=list(map(lambda c: c.getARProp(), complist))
 		if complist and all(arlist):
 			cat="".join(arlist)

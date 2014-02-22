@@ -19,16 +19,16 @@ class CharDescriptionManager:
 		self.templateDB={}
 		self.characterDB={}
 
-		def CharDescGenerator(charName, structInfo=['龜', [], '(龜)']):
-			operatorName, CompList, expression=structInfo
+		def CharDescGenerator(charName, structInfo=['龜', []]):
+			operatorName, CompList=structInfo
 			operator=OperatorManager.getOperatorByName(operatorName)
 			if not operator.isAvailableOperation():
 				print("<!-- 錯誤；不合法的運算 %s -->"%operatorName)
 				return None
 
-			direction=operator.getDirection()
 			tmpCharInfo=CharInfoGenerator([])
-			charDesc=CharDesc(charName, operator, CompList, expression, tmpCharInfo)
+			charDesc=CharDesc(charName, operator, CompList)
+			charDesc.setChInfo(tmpCharInfo)
 			return charDesc
 
 		def emptyCharInfoGenerator():
@@ -47,12 +47,6 @@ class CharDescriptionManager:
 			if charDesc.isTemplate():
 				charDesc=self.getCharDescFromTemplate(charDesc)
 				charDesc.setName(charName)
-				chInfo=self.charInfoGenerator([])
-#				chInfo=self.emptyCharInfoGenerator()
-				charDesc.setChInfo(chInfo)
-
-			if charDesc.isTemplate():
-				pass
 			elif not charDesc.getOperator().isAvailableOperation():
 				print("<!-- 錯誤；不合法的運算 %s -->"%charDesc.getOperator())
 				return None
@@ -111,8 +105,6 @@ class CharDescriptionManager:
 					l.append(charDescGenerator(name))
 				elif node.tag=="組字":
 					l.append(getDesc_AssembleChar(node))
-				elif node.tag=="套用範本":
-					l.append(getDesc_ApplyTemplate(node))
 				else:
 					pass
 
@@ -122,7 +114,7 @@ class CharDescriptionManager:
 				comp=templateCharDesc
 			else:
 				anonymousName=CharDesc.generateNewAnonymousName()
-				comp=charDescGenerator(anonymousName, [operator, l, '(龜)'])
+				comp=charDescGenerator(anonymousName, [operator, l])
 			return comp
 
 		def getDesc_SubCharacter(nodeCharacter):
@@ -145,41 +137,8 @@ class CharDescriptionManager:
 
 			return comp
 
-		def getDesc_ApplyTemplate(applyTemplate):
-			templateCharDesc=None
-
-			argumentNodeList=applyTemplate.find("引數列")
-			argumentNameList=getDesc_ArgumentList(argumentNodeList)
-
-			templateName=applyTemplate.get("範本名稱")
-			templateCharDesc=TemplateCharDesc(templateName, argumentNameList)
-
-			return templateCharDesc
-
-		def getDesc_ApplyTemplate_V2(applyTemplate):
-			pass
-			"""
-			templateCharDesc=None
-
-			argumentNodeList=applyTemplate.find("引數列")
-			argumentNameList=getDesc_ArgumentList(argumentNodeList)
-
-			templateName=applyTemplate.get("範本名稱")
-			templateCharDesc=TemplateCharDesc(templateName, argumentNameList)
-
-			return templateCharDesc
-			"""
-
 		def getDesc_CompleteCharacter(nodeCharacter):
-			applyTemplate=nodeCharacter.find("套用範本")
-
-			if applyTemplate!=None:
-				comp=getDesc_ApplyTemplate(applyTemplate)
-			else:
-				if nodeCharacter.get('範本')=='是':
-					comp=getDesc_ApplyTemplate_V2(applyTemplate)
-				else:
-					comp=getDesc_SubCharacter(nodeCharacter)
+			comp=getDesc_SubCharacter(nodeCharacter)
 			return comp
 
 		def getDesc_ArgumentList(nodeArgument):
@@ -208,15 +167,15 @@ class CharDescriptionManager:
 			chInfo=emptyCharInfoGenerator()
 			comp=getDesc_AssembleChar(assembleChar)
 			comp.setName(templateName)
-#			comp.setChInfo(chInfo)
 			return TemplateDesc(templateName, comp, parameterNameList)
 
 		templateGroupNode=rootNode.find("範本集")
 		if None!=templateGroupNode:
 			targetChildNodes=templateGroupNode.findall("範本")
 			for node in targetChildNodes:
+				templateName=node.get('名稱')
 				templateDesc=getDesc_Template(node)
-				self.templateDB[templateDesc.getName()]=templateDesc
+				self.templateDB[templateName]=templateDesc
 
 		charGroupNode=rootNode.find("字符集")
 		targetChildNodes=charGroupNode.findall("字符")
@@ -240,13 +199,8 @@ class CharDescriptionManager:
 	def constructDescriptionNetwork(self):
 		self.hanziNetwork.constructHanZiNetwork(self.characterDB.keys())
 
-	def generateCode(self, charName):
-		expandDesc=self.hanziNetwork.get(charName, None)
-		expandDesc.setCharTree()
-
 	def getCode(self, charName):
-		expandDesc=self.hanziNetwork.get(charName, None)
-		return expandDesc.getCode()
+		return self.hanziNetwork.getCode(charName)
 
 if __name__=='__main__':
 	pass

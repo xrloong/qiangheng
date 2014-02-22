@@ -6,16 +6,15 @@ from character import Operator
 class CharDesc:
 	"""字符描述"""
 	countAnonymousName=0
-	def __init__(self, name, operator, compList, expression, chInfo):
+	def __init__(self, name, operator, compList):
 		self.name=name
 
 		self.operator=operator
 		self.compList=compList
 
-		self.expression=expression
-
 		# 字符的資訊，如在某種輸入法下如何拆碼
-		self.chInfo=chInfo
+#		self.chInfo=chInfo
+		self.chInfo=None
 
 		self.showFlag=False if len(self.name)>1 else True
 		self.anonymous=self.name.count("瑲珩匿名")>0
@@ -26,10 +25,9 @@ class CharDesc:
 	def __repr__(self):
 		return str(self)
 
-	def copyDescriptionFrom(self, srcDesc):
-		self.setName(srcDesc.getName())
-		self.setOperator(srcDesc.getOperator())
-		self.expression=srcDesc.expression
+	def copyDescription(self):
+		return CharDesc(self.getName(), self.getOperator(), [])
+#		return CharDesc(self.getName(), self.getOperator(), [], None)
 
 	def setName(self, name):
 		self.name=name
@@ -44,9 +42,6 @@ class CharDesc:
 
 	def getOperator(self):
 		return self.operator
-
-	def getDirection(self):
-		return self.operator.getDirection()
 
 	def setCompList(self, compList):
 		self.compList=compList
@@ -90,19 +85,13 @@ class CharDesc:
 		else:
 			return None
 
-	def setCharTree(self):
-		"""設定某一個字符所包含的部件的碼"""
-
+	def setByComps(self, charDescList):
 		chInfo=self.getChInfo()
 		if not chInfo.isToSetTree():
 			return
 
-		radixList=self.getCompList()
-		for tmpdesc in radixList:
-			tmpdesc.setCharTree()
-
-		infoList=[x.getChInfo() for x in radixList]
-		chInfo.setByComps(infoList, self.getDirection())
+		infoList=[x.getChInfo() for x in charDescList]
+		chInfo.setByComps(self.getOperator(), infoList)
 
 class TemplateCharDesc(CharDesc):
 	def __init__(self, templateName, argumentNameList):
@@ -110,6 +99,7 @@ class TemplateCharDesc(CharDesc):
 		self.templateDesc=None
 		self.argumentNameList=argumentNameList
 		self.anonymous=True
+		self.chInfo=None
 
 	def __str__(self):
 		return self.templateName
@@ -125,20 +115,16 @@ class TemplateCharDesc(CharDesc):
 
 	def setTemplateDesc(self, templateDesc):
 		self.templateDesc=templateDesc
-
-	def setCharDesc(self, charDesc):
-		self.charDesc=charDesc
+		self.targetCharDesc=self.templateDesc.getReplacedCharDesc(self.argumentNameList)
 
 	def getCharDesc(self):
+		return self.targetCharDesc
 #		return self.charDesc
-		return self.templateDesc.getReplacedCharDesc(self.argumentNameList)
+#		return self.templateDesc.getReplacedCharDesc(self.argumentNameList)
 
-	def copyDescriptionFrom(self, srcDesc):
-		self.setTemplateName(srcDesc.getTemplateName())
-		self.setTemplateDesc(self.templateDesc)
-		self.setCharDesc(self.getCharDesc())
-#		self.setOperator(srcDesc.getOperator())
-#		self.expression=srcDesc.expression
+	def copyDescription(self):
+		templateDesc=TemplateCharDesc(self.getTemplateName(), self.templateDesc)
+		return templateDesc
 
 if __name__=='__main__':
 	print(CharDesc('王', '(龜)', None))

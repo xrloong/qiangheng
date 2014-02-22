@@ -23,9 +23,7 @@ class DYCharInfo(CharInfo):
 	def getDYProp(self):
 		return self._dy_incode
 
-	def setByComps(self, complist, direction):
-		# 計算大易碼時，不需要知道此字的組成方向
-
+	def setByComps(self, operator, complist):
 		dylist=list(map(lambda c: c.getDYProp(), complist))
 		if complist and all(dylist):
 			cat="".join(dylist)
