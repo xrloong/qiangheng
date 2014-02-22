@@ -61,7 +61,7 @@ class CharDescriptionManager:
 			if charName in self.characterDB:
 				origCharDesc=self.characterDB.get(charName, None)
 				origCharDesc.setStructureList(charDesc.getStructureList())
-				origCharDesc.updateProperty(charDesc.getProperty())
+				origCharDesc.updateCharacterProperty(charDesc.getCharacterProperty())
 			else:
 				self.characterDB[charName]=charDesc
 

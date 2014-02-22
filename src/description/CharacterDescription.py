@@ -1,12 +1,11 @@
+from description import CharacterProperty
 
 class CharacterDescription:
 	def __init__(self, name, structList=[]):
 		self.name=name
 		self.structList=structList
 
-		self.prop={}
-		self.freq=0
-		self.note=""
+		self.charProp=CharacterProperty.CharacterProperty()
 
 	def getName(self):
 		return self.name
@@ -20,16 +19,12 @@ class CharacterDescription:
 	def extendStructureList(self, structList):
 		self.structList.extend(structList)
 
-	def setProperty(self, prop):
-		self.prop.update(prop)
+	def getCharacterProperty(self):
+		return self.charProp.getProperty()
 
-	def getProperty(self):
-		return self.prop
-
-	def updateProperty(self, prop):
-		self.prop.update(prop)
-		self.freq=self.prop.get('頻率', 0)
-		self.note=self.prop.get('註記', "")
+	def updateCharacterProperty(self, prop):
+		self.charProp.updateProperty(prop)
 
 	def getFrequency(self):
-		return self.freq
+		return self.charProp.getFrequency()
+

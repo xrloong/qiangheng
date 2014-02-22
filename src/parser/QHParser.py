@@ -125,7 +125,7 @@ class QHParser:
 
 			charDesc=CharacterDescription(charName)
 			charDesc.setStructureList(structureList)
-			charDesc.updateProperty(charProperties)
+			charDesc.updateCharacterProperty(charProperties)
 
 			charDescList.append(charDesc)
 		return charDescList
@@ -155,7 +155,7 @@ class QHParser:
 
 			charDesc=CharacterDescription(charName)
 			charDesc.setStructureList(structureList)
-			charDesc.updateProperty(charProperties)
+			charDesc.updateCharacterProperty(charProperties)
 
 			charDescList.append(charDesc)
 		return charDescList
