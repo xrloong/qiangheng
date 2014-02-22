@@ -6,7 +6,6 @@ class CodeInfo:
 		self.setPropDict(propDict)
 
 	def __str__(self):
-#		return "{{{0}}}".format(self.charname)
 		return "{{{0}}}".format(self.getCode())
 
 	def __repr__(self):
@@ -26,18 +25,8 @@ class CodeInfo:
 		if code: return code
 
 	def setDataEmpty(self):
-		self.dataInitialized=False
+		pass
 
 	def setSingleDataEmpty(self):
 		pass
-
-	def setDataInitialized(self):
-		self.dataInitialized=True
-
-	def isDataInitialized(self):
-		return self.dataInitialized
-
-	def isToSetTree(self):
-		# 若非空且之前没設過值
-		return (not self.isDataInitialized())
 

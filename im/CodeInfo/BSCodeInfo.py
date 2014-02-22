@@ -28,7 +28,6 @@ class BSCodeInfo(CodeInfo):
 			return self._bs_incode
 
 	def setDataEmpty(self):
-		CodeInfo.setDataEmpty(self)
 		self._bs_incode=None
 		self._bs_spcode=None
 
@@ -37,7 +36,6 @@ class BSCodeInfo(CodeInfo):
 
 	def setBSProp(self, bs_incode, bs_spcode):
 		if bs_incode!=None and bs_spcode!=None:
-			self.setDataInitialized()
 			self._bs_incode=bs_incode
 			self._bs_spcode=bs_spcode
 

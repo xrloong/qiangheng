@@ -56,7 +56,6 @@ class ZMCodeInfo(CodeInfo):
 		return ans
 
 	def setDataEmpty(self):
-		CodeInfo.setDataEmpty(self)
 		self._zm_rtlist=None
 
 	def setSingleDataEmpty(self):
@@ -65,7 +64,6 @@ class ZMCodeInfo(CodeInfo):
 
 	def setZMProp(self, zm_rtlist):
 		if zm_rtlist!=None:
-			self.setDataInitialized()
 			self._zm_rtlist=zm_rtlist
 
 	def getZMProp(self):

@@ -36,7 +36,6 @@ class CJCodeInfo(CodeInfo):
 			return CJCodeInfo.computeTotalCode(self._cj_radix_list, self._cj_direction).lower()
 
 	def setDataEmpty(self):
-		CodeInfo.setDataEmpty(self)
 		self._cj_radix_list=None
 		self._cj_direction=None
 		self._cj_body=None
@@ -46,7 +45,6 @@ class CJCodeInfo(CodeInfo):
 
 	def setCJProp(self, dir_code, codeList):
 		if dir_code!=None and codeList!=None:
-			self.setDataInitialized()
 			self._cj_radix_list=codeList
 			self._cj_direction=dir_code
 			self._cj_body=self.computeBodyCode(self._cj_radix_list, dir_code)

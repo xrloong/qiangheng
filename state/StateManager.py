@@ -7,6 +7,7 @@ STATE_QUANTITY_ALL=2
 
 __state_Quantity=STATE_QUANTITY_NONE
 __state_IMModule=None
+codeInfoGenerator=None
 
 def __init__(self):
 	pass
@@ -20,7 +21,10 @@ def getQuantity():
 
 def setIMModule(imModule):
 	global __state_IMModule
+	global codeInfoGenerator
+
 	__state_IMModule=imModule
+	codeInfoGenerator=imModule.CodeInfoGenerator
 
 def getIMModule():
 	return __state_IMModule

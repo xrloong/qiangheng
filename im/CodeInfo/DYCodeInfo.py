@@ -18,7 +18,6 @@ class DYCodeInfo(CodeInfo):
 		return self._dy_incode
 
 	def setDataEmpty(self):
-		CodeInfo.setDataEmpty(self)
 		self._dy_incode=None
 
 	def setSingleDataEmpty(self):
@@ -26,7 +25,6 @@ class DYCodeInfo(CodeInfo):
 
 	def setDYProp(self, dy_incode):
 		if dy_incode!=None:
-			self.setDataInitialized()
 			self._dy_incode=dy_incode
 
 	def getDYProp(self):

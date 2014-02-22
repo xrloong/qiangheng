@@ -32,11 +32,12 @@ class QiangHeng:
 			self.toTXT()
 
 	def initManager(self, imModule):
-		ciGenerator=imModule.CodeInfoGenerator
 		self.descMgr=CharDescriptionManager.CharDescriptionManager(imModule)
 
 		charDescQueryer=self.descMgr.getCharDescQueryer()
-		self.hanziNetwork=HanZiNetwork.HanZiNetwork(ciGenerator)
+		self.hanziNetwork=HanZiNetwork.HanZiNetwork()
+
+		StateManager.setIMModule(imModule)
 
 	def readConfig(self, configFile):
 		f=open(configFile, encoding='utf-8-sig')

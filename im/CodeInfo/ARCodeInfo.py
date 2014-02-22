@@ -18,7 +18,6 @@ class ARCodeInfo(CodeInfo):
 		return self._ar_incode
 
 	def setDataEmpty(self):
-		CodeInfo.setDataEmpty(self)
 		self._ar_incode=None
 
 	def setSingleDataEmpty(self):
@@ -26,7 +25,6 @@ class ARCodeInfo(CodeInfo):
 
 	def setARProp(self, ar_incode):
 		if ar_incode!=None:
-			self.setDataInitialized()
 			self._ar_incode=ar_incode
 
 	def getARProp(self):

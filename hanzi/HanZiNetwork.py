@@ -1,10 +1,20 @@
 import copy
+from state import StateManager
 
 class HanZiStructure:
-	def __init__(self, operator, nodeList, codeInfo):
+	def __init__(self, operator, nodeList):
 		self.operator=operator
 		self.nodeList=nodeList
-		self.codeInfo=codeInfo
+
+		self.codeInfoList=[]
+
+		self.flagIsSet=True
+
+	def setToRadix(self):
+		self.flagIsSet=False
+
+	def setToComponent(self):
+		pass
 
 	def getOperator(self):
 		return self.operator
@@ -13,26 +23,31 @@ class HanZiStructure:
 		return self.nodeList
 
 	def getCodeInfo(self):
-		return self.codeInfo
+		return self.getCodeInfoList()[0]
 
-	def setCodeInfo(self, codeInfo):
-		self.codeInfo=codeInfo
+	def appendCodeInfo(self, codeInfo):
+		return self.codeInfoList.append(codeInfo)
 
 	def getCodeInfoList(self):
-		return [self.codeInfo]
+		return self.codeInfoList
 
 	def setStructure(self, operator, nodeList):
 		self.operator=operator
 		self.nodeList=nodeList
 
 	def setByComps(self):
+		if self.flagIsSet:
+			return
+		self.flagIsSet=True
+
 		codeInfo=self.getCodeInfo()
 		nodeList=self.nodeList
-		if not codeInfo.isToSetTree():
-			return
+		infoList=self.getAllCodeInfoList(nodeList)
+		codeInfo.setByComps(self.getOperator(), infoList[0])
 
-		infoList=[node.getCodeInfoList()[0] for node in nodeList]
-		codeInfo.setByComps(self.getOperator(), infoList)
+	def getAllCodeInfoList(self, nodeList):
+		infoList=[[node.getCodeInfoList()[0] for node in nodeList]]
+		return infoList
 
 class HanZiNode:
 	def __init__(self, charName):
@@ -57,12 +72,18 @@ class HanZiNode:
 
 		codeList=[]
 		if self.isToShow:
-			structureList=self.getStructureListWithCondition()
-			for struct in structureList:
-				codeInfo=struct.getCodeInfo()
+			codeInfoList=self.getCodeInfoList()
+			for codeInfo in codeInfoList:
 				code=codeInfo.getCode()
 				if code:
 					codeList.append(code)
+
+#			structureList=self.getStructureListWithCondition()
+#			for struct in structureList:
+#				codeInfo=struct.getCodeInfo()
+#				code=codeInfo.getCode()
+#				if code:
+#					codeList.append(code)
 		return codeList
 
 	def setNodeTree(self):
@@ -77,16 +98,11 @@ class HanZiNode:
 			structure.setByComps()
 
 class HanZiNetwork:
-	def __init__(self, codeInfoGenerator):
+	def __init__(self):
 		self.nodeList=[]
 
 		self.descNetwork={}
 		self.srcDescNameToNodeDict={}
-
-		def emptyCodeInfoGenerator():
-			return codeInfoGenerator({})
-
-		self.emptyCodeInfoGenerator=emptyCodeInfoGenerator
 
 	def isInNetwork(self, srcDesc):
 		srcName=srcDesc.getHybridName()
@@ -104,15 +120,21 @@ class HanZiNetwork:
 			childNodeList=[self.findNodeByCharDesc(childDesc) for childDesc in childDescList]
 			dstNode=self.findNodeByCharDesc(charDesc)
 
-			codeInfo=self.emptyCodeInfoGenerator()
-			structure=HanZiStructure(operator, childNodeList, codeInfo)
+			codeInfo=StateManager.codeInfoGenerator()
+			structure=HanZiStructure(operator, childNodeList)
+			structure.appendCodeInfo(codeInfo)
+			structure.setToRadix()
+
 			dstNode.addStructure(structure)
 
 	def appendNodeInfo(self, charDesc, propDict):
 		dstNode=self.findNodeByCharDesc(charDesc)
-		codeInfo=self.emptyCodeInfoGenerator()
-		codeInfo.setPropDict(propDict)
-		structure=HanZiStructure(None, [], codeInfo)
+
+		codeInfo=StateManager.codeInfoGenerator(propDict)
+		structure=HanZiStructure(None, [])
+		structure.appendCodeInfo(codeInfo)
+		structure.setToComponent()
+
 		dstNode.addStructure(structure)
 
 	def findNodeByCharDesc(self, charDesc):
