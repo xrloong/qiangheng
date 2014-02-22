@@ -160,7 +160,7 @@ class CangJie(NoneIM):
 		if ch.structure[1] in ['龜']:
 			prelist=[]
 			postlist=[]
-		elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起']:
+		elif ch.structure[1] in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
 			x=chdict.get(ch.structure[3], None)
 			y=chdict.get(ch.structure[4], None)
 			prelist=[x]
@@ -189,6 +189,13 @@ class CangJie(NoneIM):
 			x=chdict.get(ch.structure[3], None)
 			prelist=[x, x]
 			postlist=[x, x]
+		elif ch.structure[1] in ['纂',]:
+			x=chdict.get(ch.structure[3], None)
+			y=chdict.get(ch.structure[4], None)
+			z=chdict.get(ch.structure[5], None)
+			w=chdict.get(ch.structure[6], None)
+			prelist=[x]
+			postlist=[y, z, w]
 		else:
 			prelist=[]
 			postlist=[]

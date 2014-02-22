@@ -1632,7 +1632,6 @@ U+847C	葼	(龜)	tuce	tue
 U+8486	蒆	(龜)	tmiv	tmv
 U+8487	蒇	(龜)	tihu	tiu
 U+848F	蒏	(龜)	tbmw	tbw
-U+849C	蒜	(龜)	tmff	tmf
 U+84A7	蒧	(龜)	tihr	tir
 U+84CF	蓏	(龜)	thoo	tho
 U+84D6	蓖	(龜)	thwp	thp
