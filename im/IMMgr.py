@@ -4,6 +4,7 @@ from im import Boshiamy
 from im import CangJie
 from im import DaYi
 from im import ZhengMa
+from im import TableIM
 
 from character import CharInfo
 from character import ARCharInfo
@@ -17,7 +18,7 @@ class IMMgr:
 		pass
 
 	@staticmethod
-	def getIM(imName):
+	def getIM(imName, method):
 		if imName == '倉頡':
 			im=CangJie.CangJie()
 		elif imName == '行列':
@@ -28,8 +29,14 @@ class IMMgr:
 			im=Boshiamy.Boshiamy()
 		elif imName == '鄭碼':
 			im=ZhengMa.ZhengMa()
+		elif imName == '表格':
+			im=TableIM.TableIM()
 		else:
 			im=NoneIM.NoneIM()
+
+		if method=='表格對應':
+			im=TableIM.TableIM(im)
+
 		return im
 
 	@staticmethod

@@ -128,36 +128,40 @@ def genFile(options):
 	elif choice in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
 		imDirPath='zm/'
 		imName='鄭碼'
+	elif choice in ['表', '表格', '表格輸入法', 'table', 'tb',]:
+		imName='表格'
 	else:
 		imName='空'
 
-	dirchar=options.dir_charinfo + "/"
-	tmpfname=filenamelist[0]
-	if imName=='空':
-		pathlist=[]
+	if method in ['動態組碼', 'dynamic', ]:
+		imMethod='動態組碼'
+	elif method in ['表格對應', 'table']:
+		imMethod='表格對應'
 	else:
+		imMethod='不做事'
+
+	inputMethod=IMMgr.getIM(imName, imMethod)
+
+	if imMethod=='動態組碼':
+		dirchar=options.dir_charinfo + "/"
+		tmpfname=filenamelist[0]
 		pathlist=[
 				dirchar+'main/'+tmpfname,
 				dirchar+imDirPath+tmpfname,
 				]
 
-	inputMethod=IMMgr.getIM(imName)
-	constructor=IMMgr.getCharInfoGenerator(imName)
-
-	if method in ['動', '動態', '動態組碼', 'dynamic',]:
-		def AnonymouseCharInfoGenerator():
-			return constructor("XXXX", [])
-
+		constructor=IMMgr.getCharInfoGenerator(imName)
 		descMgr=CharDescriptionManager(constructor)
+
 		getDescDBFromFile(pathlist, descMgr)
 		descMgr.ConstructDescriptionNetwork()
 
 		inputMethod.setStruct(descMgr)
-	elif method in ['表', '表格', 'puretable', 'pt']:
+	elif imMethod=='表格對應':
 		cmtable=getTableFromFile(options.ptfile)
 		inputMethod.setTable(cmtable)
 	else:
-		inputMethod.setTable([])
+		pass
 
 	if pf in ['scim']:
 		p=platform.ScimPlatform(inputMethod)

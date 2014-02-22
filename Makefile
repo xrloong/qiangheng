@@ -2,28 +2,28 @@
 VERSION	=	0.04
 IMLIST	=	cj ar dy bs zm
 TEST_IMLIST	=	cj ar dy bs zm
-STYLELIST	=	scim gcin ime
+PLATFORM_LIST	=	puretable scim gcin msim
 
-all:
+.PHONY: puretable scim gcin msim
+
+all: puretable
+
+puretable:
 	for im in $(IMLIST);\
 		do\
-		time ./qiangheng.py -i $$im -p puretable -m dynamic > puretable/$$im.puretable.txt;\
-		./qiangheng.py -i $$im -p scim -m puretable -t puretable/$$im.puretable.txt > scim/$$im.scim.txt;\
-		./qiangheng.py -i $$im -p gcin -m puretable -t puretable/$$im.puretable.txt > gcin/$$im.gcin.txt;\
-		./qiangheng.py -i $$im -p msim -m puretable -t puretable/$$im.puretable.txt > msim/$$im.msim.txt;\
+		time ./qiangheng.py -i $$im -p puretable -m dynamic > $@/$$im.$@.txt;\
+	done
+
+scim gcin msim:
+	for im in $(IMLIST);\
+		do\
+		./qiangheng.py -i $$im -p $@ -m table -t puretable/$$im.puretable.txt > $@/$$im.$@.txt;\
 	done
 
 testing:
 	for im in $(TEST_IMLIST);\
 		do ./qiangheng.py --dir-charinfo test/charinfo -i $$im -p puretable -m dynamic > test/puretable/$$im.puretable.txt;\
 	done
-#	for im in $(IMLIST);\
-#		do echo $$im;\
-#		./qiangheng.py -i $$im -p puretable -m dynamic | wc -l;\
-#		./qiangheng.py -i $$im -p scim -m dynamic | wc -l;\
-#		./qiangheng.py -i $$im -p gcin -m dynamic | wc -l;\
-#		./qiangheng.py -i $$im -p msim -m dynamic | wc -l;\
-#	done
 
 compare: testing
 	diff -rN test/puretable_ans test/puretable
@@ -31,7 +31,24 @@ compare: testing
 tex/principle.pdf: tex/principle.tex
 	cd tex; xelatex principle.tex; rm principle.aux  principle.log
 
-tarball: all tex/principle.pdf
+tarballs: tarball-src tarball-all
+	make clean
+	make tarball-src VERSION=$(VERSION)
+	make puretable
+	make scim gcin msim
+	make tarball-platform VERSION=$(VERSION)
+	make tarball-all VERSION=$(VERSION)
+
+tarball-src:
+	tar cjf ../qiangheng-src-$(VERSION).tar.bz2 --exclude-vcs -C .. qiangheng
+
+tarball-platform:
+	for p in $(PLATFORM_LIST);\
+	do\
+		tar cjf ../qiangheng-$$p-$(VERSION).tar.bz2 --exclude-vcs -C .. qiangheng/$$p;\
+	done
+
+tarball-all:
 	tar cjf ../qiangheng-$(VERSION).tar.bz2 --exclude-vcs -C .. qiangheng
 
 clean:

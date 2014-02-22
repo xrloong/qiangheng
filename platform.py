@@ -16,7 +16,7 @@ class NonePlatform:
 	    #    [按鍵二, 提示二],
 	    #    [按鍵三, 提示三],
 	    # ]
-	    return map(lambda x: self.fmt.format(*x), self.im.keyMaps)
+	    return map(lambda x: self.fmt.format(*x), self.im.getKeyMaps())
 
     def genCodeMappingsTable(self, cm):
 	    return "\n".join(sorted(map(lambda x : self.cmfmt.format(*x), cm)))
