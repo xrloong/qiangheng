@@ -51,12 +51,19 @@ class QiangHeng:
 #				dirQHData+radixDir+tmpfname,
 				]
 
+		templateDir=componentDir
+		templateFileName='template.xml'
+		toTemplateList=[
+				dirQHData+'main/'+templateFileName,
+				dirQHData+templateDir+templateFileName,
+				]
+
 		radixDir="radix"+"/"+dirIM
 		toCodeList=[
 				dirQHData+radixDir+tmpfname,
 				]
 
-		self.getDescDBFromXML(toComponentList, toCodeList)
+		self.getDescDBFromXML(toTemplateList, toComponentList, toCodeList)
 
 	def constructDescriptionNetwork(self):
 		charNameList=self.descMgr.keys()
@@ -140,7 +147,10 @@ class QiangHeng:
 		table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x), cm)))
 		print(table)
 
-	def getDescDBFromXML(self, toComponentList, toCodeList):
+	def getDescDBFromXML(self, toTemplateList, toComponentList, toCodeList):
+		for filename in toTemplateList:
+			self.descMgr.loadTemplateFromXML(filename, fileencoding='utf-8-sig')
+
 		for filename in toComponentList:
 			self.descMgr.loadFromXML(filename, fileencoding='utf-8-sig')
 		self.descMgr.adjustData()
