@@ -66,14 +66,15 @@ class NoneIM:
 		self.tb=tb
 		self.method='T'
 
-	def setStruct(self, chdict):
-		self.chdict=chdict
+	def setStruct(self, descDB):
+		self.descDB=descDB
 		self.method='D'
 
 	def genIMMapping(self):
 		if self.method=='D':
 			table=[]
-			for chname, ch in self.chdict.items():
+			for chname, desc in self.descDB.items():
+				ch=desc.getChInfo()
 				self.setCharTree(ch)
 				code=self.getCode(ch)
 				if ch.isToShow() and code:
@@ -108,35 +109,35 @@ class NoneIM:
 #		'起', '廖', '載', '聖', '句',
 #		'夾', '衍', '衷',]
 #		['纂', '膷',]
-		chdict=self.chdict
+		descDB=self.descDB
 		if ch.operator in ['龜']:
 			return []
 		elif ch.operator in ['水']:
-			x=chdict.get(ch.operandlist[0], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfor()
 			return [x]
 		elif ch.operator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=chdict.get(ch.operandlist[0], None)
-			y=chdict.get(ch.operandlist[1], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			y=descDB.get(ch.operandlist[1], None).getChInfo()
 			return [x, y]
 		elif ch.operator in ['算', '湘', '霜', '想', '怡', '穎',]:
-			x=chdict.get(ch.operandlist[0], None)
-			y=chdict.get(ch.operandlist[1], None)
-			z=chdict.get(ch.operandlist[2], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			y=descDB.get(ch.operandlist[1], None).getChInfo()
+			z=descDB.get(ch.operandlist[2], None).getChInfo()
 			return [x, y, z]
 		elif ch.operator in ['纂',]:
-			x=chdict.get(ch.operandlist[0], None)
-			y=chdict.get(ch.operandlist[1], None)
-			z=chdict.get(ch.operandlist[2], None)
-			w=chdict.get(ch.operandlist[3], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			y=descDB.get(ch.operandlist[1], None).getChInfo()
+			z=descDB.get(ch.operandlist[2], None).getChInfo()
+			w=descDB.get(ch.operandlist[3], None).getChInfo()
 			return [x, y, z, w]
 		elif ch.operator in ['林', '爻']:
-			x=chdict.get(ch.operandlist[0], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
 			return [x, x]
 		elif ch.operator in ['卅', '鑫']:
-			x=chdict.get(ch.operandlist[0], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
 			return [x, x, x]
 		elif ch.operator in ['燚',]:
-			x=chdict.get(ch.operandlist[0], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
 			return [x, x, x, x]
 		else:
 			return []
@@ -250,50 +251,50 @@ class CangJie(NoneIM):
 
 	def getCJPrePostList(self, ch):
 		"""傳回倉頡的字首及字尾的部件串列"""
-		chdict=self.chdict
+		descDB=self.descDB
 		prelist=[]
 		postlist=[]
 		if ch.operator in ['龜']:
 			prelist=[]
 			postlist=[]
 		elif ch.operator in ['水']:
-			x=chdict.get(ch.operandlist[0], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
 			prelist=[x]
 			postlist=[]
 		elif ch.operator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=chdict.get(ch.operandlist[0], None)
-			y=chdict.get(ch.operandlist[1], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			y=descDB.get(ch.operandlist[1], None).getChInfo()
 			prelist=[x]
 			postlist=[y]
 		elif ch.operator in ['算', '湘', '霜', '怡',]:
-			x=chdict.get(ch.operandlist[0], None)
-			y=chdict.get(ch.operandlist[1], None)
-			z=chdict.get(ch.operandlist[2], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			y=descDB.get(ch.operandlist[1], None).getChInfo()
+			z=descDB.get(ch.operandlist[2], None).getChInfo()
 			prelist=[x]
 			postlist=[y, z]
 		elif ch.operator in ['想', '穎',]:
-			x=chdict.get(ch.operandlist[0], None)
-			y=chdict.get(ch.operandlist[1], None)
-			z=chdict.get(ch.operandlist[2], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			y=descDB.get(ch.operandlist[1], None).getChInfo()
+			z=descDB.get(ch.operandlist[2], None).getChInfo()
 			prelist=[x, y]
 			postlist=[z]
 		elif ch.operator in ['林', '爻']:
-			x=chdict.get(ch.operandlist[0], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
 			prelist=[x]
 			postlist=[x]
 		elif ch.operator in ['卅', '鑫']:
-			x=chdict.get(ch.operandlist[0], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
 			prelist=[x]
 			postlist=[x, x]
 		elif ch.operator in ['燚',]:
-			x=chdict.get(ch.operandlist[0], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
 			prelist=[x, x]
 			postlist=[x, x]
 		elif ch.operator in ['纂',]:
-			x=chdict.get(ch.operandlist[0], None)
-			y=chdict.get(ch.operandlist[1], None)
-			z=chdict.get(ch.operandlist[2], None)
-			w=chdict.get(ch.operandlist[3], None)
+			x=descDB.get(ch.operandlist[0], None).getChInfo()
+			y=descDB.get(ch.operandlist[1], None).getChInfo()
+			z=descDB.get(ch.operandlist[2], None).getChInfo()
+			w=descDB.get(ch.operandlist[3], None).getChInfo()
 			prelist=[x]
 			postlist=[y, z, w]
 		else:

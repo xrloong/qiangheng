@@ -2,6 +2,7 @@
 
 import im
 import platform
+import chardesc
 
 from optparse import OptionParser
 oparser = OptionParser()
@@ -86,7 +87,7 @@ def parsestructure(g):
 
 def getDynamicFromFile(filenamelist, CharConstructor):
 	chlist=[]
-	chdict={}
+	descDB={}
 
 	for filename in filenamelist:
 		f=open(filename, encoding=fileencoding)
@@ -101,8 +102,9 @@ def getDynamicFromFile(filenamelist, CharConstructor):
 					print("錯誤的表達式 %s=%s"%(ll[1], ll[2]))
 				else:
 					operator, operandlist=parseans
-					chdict[ll[1]]=CharConstructor(ll[1], parseans, ll[3:])
-	return chdict
+					chInfo=CharConstructor(ll[1], parseans, ll[3:])
+					descDB[ll[1]]=chardesc.CharDesc(ll[1], ll[2], chInfo)
+	return descDB
 
 def getTableFromFile(filename):
 	t=[]
@@ -159,8 +161,8 @@ def genFile(options):
 		z=im.NoneIM()
 
 	if method in ['動', '動態', '動態組碼', 'dynamic',]:
-		chdict=getDynamicFromFile(pathlist, constructor)
-		z.setStruct(chdict)
+		descDB=getDynamicFromFile(pathlist, constructor)
+		z.setStruct(descDB)
 	elif method in ['表', '表格', 'puretable', 'pt']:
 		cmtable=getTableFromFile(options.ptfile)
 		z.setTable(cmtable)
