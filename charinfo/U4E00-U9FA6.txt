@@ -6540,7 +6540,7 @@ U+675B	杛	(好 木弓)
 U+675C	杜	(好 木土)
 U+675D	杝	(好 木也)
 U+675E	杞	(好 木己)
-U+675F	束	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+675F	束	(龜)	dl	v;	IO	jcs	n	fj	21
 U+6760	杠	(好 木工)
 U+6761	条	(志 夂木)
 U+6762	杢	(志 木工)
@@ -6558,7 +6558,7 @@ U+676D	杭	(好 木亢)
 U+676E	杮	(好 木巿)
 U+676F	杯	(好 木不)
 U+6770	杰	(志 木灬)
-U+6771	東	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6771	東	(龜)	dw	vp	id	jqs	n	fk	21
 U+6772	杲	(志 日木)
 U+6773	杳	(志 木日)
 U+6774	杴	(好 木欠)
@@ -6601,7 +6601,7 @@ U+6798	枘	(好 木內)
 U+6799	枙	(好 木厄)
 U+679A	枚	(好 木攵)
 U+679B	枛	(好 木爪)
-U+679C	果	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+679C	果	(龜)	wt	pv	di	qt	n	kf	21
 U+679D	枝	(好 木支)
 U+679E	枞	(好 木从)
 U+679F	枟	(好 木云)
@@ -7509,7 +7509,7 @@ U+6B1C	欜	(好 木囊)
 U+6B1D	欝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6B1E	欞	(好 木靈)
 U+6B1F	欟	(好 木觀)
-U+6B20	欠	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6B20	欠	(龜)	no	jk	na	i	n	ro	12
 U+6B21	次	(好 冫欠)
 U+6B22	欢	(好 又欠)
 U+6B23	欣	(好 斤欠)
@@ -7575,8 +7575,8 @@ U+6B5E	歞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6B5F	歟	(好 與欠)
 U+6B60	歠	(穎 叕酉欠)
 U+6B61	歡	(好 雚欠)
-U+6B62	止	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6B63	正	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6B62	止	(龜)	ylm	e	9	z	e	ii	12
+U+6B63	正	(龜)	mylm	ae	e9	ez	e	aii	21
 U+6B64	此	(好 止匕)
 U+6B65	步	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6B66	武	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
@@ -7598,7 +7598,7 @@ U+6B75	歵	(好 止責)
 U+6B76	歶	(志 此禺)
 U+6B77	歷	(廖 厤止)
 U+6B78	歸	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6B79	歹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6B79	歹	(龜)	eni	am	en	d	a	ars	21
 U+6B7A	歺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6B7B	死	(廖 歹匕)
 U+6B7C	歼	(好 歹千)
@@ -7656,7 +7656,7 @@ U+6BAF	殯	(好 歹賓)
 U+6BB0	殰	(好 歹賣)
 U+6BB1	殱	(好 歹韯)
 U+6BB2	殲	(好 歹韱)
-U+6BB3	殳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6BB3	殳	(龜)	hne	sb	qx	ru	x	qxa	13
 U+6BB4	殴	(好 区殳)
 U+6BB5	段	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6BB6	殶	(好 主殳)
@@ -7689,7 +7689,7 @@ U+6BD0	毐	(志 士毋)
 U+6BD1	毑	(好 母也)
 U+6BD2	毒	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6BD3	毓	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6BD4	比	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6BD4	比	(龜)	pp	qq	cc	ff	ll	rrrr	22
 U+6BD5	毕	(志 比十)
 U+6BD6	毖	(志 比必)
 U+6BD7	毗	(好 田比)
@@ -7787,8 +7787,8 @@ U+6C30	氰	(載 气青)
 U+6C31	氱	(載 气昜)
 U+6C32	氲	(載 气昷)
 U+6C33	氳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6C34	水	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+6C35	氵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+6C34	水	(龜)	e	c	x	w	n	kv	12
+U+6C35	氵	(龜)	e	c	XXXX	w	e	v	11
 U+6C36	氶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6C37	氷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+6C38	永	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
@@ -8874,8 +8874,8 @@ U+7067	灧	(好 氵艷)
 U+7068	灨	(好 氵贛)
 U+7069	灩	(好 氵豔)
 U+706A	灪	(好 氵鬱)
-U+706B	火	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+706C	灬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+706B	火	(龜)	f	,	y	f	n	uo	12
+U+706C	灬	(龜)	f	,	XXXX	f	a	uo	12
 U+706D	灭	(志 一火)
 U+706E	灮	(志 火儿)
 U+706F	灯	(好 火丁)
@@ -9456,7 +9456,7 @@ U+72A9	犩	(志 魏牛)
 U+72AA	犪	(好 牜夔)
 U+72AB	犫	(志 讎牛)
 U+72AC	犬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+72AD	犭	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+72AD	犭	(龜)	kh	.	XXXX	q	p	qm	12
 U+72AE	犮	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+72AF	犯	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+72B0	犰	(好 犭九)
@@ -10440,7 +10440,7 @@ U+7679	癹	(志 癶殳)
 U+767A	発	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+767B	登	(志 癶豆)
 U+767C	發	(霜 癶弓殳)
-U+767D	白	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+767D	白	(龜)	ha	lp	/d	pd	o	nk	12
 U+767E	百	(志 一白)
 U+767F	癿	(好 白乚)
 U+7680	皀	(志 白匕)
@@ -10553,7 +10553,7 @@ U+76EA	盪	(志 湯皿)
 U+76EB	盫	(志 酓皿)
 U+76EC	盬	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+76ED	盭	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+76EE	目	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+76EE	目	(龜)	bu	j	3	m	o	l	11
 U+76EF	盯	(好 目丁)
 U+76F0	盰	(好 目干)
 U+76F1	盱	(好 目于)
@@ -10816,7 +10816,7 @@ U+77EF	矯	(好 矢喬)
 U+77F0	矰	(好 矢曾)
 U+77F1	矱	(好 矢蒦)
 U+77F2	矲	(好 矢罷)
-U+77F3	石	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+77F3	石	(龜)	mr	g	q	lo	o	g	11
 U+77F4	矴	(好 石丁)
 U+77F5	矵	(好 石刂)
 U+77F6	矶	(好 石几)
@@ -11147,8 +11147,8 @@ U+7936	礶	(好 石雚)
 U+7937	礷	(好 石藍)
 U+7938	礸	(好 石贊)
 U+7939	礹	(好 石嚴)
-U+793A	示	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+793B	礻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+793A	示	(龜)	mmf	eet	aac	rs	a	bk	12
+U+793B	礻	(龜)	if	yh	XXXX	r	s	ws	12
 U+793C	礼	(好 礻乚)
 U+793D	礽	(好 礻乃)
 U+793E	社	(好 礻土)
@@ -11596,7 +11596,7 @@ U+7AF5	竵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+7AF6	競	(林 竞)
 U+7AF7	竷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+7AF8	竸	(林 竟)
-U+7AF9	竹	(龜)	h	XXXX	XXXX	z	i	XXXX	XXXX
+U+7AF9	竹	(龜)	h	l	/	z	i	mami	42
 U+7AFA	竺	(志 竹二)
 U+7AFB	竻	(志 竹力)
 U+7AFC	竼	(志 竹凡)
@@ -11978,7 +11978,7 @@ U+7C6F	籯	(志 竹贏)
 U+7C70	籰	(志 竹矍)
 U+7C71	籱	(志 竹靃)
 U+7C72	籲	(志 竹龥)
-U+7C73	米	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+7C73	米	(龜)	fd	,	8	m	n	uf	12
 U+7C74	籴	(志 入米)
 U+7C75	籵	(好 米十)
 U+7C76	籶	(好 米几)
@@ -12111,10 +12111,10 @@ U+7CF4	糴	(好 籴翟)
 U+7CF5	糵	(志 薛米)
 U+7CF6	糶	(好 粜翟)
 U+7CF7	糷	(好 米蘭)
-U+7CF8	糸	(龜)	vif	XXXX	XXXX	s	a	XXXX	XXXX
-U+7CF9	糹	(龜)	vif	XXXX	XXXX	s	a	XXXX	XXXX
+U+7CF8	糸	(龜)	vif	x	t	s	a	z	11
+U+7CF9	糹	(龜)	vif	x	t	s	a	z	11
 U+7CFA	糺	(好 糹乚)
-U+7CFB	系	(龜)	hvif	XXXX	XXXX	ps	a	XXXX	XXXX
+U+7CFB	系	(龜)	hvif	lx	/t	ps	a	mz	21
 U+7CFC	糼	(好 糹力)
 U+7CFD	糽	(好 糹丁)
 U+7CFE	糾	(好 糹丩)
@@ -12538,7 +12538,7 @@ U+7E9B	纛	(志 毒縣)
 U+7E9C	纜	(好 糹覽)
 U+7E9D	纝	(好 糹纍)
 U+7E9E	纞	(好 糹戀)
-U+7E9F	纟	(龜)	vve	XXXX	XXXX	s	e	XXXX	XXXX
+U+7E9F	纟	(龜)	vve	x	t	s	e	z	11
 U+7EA0	纠	(好 纟丩)
 U+7EA1	纡	(好 纟于)
 U+7EA2	红	(好 纟工)
@@ -12946,7 +12946,7 @@ U+802F	耯	(好 耒蒦)
 U+8030	耰	(好 耒憂)
 U+8031	耱	(好 耒磨)
 U+8032	耲	(好 耒襄)
-U+8033	耳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8033	耳	(龜)	sj	ae	p	r	j	ce	12
 U+8034	耴	(好 耳乚)
 U+8035	耵	(好 耳丁)
 U+8036	耶	(好 耳阝)
@@ -13531,8 +13531,8 @@ U+8274	艴	(好 弗色)
 U+8275	艵	(好 并色)
 U+8276	艶	(好 豊色)
 U+8277	艷	(好 豐色)
-U+8278	艸	(龜)	uu	XXXX	XXXX	ee	j	XXXX	XXXX
-U+8279	艹	(龜)	t	XXXX	XXXX	r	j	XXXX	XXXX
+U+8278	艸	(龜)	uu	dd	u	ee	j	zizi	22
+U+8279	艹	(龜)	t	f	u	r	j	e	11
 U+827A	艺	(志 艹乙)
 U+827B	艻	(志 艹力)
 U+827C	艼	(志 艹丁)
@@ -15058,8 +15058,8 @@ U+885F	衟	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+8860	衠	(湘 彳真亍)
 U+8861	衡	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+8862	衢	(湘 彳瞿亍)
-U+8863	衣	(龜)	yhv	ylx	kk	lk	n	XXXX	XXXX
-U+8864	衤	(龜)	l	yki	XXXX	v	a	XXXX	XXXX
+U+8863	衣	(龜)	yhv	ylx	kk	lk	n	srh	21
+U+8864	衤	(龜)	l	yki	kb	v	a	wt	12
 U+8865	补	(好 衤卜)
 U+8866	衦	(好 衤干)
 U+8867	衧	(好 衤于)
@@ -15474,8 +15474,8 @@ U+89FD	觽	(好 角嶲)
 U+89FE	觾	(好 角燕)
 U+89FF	觿	(好 角巂)
 # 8A00	(角)
-U+8A00	言	(龜)	ymmr	XXXX	XXXX	i	o	XXXX	XXXX
-U+8A01	訁	(龜)	ymmr	XXXX	XXXX	i	o	XXXX	XXXX
+U+8A00	言	(龜)	ymmr	y	1	i	o	s	11
+U+8A01	訁	(龜)	ymmr	y	1	i	o	s	11
 U+8A02	訂	(好 言丁)
 U+8A03	訃	(好 言卜)
 U+8A04	訄	(起 尢言)
@@ -16147,10 +16147,10 @@ U+8C99	貙	(好 豸區)
 U+8C9A	貚	(好 豸單)
 U+8C9B	貛	(好 豸雚)
 U+8C9C	貜	(好 豸矍)
-U+8C9D	貝	(龜)	XXXX	XXXX	XXXX	mb	a	XXXX	XXXX
-U+8C9E	貞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8C9D	貝	(龜)	muc	XXXX	XXXX	mb	a	XXXX	XXXX
+U+8C9E	貞	(龜)	ybuc	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+8C9F	貟	(志 厶貝)
-U+8CA0	負	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8CA0	負	(龜)	nbuc	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+8CA1	財	(好 貝才)
 U+8CA2	貢	(志 工貝)
 U+8CA3	貣	(志 弋貝)
@@ -16708,10 +16708,10 @@ U+8EC6	軆	(好 身豊)
 U+8EC7	軇	(好 身壽)
 U+8EC8	軈	(好 身應)
 U+8EC9	軉	(好 身寶)
-U+8ECA	車	(龜)	jwj	XXXX	XXXX	c	j	XXXX	XXXX
+U+8ECA	車	(龜)	jwj	q	6	c	j	fk	12
 U+8ECB	軋	(好 車乚)
 U+8ECC	軌	(好 車九)
-U+8ECD	軍	(龜)	njwj	XXXX	XXXX	nc	j	XXXX	XXXX
+U+8ECD	軍	(龜)	njwj	jq	m6	nc	j	wwfk	22
 U+8ECE	軎	(志 車口)
 U+8ECF	軏	(好 車兀)
 U+8ED0	軐	(好 車卂)
@@ -17489,8 +17489,8 @@ U+91CD	重	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+91CE	野	(好 里予)
 U+91CF	量	(志 旦里)
 U+91D0	釐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+91D1	金	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+91D2	釒	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+91D1	金	(龜)	c	i	0	a	e	p	11
+U+91D2	釒	(龜)	c	i	0	a	e	p	11
 U+91D3	釓	(好 釒乚)
 U+91D4	釔	(好 釒乙)
 U+91D5	釕	(好 釒了)
@@ -18599,7 +18599,7 @@ U+9619	阙	(同 门欮)
 U+961A	阚	(同 门敢)
 U+961B	阛	(同 门睘)
 U+961C	阜	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+961D	阝	(龜)	XXXX	XXXX	XXXX	b	i	XXXX	XXXX
+U+961D	阝	(龜)	nl	t	p	b	i	y	11
 U+961E	阞	(好 阝力)
 U+961F	队	(好 阝人)
 U+9620	阠	(好 阝卂)
@@ -18802,7 +18802,7 @@ U+96E4	雤	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+96E5	雥	(鑫 隹)
 U+96E6	雦	(卅 隹)
 U+96E7	雧	(志 雥木)
-U+96E8	雨	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+96E8	雨	(龜)	XXXX	z	m	u	a	fv	12
 U+96E9	雩	(志 雨亏)
 U+96EA	雪	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+96EB	雫	(志 雨下)
