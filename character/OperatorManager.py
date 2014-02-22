@@ -32,7 +32,7 @@ class RearrangeInfoLShapeSimpleRadical:
 		x=oldCompList[0]
 		y=oldCompList[1]
 
-		if x.getHybridName() in ['辶', '廴']:
+		if x.getExpandName() in ['辶', '廴']:
 			charDesc.setCompList([y, x])
 			charDesc.setOperator(ansOperator)
 
@@ -85,8 +85,6 @@ class OperatorManager:
 		templateDesc=self.templateDB.get(templateName)
 
 		resultDesc=templateDesc.getReplacedCharDesc(compList)
-
-		resultDesc=resultDesc.copyDeeply()
 		resultDesc.setExpandName(charDesc.getExpandName())
 		return resultDesc
 

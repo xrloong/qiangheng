@@ -30,20 +30,19 @@ class TemplateDesc:
 		return self.parameterList
 
 	def getReplacedCharDesc(self, argumentList):
-		argumentNameList=[charDesc.getHybridName() for charDesc in argumentList]
+		tempDesc=self.charDesc.copyDeeply()
+		mappingDict={}
+		if len(argumentList)==len(self.parameterList):
+			pairList=zip(self.parameterList, argumentList)
 
-		tempDesc=copy.deepcopy(self.charDesc)
-		pairList=[]
-		if len(argumentNameList)==len(self.parameterList):
-			pairList=zip(self.parameterList, argumentNameList)
-
-		mappingDict=dict(pairList)
+			mappingDict=dict(pairList)
 		self.replaceCharDesc(tempDesc, mappingDict)
 		return tempDesc
 
 	def replaceCharDesc(self, charDesc, mappingDict):
-		argumentName=mappingDict.get(charDesc.getExpandName())
-		if argumentName!=None:
+		argumentDesc=mappingDict.get(charDesc.getExpandName())
+		if argumentDesc!=None:
+			argumentName=argumentDesc.getExpandName()
 			charDesc.setExpandName(argumentName)
 
 		for comp in charDesc.getCompList():

@@ -129,7 +129,6 @@ class CharDescriptionManager:
 			parameterNameList=getDesc_ParameterList(parameterNodeList)
 
 			comp=getDesc_AssembleChar(assembleChar)
-			comp.setName(templateName)
 			return TemplateDesc(templateName, comp, parameterNameList)
 
 		templateGroupNode=rootNode.find("範本集")

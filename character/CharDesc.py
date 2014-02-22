@@ -35,22 +35,20 @@ class CharDesc:
 		copyCharDesc.setExpandName(self.getExpandName())
 		return copyCharDesc
 
-	def copyDeeply(self):
-		if self.getOperator().getName()=='龜':
-			ansDesc=self.copyDescription()
-			return ansDesc
+	def copyDeeply(self, isWithSameExpandName=True):
 		ansChildList=[]
 		for childDesc in self.getCompList():
-			ansChilDesc=childDesc.copyDeeply()
+			ansChilDesc=childDesc.copyDeeply(False)
 			ansChildList.append(ansChilDesc)
-		ansDesc=CharDesc(self.getOperator(), ansChildList)
+
+		if self.getOperator().getName()=='龜':
+			ansDesc=self.copyDescription()
+		else:
+			ansDesc=CharDesc(self.getOperator(), ansChildList)
+
+		if isWithSameExpandName:
+			ansDesc.setExpandName(self.getExpandName())
 		return ansDesc
-
-	def setName(self, name):
-		self.name=name
-
-	def getName(self):
-		return self.name
 
 	def getHybridName(self):
 		if self.isExpandable():
