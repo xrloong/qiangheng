@@ -19,23 +19,6 @@ class StrokeInfo:
 		self.centerX = self.left + self.width//2
 		self.centerY = self.top + self.height//2
 
-	def getCodeList(self, strokeState):
-		pane=strokeState.getTargetPane()
-		points = [(point[0], pane.transformPoint(point[1])) for point in self.getPoints()]
-
-		point = points[0]
-		isCurve = point[0]
-		assert isCurve is False
-		pointExpressionList = ["0000{0[0]:02X}{0[1]:02X}".format(point[1]), ]
-
-		for point in points[1:]:
-			isCurve = point[0]
-			if isCurve:
-				pointExpressionList.append("0002{0[0]:02X}{0[1]:02X}".format(point[1]))
-			else:
-				pointExpressionList.append("0001{0[0]:02X}{0[1]:02X}".format(point[1]))
-		return pointExpressionList
-
 	def getName(self):
 		return self.name
 
@@ -1399,34 +1382,10 @@ class StrokeState:
 		return self.targetPane
 
 class Stroke(Writing):
-	def __init__(self, strokeInfo, state):
+	def __init__(self, strokeInfo, state=StrokeState()):
 		super().__init__(Pane())
 		self.strokeInfo=strokeInfo
 		self.state=state
-
-	@staticmethod
-	def fromStrokeExpression(contourPane, strokeExpression):
-		l=strokeExpression.split(';')
-		name=l[0]
-		scopeDesc=l[1]
-
-		left=int(scopeDesc[0:2], 16)
-		top=int(scopeDesc[2:4], 16)
-		right=int(scopeDesc[4:6], 16)
-		bottom=int(scopeDesc[6:8], 16)
-		scope=(left, top, right, bottom)
-
-		strokeDesc=l[2]
-		parameterExpression = strokeDesc[1:-1]
-		parameterExpressionList = parameterExpression.split(',')
-
-		clsStrokeInfo = StrokeInfoMap.get(name, None)
-		assert clsStrokeInfo!=None
-
-		parameterList = clsStrokeInfo.parseExpression(parameterExpressionList)
-		strokeInfo = clsStrokeInfo(name, scope, parameterList)
-
-		return Stroke(strokeInfo, StrokeState())
 
 	def clone(self):
 		return Stroke(self.strokeInfo, self.state.clone())
@@ -1434,9 +1393,11 @@ class Stroke(Writing):
 	def getTypeName(self):
 		return self.strokeInfo.getTypeName()
 
-	def getCode(self):
-		codeList=self.strokeInfo.getCodeList(self.state)
-		return ','.join(codeList)
+	def getState(self):
+		return self.state
+
+	def getStrokeInfo(self):
+		return self.strokeInfo
 
 	# 多型
 	def transform(self, pane):
@@ -1457,11 +1418,6 @@ class StrokeGroup(Writing):
 
 	def getCount(self):
 		return len(self.strokeList)
-
-	def getCode(self):
-		strokeList=self.getStrokeList()
-		codeList=[stroke.getCode() for stroke in strokeList]
-		return ','.join(codeList)
 
 	# 多型
 	def transform(self, pane):

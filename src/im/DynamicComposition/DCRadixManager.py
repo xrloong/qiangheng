@@ -1,6 +1,7 @@
 from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..base.RadixManager import RadixParser
+from . import Calligraphy
 from .Calligraphy import Pane
 from .Calligraphy import Stroke
 from .Calligraphy import StrokeGroup
@@ -96,13 +97,37 @@ class DCRadixParser(RadixParser):
 			countourPane=self.parsePane(descriptionRegion)
 
 			strokeExpression=strokeNode.attrib.get(DCRadixParser.ATTRIB_STROKE_EXPRESSION, '')
-			stroke=Stroke.fromStrokeExpression(pane, strokeExpression)
+			stroke=DCRadixParser.fromStrokeExpression(pane, strokeExpression)
 
 			stroke.transform(countourPane)
 
 			strokeList.append(stroke)
 		strokeGroup=StrokeGroup(pane, strokeList)
 		return strokeGroup
+
+	@staticmethod
+	def fromStrokeExpression(contourPane, strokeExpression):
+		l=strokeExpression.split(';')
+		name=l[0]
+		scopeDesc=l[1]
+
+		left=int(scopeDesc[0:2], 16)
+		top=int(scopeDesc[2:4], 16)
+		right=int(scopeDesc[4:6], 16)
+		bottom=int(scopeDesc[6:8], 16)
+		scope=(left, top, right, bottom)
+
+		strokeDesc=l[2]
+		parameterExpression = strokeDesc[1:-1]
+		parameterExpressionList = parameterExpression.split(',')
+
+		clsStrokeInfo = Calligraphy.StrokeInfoMap.get(name, None)
+		assert clsStrokeInfo!=None
+
+		parameterList = clsStrokeInfo.parseExpression(parameterExpressionList)
+		strokeInfo = clsStrokeInfo(name, scope, parameterList)
+
+		return Stroke(strokeInfo)
 
 	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)

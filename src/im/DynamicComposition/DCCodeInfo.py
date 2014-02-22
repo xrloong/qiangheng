@@ -52,13 +52,31 @@ class DCCodeInfo(CodeInfo):
 		return codeInfo
 
 	def toCode(self):
-		return self.getCode()
+		strokeList=self.getStrokeGroup().getStrokeList()
+		codeList=[self.encodeStroke(stroke) for stroke in strokeList]
+		return ','.join(codeList)
 
-	def getStrokeList(self):
-		return self.getStrokeGroup().getStrokeList()
+	def encodeStroke(self, stroke):
+		def encodePoints(points):
+			point = points[0]
+			isCurve = point[0]
+			assert isCurve is False
+			pointExpressionList = ["0000{0[0]:02X}{0[1]:02X}".format(point[1]), ]
 
-	def getCode(self):
-		return self.getStrokeGroup().getCode()
+			for point in points[1:]:
+				isCurve = point[0]
+				if isCurve:
+					pointExpressionList.append("0002{0[0]:02X}{0[1]:02X}".format(point[1]))
+				else:
+					pointExpressionList.append("0001{0[0]:02X}{0[1]:02X}".format(point[1]))
+			return ",".join(pointExpressionList)
+
+		strokeState=stroke.getState()
+		strokeInfo=stroke.getStrokeInfo()
+		pane=strokeState.getTargetPane()
+		points = [(point[0], pane.transformPoint(point[1])) for point in strokeInfo.getPoints()]
+
+		return encodePoints(points)
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
