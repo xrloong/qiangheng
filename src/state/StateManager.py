@@ -1,6 +1,6 @@
 
 # 視此模式為獨體模式（Singleton）。
-from gear import CodeInfoManager
+from im.gear import CodeInfoManager
 
 __state_IMModule=None
 characterDescriptionRearrangerGenerator=None

@@ -5,9 +5,9 @@ import sys
 import Constant
 from xml.etree import ElementTree
 from parser import QHParser
-from gear import OperatorManager
+from ..gear import OperatorManager
+from ..gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 from gear.CodeVarianceType import CodeVarianceType
-from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class RadixManager:
 	def __init__(self):

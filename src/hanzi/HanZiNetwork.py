@@ -3,7 +3,7 @@ import copy
 
 from util.topsort import topsort
 from util.topsort import CycleError
-from gear import Operator
+from im.gear import Operator
 from state import StateManager
 
 from . import HanZiStructure

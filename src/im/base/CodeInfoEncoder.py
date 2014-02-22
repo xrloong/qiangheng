@@ -1,5 +1,5 @@
 from .CodeInfo import CodeInfo
-from gear import Operator
+from ..gear import Operator
 
 class CodeInfoEncoder:
 	def __init__(self):

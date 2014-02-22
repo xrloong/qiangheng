@@ -2,7 +2,7 @@
 
 import sys
 from .CharacterDescription import CharacterDescription
-from gear import OperatorManager
+from im.gear import OperatorManager
 from parser import QHParser
 from state import StateManager
 from xml.etree import ElementTree
