@@ -98,8 +98,13 @@ class HangerStructureDescription(StructureDescription):
 	def target(self):
 		return self.hangerStructureDescription
 
-	def replacedBy(self, newStructureDescription):
-		self.hangerStructureDescription=newStructureDescription.target
+	def replacedBy(self, newStructureDescription, withOldExpandName=False):
+		if withOldExpandName:
+			oldExpandName=self.hangerStructureDescription.getExpandName()
+			self.hangerStructureDescription=newStructureDescription.target
+			self.hangerStructureDescription.setExpandName(oldExpandName)
+		else:
+			self.hangerStructureDescription=newStructureDescription.target
 
 	def copyDescription(self):
 		return HangerStructureDescription(self.getOperator(), [])

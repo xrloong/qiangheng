@@ -30,8 +30,8 @@ class IMInfo:
 	def getKeyList(self):
 		return "".join(list(zip(*self.keyMaps))[0])
 
-	def setStruct(self, descMgr):
-		self.descMgr=descMgr
+#	def setStruct(self, descMgr):
+#		self.descMgr=descMgr
 
 CodeInfoGenerator=CodeInfo.CodeInfo
 

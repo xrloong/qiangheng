@@ -82,9 +82,7 @@ class TemplateDescription:
 	def rearrange(self, charDesc):
 		compList=charDesc.getCompList()
 		resultDesc=self.getReplacedCharDesc(compList)
-		resultDesc.setExpandName(charDesc.getExpandName())
-
-		charDesc.replacedBy(resultDesc)
+		charDesc.replacedBy(resultDesc, True)
 
 	# 需要先替換兒子，才可以進行自己的替換。
 	# 否則，如：條=(範翛 木)=(範湘 亻丨(志 夂木))
@@ -95,7 +93,7 @@ class TemplateDescription:
 
 		argumentDesc=mappingDict.get(charDesc.getExpandName())
 		if argumentDesc!=None:
-			charDesc.replacedBy(argumentDesc)
+			charDesc.replacedBy(argumentDesc, False)
 
 if __name__=='__main__':
 	print(TemplateDescription('王', '(龜)', None))

@@ -48,6 +48,7 @@ class IMMgr:
 
 		return imModule
 
+	"""
 	@staticmethod
 	def getIM(imName):
 		imModule=IMMgr.getIMModule(imName)
@@ -57,6 +58,7 @@ class IMMgr:
 	def getCodeInfoGenerator(imName):
 		imModule=IMMgr.getIMModule(imName)
 		return imModule.CodeInfoGenerator
+	"""
 
 if __name__=='__main__':
 	pass
