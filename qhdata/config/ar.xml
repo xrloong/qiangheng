@@ -4,21 +4,11 @@
 		<輸入法 名稱="行列" 版本="三十" 標準="瑲珩" />
 	</設定>
 	<設定檔 資料目錄="qhdata/">
-		<範本 檔案="template/main.xml" />
+		<匯入 檔案="config/traditional.xml" />
+
 		<範本 檔案="template/ar.xml" />
 
-		<部件 檔案="frequency/CJK.xml" />
-		<部件 檔案="frequency/CJK-A.xml" />
-
-		<部件 檔案="main/CJK.xml" />
-		<部件 檔案="main/CJK-A.xml" />
-		<部件 檔案="main/component/CJK.xml" />
-		<部件 檔案="main/component/CJK-A.xml" />
-
-		<部件 檔案="style/standard.xml" />
-		<部件 檔案="style/traditional.xml" />
 		<部件 檔案="style/ar.xml" />
-
 		<部件 檔案="component/CJK/ar.xml" />
 		<部件 檔案="component/CJK-A/ar.xml" />
 
