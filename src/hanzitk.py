@@ -137,25 +137,13 @@ def generateTTF(filename):
 
 	f=fontforge.font()
 	f.is_quadratic=True
-	f.strokedfont=True
-	f.strokewidth=50
+#	f.strokedfont=True
+#	f.strokewidth=50
 	f.em=emsize
 
 	start, end=0x4E00, 0x9FA6 # 全部
 
 	from canvas import TrueTypeGlyphHanZiCanvas
-	"""
-	for o in range(start, end+1):
-		g=f.createChar(o)
-		canvas=TrueTypeGlyphHanZiCanvas.TrueTypeGlyphHanZiCanvas(g, emsize, emsize)
-		drawSystem=HanZiDrawingSystem(canvas)
-
-		if o%256==0:
-			print("U+%04X"%o)
-
-		ct=rm.getFont(chr(o))
-		drawSystem.draw(ct, canvas=canvas)
-		"""
 
 	characters=sorted(rm.getCharacters())
 	print("總共有 %s 個字符"%len(characters))
@@ -165,19 +153,28 @@ def generateTTF(filename):
 
 		o=ord(ch)
 		g=f.createChar(o)
+		g.left_side_bearing=100
+		g.right_side_bearing=100
+
 		canvas=TrueTypeGlyphHanZiCanvas.TrueTypeGlyphHanZiCanvas(g, emsize, emsize)
 		drawSystem=HanZiDrawingSystem(canvas)
 
 		ct=rm.getFont(ch)
 		drawSystem.draw(ct, canvas=canvas)
 
-	f.save(filename)
+		# stroke(penType, strokeWidth, lineCap, lineJoin)
+		# stroke(circular|calligraphic|polygon, strokeWidth, square|round|butt, miter|round|bevel)
+		g.stroke("circular",30, "round", "miter")
+		g.removeOverlap()
+
+	f.generate(filename)
 	print('結束')
 
 oparser = OptionParser()
 oparser.add_option("-s", action="store_true", dest="show_font", help="秀出字形", default=False)
 oparser.add_option("-g", action="store_true", dest="gen_font", help="產生字型檔", default=False)
 oparser.add_option("-i", "--in-fontfile", dest="fontfile", help="字型來源檔")
+#oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔", default="font/qhdc.sfd")
 oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔", default="font/qhdc.ttf")
 (options, args) = oparser.parse_args()
 
