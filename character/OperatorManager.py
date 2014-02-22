@@ -60,9 +60,6 @@ class OperatorManager:
 			'函':RearrangeInfoSame(),
 			'區':RearrangeInfoSame(),
 			'左':RearrangeInfoSame(),
-
-			'好':RearrangeInfoSame(),
-			'志':RearrangeInfoSame(),
 		}
 		def operatorGenerator(operatorName):
 			return Operator.Operator(operatorName)
