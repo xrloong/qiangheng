@@ -7,17 +7,20 @@ class ZMCharInfo(CharInfo):
 		self.setFlag=False
 
 		self._zm_rtlist=[]
-		self._zm_incode=None
-		self._zm_tpcode=None
+		extra_code=None
+		if len(prop)>=2:
+			extra_code=prop[1]
+
 		if len(prop)>=1:
 			str_rtlist=prop[0]
 			if str_rtlist=='XXXX':
 				self.setZMProp([])
 			else:
-				self.setZMProp(str_rtlist.split(','))
+				self.setZMProp(str_rtlist.split(','), extra_code)
 
-	def setZMProp(self, zm_rtlist):
+	def setZMProp(self, zm_rtlist, zm_extra=None):
 		self._zm_rtlist=zm_rtlist
+		self._zm_extra=zm_extra
 
 		self.setFlag=True
 
@@ -63,8 +66,11 @@ class ZMCharInfo(CharInfo):
 				ans=self._zm_rtlist[0][0:3]+self._zm_rtlist[-1][0]
 		else:
 			ans=''
+		if self._zm_extra:
+			ans+=self._zm_extra
 		return ans
 
 	def getCode(self):
-		if self.zm: return self.zm
+		if self.zm:
+			return self.zm
 
