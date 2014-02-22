@@ -12,7 +12,7 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
-		isAllWithCode=all(map(lambda x: x.getMainCode(), codeInfoList))
+		isAllWithCode=all(map(lambda x: x.getMainCodeList(), codeInfoList))
 		return isAllWithCode
 
 	def encodeAsTurtle(self, codeInfoList):
@@ -81,12 +81,12 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 
 	@staticmethod
 	def computeDaYiCode(codeInfoList):
-		dyCodeList=list(map(lambda c: c.getMainCode(), codeInfoList))
+		dyCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
 		return DYCodeInfoEncoder.computeDaYiCodeByCodeList(dyCodeList)
 
 	def computeDaYiCodeByCodeList(dyCodeList):
-		cat="".join(dyCodeList)
-		dyCode=cat[:3]+cat[-1] if len(cat)>4 else cat
+		cat=sum(dyCodeList, [])
+		dyCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
 		return dyCode
 
 	@staticmethod
