@@ -87,7 +87,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 		return nameSet
 
 	def recursivelyAddStructure(self, structDesc):
-		childDescList=structDesc.getCompList()
+		childDescList=self.descriptionManager.queryChildren(structDesc)
 		for childSrcDesc in childDescList:
 			self.recursivelyAddStructure(childSrcDesc)
 

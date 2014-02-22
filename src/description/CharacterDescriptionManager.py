@@ -58,6 +58,9 @@ class CharacterDescriptionManager:
 			characterProperty=charDesc.getCharacterProperty()
 			self.characterDB[charName]=charDesc
 
+	def queryChildren(self, charDesc):
+		return charDesc.getCompList()
+
 	def adjustData(self, structureRearranger):
 		for charName in self.characterDB.keys():
 #			print("name: %s"%charName, file=sys.stderr);
