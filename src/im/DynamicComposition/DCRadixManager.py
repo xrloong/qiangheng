@@ -8,8 +8,6 @@ from .Calligraphy import StrokeGroup
 import re
 
 class DCRadixParser(RadixParser):
-	TAG_RADIX_SET='字根集'
-	TAG_RADIX='字根'
 	TAG_STROKE_GROUP='筆劃組'
 	TAG_GEOMETRY='幾何'
 	TAG_SCOPE='範圍'
@@ -18,7 +16,6 @@ class DCRadixParser(RadixParser):
 	TAG_EXTRA_SCOPE='補充範圍'
 
 	TAG_CODE_INFORMATION='編碼資訊'
-	ATTRIB_CODE_EXPRESSION='資訊表示式'
 	ATTRIB_STROKE_EXPRESSION='筆劃資訊'
 
 	TAG_CHARACTER_SET='字符集'
@@ -28,7 +25,6 @@ class DCRadixParser(RadixParser):
 
 	def __init__(self, nameInputMethod, codeInfoEncoder):
 		super().__init__(nameInputMethod, codeInfoEncoder)
-		self.strokeGroupDB={}
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
@@ -54,16 +50,6 @@ class DCRadixParser(RadixParser):
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):
-		radixSetNode=rootNode.find(DCRadixParser.TAG_RADIX_SET)
-		if radixSetNode is not None:
-			radixNodeList=radixSetNode.findall(DCRadixParser.TAG_RADIX)
-			for radixNode in radixNodeList:
-				radixName=radixNode.get(DCRadixParser.TAG_NAME)
-				strokeGroupNodeList=radixNode.findall(DCRadixParser.TAG_STROKE_GROUP)
-				for strokeGroupNode in strokeGroupNodeList:
-					[strokeGroupName, strokeGroup]=self.parseStrokeGroup(strokeGroupNode)
-					self.strokeGroupDB[strokeGroupName]=strokeGroup
-
 		characterSetNode=rootNode.find(DCRadixParser.TAG_CHARACTER_SET)
 		characterNodeList=characterSetNode.findall(DCRadixParser.TAG_CHARACTER)
 		for characterNode in characterNodeList:
@@ -107,8 +93,6 @@ class DCRadixParser(RadixParser):
 		strokeList=[]
 		strokeNodeList=strokeGroupNode.findall(DCRadixParser.TAG_STROKE)
 		for strokeNode in strokeNodeList:
-			description=strokeNode.attrib.get(DCRadixParser.ATTRIB_CODE_EXPRESSION, '')
-
 			descriptionRegion=strokeNode.get(DCRadixParser.TAG_SCOPE)
 			countourPane=self.parsePane(descriptionRegion)
 
@@ -116,6 +100,7 @@ class DCRadixParser(RadixParser):
 			stroke=Stroke.fromStrokeExpression(pane, strokeExpression)
 
 			stroke.transform(countourPane)
+
 			strokeList.append(stroke)
 		strokeGroup=StrokeGroup(pane, strokeList)
 		return strokeGroup
@@ -126,7 +111,4 @@ class DCRadixParser(RadixParser):
 		right=int(descriptionRegion[4:6], 16)
 		bottom=int(descriptionRegion[6:8], 16)
 		return Pane([left, top, right, bottom])
-
-	def findStrokeGroup(self, strokeGroupName):
-		return self.strokeGroupDB.get(strokeGroupName)
 
