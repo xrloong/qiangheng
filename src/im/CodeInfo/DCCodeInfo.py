@@ -1,3 +1,4 @@
+import re
 from gear.CodeInfo import CodeInfo
 
 class DCCodeInfo(CodeInfo):
@@ -42,7 +43,13 @@ class DCCodeInfo(CodeInfo):
 
 class Stroke:
 	def __init__(self, description):
-		descriptionList=description.split(',')
+		matchResult=re.match("\((.*)\)(.*)", description)
+
+		groups=matchResult.groups()
+		nameDescription=groups[0]
+		strokeDescription=groups[1]
+
+		descriptionList=strokeDescription.split(',')
 		self.actionList=[StrokeAction(d) for d in descriptionList]
 
 	def getActionList(self):
