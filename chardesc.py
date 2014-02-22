@@ -228,6 +228,26 @@ class CharDesc:
 			postlist=[]
 		return [prelist, postlist]
 
+	def getDir(self):
+		"""傳回倉頡的結合方向"""
+
+		oldOperator=self.op
+
+		ansDir='+'
+		if oldOperator in ['龜', '水']:
+			ansDir='+'
+		elif oldOperator in ['回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
+			ansDir='+'
+		elif oldOperator in ['纂', '算', '志', '霜', '想', '爻', '卅', ]:
+			ansDir='|'
+		elif oldOperator in ['湘', '好', '怡', '穎', '林', '鑫', ]:
+			ansDir='-'
+		elif oldOperator in ['燚',]:
+			ansDir='+'
+		else:
+			ansDir='+'
+		return ansDir
+
 CharDesc.NoneDesc=CharDesc("", '', charinfo.CharInfo.NoneChar)
 
 if __name__=='__main__':

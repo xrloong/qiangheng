@@ -19,10 +19,14 @@ aga	与
 ajk	丙
 al	丆
 al	万
+alp;	靣
+alpe	面
+alps	靦
 c	水
 c	氵
 c	氺
 ca	业
+cale	湎
 clm	洀
 cosz	海
 d	刂
@@ -52,6 +56,7 @@ jha	丒
 jhh	刅
 jjof	解
 jk	刄
+js	見
 k	人
 k	亻
 ka	亼

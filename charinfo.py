@@ -42,8 +42,8 @@ class CharInfo:
 	def updateIMCode(self, chdesc):
 		# 多型
 		descList=self.normalizationToLinear(chdesc)
-		complist=[x.getChInfo() for x in descList]
-		self.setByComps(complist)
+		compList=[x.getChInfo() for x in descList]
+		self.setByComps(compList)
 
 	def normalizationToLinear(self, comp):
 		"""將樹狀結構轉為線性結構"""
@@ -60,9 +60,32 @@ class CJCharInfo(CharInfo):
 		super().__init__(charname, parseans, prop)
 		self._cj_incode=None	# 當獨體使用
 		self._cj_rtcode=None	# 當部件使用
+		self._X_dir_code=None
 		if len(prop)>=2:
 			self.setCJProp(prop[0], prop[1])
+			self.XsetCJProp(prop[0], prop[2])
 		self.noneFlag=False
+
+		self._X_body_code=''
+
+	def getDirCode(self):
+		return self._X_dir_code
+
+	def XsetCJProp(self, a, b):
+		self._X_single_code=a
+
+		if len(b)>0:
+			dir_code=b[0]
+			if dir_code not in ['|', '-', '+']:
+				dir_code='+'
+
+			self._X_radix_list=b[1:].split(',')
+		else:
+			dir_code='+'
+			self._X_radix_list=[]
+
+		self._X_dir_code=dir_code
+		self._X_body_code=''
 
 	def setCJProp(self, cj_incode, cj_rtcode):
 		if cj_incode=='XXXX':
@@ -108,9 +131,12 @@ class CJCharInfo(CharInfo):
 			cjbodycode=CJCombideCode(headcode, bodycode)
 			self.setCJProp(cjcode, cjbodycode)
 
+	def XsetCJByComps(self, dirCode, compList):
+		pass
+
 	@property
 	def cj(self):
-		return self._cj_incode
+		return self._cj_incode.lower()
 
 	@property
 	def isSeted(self):
@@ -119,6 +145,65 @@ class CJCharInfo(CharInfo):
 	def getCode(self):
 		if self.cj: return self.cj
 
+	def computeHeadTailCode(self, code, headCount):
+		frontCode=code[:headCount]
+		rearCode=code[headCount:]
+
+		# 以大寫來表示重要的尾碼
+		xTailCode=list(filter(lambda x: x.isupper(), rearCode))
+		if len(xTailCode)>0:
+			# 重要的尾碼
+			tailCode=xTailCode[-1]
+		elif len(rearCode)>0:
+			tailCode=rearCode[-1]
+		else:
+			tailCode=''
+
+		return frontCode+tailCode
+
+	def computeHeadCode(self, code):
+		headCode=self.computeHeadTailCode(code, 1)
+		return headCode
+
+	def computeBodyCode(self, codeList):
+		bodyCode=''
+		if len(codeList)==0:
+			bodyCode=''
+		elif len(codeList)==1:
+			bodyCode=self.computeHeadTailCode(codeList[0], 2)
+		else:
+			tmpCodeList=codeList
+
+			tmpHeadCode=self.computeHeadCode(tmpCodeList[0])
+			tmpCodeList=tmpCodeList[1:]
+
+			if len(tmpHeadCode)==2:
+				if len(tmpCodeList)>0:
+					tmpBodyCode=self.computeHeadTailCode(tmpCodeList[-1], 0)
+				else:
+					tmpBodyCode=''
+			elif len(tmpHeadCode)==1:
+				tmpHeadCode2=self.computeHeadCode(tmpCodeList[0])
+				tmpCodeList=tmpCodeList[1:]
+
+				if len(tmpCodeList)>0:
+					tmpBodyCode2=self.computeHeadTailCode(tmpCodeList[-1], 0)
+				else:
+					tmpBodyCode2=''
+				tmpBodyCode=self.computeHeadTailCode(tmpHeadCode2+tmpBodyCode2, 1)
+			else:
+				# 理論上錯誤
+				tmpBodyCode=''
+			bodyCode=tmpHeadCode+tmpBodyCode
+		return bodyCode
+
+	def computeTotalCode(self, codeList):
+		if len(codeList)>0:
+			totalCode=self.computeHeadCode(codeList[0])+self.computeBodyCode(codeList[1:])
+		else:
+			totalCode=''
+		return totalCode
+
 	def updateIMCode(self, chdesc):
 		prelist, postlist=chdesc.getCJPrePostList()
 
@@ -126,6 +211,30 @@ class CJCharInfo(CharInfo):
 		post_chinfo_list=map(lambda x:x.getChInfo(), postlist)
 
 		self.setCJByComps(pre_chinfo_list, post_chinfo_list)
+
+	def updateIMCode(self, chdesc):
+		descList=chdesc.getCompList()
+
+		ansRadixList=[]
+
+		if self.getDirCode():
+			dir_code=self.getDirCode()
+		else:
+			dir_code=chdesc.getDir()
+
+		for x in descList:
+			tmpchinfo=x.getChInfo()
+			tmpRadixList=tmpchinfo._X_radix_list
+			if x.getDir()=='+':
+				ansRadixList.append(tmpchinfo.computeBodyCode(tmpRadixList))
+			elif x.getDir()==dir_code:
+				# 同向
+				ansRadixList.extend(tmpRadixList)
+			else:
+				# 不同向
+				ansRadixList.append(tmpchinfo.computeBodyCode(tmpRadixList))
+		self._X_radix_list=ansRadixList
+		self._cj_incode=self.computeTotalCode(ansRadixList)
 
 	def normalizationToLinear(self, chdesc):
 		"""將樹狀結構轉為線性結構"""

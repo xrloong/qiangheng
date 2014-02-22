@@ -40,11 +40,12 @@ class NoneIM:
 	def genIMMapping(self):
 		def getSmallDescDB():
 			charlist=[
-					'土',
-					'吉',
-					'夠',
-					'炎',
-					'畦',
+#					'土',
+#					'吉',
+#					'夠',
+#					'炎',
+#					'畦',
+					'海',
 					]
 			smallDB={}
 			for chname in charlist:

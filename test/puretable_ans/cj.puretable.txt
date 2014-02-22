@@ -1,10 +1,12 @@
 bm	且
 bnd	孚
+buhu	見
 d	木
 dw	東
 dwf	柬
 e	水
 ehby	洀
+emwl	湎
 eowy	海
 ff	氺
 g	土
@@ -50,6 +52,9 @@ mn	丁
 mob	丙
 ms	万
 mvs	丂
+mwbuu	靦
+mwr	靣
+mwsl	面
 my	下
 myvs	丐
 nbg	角

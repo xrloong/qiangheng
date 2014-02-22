@@ -26,6 +26,9 @@ flk	柬
 gd	丆
 gi	不
 gia	丕
+gjj	靣
+gjkl	靦
+gjko	面
 hd	七
 hdko	东
 iavv	丄
@@ -43,6 +46,7 @@ ku	业
 kv	水
 kv	氺
 lc	且
+lr	見
 mazm	敏
 mazy	每
 mb	牛
@@ -85,6 +89,7 @@ tirr	北
 u	忄
 urym	懈
 v	氵
+vgjk	湎
 vmzy	海
 vpy	洀
 xed	丑

@@ -52,6 +52,7 @@ kua	丟
 le	丄
 lp	丆
 me	且
+mrl	見
 nds	解
 ne	角
 nocc	够
@@ -80,6 +81,9 @@ ti	丁
 ti	丅
 tly	丏
 tn	木
+toh	面
+tohr	靦
+too	靣
 un	永
 vom	每
 vomp	敏
@@ -89,6 +93,7 @@ wee	丞
 wn	水
 wn	氶
 wn	氺
+wtoh	湎
 wvom	海
 wwe	丝
 wza	洀
