@@ -58,7 +58,7 @@ class ARRadixParser(RadixParser):
 
 class ARRadixCodeInfoDescription(RadixCodeInfoDescription):
 	def __init__(self, elementCodeInfo):
-		RadixCodeInfoDescription.__init__(self, elementCodeInfo)
+		super().__init__(elementCodeInfo)
 
 		radixNameList=[]
 		subRadixNodeList=elementCodeInfo.findall(ARRadixParser.TAG_SUB_RADIX)

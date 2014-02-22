@@ -86,7 +86,7 @@ class DYCodeInfo(CodeInfo):
 	}
 
 	def __init__(self, codeList):
-		CodeInfo.__init__(self)
+		super().__init__()
 
 		self._codeList=codeList
 

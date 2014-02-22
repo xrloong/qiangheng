@@ -5,7 +5,7 @@ import tkinter
 
 class TkHanZiCanvas(HanZiCanvas.HanZiCanvas):
 	def __init__(self, tkcanvas, width, height):
-		HanZiCanvas.HanZiCanvas.__init__(self, width, height)
+		super().__init__(width, height)
 
 		self.canvas=tkcanvas
 

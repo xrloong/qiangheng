@@ -25,7 +25,7 @@ class Operator:
 
 class BuiltinOperator(Operator):
 	def __init__(self, name, rearrangeInfo):
-		Operator.__init__(self, name)
+		super().__init__(name)
 		self.rearrangeInfo=rearrangeInfo
 
 	def getRearrangeInfo(self):
@@ -36,7 +36,7 @@ class BuiltinOperator(Operator):
 
 class TemplateOperator(Operator):
 	def __init__(self, name):
-		Operator.__init__(self, name)
+		super().__init__(name)
 		self.rearrangeInfo=None
 
 	def setRearrangeInfo(self, rearrangeInfo):

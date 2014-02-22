@@ -70,7 +70,7 @@ class BSCodeInfo(CodeInfo):
 	}
 
 	def __init__(self, singletonCode, codeList, supplementCode):
-		CodeInfo.__init__(self)
+		super().__init__()
 
 		self._bs_spcode=supplementCode
 

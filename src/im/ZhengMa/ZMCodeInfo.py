@@ -2,7 +2,7 @@ from ..base.CodeInfo import CodeInfo
 
 class ZMCodeInfo(CodeInfo):
 	def __init__(self, singleCode, rtList, extraCode):
-		CodeInfo.__init__(self)
+		super().__init__()
 
 		self._zm_code=''
 		self._codeList=rtList

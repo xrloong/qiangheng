@@ -32,7 +32,7 @@ class HanZiStructure:
 
 class HanZiUnitStructure(HanZiStructure):
 	def __init__(self, radixCodeInfo):
-		HanZiStructure.__init__(self)
+		super().__init__()
 		self.codeInfoList=[radixCodeInfo]
 
 	def getCodeInfoList(self):
@@ -46,7 +46,7 @@ class HanZiUnitStructure(HanZiStructure):
 
 class HanZiWrapperStructure(HanZiStructure):
 	def __init__(self, referenceNode, expression):
-		HanZiStructure.__init__(self)
+		super().__init__()
 
 		self.referenceNode=referenceNode
 		self.expression=expression
@@ -73,7 +73,7 @@ class HanZiWrapperStructure(HanZiStructure):
 
 class HanZiAssemblageStructure(HanZiStructure):
 	def __init__(self, codeVariance, operator, structureList):
-		HanZiStructure.__init__(self)
+		super().__init__()
 
 		self.operator=operator
 		self.structureList=structureList

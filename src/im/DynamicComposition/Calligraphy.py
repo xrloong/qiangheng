@@ -136,7 +136,7 @@ class Stroke(Writing):
 	DEFAULT_INSTANCE_NAME='瑲珩預設筆劃名'
 
 	def __init__(self, contourPane, strokeName, actionList, pointList):
-		Writing.__init__(self, contourPane)
+		super().__init__(contourPane)
 
 		assert (strokeName in Stroke.STROKE_NAMES), "不認得的筆畫名稱: %s"%strokeName
 
@@ -171,7 +171,7 @@ class Stroke(Writing):
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
-		Writing.__init__(self, contourPane)
+		super().__init__(contourPane)
 
 		self.strokeList=strokeList
 

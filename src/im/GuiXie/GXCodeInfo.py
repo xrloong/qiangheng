@@ -2,7 +2,7 @@ from ..base.CodeInfo import CodeInfo
 
 class GXCodeInfo(CodeInfo):
 	def __init__(self, characterCode):
-		CodeInfo.__init__(self)
+		super().__init__()
 
 	@staticmethod
 	def generateDefaultCodeInfo(characterCode):

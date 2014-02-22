@@ -27,7 +27,7 @@ class DCRadixParser(RadixParser):
 	TAG_NAME='名稱'
 
 	def __init__(self, nameInputMethod, codeInfoEncoder):
-		RadixParser.__init__(self, nameInputMethod, codeInfoEncoder)
+		super().__init__(nameInputMethod, codeInfoEncoder)
 		self.strokeGroupDB={}
 
 	# 多型

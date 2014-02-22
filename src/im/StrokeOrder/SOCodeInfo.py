@@ -7,7 +7,7 @@ class SOCodeInfo(DCCodeInfo):
 	RADIX_SEPERATOR=','
 
 	def __init__(self, strokeGroup):
-		DCCodeInfo.__init__(self, strokeGroup)
+		super().__init__(strokeGroup)
 
 	@staticmethod
 	def generateDefaultCodeInfo(strokeGroup):

@@ -41,7 +41,7 @@ class DCCodeInfo(CodeInfo):
 	STROKE_GROUP_NAME_ZUO="㘴"
 
 	def __init__(self, strokeGroupDB):
-		CodeInfo.__init__(self)
+		super().__init__()
 
 		self.strokeGroupDB=strokeGroupDB
 		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.DEFAULT_PANE}

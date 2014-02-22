@@ -109,9 +109,6 @@ class StructureDescription:
 		return name
 
 class HangerStructureDescription(StructureDescription):
-	def __init__(self, operator, compList):
-		self.hangerStructureDescription=StructureDescription(operator, compList)
-
 	def __init__(self, targetDescription):
 		self.hangerStructureDescription=targetDescription
 
@@ -119,9 +116,7 @@ class HangerStructureDescription(StructureDescription):
 		copy.deepcopy(None, memo)
 
 		newTarget=copy.deepcopy(self.target)
-		compList=self.getCompList()
 		hangerStructureDescription=HangerStructureDescription(newTarget)
-		hangerStructureDescription.replacedBy(newTarget)
 		return hangerStructureDescription
 
 	@staticmethod

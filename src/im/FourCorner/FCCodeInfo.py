@@ -40,7 +40,7 @@ class FCCodeInfo(CodeInfo):
 	]
 
 	def __init__(self, corners):
-		CodeInfo.__init__(self)
+		super().__init__()
 		[self._top_left, self._top_right, self._bottom_left, self._bottom_right]=corners
 
 	@staticmethod

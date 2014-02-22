@@ -2,7 +2,7 @@ from ..base.CodeInfo import CodeInfo
 
 class SPCodeInfo(CodeInfo):
 	def __init__(self):
-		CodeInfo.__init__(self)
+		super().__init__()
 
 	@staticmethod
 	def generateDefaultCodeInfo(characterCode):

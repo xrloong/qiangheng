@@ -160,7 +160,7 @@ def generateTTF(filename):
 
 	from canvas import TrueTypeGlyphHanZiCanvas
 
-	characters=sorted(rm.getCharacters())[130:132]
+	characters=sorted(rm.getCharacters())
 	print("總共有 %s 個字符"%len(characters))
 	for index, ch in enumerate(characters):
 		if index%100==0:

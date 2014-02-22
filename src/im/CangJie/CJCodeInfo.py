@@ -5,7 +5,7 @@ import sys
 
 class CJCodeInfo(CodeInfo):
 	def __init__(self, singleCode, direction, cjLumpList):
-		CodeInfo.__init__(self)
+		super().__init__()
 
 		self.singleCode=singleCode
 		self.direction=direction
