@@ -40,7 +40,10 @@ tarballs: tarball-src tarball-all
 	make tarball-all VERSION=$(VERSION)
 
 tarball-src:
-	tar cjf ../qiangheng-src-$(VERSION).tar.bz2 --exclude-vcs -C .. qiangheng
+	mkdir -p /tmp/qiangheng
+	svn ls -R > /tmp/qiangheng/files.list
+	echo tex/principle.pdf >> /tmp/qiangheng/files.list
+	tar cjf ../qiangheng-src-$(VERSION).tar.bz2 --exclude-vcs --no-recursion --xform="s:^:qiangheng/:" -T /tmp/qiangheng/files.list
 
 tarball-platform:
 	for p in $(PLATFORM_LIST);\
