@@ -140,6 +140,11 @@ class Stroke(Writing):
 		for action in self.actionList:
 			action.translate(xOffset, yOffset)
 
+	# 多型
+	def transform(self, pane):
+		for action in self.actionList:
+			action.transform(pane)
+
 class StrokeAction:
 	def __init__(self, description):
 		self.action=int(description[0:4])
@@ -155,14 +160,6 @@ class StrokeAction:
 	def getCode(self):
 		return "%04X%02X%02X"%(self.action, self.x, self.y)
 
-	def transform(self, left, top, right, bottom):
-		width=right-left
-		height=bottom-top
-		xScale=width/Stroke.WIDTH
-		yScale=height/Stroke.HEIGHT
-		self.scale(xScale, yScale)
-		self.translate(left, top)
-
 	def scale(self, xScale, yScale):
 		self.x=int(self.x*xScale)
 		self.y=int(self.y*yScale)
@@ -170,6 +167,18 @@ class StrokeAction:
 	def translate(self, xOffset, yOffset):
 		self.x=int(self.x+xOffset)
 		self.y=int(self.y+yOffset)
+
+	# 多型
+	def transform(self, pane):
+		width=pane.getWidth()
+		height=pane.getHeight()
+		xScale=width*1./Pane.WIDTH
+		yScale=height*1./Pane.HEIGHT
+		left=pane.getLeft()
+		top=pane.getTop()
+
+		self.scale(xScale, yScale)
+		self.translate(left, top)
 
 class StrokeGroup(Writing):
 	def __init__(self, pane, strokeList):
@@ -179,4 +188,9 @@ class StrokeGroup(Writing):
 
 	def getStrokeList(self):
 		return self.strokeList
+
+	# 多型
+	def transform(self, pane):
+		for stroke in self.strokeList:
+			stroke.transform(pane)
 
