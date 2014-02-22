@@ -33,7 +33,9 @@ public class FindCommonComponentProvider extends ContentProvider {
 	private static final int CODE_ADDENDUM_ID = 12;
 	private static final int CODE_CHARACTER_ADDENDUM = 13;
 	private static final int CODE_CHARACTER_ADDENDUM_ID = 14;
-	private static final int CODE_STROKE_OF_GROUP_ID = 15;
+
+	private static final int CODE_STROKE_OF_GROUP = 101;
+	private static final int CODE_STROKE_GROUP_BY_NAME = 102;
 
 	private static final UriMatcher sUriMatcher;
 	static {
@@ -59,8 +61,9 @@ public class FindCommonComponentProvider extends ContentProvider {
 		sUriMatcher.addURI(AUTHORITY, "character_addendum/", CODE_CHARACTER_ADDENDUM);
 		sUriMatcher.addURI(AUTHORITY, "character_addendum/#", CODE_CHARACTER_ADDENDUM_ID);
 
-//		sUriMatcher.addURI(AUTHORITY, "stroke_of_group/", CODE_STROKE_GROUP_CONTENT);
-		sUriMatcher.addURI(AUTHORITY, "stroke_of_group/#", CODE_STROKE_OF_GROUP_ID);
+		sUriMatcher.addURI(AUTHORITY, "stroke_group/stroke/byid/#", CODE_STROKE_OF_GROUP);
+		sUriMatcher.addURI(AUTHORITY, "stroke_group/stroke/byname/*", CODE_STROKE_OF_GROUP);
+		sUriMatcher.addURI(AUTHORITY, "stroke_group/byname/*", CODE_STROKE_GROUP_BY_NAME);
 	}
 
 	private DatabaseHelper mOpenHelper = null;
@@ -79,7 +82,7 @@ public class FindCommonComponentProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		Logger.i(LOG_TAG, "query() +");
-		Logger.i(LOG_TAG, "query() uri: " + uri);
+		Logger.i(LOG_TAG, "query() uri: %s", uri);
 
 		SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
@@ -144,18 +147,52 @@ public class FindCommonComponentProvider extends ContentProvider {
                 String characterAddendumId = uri.getPathSegments().get(1);
                 where = generateWhereClauseWithID(CharacterAddendumColumns._ID, characterAddendumId, selection);
         		break;
-        	case CODE_STROKE_OF_GROUP_ID:
+        	case CODE_STROKE_OF_GROUP:
         		tableName = CharacterColumns.TABLE_NAME;
-                String strokeGroupId = uri.getPathSegments().get(1);
-        		String commandFormant = "SELECT * from %1$s JOIN %2$s On %1$s.%3$s=%2$s.%4$s AND %1$s.%5$s=%6$s";
-        		String command = String.format(commandFormant, StrokeGroupContentColumns.TABLE_NAME, StrokeColumns.TABLE_NAME, StrokeGroupContentColumns.REFERENCE_STROKE_ID,
-        				StrokeColumns._ID, StrokeGroupContentColumns.REFERENCE_GROUP_ID, strokeGroupId);
-        		return db.rawQuery(command, null);
-        		/*
-                String character = uri.getPathSegments().get(1);
-                where = generateWhereClauseWithID(CharacterColumns._ID, character, selection);
-                */
-//        		break;
+
+        		String byMethod = uri.getPathSegments().get(2);
+        		if("byid".equals(byMethod)) {
+	                String strokeGroupId = uri.getPathSegments().get(3);
+	        		String commandFormant = "SELECT * from %1$s JOIN %2$s On %1$s.%3$s=%2$s.%4$s AND %1$s.%5$s=%6$s";
+	        		String command = String.format(commandFormant, StrokeGroupContentColumns.TABLE_NAME, StrokeColumns.TABLE_NAME, StrokeGroupContentColumns.REFERENCE_STROKE_ID,
+	        				StrokeColumns._ID, StrokeGroupContentColumns.REFERENCE_GROUP_ID, strokeGroupId);
+	        		return db.rawQuery(command, null);
+        		} else if("byname".equals(byMethod)) {
+        			String strokeGroupName = uri.getPathSegments().get(3);
+//        			Cursor cursor = db.query(StrokeGroupColumns.TABLE_NAME, projection, StrokeGroupColumns.NAME+"=="+strokeGroupName, selectionArgs, null, null, sortOrder);
+//        			Cursor cursor = db.query(StrokeGroupColumns.TABLE_NAME, projection, StrokeGroupColumns.NAME+"=?", new String[] {strokeGroupName}, null, null, sortOrder);
+        			Cursor cursor = db.query(StrokeGroupColumns.TABLE_NAME, projection, where, selectionArgs, null, null, sortOrder);
+
+					int indexId = cursor.getColumnIndex(StrokeGroupColumns._ID);
+					int indexName = cursor.getColumnIndex(StrokeGroupColumns.NAME);
+					long strokeGroupId = 0;
+					cursor.moveToFirst();
+					while(!cursor.isAfterLast()) {
+						String name = cursor.getString(indexName);
+						if(strokeGroupName.equals(name)) {
+							strokeGroupId = cursor.getLong(indexId);
+						}
+						cursor.moveToNext();
+					}
+					cursor.close();
+					/*
+        			cursor.moveToFirst();
+        			int indexId = cursor.getColumnIndex(StrokeGroupColumns._ID);
+        			long strokeGroupId = cursor.getLong(indexId);
+        			cursor.close();
+        			*/
+	        		String commandFormant = "SELECT * from %1$s JOIN %2$s On %1$s.%3$s=%2$s.%4$s AND %1$s.%5$s=%6$d";
+	        		String command = String.format(commandFormant, StrokeGroupContentColumns.TABLE_NAME, StrokeColumns.TABLE_NAME, StrokeGroupContentColumns.REFERENCE_STROKE_ID,
+	        				StrokeColumns._ID, StrokeGroupContentColumns.REFERENCE_GROUP_ID, strokeGroupId);
+	        		return db.rawQuery(command, null);
+        		}
+        	case CODE_STROKE_GROUP_BY_NAME:
+        		tableName = StrokeGroupColumns.TABLE_NAME;
+//        		String byMethod = uri.getPathSegments().get(1);
+        		String strokeGroupName = uri.getPathSegments().get(2);
+        		where = StrokeGroupColumns.NAME + " LIKE '%%"+strokeGroupName+"%%'";
+Logger.e(LOG_TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX %s, %s", strokeGroupName, where);
+        		break;
         }
 
         Cursor cursor = null;
@@ -389,7 +426,8 @@ public class FindCommonComponentProvider extends ContentProvider {
 					+ " ("
 					+ StrokeGroupColumns._ID + " INTEGER PRIMARY KEY, "
 					+ StrokeGroupColumns.DB_NAME + " TEXT NOT NULL UNIQUE, "
-					+ StrokeGroupColumns.NAME + " TEXT"
+					+ StrokeGroupColumns.NAME + " TEXT,"
+					+ StrokeGroupColumns.RANGE + " TEXT"
 					+ ");";
 			Logger.i(LOG_TAG, "create table: stroke_groups");
 			db.execSQL(sqlCommandToCreateTableStrokeGroup);

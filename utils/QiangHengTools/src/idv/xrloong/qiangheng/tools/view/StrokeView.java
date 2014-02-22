@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import idv.xrloong.qiangheng.tools.R;
+import idv.xrloong.qiangheng.tools.model.Geometry;
 import idv.xrloong.qiangheng.tools.util.Logger;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -19,10 +19,9 @@ public class StrokeView extends View {
 		@Override
 		public IStrokeDrawable getStrokeDrawable() {
 			return new IStrokeDrawable() {
-
 				@Override
-				public List<Path> getPathList() {
-					return new ArrayList<Path>();
+				public List<StrokeDrawableInfo> getInfoList() {
+					return new ArrayList<StrokeDrawableInfo>();
 				}
 			};
 		}
@@ -75,14 +74,31 @@ public class StrokeView extends View {
 	}
 
 	private void drawStroke(Canvas canvas, IStrokeDrawable drawableStroke) {
-		List<Path> pathList = drawableStroke.getPathList();
-		for(Path path : pathList) {
-			drawPath(canvas, path);
+		List<StrokeDrawableInfo> infoList = drawableStroke.getInfoList();
+		for(StrokeDrawableInfo info : infoList) {
+			drawPath(canvas, info);
 		}
 	}
 
-	private void drawPath(Canvas canvas, Path path) {
-		canvas.drawPath(path, mPaintStroke);
+	private void drawPath(Canvas canvas, StrokeDrawableInfo info) {
+		Geometry geometry = info.getGeometry();
+
+		canvas.save();
+
+		int width = geometry.getRight() - geometry.getLeft();
+		int height = geometry.getBottom() - geometry.getTop();
+		float scaleX = width * 1.f / 256;
+		float scaleY = height * 1.f / 256;
+		int x = geometry.getLeft();
+		int y = geometry.getTop();
+
+		canvas.translate(x, y);
+		canvas.scale(scaleX, scaleY);
+
+		mPaintStroke.setColor(info.getColor());
+		canvas.drawPath(info.getPath(), mPaintStroke);
+
+		canvas.restore();
 	}
 
 	private void initBoundaryPaint() {

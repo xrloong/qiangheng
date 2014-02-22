@@ -2,6 +2,7 @@ package idv.xrloong.qiangheng.tools.model;
 
 import idv.xrloong.qiangheng.tools.util.Logger;
 import idv.xrloong.qiangheng.tools.view.IStrokeDrawable;
+import idv.xrloong.qiangheng.tools.view.StrokeDrawableInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,8 @@ public class StrokeAction implements IStrokeDrawable {
 
 		mPath=new Path();
 
-		String[] x = description.split(",");
-		setPath(x);
+		mPath.reset();
+		drawPath(mPath, description);
 	}
 
 	public String getName()
@@ -30,18 +31,19 @@ public class StrokeAction implements IStrokeDrawable {
 	}
 
 	@Override
-	public List<Path> getPathList() {
-		List<Path> pathList = new ArrayList<Path>();
-		pathList.add(mPath);
+	public List<StrokeDrawableInfo> getInfoList() {
+		List<StrokeDrawableInfo> pathList = new ArrayList<StrokeDrawableInfo>();
+		pathList.add(new StrokeDrawableInfo(mPath));
 		return pathList;
 	}
 
-	private void setPath(String[] points)
+	public static void drawPath(Path path, String description)
 	{
+		String[] points = description.split(",");
+
 		boolean isCurve = false;
 
 		List<Point> pointList = new ArrayList<Point>();
-		mPath.reset();
 		for(String d:points)
 		{
 			int action =Integer.parseInt(d.substring(0, 4), 16);
@@ -52,19 +54,19 @@ public class StrokeAction implements IStrokeDrawable {
 			int numPoints = pointList.size();
 			switch(action){
 			case 0:
-				mPath.moveTo(x, y);
+				path.moveTo(x, y);
 				break;
 			case 1:
 				if(isCurve)
 				{
 					Point p1 = pointList.get(numPoints-2);
 					Point p2 = pointList.get(numPoints-1);
-					mPath.quadTo(p1.x, p1.y, p2.x, p2.y);
+					path.quadTo(p1.x, p1.y, p2.x, p2.y);
 				}
 				else
 				{
 					Point p1 = pointList.get(numPoints-1);
-					mPath.lineTo(p1.x, p1.y);
+					path.lineTo(p1.x, p1.y);
 				}
 				isCurve = false;
 				break;

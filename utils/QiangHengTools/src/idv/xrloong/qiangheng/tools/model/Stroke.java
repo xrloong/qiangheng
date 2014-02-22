@@ -1,7 +1,10 @@
 package idv.xrloong.qiangheng.tools.model;
 
+import java.util.List;
+
+import android.graphics.Path;
+
 import idv.xrloong.qiangheng.tools.util.Logger;
-import junit.framework.Assert;
 
 public class Stroke {
 	private static final String LOG_TAG = Logger.getLogTag(Stroke.class);
@@ -102,5 +105,29 @@ public class Stroke {
 
 	public void setName(String name) {
 		mName = name;
+	}
+
+	private List<Stroke> mRefStrokeList;
+	public void setRefStrokeList(List<Stroke> refStrokeList) {
+		mRefStrokeList = refStrokeList;
+	}
+
+	public List<Stroke> getRefStrokeList() {
+		return mRefStrokeList;
+	}
+
+	public Path getPath() {
+		Path path = new Path();
+		if(isNormal()) {
+			StrokeAction.drawPath(path, getExpression());
+		} else if(isRef()) {
+			List<Stroke> refStrokeList = getRefStrokeList();
+			for(Stroke tmpStroke : refStrokeList) {
+				if(tmpStroke.isNormal()) {
+					StrokeAction.drawPath(path, tmpStroke.getExpression());
+				}
+			}
+		}
+		return path;
 	}
 }

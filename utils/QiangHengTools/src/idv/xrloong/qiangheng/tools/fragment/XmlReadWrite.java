@@ -140,7 +140,23 @@ public class XmlReadWrite {
 
 		Set<String> radixNameSet = radixSetMap.keySet();
 		List<String> radixNameList = new ArrayList<String>(radixNameSet);
-		Collections.sort(radixNameList);
+		Collections.sort(radixNameList, new Comparator<String>() {
+			private static final int CATEGORY_STROKE = 1;
+			private static final int CATEGORY_NORMAL = 2;
+
+			@Override
+			public int compare(String leftName, String rightName) {
+				int leftSize = leftName.split("%")[0].length();
+				int rightSize = rightName.split("%")[0].length();
+				int leftCategory = (leftSize==2) ? CATEGORY_NORMAL : CATEGORY_STROKE;
+				int rightCategory = (rightSize==2) ? CATEGORY_NORMAL : CATEGORY_STROKE;
+				if(leftCategory == rightCategory) {
+					return leftName.compareTo(rightName);
+				} else {
+					return leftCategory - rightCategory;
+				}
+			}
+		});
 
 		try {
 			serializer.startTag(null, TAG_RADIX_SET);
@@ -248,8 +264,14 @@ public class XmlReadWrite {
 		try {
 			serializer.startTag(null, TAG_RADIX);
 			serializer.attribute(null, ATTR_NAME, radixName);
-			String coment = String.format("U+%04X", radixName.codePointAt(1));
-			serializer.attribute(null, ATTR_COMMENT, coment);
+			String comment = "";
+			if(radixName.length()==2) {
+				comment = String.format("U+%04X", radixName.codePointAt(1));
+			} else {
+				comment = radixName.split("\\$")[1];
+			}
+
+			serializer.attribute(null, ATTR_COMMENT, comment);
 
 			for(StrokeGroup strokeGroup : strokeGroupList) {
 				serializeStrokeGroup(serializer, strokeGroup);
@@ -277,7 +299,7 @@ public class XmlReadWrite {
 				serializer.attribute(null, ATTR_NAME, strokeGroupName);
 			}
 
-			Geometry geometry = new Geometry("0000FFFF");
+			Geometry geometry = strokeGroup.getGeometry();
 			serializeGeometry(serializer, geometry);
 			for(Stroke stroke : strokeGroup.getStrokeList()) {
 				serializeStroke(serializer, stroke, bIsWithAttribute);
@@ -455,6 +477,7 @@ public class XmlReadWrite {
 		String strokGroupName = parser.getAttributeValue(null, ATTR_NAME);
 
 		List<Stroke> strokeList= new ArrayList<Stroke>();
+		Geometry geometry = null;
 		outer:
 		while(parser.getEventType() != XmlPullParser.END_DOCUMENT) {
 			int type = parser.getEventType();
@@ -462,7 +485,7 @@ public class XmlReadWrite {
 			switch(type) {
 			case XmlPullParser.START_TAG:
 				if(TAG_GEOGRAPHY.equals(name)) {
-					parseGeometry(parser);
+					geometry = parseGeometry(parser);
 				} else if(TAG_STROKE.equals(name)) {
 					Stroke stroke = parseStroke(parser);
 					strokeList.add(stroke);
@@ -479,7 +502,7 @@ public class XmlReadWrite {
 			parser.next();
 		}
 
-		StrokeGroup strokeGroup = new StrokeGroup(strokeList);
+		StrokeGroup strokeGroup = new StrokeGroup(strokeList, geometry);
 		strokeGroup.setName(strokGroupName);
 		return strokeGroup;
 	}

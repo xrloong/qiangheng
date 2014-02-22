@@ -4,6 +4,7 @@ import idv.xrloong.qiangheng.tools.R;
 import idv.xrloong.qiangheng.tools.FindCommonComponent.StrokeHelper;
 import idv.xrloong.qiangheng.tools.model.DCCharacter;
 import idv.xrloong.qiangheng.tools.model.DCData;
+import idv.xrloong.qiangheng.tools.model.ReplaceStrokeGroup;
 import idv.xrloong.qiangheng.tools.model.StrokeGroup;
 import idv.xrloong.qiangheng.tools.model.StrokeTypeManager;
 import idv.xrloong.qiangheng.tools.util.Logger;
@@ -20,11 +21,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class FindCommonComponentFragment extends Fragment {
 	private static final String LOG_TAG = Logger.getLogTag(FindCommonComponentFragment.class);
 	private StrokeControlView mControlView;
+	private StrokeControlView mReplaceControlView;
+	private IStrokeDrawable mOriginalStrokeGroup;
+	private ReplaceStrokeGroup mReplaceStrokeGroup;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,46 @@ public class FindCommonComponentFragment extends Fragment {
 			@Override
 			public void onJump(int index) {
 				jumpTo(index);
+			}
+		});
+		mReplaceControlView = (StrokeControlView) rootView.findViewById(R.id.replace_stroke_control_view);
+		mReplaceControlView.setOnIndexChangedListener(new StrokeControlView.OnIndexChangedListener() {
+			@Override
+			public void onJump(int index) {
+				jumpToStrokeGroup(index);
+			}
+		});
+
+		Button buttonUpdate = (Button) rootView.findViewById(R.id.button_update);
+		buttonUpdate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditText editText = (EditText) rootView.findViewById(R.id.edittext_replace_sequence);
+
+				String sequence = editText.getText().toString();
+				if(mReplaceStrokeGroup != null) {
+					mReplaceStrokeGroup.setSequence(sequence);
+				}
+
+				StrokeView sv = (StrokeView) rootView.findViewById(R.id.stroke_view);
+				sv.invalidate();
+			}
+		});
+		Button buttonUpdateStrokeGroup = (Button) rootView.findViewById(R.id.button_update_stroke_group);
+		buttonUpdateStrokeGroup.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Context context = getActivity();
+
+				EditText editText = (EditText) getView().findViewById(R.id.edittext_stroke_group);
+				String strokeName = "$" + editText.getText().toString();
+				int index = mReplaceControlView.getCurrentIndex() - 1;
+				final StrokeGroup strokeGroup = StrokeHelper.queryStrokeGroup(context, strokeName, index);
+				if(mReplaceStrokeGroup != null) {
+					mReplaceStrokeGroup.setReplace(strokeGroup);
+				}
+				mReplaceControlView.findViewById(R.id.stroke_view).invalidate();
+				mControlView.findViewById(R.id.stroke_view).invalidate();
 			}
 		});
 
@@ -92,7 +138,7 @@ public class FindCommonComponentFragment extends Fragment {
 		if(character != null)
 		{
 			String characterName = character.getName();
-																																																																																																																																																																																																																				
+
 			TextView textDataID = (TextView) rootView.findViewById(R.id.data_id);
 			TextView textCharacterName = (TextView) rootView.findViewById(R.id.character_name);
 
@@ -102,7 +148,39 @@ public class FindCommonComponentFragment extends Fragment {
 			StrokeView sv = (StrokeView) rootView.findViewById(R.id.stroke_view);
 
 			long groupingId = character.getGroupingId();
-			final StrokeGroup strokeGroup = StrokeHelper.queryStrokeGroup(context, groupingId);
+			mOriginalStrokeGroup = StrokeHelper.queryStrokeGroup(context, groupingId);
+			mReplaceStrokeGroup = new ReplaceStrokeGroup(mOriginalStrokeGroup);
+
+			IStrokeViewController controller = new IStrokeViewController() {
+				@Override
+				public IStrokeDrawable getStrokeDrawable() {
+					return mReplaceStrokeGroup;
+				}
+			};
+			sv.setController(controller);
+		}
+	}
+
+	private void jumpToStrokeGroup(int dataID){
+		Context context = getActivity();
+
+		EditText editText = (EditText) getView().findViewById(R.id.edittext_stroke_group);
+		String strokeName = "$" + editText.getText().toString();
+		int index = dataID -1;
+		final StrokeGroup strokeGroup = StrokeHelper.queryStrokeGroup(context, strokeName, index);
+		if(strokeGroup != null)
+		{
+			Logger.e(LOG_TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXX AAAA");
+
+/*
+			TextView textDataID = (TextView) rootView.findViewById(R.id.data_id);
+			TextView textCharacterName = (TextView) rootView.findViewById(R.id.character_name);
+
+			textDataID.setText(String.format("%d", dataID));
+			textCharacterName.setText(String.format("%s", characterName));
+*/
+
+			StrokeView sv = (StrokeView) mReplaceControlView.findViewById(R.id.stroke_view);
 
 			IStrokeViewController controller = new IStrokeViewController() {
 				@Override

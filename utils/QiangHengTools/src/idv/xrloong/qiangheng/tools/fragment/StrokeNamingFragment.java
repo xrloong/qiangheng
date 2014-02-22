@@ -156,6 +156,7 @@ public class StrokeNamingFragment extends Fragment {
 			is = new FileInputStream(file);
 			InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 			int count=isr.read(buffers);
+			isr.close();
 
 			content = String.format("%s", String.valueOf(buffers, 0, count));
 		} catch (IOException e) {

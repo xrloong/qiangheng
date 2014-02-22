@@ -1,5 +1,6 @@
 package idv.xrloong.qiangheng.tools.FindCommonComponent;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +96,6 @@ public class StrokeHelper {
 			int indexName = cursor.getColumnIndex(StrokeColumns.STROKE_NAME);
 			int indexRange = cursor.getColumnIndex(StrokeColumns.RANGE);
 
-
 			long id = cursor.getLong(indexId);
 			String dbName = cursor.getString(indexDbName);
 			String expression = cursor.getString(indexExpression);
@@ -172,12 +172,15 @@ public class StrokeHelper {
 			int indexId = cursor.getColumnIndex(StrokeGroupColumns._ID);
 			int indexDbName = cursor.getColumnIndex(StrokeGroupColumns.DB_NAME);
 			int indexName = cursor.getColumnIndex(StrokeGroupColumns.NAME);
+			int indexRange = cursor.getColumnIndex(StrokeGroupColumns.RANGE);
 
 			long id = cursor.getLong(indexId);
 			String dbName = cursor.getString(indexDbName);
 			String name = cursor.getString(indexName);
+			String range = cursor.getString(indexRange);
 
-			strokeGroup = new StrokeGroup(new ArrayList<Stroke>());
+			Geometry geometry = new Geometry(range);
+			strokeGroup = new StrokeGroup(new ArrayList<Stroke>(), geometry);
 			strokeGroup.setDbId(id);
 			strokeGroup.setDbName(dbName);
 			strokeGroup.setName(name);
@@ -263,10 +266,40 @@ public class StrokeHelper {
 	private static List<Stroke> queryAllStrokeOfGroup(Context context, long targetGroupId) {
 		Logger.d(LOG_TAG, "queryAllStrokeGroupContentOfGroup() +");
 
-//		Uri uri = Uri.parse("content://"+StrokeGroupContentColumns.AUTHORITY+"/stroke_group_content");
-		Uri uri = Uri.parse("content://"+StrokeGroupContentColumns.AUTHORITY+"/stroke_of_group");
+		Uri uri = Uri.parse("content://"+StrokeGroupContentColumns.AUTHORITY+"/stroke_group/stroke/byid/");
 		uri = ContentUris.withAppendedId(uri, targetGroupId);
 
+		List<Stroke> infoList = new ArrayList<Stroke>();
+
+		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+		if(cursor != null) {
+			cursor.moveToFirst();
+			while(!cursor.isAfterLast()) {
+				Stroke stroke = convertCursorToStroke(context, cursor);
+
+				if(stroke.isRef()) {
+					String strokeGroupName = stroke.getExpression();
+					List<Stroke> l = queryAllStrokeOfGroup(context, strokeGroupName);
+					stroke.setRefStrokeList(l);
+				}
+				infoList.add(stroke);
+
+				cursor.moveToNext();
+			}
+
+			cursor.close();
+		}
+
+		Logger.d(LOG_TAG, "queryAllStrokeGroupContentOfGroup() -");
+		return infoList;
+	}
+
+	private static List<Stroke> queryAllStrokeOfGroup(Context context, String strokeGroupName) {
+		Logger.d(LOG_TAG, "queryAllStrokeGroupContentOfGroup() +");
+
+//		Uri uri = Uri.parse("content://"+StrokeGroupContentColumns.AUTHORITY+"/stroke_group/stroke/byname/"+strokeGroupName);
+		Uri uri = Uri.parse("content://"+StrokeGroupContentColumns.AUTHORITY+"/stroke_group/stroke/byname/");
+		uri = Uri.withAppendedPath(uri, URLEncoder.encode(strokeGroupName));
 		List<Stroke> infoList = new ArrayList<Stroke>();
 
 		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
@@ -285,6 +318,34 @@ public class StrokeHelper {
 
 		Logger.d(LOG_TAG, "queryAllStrokeGroupContentOfGroup() -");
 		return infoList;
+	}
+
+	public static StrokeGroup queryStrokeGroup(Context context, String strokeGroupName, int index) {
+		Logger.d(LOG_TAG, "queryStrokeGroup() +");
+Logger.e(LOG_TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXX %s %d", strokeGroupName, index);
+		Uri uri = Uri.parse("content://"+StrokeGroupContentColumns.AUTHORITY+"/stroke_group/byname/");
+		uri = Uri.withAppendedPath(uri, URLEncoder.encode(strokeGroupName));
+
+		StrokeGroup strokeGroup = null;
+		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+		if(cursor != null) {
+			cursor.moveToPosition(index);
+//			cursor.moveToFirst();
+
+			if(!cursor.isAfterLast()) {
+				strokeGroup = convertCursorToStrokeGroup(cursor);
+			}
+
+			cursor.close();
+		}
+		if(strokeGroup != null) {
+			long groupId = strokeGroup.getDbId();
+			List<Stroke> strokeList = queryAllStrokeOfGroup(context, groupId);
+			strokeGroup.setStrokeList(strokeList);
+		}
+
+		Logger.d(LOG_TAG, "queryStrokeGroup() -");
+		return strokeGroup;
 	}
 
 	private static List<StrokeGroupContentInfo> queryAllStrokeGroupContent(Context context) {
@@ -562,6 +623,7 @@ public class StrokeHelper {
 		ContentValues values = new ContentValues();
 		values.put(StrokeGroupColumns.DB_NAME, strokeGroup.getDbName());
 		values.put(StrokeGroupColumns.NAME, strokeGroup.getName());
+		values.put(StrokeGroupColumns.RANGE, strokeGroup.getGeometry().getExpression());
 
 		Logger.d(LOG_TAG, "convertStrokeGroupToContentValues() -");
 		return values;

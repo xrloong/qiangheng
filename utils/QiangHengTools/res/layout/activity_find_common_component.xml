@@ -29,6 +29,53 @@
 		    android:layout_margin="10px"
 		    android:text="字符名"
 	    	/>
-	</LinearLayout>
+	    <EditText
+			android:id="@+id/edittext_replace_sequence"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+	    	/>
+	    <Button
+			android:id="@+id/button_update"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="更新筆劃序列"
+	        />
+	    <EditText
+			android:id="@+id/edittext_stroke_group"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+	    	/>
+	    <Button
+			android:id="@+id/button_update_stroke_group"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="更新目標筆劃組"
+	        />
+	    	</LinearLayout>
 
+    <include
+		layout="@layout/stroke_control_view"
+		android:id="@+id/replace_stroke_control_view"
+		/>
+    <LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    >
+	    <TextView
+			android:id="@+id/replace_data_id"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_margin="10px"
+		    android:text="第幾筆資料"
+	    	/>
+	    <TextView
+			android:id="@+id/replace_stroke_group_name"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_margin="10px"
+		    android:text="筆劃組名"
+	    	/>
+	</LinearLayout>
+    
 </LinearLayout>

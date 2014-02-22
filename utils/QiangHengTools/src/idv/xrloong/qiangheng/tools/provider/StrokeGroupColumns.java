@@ -11,4 +11,5 @@ public class StrokeGroupColumns implements BaseColumns {
 
 	public static final String DB_NAME = "db_name";
 	public static final String NAME = "name";
+	public static final String RANGE = "range";
 }

@@ -1,6 +1,7 @@
 package idv.xrloong.qiangheng.tools.model;
 
 import idv.xrloong.qiangheng.tools.view.IStrokeDrawable;
+import idv.xrloong.qiangheng.tools.view.StrokeDrawableInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +14,11 @@ public class StrokeGroup implements IStrokeDrawable {
 	private String mDbName;
 	private String mName;
 
+	private Geometry mGeometry;
 	private List<Stroke> mStrokeList = new ArrayList<Stroke>();
-	public StrokeGroup(List<Stroke> strokeList) {
+	public StrokeGroup(List<Stroke> strokeList, Geometry geometry) {
 		mStrokeList = strokeList;
+		mGeometry = geometry;
 	}
 
 	public void setName(String name) {
@@ -34,13 +37,25 @@ public class StrokeGroup implements IStrokeDrawable {
 		return mStrokeList;
 	}
 
+	public Geometry getGeometry() {
+		return mGeometry;
+	}
+
 	@Override
-	public List<Path> getPathList() {
-		List<Path> strokeList = new ArrayList<Path>();
+	public List<StrokeDrawableInfo> getInfoList() {
+		List<StrokeDrawableInfo> strokeList = new ArrayList<StrokeDrawableInfo>();
+		int colorIndex = 0;
 		for(Stroke stroke : getStrokeList()) {
-			StrokeAction strokeAction = new StrokeAction(stroke.getExpression());
-			List<Path> tmpPathList = strokeAction.getPathList();
-			strokeList.addAll(tmpPathList);
+			Path path = stroke.getPath();
+			int color = StrokeDrawableInfo.getNormalColor();
+			if(stroke.isRef()) {
+				color = StrokeDrawableInfo.getRefColor(colorIndex);
+				colorIndex++;
+			}
+
+			StrokeDrawableInfo strokeDrawableInfo = new StrokeDrawableInfo(path, color);
+			strokeDrawableInfo.setGeometry(new Geometry(stroke.getRange()));
+			strokeList.add(strokeDrawableInfo);
 		}
 		return strokeList;
 	}
