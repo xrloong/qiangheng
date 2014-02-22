@@ -3,6 +3,7 @@ package idv.xrloong.qiangheng.tools;
 import java.io.Serializable;
 
 import idv.xrloong.qiangheng.tools.activity.FragmentActivity;
+import idv.xrloong.qiangheng.tools.fragment.DecomposingExtentionBFragment;
 import idv.xrloong.qiangheng.tools.fragment.FindCommonComponentFragment;
 import idv.xrloong.qiangheng.tools.fragment.StrokeNamingFragment;
 import idv.xrloong.qiangheng.tools.model.QHToolContent;
@@ -47,6 +48,10 @@ public class QHToolFactory {
 			break;
 		case FindingCommonComponent:
 			fragment = new FindCommonComponentFragment();
+			break;
+
+		case DecomposingExtB:
+			fragment = new DecomposingExtentionBFragment();
 			break;
 
 		default:

@@ -36,6 +36,10 @@
             android:name=".provider.FindCommonComponentProvider"
             android:exported="false"
             android:authorities="idv.xrloong.qiangheng.tools.FindCommonComponent" />
+        <provider
+            android:name=".provider.ExtentionBProvider"
+            android:exported="false"
+            android:authorities="idv.xrloong.qiangheng.tools.DecomposingExtentionB" />
         </application>
 
 </manifest>

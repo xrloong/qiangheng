@@ -14,7 +14,7 @@ public class QHToolContent {
 	private static final String LOG_TAG = Logger.getLogTag(QHToolContent.class);
 
 	public static enum QHToolType {
-		None, NamingStroke, FindingCommonComponent;
+		None, NamingStroke, FindingCommonComponent, DecomposingExtB;
 
 		public boolean isNamingStroke() {
 			return NamingStroke.equals(this);
@@ -77,6 +77,7 @@ public class QHToolContent {
 	private void init(Context context) {
 		ITEMS.add(new QHToolItem(QHToolType.NamingStroke, context.getString(R.string.tool_name_namming_stroking)));
 		ITEMS.add(new QHToolItem(QHToolType.FindingCommonComponent, context.getString(R.string.tool_name_find_common_component)));
+		ITEMS.add(new QHToolItem(QHToolType.DecomposingExtB, context.getString(R.string.tool_name_decompose_ext_b)));
 	}
 
 	public List<QHToolItem> getItems() {
