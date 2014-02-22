@@ -81,12 +81,9 @@ class QiangHeng:
 		dstNode=self.hanziNetwork.findNodeByCharDesc(srcDesc)
 
 		operator=srcDesc.getOperator()
-		childNodeList=[]
-		for childSrcDesc in srcDesc.getCompList():
-			childNode=self.hanziNetwork.findNodeByCharDesc(childSrcDesc)
-			childNodeList.append(childNode)
+		childDescList=srcDesc.getCompList()
 
-		self.hanziNetwork.addLink(srcDesc, operator, childNodeList)
+		self.hanziNetwork.addLink(srcDesc, operator, childDescList)
 
 		for childSrcDesc in srcDesc.getCompList():
 			self.recursivelyAddLink(childSrcDesc)
@@ -142,7 +139,9 @@ class QiangHeng:
 	def genIMMapping(self, targetCharList):
 		table=[]
 		for charName in targetCharList:
-			codeList=self.hanziNetwork.getCodeList(charName)
+			charNode=self.hanziNetwork.findNodeByName(charName)
+
+			codeList=charNode.getCodeList()
 			for code in codeList:
 				table.append([code, charName])
 		return table

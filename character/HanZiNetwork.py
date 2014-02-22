@@ -11,14 +11,8 @@ class HanZiStructure:
 	def getOperator(self):
 		return self.operator
 
-#	def setOperator(self, operator):
-#		self.operator=operator
-
 	def getNodeList(self):
 		return self.nodeList
-
-#	def setNodeList(self, nodeList):
-#		self.nodeList=nodeList
 
 	def getCharInfo(self):
 		return self.charInfo
@@ -41,7 +35,6 @@ class HanZiStructure:
 
 class HanZiNode:
 	def __init__(self, charDesc, chInfo):
-#		self.charDesc=charDesc
 		self.flagExpanded=False
 
 		self.structureX=HanZiStructure(charDesc.getOperator(), [], chInfo)
@@ -72,6 +65,8 @@ class HanZiNode:
 		return self.structureList
 
 	def getCodeList(self):
+		self.setNodeTree()
+
 		codeList=[]
 		if self.isToShow:
 			structureList=self.getStructureListWithCondition()
@@ -129,6 +124,12 @@ class HanZiNetwork:
 			dstNode=self.findNodeByCharDesc(charDesc)
 			dstNode.setStructure(operator, childNodeList)
 
+	def addLink(self, charDesc, operator, childDescList):
+		if len(childDescList)>0:
+			childNodeList=[self.findNodeByCharDesc(childDesc) for childDesc in childDescList]
+			dstNode=self.findNodeByCharDesc(charDesc)
+			dstNode.setStructure(operator, childNodeList)
+
 	def findNodeByName(self, charName):
 		return self.srcDescNameToNodeDict.get(charName)
 
@@ -143,10 +144,4 @@ class HanZiNetwork:
 
 		ansNode=self.findNodeByName(charName)
 		return ansNode
-
-	def getCodeList(self, charName):
-		charNode=self.findNodeByName(charName)
-		charNode.setNodeTree()
-
-		return charNode.getCodeList()
 
