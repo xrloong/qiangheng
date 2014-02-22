@@ -69,6 +69,19 @@ class OperatorManager:
 			'圭':RearrangeInfoV4(),
 			'燚':RearrangeInfoSquare(self.emptyCharDescGenerator),
 		}
+		self.availableOperation=[
+			'龜', '水', '錯', '龍',
+			'夾',
+			'起', '廖', '載', '聖',
+			'霜', '想', '怡', '穎',
+			'回', '同', '函', '區', '左',
+			'好', '志', '算', '湘', '纂', '膷',
+			'林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',
+		]
+
+	def isAvailableOperation(self, operatorName):
+		return (operatorName in self.availableOperation)
+
 	# 分成以下層級
 	# SpecialCase:	錯、龜、水
 	# 橫、縱：鴻：不定個數橫向組同，蚕：不定個數縱向組合，龍：不定個數的組同。

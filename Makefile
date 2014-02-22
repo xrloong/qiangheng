@@ -24,6 +24,8 @@ xml:
 	mkdir -p $(XML_PATH)
 	for im in $(IMLIST);\
 	do\
+		echo $$im;\
+#		time ./qiangheng.py -i $$im --xml > _$$im.xml;\
 		time ./qiangheng.py -i $$im --xml |\
 			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
 	done

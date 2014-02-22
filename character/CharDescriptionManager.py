@@ -24,7 +24,11 @@ class CharDescriptionManager:
 		def CharDescGenerator(charName, structInfo=['龜', [], '(龜)']):
 			operator, CompList, expression=structInfo
 #			direction=RearrangementManager.computeDirection(operator)
-			direction=self.rearrangeMgr.computeDirection(operator)
+			if not self.operationMgr.isAvailableOperation(operator):
+				print("<!-- 錯誤；不合法的運算 %s -->"%operator)
+				return None
+
+			direction=self.operationMgr.computeDirection(operator)
 			tmpCharInfo=CharInfoGenerator(charName, [])
 			charDesc=CharDesc(charName, operator, CompList, direction, expression, tmpCharInfo)
 			return charDesc
@@ -37,7 +41,7 @@ class CharDescriptionManager:
 			return CharDescGenerator(anonymousName)
 
 		imName=imModule.IMInfo.IMName
-		self.rearrangeMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
+		self.operationMgr=imModule.OperatorManager(self, emptyCharDescGenerator)
 
 		self.charInfoGenerator=CharInfoGenerator
 		self.charDescGenerator=CharDescGenerator
@@ -243,7 +247,7 @@ class CharDescriptionManager:
 			compList.append(childDstDesc)
 		dstDesc.setCompList(compList)
 
-		self.rearrangeMgr.rearrangeDesc(dstDesc)
+		self.operationMgr.rearrangeDesc(dstDesc)
 
 	def getExpandDescriptionByNameInNetwork(self, charName):
 		return self.descNetwork.get(charName, None)
