@@ -489,36 +489,37 @@ class StrokeObject_橫撇(StrokeObject):
 class StrokeObject_橫撇彎鉤(StrokeObject):
 	def parseExpression(self):
 		l=self.parameterExpressionList
-		assert len(l)==4
+		assert len(l)==6
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
 		assert int(l[3])>0
-		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
+		assert int(l[4])>0
+		assert int(l[5])>0
+		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), ]
 
 	def getStartPoint(self):
 		paramList=self.parseExpression()
-		w=paramList[0]
-		wb=paramList[2]
+		w1=paramList[0]
+		w2l=paramList[2]
+		w2r=paramList[3]
 
 		topLeft = self.getTopLeft()
-		return (topLeft[0]+(wb-w)//2, topLeft[1])
+		return (topLeft[0]+(w2l-w1), topLeft[1])
 
 	def getPoints(self):
 		paramList=self.parseExpression()
-		w=paramList[0]
-		h=paramList[1]
-		wb=paramList[2]
-		h3=paramList[3]
-
-		wr=(wb-w)//2
-		wl=wb-wr
-		cr = 0x30
+		w1=paramList[0]
+		h2=paramList[1]
+		w2l=paramList[2]
+		w2r=paramList[3]
+		cr=paramList[4]
+		h3=paramList[5]
 
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
-		points.extend(self.compute_橫(points[-1][1], w))
-		points.extend(self.compute_撇曲(points[-1][1], wl, wr, h, cr))
+		points.extend(self.compute_橫(points[-1][1], w1))
+		points.extend(self.compute_撇曲(points[-1][1], w2l, w2r, h2, cr))
 		points.extend(self.compute_上(points[-1][1], h3))
 		return points
 
