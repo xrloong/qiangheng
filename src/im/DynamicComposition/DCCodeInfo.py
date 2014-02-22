@@ -1,29 +1,26 @@
 from ..base.CodeInfo import CodeInfo
 from .Calligraphy import Pane
+from .Calligraphy import StrokeGroup
 
 class DCCodeInfo(CodeInfo):
-	INSTALLMENT_SEPERATOR='|'
-	STROKE_SEPERATOR=';'
-	RADIX_SEPERATOR=','
-
-	def __init__(self, strokeList, pane):
+	def __init__(self, strokeGroup):
 		CodeInfo.__init__(self)
 
-		self.strokeList=strokeList
-		self.pane=pane
+		self.strokeGroup=strokeGroup
 
 	@staticmethod
-	def generateDefaultCodeInfo(strokeList, pane):
-		codeInfo=DCCodeInfo(strokeList, pane)
+	def generateDefaultCodeInfo(strokeGroup):
+		codeInfo=DCCodeInfo(strokeGroup)
 		return codeInfo
 
 	def toCode(self):
 		return self.getCode()
 
 	def getStrokeList(self):
-		return self.strokeList
+		return self.strokeGroup.getStrokeList()
 
 	def getCode(self):
-		codeList=[stroke.getCode() for stroke in self.strokeList]
+		strokeList=self.getStrokeList()
+		codeList=[stroke.getCode() for stroke in strokeList]
 		return ','.join(codeList)
 

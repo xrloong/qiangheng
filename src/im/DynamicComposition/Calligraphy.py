@@ -1,6 +1,34 @@
 import re
 import sys
 
+class StrokeAction:
+	def __init__(self, description):
+		self.action=int(description[0:4])
+		self.x=int(description[4:6], 16)
+		self.y=int(description[6:8], 16)
+
+	def getCode(self):
+		return "%04X%02X%02X"%(self.action, self.x, self.y)
+
+	def scale(self, xScale, yScale):
+		self.x=int(self.x*xScale)
+		self.y=int(self.y*yScale)
+
+	def translate(self, xOffset, yOffset):
+		self.x=int(self.x+xOffset)
+		self.y=int(self.y+yOffset)
+
+	def transform(self, pane):
+		width=pane.getWidth()
+		height=pane.getHeight()
+		xScale=width*1./Pane.WIDTH
+		yScale=height*1./Pane.HEIGHT
+		left=pane.getLeft()
+		top=pane.getTop()
+
+		self.scale(xScale, yScale)
+		self.translate(left, top)
+
 class Pane:
 	WIDTH=0x100
 	HEIGHT=0x100
@@ -144,41 +172,6 @@ class Stroke(Writing):
 	def transform(self, pane):
 		for action in self.actionList:
 			action.transform(pane)
-
-class StrokeAction:
-	def __init__(self, description):
-		self.action=int(description[0:4])
-		self.x=int(description[4:6], 16)
-		self.y=int(description[6:8], 16)
-
-		[left, top, right, bottom]=Pane.DEFAULT_REGION
-		self.left=left
-		self.top=top
-		self.right=right
-		self.bottomm=bottom
-
-	def getCode(self):
-		return "%04X%02X%02X"%(self.action, self.x, self.y)
-
-	def scale(self, xScale, yScale):
-		self.x=int(self.x*xScale)
-		self.y=int(self.y*yScale)
-
-	def translate(self, xOffset, yOffset):
-		self.x=int(self.x+xOffset)
-		self.y=int(self.y+yOffset)
-
-	# 多型
-	def transform(self, pane):
-		width=pane.getWidth()
-		height=pane.getHeight()
-		xScale=width*1./Pane.WIDTH
-		yScale=height*1./Pane.HEIGHT
-		left=pane.getLeft()
-		top=pane.getTop()
-
-		self.scale(xScale, yScale)
-		self.translate(left, top)
 
 class StrokeGroup(Writing):
 	def __init__(self, pane, strokeList):

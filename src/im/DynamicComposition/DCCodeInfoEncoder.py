@@ -2,6 +2,7 @@ from .DCCodeInfo import DCCodeInfo
 from ..base.CodeInfoEncoder import CodeInfoEncoder
 from ..base.CodeInfo import CodeInfo
 from .Calligraphy import Pane
+from .Calligraphy import StrokeGroup
 
 import sys
 import copy
@@ -12,8 +13,13 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		pass
 
-	def generateDefaultCodeInfo(self, strokeList, pane=Pane.DEFAULT_PANE):
-		return DCCodeInfo.generateDefaultCodeInfo(strokeList, pane)
+	def generateDefaultCodeInfo(self, strokeGroup):
+		return DCCodeInfo.generateDefaultCodeInfo(strokeGroup)
+
+	def generateDefaultStrokeGroup(self, strokeList):
+		pane=Pane.DEFAULT_PANE
+		strokeGroup=StrokeGroup(pane, strokeList)
+		return self.generateDefaultCodeInfo(strokeGroup)
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getStrokeList())>0, codeInfoList))
@@ -61,7 +67,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList=[]
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 0, 0, 0, 0))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsLoop(self, codeInfoList):
@@ -75,7 +81,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 0, 2, 0, 2))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 1, 1, 1, 1))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsSilkworm(self, codeInfoList):
@@ -86,7 +92,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		for (index, tmpCodeInfo) in enumerate(codeInfoList):
 			newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(tmpCodeInfo, helper, 0, 0, index, index))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
@@ -97,7 +103,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		for (index, tmpCodeInfo) in enumerate(codeInfoList):
 			newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(tmpCodeInfo, helper, index, index, 0, 0))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsQi(self, codeInfoList):
@@ -114,7 +120,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 0, 1, 0, 1))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 1, 1, 0, 0))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsLiao(self, codeInfoList):
@@ -131,7 +137,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 0, 1, 0, 1))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 1, 1, 1, 1))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsZai(self, codeInfoList):
@@ -145,7 +151,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 0, 1, 0, 1))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 0, 0, 1, 1))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsDou(self, codeInfoList):
@@ -159,7 +165,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 0, 1, 0, 1))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 0, 0, 0, 0))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsMu(self, codeInfoList):
@@ -175,7 +181,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 0, 0, 2, 2))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(thirdCodeInfo, helper, 2, 2, 2, 2))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsZuo(self, codeInfoList):
@@ -192,7 +198,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 0, 0, 0, 0))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 2, 2, 0, 0))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsYou(self, codeInfoList):
@@ -208,7 +214,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 1, 1, 0, 0))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 3, 3, 0, 0))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsLiang(self, codeInfoList):
@@ -224,7 +230,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 1, 1, 1, 1))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 3, 3, 1, 1))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 	def encodeAsJia(self, codeInfoList):
@@ -240,7 +246,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(firstCodeInfo, helper, 0, 0, 1, 1))
 		newStrokeList.extend(DCCodeInfoEncoder.computeNewStrokeList(secondCodeInfo, helper, 2, 2, 1, 1))
 
-		codeInfo=self.generateDefaultCodeInfo(newStrokeList)
+		codeInfo=self.generateDefaultStrokeGroup(newStrokeList)
 		return codeInfo
 
 class DCGridHelper:

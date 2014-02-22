@@ -63,9 +63,8 @@ class DCRadixParser(RadixParser):
 					tmpStrokeGroup.transform(countourPane)
 					strokeList.extend(tmpStrokeGroup.getStrokeList())
 
-#		strokeGroup=StrokeGroup(pane, strokeList)
-#		strokeList=strokeGroup.getStrokeList()
-		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeList, pane)
+		strokeGroup=StrokeGroup(pane, strokeList)
+		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeGroup)
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):

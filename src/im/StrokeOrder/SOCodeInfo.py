@@ -6,15 +6,16 @@ class SOCodeInfo(DCCodeInfo):
 	STROKE_SEPERATOR=';'
 	RADIX_SEPERATOR=','
 
-	def __init__(self, strokeList, region):
-		DCCodeInfo.__init__(self, strokeList, region)
+	def __init__(self, strokeGroup):
+		DCCodeInfo.__init__(self, strokeGroup)
 
 	@staticmethod
-	def generateDefaultCodeInfo(strokeList, region):
-		codeInfo=SOCodeInfo(strokeList, region)
+	def generateDefaultCodeInfo(strokeGroup):
+		codeInfo=SOCodeInfo(strokeGroup)
 		return codeInfo
 
 	def getCode(self):
-		codeList=[stroke.getTypeName() for stroke in self.strokeList]
+		strokeList=self.getStrokeList()
+		codeList=[stroke.getTypeName() for stroke in strokeList]
 		return ','.join(codeList)
 
