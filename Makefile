@@ -15,82 +15,82 @@ TARBALLS_PATH	=	tarballs
 XFORM		=	--xform="s:^:qiangheng/:"
 ICON_PATH	=	icons/ pixmaps/
 
-.PHONY: puretable tarballs pixmaps
+.PHONY: xml tarballs pixmaps
 
-all: puretable
+all: xml
 
-#puretable: $(PURETABLE_PATH)
-$(PURETABLE_PATH):
-puretable:
-	mkdir -p $(PURETABLE_PATH)
-	for im in $(IMLIST);\
-	do\
-		time ./qiangheng.py -i $$im --text > $(PURETABLE_PATH)/qh$$im.txt;\
-	done
-	touch $(PURETABLE_PATH)
-
+$(XML_PATH):
 xml:
 	mkdir -p $(XML_PATH)
 	for im in $(IMLIST);\
 	do\
 		time ./qiangheng.py -i $$im --xml |\
-			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml;\
+			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
 	done
 	touch $(XML_PATH)
 
-imtables: scim ibus gcin ovim msim
+imtables: scim ibus gcin ovim msim puretable
 
 scim: $(SCIM_PATH)
-$(SCIM_PATH): $(PURETABLE_PATH)
+$(SCIM_PATH): $(XML_PATH)
 	mkdir -p $(SCIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		./convertTable.py -i $$im -p scim -t $(PURETABLE_PATH)/qh$$im.txt > $(SCIM_PATH)/qh$$im.scim;\
+		xalan -xsl xslt/scim.xslt -in tables/xml/qh$$im.xml -param UUID \"`uuidgen`\" -param SERIAL \"`date +%Y%m%d`\" -param ICON_DIR \"/usr/share/scim/icon/\" -param ICON_FILE \"qh$$im.svg\" -out $(SCIM_PATH)/qh$$im.scim;\
 		scim-make-table $(SCIM_PATH)/qh$$im.scim -b -o $(SCIM_PATH)/qh$$im.bin;\
 	done
 	touch $(SCIM_PATH)
 
 ibus: $(IBUS_PATH)
-$(IBUS_PATH): $(PURETABLE_PATH)
+$(IBUS_PATH): $(XML_PATH)
 	mkdir -p $(IBUS_PATH)
 	mkdir -p tmp
 	for im in $(IMLIST);\
 	do\
-		./convertTable.py -i $$im -p ibus -t $(PURETABLE_PATH)/qh$$im.txt > $(IBUS_PATH)/qh$$im.ibus;\
+		xalan -xsl xslt/ibus.xslt -in tables/xml/qh$$im.xml -param UUID \"`uuidgen`\" -param SERIAL \"`date +%Y%m%d`\" -param ICON_FILE \"qh$$im.svg\" -out $(IBUS_PATH)/qh$$im.ibus;\
 		bash -c "cd tmp; ibus-table-createdb -s ../$(IBUS_PATH)/qh$$im.ibus";\
 	done
 	cp tmp/*.db $(IBUS_PATH)
 	touch $(IBUS_PATH)
 
 gcin: $(GCIN_PATH)
-$(GCIN_PATH): $(PURETABLE_PATH)
+$(GCIN_PATH): $(XML_PATH)
 	mkdir -p $(GCIN_PATH)
 	for im in $(IMLIST);\
 	do\
-		./convertTable.py -i $$im -p gcin -t $(PURETABLE_PATH)/qh$$im.txt > $(GCIN_PATH)/qh$$im.cin;\
+		time xalan -xsl xslt/gcin.xslt -in $(XML_PATH)/qh$$im.xml -out $(GCIN_PATH)/qh$$im.cin;\
 		gcin2tab $(GCIN_PATH)/qh$$im.cin;\
 	done
 	touch $(GCIN_PATH)
 
 ovim: $(OVIM_PATH)
-$(OVIM_PATH): $(PURETABLE_PATH)
+$(OVIM_PATH): $(XML_PATH)
 	mkdir -p $(OVIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		./convertTable.py -i $$im -p ovim -t $(PURETABLE_PATH)/qh$$im.txt > $(OVIM_PATH)/qh$$im.cin;\
+		time xalan -xsl xslt/ovim.xslt -in $(XML_PATH)/qh$$im.xml -out $(OVIM_PATH)/qh$$im.cin;\
 	done
 	touch $(OVIM_PATH)
 
 msim: $(MSIM_PATH)
-$(MSIM_PATH): $(PURETABLE_PATH)
+$(MSIM_PATH): $(XML_PATH)
 	mkdir -p $(MSIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		./convertTable.py -i $$im -p msim -t $(PURETABLE_PATH)/qh$$im.txt > $(MSIM_PATH)/qh$$im.msim;\
+		time xalan -xsl xslt/msim.xslt -in $(XML_PATH)/qh$$im.xml -out $(MSIM_PATH)/qh$$im.msim;\
 		sed 's/$$'"/`echo \\\r`/" $(MSIM_PATH)/qh$$im.msim > tmp/qh$$im.msim.dos;\
 		iconv -f utf-8 -t utf-16le tmp/qh$$im.msim.dos > $(MSIM_PATH)/qh$$im.msim.txt;\
 	done
 	touch $(MSIM_PATH)
+
+puretable: $(PURETABLE_PATH)
+$(PURETABLE_PATH): $(XML_PATH)
+	mkdir -p $(PURETABLE_PATH)
+	for im in $(IMLIST);\
+	do\
+		time xalan -xsl xslt/puretable.xslt -in $(XML_PATH)/qh$$im.xml -out $(PURETABLE_PATH)/qh$$im.txt;\
+	done
+	touch $(PURETABLE_PATH)
 
 testing:
 	for im in $(TEST_IMLIST);\
@@ -117,7 +117,7 @@ pixmaps:
 
 tarballs: pre-tarballs tarball-src tarball-all
 	make tarball-src VERSION=$(VERSION)
-	make puretable
+	make xml
 	make imtables
 	make tarballs-platform VERSION=$(VERSION)
 	make tarball-all VERSION=$(VERSION)

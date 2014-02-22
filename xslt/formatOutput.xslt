@@ -7,23 +7,10 @@
    -->
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
-  <xsl:variable name='tab'><xsl:text>	</xsl:text></xsl:variable>
-  <xsl:variable name='newline'><xsl:text>
-</xsl:text></xsl:variable>
+  <xsl:strip-space elements="*"/>
 
   <xsl:template match="/">
-    <xsl:apply-templates select="對應集" />
-  </xsl:template>
- 
-  <xsl:template match="對應集">
-    <xsl:copy><xsl:value-of select="$newline" />
-      <xsl:for-each select="對應">
-        <xsl:sort select="@按鍵"/>
-        <xsl:value-of select="$tab" />
-        <xsl:copy-of select="."/>
-        <xsl:value-of select="$newline" />
-      </xsl:for-each>
-    </xsl:copy>
+    <xsl:copy-of select="." />
   </xsl:template>
 
 </xsl:stylesheet>

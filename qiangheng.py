@@ -83,17 +83,44 @@ def genFile(options):
 	descMgr.ConstructDescriptionNetwork()
 
 	if xml_format:
-		toXML(descMgr)
+		toXML(descMgr, imModule)
 	else:
 		toTXT(descMgr)
 
-def toXML(descMgr):
-	charGroup=ElementTree.Element("對應集")
+def toXML(descMgr, imModule):
+	imInfo=imModule.IMInfo()
+	keyMaps=imInfo.getKeyMaps()
+
+	rootNode=ElementTree.Element("輸入法")
+
+	# 名稱
+	nameNode=ElementTree.SubElement(rootNode, "輸入法名稱",
+		attrib={
+			"EN":imInfo.getName('en'),
+			"TW":imInfo.getName('tw'),
+			"CN":imInfo.getName('cn'),
+			"HK":imInfo.getName('hk'),
+#			"SG":imInfo.getName('sg'),
+			})
+
+	# 屬性
+	propertyNode=ElementTree.SubElement(rootNode, "屬性",
+		attrib={
+			"最大按鍵數":"%s"%imInfo.getMaxKeyLength()
+			})
+
+	# 按鍵與顯示的對照表
+	keyMapsNode=ElementTree.SubElement(rootNode, "按鍵對應集")
+	for key, disp in keyMaps:
+		ElementTree.SubElement(keyMapsNode, "按鍵對應", attrib={"按鍵":key, "顯示":disp})
+
+	# 對照表
+	charGroup=ElementTree.SubElement(rootNode, "對應集")
 	targetCharList=descMgr.keys()
 	cm=genIMMapping(descMgr, targetCharList)
-	for x in cm:
-		ElementTree.SubElement(charGroup, "對應", attrib={"按鍵":x[0], "字符":x[1]})
-	xmlNode=ElementTree.ElementTree(charGroup)
+	for x in sorted(cm):
+		ElementTree.SubElement(charGroup, "對應", attrib={"按鍵序列":x[0], "字符":x[1]})
+	xmlNode=ElementTree.ElementTree(rootNode)
 	ElementTree.dump(xmlNode)
 #	xmlNode.write(sys.stdout)
 
