@@ -7,6 +7,11 @@ from description.StructureDescription import HangerStructureDescription
 from description.TemplateDescription import TemplateDescription
 from description.TemplateDescription import TemplateSubstitutionDescription
 
+#from xml.etree import ElementTree as ET
+from xml.etree import cElementTree as ET
+#import lxml.etree as ET
+#import lxml.objectify as ET
+
 class QHParser:
 	def __init__(self, operatorGenerator):
 		self.operatorGenerator=operatorGenerator
@@ -125,5 +130,16 @@ class QHParser:
 		charDescList=[]
 		if version=='0.3':
 			charDescList=self.loadCharDescriptionByParsingXML__0_3(node)
+		return charDescList
+
+	def loadTemplates(self, filename):
+		xmlNode=ET.parse(filename)
+		rootNode=xmlNode.getroot()
+		return self.loadTemplateByParsingXML(rootNode)
+
+	def loadCharacters(self, filename):
+		xmlNode=ET.parse(filename)
+		rootNode=xmlNode.getroot()
+		charDescList=self.loadCharDescriptionByParsingXML(rootNode)
 		return charDescList
 

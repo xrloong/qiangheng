@@ -3,10 +3,6 @@
 import sys
 from .CharacterDescription import CharacterDescription
 from parser import QHParser
-#from xml.etree import ElementTree as ET
-from xml.etree import cElementTree as ET
-#import lxml.etree as ET
-#import lxml.objectify as ET
 import Constant
 
 class CharacterDescriptionManager:
@@ -38,37 +34,29 @@ class CharacterDescriptionManager:
 	def loadData(self, toTemplateList, toComponentList):
 		templateDB={}
 		for filename in toTemplateList:
-			tmpTemplateDB=self.loadTemplateFromXML(filename)
+			tmpTemplateDB=self.parser.loadTemplates(filename)
 			templateDB.update(tmpTemplateDB)
 
 		self.operationManager.setTemplateDB(templateDB)
 
 		for filename in toComponentList:
-			self.loadFromXML(filename)
+			charDescList=self.parser.loadCharacters(filename)
+			for charDesc in charDescList:
+				self.saveChar(charDesc)
 
 		structureRearranger=self.operationManager.getStructureRearranger()
 		self.adjustData(structureRearranger)
 
-	def loadFromXML(self, filename):
-		xmlNode=ET.parse(filename)
-		rootNode=xmlNode.getroot()
-		charDescList=self.parser.loadCharDescriptionByParsingXML(rootNode)
-		for charDesc in charDescList:
-			charName=charDesc.getName()
-			if charName in self.characterDB:
-				characterProperty=charDesc.getCharacterProperty()
-				origCharDesc=self.characterDB.get(charName)
-				origCharDesc.setStructureList(charDesc.getStructureList())
-				origCharDesc.updateCharacterProperty(charDesc.getCharacterProperty())
-			else:
-				characterProperty=charDesc.getCharacterProperty()
-				self.characterDB[charName]=charDesc
-
-
-	def loadTemplateFromXML(self, filename):
-		xmlNode=ET.parse(filename)
-		rootNode=xmlNode.getroot()
-		return self.parser.loadTemplateByParsingXML(rootNode)
+	def saveChar(self, charDesc):
+		charName=charDesc.getName()
+		if charName in self.characterDB:
+			characterProperty=charDesc.getCharacterProperty()
+			origCharDesc=self.characterDB.get(charName)
+			origCharDesc.setStructureList(charDesc.getStructureList())
+			origCharDesc.updateCharacterProperty(charDesc.getCharacterProperty())
+		else:
+			characterProperty=charDesc.getCharacterProperty()
+			self.characterDB[charName]=charDesc
 
 	def adjustData(self, structureRearranger):
 		for charName in self.characterDB.keys():
