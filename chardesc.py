@@ -63,8 +63,11 @@ class CharDesc:
 		oldOperator=self.op
 
 		ansDir='+'
-		if oldOperator in ['龜', '水']:
+		if oldOperator in ['龜']:
 			ansDir='+'
+		elif oldOperator in ['水']:
+#			ansDir='+'
+			ansDir=self.getCompList()[0].getDir()
 		elif oldOperator in ['回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
 			ansDir='+'
 		elif oldOperator in ['纂', '算', '志', '霜', '想', '爻', '卅', ]:

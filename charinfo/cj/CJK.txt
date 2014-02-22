@@ -712,7 +712,6 @@ U+6210	成	(龜)	+ihs
 U+6211	我	(龜)	+hqi
 U+6216	或	(龜)	+irm
 U+621E	戞	(龜)	|mb,i
-U+6220	戠	(龜)	+yia=yai
 U+622A	截	(龜)	+ji,og
 U+6232	戲	(龜)	-ypmrt,i
 U+6234	戴	(龜)	+ji,wtc
@@ -1519,7 +1518,7 @@ U+8D63	赣	(龜)	-ytaj,hembo
 U+8D64	赤	(龜)	+glnc
 U+8D70	走	(龜)	+gyo
 U+8D71	赱	(龜)	|g,co
-U+8DB3	足	(龜)	+rylm=ryo
+U+8DB3	足	(龜)	+ryo
 # 8E00
 U+8E28	踨	(龜)	-rylm,ooyo
 U+8E47	蹇	(龜)	|j,ttc,ryo
@@ -1780,6 +1779,8 @@ U+9FA0	龠	(龜)	|o,m,rrr,Bt
 [流右]	[流右]	(龜)	|yi,hlu
 [氾右]	[氾右]	(龜)	+su
 [垴右]	[垴右]	(龜)	+yuk
+[熾右]	[熾右]	(龜)	+yia
+[左足]	[左足]	(龜)	+rylm
 ##
 [糉右]	[糉右]	(龜)	+Ukc,he
 [糭右]	[糭右]	(龜)	+Ukic,he
