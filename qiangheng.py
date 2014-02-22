@@ -138,7 +138,6 @@ class QiangHeng:
 		charDescQueryer=self.descMgr.getCharDescQueryer()
 		table=[]
 		for charName in sorted(targetCharList):
-			print("<!-- %s -->"%charName)
 			charDesc=charDescQueryer(charName)
 			codeList=self.hanziNetwork.getCodeList(charDesc)
 			for code in codeList:
