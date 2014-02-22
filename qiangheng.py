@@ -6,6 +6,8 @@ from im import IMMgr
 from description import CharDescriptionManager
 from hanzi import HanZiNetwork
 
+from state import StateManager
+
 from optparse import OptionParser
 
 class QiangHeng:
@@ -14,8 +16,8 @@ class QiangHeng:
 		xml_format=options.xml_format
 
 		configList=self.readConfig(configFile)
-		[imname, toTemplateList, toComponentList, toCodeList]=configList
-		imModule=self.getIMInfo(imname)
+		[imProp, toTemplateList, toComponentList, toCodeList]=configList
+		imModule=IMMgr.IMMgr.getIMModule(imProp)
 
 		self.initManager(imModule)
 
@@ -42,8 +44,20 @@ class QiangHeng:
 		rootNode=xmlNode.getroot()
 
 		configNode=rootNode.find('設定')
-		imnameNode=configNode.find('輸入法名稱')
-		imname=imnameNode.text
+		imNode=configNode.find('輸入法')
+		imProp=imNode.attrib
+
+		codingMethod=configNode.find('拆碼方式')
+		quantityStr=codingMethod.get('數量')
+		if quantityStr=='無':
+			quantity=StateManager.STATE_QUANTITY_NONE
+		elif quantityStr=='一':
+			quantity=StateManager.STATE_QUANTITY_FIRST
+		elif quantityStr=='全':
+			quantity=StateManager.STATE_QUANTITY_ALL
+		else:
+			quantity=StateManager.STATE_QUANTITY_NONE
+		StateManager.setQuantity(quantity)
 
 		configFileNode=rootNode.find('設定檔')
 		templateNodeList=configFileNode.findall('範本')
@@ -57,7 +71,7 @@ class QiangHeng:
 		toCodeList=[rootDirPrefix+node.get('檔案') for node in radixNodeList]
 
 
-		return [imname, toTemplateList, toComponentList, toCodeList]
+		return [imProp, toTemplateList, toComponentList, toCodeList]
 
 
 	def readDesc(self, dirQHDataRoot, configFile):
@@ -184,23 +198,6 @@ class QiangHeng:
 			for code in codeList:
 				table.append([code, charName])
 		return table
-
-	def getIMInfo(self, imName):
-		if imName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
-			imName='倉頡'
-		elif imName in ['行', '行列', '行列輸入法', 'array', 'ar',]:
-			imName='行列'
-		elif imName in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
-			imName='大易'
-		elif imName in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
-			imName='嘸蝦米'
-		elif imName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
-			imName='鄭碼'
-		else:
-			imName='空'
-
-		imModule=IMMgr.IMMgr.getIMModule(imName)
-		return imModule
 
 oparser = OptionParser()
 oparser.add_option("-c", "--config", dest="config_file", help="輸入法設定檔", default="qhdata/config/default.xml")
