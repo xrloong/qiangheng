@@ -1,7 +1,7 @@
-from .IM import IM
-from .CodeInfo import ZMCodeInfo
+from .IMInfo import IMInfo
+from ..CodeInfo import ZMCodeInfo
 
-class ZhengMa(IM):
+class ZhengMaInfo(IMInfo):
 	"鄭碼輸入法"
 
 	IMName="鄭碼"
@@ -43,7 +43,7 @@ class ZhengMa(IM):
 		self.iconfile="qhzm.svg"
 		self.maxkeylength=4
 
-IMInfo=ZhengMa
+IMInfo=ZhengMaInfo
 CodeInfoGenerator=ZMCodeInfo.ZMCodeInfo
 
 if __name__=='__main__':

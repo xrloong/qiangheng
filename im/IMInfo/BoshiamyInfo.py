@@ -1,7 +1,7 @@
-from .IM import IM
-from .CodeInfo import BSCodeInfo
+from .IMInfo import IMInfo
+from ..CodeInfo import BSCodeInfo
 
-class Boshiamy(IM):
+class BoshiamyInfo(IMInfo):
 	"嘸蝦米輸入法"
 
 	IMName="嘸蝦米"
@@ -43,7 +43,7 @@ class Boshiamy(IM):
 		self.iconfile="qhbs.svg"
 		self.maxkeylength=4
 
-IMInfo=Boshiamy
+IMInfo=BoshiamyInfo
 CodeInfoGenerator=BSCodeInfo.BSCodeInfo
 
 if __name__=='__main__':

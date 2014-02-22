@@ -1,7 +1,7 @@
-from .IM import IM
-from .CodeInfo import DYCodeInfo
+from .IMInfo import IMInfo
+from ..CodeInfo import DYCodeInfo
 
-class DaYi(IM):
+class DaYiInfo(IMInfo):
 	"大易輸入法"
 
 	IMName="大易"
@@ -57,7 +57,7 @@ class DaYi(IM):
 		self.iconfile="qhdy.svg"
 		self.maxkeylength=4
 
-IMInfo=DaYi
+IMInfo=DaYiInfo
 CodeInfoGenerator=DYCodeInfo.DYCodeInfo
 
 if __name__=='__main__':

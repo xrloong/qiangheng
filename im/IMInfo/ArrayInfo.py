@@ -1,7 +1,7 @@
-from .IM import IM
-from .CodeInfo import ARCodeInfo
+from .IMInfo import IMInfo
+from ..CodeInfo import ARCodeInfo
 
-class Array(IM):
+class ArrayInfo(IMInfo):
 	"行列輸入法"
 
 	IMName="行列"
@@ -47,7 +47,7 @@ class Array(IM):
 		self.iconfile="qhar.svg"
 		self.maxkeylength=4
 
-IMInfo=Array
+IMInfo=ArrayInfo
 CodeInfoGenerator=ARCodeInfo.ARCodeInfo
 
 if __name__=='__main__':

@@ -1,6 +1,6 @@
-from .CodeInfo import CodeInfo
+from ..CodeInfo import CodeInfo
 
-class IM:
+class IMInfo:
 	"輸入法"
 
 	IMName="空"

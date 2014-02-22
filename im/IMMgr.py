@@ -1,9 +1,9 @@
-from . import IM
-from . import Array
-from . import Boshiamy
-from . import CangJie
-from . import DaYi
-from . import ZhengMa
+from .IMInfo import IMInfo
+from .IMInfo import ArrayInfo
+from .IMInfo import BoshiamyInfo
+from .IMInfo import CangJieInfo
+from .IMInfo import DaYiInfo
+from .IMInfo import ZhengMaInfo
 
 from .CodeInfo import CodeInfo
 from .CodeInfo import ARCodeInfo
@@ -19,17 +19,17 @@ class IMMgr:
 	@staticmethod
 	def getIMModule(imName):
 		if imName == '倉頡':
-			imModule=CangJie
+			imModule=CangJieInfo
 		elif imName == '行列':
-			imModule=Array
+			imModule=ArrayInfo
 		elif imName == '大易':
-			imModule=DaYi
+			imModule=DaYiInfo
 		elif imName == '嘸蝦米':
-			imModule=Boshiamy
+			imModule=BoshiamyInfo
 		elif imName == '鄭碼':
-			imModule=ZhengMa
+			imModule=ZhengMaInfo
 		else:
-			imModule=IM
+			imModule=IMInfo
 
 		return imModule
 

@@ -1,7 +1,7 @@
-from .IM import IM
-from .CodeInfo import CJCodeInfo
+from .IMInfo import IMInfo
+from ..CodeInfo import CJCodeInfo
 
-class CangJie(IM):
+class CangJieInfo(IMInfo):
 	"倉頡輸入法"
 
 	IMName="倉頡"
@@ -43,7 +43,7 @@ class CangJie(IM):
 		self.iconfile="qhcj.svg"
 		self.maxkeylength=5
 
-IMInfo=CangJie
+IMInfo=CangJieInfo
 CodeInfoGenerator=CJCodeInfo.CJCodeInfo
 
 if __name__=='__main__':
