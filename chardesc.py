@@ -17,6 +17,13 @@ class CharDesc:
 		# 字符的資訊，如在某種輸入法下如何拆碼
 		self.chInfo=charinfo.CharInfo.NoneChar
 
+	def copyInfoFrom(self, srcDesc):
+		self.name=srcDesc.name
+		self.setOperatorAndDirection(srcDesc.getOperator(), srcDesc.getDirection())
+		self.compList=copy.copy(srcDesc.getCompList())
+		self.description=srcDesc.description
+		self.setChInfo(copy.copy(srcDesc.getChInfo()))
+
 	def setName(self, name):
 		self.name=name
 
@@ -53,6 +60,7 @@ CharDesc.NoneDesc=CharDesc("", '龜', [], '+', '(龜)')
 class CharDescriptionManager:
 	def __init__(self):
 		self.descDB={}
+		self.descNetwork={}
 
 	def __getitem__(self, key):
 		return self.descDB[key]
@@ -65,6 +73,32 @@ class CharDescriptionManager:
 
 	def get(self, key, value=None):
 		return self.descDB.get(key, value)
+
+	def getExpandDescriptionByName(self, charName):
+		charDesc=CharDescriptionManager.generateDescription(charName)
+		if not charDesc:
+			return None
+
+		self.expandCharDesc(charDesc)
+		return charDesc
+
+	def expandCharDesc(self, charDesc):
+		# 擴展 charDesc
+		# charDesc 會被改變，而非產生新的 CharDesc
+		if len(charDesc.getCompList())==0:
+			tmpDesc=self.get(charDesc.name, None)
+			if len(tmpDesc.getCompList())==0:
+				pass
+			else:
+				# 現有的資料已見底，但從 DB 中查到者仍可擴展
+				self.expandCharDesc(tmpDesc)
+			charDesc.copyInfoFrom(tmpDesc)
+
+		else:
+			for idxChdesc in charDesc.getCompList():
+				self.expandCharDesc(idxChdesc)
+
+		CharDescriptionManager.rearrangeDesc(charDesc)
 
 	@staticmethod
 	def generateDescription(charName, structInfo=['龜', [], '(龜)']):
@@ -101,89 +135,58 @@ class CharDescriptionManager:
 			ansDir='+'
 		return ansDir
 
-	def getExpandDescriptionByName(self, charName):
-		charDesc=copy.copy(self.get(charName, None))
-		if not charDesc:
-			return None
-
-		self.expandCharDesc(charDesc)
-		return charDesc
-
-	def expandCharDesc(self, charDesc):
-
-		if len(charDesc.getCompList())==0:
-			chdesc=self.get(charDesc.name, None)
-			if len(chdesc.getCompList())==0:
-				return chdesc
-			else:
-				# 現有的資料已見底，但從 DB 中查到者仍可擴展
-				return self.expandCharDesc(chdesc)
-
-		l=[]
-		for idxChdesc in charDesc.getCompList():
-			newDesc=copy.copy(idxChdesc)
-			expandDesc=self.expandCharDesc(newDesc)
-			l.append(expandDesc)
-
-		self.rearrangeDesc(charDesc)
-		return charDesc
-
-	def rearrangeDesc(self, charDesc):
-		[newOp, newCompList]=self.getRearrangedOpAndCompList(charDesc)
+	@staticmethod
+	def rearrangeDesc(charDesc):
+		[newOp, newCompList]=CharDescriptionManager.computeRearrangedOpAndCompList(charDesc)
 		direction=CharDescriptionManager.computeDirection(newOp)
 		charDesc.setOperatorAndDirection(newOp, direction)
-
-		# deepcopy 可以防止動到 descDB 的內容
-		# 但不用 deepcopy 則快很多
-#		charDesc.setCompList(copy.deepcopy(newCompList))
 		charDesc.setCompList(newCompList)
 
-	def getRearrangedOpAndCompList(self, charDesc):
+	@staticmethod
+	def computeRearrangedOpAndCompList(charDesc):
 #		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
 #		['好', '志',
 #		'回', '同', '函', '區', '左',
 #		'起', '廖', '載', '聖', '句',
 #		'夾', '衍', '衷',]
 #		['纂', '膷',]
-		ch=charDesc.getChInfo()
-
 		newOperator='龜'
 		newCompList=[]
 
 		oldOperator=charDesc.getOperator()
-		nameCompList=[x.name for x in charDesc.getCompList()]
+		oldCompList=charDesc.getCompList()
 
 		if oldOperator in ['龜']:
 			newOperator=oldOperator
 			newCompList=[]
 		elif oldOperator in ['水']:
-			x=self.get(nameCompList[0], None)
+			x=oldCompList[0]
 
 			newOperator=oldOperator
 			newCompList=[x]
 		elif oldOperator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=self.get(nameCompList[0], None)
-			y=self.get(nameCompList[1], None)
+			x=oldCompList[0]
+			y=oldCompList[1]
 
 			newOperator=oldOperator
 			newCompList=[x, y]
 		elif oldOperator in ['算', '湘', '霜', '想', '怡', '穎',]:
-			x=self.get(nameCompList[0], None)
-			y=self.get(nameCompList[1], None)
-			z=self.get(nameCompList[2], None)
+			x=oldCompList[0]
+			y=oldCompList[1]
+			z=oldCompList[2]
 
 			newOperator=oldOperator
 			newCompList=[x, y, z]
 		elif oldOperator in ['纂',]:
-			x=self.get(nameCompList[0], None)
-			y=self.get(nameCompList[1], None)
-			z=self.get(nameCompList[2], None)
-			w=self.get(nameCompList[3], None)
+			x=oldCompList[0]
+			y=oldCompList[1]
+			z=oldCompList[2]
+			w=oldCompList[3]
 
 			newOperator=oldOperator
 			newCompList=[x, y, z, w]
 		elif oldOperator in ['林', '爻']:
-			x=self.get(nameCompList[0], None)
+			x=oldCompList[0]
 
 			if oldOperator=='林':
 				newOperator='好'
@@ -193,7 +196,7 @@ class CharDescriptionManager:
 				newOperator='錯'
 			newCompList=[x, x]
 		elif oldOperator in ['卅', '鑫']:
-			x=self.get(nameCompList[0], None)
+			x=oldCompList[0]
 
 			if oldOperator=='卅':
 				newOperator='湘'
@@ -205,7 +208,7 @@ class CharDescriptionManager:
 			newCompList=[x, x, x]
 		elif oldOperator in ['燚',]:
 			# 暫不處理
-			x=self.get(nameCompList[0], None)
+			x=oldCompList[0]
 
 			newOperator=oldOperator
 			newCompList=[x, x, x, x]
