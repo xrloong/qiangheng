@@ -7,27 +7,6 @@ class CJCodeInfo(CodeInfo):
 		if str_rtlist!=None:
 			self.setCJProp('*', [str_rtlist])
 
-	def setByComps(self, operator, complist):
-		# 計算倉頡碼時，需要知道此字的組成方向
-		direction=operator.getDirection()
-
-		ansRadixList=[]
-		for tmpCodeInfo in complist:
-			tmpDirCode, tmpRadixList=tmpCodeInfo.getCJProp()
-#			if tmpDirCode=='*':
-			if direction=='$':
-				ansRadixList.extend(tmpRadixList)
-			elif tmpDirCode in ['*', '@']:
-				ansRadixList.append(tmpCodeInfo._cj_body)
-			elif tmpDirCode==direction:
-				# 同向
-				ansRadixList.extend(tmpRadixList)
-			else:
-				# 不同向
-				ansRadixList.append(tmpCodeInfo._cj_body)
-
-		self.setCJProp(direction, ansRadixList)
-
 	@property
 	def characterCode(self):
 		if self._cj_single:

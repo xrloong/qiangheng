@@ -1,6 +1,6 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import DYCodeInfo
-from gear.CodeInfoEncoder import CodeInfoEncoder
+from ..CodeInfoEncoder import DYCodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class DaYiInfo(IMInfo):
@@ -62,7 +62,7 @@ class DaYiInfo(IMInfo):
 IMInfo=DaYiInfo
 CodeInfoGenerator=DYCodeInfo.DYCodeInfo
 
-codeInfoEncoder=CodeInfoEncoder()
+codeInfoEncoder=DYCodeInfoEncoder.DYCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':

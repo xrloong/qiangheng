@@ -1,6 +1,6 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import BSCodeInfo
-from gear.CodeInfoEncoder import CodeInfoEncoder
+from ..CodeInfoEncoder import BSCodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class BoshiamyInfo(IMInfo):
@@ -48,7 +48,7 @@ class BoshiamyInfo(IMInfo):
 IMInfo=BoshiamyInfo
 CodeInfoGenerator=BSCodeInfo.BSCodeInfo
 
-codeInfoEncoder=CodeInfoEncoder()
+codeInfoEncoder=BSCodeInfoEncoder.BSCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':

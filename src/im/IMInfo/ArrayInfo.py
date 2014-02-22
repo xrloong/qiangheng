@@ -1,6 +1,6 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import ARCodeInfo
-from gear.CodeInfoEncoder import CodeInfoEncoder
+from ..CodeInfoEncoder import ARCodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class ArrayInfo(IMInfo):
@@ -52,7 +52,7 @@ class ArrayInfo(IMInfo):
 IMInfo=ArrayInfo
 CodeInfoGenerator=ARCodeInfo.ARCodeInfo
 
-codeInfoEncoder=CodeInfoEncoder()
+codeInfoEncoder=ARCodeInfoEncoder.ARCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':

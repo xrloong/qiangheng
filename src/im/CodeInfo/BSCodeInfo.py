@@ -8,14 +8,6 @@ class BSCodeInfo(CodeInfo):
 		if str_incode!=None and str_spcode!=None:
 			self.setBSProp(str_incode, str_spcode)
 
-	def setByComps(self, operator, complist):
-		bslist=list(map(lambda c: c.getBSProp()[0], complist))
-		if complist and all(bslist):
-			cat="".join(bslist)
-			bs_incode=(cat[:3]+cat[-1]) if len(cat)>4 else cat
-			bs_spcode=complist[-1].getBSProp()[1]
-			self.setBSProp(bs_incode, bs_spcode)
-
 	@property
 	def characterCode(self):
 		if self._bs_single:

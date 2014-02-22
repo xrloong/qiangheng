@@ -8,5 +8,8 @@ class CodeInfoEncoder:
 			codeVariance=childCodeInfo.getCodeVarianceType()
 			codeInfo.codeVariance.multi(codeVariance)
 
+		self.setByComps(codeInfo, operator, codeInfoList)
+
+	def setByComps(self, codeInfo, operator, codeInfoList):
 		codeInfo.setByComps(operator, codeInfoList)
 

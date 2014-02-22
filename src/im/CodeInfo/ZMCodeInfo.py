@@ -11,13 +11,6 @@ class ZMCodeInfo(CodeInfo):
 			rtlist=str_rtlist.split(',')
 			self.setZMProp(rtlist)
 
-	def setByComps(self, operator, complist):
-		if all(complist):
-			rtlist=sum(map(lambda c: c.getZMProp(), complist), [])
-			if complist and all(rtlist):
-				rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-				self.setZMProp(rtlist)
-
 	@property
 	def characterCode(self):
 		if self._zm_single:

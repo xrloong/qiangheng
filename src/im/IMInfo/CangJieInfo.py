@@ -1,6 +1,6 @@
 from .IMInfo import IMInfo
 from ..CodeInfo import CJCodeInfo
-from gear.CodeInfoEncoder import CodeInfoEncoder
+from ..CodeInfoEncoder import CJCodeInfoEncoder
 from gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
 class CangJieInfo(IMInfo):
@@ -48,7 +48,7 @@ class CangJieInfo(IMInfo):
 IMInfo=CangJieInfo
 CodeInfoGenerator=CJCodeInfo.CJCodeInfo
 
-codeInfoEncoder=CodeInfoEncoder()
+codeInfoEncoder=CJCodeInfoEncoder.CJCodeInfoEncoder()
 CharacterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
 if __name__=='__main__':
