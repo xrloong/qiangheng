@@ -25,9 +25,6 @@ class TemplateDescription:
 	def __init__(self, name, parameterList, replaceInfoList):
 		self.name=name
 
-		[condition, charDesc]=replaceInfoList[0]
-
-		self.charDesc=charDesc
 		self.replaceInfoList=replaceInfoList
 		self.parameterList=parameterList
 
@@ -49,7 +46,32 @@ class TemplateDescription:
 #	def getParameterList(self):
 #		return self.parameterList
 
-	def getWantedCharDesc(self, mappingDict):
+	def rearrange(self, charDesc):
+		def getMapping(parameterList, argumentList):
+			mappingDict={}
+			if len(argumentList)==len(parameterList):
+				pairList=zip(parameterList, argumentList)
+
+				mappingDict=dict(pairList)
+			return mappingDict
+
+		def getReplacedCharDesc(targetStructureDescription):
+			tempDesc=targetStructureDescription.copyDeeply()
+
+			replaceCharDesc(tempDesc, mappingDict)
+			return tempDesc
+
+		# 需要先替換兒子，才可以進行自己的替換。
+		# 否則，如：條=(範翛 木)=(範湘 亻丨(志 夂木))
+		# 而 '木' 會被誤判為湘的參數。
+		def replaceCharDesc(charDesc, mappingDict):
+			for comp in charDesc.getCompList():
+				replaceCharDesc(comp, mappingDict)
+
+			argumentDesc=mappingDict.get(charDesc.getExpandName())
+			if argumentDesc!=None:
+				charDesc.replacedBy(argumentDesc)
+
 		def isConditionMatch(condition, mappingDict):
 			if condition.isMatchAll():
 				return True
@@ -58,42 +80,20 @@ class TemplateDescription:
 			argumentDesc=mappingDict.get(operand1)
 			return argumentDesc.getExpandName()==operand2
 
-		targetCharDesc=None
-		for replaceInfo in self.replaceInfoList:
-			[condition, charDesc]=replaceInfo
-			if isConditionMatch(condition, mappingDict):
-				targetCharDesc=charDesc
-				break
-		return targetCharDesc
+		def getWantedCharDesc(mappingDict):
+			targetCharDesc=None
+			for replaceInfo in self.replaceInfoList:
+				[condition, charDesc]=replaceInfo
+				if isConditionMatch(condition, mappingDict):
+					targetCharDesc=charDesc
+					break
+			return targetCharDesc
 
-	def getReplacedCharDesc(self, argumentList):
-		mappingDict={}
-		if len(argumentList)==len(self.parameterList):
-			pairList=zip(self.parameterList, argumentList)
-
-			mappingDict=dict(pairList)
-
-		targetCharDesc=self.getWantedCharDesc(mappingDict)
-		tempDesc=targetCharDesc.copyDeeply()
-
-		self.replaceCharDesc(tempDesc, mappingDict)
-		return tempDesc
-
-	def rearrange(self, charDesc):
 		compList=charDesc.getCompList()
-		resultDesc=self.getReplacedCharDesc(compList)
+		mappingDict=getMapping(self.parameterList, compList)
+		targetStructureDescription=getWantedCharDesc(mappingDict)
+		resultDesc=getReplacedCharDesc(targetStructureDescription)
 		charDesc.replacedBy(resultDesc)
-
-	# 需要先替換兒子，才可以進行自己的替換。
-	# 否則，如：條=(範翛 木)=(範湘 亻丨(志 夂木))
-	# 而 '木' 會被誤判為湘的參數。
-	def replaceCharDesc(self, charDesc, mappingDict):
-		for comp in charDesc.getCompList():
-			self.replaceCharDesc(comp, mappingDict)
-
-		argumentDesc=mappingDict.get(charDesc.getExpandName())
-		if argumentDesc!=None:
-			charDesc.replacedBy(argumentDesc)
 
 if __name__=='__main__':
 	print(TemplateDescription('王', '(龜)', None))
