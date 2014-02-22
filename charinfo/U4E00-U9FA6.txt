@@ -12776,7 +12776,7 @@ U+7F87	羇	(霜 罒革奇)
 U+7F88	羈	(霜 罒革馬)
 U+7F89	羉	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	lkzs	22
 U+7F8A	羊	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	uc	12
-U+7F8B	羋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	iabi	41
+U+7F8B	羋	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	iaib	41
 U+7F8C	羌	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ucr	22
 U+7F8D	羍	(志 大羊)
 U+7F8E	美	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ucgd	22
@@ -13450,7 +13450,7 @@ U+8223	舣	(好 舟义)
 U+8224	舤	(好 舟凡)
 U+8225	舥	(好 舟巴)
 U+8226	舦	(好 舟太)
-U+8227	舧	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8227	舧	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pymq	32
 U+8228	舨	(好 舟反)
 U+8229	舩	(好 舟公)
 U+822A	航	(好 舟亢)
@@ -13483,7 +13483,7 @@ U+8244	艄	(好 舟肖)
 U+8245	艅	(好 舟余)
 U+8246	艆	(好 舟良)
 U+8247	艇	(好 舟廷)
-U+8248	艈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8248	艈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pyzn	42
 U+8249	艉	(好 舟尾)
 U+824A	艊	(好 舟帛)
 U+824B	艋	(好 舟孟)
@@ -13491,7 +13491,7 @@ U+824C	艌	(好 舟念)
 U+824D	艍	(好 舟居)
 U+824E	艎	(好 舟皇)
 U+824F	艏	(好 舟首)
-U+8250	艐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8250	艐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pyor	42
 U+8251	艑	(好 舟扁)
 U+8252	艒	(好 舟冒)
 U+8253	艓	(好 舟枼)
@@ -13521,11 +13521,11 @@ U+826A	艪	(好 舟魯)
 U+826B	艫	(好 舟盧)
 U+826C	艬	(好 舟毚)
 U+826D	艭	(好 舟雙)
-U+826E	艮	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+826F	良	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+826E	艮	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	xo	12
+U+826F	良	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	sxo	21
 U+8270	艰	(好 又艮)
-U+8271	艱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+8272	色	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8271	艱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eaox	42
+U+8272	色	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ryia	21
 U+8273	艳	(好 丰色)
 U+8274	艴	(好 弗色)
 U+8275	艵	(好 并色)
@@ -13547,7 +13547,7 @@ U+8284	芄	(志 艹丸)
 U+8285	芅	(志 艹弋)
 U+8286	芆	(志 艹义)
 U+8287	芇	(志 艹巾)
-U+8288	芈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8288	芈	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	iaib	41
 U+8289	芉	(志 艹干)
 U+828A	芊	(志 艹千)
 U+828B	芋	(志 艹于)
@@ -13598,7 +13598,7 @@ U+82B7	芷	(志 艹止)
 U+82B8	芸	(志 艹云)
 U+82B9	芹	(志 艹斤)
 U+82BA	芺	(志 艹夭)
-U+82BB	芻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+82BB	芻	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ryrz	42
 U+82BC	芼	(志 艹毛)
 U+82BD	芽	(志 艹牙)
 U+82BE	芾	(志 艹巿)
@@ -13619,7 +13619,7 @@ U+82CC	苌	(志 艹长)
 U+82CD	苍	(志 艹仓)
 U+82CE	苎	(算 艹宀一)
 U+82CF	苏	(志 艹办)
-U+82D0	苐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+82D0	苐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eyz	21
 U+82D1	苑	(志 艹夗)
 U+82D2	苒	(志 艹冉)
 U+82D3	苓	(志 艹令)
@@ -13637,7 +13637,7 @@ U+82DE	苞	(志 艹包)
 U+82DF	苟	(志 艹句)
 U+82E0	苠	(志 艹民)
 U+82E1	苡	(志 艹以)
-U+82E2	苢	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+82E2	苢	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ey	21
 U+82E3	苣	(志 艹巨)
 U+82E4	苤	(志 艹丕)
 U+82E5	若	(志 艹右)
@@ -13689,8 +13689,8 @@ U+8310	茐	(志 艹匆)
 U+8311	茑	(志 艹鸟)
 U+8312	茒	(志 艹邜)
 U+8313	茓	(志 艹穴)
-U+8314	茔	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+8315	茕	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8314	茔	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ewb	31
+U+8315	茕	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ewye	41
 U+8316	茖	(志 艹各)
 U+8317	茗	(志 艹名)
 U+8318	茘	(志 艹刕)
@@ -13698,7 +13698,7 @@ U+8319	茙	(志 艹戎)
 U+831A	茚	(志 艹印)
 U+831B	茛	(志 艹艮)
 U+831C	茜	(志 艹西)
-U+831D	茝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+831D	茝	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eh	21
 U+831E	茞	(志 艹臣)
 U+831F	茟	(志 艹聿)
 U+8320	茠	(志 艹休)
@@ -13717,9 +13717,9 @@ U+832C	茬	(志 艹在)
 U+832D	茭	(志 艹交)
 U+832E	茮	(志 艹尗)
 U+832F	茯	(志 艹伏)
-U+8330	茰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8330	茰	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ekos	31
 U+8331	茱	(志 艹朱)
-U+8332	茲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8332	茲	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ezzz	41
 U+8333	茳	(志 艹江)
 U+8334	茴	(志 艹回)
 U+8335	茵	(志 艹因)
@@ -13768,11 +13768,11 @@ U+835F	荟	(志 艹会)
 U+8360	荠	(志 艹齊)
 U+8361	荡	(志 艹汤)
 U+8362	荢	(志 艹宇)
-U+8363	荣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8363	荣	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ewf	31
 U+8364	荤	(志 艹军)
-U+8365	荥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+8366	荦	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+8367	荧	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8365	荥	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ewkv	31
+U+8366	荦	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ewmb	31
+U+8367	荧	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ewuo	31
 U+8368	荨	(志 艹寻)
 U+8369	荩	(志 艹尽)
 U+836A	荪	(志 艹孙)
@@ -13850,12 +13850,12 @@ U+83B1	莱	(志 艹来)
 U+83B2	莲	(志 艹连)
 U+83B3	莳	(志 艹時)
 U+83B4	莴	(志 艹呙)
-U+83B5	莵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+83B5	莵	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	emrs	41
 U+83B6	莶	(志 艹佥)
 U+83B7	获	(志 艹犾)
 U+83B8	莸	(志 艹狁)
-U+83B9	莹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
-U+83BA	莺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+83B9	莹	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ewcs	31
+U+83BA	莺	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ewrz	31
 U+83BB	莻	(志 艿吒)
 U+83BC	莼	(志 艹纯)
 U+83BD	莽	(算 艹犬廾)
@@ -13877,7 +13877,7 @@ U+83CC	菌	(志 艹囷)
 U+83CD	菍	(志 艹念)
 U+83CE	菎	(志 艹昆)
 U+83CF	菏	(志 艹河)
-U+83D0	菐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+83D0	菐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kuuc	22
 U+83D1	菑	(志 艹甾)
 U+83D2	菒	(志 艹杲)
 U+83D3	菓	(志 艹果)
@@ -13891,7 +13891,7 @@ U+83DA	菚	(志 艹戔)
 U+83DB	菛	(志 艹門)
 U+83DC	菜	(志 艹采)
 U+83DD	菝	(志 艹拔)
-U+83DE	菞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+83DE	菞	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	emrm	41
 U+83DF	菟	(志 艹兔)
 U+83E0	菠	(志 艹波)
 U+83E1	菡	(志 艹函)
@@ -13908,7 +13908,7 @@ U+83EB	菫	(志 艹堇)
 U+83EC	菬	(志 艹沼)
 U+83ED	菭	(志 艹治)
 U+83EE	菮	(志 艹庚)
-U+83EF	華	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+83EF	華	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	eaeb	41
 U+83F0	菰	(志 艹孤)
 U+83F1	菱	(志 艹夌)
 U+83F2	菲	(志 艹非)
@@ -14520,12 +14520,12 @@ U+8649	虉	(志 艹鷊)
 U+864A	虊	(志 艹欒)
 U+864B	虋	(志 艹釁)
 U+864C	虌	(志 艹鼈)
-U+864D	虍	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+864D	虍	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ih	12
 U+864E	虎	(廖 虍几)
 U+864F	虏	(廖 虍力)
-U+8650	虐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8650	虐	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ihh	22
 U+8651	虑	(廖 虍心)
-U+8652	虒	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
+U+8652	虒	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	pdih	22
 U+8653	虓	(好 九虎)
 U+8654	虔	(廖 虍文)
 U+8655	處	(廖 虍処)
@@ -14550,7 +14550,7 @@ U+8667	虧	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+8668	虨	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+8669	虩	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+866A	虪	(好 虎儵)
-U+866B	虫	(龜)	lmi	/	;	c	a	XXXX	XXXX
+U+866B	虫	(龜)	lmi	/	;	c	a	i	11
 U+866C	虬	(好 虫乚)
 U+866D	虭	(好 虫刀)
 U+866E	虮	(好 虫几)
