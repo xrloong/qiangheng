@@ -56,7 +56,7 @@ class OperatorManager:
 		if templateName in self.templateOperatorDict:
 			operator=self.templateOperatorDict[templateName]
 		else:
-			operator=Operator.TemplateOperator(templateName, '*')
+			operator=Operator.TemplateOperator(templateName)
 			self.templateOperatorDict[templateName]=operator
 
 	def findTemplateOperator(self, templateName):
