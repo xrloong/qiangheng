@@ -172,6 +172,31 @@ class CangJie(NoneIM):
 		def getCJProp(self):
 			return [self._cj_incode, self._cj_rtcode]
 
+		def setCJByComps(self, prelist, postlist):
+			def CJCombideCode(first, second):
+				tmpfirst=first if len(first)<=2 else first[0]+first[-1]
+				tmpsecond=second if len(second)<=2 else second[0]+second[-1]
+				anscode=tmpfirst+tmpsecond
+				anscode=anscode if len(anscode)<=3 else anscode[0:2]+anscode[-1]
+				return anscode
+
+			def getCJRootCodeAsBody(rtcodelist):
+				tmpcode=rtcodelist[0]
+				tmpcode=tmpcode if len(tmpcode)<=3 else tmpcode[0:2]+tmpcode[-1]
+				for rtcode in rtcodelist[1:]:
+					tmpcode=CJCombideCode(tmpcode, rtcode)
+				return tmpcode
+
+			cjlist=[list(map(lambda c: c.getCJProp()[1], prelist)),
+					list(map(lambda c: c.getCJProp()[1], postlist))]
+			if cjlist[0] and cjlist[1] and all(cjlist[0]) and all(cjlist[1]):
+				headcode=getCJRootCodeAsBody(cjlist[0])
+				headcode=headcode if len(headcode)<=2 else headcode[0]+headcode[-1]
+				bodycode=getCJRootCodeAsBody(cjlist[1])
+				cjcode=headcode+bodycode
+				cjbodycode=CJCombideCode(headcode, bodycode)
+				self.setCJProp(cjcode, cjbodycode)
+
 		@property
 		def cj(self):
 			return self._cj_incode
@@ -282,35 +307,13 @@ class CangJie(NoneIM):
 			# 如果有值，代表事先指定或之前設定過。
 			return
 
-		def CJCombideCode(first, second):
-			tmpfirst=first if len(first)<=2 else first[0]+first[-1]
-			tmpsecond=second if len(second)<=2 else second[0]+second[-1]
-			anscode=tmpfirst+tmpsecond
-			anscode=anscode if len(anscode)<=3 else anscode[0:2]+anscode[-1]
-			return anscode
-
-		def getCJRootCodeAsBody(rtcodelist):
-			tmpcode=rtcodelist[0]
-			tmpcode=tmpcode if len(tmpcode)<=3 else tmpcode[0:2]+tmpcode[-1]
-			for rtcode in rtcodelist[1:]:
-				tmpcode=CJCombideCode(tmpcode, rtcode)
-			return tmpcode
-
 		prelist, postlist=self.getCJPrePostList(ch)
 		complist=[prelist, postlist]
 
 		for tmpch in prelist+postlist:
 			self.setCharTree(tmpch)
 
-		cjlist=[list(map(lambda c: c.getCJProp()[1], prelist)),
-				list(map(lambda c: c.getCJProp()[1], postlist))]
-		if cjlist[0] and cjlist[1] and all(cjlist[0]) and all(cjlist[1]):
-			headcode=getCJRootCodeAsBody(cjlist[0])
-			headcode=headcode if len(headcode)<=2 else headcode[0]+headcode[-1]
-			bodycode=getCJRootCodeAsBody(cjlist[1])
-			cjcode=headcode+bodycode
-			cjbodycode=CJCombideCode(headcode, bodycode)
-			ch.setCJProp(cjcode, cjbodycode)
+		ch.setCJByComps(prelist, postlist)
 
 class Array(NoneIM):
 	"行列輸入法"
