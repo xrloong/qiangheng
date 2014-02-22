@@ -15,7 +15,7 @@ filenamelist=[
 #		'charinfo/BopomofoExt.txt',
 #		'charinfo/CJKpunct.txt',
 #		'charinfo/FullASCIIpunct.txt',
-		'charinfo/U4E00-U9FA6.txt',
+		'charinfo/CJK.txt',
 #		'charinfo/U3400-U4DB5.txt',
 #		'charinfo/U20000-U2A6DF.txt.txt',
 #		'charinfo/Hiragana.txt',
