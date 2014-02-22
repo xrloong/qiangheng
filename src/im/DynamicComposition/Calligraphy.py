@@ -28,14 +28,10 @@ class Point:
 		self.y=int(self.y+yOffset)
 
 	def transform(self, pane):
-		width=pane.getWidth()
-		height=pane.getHeight()
-		xScale=width*1./Pane.WIDTH
-		yScale=height*1./Pane.HEIGHT
 		left=pane.getLeft()
 		top=pane.getTop()
 
-		self.scale(xScale, yScale)
+		self.scale(pane.getHScale(), pane.getVScale())
 		self.translate(left, top)
 
 class StrokeAction:
@@ -93,6 +89,8 @@ class Pane:
 
 		self.name="預設範圍"
 
+		self.hScale=self.width*1./Pane.WIDTH
+		self.vScale=self.height*1./Pane.HEIGHT
 	@property
 	def width(self):
 		return self.right-self.left+1
@@ -127,6 +125,12 @@ class Pane:
 
 	def getHeight(self):
 		return self.height
+
+	def getHScale(self):
+		return self.hScale
+
+	def getVScale(self):
+		return self.vScale
 
 Pane.DEFAULT_PANE=Pane()
 
