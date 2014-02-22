@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import charinfo
 import chardesc
 
 class Token:
@@ -95,7 +96,7 @@ class Parser:
 
 	def parse(data, name=''):
 		def parseCompDesc():
-			comp=chardesc.CharDesc('王', '(龜)', None)
+			comp=chardesc.CharDesc('王', '(龜)', charinfo.CharInfo.NoneChar)
 
 			tkn=lexer.getNextToken()
 			if tkn.ttype != Token.leftParenthesis:
@@ -135,7 +136,7 @@ class Parser:
 			while True:
 				tnk=lexer.getNextToken()
 				if tnk.ttype==Token.hanzi or tnk.ttype==Token.radical:
-					comp=chardesc.CharDesc(tnk.value, '(龜)', None)
+					comp=chardesc.CharDesc(tnk.value, '(龜)', charinfo.CharInfo.NoneChar)
 					comp.setOp('龜')
 					l.append(comp)
 				elif tnk.ttype==Token.leftParenthesis:

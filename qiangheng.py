@@ -5,6 +5,8 @@ import platform
 import chardesc
 import qhparser
 
+import charinfo
+
 from optparse import OptionParser
 oparser = OptionParser()
 oparser.add_option("-t", "--pure-table-file", dest="ptfile", help="表格名稱")
@@ -126,42 +128,42 @@ def genFile(options):
 
 	tmpfname=filenamelist[0]
 	if choice in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
-		constructor=im.CangJie.CJCharInfo
+		constructor=charinfo.CJCharInfo
 		pathlist=[
 				dirchar+'main/'+tmpfname,
 				dirchar+'cj/'+tmpfname,
 				]
 		z=im.CangJie()
 	elif choice in ['行', '行列', '行列輸入法', 'array', 'ar',]:
-		constructor=im.Array.ARCharInfo
+		constructor=charinfo.ARCharInfo
 		pathlist=[
 				dirchar+'main/'+tmpfname,
 				dirchar+'ar/'+tmpfname,
 				]
 		z=im.Array()
 	elif choice in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
-		constructor=im.DaYi.DYCharInfo
+		constructor=charinfo.DYCharInfo
 		pathlist=[
 				dirchar+'main/'+tmpfname,
 				dirchar+'dy/'+tmpfname,
 				]
 		z=im.DaYi()
 	elif choice in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
-		constructor=im.Boshiamy.BSCharInfo
+		constructor=charinfo.BSCharInfo
 		pathlist=[
 				dirchar+'main/'+tmpfname,
 				dirchar+'bs/'+tmpfname,
 				]
 		z=im.Boshiamy()
 	elif choice in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
-		constructor=im.ZhengMa.ZMCharInfo
+		constructor=charinfo.ZMCharInfo
 		pathlist=[
 				dirchar+'main/'+tmpfname,
 				dirchar+'zm/'+tmpfname,
 				]
 		z=im.ZhengMa()
 	else:
-		constructor=im.NoneIM.CharInfo
+		constructor=charinfo.CharInfo
 		pathlist=[]
 		z=im.NoneIM()
 

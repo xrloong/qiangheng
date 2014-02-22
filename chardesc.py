@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import charinfo
+
 class CharDesc:
 	"""字符描述"""
 	def __init__(self, name, description, chInfo):
@@ -22,6 +24,9 @@ class CharDesc:
 	def setCompList(self, compList):
 		self.compList=compList
 
+	def getCompList(self):
+		return self.compList
+
 	def getDescription(self):
 		return self.getDescription
 
@@ -37,7 +42,7 @@ class CharDesc:
 	def __repr__(self):
 		return str(self)
 
-CharDesc.NoneDesc=CharDesc("", '', None)
+CharDesc.NoneDesc=CharDesc("", '', charinfo.CharInfo.NoneChar)
 
 if __name__=='__main__':
 	print(CharDesc.NoneDesc)

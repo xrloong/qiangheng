@@ -1,46 +1,10 @@
 
 import copy
+from charinfo import *
+from chardesc import *
 
 class NoneIM:
 	"輸入法"
-
-	class CharInfo:
-		def __init__(self, charname, parseans, prop):
-			self.charname=charname
-			self.operator=parseans[0]
-			self.operandlist=parseans[1]
-
-			self.showFlag=False if len(self.charname)>1 else True
-			self.noneFlag=True
-
-		def __str__(self):
-			return "{{ {0}|{1},{2} }}".format(self.charname, self.operator, self.operandlist)
-			return self.charname
-
-		def __repr__(self):
-			return str(self)
-
-		def isToShow(self):
-			return self.showFlag
-
-		def isToSetTree(self):
-			# 若非空且之前没設過值
-			return (not self.isNone) and (not self.isSeted)
-
-		def setByComps(self, complist):
-			pass
-
-		@property
-		def isNone(self):
-			# 是否為空
-			return self.noneFlag
-
-		@property
-		def isSeted(self):
-			# 是否之前設過值，會被覆蓋
-			return False
-	CharInfo.NoneChar=CharInfo('[瑲珩預設空字符]', ['龜', []], [])
-	CharInfo.NoneChar.noneFlag=True
 
 	def __init__(self):
 		self.keyMaps=[]
@@ -74,10 +38,28 @@ class NoneIM:
 		self.method='D'
 
 	def genIMMapping(self):
+		def getSmallDescDB():
+			charlist=[
+					'土',
+					'吉',
+					'夠',
+					'炎',
+					'畦',
+					]
+			smallDB={}
+			for chname in charlist:
+				chdesc=self.descDB.get(chname, None)
+				if chdesc:
+					smallDB[chname]=chdesc
+
+			return smallDB
+
 		if self.method=='D':
+			targetDB=self.descDB
+#			targetDB=getSmallDescDB()
+
 			table=[]
-			for chname, desc in self.descDB.items():
-				chdesc=desc
+			for chname, chdesc in targetDB.items():
 				self.setCharTree(chdesc)
 
 				ch=chdesc.getChInfo()
@@ -92,81 +74,61 @@ class NoneIM:
 		else:
 			table=[]
 		return table
-
-	"""
-	def genIMMapping(self):
-		if self.method=='D':
-			table=[]
-			for chname in [
-					'徰',
-					]:
-				chdesc=self.descDB.get(chname)
-				self.setCharTree(chdesc)
-
-				ch=chdesc.getChInfo()
-				code=self.getCode(ch)
-				if ch.isToShow() and code:
-					table.append([code, chname])
-				else:
-					pass
-#					print("Debug", chname)
-		elif self.method=='T':
-			table=self.tb
-		else:
-			table=[]
-		return table
-	"""
 
 	def getCode(self, ch):
 		ch=chdesc.getChInfo()
-		pass
+
+	def getCorespondingChInfo(self, charname, parseans, prop):
+		return CharInfo(charname, parseans, prop)
 
 	def setCharTree(self, chdesc):
-		ch=chdesc.getChInfo()
-
-		if not ch.isToSetTree():
+		if not chdesc.getChInfo().isToSetTree():
 			return
 
-		descList=self.normalizationToLinear(self.expandCharTree(chdesc))
-#		descList=self.expandCharTree(chdesc).compList
+		expand_chdesc=self.expandCharTree(chdesc)
+		descList=self.normalizationToLinear(expand_chdesc)
 		for tmpdesc in descList:
-			tmpch=tmpdesc.getChInfo()
 			self.setCharTree(tmpdesc)
-#		complist=self.getAllComp(ch)
+
 		complist=[x.getChInfo() for x in descList]
-		ch.setByComps(complist)
+
+		charinfo=chdesc.getChInfo()
+		charinfo.setByComps(complist)
 
 	def expandCharTree(self, comp):
 
-		if comp.op=='龜':
+		if len(comp.getCompList())==0:
 			chdesc=self.descDB.get(comp.name, None)
-			if chdesc.op=='龜':
+			if len(chdesc.getCompList())==0:
 				return chdesc
 			else:
+				# 現有的資料已見底，但從 DB 中查到者仍可擴展
 				return self.expandCharTree(chdesc)
 
-#		anscomp=copy.deepcopy(comp)
-		anscomp=comp
 		l=[]
-		for tc in anscomp.compList:
+		for tc in comp.getCompList():
 			x=self.expandCharTree(tc)
 			l.append(x)
 
-#		anscomp.setCompList(l)
-
-		[newOp, newCompList]=self.getRearrangedOpAndCompList(anscomp)
-		anscomp.setOp(newOp)
-		anscomp.setCompList(newCompList)
+		anscomp=self.getRearrangedDesc(comp)
 
 		return anscomp
 
 	def normalizationToLinear(self, comp):
-		if comp.op=='龜':
+		"""將樹狀結構轉為線性結構"""
+		if len(comp.getCompList())==0:
 			return [comp]
-		l=[]
-		for tc in comp.compList:
-			l.extend(self.normalizationToLinear(tc))
-		return l
+		return sum(map(lambda x: self.normalizationToLinear(x), comp.getCompList()), [])
+
+	def normalizationToTree(self, comp):
+		"""將樹狀結構轉為樹狀結構，目前即為不處理，提供一個介面。"""
+		return comp
+
+	def getRearrangedDesc(self, chdesc):
+		[newOp, newCompList]=self.getRearrangedOpAndCompList(chdesc)
+		chdesc.setOp(newOp)
+		chdesc.setCompList(newCompList)
+		return chdesc
 
 	def getRearrangedOpAndCompList(self, chdesc):
 #		['水', '林', '爻', '卅', '丰', '鑫', '卌', '圭', '燚',]
@@ -180,64 +142,66 @@ class NoneIM:
 
 		newOperator='龜'
 		newCompList=[]
-		if ch==None:
-			return [newOperator, newCompList]
 
-		if ch.operator in ['龜']:
-			newOperator=ch.operator
+		oldOperator=ch.operator
+		oldCompList=[x for x in map(lambda x: x.name, chdesc.getCompList())]
+
+		if oldOperator in ['龜']:
+			newOperator=oldOperator
 			newCompList=[]
-		elif ch.operator in ['水']:
-			x=descDB.get(ch.operandlist[0], None)
+		elif oldOperator in ['水']:
+			x=descDB.get(oldCompList, None)
+			x=oldCompList[0]
 
-			newOperator=ch.operator
+			newOperator=oldOperator
 			newCompList=[x]
-		elif ch.operator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=descDB.get(ch.operandlist[0], None)
-			y=descDB.get(ch.operandlist[1], None)
+		elif oldOperator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
+			x=descDB.get(oldCompList[0], None)
+			y=descDB.get(oldCompList[1], None)
 
-			newOperator=ch.operator
+			newOperator=oldOperator
 			newCompList=[x, y]
-		elif ch.operator in ['算', '湘', '霜', '想', '怡', '穎',]:
-			x=descDB.get(ch.operandlist[0], None)
-			y=descDB.get(ch.operandlist[1], None)
-			z=descDB.get(ch.operandlist[2], None)
+		elif oldOperator in ['算', '湘', '霜', '想', '怡', '穎',]:
+			x=descDB.get(oldCompList[0], None)
+			y=descDB.get(oldCompList[1], None)
+			z=descDB.get(oldCompList[2], None)
 
-			newOperator=ch.operator
+			newOperator=oldOperator
 			newCompList=[x, y, z]
-		elif ch.operator in ['纂',]:
-			x=descDB.get(ch.operandlist[0], None)
-			y=descDB.get(ch.operandlist[1], None)
-			z=descDB.get(ch.operandlist[2], None)
-			w=descDB.get(ch.operandlist[3], None)
+		elif oldOperator in ['纂',]:
+			x=descDB.get(oldCompList[0], None)
+			y=descDB.get(oldCompList[1], None)
+			z=descDB.get(oldCompList[2], None)
+			w=descDB.get(oldCompList[3], None)
 
-			newOperator=ch.operator
+			newOperator=oldOperator
 			newCompList=[x, y, z, w]
-		elif ch.operator in ['林', '爻']:
-			x=descDB.get(ch.operandlist[0], None)
+		elif oldOperator in ['林', '爻']:
+			x=descDB.get(oldCompList[0], None)
 
-			if ch.operator=='林':
+			if oldOperator=='林':
 				newOperator='好'
-			elif ch.operator=='林':
+			elif oldOperator=='爻':
 				newOperator='志'
 			else:
 				newOperator='錯'
 			newCompList=[x, x]
-		elif ch.operator in ['卅', '鑫']:
-			x=descDB.get(ch.operandlist[0], None)
+		elif oldOperator in ['卅', '鑫']:
+			x=descDB.get(oldCompList[0], None)
 
-			if ch.operator=='卅':
-				newOperator='好'
-			elif ch.operator=='鑫':
+			if oldOperator=='卅':
+				newOperator='湘'
+			elif oldOperator=='鑫':
 				# 暫不處理
-				newOperator='鑫'
+				newOperator='算'
 			else:
 				newOperator='錯'
 			newCompList=[x, x, x]
-		elif ch.operator in ['燚',]:
+		elif oldOperator in ['燚',]:
 			# 暫不處理
-			x=descDB.get(ch.operandlist[0], None)
+			x=descDB.get(oldCompList[0], None)
 
-			newOperator=ch.operator
+			newOperator=oldOperator
 			newCompList=[x, x, x, x]
 		else:
 			newOperator='龜'
@@ -248,67 +212,6 @@ class NoneIM:
 
 class CangJie(NoneIM):
 	"倉頡輸入法"
-
-	class CJCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, parseans, prop):
-			super().__init__(charname, parseans, prop)
-			self._cj_incode=None	# 當獨體使用
-			self._cj_rtcode=None	# 當部件使用
-			if len(prop)>=2:
-				self.setCJProp(prop[0], prop[1])
-			self.noneFlag=False
-
-		def setCJProp(self, cj_incode, cj_rtcode):
-			if cj_incode=='XXXX':
-				self._cj_incode=None
-			else:
-				self._cj_incode=cj_incode
-
-			if cj_rtcode=='XXXX':
-#				self._cj_rtcode=None
-				# 目前先假設跟 _cj_incode 一樣
-				if cj_incode=='XXXX':
-					self._cj_rtcode=None
-				else:
-					self._cj_rtcode=cj_incode
-			else:
-				self._cj_rtcode=cj_rtcode
-
-		def getCJProp(self):
-			return [self._cj_incode, self._cj_rtcode]
-
-		def setCJByComps(self, prelist, postlist):
-			def CJCombideCode(first, second):
-				tmpfirst=first if len(first)<=2 else first[0]+first[-1]
-				tmpsecond=second if len(second)<=2 else second[0]+second[-1]
-				anscode=tmpfirst+tmpsecond
-				anscode=anscode if len(anscode)<=3 else anscode[0:2]+anscode[-1]
-				return anscode
-
-			def getCJRootCodeAsBody(rtcodelist):
-				tmpcode=rtcodelist[0]
-				tmpcode=tmpcode if len(tmpcode)<=3 else tmpcode[0:2]+tmpcode[-1]
-				for rtcode in rtcodelist[1:]:
-					tmpcode=CJCombideCode(tmpcode, rtcode)
-				return tmpcode
-
-			cjlist=[list(map(lambda c: c.getCJProp()[1], prelist)),
-					list(map(lambda c: c.getCJProp()[1], postlist))]
-			if cjlist[0] and cjlist[1] and all(cjlist[0]) and all(cjlist[1]):
-				headcode=getCJRootCodeAsBody(cjlist[0])
-				headcode=headcode if len(headcode)<=2 else headcode[0]+headcode[-1]
-				bodycode=getCJRootCodeAsBody(cjlist[1])
-				cjcode=headcode+bodycode
-				cjbodycode=CJCombideCode(headcode, bodycode)
-				self.setCJProp(cjcode, cjbodycode)
-
-		@property
-		def cj(self):
-			return self._cj_incode
-
-		@property
-		def isSeted(self):
-			return bool(self._cj_incode)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -352,52 +255,59 @@ class CangJie(NoneIM):
 		if ch.cj:
 			return ch.cj
 
-	def getCJPrePostList(self, ch):
+	def getCorespondingChInfo(self, charname, parseans, prop):
+		return CJCharInfo(charname, parseans, prop)
+
+	def getCJPrePostList(self, chdesc):
 		"""傳回倉頡的字首及字尾的部件串列"""
+
 		descDB=self.descDB
+		oldOperator=chdesc.op
+		oldCompList=chdesc.getCompList()
+
 		prelist=[]
 		postlist=[]
-		if ch.operator in ['龜']:
+		if oldOperator in ['龜']:
 			prelist=[]
 			postlist=[]
-		elif ch.operator in ['水']:
-			x=descDB.get(ch.operandlist[0], None)
+		elif oldOperator in ['水']:
+			x=oldCompList[0]
 			prelist=[x]
 			postlist=[]
-		elif ch.operator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
-			x=descDB.get(ch.operandlist[0], None)
-			y=descDB.get(ch.operandlist[1], None)
+		elif oldOperator in ['好', '志', '回', '同', '函', '區', '載', '廖', '起', '句', '夾']:
+			x=oldCompList[0]
+			y=oldCompList[1]
 			prelist=[x]
 			postlist=[y]
-		elif ch.operator in ['算', '湘', '霜', '怡',]:
-			x=descDB.get(ch.operandlist[0], None)
-			y=descDB.get(ch.operandlist[1], None)
-			z=descDB.get(ch.operandlist[2], None)
+		elif oldOperator in ['算', '湘', '霜', '怡',]:
+			x=oldCompList[0]
+			y=oldCompList[1]
+			z=oldCompList[2]
 			prelist=[x]
 			postlist=[y, z]
-		elif ch.operator in ['想', '穎',]:
-			x=descDB.get(ch.operandlist[0], None)
-			y=descDB.get(ch.operandlist[1], None)
-			z=descDB.get(ch.operandlist[2], None)
+		elif oldOperator in ['想', '穎',]:
+			x=oldCompList[0]
+			y=oldCompList[1]
+			z=oldCompList[2]
 			prelist=[x, y]
 			postlist=[z]
-		elif ch.operator in ['林', '爻']:
-			x=descDB.get(ch.operandlist[0], None)
+		elif oldOperator in ['林', '爻']:
+			x=oldCompList[0]
 			prelist=[x]
 			postlist=[x]
-		elif ch.operator in ['卅', '鑫']:
-			x=descDB.get(ch.operandlist[0], None)
+		elif oldOperator in ['卅', '鑫']:
+			x=oldCompList[0]
 			prelist=[x]
 			postlist=[x, x]
-		elif ch.operator in ['燚',]:
-			x=descDB.get(ch.operandlist[0], None)
+		elif oldOperator in ['燚',]:
+			x=oldCompList[0]
 			prelist=[x, x]
 			postlist=[x, x]
-		elif ch.operator in ['纂',]:
-			x=descDB.get(ch.operandlist[0], None)
-			y=descDB.get(ch.operandlist[1], None)
-			z=descDB.get(ch.operandlist[2], None)
-			w=descDB.get(ch.operandlist[3], None)
+		elif oldOperator in ['纂',]:
+			x=oldCompList[0]
+			y=oldCompList[1]
+			z=oldCompList[2]
+			w=oldCompList[3]
 			prelist=[x]
 			postlist=[y, z, w]
 		else:
@@ -408,57 +318,28 @@ class CangJie(NoneIM):
 	def setCharTree(self, chdesc):
 		"""設定某一個字符所包含的部件的碼"""
 
-		ch=chdesc.getChInfo()
-
-		if not ch.isToSetTree():
+		if not chdesc.getChInfo().isToSetTree():
 			# 如果有值，代表事先指定或之前設定過。
 			return
 
-		prelist, postlist=self.getCJPrePostList(ch)
-		complist=[prelist, postlist]
+		expand_chdesc=self.expandCharTree(chdesc)
+		descList=self.normalizationToLinear(expand_chdesc)
+#		descList=self.normalizationToLinear(self.expandCharTree(chdesc))
+		for tmpdesc in descList:
+			self.setCharTree(tmpdesc)
 
+		prelist, postlist=self.getCJPrePostList(expand_chdesc)
 		for tmpchdesc in prelist+postlist:
 			self.setCharTree(tmpchdesc)
 
 		pre_chinfo_list=map(lambda x:x.getChInfo(), prelist)
 		post_chinfo_list=map(lambda x:x.getChInfo(), postlist)
 
-		ch.setCJByComps(pre_chinfo_list, post_chinfo_list)
+		charinfo=chdesc.getChInfo()
+		charinfo.setCJByComps(pre_chinfo_list, post_chinfo_list)
 
 class Array(NoneIM):
 	"行列輸入法"
-
-	class ARCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, parseans, prop):
-			super().__init__(charname, parseans, prop)
-			self._ar_incode=None
-			if len(prop)>=1:
-				self.setARProp(prop[0])
-			self.noneFlag=False
-
-		def setARProp(self, ar_incode):
-			if ar_incode=='XXXX':
-				self._ar_incode=None
-			else:
-				self._ar_incode=ar_incode
-
-		def getARProp(self):
-			return self._ar_incode
-
-		def setByComps(self, complist):
-			arlist=list(map(lambda c: c.getARProp(), complist))
-			if complist and all(arlist):
-				cat="".join(arlist)
-				ar=cat[:3]+cat[-1] if len(cat)>4 else cat
-				self.setARProp(ar)
-
-		@property
-		def ar(self):
-			return self._ar_incode
-
-		@property
-		def isSeted(self):
-			return bool(self._ar_incode)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -506,43 +387,11 @@ class Array(NoneIM):
 		if ch.ar:
 			return ch.ar
 
+	def getCorespondingChInfo(self, charname, parseans, prop):
+		return ARCharInfo(charname, parseans, prop)
+
 class DaYi(NoneIM):
 	"大易輸入法"
-
-	class DYCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, parseans, prop):
-			super().__init__(charname, parseans, prop)
-			self._dy_incode=None
-			self._flag_seted=False
-			if len(prop)>=1:
-				self.setDYProp(prop[0])
-			self.noneFlag=False
-
-		def setDYProp(self, dy_incode):
-			if dy_incode=='XXXX':
-				self._dy_incode=None
-			else:
-				self._dy_incode=dy_incode
-			self._flag_seted=True
-
-		def getDYProp(self):
-			return self._dy_incode
-
-		def setByComps(self, complist):
-			dylist=list(map(lambda c: c.getDYProp(), complist))
-			if complist and all(dylist):
-				cat="".join(dylist)
-				dy=cat[:3]+cat[-1] if len(cat)>4 else cat
-				self.setDYProp(dy)
-
-		@property
-		def dy(self):
-			return self._dy_incode
-
-		@property
-		def isSeted(self):
-			return self._flag_seted
-			return bool(self._dy_incode)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -600,49 +449,11 @@ class DaYi(NoneIM):
 		if ch.dy:
 			return ch.dy
 
+	def getCorespondingChInfo(self, charname, parseans, prop):
+		return DYCharInfo(charname, parseans, prop)
+
 class Boshiamy(NoneIM):
 	"嘸蝦米輸入法"
-
-	class BSCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, parseans, prop):
-			super().__init__(charname, parseans, prop)
-			self._bs_incode=None
-			self._bs_spcode=None
-			if len(prop)>=2:
-				self.setBSProp(prop[0], prop[1])
-			self.noneFlag=False
-
-		def setBSProp(self, bs_incode, bs_spcode):
-			if bs_incode=='XXXX' or bs_spcode=='XXXX':
-				self._bs_incode=None
-				self._bs_spcode=None
-			else:
-				self._bs_incode=bs_incode
-				self._bs_spcode=bs_spcode
-
-		def getBSProp(self):
-			return [self._bs_incode, self._bs_spcode]
-
-		def setByComps(self, complist):
-			bslist=list(map(lambda c: c.getBSProp()[0], complist))
-			if complist and all(bslist):
-				cat="".join(bslist)
-				bs_incode=(cat[:3]+cat[-1]) if len(cat)>4 else cat
-				bs_spcode=complist[-1].getBSProp()[1]
-				self.setBSProp(bs_incode, bs_spcode)
-
-		@property
-		def bs(self):
-			if self._bs_incode==None or self._bs_spcode==None:
-				return None
-			if len(self._bs_incode)<3:
-				return self._bs_incode+self._bs_spcode
-			else:
-				return self._bs_incode
-
-		@property
-		def isSeted(self):
-			return bool(self._bs_incode)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -686,71 +497,11 @@ class Boshiamy(NoneIM):
 		if ch.bs:
 			return ch.bs
 
+	def getCorespondingChInfo(self, charname, parseans, prop):
+		return BSCharInfo(charname, parseans, prop)
+
 class ZhengMa(NoneIM):
 	"鄭碼輸入法"
-
-	class ZMCharInfo(NoneIM.CharInfo):
-		def __init__(self, charname, parseans, prop):
-			super().__init__(charname, parseans, prop)
-			self._zm_rtlist=[]
-			self._zm_incode=None
-			self._zm_tpcode=None
-			if len(prop)>=1:
-				str_rtlist=prop[0]
-				if str_rtlist=='XXXX':
-					self.setZMProp([])
-				else:
-					self.setZMProp(str_rtlist.split(','))
-			self.noneFlag=False
-
-		def setZMProp(self, zm_rtlist):
-			self._zm_rtlist=zm_rtlist
-
-		def getZMProp(self):
-			return self._zm_rtlist
-
-		def setByComps(self, complist):
-			if all(complist):
-				rtlist=sum(map(lambda c: c.getZMProp(), complist), [])
-				if complist and all(rtlist):
-					rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-					self.setZMProp(rtlist)
-
-		@property
-		def zm(self):
-			ans=''
-			tmp_rtlist=self._zm_rtlist
-			if len(tmp_rtlist)==0:
-				return None
-			elif len(tmp_rtlist)==1:
-				ans=self._zm_rtlist[0]
-			elif len(tmp_rtlist)==2:
-				if len(tmp_rtlist[0])==1 and len(tmp_rtlist[1])==1:
-					ans=''.join(self._zm_rtlist[0:2])
-					ans=self._zm_rtlist[0][0]+self._zm_rtlist[-1][0]+'vv'
-				else:
-					ans=(self._zm_rtlist[0]+self._zm_rtlist[-1])[:4]
-			elif len(tmp_rtlist)==3:
-				if len(tmp_rtlist[0])==1:
-					ans=self._zm_rtlist[0][0]+self._zm_rtlist[1][0]+self._zm_rtlist[-1][0:2]
-				elif len(tmp_rtlist[0])==2:
-					ans=self._zm_rtlist[0][0:2]+self._zm_rtlist[-2][0]+self._zm_rtlist[-1][0]
-				elif len(tmp_rtlist[0])==3:
-					ans=self._zm_rtlist[0][0:3]+self._zm_rtlist[-1][0]
-			elif len(tmp_rtlist)==4:
-				if len(tmp_rtlist[0])==1:
-					ans=self._zm_rtlist[0][0]+self._zm_rtlist[1][0]+self._zm_rtlist[-2][0]+self._zm_rtlist[-1][0]
-				elif len(tmp_rtlist[0])==2:
-					ans=self._zm_rtlist[0][0:2]+self._zm_rtlist[-2][0]+self._zm_rtlist[-1][0]
-				elif len(tmp_rtlist[0])==3:
-					ans=self._zm_rtlist[0][0:3]+self._zm_rtlist[-1][0]
-			else:
-				ans=''
-			return ans
-
-		@property
-		def isSeted(self):
-			return bool(self._zm_rtlist)
 
 	def __init__(self):
 		self.keyMaps=[
@@ -793,6 +544,9 @@ class ZhengMa(NoneIM):
 	def getCode(self, ch):
 		if ch.zm:
 			return ch.zm
+
+	def getCorespondingChInfo(self, charname, parseans, prop):
+		return ZMCharInfo(charname, parseans, prop)
 
 if __name__=='__main__':
 	pass
