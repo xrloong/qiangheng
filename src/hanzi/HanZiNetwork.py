@@ -153,6 +153,28 @@ class HanZiNode:
 
 			structure.setCompositions()
 
+class HanZiWrapperNode:
+	def __init__(self, targetNode):
+		self.targetNode=targetNode
+
+	def addStructure(self, structure):
+		self.targetNode.addStructure(structure)
+
+	def setStructureList(self, structureList):
+		self.targetNode.setStructureList(structureList)
+
+	def getStructureListWithCondition(self):
+		return self.targetNode.getStructureListWithCondition()
+
+	def getCodeInfoList(self):
+		return self.targetNode.getCodeInfoList()
+
+	def getCodePropertiesList(self):
+		return self.targetNode.getCodePropertiesList()
+
+	def setNodeTree(self):
+		return self.targetNode.setNodeTree()
+
 class DescriptionManagerToHanZiNetworkConverter:
 	def __init__(self, descriptionManager):
 		self.descriptionManager=descriptionManager
@@ -178,10 +200,8 @@ class DescriptionManagerToHanZiNetworkConverter:
 		hanziNetwork=self.hanziNetwork
 
 		if structDesc.isLeaf():
-#			hanziNetwork.addNode(structDesc)
 			hanziNetwork.addReferenceNode(structDesc)
 		elif structDesc.isTurtle():
-#			hanziNetwork.addNode(structDesc)
 			hanziNetwork.addTurtleStruct(structDesc)
 		else:
 			hanziNetwork.addNode(structDesc)
@@ -222,19 +242,11 @@ class HanZiNetwork:
 			self.structDescUniqueNameToNodeDict[anonymousName]=tmpNode
 
 	def addReferenceNode(self, structDesc):
-		# 需考慮如：'炎'、'焱'的例子，使用重複的部件，要連結到相同的節點且不重複。
-		self.addNode(structDesc)
-
-		leafNode=self.structDescUniqueNameToNodeDict.get(structDesc.getUniqueName())
-		rootNode=self.structDescExpandNameToNodeDict.get(structDesc.getReferenceName())
-		operator = Operator.Operator('爲', '*')
-		childNodeList=[rootNode]
-		codeType=structDesc.getCodeType()
-		structure=HanZiStructure(codeType, operator, childNodeList)
-		structure.setToRadix()
-
-		structureList=[structure]
-		leafNode.setStructureList(structureList)
+		anonymousName=structDesc.getUniqueName()
+		if anonymousName not in self.structDescUniqueNameToNodeDict:
+			rootNode=self.structDescExpandNameToNodeDict.get(structDesc.getReferenceName())
+			tmpNode=HanZiWrapperNode(rootNode)
+			self.structDescUniqueNameToNodeDict[anonymousName]=tmpNode
 
 	def addTurtleStruct(self, structDesc):
 		self.addNode(structDesc)
