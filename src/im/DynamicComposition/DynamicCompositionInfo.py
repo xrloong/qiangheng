@@ -1,6 +1,4 @@
 from ..base.IMInfo import IMInfo
-from .DCRadixManager import DCRadixParser
-from .DCCodeInfoEncoder import DCCodeInfoEncoder
 
 class DynamicCompositionInfo(IMInfo):
 	"動態組字"
@@ -27,11 +25,6 @@ class DynamicCompositionInfo(IMInfo):
 				}
 		self.iconfile="qhdc.svg"
 		self.maxkeylength=4
-
-IMInfo=DynamicCompositionInfo
-
-codeInfoEncoder=DCCodeInfoEncoder()
-radixParser=DCRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

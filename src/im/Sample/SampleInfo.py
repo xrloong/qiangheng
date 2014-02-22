@@ -1,6 +1,4 @@
 from ..base.IMInfo import IMInfo
-from .SPRadixManager import SPRadixParser
-from .SPCodeInfoEncoder import SPCodeInfoEncoder
 
 class SampleInfo(IMInfo):
 	"範例輸入法"
@@ -43,11 +41,6 @@ class SampleInfo(IMInfo):
 				}
 		self.iconfile="qhsp.svg"
 		self.maxkeylength=4
-
-IMInfo=SampleInfo
-
-codeInfoEncoder=SPCodeInfoEncoder()
-radixParser=SPRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

@@ -1,21 +1,9 @@
-from .base import IMInfo
-from .Array import ArrayInfo
-from .Boshiamy import BoshiamyInfo
-from .CangJie import CangJieInfo
-from .DaYi import DaYiInfo
-from .DynamicComposition import DynamicCompositionInfo
-from .StrokeOrder import StrokeOrderInfo
-from .FourCorner import FourCornerInfo
-from .GuiXie import GuiXieInfo
-from .ZhengMa import ZhengMaInfo
-from .Sample import SampleInfo
-
 class IMMgr:
 	def __init__(self):
 		pass
 
 	@staticmethod
-	def getIMModule(imProp):
+	def getIMPackage(imProp):
 		imName=imProp['名稱']
 
 		if imName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
@@ -42,29 +30,40 @@ class IMMgr:
 			imName='空'
 
 		if imName == '倉頡':
-			imModule=CangJieInfo
+			from . import CangJie
+			imPackage=CangJie
 		elif imName == '行列':
-			imModule=ArrayInfo
+			from . import Array
+			imPackage=Array
 		elif imName == '大易':
-			imModule=DaYiInfo
+			from . import DaYi
+			imPackage=DaYi
 		elif imName == '嘸蝦米':
-			imModule=BoshiamyInfo
+			from . import Boshiamy
+			imPackage=Boshiamy
 		elif imName == '鄭碼':
-			imModule=ZhengMaInfo
+			from . import ZhengMa
+			imPackage=ZhengMa
 		elif imName == '動組':
-			imModule=DynamicCompositionInfo
+			from . import DynamicComposition
+			imPackage=DynamicComposition
 		elif imName == '筆順':
-			imModule=StrokeOrderInfo
+			from . import StrokeOrder
+			imPackage=StrokeOrder
 		elif imName == '四角':
-			imModule=FourCornerInfo
+			from . import FourCorner
+			imPackage=FourCorner
 		elif imName == '庋㩪':
-			imModule=GuiXieInfo
+			from . import GuiXie
+			imPackage=GuiXie
 		elif imName == '範例':
-			imModule=SampleInfo
+			from . import Sample
+			imPackage=Sample
 		else:
-			imModule=IMInfo
+			from . import base
+			imPackage=base
 
-		return imModule
+		return imPackage
 
 if __name__=='__main__':
 	pass

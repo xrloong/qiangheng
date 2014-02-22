@@ -1,6 +1,4 @@
 from ..base.IMInfo import IMInfo
-from .FCRadixManager import FCRadixParser
-from .FCCodeInfoEncoder import FCCodeInfoEncoder
 
 class FourCornerInfo(IMInfo):
 	"四角號碼"
@@ -27,11 +25,6 @@ class FourCornerInfo(IMInfo):
 				}
 		self.iconfile="qhfc.svg"
 		self.maxkeylength=4
-
-IMInfo=FourCornerInfo
-
-codeInfoEncoder=FCCodeInfoEncoder()
-radixParser=FCRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

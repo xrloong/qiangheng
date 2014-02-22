@@ -1,6 +1,4 @@
 from ..base.IMInfo import IMInfo
-from .DYRadixManager import DYRadixParser
-from .DYCodeInfoEncoder import DYCodeInfoEncoder
 
 class DaYiInfo(IMInfo):
 	"大易輸入法"
@@ -57,11 +55,6 @@ class DaYiInfo(IMInfo):
 				}
 		self.iconfile="qhdy.svg"
 		self.maxkeylength=4
-
-IMInfo=DaYiInfo
-
-codeInfoEncoder=DYCodeInfoEncoder()
-radixParser=DYRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

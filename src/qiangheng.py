@@ -17,21 +17,20 @@ class QiangHeng:
 
 		configList=self.readConfig(configFile)
 		[imProp, toTemplateList, toComponentList, toCodeList]=configList
-		imModule=IMMgr.IMMgr.getIMModule(imProp)
 
-		StateManager.setIMModule(imModule)
+		imPackage=IMMgr.IMMgr.getIMPackage(imProp)
+		StateManager.setIMPackage(imPackage)
 
-		radixParser=imModule.radixParser
-		StateManager.getCodeInfoManager().loadRadix(radixParser, toCodeList)
+		StateManager.getCodeInfoManager().loadRadix(toCodeList)
 
-		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(imModule)
+		self.descMgr=CharacterDescriptionManager.CharDescriptionManager()
 		self.descMgr.loadData(toTemplateList, toComponentList)
 
 		self.hanziNetwork=HanZiNetwork.HanZiNetwork.construct(self.descMgr)
 
 		codeMappingInfoList=self.genIMMapping()
 		if xml_format:
-			imInfo=imModule.IMInfo()
+			imInfo=imPackage.IMInfo()
 			self.toXML(imInfo, codeMappingInfoList)
 		else:
 			self.toTXT(codeMappingInfoList)

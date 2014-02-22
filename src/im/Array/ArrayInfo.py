@@ -1,6 +1,4 @@
 from ..base.IMInfo import IMInfo
-from .ARRadixManager import ARRadixParser
-from .ARCodeInfoEncoder import ARCodeInfoEncoder
 
 class ArrayInfo(IMInfo):
 	"行列輸入法"
@@ -47,11 +45,6 @@ class ArrayInfo(IMInfo):
 				}
 		self.iconfile="qhar.svg"
 		self.maxkeylength=4
-
-IMInfo=ArrayInfo
-
-codeInfoEncoder=ARCodeInfoEncoder()
-radixParser=ARRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

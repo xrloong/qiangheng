@@ -1,6 +1,4 @@
 from ..base.IMInfo import IMInfo
-from .CJRadixManager import CJRadixParser
-from .CJCodeInfoEncoder import CJCodeInfoEncoder
 
 class CangJieInfo(IMInfo):
 	"倉頡輸入法"
@@ -43,11 +41,6 @@ class CangJieInfo(IMInfo):
 				}
 		self.iconfile="qhcj.svg"
 		self.maxkeylength=5
-
-IMInfo=CangJieInfo
-
-codeInfoEncoder=CJCodeInfoEncoder()
-radixParser=CJRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

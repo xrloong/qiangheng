@@ -3,29 +3,25 @@
 from im.gear import CodeInfoManager
 from im.gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 
-__state_IMModule=None
+__state_IMPackage=None
 characterDescriptionRearrangerGenerator=None
 codeInfoManager=None
 
 def __init__(self):
 	pass
 
-def setIMModule(imModule):
-	global __state_IMModule
+def setIMPackage(imPackage):
+	global __state_IMPackage
 	global characterDescriptionRearrangerGenerator
 	global codeInfoManager
 
-	__state_IMModule=imModule
+	__state_IMPackage=imPackage
 
 	characterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 
-	codeInfoEncoder=imModule.codeInfoEncoder
-	radixParser=imModule.radixParser
-
-	codeInfoManager=CodeInfoManager.CodeInfoManager(codeInfoEncoder)
-
-def getIMModule():
-	return __state_IMModule
+	codeInfoEncoder=imPackage.CodeInfoEncoder()
+	radixParser=imPackage.RadixParser(imPackage.IMName, codeInfoEncoder)
+	codeInfoManager=CodeInfoManager.CodeInfoManager(radixParser, codeInfoEncoder)
 
 def getCodeInfoManager():
 	return codeInfoManager

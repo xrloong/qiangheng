@@ -1,6 +1,4 @@
 from ..base.IMInfo import IMInfo
-from .GXRadixManager import GXRadixParser
-from .GXCodeInfoEncoder import GXCodeInfoEncoder
 
 class GuiXieInfo(IMInfo):
 	"中國字庋㩪"
@@ -27,11 +25,6 @@ class GuiXieInfo(IMInfo):
 				}
 		self.iconfile="qhgx.svg"
 		self.maxkeylength=6
-
-IMInfo=GuiXieInfo
-
-codeInfoEncoder=GXCodeInfoEncoder()
-radixParser=GXRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

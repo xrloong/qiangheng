@@ -1,6 +1,4 @@
 from ..base.IMInfo import IMInfo
-from .BSRadixManager import BSRadixParser
-from .BSCodeInfoEncoder import BSCodeInfoEncoder
 
 class BoshiamyInfo(IMInfo):
 	"嘸蝦米輸入法"
@@ -43,11 +41,6 @@ class BoshiamyInfo(IMInfo):
 				}
 		self.iconfile="qhbs.svg"
 		self.maxkeylength=4
-
-IMInfo=BoshiamyInfo
-
-codeInfoEncoder=BSCodeInfoEncoder()
-radixParser=BSRadixParser(IMInfo.IMName, codeInfoEncoder)
 
 if __name__=='__main__':
 	pass

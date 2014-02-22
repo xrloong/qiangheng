@@ -9,7 +9,7 @@ from xml.etree import ElementTree
 import Constant
 
 class CharDescriptionManager:
-	def __init__(self, imModule):
+	def __init__(self):
 		self.templateDB={}
 		self.characterDB={}
 
