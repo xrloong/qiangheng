@@ -160,26 +160,16 @@ class StrokeObject:
 			(False, endPoint),]
 
 
-	def compute_豎撇(self, startPoint, w, h):
-		assert w>0 and h>0
-		tmph = h - h//2
+	def compute_豎撇(self, startPoint, w, hs, hp):
+		assert w>0 and hs>0 and hp>0
 
 		startPoint = self.getStartPoint()
-		midPoint1 = [startPoint[0], startPoint[1] + tmph]
-		midPoint2 = [startPoint[0], startPoint[1] + h]
-		endPoint = [startPoint[0] - w, startPoint[1] + h]
+		midPoint1 = [startPoint[0], startPoint[1] + hs]
+		midPoint2 = [midPoint1[0], midPoint1[1] + hp]
+		endPoint = [midPoint2[0] - w, midPoint2[1]]
 
 		return [ (False, midPoint1), (True, midPoint2), (False, endPoint) ]
 
-
-	def compute_豎鉤之豎(self, startPoint, h1, h2, w):
-		assert h1>0 and h2 and w>0
-		midPoint1 = [startPoint[0], startPoint[1] + h1 - h2*2]
-		midPoint2 = [startPoint[0], startPoint[1] + h1 + h2]
-		midPoint3 = [midPoint2[0] - w//4, midPoint2[1]]
-		return [(False, midPoint1),
-			(True, midPoint2),
-			(False, midPoint3), ]
 
 	def compute_彎鉤之彎(self, startPoint, w1, h1):
 		assert h1>0
@@ -830,10 +820,17 @@ class StrokeObject_豎鉤(StrokeObject):
 		w2=paramList[1]
 		h2=paramList[2]
 
+		hs = h1 - h2*3
+		hp = h2*3
+		wp = w2//4
+
+		wg=w2//2
+		hg=wg
+
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
-		points.extend(self.compute_豎鉤之豎(points[-1][1], h1-h2, h2, w2))
-		points.extend(self.compute_趯(points[-1][1], w2//2, w2//2))
+		points.extend(self.compute_豎撇(points[-1][1], wp, hs, hp))
+		points.extend(self.compute_趯(points[-1][1], wg, hg))
 		return points
 
 class StrokeObject_斜鉤(StrokeObject):
@@ -1066,9 +1063,13 @@ class StrokeObject_豎撇(StrokeObject):
 		w1=paramList[0]
 		h1=paramList[1]
 
+		hs = h1 - h1//2
+		hp = h1 - (hs)
+		wp = w1
+
 		startPoint = self.getStartPoint()
 		points=[(False, startPoint), ]
-		points.extend(self.compute_豎撇(points[-1][1], w1, h1))
+		points.extend(self.compute_豎撇(points[-1][1], w1, hs, hp))
 		return points
 
 class StrokeObject_挑(StrokeObject):
