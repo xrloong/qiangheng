@@ -90,141 +90,133 @@ class BaseCurveComputer:
 		self.startEnd = startEnd
 
 	def computeScope(self, expressionList):
-		def solve(x0, x1, x2, x):
-			a=x0-2*x1+x2		# y0-2y1+y2
-			b=2*(x1-x0)		# -2(y1-y0)
-			c=x0-x			# -2(y0-y)
-			solutions=[]
-			if a!=0:
-				b2_4ac=b*b-4*a*c
-				if b2_4ac>=0:
-					tmp=b2_4ac**0.5
-					solutions=[(-b+tmp)/(2*a), (-b-tmp)/(2*a)]
-				else:
-					solutions=[]
-			else:
-				t=c/(-2*b)
-				solutions=[t]
-			return solutions
-
 		def getPos(exp):
 			return [int(exp[4:6], 16), int(exp[6:8], 16)]
 
+		def solveMin(s0, s1, s2):
+			a=s0-2*s1+s2
+			b=2*(s1-s0)
+			c=s0
+
+			if a>0:
+				# it happends at t=-b/(2*a)
+				t=-b/(2*a)
+				if 0<=t<=1:
+					tmpMinX=(1-t)*(1-t)*s0 + 2*(1-t)*t*s1 + t*t*s2
+					import math
+					return math.floor(tmpMinX)
+			return min(s0, s2)
+
+		def solveMax(s0, s1, s2):
+			a=s0-2*s1+s2
+			b=2*(s1-s0)
+			c=s0
+
+			if a<0:
+				# it happends at t=-b/(2*a)
+				t=-b/(2*a)
+				if 0<=t<=1:
+					tmpMinX=(1-t)*(1-t)*s0 + 2*(1-t)*t*s1 + t*t*s2
+					import math
+					return math.ceil(tmpMinX)
+			return max(s0, s2)
+
 		def findLeft(expressionList):
 			pointList = map(lambda p: getPos(p), expressionList)
-			start = min(list(zip(*pointList))[0])
-			end = 0
-			for x in range(start, end -1, -1):
-				prevPoint = getPos(expressionList[0])
-				midPoint = None
-				for p in expressionList[1:]:
-					currPoint = getPos(p)
+			prevPoint = getPos(expressionList[0])
+			midPoint = None
 
-					if p[0:4]=='0001':
-						withSolution=True
-						if midPoint:
-							solution=solve(prevPoint[0], midPoint[0], currPoint[0], x)
-							withSolution=any(map(lambda t: 0<=t<=1, solution))
-						else:
-							# line
-							withSolution=min(prevPoint[0], currPoint[0]) <= x <= max(prevPoint[0], currPoint[0])
-						if withSolution: break
+			minX = prevPoint[0]
+			for p in expressionList[1:]:
+				currPoint = getPos(p)
 
-						prevPoint=currPoint
-						midPoint=None
-					elif p[0:4]=='0002':
-						midPoint=currPoint
-				else:
-					# it pass all case of for, it means it doesn't find solution
-					return x
-			return 0
+				minX = min(minX, currPoint[0])
+				if p[0:4]=='0001':
+
+					withSolution=True
+					if midPoint:
+						s0, s1, s2 = prevPoint[0], midPoint[0], currPoint[0]
+						tmpMinX=solveMin(s0, s1, s2)
+						minX = min(minX, tmpMinX)
+
+					prevPoint=currPoint
+					midPoint=None
+				elif p[0:4]=='0002':
+					midPoint=currPoint
+			return max(0, minX - 1)
 
 		def findRight(expressionList):
 			pointList = map(lambda p: getPos(p), expressionList)
-			start = max(list(zip(*pointList))[0])
-			end = 0xFF
-			for x in range(start, end + 1):
-				prevPoint = getPos(expressionList[0])
-				midPoint = None
-				for p in expressionList[1:]:
-					currPoint = getPos(p)
+			prevPoint = getPos(expressionList[0])
+			midPoint = None
 
-					if p[0:4]=='0001':
-						withSolution=False
-						if midPoint:
-							solution=solve(prevPoint[0], midPoint[0], currPoint[0], x)
-							withSolution=any(map(lambda t: 0<=t<=1, solution))
-						else:
-							# line
-							withSolution=min(prevPoint[0], currPoint[0]) <= x <= max(prevPoint[0], currPoint[0])
-						if withSolution: break
+			maxX = prevPoint[0]
+			for p in expressionList[1:]:
+				currPoint = getPos(p)
 
-						prevPoint=currPoint
-						midPoint=None
-					elif p[0:4]=='0002':
-						midPoint=currPoint
-				else:
-					# it pass all case of for, it means it doesn't find solution
-					return x
-			return 0xFF
+				maxX = max(maxX, currPoint[0])
+				if p[0:4]=='0001':
+
+					withSolution=True
+					if midPoint:
+						s0, s1, s2 = prevPoint[0], midPoint[0], currPoint[0]
+						tmpMaxX=solveMax(s0, s1, s2)
+						maxX = max(maxX, tmpMaxX)
+
+					prevPoint=currPoint
+					midPoint=None
+				elif p[0:4]=='0002':
+					midPoint=currPoint
+			return min(0xFF, maxX + 1)
 
 		def findTop(expressionList):
 			pointList = map(lambda p: getPos(p), expressionList)
-			start = min(list(zip(*pointList))[1])
-			end = 0
-			for x in range(start, end -1, -1):
-				prevPoint = getPos(expressionList[0])
-				midPoint = None
-				for p in expressionList[1:]:
-					currPoint = getPos(p)
+			prevPoint = getPos(expressionList[0])
+			midPoint = None
 
-					if p[0:4]=='0001':
-						withSolution=False
-						if midPoint:
-							solution=solve(prevPoint[1], midPoint[1], currPoint[1], x)
-							withSolution=any(map(lambda t: 0<=t<=1, solution))
-						else:
-							# line
-							withSolution=min(prevPoint[1], currPoint[1]) <= x <= max(prevPoint[1], currPoint[1])
-						if withSolution: break
+			minY = prevPoint[1]
+			for p in expressionList[1:]:
+				currPoint = getPos(p)
 
-						prevPoint=currPoint
-						midPoint=None
-					elif p[0:4]=='0002':
-						midPoint=currPoint
-				else:
-					# it pass all case of for, it means it doesn't find solution
-					return x
-			return 0
+				minY = min(minY, currPoint[1])
+				if p[0:4]=='0001':
+
+					withSolution=True
+					if midPoint:
+						s0, s1, s2 = prevPoint[1], midPoint[1], currPoint[1]
+						tmpMinY=solveMin(s0, s1, s2)
+						minY = min(minY, tmpMinY)
+
+					prevPoint=currPoint
+					midPoint=None
+				elif p[0:4]=='0002':
+					midPoint=currPoint
+			return max(0, minY - 1)
 
 		def findBottom(expressionList):
 			pointList = map(lambda p: getPos(p), expressionList)
-			start = max(list(zip(*pointList))[1])
-			end = 0xFF
-			for x in range(start, end + 1):
-				prevPoint = getPos(expressionList[0])
-				midPoint = None
-				for p in expressionList[1:]:
-					currPoint = getPos(p)
+			prevPoint = getPos(expressionList[0])
+			midPoint = None
 
-					if p[0:4]=='0001':
-						withSolution=False
-						if midPoint:
-							solution=solve(prevPoint[1], midPoint[1], currPoint[1], x)
-							withSolution=any(map(lambda t: 0<=t<=1, solution))
-						else:
-							# line
-							withSolution=min(prevPoint[1], currPoint[1]) <= x <= max(prevPoint[1], currPoint[1])
-						if withSolution: break
+			maxY = prevPoint[1]
+			for p in expressionList[1:]:
+				currPoint = getPos(p)
 
-						prevPoint=currPoint
-						midPoint=None
-					elif p[0:4]=='0002':
-						midPoint=currPoint
-				else:
-					# it pass all case of for, it means it doesn't find solution
-					return x
-			return 0xFF
+				maxY = max(maxY, currPoint[1])
+				if p[0:4]=='0001':
+
+					withSolution=True
+					if midPoint:
+						s0, s1, s2 = prevPoint[1], midPoint[1], currPoint[1]
+						tmpMaxY=solveMax(s0, s1, s2)
+						maxY = max(maxY, tmpMaxY)
+
+					prevPoint=currPoint
+					midPoint=None
+				elif p[0:4]=='0002':
+					midPoint=currPoint
+			return min(0xFF, maxY + 1)
+
 		scope = [
 			findLeft(expressionList),
 			findTop(expressionList),
@@ -243,9 +235,6 @@ class BaseCurveComputer:
 
 	def getNewScope(self):
 		return self.newScope
-
-	def getStartPoint(self):
-		return self.getStartEnd()[:2]
 
 	def getStartPointAtTopLeft(self):
 		left, top, right, bottom = self.getScope()
@@ -459,7 +448,20 @@ class CurveComputer_點(BaseCurveComputer):
 	def genInfo(self):
 		startX, startY = self.getPos(self.pointList[0])
 		endX, endY = self.getPos(self.pointList[1])
+		if endX - startX>0:
+			w = min(endX - startX, self.getStrokeWidth())
+		else:
+			w = max(endX - startX, -self.getStrokeWidth())
+		h = min(endY - startY, self.getStrokeHeight())
 		self.info = [endX - startX, endY - startY]
+
+	def getStartPoint(self):
+		w = self.getInfo()[0]
+		h = self.getInfo()[1]
+		if w>0:
+			return self.getStartPointAtTopLeft()
+		else:
+			return self.getStartPointAtTopRight()
 
 	def genNewExp(self):
 		w = self.getInfo()[0]
@@ -833,14 +835,20 @@ class CurveComputer_橫撇橫折鉤(BaseCurveComputer):
 		mid4X, mid4Y = self.getPos(self.pointList[4])
 		mid5X, mid5Y = self.getPos(self.pointList[-2])
 		endX, endY = self.getPos(self.pointList[-1])
-		w = mid1X - startX
 		w2 = mid1X - mid2X
 		h2 = mid2Y - mid1Y
 		w3 = mid3X - mid2X
 		hh = mid5Y - mid3Y
 		wg = mid3X - endX
 		hg = mid5Y - endY
+		w = min(mid1X - startX, self.getStrokeWidth() - w3 + w2)
+		h2 = min(mid2Y - mid1Y, self.getStrokeHeight() - hh)
+
 		self.info = [w, w2, h2, w3, hh, wg, hg]
+
+	def getStartPoint(self):
+		topLeft = self.getStartPointAtTopLeft()
+		return topLeft
 
 	def genNewExp(self):
 		w = self.getInfo()[0]
@@ -1102,7 +1110,14 @@ class CurveComputer_豎橫折鉤(BaseCurveComputer):
 		h = mid4Y - mid2Y
 		wg = mid2X - endX
 		hg = mid4Y - endY
+		assert w>wp>=0 and wg >=0
+		w = min(mid2X - mid1X, self.getStrokeWidth())
 		self.info = [wp, hp, w, h, wg, hg]
+
+	def getStartPoint(self):
+		wp = self.getInfo()[0]
+		topLeft = self.getStartPointAtTopLeft()
+		return (topLeft[0]+wp, topLeft[1])
 
 	def genNewExp(self):
 		wp = self.getInfo()[0]
@@ -1290,11 +1305,17 @@ class CurveComputer_彎鉤(BaseCurveComputer):
 		startX, startY = self.getPos(self.pointList[0])
 		midX, midY = self.getPos(self.pointList[-2])
 		endX, endY = self.getPos(self.pointList[-1])
-		w1=midX-startX
-		h1=midY-startY
-		wg=midX-endX
+		w1=min(midX-startX, self.getStrokeWidth())
+		h1=min(midY-startY, self.getStrokeHeight())
+		wg=min(midX-endX, self.getStrokeWidth())
 		hg=midY-endY
 		self.info = [w1, h1, wg, hg]
+
+	def getStartPoint(self):
+		w1 = self.getInfo()[0]
+		wg = self.getInfo()[2]
+		topLeft = self.getStartPointAtTopLeft()
+		return (topLeft[0]+max(0, wg-w1), topLeft[1])
 
 	def genNewExp(self):
 		w1 = self.getInfo()[0]
@@ -1316,11 +1337,18 @@ class CurveComputer_撇鉤(BaseCurveComputer):
 		startX, startY = self.getPos(self.pointList[0])
 		midX, midY = self.getPos(self.pointList[-2])
 		endX, endY = self.getPos(self.pointList[-1])
-		wp=midX-startX
-		hp=midY-startY
+#		wp=midX-startX
+#		hp=midY-startY
 		wg=midX-endX
 		hg=midY-endY
+
+		hp = min(midY-startY, self.getStrokeHeight())
+		wp = min(midX-startX, self.getStrokeWidth() - wg)
 		self.info = [wp, hp, wg, hg]
+
+	def getStartPoint(self):
+		topRight = self.getStartPointAtTopRight()
+		return topRight
 
 	def genNewExp(self):
 		wp = self.getInfo()[0]
@@ -1434,11 +1462,20 @@ class CurveComputer_撇橫(BaseCurveComputer):
 		i = self.actionList[1:-1].index("0001")+1
 		midX, midY = self.getPos(self.pointList[i])
 		endX, endY = self.getPos(self.pointList[-1])
-		w1 = startX - midX
-		h1 = midY - startY
-		w2 = endX - midX
+		w1 = min(startX - midX, self.getStrokeWidth())
+#		h1 = midY - startY
+		w2 = min(endX - midX, self.getStrokeWidth())
 		h2 = endY - midY
+		if h2>0:
+			h1 = min(midY - startY, self.getStrokeHeight() - h2)
+		else:
+			h1 = min(midY - startY, self.getStrokeHeight())
 		self.info = [w1, h1, w2, h2]
+
+	def getStartPoint(self):
+		w1 = self.getInfo()[0]
+		topLeft = self.getStartPointAtTopLeft()
+		return (topLeft[0] + w1, topLeft[1])
 
 	def genNewExp(self):
 		w1 = self.getInfo()[0]
@@ -1466,12 +1503,21 @@ class CurveComputer_撇橫撇(BaseCurveComputer):
 		mid1X, mid1Y = self.getPos(self.pointList[1])
 		mid2X, mid2Y = self.getPos(self.pointList[2])
 		endX, endY = self.getPos(self.pointList[-1])
-		w1 = startX - mid1X
-		h1 = mid1Y - startY
-		w = mid2X - mid1X
-		w2 = mid2X - endX
+		w1 = min(startX - mid1X, self.getStrokeWidth())
+#		h1 = mid1Y - startY
+		w2 = min(mid2X - endX, self.getStrokeWidth())
+		w = min(mid2X - mid1X, self.getStrokeWidth(), self.getStrokeWidth()+w1+w2)
+
 		h2 = endY - mid2Y
+		h1 = min(mid1Y - startY, self.getStrokeHeight()-h2)
 		self.info = [w1, h1, w, w2, h2]
+
+	def getStartPoint(self):
+		w1 = self.getInfo()[0]
+		w = self.getInfo()[2]
+		w2 = self.getInfo()[3]
+		topLeft = self.getStartPointAtTopLeft()
+		return (topLeft[0]+w1+max(0, w2-w), topLeft[1])
 
 	def genNewExp(self):
 		w1 = self.getInfo()[0]
@@ -1582,9 +1628,16 @@ class CurveComputer_臥捺(BaseCurveComputer):
 	def genInfo(self):
 		startX, startY = self.getPos(self.pointList[0])
 		endX, endY = self.getPos(self.pointList[-1])
-		w = endX - startX
-		h = endY - startY
+		w = min(endX - startX, self.getStrokeWidth())
+		h = min(endY - startY, self.getStrokeHeight())
 		self.info = [w, h]
+
+	def getStartPoint(self):
+		w = self.getInfo()[0]
+		h = self.getInfo()[1]
+		topLeft = self.getStartPointAtTopLeft()
+		topRight = self.getStartPointAtTopLeft()
+		return ((topLeft[0]+topRight[0])//2, topLeft[1])
 
 	def genNewExp(self):
 		w = self.getInfo()[0]
@@ -1718,11 +1771,3 @@ def genStroke(name, exp):
 
 main()
 
-#CurveComputer_點(BaseCurveComputer):
-#CurveComputer_橫撇橫折鉤(BaseCurveComputer):
-#CurveComputer_豎橫折鉤(BaseCurveComputer):
-#CurveComputer_彎鉤(BaseCurveComputer):
-#CurveComputer_撇鉤(BaseCurveComputer):
-#CurveComputer_撇橫(BaseCurveComputer):
-#CurveComputer_撇橫撇(BaseCurveComputer):
-#CurveComputer_臥捺(BaseCurveComputer):
