@@ -1,5 +1,5 @@
 
-VERSION	=	0.03
+VERSION	=	0.04
 IMLIST	=	cj ar dy bs zm
 STYLELIST	=	scim gcin ime
 
@@ -20,9 +20,12 @@ test:
 		./qiangheng.py -i $$im -p msim -m dynamic | wc -l;\
 	done
 
-tarball: all
+tex/principle.pdf: tex/principle.tex
+	cd tex; xelatex principle.tex; rm principle.aux  principle.log
+
+tarball: all tex/principle.pdf
 	tar cjf ../qiangheng-$(VERSION).tar.bz2 --exclude-vcs -C .. qiangheng
 
 clean:
-	rm -f *.pyc *~ scim/* gcin/* msim/* puretable/*
+	rm -f *.pyc *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log
 
