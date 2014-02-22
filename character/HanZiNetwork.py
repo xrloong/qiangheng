@@ -3,10 +3,10 @@ import copy
 from .CharDesc import CharDesc
 
 class HanZiStructure:
-	def __init__(self, operator, nodeList, charInfo):
+	def __init__(self, operator, nodeList, codeInfo):
 		self.operator=operator
 		self.nodeList=nodeList
-		self.charInfo=charInfo
+		self.codeInfo=codeInfo
 
 	def getOperator(self):
 		return self.operator
@@ -14,27 +14,27 @@ class HanZiStructure:
 	def getNodeList(self):
 		return self.nodeList
 
-	def getCharInfo(self):
-		return self.charInfo
+	def getCodeInfo(self):
+		return self.codeInfo
 
-	def setCharInfo(self, charInfo):
-		self.charInfo=charInfo
+	def setCodeInfo(self, codeInfo):
+		self.codeInfo=codeInfo
 
-	def getCharInfoList(self):
-		return [self.charInfo]
+	def getCodeInfoList(self):
+		return [self.codeInfo]
 
 	def setStructure(self, operator, nodeList):
 		self.operator=operator
 		self.nodeList=nodeList
 
 	def setByComps(self):
-		chInfo=self.getCharInfo()
+		codeInfo=self.getCodeInfo()
 		nodeList=self.nodeList
-		if not chInfo.isToSetTree():
+		if not codeInfo.isToSetTree():
 			return
 
-		infoList=[node.getCharInfoList()[0] for node in nodeList]
-		chInfo.setByComps(self.getOperator(), infoList)
+		infoList=[node.getCodeInfoList()[0] for node in nodeList]
+		codeInfo.setByComps(self.getOperator(), infoList)
 
 class HanZiNode:
 	def __init__(self, charName):
@@ -50,9 +50,9 @@ class HanZiNode:
 #		return self.structureList[:1]
 		return self.structureList
 
-	def getCharInfoList(self):
+	def getCodeInfoList(self):
 		structureList=self.getStructureListWithCondition()
-		return sum(map(lambda s: s.getCharInfoList(), structureList), [])
+		return sum(map(lambda s: s.getCodeInfoList(), structureList), [])
 
 	def getCodeList(self):
 		self.setNodeTree()
@@ -61,8 +61,8 @@ class HanZiNode:
 		if self.isToShow:
 			structureList=self.getStructureListWithCondition()
 			for struct in structureList:
-				chinfo=struct.getCharInfo()
-				code=chinfo.getCode()
+				codeInfo=struct.getCodeInfo()
+				code=codeInfo.getCode()
 				if code:
 					codeList.append(code)
 		return codeList
@@ -79,16 +79,16 @@ class HanZiNode:
 			structure.setByComps()
 
 class HanZiNetwork:
-	def __init__(self, charInfoGenerator):
+	def __init__(self, codeInfoGenerator):
 		self.nodeList=[]
 
 		self.descNetwork={}
 		self.srcDescNameToNodeDict={}
 
-		def emptyCharInfoGenerator():
-			return charInfoGenerator({})
+		def emptyCodeInfoGenerator():
+			return codeInfoGenerator({})
 
-		self.emptyCharInfoGenerator=emptyCharInfoGenerator
+		self.emptyCodeInfoGenerator=emptyCodeInfoGenerator
 
 	def isInNetwork(self, srcDesc):
 		srcName=srcDesc.getHybridName()
@@ -106,15 +106,15 @@ class HanZiNetwork:
 			childNodeList=[self.findNodeByCharDesc(childDesc) for childDesc in childDescList]
 			dstNode=self.findNodeByCharDesc(charDesc)
 
-			chInfo=self.emptyCharInfoGenerator()
-			structure=HanZiStructure(operator, childNodeList, chInfo)
+			codeInfo=self.emptyCodeInfoGenerator()
+			structure=HanZiStructure(operator, childNodeList, codeInfo)
 			dstNode.addStructure(structure)
 
 	def appendNodeInfo(self, charDesc, propDict):
 		dstNode=self.findNodeByCharDesc(charDesc)
-		chInfo=self.emptyCharInfoGenerator()
-		chInfo.setPropDict(propDict)
-		structure=HanZiStructure(None, [], chInfo)
+		codeInfo=self.emptyCodeInfoGenerator()
+		codeInfo.setPropDict(propDict)
+		structure=HanZiStructure(None, [], codeInfo)
 		dstNode.addStructure(structure)
 
 	def findNodeByCharDesc(self, charDesc):

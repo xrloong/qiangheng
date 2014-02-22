@@ -1,6 +1,6 @@
-from .CharInfo import CharInfo
+from .CodeInfo import CodeInfo
 
-class ZMCharInfo(CharInfo):
+class ZMCodeInfo(CodeInfo):
 	def setPropDict(self, propDict):
 		extra_code=propDict.get('補充資訊')
 		str_rtlist=propDict.get('資訊表示式')
@@ -56,7 +56,7 @@ class ZMCharInfo(CharInfo):
 		return ans
 
 	def setDataEmpty(self):
-		CharInfo.setDataEmpty(self)
+		CodeInfo.setDataEmpty(self)
 		self._zm_rtlist=None
 
 	def setSingleDataEmpty(self):

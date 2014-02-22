@@ -1,5 +1,4 @@
-from im import CharInfo
-from character import OperatorManager
+from .CodeInfo import CodeInfo
 
 class IM:
 	"輸入法"
@@ -34,8 +33,7 @@ class IM:
 	def setStruct(self, descMgr):
 		self.descMgr=descMgr
 
-CharInfoGenerator=CharInfo.CharInfo
-OperatorManager=OperatorManager.OperatorManager
+CodeInfoGenerator=CodeInfo.CodeInfo
 
 if __name__=='__main__':
 	pass

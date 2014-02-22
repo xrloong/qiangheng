@@ -1,6 +1,6 @@
-from .CharInfo import CharInfo
+from .CodeInfo import CodeInfo
 
-class CJCharInfo(CharInfo):
+class CJCodeInfo(CodeInfo):
 	def setPropDict(self, propDict):
 		self._cj_single=propDict.get('獨體編碼')
 		str_rtlist=propDict.get('資訊表示式')
@@ -12,19 +12,19 @@ class CJCharInfo(CharInfo):
 		direction=operator.getDirection()
 
 		ansRadixList=[]
-		for tmpchinfo in complist:
-			tmpDirCode, tmpRadixList=tmpchinfo.getCJProp()
+		for tmpCodeInfo in complist:
+			tmpDirCode, tmpRadixList=tmpCodeInfo.getCJProp()
 #			if tmpDirCode=='*':
 			if direction=='$':
 				ansRadixList.extend(tmpRadixList)
 			elif tmpDirCode in ['*', '@']:
-				ansRadixList.append(tmpchinfo._cj_body)
+				ansRadixList.append(tmpCodeInfo._cj_body)
 			elif tmpDirCode==direction:
 				# 同向
 				ansRadixList.extend(tmpRadixList)
 			else:
 				# 不同向
-				ansRadixList.append(tmpchinfo._cj_body)
+				ansRadixList.append(tmpCodeInfo._cj_body)
 
 		self.setCJProp(direction, ansRadixList)
 
@@ -33,10 +33,10 @@ class CJCharInfo(CharInfo):
 		if self._cj_single:
 			return self._cj_single
 		else:
-			return CJCharInfo.computeTotalCode(self._cj_radix_list, self._cj_direction).lower()
+			return CJCodeInfo.computeTotalCode(self._cj_radix_list, self._cj_direction).lower()
 
 	def setDataEmpty(self):
-		CharInfo.setDataEmpty(self)
+		CodeInfo.setDataEmpty(self)
 		self._cj_radix_list=None
 		self._cj_direction=None
 		self._cj_body=None
@@ -73,7 +73,7 @@ class CJCharInfo(CharInfo):
 
 	@staticmethod
 	def computeHeadCode(code):
-		headCode=CJCharInfo.computeHeadTailCode(code, 1)
+		headCode=CJCodeInfo.computeHeadTailCode(code, 1)
 		return headCode
 
 	@staticmethod
@@ -82,42 +82,42 @@ class CJCharInfo(CharInfo):
 			pass
 
 		if direction=='$':
-			tmpCodeList=[CJCharInfo.computeHeadTailCode(x, 3) for x in codeList]
+			tmpCodeList=[CJCodeInfo.computeHeadTailCode(x, 3) for x in codeList]
 			tmpCode=''.join(tmpCodeList)
-			bodyCode=CJCharInfo.computeHeadTailCode(tmpCode, 3)
+			bodyCode=CJCodeInfo.computeHeadTailCode(tmpCode, 3)
 			return bodyCode
 
 		bodyCode=''
 		if len(codeList)==0:
 			bodyCode=''
 		elif len(codeList)==1:
-			bodyCode=CJCharInfo.computeHeadTailCode(codeList[0], 2)
+			bodyCode=CJCodeInfo.computeHeadTailCode(codeList[0], 2)
 		else:
 			tmpCodeList=codeList
 
 			# 調整特徵碼
 			if direction=='@':
-				tmpCodeList=codeList[:1]+[CJCharInfo.computeHeadCode(x) for x in codeList[1:]]
+				tmpCodeList=codeList[:1]+[CJCodeInfo.computeHeadCode(x) for x in codeList[1:]]
 			else:
-				tmpCodeList=[CJCharInfo.computeHeadCode(x).lower() for x in codeList[:-1]]+codeList[-1:]
+				tmpCodeList=[CJCodeInfo.computeHeadCode(x).lower() for x in codeList[:-1]]+codeList[-1:]
 
-			tmpHeadCode=CJCharInfo.computeHeadCode(tmpCodeList[0])
+			tmpHeadCode=CJCodeInfo.computeHeadCode(tmpCodeList[0])
 			tmpCodeList=tmpCodeList[1:]
 
 			if len(tmpHeadCode)==2:
 				if len(tmpCodeList)>0:
-					tmpBodyCode=CJCharInfo.computeHeadTailCode(tmpCodeList[-1], 0)
+					tmpBodyCode=CJCodeInfo.computeHeadTailCode(tmpCodeList[-1], 0)
 				else:
 					tmpBodyCode=''
 			elif len(tmpHeadCode)==1:
-				tmpHeadCode2=CJCharInfo.computeHeadCode(tmpCodeList[0])
+				tmpHeadCode2=CJCodeInfo.computeHeadCode(tmpCodeList[0])
 				tmpCodeList=tmpCodeList[1:]
 
 				if len(tmpCodeList)>0:
-					tmpBodyCode2=CJCharInfo.computeHeadTailCode(tmpCodeList[-1], 0)
+					tmpBodyCode2=CJCodeInfo.computeHeadTailCode(tmpCodeList[-1], 0)
 				else:
 					tmpBodyCode2=''
-				tmpBodyCode=CJCharInfo.computeHeadTailCode(tmpHeadCode2+tmpBodyCode2, 1)
+				tmpBodyCode=CJCodeInfo.computeHeadTailCode(tmpHeadCode2+tmpBodyCode2, 1)
 			else:
 				# 理論上錯誤
 				tmpBodyCode=''
@@ -127,12 +127,12 @@ class CJCharInfo(CharInfo):
 	@staticmethod
 	def computeTotalCode(codeList, direction):
 		if direction=='$':
-			totalCode=CJCharInfo.computeBodyCode(codeList, direction)
+			totalCode=CJCodeInfo.computeBodyCode(codeList, direction)
 		else:
 			if len(codeList)==1:
-				totalCode=CJCharInfo.computeHeadTailCode(codeList[0], 3)
+				totalCode=CJCodeInfo.computeHeadTailCode(codeList[0], 3)
 			elif len(codeList)>1:
-				totalCode=CJCharInfo.computeHeadCode(codeList[0])+CJCharInfo.computeBodyCode(codeList[1:], direction)
+				totalCode=CJCodeInfo.computeHeadCode(codeList[0])+CJCodeInfo.computeBodyCode(codeList[1:], direction)
 			else:
 				totalCode=''
 		return totalCode

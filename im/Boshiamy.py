@@ -1,6 +1,5 @@
 from .IM import IM
-from im import BSCharInfo
-from character import OperatorManager
+from .CodeInfo import BSCodeInfo
 
 class Boshiamy(IM):
 	"嘸蝦米輸入法"
@@ -45,8 +44,7 @@ class Boshiamy(IM):
 		self.maxkeylength=4
 
 IMInfo=Boshiamy
-CharInfoGenerator=BSCharInfo.BSCharInfo
-OperatorManager=OperatorManager.OperatorManager_BS
+CodeInfoGenerator=BSCodeInfo.BSCodeInfo
 
 if __name__=='__main__':
 	pass

@@ -1,6 +1,5 @@
 from .IM import IM
-from im import CJCharInfo
-from character import OperatorManager
+from .CodeInfo import CJCodeInfo
 
 class CangJie(IM):
 	"倉頡輸入法"
@@ -45,8 +44,7 @@ class CangJie(IM):
 		self.maxkeylength=5
 
 IMInfo=CangJie
-CharInfoGenerator=CJCharInfo.CJCharInfo
-OperatorManager=OperatorManager.OperatorManager_CJ
+CodeInfoGenerator=CJCodeInfo.CJCodeInfo
 
 if __name__=='__main__':
 	pass

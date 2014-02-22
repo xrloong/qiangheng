@@ -30,7 +30,7 @@ class QiangHeng:
 			self.toTXT()
 
 	def initManager(self, imModule):
-		ciGenerator=imModule.CharInfoGenerator
+		ciGenerator=imModule.CodeInfoGenerator
 		self.descMgr=CharDescriptionManager(imModule)
 
 		charDescQueryer=self.descMgr.getCharDescQueryer()

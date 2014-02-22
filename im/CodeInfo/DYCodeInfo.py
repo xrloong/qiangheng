@@ -1,6 +1,6 @@
-from .CharInfo import CharInfo
+from .CodeInfo import CodeInfo
 
-class DYCharInfo(CharInfo):
+class DYCodeInfo(CodeInfo):
 	def setPropDict(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
@@ -18,7 +18,7 @@ class DYCharInfo(CharInfo):
 		return self._dy_incode
 
 	def setDataEmpty(self):
-		CharInfo.setDataEmpty(self)
+		CodeInfo.setDataEmpty(self)
 		self._dy_incode=None
 
 	def setSingleDataEmpty(self):

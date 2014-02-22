@@ -1,16 +1,16 @@
-from im import IM
-from im import Array
-from im import Boshiamy
-from im import CangJie
-from im import DaYi
-from im import ZhengMa
+from . import IM
+from . import Array
+from . import Boshiamy
+from . import CangJie
+from . import DaYi
+from . import ZhengMa
 
-from im import CharInfo
-from im import ARCharInfo
-from im import BSCharInfo
-from im import CJCharInfo
-from im import DYCharInfo
-from im import ZMCharInfo
+from .CodeInfo import CodeInfo
+from .CodeInfo import ARCodeInfo
+from .CodeInfo import BSCodeInfo
+from .CodeInfo import CJCodeInfo
+from .CodeInfo import DYCodeInfo
+from .CodeInfo import ZMCodeInfo
 
 class IMMgr:
 	def __init__(self):
@@ -39,9 +39,9 @@ class IMMgr:
 		return imModule.IMInfo
 
 	@staticmethod
-	def getCharInfoGenerator(imName):
+	def getCodeInfoGenerator(imName):
 		imModule=IMMgr.getIMModule(imName)
-		return imModule.CharInfoGenerator
+		return imModule.CodeInfoGenerator
 
 if __name__=='__main__':
 	pass

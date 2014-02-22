@@ -1,6 +1,5 @@
 from .IM import IM
-from im import DYCharInfo
-from character import OperatorManager
+from .CodeInfo import DYCodeInfo
 
 class DaYi(IM):
 	"大易輸入法"
@@ -59,8 +58,7 @@ class DaYi(IM):
 		self.maxkeylength=4
 
 IMInfo=DaYi
-CharInfoGenerator=DYCharInfo.DYCharInfo
-OperatorManager=OperatorManager.OperatorManager_DY
+CodeInfoGenerator=DYCodeInfo.DYCodeInfo
 
 if __name__=='__main__':
 	pass

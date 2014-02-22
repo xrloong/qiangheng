@@ -1,9 +1,4 @@
-
-class CharInfo:
-	class CharInfoProp:
-		def __init__(self):
-			pass
-
+class CodeInfo:
 	def __init__(self, propDict={}):
 		self.setDataEmpty()
 		self.setSingleDataEmpty()

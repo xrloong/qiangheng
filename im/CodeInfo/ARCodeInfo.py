@@ -1,6 +1,6 @@
-from .CharInfo import CharInfo
+from .CodeInfo import CodeInfo
 
-class ARCharInfo(CharInfo):
+class ARCodeInfo(CodeInfo):
 	def setPropDict(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
@@ -18,7 +18,7 @@ class ARCharInfo(CharInfo):
 		return self._ar_incode
 
 	def setDataEmpty(self):
-		CharInfo.setDataEmpty(self)
+		CodeInfo.setDataEmpty(self)
 		self._ar_incode=None
 
 	def setSingleDataEmpty(self):

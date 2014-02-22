@@ -1,6 +1,6 @@
-from .CharInfo import CharInfo
+from .CodeInfo import CodeInfo
 
-class BSCharInfo(CharInfo):
+class BSCodeInfo(CodeInfo):
 	def setPropDict(self, propDict):
 		self._bs_single=propDict.get('獨體編碼')
 		str_incode=propDict.get('資訊表示式')
@@ -28,7 +28,7 @@ class BSCharInfo(CharInfo):
 			return self._bs_incode
 
 	def setDataEmpty(self):
-		CharInfo.setDataEmpty(self)
+		CodeInfo.setDataEmpty(self)
 		self._bs_incode=None
 		self._bs_spcode=None
 

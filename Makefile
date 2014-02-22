@@ -99,31 +99,10 @@ $(PURETABLE_PATH): $(XML_PATH)
 	done
 	touch $(PURETABLE_PATH)
 
-testdata:
-	for i in main ar bs cj dy zm;\
-	do\
-		time xalan -xsl xslt/selectTestData.xslt -in charinfo/$$i/CJK.xml \
-			| xalan -xsl xslt/formatOutput.xslt -out test/charinfo/$$i/CJK.xml -indent 4;\
-	done
-
-testing:
-	for im in $(TEST_IMLIST);\
-	do ./qiangheng.py --dir-charinfo test/charinfo -i $$im > test/puretable/$$im.puretable.txt;\
-	done
-
-compare: testing
-	diff -rN test/puretable_ans test/puretable
-
 pdf: tex/qiangheng.pdf
 
 tex/qiangheng.pdf: tex/qiangheng.tex
 	cd tex; xelatex qiangheng.tex; rm qiangheng.aux  qiangheng.log
-
-old-format:
-	for i in ar bs cj dy zm main;\
-	do\
-		xalan -xsl xslt/xml2txt.xslt -in charinfo/$$i/CJK.xml -out charinfo/$$i/CJK.old.txt;\
-	done
 
 all-icons:
 	#inkscape -D -w 64 -h 64 -e pixmaps/qiangheng.png icons/qiangheng.svg;
@@ -165,9 +144,7 @@ tarball-all:
 
 clean:
 	rm -rf tables/ tmp/ tarballs/ pixmaps
-	rm -f charinfo/*/CJK.old.txt
 	rm -f *.pyc im/*.pyc character/*.pyc operatorinfo/*.pyc
 	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log tex/*.pdf
-	rm -f charinfo/*/*.bak.txt charinfo/*/*.rst.txt
 	rm -f test/puretable/*
 

@@ -1,6 +1,5 @@
 from .IM import IM
-from im import ARCharInfo
-from character import OperatorManager
+from .CodeInfo import ARCodeInfo
 
 class Array(IM):
 	"行列輸入法"
@@ -49,8 +48,7 @@ class Array(IM):
 		self.maxkeylength=4
 
 IMInfo=Array
-CharInfoGenerator=ARCharInfo.ARCharInfo
-OperatorManager=OperatorManager.OperatorManager_AR
+CodeInfoGenerator=ARCodeInfo.ARCodeInfo
 
 if __name__=='__main__':
 	pass

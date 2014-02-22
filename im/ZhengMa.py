@@ -1,6 +1,5 @@
 from .IM import IM
-from im import ZMCharInfo
-from character import OperatorManager
+from .CodeInfo import ZMCodeInfo
 
 class ZhengMa(IM):
 	"鄭碼輸入法"
@@ -45,8 +44,7 @@ class ZhengMa(IM):
 		self.maxkeylength=4
 
 IMInfo=ZhengMa
-CharInfoGenerator=ZMCharInfo.ZMCharInfo
-OperatorManager=OperatorManager.OperatorManager_ZM
+CodeInfoGenerator=ZMCodeInfo.ZMCodeInfo
 
 if __name__=='__main__':
 	pass
