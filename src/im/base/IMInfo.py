@@ -30,7 +30,7 @@ class IMInfo:
 	def getKeyList(self):
 		return "".join(list(zip(*self.keyMaps))[0])
 
-radixManager=RadixManager.RadixManager()
+radixManager=RadixManager.RadixManager(IMInfo.IMName)
 
 if __name__=='__main__':
 	pass

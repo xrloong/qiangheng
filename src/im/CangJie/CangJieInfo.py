@@ -45,7 +45,7 @@ class CangJieInfo(IMInfo):
 
 IMInfo=CangJieInfo
 
-radixManager=CJRadixManager.CJRadixManager()
+radixManager=CJRadixManager.CJRadixManager(IMInfo.IMName)
 
 if __name__=='__main__':
 	pass

@@ -5,8 +5,8 @@ from .Stroke import Stroke
 import Constant
 
 class DCRadixManager(RadixManager):
-	def __init__(self):
-		RadixManager.__init__(self)
+	def __init__(self, nameInputMethod):
+		RadixManager.__init__(self, nameInputMethod)
 
 	def createEncoder(self):
 		return DCCodeInfoEncoder()

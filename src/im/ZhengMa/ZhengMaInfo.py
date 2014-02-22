@@ -45,7 +45,7 @@ class ZhengMaInfo(IMInfo):
 
 IMInfo=ZhengMaInfo
 
-radixManager=ZMRadixManager.ZMRadixManager()
+radixManager=ZMRadixManager.ZMRadixManager(IMInfo.IMName)
 
 if __name__=='__main__':
 	pass

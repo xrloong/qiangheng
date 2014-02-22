@@ -4,7 +4,7 @@ from . import DCRadixManager
 class DynamicCompositionInfo(IMInfo):
 	"動態組字"
 
-	IMName="動組"
+	IMName="動態組字"
 	def __init__(self):
 		self.keyMaps=[
 			['0', '0',],
@@ -29,7 +29,7 @@ class DynamicCompositionInfo(IMInfo):
 
 IMInfo=DynamicCompositionInfo
 
-radixManager=DCRadixManager.DCRadixManager()
+radixManager=DCRadixManager.DCRadixManager(IMInfo.IMName)
 
 if __name__=='__main__':
 	pass

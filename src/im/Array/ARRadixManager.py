@@ -5,8 +5,8 @@ from ..base.RadixManager import RadixCodeInfoDescription
 import Constant
 
 class ARRadixManager(RadixManager):
-	def __init__(self):
-		RadixManager.__init__(self)
+	def __init__(self, nameInputMethod):
+		RadixManager.__init__(self, nameInputMethod)
 
 	def createEncoder(self):
 		return ARCodeInfoEncoder()

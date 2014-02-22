@@ -2,9 +2,9 @@ from ..base.IMInfo import IMInfo
 from . import FCRadixManager
 
 class FourCornerInfo(IMInfo):
-	"範例輸入法"
+	"四角號碼"
 
-	IMName="範例"
+	IMName="四角"
 	def __init__(self):
 		self.keyMaps=[
 			['0', '0',],
@@ -29,7 +29,7 @@ class FourCornerInfo(IMInfo):
 
 IMInfo=FourCornerInfo
 
-radixManager=FCRadixManager.FCRadixManager()
+radixManager=FCRadixManager.FCRadixManager(IMInfo.IMName)
 
 if __name__=='__main__':
 	pass

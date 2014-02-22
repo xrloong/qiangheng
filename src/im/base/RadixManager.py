@@ -1,7 +1,6 @@
 from .CodeInfo import CodeInfo
 from .CodeInfoEncoder import CodeInfoEncoder
 
-import sys
 import Constant
 from xml.etree import ElementTree
 from parser import QHParser
@@ -10,7 +9,9 @@ from ..gear.CharacterDescriptionRearranger import CharacterDescriptionRearranger
 from gear.CodeVarianceType import CodeVarianceType
 
 class RadixManager:
-	def __init__(self):
+	def __init__(self, nameInputMethod):
+		self.nameInputMethod=nameInputMethod
+
 		self.characterDescriptionRearrangerGenerator=CharacterDescriptionRearranger
 		self.codeInfoEncoder=self.createEncoder()
 
@@ -115,6 +116,9 @@ class RadixManager:
 		xmlNode=ElementTree.parse(f)
 		rootNode=xmlNode.getroot()
 
+		self.checkFileType(rootNode)
+		self.checkInputMethod(rootNode)
+
 		radixInfoList=self.loadRadixInfo(rootNode)
 		return radixInfoList
 
@@ -128,6 +132,16 @@ class RadixManager:
 
 			radixInfoList.append([charName, radixInfoSet])
 		return radixInfoList
+
+	def checkFileType(self, rootNode):
+		fileType=rootNode.get(Constant.TAG_FILE_TYPE)
+		assert fileType==Constant.TAG_FILE_TYPE_RADIX, \
+			"文字類型錯誤，預期為＜字根＞，實際為＜%s＞。"%(fileType)
+
+	def checkInputMethod(self, rootNode):
+		nameInputMethod=rootNode.get(Constant.TAG_INPUT_METHOD)
+		assert nameInputMethod==self.nameInputMethod, \
+			"輸入法錯誤，預期為＜%s＞，實際為＜%s＞。"%(self.nameInputMethod, nameInputMethod)
 
 class RadixCodeInfoDescription:
 	def __init__(self, elementCodeInfo):

@@ -49,7 +49,7 @@ class ArrayInfo(IMInfo):
 
 IMInfo=ArrayInfo
 
-radixManager=ARRadixManager.ARRadixManager()
+radixManager=ARRadixManager.ARRadixManager(IMInfo.IMName)
 
 if __name__=='__main__':
 	pass
