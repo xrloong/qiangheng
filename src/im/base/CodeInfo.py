@@ -7,7 +7,7 @@ class CodeInfo:
 		self._isSupportRadixCode=True
 
 	@staticmethod
-	def generateDefaultCodeInfo(self):
+	def generateDefaultCodeInfo():
 		codeInfo=CodeInfo()
 		return codeInfo
 
