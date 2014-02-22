@@ -9,8 +9,10 @@ class SPCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, characterCode):
 		return SPCodeInfo.generateDefaultCodeInfo(characterCode)
 
-	def generateCodeInfo(self, propDict):
-		return SPCodeInfo.generateCodeInfo(propDict)
+	def generateCodeInfo(self, propDict, codeVariance):
+		codeInfo=SPCodeInfo.generateCodeInfo(propDict)
+		codeInfo.multiplyCodeVarianceType(codeVariance)
+		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getCharacterCode(), codeInfoList))

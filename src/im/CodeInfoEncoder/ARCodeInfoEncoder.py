@@ -12,8 +12,10 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, codeList):
 		return ARCodeInfo.generateDefaultCodeInfo(codeList)
 
-	def generateCodeInfo(self, propDict):
-		return ARCodeInfo.generateCodeInfo(propDict)
+	def generateCodeInfo(self, propDict, codeVariance):
+		codeInfo=ARCodeInfo.generateCodeInfo(propDict)
+		codeInfo.multiplyCodeVarianceType(codeVariance)
+		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getMainCodeList(), codeInfoList))

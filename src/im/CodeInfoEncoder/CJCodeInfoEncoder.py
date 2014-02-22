@@ -9,8 +9,10 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, direction, ansRadixList):
 		return CJCodeInfo.generateDefaultCodeInfo(direction, ansRadixList)
 
-	def generateCodeInfo(self, propDict):
-		return CJCodeInfo.generateCodeInfo(propDict)
+	def generateCodeInfo(self, propDict, codeVariance):
+		codeInfo=CJCodeInfo.generateCodeInfo(propDict)
+		codeInfo.multiplyCodeVarianceType(codeVariance)
+		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
 		return True

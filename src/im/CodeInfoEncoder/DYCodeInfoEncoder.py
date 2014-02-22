@@ -12,8 +12,10 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, codeList):
 		return DYCodeInfo.generateDefaultCodeInfo(codeList)
 
-	def generateCodeInfo(self, propDict):
-		return DYCodeInfo.generateCodeInfo(propDict)
+	def generateCodeInfo(self, propDict, codeVariance):
+		codeInfo=DYCodeInfo.generateCodeInfo(propDict)
+		codeInfo.multiplyCodeVarianceType(codeVariance)
+		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getMainCodeList(), codeInfoList))

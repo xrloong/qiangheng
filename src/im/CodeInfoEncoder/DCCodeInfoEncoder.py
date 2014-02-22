@@ -15,8 +15,10 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, strokeList):
 		return DCCodeInfo.generateDefaultCodeInfo(strokeList)
 
-	def generateCodeInfo(self, propDict):
-		return DCCodeInfo.generateCodeInfo(propDict)
+	def generateCodeInfo(self, propDict, codeVariance):
+		codeInfo=DCCodeInfo.generateCodeInfo(propDict)
+		codeInfo.multiplyCodeVarianceType(codeVariance)
+		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: len(x.getStrokeList())>0, codeInfoList))
