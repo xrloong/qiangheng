@@ -1431,9 +1431,7 @@ U+7BE6	篦	(龜)	m,n,r,r
 U+7BF9	篹	(龜)	m,l,g,y
 U+7BFE	篾	(龜)	m,l,h,s
 # 7C00
-U+7C0B	簋	(龜)	m,x,lk
 U+7C1A	簚	(龜)	m,l,h,l
-U+7C20	簠	(龜)	m,f,lk
 U+7C2D	簭	(龜)	m,b,o,j
 U+7C51	籑	(龜)	m,l,s,x
 U+7C73	米	(龜)	uf

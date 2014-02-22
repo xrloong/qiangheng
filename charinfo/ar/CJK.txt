@@ -1431,9 +1431,7 @@ U+7BE6	篦	(龜)	llpq
 U+7BF9	篹	(龜)	ljzs
 U+7BFE	篾	(龜)	l/zx
 # 7C00
-U+7C0B	簋	(龜)	ltxu
 U+7C1A	簚	(龜)	l/ax
-U+7C20	簠	(龜)	lqhu
 U+7C2D	簭	(龜)	lqk;
 U+7C51	籑	(龜)	ljzx
 U+7C73	米	(龜)	,
