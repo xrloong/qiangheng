@@ -1,5 +1,6 @@
 import sys
 from . import HanZiStructure
+from gear import CharacterInfo
 
 class HanZiNode:
 	def __init__(self, name, characterProperty=None):
@@ -7,11 +8,15 @@ class HanZiNode:
 		self.structureList=[]
 		self.characterProperty=characterProperty
 
+		freq=characterProperty.getFrequency()
+		characterInfo=CharacterInfo.CharacterInfo(self.name, freq)
+		self.characterInfo=characterInfo
+
 	def getName(self):
 		return self.name
 
-	def getCharacterProperty(self):
-		return self.characterProperty
+#	def getCharacterProperty(self):
+#		return self.characterProperty
 
 	def addStructure(self, structure):
 		self.structureList.append(structure)
@@ -38,16 +43,11 @@ class HanZiNode:
 
 		return sum(map(lambda s: s.getCodeInfoList(), structureList), [])
 
-	def getCodePropertiesList(self):
-		codeList=[]
-		tmpCodeInfoList=self.getCodeInfoList()
-		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), tmpCodeInfoList)
-		for codeInfo in codeInfoList:
-			codeProp=codeInfo.getCodeProperties()
-			if codeProp:
-				codeList.append(codeProp)
+	def getCharacterInfo(self):
+		codeInfoList=self.getCodeInfoList()
+		self.characterInfo.setCodeInfoList(codeInfoList)
 
-		return codeList
+		return self.characterInfo
 
 	def setNodeTree(self):
 		"""設定某一個字符所包含的部件的碼"""

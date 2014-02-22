@@ -165,11 +165,8 @@ class HanZiNetwork:
 		structureName=structDesc.getUniqueName()
 		return self.structureDict.get(structureName)
 
-	def getCodePropertiesList(self, charName):
+	def getCharacterInfo(self, charName):
 		charNode=self.nodeDict.get(charName)
-		charProp=charNode.getCharacterProperty()
-		freq=charProp.getFrequency()
-
-		codePropList=charNode.getCodePropertiesList()
-		return map(lambda codeAndType: codeAndType+[freq], codePropList)
+		characterInfo=charNode.getCharacterInfo()
+		return characterInfo
 

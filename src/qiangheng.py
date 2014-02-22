@@ -7,9 +7,7 @@ from xml.etree import ElementTree
 from im import IMMgr
 from description import CharacterDescriptionManager
 from hanzi import HanZiNetwork
-
 from state import StateManager
-
 from optparse import OptionParser
 
 class QiangHeng:
@@ -27,12 +25,12 @@ class QiangHeng:
 
 		self.hanziNetwork=HanZiNetwork.HanZiNetwork.construct(self.descMgr)
 
-		characterMapping=self.genIMMapping()
+		codeMappingInfoList=self.genIMMapping()
 		if xml_format:
 			imInfo=imModule.IMInfo()
-			self.toXML(imInfo, characterMapping)
+			self.toXML(imInfo, codeMappingInfoList)
 		else:
-			self.toTXT(characterMapping)
+			self.toTXT(codeMappingInfoList)
 
 	def initManager(self, imModule):
 		self.descMgr=CharacterDescriptionManager.CharDescriptionManager(imModule)
@@ -63,7 +61,7 @@ class QiangHeng:
 		return [imProp, toTemplateList, toComponentList, toCodeList]
 
 
-	def toXML(self, imInfo, characterMapping):
+	def toXML(self, imInfo, codeMappingInfoList):
 		keyMaps=imInfo.getKeyMaps()
 
 		rootNode=ElementTree.Element("輸入法")
@@ -91,15 +89,15 @@ class QiangHeng:
 
 		# 對照表
 		charGroup=ElementTree.SubElement(rootNode, "對應集")
-		for x in sorted(characterMapping):
-			attrib={"按鍵序列":x[0], "字符":x[1], "頻率":x[2], "類型":x[3]}
+		for x in sorted(codeMappingInfoList, key=lambda y: y.getKey()):
+			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "頻率":x.getFrequency(), "類型":x.getVariance()}
 			ElementTree.SubElement(charGroup, "對應", attrib)
 		xmlNode=ElementTree.ElementTree(rootNode)
 		ElementTree.dump(xmlNode)
 #		xmlNode.write(sys.stdout)
 
-	def toTXT(self, characterMapping):
-		table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x), characterMapping)))
+	def toTXT(self, codeMappingInfoList):
+		table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x.getKey()), codeMappingInfoList)))
 		print(table)
 
 	def genIMMapping(self):
@@ -108,9 +106,8 @@ class QiangHeng:
 		table=[]
 		for charName in sorted(targetCharacterList):
 #			print("<-- %s -->"%charName, sys.stderr)
-			codePropList=self.hanziNetwork.getCodePropertiesList(charName)
-			for code, type, freq in codePropList:
-				table.append([code, charName, freq, type])
+			characterInfo=self.hanziNetwork.getCharacterInfo(charName)
+			table.extend(characterInfo.getCodeMappingInfoList())
 		return table
 
 oparser = OptionParser()
