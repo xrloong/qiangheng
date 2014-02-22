@@ -9,15 +9,15 @@
 		<範本 檔案="template/zm.xml" />
 
 		<部件 檔案="main/CJK.xml" />
-		<部件 檔案="component/main/CJK.xml" />
+		<部件 檔案="component/CJK/main.xml" />
 
 		<部件 檔案="style/standard.xml" />
 		<部件 檔案="style/simplified.xml" />
 		<部件 檔案="style/zm.xml" />
 
-		<部件 檔案="component/zm/CJK.xml" />
+		<部件 檔案="component/CJK/zm.xml" />
 
-		<字根 檔案="radix/zm/CJK.xml" />
+		<字根 檔案="radix/CJK/zm.xml" />
 	</設定檔>
 </瑲珩>
 
