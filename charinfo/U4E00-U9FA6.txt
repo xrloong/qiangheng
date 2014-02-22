@@ -163,7 +163,7 @@ U+4E9F	亟	(龜)	nem	gd;a	eboe	koue	e	yjxa	41
 U+4EA0	亠	(龜)	im	y	k	l	e	s	1
 U+4EA1	亡	(龜)	yv	ys	kl	f	l	sh	12
 U+4EA2	亢	(志 亠几)
-U+4EA3	亣	(龜)	yll	ye	y11	lr	i	亣	21
+U+4EA3	亣	(龜)	yll	ye	y11	lr	i	snd	21
 U+4EA4	交	(龜)	yck	yk.	k8x	lx	x	soos	31
 U+4EA5	亥	(龜)	yvho	yxk	kl/a	lh	a	szod	31
 U+4EA6	亦	(龜)	ylnc	yc	kt	lf	a	sno	31
@@ -2823,7 +2823,7 @@ U+58F0	声	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bxm	21
 U+58F1	壱	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bwrr	31
 U+58F2	売	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bwrd	31
 U+58F3	壳	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bwqd	31
-U+58F4	壴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	壴	31
+U+58F4	壴	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bjua	31
 U+58F5	壵	(鑫 士)
 U+58F6	壶	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bwku	31
 U+58F7	壷	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	bwka	41
@@ -3159,7 +3159,7 @@ U+5A3D	娽	(好 女录)
 U+5A3E	娾	(好 女厓)
 U+5A3F	娿	(好 女阿)
 U+5A40	婀	(好 女阿)
-U+5A41	婁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	婁	22
+U+5A41	婁	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	kjzm	22
 U+5A42	婂	(好 女帛)
 U+5A43	婃	(好 女宗)
 U+5A44	婄	(好 女咅)

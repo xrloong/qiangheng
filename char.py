@@ -7,7 +7,9 @@ class Char:
 		self._array=None
 		self._dayi=None
 		self._boshiamy=None
+		self._boshiamy_supplement=None
 		self._zhengma=None
+		self._zhengma_type=None
 
 		if len(prop)>=8:
 			self.setIMproperty(prop)
@@ -16,8 +18,8 @@ class Char:
 		self.cj=prop[1]
 		self.ar=prop[2]
 		self.dy=prop[3]
-		self.bs=prop[4]
-		self.zm=prop[6]
+		self.bs=[prop[4], prop[5]]
+		self.zm=[prop[6], prop[7]]
 
 	@property
 	def cj(self):
@@ -54,25 +56,36 @@ class Char:
 
 	@property
 	def bs(self):
-		return self._boshiamy
+		if self._boshiamy==None or self._boshiamy_supplement==None:
+			return None
+		if len(self._boshiamy)<3:
+			return self._boshiamy+self._boshiamy_supplement
+		else:
+			return self._boshiamy
 
 	@bs.setter
 	def bs(self, code):
-		if code=='XXXX':
+		if code[0]=='XXXX' or code[1]=='XXXX':
 			self._boshiamy=None
+			self._boshiamy_supplement=None
 		else:
-			self._boshiamy=code
+			self._boshiamy=code[0]
+			self._boshiamy_supplement=code[1]
 
 	@property
 	def zm(self):
+		if self._zhengma==None or self._zhengma_type==None:
+			return None
 		return self._zhengma
 
 	@zm.setter
 	def zm(self, code):
-		if code=='XXXX':
+		if code[0]=='XXXX' or code[1]=='XXXX':
 			self._zhengma=None
+			self._zhengma_type=None
 		else:
-			self._zhengma=code
+			self._zhengma=code[0]
+			self._zhengma_type=code[1]
 
 if __name__=='__main__':
 	c=Char('王', ['(龜)', 'kn', 'sl', '/c', 'k', 'l', 'qy', '12'])
