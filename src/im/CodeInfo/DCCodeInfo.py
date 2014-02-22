@@ -1,6 +1,9 @@
 from gear.CodeInfo import CodeInfo
 
 class DCCodeInfo(CodeInfo):
+	def __init__(self):
+		CodeInfo.__init__(self)
+
 	def setRadixCodeProperties(self, propDict):
 		self.actionList=[]
 

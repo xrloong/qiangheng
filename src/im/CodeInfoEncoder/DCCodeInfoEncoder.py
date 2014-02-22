@@ -11,7 +11,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=DCCodeInfo(propDict)
+		codeInfo=DCCodeInfo()
+		codeInfo.setInit(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

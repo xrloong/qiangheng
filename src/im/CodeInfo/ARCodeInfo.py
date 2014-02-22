@@ -120,18 +120,17 @@ class ARCodeInfo(CodeInfo):
 			codeList=list(map(lambda x: x.split(','), codeList))
 			self.setCodeList(codeList)
 
+	def __init__(self):
+		CodeInfo.__init__(self)
+
+		self._codeList=None
+
 	@property
 	def characterCode(self):
 		mainRadixList=self.getMainCodeList()
 		mainCodeList=list(map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList))
 		code="".join(mainCodeList)
 		return (code[:3]+code[-1] if len(code)>4 else code)
-
-	def setDataEmpty(self):
-		self._codeList=None
-
-	def setSingleDataEmpty(self):
-		pass
 
 	def isInstallmentEncoded(self):
 		return len(self._codeList)>1

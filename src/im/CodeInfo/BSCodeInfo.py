@@ -84,6 +84,14 @@ class BSCodeInfo(CodeInfo):
 		RADIX_M1_E2_E1:'m',
 	}
 
+	def __init__(self):
+		CodeInfo.__init__(self)
+
+		self._bs_code_list=None
+		self._bs_spcode=None
+
+		self._bs_single=None
+
 	def setRadixCodeProperties(self, propDict):
 		self._bs_single=propDict.get('獨體編碼')
 		str_incode=propDict.get('資訊表示式')
@@ -106,13 +114,6 @@ class BSCodeInfo(CodeInfo):
 				return code[:3]+code[-1:]
 			else:
 				return code
-
-	def setDataEmpty(self):
-		self._bs_code_list=None
-		self._bs_spcode=None
-
-	def setSingleDataEmpty(self):
-		self._bs_single=None
 
 	def setBSProp(self, bs_code_list, bs_spcode):
 		if bs_code_list!=None and bs_spcode!=None:

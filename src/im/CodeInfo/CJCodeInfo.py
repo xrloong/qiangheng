@@ -1,6 +1,15 @@
 from gear.CodeInfo import CodeInfo
 
 class CJCodeInfo(CodeInfo):
+	def __init__(self):
+		CodeInfo.__init__(self)
+
+		self._cj_radix_list=None
+		self._cj_direction=None
+		self._cj_body=None
+
+		self._cj_single=None
+
 	def setRadixCodeProperties(self, propDict):
 		self._cj_single=propDict.get('獨體編碼')
 		self._cj_rtlist=[]
@@ -15,14 +24,6 @@ class CJCodeInfo(CodeInfo):
 			return self._cj_single
 		else:
 			return self._cj_total
-
-	def setDataEmpty(self):
-		self._cj_radix_list=None
-		self._cj_direction=None
-		self._cj_body=None
-
-	def setSingleDataEmpty(self):
-		self._cj_single=None
 
 	def setCJProp(self, dir_code, codeList):
 		if dir_code!=None and codeList!=None:

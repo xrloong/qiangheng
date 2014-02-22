@@ -9,7 +9,8 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=ARCodeInfo(propDict)
+		codeInfo=ARCodeInfo()
+		codeInfo.setInit(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

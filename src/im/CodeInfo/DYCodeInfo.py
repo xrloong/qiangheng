@@ -93,6 +93,11 @@ class DYCodeInfo(CodeInfo):
 		RADIX_EXTEND_H2:'h',
 	}
 
+	def __init__(self):
+		CodeInfo.__init__(self)
+
+		self._codeList=None
+
 	def setRadixCodeProperties(self, propDict):
 		str_rtlist=propDict.get('資訊表示式')
 		if str_rtlist!=None:
@@ -106,12 +111,6 @@ class DYCodeInfo(CodeInfo):
 		mainCodeList=list(map(lambda x: DYCodeInfo.radixToCodeDict[x], mainRadixList))
 		code="".join(mainCodeList)
 		return (code[:3]+code[-1:] if len(code)>4 else code)
-
-	def setDataEmpty(self):
-		self._codeList=None
-
-	def setSingleDataEmpty(self):
-		pass
 
 	def isInstallmentEncoded(self):
 		return len(self._codeList)>1

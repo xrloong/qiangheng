@@ -6,7 +6,8 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=GXCodeInfo(propDict)
+		codeInfo=GXCodeInfo()
+		codeInfo.setInit(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

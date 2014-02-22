@@ -6,7 +6,8 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=CJCodeInfo(propDict)
+		codeInfo=CJCodeInfo()
+		codeInfo.setInit(propDict)
 
 		direction='*'
 		rtlist=codeInfo.getRtList()

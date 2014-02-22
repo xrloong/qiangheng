@@ -9,7 +9,8 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=BSCodeInfo(propDict)
+		codeInfo=BSCodeInfo()
+		codeInfo.setInit(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

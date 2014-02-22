@@ -1,12 +1,10 @@
 from .CodeVarianceType import CodeVarianceType
 
 class CodeInfo:
-	def __init__(self, propDict):
-		self.setDataEmpty()
-		self.setSingleDataEmpty()
-
+	def __init__(self):
 		self.codeVariance=CodeVarianceType()
 
+	def setInit(self, propDict):
 		self.setRadixCodeProperties(propDict)
 
 		hasCharacter=bool("字符碼" in propDict)
@@ -39,12 +37,6 @@ class CodeInfo:
 
 	def getCodeVarianceType(self):
 		return self.codeVariance
-
-	def setDataEmpty(self):
-		pass
-
-	def setSingleDataEmpty(self):
-		pass
 
 	def multiplyCodeVarianceType(self, codeVariance):
 		self.codeVariance.multi(codeVariance)

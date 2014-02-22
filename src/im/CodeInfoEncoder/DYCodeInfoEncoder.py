@@ -9,7 +9,8 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=DYCodeInfo(propDict)
+		codeInfo=DYCodeInfo()
+		codeInfo.setInit(propDict)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):

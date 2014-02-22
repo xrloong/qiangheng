@@ -7,7 +7,9 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		pass
 
 	def generateCodeInfo(self, propDict):
-		codeInfo=ZMCodeInfo(propDict)
+		codeInfo=ZMCodeInfo()
+		codeInfo.setInit(propDict)
+
 		rtlist=codeInfo.getRtList()
 		zmCode=self.computeCharacterCode(rtlist)
 		codeInfo.setCharacterCode(zmCode)

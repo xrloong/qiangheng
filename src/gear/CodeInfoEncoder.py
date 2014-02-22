@@ -6,7 +6,9 @@ class CodeInfoEncoder:
 		pass
 
 	def generateCodeInfo(self, propDict):
-		return CodeInfo(propDict)
+		codeInfo=CodeInfo()
+		codeInfo.setInit(propDict)
+		return codeInfo
 
 	def generateDefaultCodeInfo(self):
 		return self.generateCodeInfo({})

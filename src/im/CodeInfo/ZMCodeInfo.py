@@ -1,6 +1,14 @@
 from gear.CodeInfo import CodeInfo
 
 class ZMCodeInfo(CodeInfo):
+	def __init__(self):
+		CodeInfo.__init__(self)
+
+		self._zm_rtlist=None
+
+		self._zm_extra=None
+		self._zm_single=None
+
 	def setRadixCodeProperties(self, propDict):
 		extra_code=propDict.get('補充資訊')
 		str_rtlist=propDict.get('資訊表示式')
@@ -25,13 +33,6 @@ class ZMCodeInfo(CodeInfo):
 
 	def setCharacterCode(self, zmCode):
 		self._zm_code=zmCode
-
-	def setDataEmpty(self):
-		self._zm_rtlist=None
-
-	def setSingleDataEmpty(self):
-		self._zm_extra=None
-		self._zm_single=None
 
 	def setZMProp(self, zm_rtlist):
 		if zm_rtlist!=None:
