@@ -31,32 +31,28 @@ class HanZiWrapperStructure(HanZiStructure):
 	def __init__(self, referenceNode, expression):
 		self.referenceNode=referenceNode
 		self.expression=expression
-
-	def getCodeInfoList(self):
-		return self.getTargetNode().getCodeInfoList()
+		self.targetNode=None
+		self.codeInfoList=[]
 
 	def getNodeList(self):
 		return [self.referenceNode]
 
+	def getCodeInfoList(self):
+		return self.codeInfoList
+
 	def setCompositions(self):
-		struct=self.getTargetStructure()
-		struct.setCompositions()
+		targetNode=self.targetNode
+		targetNode.setCompositions()
+		self.codeInfoList=targetNode.getCodeInfoList()
 
-	def getTargetStructure(self):
-		struct=self.referenceNode.getFirstStructure()
-		return struct
+	def setTargetNode(self, targetNode):
+		self.targetNode=targetNode
 
-	def getTargetNode(self):
-		tempList=self.expression.split(".")
-		if(len(tempList)>1):
-			index=int(tempList[1])
+	def getReferenceNode(self):
+		return self.referenceNode
 
-			struct=self.getTargetStructure()
-			nodeList=struct.getNodeList()
-
-			return nodeList[index]
-		else:
-			return self.referenceNode
+	def getExpression(self):
+		return self.expression
 
 class HanZiAssemblageStructure(HanZiStructure):
 	def __init__(self, codeType, operator, nodeList):

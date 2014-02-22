@@ -56,6 +56,12 @@ class HanZiNode:
 
 			structure.setCompositions()
 
+	def setCompositions(self):
+		self.setNodeTree()
+#		for structure in structureList:
+#			structure.setCompositions()
+#		self.setCompositions()
+
 	def printAllCodeInfoInStructure(self):
 		structureList=self.getStructureListWithCondition()
 		for struct in structureList:

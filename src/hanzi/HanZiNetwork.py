@@ -1,3 +1,4 @@
+import sys
 import copy
 from description.CodeType import CodeType
 from description.operator import Operator
@@ -26,7 +27,47 @@ class DescriptionManagerToHanZiNetworkConverter:
 			for structDesc in structDescList:
 				structDesc.setRootName(charName)
 				self.recursivelyAddStructure(structDesc)
+
+		# 將 referenceNode 轉為 targetNode
+		# 如焤會使用 "府.0" 及 "府.1" ，則 "府" 為 referenceNode
+		# 而 "广" 及 "付" 為 targetNode 。
+		# 因有可能先建構 "焤" 的結構後，才建構 "府"
+		# 所以在建構 "焤" 時， "府.0" 及 "府.1" 還不存在
+		for charName in sortedNameList:
+			charDesc=self.queryDescription(charName)
+
+			structDescList=charDesc.getStructureList()
+			for structDesc in structDescList:
+				node=self.hanziNetwork.findNode(structDesc)
+				strctureList=node.getStructureListWithCondition()
+				for structure in strctureList:
+					self.recursivelyConvertReferenceNodeToTargetNode(structure)
 		return self.hanziNetwork
+
+	def computeTargetNodeOfWrapperStrcture(self, wrapperStructuer):
+		expression=wrapperStructuer.getExpression()
+		tempList=expression.split(".")
+		if(len(tempList)>1):
+			index=int(tempList[1])
+			referenceNode=wrapperStructuer.getReferenceNode()
+			structure=referenceNode.getFirstStructure()
+
+			nodeList=structure.getNodeList()
+
+			return nodeList[index]
+		else:
+			return wrapperStructuer.referenceNode
+
+	def recursivelyConvertReferenceNodeToTargetNode(self, structure):
+		if isinstance(structure, HanZiStructure.HanZiWrapperStructure):
+			targetNode=self.computeTargetNodeOfWrapperStrcture(structure)
+			structure.setTargetNode(targetNode)
+		else:
+			nodeList=structure.getNodeList()
+			for node in nodeList:
+				strctureList=node.getStructureListWithCondition()
+				for childStructure in strctureList:
+					self.recursivelyConvertReferenceNodeToTargetNode(childStructure);
 
 	def recursivelyAddStructure(self, structDesc):
 		childDescList=structDesc.getCompList()
