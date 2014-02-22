@@ -141,9 +141,9 @@ class HanZiNetwork:
 		return structure
 
 	def addUnitLink(self, structDesc):
-		codeType=structDesc.getCodeType()
+		codeVariance=structDesc.getCodeVarianceType()
 		codeInfoProperties=structDesc.getCodeInfoDict()
-		structure=HanZiStructure.HanZiUnitStructure(codeType, codeInfoProperties)
+		structure=HanZiStructure.HanZiUnitStructure(codeVariance, codeInfoProperties)
 
 		return structure
 
@@ -153,8 +153,8 @@ class HanZiNetwork:
 
 		childStructureList=[self.findStructure(childDesc) for childDesc in childDescList]
 
-		codeType=structDesc.getCodeType()
-		structure=HanZiStructure.HanZiAssemblageStructure(codeType, operator, childStructureList)
+		codeVariance=structDesc.getCodeVarianceType()
+		structure=HanZiStructure.HanZiAssemblageStructure(codeVariance, operator, childStructureList)
 
 		return structure
 

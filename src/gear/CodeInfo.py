@@ -1,11 +1,11 @@
-from .CodeType import CodeType
+from .CodeVarianceType import CodeVarianceType
 
 class CodeInfo:
 	def __init__(self, propDict={}):
 		self.setDataEmpty()
 		self.setSingleDataEmpty()
 
-		self.codeType=CodeType()
+		self.codeVariance=CodeVarianceType()
 		self.setRadixCodeProperties(propDict)
 
 	def __str__(self):
@@ -19,21 +19,21 @@ class CodeInfo:
 
 	def setCompositions(self, operator, complist):
 		for codeInfo in complist:
-			codeType=codeInfo.getCodeType()
-			self.codeType.multi(codeType)
+			codeVariance=codeInfo.getCodeVarianceType()
+			self.codeVariance.multi(codeVariance)
 
 		self.setByComps(operator, complist)
 
 	def setByComps(self, operator, complist):
 		pass
 
-	def getCodeType(self):
-		return self.codeType
+	def getCodeVarianceType(self):
+		return self.codeVariance
 
 	def getCodeProperties(self):
 		characterCode=self.characterCode
 		if characterCode:
-			return [characterCode, self.codeType.getTypeString()]
+			return [characterCode, self.codeVariance.getVarianceByString()]
 		else:
 			return []
 
@@ -43,8 +43,8 @@ class CodeInfo:
 	def setSingleDataEmpty(self):
 		pass
 
-	def multiCodeType(self, codeType):
-		self.codeType.multi(codeType)
+	def multiCodeVarianceType(self, codeVariance):
+		self.codeVariance.multi(codeVariance)
 
 	@property
 	def code(self):

@@ -2,7 +2,7 @@
 
 import sys
 import copy
-from gear.CodeType import CodeType
+from gear.CodeVarianceType import CodeVarianceType
 
 class StructureDescription:
 	"""字符描述"""
@@ -17,7 +17,7 @@ class StructureDescription:
 		self.operator=operator
 		self.compList=compList
 
-		self.codeType=CodeType()
+		self.codeVariance=CodeVarianceType()
 
 	def __str__(self):
 		return '<{0}={1}|({2})>'.format(self.getReferenceExpression(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
@@ -31,7 +31,7 @@ class StructureDescription:
 	def copyDescription(self):
 		copyStructureDescription=StructureDescription(self.getOperator(), [])
 		copyStructureDescription.setReferenceExpression(self.getReferenceExpression())
-		copyStructureDescription.setCodeType(self.getCodeType())
+		copyStructureDescription.setCodeVarianceType(self.getCodeVarianceType())
 		return copyStructureDescription
 
 	def copyDeeply(self):
@@ -48,14 +48,14 @@ class StructureDescription:
 		return ansDesc
 
 	def setStructureProperties(self, structProp):
-		codeTypeString=structProp.get("類型", "標準")
-		self.target.getCodeType().setTypeString(codeTypeString)
+		codeVarianceString=structProp.get("類型", "標準")
+		self.target.getCodeVarianceType().setVarianceByString(codeVarianceString)
 
-	def getCodeType(self):
-		return self.target.codeType
+	def getCodeVarianceType(self):
+		return self.target.codeVariance
 
-	def setCodeType(self, codeType):
-		self.target.codeType=codeType
+	def setCodeVarianceType(self, codeVariance):
+		self.target.codeVariance=codeVariance
 
 	def getUniqueName(self):
 		return self.target.name

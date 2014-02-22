@@ -31,10 +31,10 @@ class HanZiStructure:
 			pass
 
 class HanZiUnitStructure(HanZiStructure):
-	def __init__(self, codeType, codeInfoProperties):
+	def __init__(self, codeVariance, codeInfoProperties):
 		HanZiStructure.__init__(self)
 
-		codeInfo=HanZiCodeInfo.HanZiCodeInfo(codeInfoProperties, codeType)
+		codeInfo=HanZiCodeInfo.HanZiCodeInfo(codeInfoProperties, codeVariance)
 		self.codeInfoList=[codeInfo]
 
 	def getCodeInfoList(self):
@@ -74,14 +74,14 @@ class HanZiWrapperStructure(HanZiStructure):
 		self.referenceNode.setNodeTree()
 
 class HanZiAssemblageStructure(HanZiStructure):
-	def __init__(self, codeType, operator, structureList):
+	def __init__(self, codeVariance, operator, structureList):
 		HanZiStructure.__init__(self)
 
 		self.operator=operator
 		self.structureList=structureList
 
 		self.codeInfoList=[]
-		self.codeType=codeType
+		self.codeVariance=codeVariance
 
 	def getCodeInfoList(self):
 		return self.codeInfoList
@@ -94,7 +94,7 @@ class HanZiAssemblageStructure(HanZiStructure):
 		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(structureList)
 
 		for infoList in infoListList:
-			codeInfo=HanZiCodeInfo.HanZiCodeInfo({}, self.codeType)
+			codeInfo=HanZiCodeInfo.HanZiCodeInfo({}, self.codeVariance)
 			codeInfo.setCompositions(self.operator, infoList)
 
 			self.codeInfoList.append(codeInfo)

@@ -1,10 +1,10 @@
 from state import StateManager
 
 class HanZiCodeInfo:
-	def __init__(self, propDict, codeType,):
+	def __init__(self, propDict, codeVariance,):
 		codeInfo=StateManager.codeInfoGenerator(propDict)
 		self.codeInfo=codeInfo
-		self.codeInfo.multiCodeType(codeType)
+		self.codeInfo.multiCodeVarianceType(codeVariance)
 
 		hasCharacter=bool("字符碼" in propDict)
 		hasRadix=bool("字根碼" in propDict)
@@ -33,8 +33,8 @@ class HanZiCodeInfo:
 		tmpCompList=[comp.codeInfo for comp in complist]
 		self.codeInfo.setCompositions(operator, tmpCompList)
 
-	def getCodeType(self):
-		return self.codeInfo.getCodeType()
+	def getCodeVarianceType(self):
+		return self.codeInfo.getCodeVarianceType()
 
 	def getCodeProperties(self):
 		return self.codeInfo.getCodeProperties()
