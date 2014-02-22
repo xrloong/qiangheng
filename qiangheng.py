@@ -13,12 +13,12 @@ class QiangHeng:
 		choice=options.imname
 		xml_format=options.xml_format
 
-		[imModule, dirIM, styleFileIM]=self.getIMInfo(choice)
+		[imModule, configFile]=self.getIMInfo(choice)
 
 		self.initManager(imModule)
 
 		dirQHDataRoot=options.dir_qhdata
-		self.readDesc(dirQHDataRoot, dirIM, styleFileIM)
+		self.readDesc(dirQHDataRoot, configFile)
 
 		self.constructDescriptionNetwork()
 
@@ -35,44 +35,24 @@ class QiangHeng:
 		charDescQueryer=self.descMgr.getCharDescQueryer()
 		self.hanziNetwork=HanZiNetwork(ciGenerator)
 
-	def readDesc(self, dirQHDataRoot, dirIM, styleFileIM):
-		filenamelist=[
-				'CJK.xml',
-		]
+	def readDesc(self, dirQHDataRoot, configFile):
+		rootDirPrefix=dirQHDataRoot+"/"
+		configFile=rootDirPrefix+configFile
 
-		styleDir=dirQHDataRoot+"/"+"style"+"/"
-		styleStandardFilePath=styleDir+'standard.xml'
-		styleImFilePath=styleDir+styleFileIM
+		f=open(configFile, encoding='utf-8-sig')
+		xmlNode=ElementTree.parse(f)
+		rootNode=xmlNode.getroot()
 
-		componentDir="component"+"/"
-		componentMainDir=componentDir+"main/"
-		componentImDir=componentDir+dirIM
+		configNode=rootNode.find('設定檔')
+		templateNodeList=configNode.findall('範本')
+		componentNodeList=configNode.findall('部件')
+		radixNodeList=configNode.findall('字根')
 
-		dirQHData=dirQHDataRoot + "/"
-		tmpfname=filenamelist[0]
-		radixDir="radix"+"/"+dirIM
-		toComponentList=[
-				dirQHData+'main/'+tmpfname,
+		toComponentList=[rootDirPrefix+node.get('檔案') for node in componentNodeList]
 
-				styleStandardFilePath,
-				styleImFilePath,
+		toTemplateList=[rootDirPrefix+node.get('檔案') for node in templateNodeList]
 
-				dirQHData+componentMainDir+tmpfname,
-				dirQHData+componentImDir+tmpfname,
-#				dirQHData+radixDir+tmpfname,
-				]
-
-		templateDir=componentImDir
-		templateFileName='template.xml'
-		toTemplateList=[
-				dirQHData+'main/'+templateFileName,
-				dirQHData+templateDir+templateFileName,
-				]
-
-		radixDir="radix"+"/"+dirIM
-		toCodeList=[
-				dirQHData+radixDir+tmpfname,
-				]
+		toCodeList=[rootDirPrefix+node.get('檔案') for node in radixNodeList]
 
 		self.getDescDBFromXML(toTemplateList, toComponentList, toCodeList)
 
@@ -182,32 +162,26 @@ class QiangHeng:
 
 	def getIMInfo(self, imName):
 		if imName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
-			imStyleFile='cj.xml'
-			imDirPath='cj/'
+			configFile='config/cj.xml'
 			imName='倉頡'
 		elif imName in ['行', '行列', '行列輸入法', 'array', 'ar',]:
-			imStyleFile='ar.xml'
-			imDirPath='ar/'
+			configFile='config/ar.xml'
 			imName='行列'
 		elif imName in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
-			imStyleFile='dy.xml'
-			imDirPath='dy/'
+			configFile='config/dy.xml'
 			imName='大易'
 		elif imName in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
-			imStyleFile='bs.xml'
-			imDirPath='bs/'
+			configFile='config/bs.xml'
 			imName='嘸蝦米'
 		elif imName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
-			imStyleFile='zm.xml'
-			imDirPath='zm/'
+			configFile='config/zm.xml'
 			imName='鄭碼'
 		else:
-			imStyleFile='standard.xml'
-			imDirPath=''
+			configFile='config/default.xml'
 			imName='空'
 
 		imModule=IMMgr.getIMModule(imName)
-		return [imModule, imDirPath, imStyleFile]
+		return [imModule, configFile]
 
 oparser = OptionParser()
 oparser.add_option("-i", "--im", dest="imname", help="輸入法名稱", default="倉頡")
