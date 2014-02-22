@@ -2,10 +2,11 @@ import re
 import sys
 
 class StrokeInfo:
-	def __init__(self, name, scope, parameterExpressionList):
+	def __init__(self, name, scope, parameterList):
 		self.name = name
 		self.scope = scope
-		self.parameterExpressionList = parameterExpressionList
+		self.parameterList=parameterList
+
 		self.scopeWidth = scope[2]-scope[0]
 		self.scopeHeight = scope[3]-scope[1]
 		self.width = self.scopeWidth-2
@@ -38,7 +39,8 @@ class StrokeInfo:
 	def getName(self):
 		return self.name
 
-	def parseExpression(self):
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
 		return []
 
 	def getWidth(self):
@@ -212,14 +214,15 @@ class StrokeInfo:
 
 
 class StrokeInfo_點(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==2
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1])]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w=paramList[0]
 		h=paramList[1]
 		if w>0:
@@ -228,7 +231,7 @@ class StrokeInfo_點(StrokeInfo):
 			return self.getTopRight()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w=paramList[0]
 		h=paramList[1]
 
@@ -238,8 +241,9 @@ class StrokeInfo_點(StrokeInfo):
 		return points
 
 class StrokeInfo_圈(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -249,7 +253,7 @@ class StrokeInfo_圈(StrokeInfo):
 		return self.getTop()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		a=paramList[0]
 		b=paramList[1]
 
@@ -259,8 +263,9 @@ class StrokeInfo_圈(StrokeInfo):
 		return points
 
 class StrokeInfo_橫(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==1
 		assert int(l[0])>0
 		return [int(l[0])]
@@ -269,7 +274,7 @@ class StrokeInfo_橫(StrokeInfo):
 		return self.getLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 
 		startPoint = self.getStartPoint()
@@ -278,8 +283,9 @@ class StrokeInfo_橫(StrokeInfo):
 		return points
 
 class StrokeInfo_橫鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -287,7 +293,7 @@ class StrokeInfo_橫鉤(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 
@@ -295,7 +301,7 @@ class StrokeInfo_橫鉤(StrokeInfo):
 		return (topLeft[0]+max(0, w2-w1), topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
@@ -307,8 +313,9 @@ class StrokeInfo_橫鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_橫折(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -318,7 +325,7 @@ class StrokeInfo_橫折(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 
@@ -329,8 +336,9 @@ class StrokeInfo_橫折(StrokeInfo):
 		return points
 
 class StrokeInfo_橫折折(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -341,7 +349,7 @@ class StrokeInfo_橫折折(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 		w3=paramList[2]
@@ -354,8 +362,9 @@ class StrokeInfo_橫折折(StrokeInfo):
 		return points
 
 class StrokeInfo_橫折提(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -367,7 +376,7 @@ class StrokeInfo_橫折提(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 		w3=paramList[2]
@@ -381,8 +390,9 @@ class StrokeInfo_橫折提(StrokeInfo):
 		return points
 
 class StrokeInfo_橫折鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==5
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -392,7 +402,7 @@ class StrokeInfo_橫折鉤(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		w3=paramList[3]
@@ -401,7 +411,7 @@ class StrokeInfo_橫折鉤(StrokeInfo):
 		return (topLeft[0]+max(0, (w2+w3)-w1), topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
@@ -416,8 +426,9 @@ class StrokeInfo_橫折鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_橫折彎(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -429,7 +440,7 @@ class StrokeInfo_橫折彎(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 		w2=paramList[2]
@@ -446,8 +457,9 @@ class StrokeInfo_橫折彎(StrokeInfo):
 		return points
 
 class StrokeInfo_橫撇(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -455,7 +467,7 @@ class StrokeInfo_橫撇(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
@@ -464,7 +476,7 @@ class StrokeInfo_橫撇(StrokeInfo):
 		return (topLeft[0]+max(0, w2-w1), topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
@@ -476,8 +488,9 @@ class StrokeInfo_橫撇(StrokeInfo):
 		return points
 
 class StrokeInfo_橫斜彎鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==6
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -488,7 +501,7 @@ class StrokeInfo_橫斜彎鉤(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2l=paramList[2]
 		w2r=paramList[3]
@@ -497,7 +510,7 @@ class StrokeInfo_橫斜彎鉤(StrokeInfo):
 		return (topLeft[0]+(w2l-w1), topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 		w2l=paramList[2]
@@ -513,8 +526,9 @@ class StrokeInfo_橫斜彎鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_橫折折折鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==8
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -530,7 +544,7 @@ class StrokeInfo_橫折折折鉤(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
@@ -550,8 +564,9 @@ class StrokeInfo_橫折折折鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_橫斜鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -563,7 +578,7 @@ class StrokeInfo_橫斜鉤(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
@@ -577,8 +592,9 @@ class StrokeInfo_橫斜鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_橫折折折(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert int(l[0])>0
 		assert int(l[1])>0
 		assert int(l[2])>0
@@ -590,7 +606,7 @@ class StrokeInfo_橫折折折(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h2=paramList[1]
 		w3=paramList[2]
@@ -605,8 +621,9 @@ class StrokeInfo_橫折折折(StrokeInfo):
 		return points
 
 class StrokeInfo_豎(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==1
 		assert int(l[0])>0
 		return [int(l[0]), ]
@@ -615,7 +632,7 @@ class StrokeInfo_豎(StrokeInfo):
 		return self.getTop()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		h1=paramList[0]
 
 		startPoint = self.getStartPoint()
@@ -624,8 +641,9 @@ class StrokeInfo_豎(StrokeInfo):
 		return points
 
 class StrokeInfo_豎折(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -635,7 +653,7 @@ class StrokeInfo_豎折(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		h1=paramList[0]
 		w2=paramList[1]
 
@@ -646,8 +664,9 @@ class StrokeInfo_豎折(StrokeInfo):
 		return points
 
 class StrokeInfo_豎提(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -658,7 +677,7 @@ class StrokeInfo_豎提(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		h1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
@@ -670,8 +689,9 @@ class StrokeInfo_豎提(StrokeInfo):
 		return points
 
 class StrokeInfo_豎折折(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -682,7 +702,7 @@ class StrokeInfo_豎折折(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		h1=paramList[0]
 		w2=paramList[1]
 		h3=paramList[2]
@@ -695,8 +715,9 @@ class StrokeInfo_豎折折(StrokeInfo):
 		return points
 
 class StrokeInfo_豎折彎鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==7
 		assert int(l[0])>=0
 		assert int(l[1])>0
@@ -708,14 +729,14 @@ class StrokeInfo_豎折彎鉤(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), int(l[5]), int(l[6]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 
 		topLeft = self.getTopLeft()
 		return (topLeft[0] + w1, topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
@@ -738,8 +759,9 @@ class StrokeInfo_豎折彎鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_豎彎鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -748,7 +770,7 @@ class StrokeInfo_豎彎鉤(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		h1=paramList[0]
 		w1=paramList[1]
 		cr=paramList[2]
@@ -758,7 +780,7 @@ class StrokeInfo_豎彎鉤(StrokeInfo):
 		return (topLeft[0], topLeft[1]+max(0, h2-h1))
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		h1=paramList[0]
 		w1=paramList[1]
 		cr=paramList[2]
@@ -773,8 +795,9 @@ class StrokeInfo_豎彎鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_豎彎(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -782,7 +805,7 @@ class StrokeInfo_豎彎(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		cr=paramList[0]
 		w=paramList[1]
 		h=paramList[2]
@@ -790,7 +813,7 @@ class StrokeInfo_豎彎(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		cr=paramList[2]
@@ -803,8 +826,9 @@ class StrokeInfo_豎彎(StrokeInfo):
 		return points
 
 class StrokeInfo_豎鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -815,7 +839,7 @@ class StrokeInfo_豎鉤(StrokeInfo):
 		return self.getTopRight()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		h1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
@@ -834,8 +858,9 @@ class StrokeInfo_豎鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_斜鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -846,7 +871,7 @@ class StrokeInfo_斜鉤(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		h2=paramList[2]
@@ -858,8 +883,9 @@ class StrokeInfo_斜鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_彎鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==4
 #		assert int(l[0])>0
 		assert int(l[1])>0
@@ -868,7 +894,7 @@ class StrokeInfo_彎鉤(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
@@ -878,7 +904,7 @@ class StrokeInfo_彎鉤(StrokeInfo):
 		return (topLeft[0]+max(0,w2-w1), topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
@@ -891,8 +917,9 @@ class StrokeInfo_彎鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_撇鉤(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==4
 #		assert int(l[0])>0
 		assert int(l[1])>0
@@ -901,7 +928,7 @@ class StrokeInfo_撇鉤(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
@@ -911,7 +938,7 @@ class StrokeInfo_撇鉤(StrokeInfo):
 		return (topLeft[0]-w1+w2, topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
@@ -924,8 +951,9 @@ class StrokeInfo_撇鉤(StrokeInfo):
 		return points
 
 class StrokeInfo_撇(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -935,7 +963,7 @@ class StrokeInfo_撇(StrokeInfo):
 		return self.getTopRight()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
@@ -945,8 +973,9 @@ class StrokeInfo_撇(StrokeInfo):
 		return points
 
 class StrokeInfo_撇點(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -955,14 +984,14 @@ class StrokeInfo_撇點(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+w1, topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
@@ -975,8 +1004,9 @@ class StrokeInfo_撇點(StrokeInfo):
 		return points
 
 class StrokeInfo_撇橫(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -985,14 +1015,14 @@ class StrokeInfo_撇橫(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+w1, topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
@@ -1010,8 +1040,9 @@ class StrokeInfo_撇橫(StrokeInfo):
 		return points
 
 class StrokeInfo_撇橫撇(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==5
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -1021,19 +1052,19 @@ class StrokeInfo_撇橫撇(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), int(l[4]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[2]
 		w3=paramList[3]
 
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 
 		topLeft = self.getTopLeft()
 		return (topLeft[0]+w1+max(0, w3-w2), topLeft[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
@@ -1048,8 +1079,9 @@ class StrokeInfo_撇橫撇(StrokeInfo):
 		return points
 
 class StrokeInfo_豎撇(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -1059,7 +1091,7 @@ class StrokeInfo_豎撇(StrokeInfo):
 		return self.getTopRight()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
@@ -1073,8 +1105,9 @@ class StrokeInfo_豎撇(StrokeInfo):
 		return points
 
 class StrokeInfo_提(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -1084,7 +1117,7 @@ class StrokeInfo_提(StrokeInfo):
 		return self.getBottomLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
@@ -1094,15 +1127,16 @@ class StrokeInfo_提(StrokeInfo):
 		return points
 
 class StrokeInfo_捺(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
@@ -1110,7 +1144,7 @@ class StrokeInfo_捺(StrokeInfo):
 		return (topRight[0]-w1, topRight[1])
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
@@ -1120,22 +1154,23 @@ class StrokeInfo_捺(StrokeInfo):
 		return points
 
 class StrokeInfo_臥捺(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==2
 		assert int(l[0])>0
 		assert int(l[1])>0
 		return [int(l[0]), int(l[1]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		h1=paramList[1]
 
 		left = self.getLeft()
 		return (left[0], left[1]-h1//2)
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 
@@ -1145,8 +1180,9 @@ class StrokeInfo_臥捺(StrokeInfo):
 		return points
 
 class StrokeInfo_提捺(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==4
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -1155,14 +1191,14 @@ class StrokeInfo_提捺(StrokeInfo):
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
 	def getStartPoint(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		h1=paramList[1]
 
 		topLeft = self.getTopLeft()
 		return (topLeft[0], topLeft[1]+h1)
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		h1=paramList[1]
 		w2=paramList[2]
@@ -1175,8 +1211,9 @@ class StrokeInfo_提捺(StrokeInfo):
 		return points
 
 class StrokeInfo_橫捺(StrokeInfo):
-	def parseExpression(self):
-		l=self.parameterExpressionList
+	@classmethod
+	def parseExpression(cls, parameterExpressionList):
+		l=parameterExpressionList
 		assert len(l)==3
 		assert int(l[0])>0
 		assert int(l[1])>0
@@ -1187,7 +1224,7 @@ class StrokeInfo_橫捺(StrokeInfo):
 		return self.getTopLeft()
 
 	def getPoints(self):
-		paramList=self.parseExpression()
+		paramList=self.parameterList
 		w1=paramList[0]
 		w2=paramList[1]
 		h2=paramList[2]
@@ -1369,26 +1406,6 @@ class Stroke(Writing):
 
 	@staticmethod
 	def fromStrokeExpression(contourPane, strokeExpression):
-		strokeInfo = Stroke.parseStrokeInfo(strokeExpression)
-
-		return Stroke(strokeInfo, StrokeState())
-
-	def clone(self):
-		return Stroke(self.strokeInfo, self.state.clone())
-
-	def getTypeName(self):
-		return self.strokeInfo.getTypeName()
-
-	def getCode(self):
-		codeList=self.strokeInfo.getCodeList(self.state)
-		return ','.join(codeList)
-
-	# 多型
-	def transform(self, pane):
-		pane.transformPane(self.state.getTargetPane())
-
-	@staticmethod
-	def parseStrokeInfo(strokeExpression):
 		l=strokeExpression.split(';')
 		name=l[0]
 		scopeDesc=l[1]
@@ -1405,7 +1422,25 @@ class Stroke(Writing):
 
 		clsStrokeInfo = StrokeInfoMap.get(name, None)
 		assert clsStrokeInfo!=None
-		return clsStrokeInfo(name, scope, parameterExpressionList)
+
+		parameterList = clsStrokeInfo.parseExpression(parameterExpressionList)
+		strokeInfo = clsStrokeInfo(name, scope, parameterList)
+
+		return Stroke(strokeInfo, StrokeState())
+
+	def clone(self):
+		return Stroke(self.strokeInfo, self.state.clone())
+
+	def getTypeName(self):
+		return self.strokeInfo.getTypeName()
+
+	def getCode(self):
+		codeList=self.strokeInfo.getCodeList(self.state)
+		return ','.join(codeList)
+
+	# 多型
+	def transform(self, pane):
+		pane.transformPane(self.state.getTargetPane())
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
