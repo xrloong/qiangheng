@@ -1,39 +1,6 @@
 import re
 import sys
 
-class Point:
-	def __init__(self, x, y):
-		self.x=x
-		self.y=y
-
-	def clone(self):
-		return Point(self.x, self.y)
-
-	@property
-	def code(self):
-		return "%02X%02X"%(self.x, self.y)
-
-	def getX(self):
-		return self.x
-
-	def getY(self):
-		return self.y
-
-	def scale(self, xScale, yScale):
-		self.x=int(self.x*xScale)
-		self.y=int(self.y*yScale)
-
-	def translate(self, xOffset, yOffset):
-		self.x=int(self.x+xOffset)
-		self.y=int(self.y+yOffset)
-
-	def transform(self, pane):
-		left=pane.getLeft()
-		top=pane.getTop()
-
-		self.scale(pane.getHScale(), pane.getVScale())
-		self.translate(left, top)
-
 class StrokeAction:
 	ACTION_START="0000"
 	ACTION_END="0001"
@@ -55,22 +22,19 @@ class StrokeAction:
 		self.action=action
 		self.point=point
 
-	def clone(self):
-		return StrokeAction(self.action, self.point.clone())
-
 	@staticmethod
 	def fromDescription(description):
 		actionStr=description[0:4]
 		action=StrokeAction.ActionStrToNumDict[actionStr]
-		point=Point(int(description[4:6], 16), int(description[6:8], 16))
+		x=int(description[4:6], 16)
+		y=int(description[6:8], 16)
+		point=(x, y)
 		return StrokeAction(action, point)
 
-	@property
-	def code(self):
-		return StrokeAction.ActionNumToStrDict[self.action]+self.point.code
-
-	def transform(self, pane):
-		self.point.transform(pane)
+	def getCode(self, pane):
+		(x, y)=pane.transformPoint(self.point)
+		code="%02X%02X"%(x, y)
+		return StrokeAction.ActionNumToStrDict[self.action]+code
 
 class Pane:
 	WIDTH=0x100
@@ -89,8 +53,15 @@ class Pane:
 
 		self.name="預設範圍"
 
+		self.setup()
+
+	def clone(self):
+		return Pane(self.getAsList())
+
+	def setup(self):
 		self.hScale=self.width*1./Pane.WIDTH
 		self.vScale=self.height*1./Pane.HEIGHT
+
 	@property
 	def width(self):
 		return self.right-self.left+1
@@ -131,6 +102,31 @@ class Pane:
 
 	def getVScale(self):
 		return self.vScale
+
+	def transformPoint(self, point):
+		[x, y]=point
+		left=self.getLeft()
+		top=self.getTop()
+
+		xScale=self.getHScale()
+		yScale=self.getVScale()
+
+		newX=int(x*xScale)+left
+		newY=int(y*yScale)+top
+
+		return (newX, newY)
+
+	def transform(self, pane):
+		vScale=pane.getVScale()
+		hScale=pane.getHScale()
+		paneLeft=pane.getLeft()
+		paneTop=pane.getTop()
+
+		self.left=int(self.left*hScale+paneLeft)
+		self.right=int(self.right*hScale+paneLeft)
+		self.top=int(self.top*vScale+paneTop)
+		self.bottom=int(self.bottom*vScale+paneTop)
+		self.setup()
 
 Pane.DEFAULT_PANE=Pane()
 
@@ -187,8 +183,7 @@ class Stroke(Writing):
 		self.actionList=actionList
 
 	def clone(self):
-		actionList=[a.clone() for a in self.actionList]
-		return Stroke(self.contourPane, self.typeName, actionList)
+		return Stroke(self.contourPane.clone(), self.typeName, self.actionList)
 
 	def getInstanceName(self):
 		return self.name
@@ -200,13 +195,12 @@ class Stroke(Writing):
 		return self.typeName
 
 	def getCode(self):
-		codeList=[action.code for action in self.actionList]
+		codeList=[action.getCode(self.contourPane) for action in self.actionList]
 		return ','.join(codeList)
 
 	# 多型
 	def transform(self, pane):
-		for action in self.actionList:
-			action.transform(pane)
+		self.contourPane.transform(pane)
 
 class StrokeGroup(Writing):
 	def __init__(self, contourPane, strokeList):
@@ -220,6 +214,14 @@ class StrokeGroup(Writing):
 
 	def getStrokeList(self):
 		return self.strokeList
+
+	def getCount(self):
+		return len(self.strokeList)
+
+	def getCode(self):
+		strokeList=self.getStrokeList()
+		codeList=[stroke.getCode() for stroke in strokeList]
+		return ','.join(codeList)
 
 	# 多型
 	def transform(self, pane):

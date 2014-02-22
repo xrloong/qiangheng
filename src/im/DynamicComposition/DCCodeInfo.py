@@ -58,9 +58,7 @@ class DCCodeInfo(CodeInfo):
 		return self.getStrokeGroup().getStrokeList()
 
 	def getCode(self):
-		strokeList=self.getStrokeList()
-		codeList=[stroke.getCode() for stroke in strokeList]
-		return ','.join(codeList)
+		return self.getStrokeGroup().getCode()
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
@@ -82,7 +80,7 @@ class DCCodeInfo(CodeInfo):
 		return strokeGroup.clone()
 
 	def getStrokeCount(self):
-		return len(self.getStrokeList())
+		return self.getStrokeGroup().getCount()
 
 	def transform(self, pane):
 		self.getStrokeGroup().transform(pane)
