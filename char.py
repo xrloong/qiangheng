@@ -27,7 +27,7 @@ class Char:
 		self.ar=prop[2]
 		self.dy=prop[3]
 		self.bs, self.bssp=prop[4], prop[5]
-		self.zm=[prop[6], prop[7]]
+		self.zm, self.zmtp=prop[6], prop[7]
 
 	@property
 	def cj(self):
@@ -99,26 +99,31 @@ class Char:
 
 	@property
 	def zm(self):
-		if self._zhengma==None or self._zhengma_type==None:
+		if self._zhengma==None:
 			return None
-		return self._zhengma
+		else:
+			return self._zhengma
 
 	@zm.setter
 	def zm(self, code):
-		if code[0]=='XXXX' or code[1]=='XXXX':
+		if code=='XXXX':
 			self._zhengma=None
-			self.zmtp=None
 		else:
-			self._zhengma=code[0]
-			self.zmtp=code[1]
+			self._zhengma=code
 
 	@property
 	def zmtp(self):
-		return self._zhengma_type
+		if self._zhengma_type==None:
+			return None
+		else:
+			return self._zhengma_type
 
 	@zmtp.setter
 	def zmtp(self, type):
-		self._zhengma_type=type
+		if type=='XXXX':
+			self._zhengma_type=None
+		else:
+			self._zhengma_type=type
 
 if __name__=='__main__':
 	c=Char('王', ['(龜)', 'hn', 'sl', '/c', 'k', 'l', 'qy', '12'])

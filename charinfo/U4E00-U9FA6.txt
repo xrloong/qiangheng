@@ -75,7 +75,7 @@ U+4E47	乇	(龜)	hp	XXXX	XXXX	XXXX	XXXX	mhd	12
 U+4E48	么	(龜)	hi	XXXX	XXXX	XXXX	XXXX	mzs	21
 U+4E49	义	(龜)	ik	XXXX	XXXX	XXXX	XXXX	sos	21
 U+4E4A	乊	(龜)	hc	XXXX	XXXX	XXXX	XXXX	mud	21
-U+4E4B	之	(龜)	ino	XXXX	XXXX	XXXX	XXXX	w	1
+U+4E4B	之	(龜)	ino	XXXX	XXXX	XXXX	XXXX	w	11
 U+4E4C	乌	(龜)	pvsm	XXXX	XXXX	XXXX	XXXX	rza	13
 U+4E4D	乍	(龜)	os	XXXX	XXXX	XXXX	XXXX	maid	22
 U+4E4E	乎	(龜)	hfd	XXXX	XXXX	XXXX	XXXX	mua	21
@@ -160,7 +160,7 @@ U+4E9C	亜	(龜)	mllm	qea	XXXX	oe	e	bdjk	32
 U+4E9D	亝	(志 厽二)
 U+4E9E	亞	(龜)	mllm	aea	e1re	oe	e	bza	13
 U+4E9F	亟	(龜)	nem	gd;a	eboe	koue	e	yjxa	41
-U+4EA0	亠	(龜)	im	y	k	l	e	s	1
+U+4EA0	亠	(龜)	im	y	k	l	e	s	11
 U+4EA1	亡	(龜)	yv	ys	kl	f	l	sh	12
 U+4EA2	亢	(志 亠几)
 U+4EA3	亣	(龜)	yll	ye	y11	lr	i	snd	21
@@ -911,8 +911,8 @@ U+5185	内	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ldod	22
 U+5186	円	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	ldia	32
 U+5187	冇	(龜)	kb	XXXX	XXXX	XXXX	XXXX	gdld	22
 U+5188	冈	(同 冂乂)
-U+5189	冉	(龜)	XXXX	XXXX	mf	XXXX	XXXX	ldb	32
-U+518A	冊	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	lde	32
+U+5189	冉	(龜)	XXXX	XXXX	mf	XXXX	XXXX	ldb	22
+U+518A	冊	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	lde	22
 U+518B	冋	(同 冂口)
 U+518C	册	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	qqa	31
 U+518D	再	(志 一冉)
@@ -6453,7 +6453,7 @@ U+6704	朄	(好 申柬)
 U+6705	朅	(好 去曷)
 U+6706	朆	(好 曾勿)
 U+6707	朇	(好 會卑)
-U+6708	月	(龜)	b	u	j	u	e	XXXX	XXXX
+U+6708	月	(龜)	b	u	j	u	e	q	11
 U+6709	有	(龜)	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX	XXXX
 U+670A	朊	(好 月元)
 U+670B	朋	(林 月)

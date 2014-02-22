@@ -162,12 +162,63 @@ class ZhengMa(NoneIM):
 	def __init__(self):
 		pass
 
-	def genTable(self, chdict):
-		table=[]
-		for chname, ch in chdict.items():
-			if ch.zm:
-				table.append([ch.zm, chname])
-		return table
+	def getCode(self, ch):
+		if ch.zm:
+			return ch.zm
+
+	def setCharTree(self, ch, chdict):
+		if ch.zm:
+			return
+
+		complist=self.getAllComp(ch, chdict)
+
+		for tmpch in complist:
+			self.setCharTree(tmpch, chdict)
+
+		def codeToList(code, type):
+			if not code or not type:
+				return None
+			if type[0]=='1':
+				return [[code, type]]
+			elif type[0]=='2':
+				if type[1]=='1':
+					return [[code[0], type], [code[1:], type]]
+				elif type[1]=='2':
+					return [[code[0:2], type], [code[2:], type]]
+			elif type[0]=='3':
+				if type[1]=='1':
+					return [[code[0], type], [code[1], type], [code[2:], type]]
+				elif type[1]=='2':
+					return [[code[0:2], type], [code[2], type], [code[3], type]]
+			elif type[0]=='4':
+				if type[1]=='1':
+					return [[code[0], type], [code[1], type], [code[2], type], [code[3], type]]
+				elif type[1]=='2':
+					return [[code[0:2], type], [code[2], type], [code[3], type]]
+
+		def listToCode(l):
+			nmCompList=sum(map(lambda x: int(x[1][0]), l))
+			if nmCompList==1:
+				return [l[0][0], '1'+l[0][1][1]]
+			elif nmCompList==2:
+				return [l[0][0]+l[1][0], '2'+l[0][1][1]]
+			elif nmCompList==3:
+				if l[0][1][1]=='1':
+					return [l[0][0][0]+l[-2][0][0]+l[-1][0][0:2], '3'+l[0][1][1]]
+				else:
+					return [l[0][0][0:2]+l[-2][0][0]+l[-1][0][0], '3'+l[0][1][1]]
+			elif nmCompList>=4:
+				if l[0][1][1]=='1':
+					return [l[0][0][0]+l[1][0][0]+l[-2][0][0]+l[-1][0][0], '4'+l[0][1][1]]
+				else:
+					return [l[0][0][0:2]+l[-2][0][0]+l[-1][0][0], '4'+l[0][1][1]]
+
+		if all(complist):
+			ctlist=list(map(lambda c: codeToList(c.zm, c.zmtp), complist))
+			if complist and all(ctlist):
+				code, type=listToCode(sum(ctlist, []))
+				ch.zm=code
+				ch.zmtp=type
 
 if __name__=='__main__':
 	pass
