@@ -2,7 +2,7 @@
 
 import sys
 from .CharacterDescription import CharacterDescription
-from .operator import OperatorManager
+from gear import OperatorManager
 from parser import QHParser
 from xml.etree import ElementTree
 
@@ -11,20 +11,13 @@ class CharDescriptionManager:
 		self.templateDB={}
 		self.characterDB={}
 
-		def charDescRearranger(charDesc):
-			return self.operationMgr.rearrangeDesc(charDesc)
-
 		def charDescQueryer(charName):
 			charDesc=self.characterDB.get(charName, [])
 			return charDesc
 
-		imName=imModule.IMInfo.IMName
 		self.operationMgr=OperatorManager.OperatorManager(self)
 
 		self.charDescQueryer=charDescQueryer
-		self.charDescRearranger=charDescRearranger
-
-		self.operatorGenerator=self.operationMgr.getOperatorGenerator()
 
 		self.parser=QHParser.QHParser(self.operationMgr.getOperatorGenerator())
 
@@ -91,8 +84,6 @@ class CharDescriptionManager:
 			origCharDesc.extendStructureList(charDesc.getStructureList())
 
 	def adjustData(self):
-		self.operationMgr.adjustTemplate()
-
 		for charName in self.characterDB.keys():
 #			print("name: %s"%charName, file=sys.stderr);
 			charDesc=self.characterDB.get(charName)

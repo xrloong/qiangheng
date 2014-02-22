@@ -97,12 +97,3 @@ class OperatorManager:
 			rearrangeInfo=self.rearrangeInfoDictForBuiltinOperator.get(operatorName)
 		return rearrangeInfo
 
-	def adjustTemplate(self):
-		pass
-
-#OperatorManager_AR=OperatorManager
-#OperatorManager_BS=OperatorManager
-#OperatorManager_CJ=OperatorManager
-#OperatorManager_DY=OperatorManager
-#OperatorManager_ZM=OperatorManager
-
