@@ -4,7 +4,9 @@
 import sys
 
 #from xml.etree import ElementTree as ET
-import lxml.etree as ET
+from xml.etree import cElementTree as ET
+#import lxml.etree as ET
+#import lxml.objectify as ET
 from optparse import OptionParser
 from state import StateManager
 from im.IMMgr import IMMgr
@@ -44,8 +46,7 @@ class QiangHeng:
 			pass
 
 	def readConfig(self, configFileName):
-		f=open(configFileName, encoding='utf-8-sig')
-		xmlNode=ET.parse(f)
+		xmlNode=ET.parse(configFileName)
 		rootNode=xmlNode.getroot()
 
 		configNode=rootNode.find('設定')
@@ -58,8 +59,7 @@ class QiangHeng:
 		return [imProp, toTemplateList, toComponentList, toCodeList]
 
 	def getConfigFiles(self, configFileName):
-		f=open(configFileName, encoding='utf-8-sig')
-		xmlNode=ET.parse(f)
+		xmlNode=ET.parse(configFileName)
 		rootNode=xmlNode.getroot()
 		configFileNode=rootNode.find('設定檔')
 
@@ -126,9 +126,9 @@ class QiangHeng:
 			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "頻率":x.getFrequency(), "類型":x.getVariance()}
 			ET.SubElement(charGroup, "對應", attrib)
 		xmlNode=ET.ElementTree(rootNode)
-		print(ET.tounicode(xmlNode, pretty_print=True))
-#		ET.dump(xmlNode)
-#		xmlNode.write(sys.stdout)
+#		print(ET.tounicode(xmlNode, pretty_print=True))
+		ET.dump(xmlNode)
+#		xmlNode.write(sys.stdout, encoding="unicode")
 
 	def toTXT(self, codeMappingInfoList):
 		table="\n".join(sorted(map(lambda x : '{0}\t{1}'.format(*x.getKey()), codeMappingInfoList)))

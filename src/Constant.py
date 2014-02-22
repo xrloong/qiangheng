@@ -1,6 +1,4 @@
 
-FILE_ENCODING='utf-8-sig'
-
 TAG_VERSION='版本號'
 
 TAG_FILE_TYPE='文件類型'

@@ -4,7 +4,9 @@ import sys
 from .CharacterDescription import CharacterDescription
 from parser import QHParser
 #from xml.etree import ElementTree as ET
-import lxml.etree as ET
+from xml.etree import cElementTree as ET
+#import lxml.etree as ET
+#import lxml.objectify as ET
 import Constant
 
 class CharacterDescriptionManager:
@@ -36,20 +38,19 @@ class CharacterDescriptionManager:
 	def loadData(self, toTemplateList, toComponentList):
 		templateDB={}
 		for filename in toTemplateList:
-			tmpTemplateDB=self.loadTemplateFromXML(filename, fileencoding=Constant.FILE_ENCODING)
+			tmpTemplateDB=self.loadTemplateFromXML(filename)
 			templateDB.update(tmpTemplateDB)
 
 		self.operationManager.setTemplateDB(templateDB)
 
 		for filename in toComponentList:
-			self.loadFromXML(filename, fileencoding=Constant.FILE_ENCODING)
+			self.loadFromXML(filename)
 
 		structureRearranger=self.operationManager.getStructureRearranger()
 		self.adjustData(structureRearranger)
 
-	def loadFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
-		f=open(filename, encoding=fileencoding)
-		xmlNode=ET.parse(f)
+	def loadFromXML(self, filename):
+		xmlNode=ET.parse(filename)
 		rootNode=xmlNode.getroot()
 		charDescList=self.parser.loadCharDescriptionByParsingXML(rootNode)
 		for charDesc in charDescList:
@@ -64,9 +65,8 @@ class CharacterDescriptionManager:
 				self.characterDB[charName]=charDesc
 
 
-	def loadTemplateFromXML(self, filename, fileencoding=Constant.FILE_ENCODING):
-		f=open(filename, encoding=fileencoding)
-		xmlNode=ET.parse(f)
+	def loadTemplateFromXML(self, filename):
+		xmlNode=ET.parse(filename)
 		rootNode=xmlNode.getroot()
 		return self.parser.loadTemplateByParsingXML(rootNode)
 

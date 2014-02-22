@@ -3,7 +3,9 @@ from .CodeInfoEncoder import CodeInfoEncoder
 
 import Constant
 #from xml.etree import ElementTree as ET
-import lxml.etree as ET
+from xml.etree import cElementTree as ET
+#import lxml.etree as ET
+#import lxml.objectify as ET
 from ..gear import OperatorManager
 from gear.CodeVarianceType import CodeVarianceTypeFactory
 
@@ -79,8 +81,7 @@ class RadixParser:
 			self.parseRadixFromXML(filename)
 
 	def parseRadixFromXML(self, filename):
-		f=open(filename, encoding=Constant.FILE_ENCODING)
-		xmlNode=ET.parse(f)
+		xmlNode=ET.parse(filename)
 		rootNode=xmlNode.getroot()
 
 		fileType=self.parseFileType(rootNode)
