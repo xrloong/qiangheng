@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">瑲珩工具</string>
+	<string name="title_item_detail">瑲珩</string>
+	<string name="title_item_list">瑲珩</string>
+
+	<string name="tool_name_namming_stroking">命名筆劃</string>
+	<string name="tool_name_find_common_component">共通部件</string>
+
+	<string name="menu_item_read_description">讀取筆劃描述</string>
+	<string name="menu_item_write_description">輸出筆劃描述</string>
+</resources>
