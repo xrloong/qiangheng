@@ -1,4 +1,5 @@
 import sys
+import Constant
 
 from gear.CharacterProperty import CharacterProperty
 from description.CharacterDescription import CharacterDescription
@@ -19,25 +20,25 @@ class QHParser:
 		return structDesc
 
 	def getDesc_Radix(self, node):
-		name=node.get("置換")
+		name=node.get(Constant.TAG_REPLACEMENT)
 		structDesc=self.generateStructureDescription()
 		structDesc.setReferenceExpression(name)
 		return structDesc
 
 	def getDesc_AssembleChar(self, assembleChar):
 		structDescList=[]
-		filter_lambda=lambda x: x.tag in ["字根", "組字"]
+		filter_lambda=lambda x: x.tag in [Constant.TAG_RADIX, Constant.TAG_COMPOSITION]
 		targetChildNodes=filter(filter_lambda , list(assembleChar))
 		for node in targetChildNodes:
-			if node.tag=="字根":
+			if node.tag==Constant.TAG_RADIX:
 				structDesc=self.getDesc_Radix(node)
-			elif node.tag=="組字":
+			elif node.tag==Constant.TAG_COMPOSITION:
 				structDesc=self.getDesc_AssembleChar(node)
 			else:
 				print("getDesc_AssembleChar: 預期外的標籤。", file=sys.stderr)
 			structDescList.append(structDesc)
 
-		operatorName=assembleChar.get("運算")
+		operatorName=assembleChar.get(Constant.TAG_OPERATOR)
 		if operatorName:
 			comp=self.generateStructureDescription([operatorName, structDescList])
 		else:
@@ -46,7 +47,7 @@ class QHParser:
 		return comp
 
 	def getDesc_StructureList(self, nodeCharacter):
-		assembleCharList=nodeCharacter.findall("組字")
+		assembleCharList=nodeCharacter.findall(Constant.TAG_COMPOSITION)
 		compList=[]
 		for assembleChar in assembleCharList:
 			comp=self.getDesc_AssembleChar(assembleChar)
@@ -58,25 +59,25 @@ class QHParser:
 
 	def getDesc_ParameterList(self, nodeParameter):
 		parameterList=[]
-		targetParameterNodes=nodeParameter.findall("參數")
+		targetParameterNodes=nodeParameter.findall(Constant.TAG_PARAMETER)
 		for node in targetParameterNodes:
-			charName=node.get('名稱')
+			charName=node.get(Constant.TAG_NAME)
 			parameterList.append(charName)
 		return parameterList
 
 	def getDesc_Template_Substitution(self, nodeStructure):
-		assembleChar=nodeStructure.find("組字")
+		assembleChar=nodeStructure.find(Constant.TAG_COMPOSITION)
 		comp=self.getDesc_AssembleChar(assembleChar)
 		return TemplateSubstitutionDescription(comp)
 
 	def getDesc_Template(self, nodeTemplate):
-		templateName=nodeTemplate.get('名稱')
+		templateName=nodeTemplate.get(Constant.TAG_NAME)
 
-		parameterNodeList=nodeTemplate.find("參數列")
+		parameterNodeList=nodeTemplate.find(Constant.TAG_PARAMETER_LIST)
 		parameterNameList=self.getDesc_ParameterList(parameterNodeList)
 
 		substitutionList=[]
-		structureNodes=nodeTemplate.findall("組字結構")
+		structureNodes=nodeTemplate.findall(Constant.TAG_COMPOSITION_STRUCTURE)
 		for node in structureNodes:
 			substitution=self.getDesc_Template_Substitution(node)
 			substitutionList.append(substitution)
@@ -86,7 +87,7 @@ class QHParser:
 	def getDesc_TurtleCharacter(self, nodeCharacter):
 		assembleChar=nodeCharacter
 		infoDict=None
-		codeInfo=assembleChar.find("編碼資訊")
+		codeInfo=assembleChar.find(Constant.TAG_CODE_INFORMATION)
 		if codeInfo is not None:
 			infoDict=codeInfo.attrib
 
@@ -95,7 +96,7 @@ class QHParser:
 		return turtle
 
 	def getDesc_TurtleCharacterList(self, nodeCharacter):
-		assembleCharList=nodeCharacter.findall("組字")
+		assembleCharList=nodeCharacter.findall(Constant.TAG_COMPOSITION)
 		turtleList=[]
 		for assembleChar in assembleCharList:
 			turtle=self.getDesc_TurtleCharacter(assembleChar)
@@ -104,11 +105,11 @@ class QHParser:
 
 	def loadCodeInfoByParsingXML__0_3(self, rootNode):
 		# 用於 0.3 版
-		charGroupNode=rootNode.find("字符集")
-		targetChildNodes=charGroupNode.findall("字符")
+		charGroupNode=rootNode.find(Constant.TAG_CHARACTER_SET)
+		targetChildNodes=charGroupNode.findall(Constant.TAG_CHARACTER)
 		charDescList=[]
 		for node in targetChildNodes:
-			charName=node.get('名稱')
+			charName=node.get(Constant.TAG_NAME)
 			structureList=self.getDesc_TurtleCharacterList(node)
 
 			charProp=CharacterProperty(node.attrib)
@@ -120,25 +121,25 @@ class QHParser:
 
 	def loadTemplateByParsingXML__0_3(self, rootNode):
 		# 用於 0.3 版
-		templateGroupNode=rootNode.find("範本集")
+		templateGroupNode=rootNode.find(Constant.TAG_TEMPLATE_SET)
 		templateDB={}
 		if None!=templateGroupNode:
-			targetChildNodes=templateGroupNode.findall("範本")
+			targetChildNodes=templateGroupNode.findall(Constant.TAG_TEMPLATE)
 			for node in targetChildNodes:
-				templateName=node.get('名稱')
+				templateName=node.get(Constant.TAG_NAME)
 				templateDesc=self.getDesc_Template(node)
 				templateDB[templateName]=templateDesc
 		return templateDB
 
 	def loadCharDescriptionByParsingXML__0_3(self, rootNode):
 		# 用於 0.3 版
-		charGroupNode=rootNode.find("字符集")
-		targetChildNodes=charGroupNode.findall("字符")
+		charGroupNode=rootNode.find(Constant.TAG_CHARACTER_SET)
+		targetChildNodes=charGroupNode.findall(Constant.TAG_CHARACTER)
 
 		charDescList=[]
 		for node in targetChildNodes:
 			structureList=self.getDesc_StructureList(node)
-			charName=node.get('名稱')
+			charName=node.get(Constant.TAG_NAME)
 
 			charProp=CharacterProperty(node.attrib)
 			charDesc=CharacterDescription(charName, charProp)
@@ -148,21 +149,21 @@ class QHParser:
 		return charDescList
 
 	def loadCodeInfoByParsingXML(self, node):
-		version=node.get('版本號')
+		version=node.get(Constant.TAG_VERSION)
 		propertyDB={}
 		if version=='0.3':
 			charDescList=self.loadCodeInfoByParsingXML__0_3(node)
 		return charDescList
 
 	def loadTemplateByParsingXML(self, node):
-		version=node.get('版本號')
+		version=node.get(Constant.TAG_VERSION)
 		templateDB={}
 		if version=='0.3':
 			templateDB=self.loadTemplateByParsingXML__0_3(node)
 		return templateDB
 
 	def loadCharDescriptionByParsingXML(self, node):
-		version=node.get('版本號')
+		version=node.get(Constant.TAG_VERSION)
 		charDescList=[]
 		if version=='0.3':
 			charDescList=self.loadCharDescriptionByParsingXML__0_3(node)
