@@ -26,7 +26,7 @@ class SPCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	@classmethod
-	def encodeAsEast(cls, codeInfoList):
+	def encodeAsSparrow(cls, codeInfoList):
 		"""運算 "雀" """
 		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo

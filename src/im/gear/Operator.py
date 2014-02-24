@@ -52,7 +52,7 @@ class TemplateOperator(Operator):
 
 OperatorTurtle=BuiltinOperator('龜')
 OperatorLoong=BuiltinOperator('龍')
-OperatorEast=BuiltinOperator('雀')
+OperatorSparrow=BuiltinOperator('雀')
 OperatorEqual=BuiltinOperator('爲')
 
 OperatorSilkworm=BuiltinOperator('蚕')

@@ -30,7 +30,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	@classmethod
-	def encodeAsEast(cls, codeInfoList):
+	def encodeAsSparrow(cls, codeInfoList):
 		"""運算 "雀" """
 		direction='$'
 		cjLumpList=cls.convertCodeInfoListToRadixList(direction, codeInfoList)

@@ -29,7 +29,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	@classmethod
-	def encodeAsEast(cls, codeInfoList):
+	def encodeAsSparrow(cls, codeInfoList):
 		"""運算 "雀" """
 		print("不合法的運算：雀", file=sys.stderr)
 		codeInfo=cls.encodeAsInvalidate(codeInfoList)
