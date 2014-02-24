@@ -98,7 +98,7 @@ class CodeInfoEncoder:
 
 	@classmethod
 	def encodeAsEast(cls, codeInfoList):
-		"""運算 "東" """
+		"""運算 "雀" """
 		codeInfo=cls.generateDefaultCodeInfo()
 		return codeInfo
 

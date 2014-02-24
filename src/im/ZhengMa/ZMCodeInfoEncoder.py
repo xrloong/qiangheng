@@ -31,7 +31,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 
 	@classmethod
 	def encodeAsEast(cls, codeInfoList):
-		"""運算 "東" """
+		"""運算 "雀" """
 		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 

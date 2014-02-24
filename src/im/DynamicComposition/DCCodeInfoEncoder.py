@@ -91,8 +91,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	@classmethod
 	def encodeAsEast(cls, codeInfoList):
-		"""運算 "東" """
-		print("不合法的運算：東", file=sys.stderr)
+		"""運算 "雀" """
+		print("不合法的運算：雀", file=sys.stderr)
 		codeInfo=cls.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 

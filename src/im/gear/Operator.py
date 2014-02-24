@@ -43,7 +43,7 @@ class TemplateOperator(Operator):
 
 # 龜
 # 爲
-# 龍東
+# 龍雀
 # 蚕鴻回
 # 起廖載斗
 # 同函區左
@@ -52,7 +52,7 @@ class TemplateOperator(Operator):
 
 OperatorTurtle=BuiltinOperator('龜')
 OperatorLoong=BuiltinOperator('龍')
-OperatorEast=BuiltinOperator('東')
+OperatorEast=BuiltinOperator('雀')
 OperatorEqual=BuiltinOperator('爲')
 
 OperatorSilkworm=BuiltinOperator('蚕')
