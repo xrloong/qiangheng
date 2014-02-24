@@ -12,6 +12,7 @@ class SPCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.toCode(), codeInfoList))
 		return isAllWithCode
 
+
 	@classmethod
 	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """

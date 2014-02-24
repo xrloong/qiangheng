@@ -12,6 +12,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=codeInfoList and all(map(lambda x: x.getRtList(), codeInfoList))
 		return isAllWithCode
 
+
 	@classmethod
 	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """

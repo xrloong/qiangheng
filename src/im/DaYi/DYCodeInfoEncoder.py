@@ -14,6 +14,7 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.getMainCodeList(), codeInfoList))
 		return isAllWithCode
 
+
 	@classmethod
 	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """
@@ -40,6 +41,7 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		"""運算 "爲" """
 		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
+
 
 	@classmethod
 	def encodeAsLoop(cls, codeInfoList):
