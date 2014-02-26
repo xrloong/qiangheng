@@ -7,7 +7,7 @@ class BSRadixParser(RadixParser):
 	RADIX_SEPERATOR=','
 
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
-	ATTRIB_SINGLE_CODE='獨體編碼'
+	ATTRIB_DIGITAL='基本數字'
 	ATTRIB_SUPPLEMENTARY_CODE='嘸蝦米補碼'
 
 	# 多型
@@ -22,16 +22,16 @@ class BSRadixParser(RadixParser):
 		if elementCodeInfo is not None:
 			infoDict=elementCodeInfo.attrib
 
-		singletonCode=infoDict.get(BSRadixParser.ATTRIB_SINGLE_CODE)
 		strCodeList=infoDict.get(BSRadixParser.ATTRIB_CODE_EXPRESSION)
 		supplementCode=infoDict.get(BSRadixParser.ATTRIB_SUPPLEMENTARY_CODE)
+		isDigital=True if infoDict.get(BSRadixParser.ATTRIB_DIGITAL) != None else False
 
 		codeList=None
 		if strCodeList!=None:
 			codeList=strCodeList.split(BSRadixParser.INSTALLMENT_SEPERATOR)
 			codeList=list(map(lambda x: x.split(BSRadixParser.RADIX_SEPERATOR), codeList))
 
-		codeInfo=BSCodeInfo(singletonCode, codeList, supplementCode)
+		codeInfo=BSCodeInfo(codeList, supplementCode, isDigital)
 		return codeInfo
 
 
