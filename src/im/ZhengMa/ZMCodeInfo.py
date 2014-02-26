@@ -1,25 +1,20 @@
 from ..base.CodeInfo import CodeInfo
 
 class ZMCodeInfo(CodeInfo):
-	def __init__(self, singleCode, rtList, extraCode):
+	def __init__(self, rtList, extraCode):
 		super().__init__()
 
 		self._zm_code=''
 		self._codeList=rtList
 
 		self._zm_extra=extraCode
-		self._zm_single=singleCode
 
 	@staticmethod
 	def generateDefaultCodeInfo(rtlist):
-		codeInfo=ZMCodeInfo(None, rtlist, None)
+		codeInfo=ZMCodeInfo(rtlist, None)
 		return codeInfo
 
 	def toCode(self):
-		singletonCode=self.getSingletonCode()
-		if singletonCode:
-			return singletonCode
-
 		rtlist=self.getRtList()
 		codeList=self.convertRadixListToCodeList(rtlist)
 		ans=self.computeCharacterCode(codeList)
@@ -67,9 +62,6 @@ class ZMCodeInfo(CodeInfo):
 		else:
 			ans=''
 		return ans
-
-	def getSingletonCode(self):
-		return self._zm_single
 
 	def getExtraCode(self):
 		return self._zm_extra
