@@ -8,7 +8,6 @@ import sys
 
 class CJRadixParser(RadixParser):
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
-	ATTRIB_SINGLE_CODE='獨體編碼'
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
@@ -23,12 +22,10 @@ class CJRadixParser(RadixParser):
 			infoDict=elementCodeInfo.attrib
 
 		direction='*'
-		singleCode=infoDict.get(CJRadixParser.ATTRIB_SINGLE_CODE)
-		rtlist=[]
 		description=infoDict.get(CJRadixParser.ATTRIB_CODE_EXPRESSION)
 
 		cjLumpList=self.parseCJLumpList(description)
-		codeInfo=CJCodeInfo(singleCode, direction, cjLumpList)
+		codeInfo=CJCodeInfo(direction, cjLumpList)
 
 		return codeInfo
 
@@ -36,22 +33,24 @@ class CJRadixParser(RadixParser):
 		cjLumpList=[]
 
 		if description!=None:
-			matchResult=re.match("(\w*)(\[(\w*)\](\w*))?", description)
-			groups=matchResult.groups()
-			frontCode=groups[0]
-			tailingSurround=groups[2]
-			rearCode=groups[3]
-			if tailingSurround==None:
-				tailingSurround=""
+			description_list=description.split(",")
+			for desc in description_list:
+				matchResult=re.match("(\w*)(\[(\w*)\](\w*))?", desc)
+				groups=matchResult.groups()
+				frontCode=groups[0]
+				tailingSurround=groups[2]
+				rearCode=groups[3]
+				if tailingSurround==None:
+					tailingSurround=""
 
-			matchResult=re.match("([A-Z]*)([a-z]*)", tailingSurround)
-			groups=matchResult.groups()
+				matchResult=re.match("([A-Z]*)([a-z]*)", tailingSurround)
+				groups=matchResult.groups()
 
-			containerCode=groups[0]
-			interiorCode=groups[1]
+				containerCode=groups[0]
+				interiorCode=groups[1]
 
-			cjLump=CJLump.generate(frontCode, containerCode, interiorCode)
-			cjLumpList.append(cjLump)
+				cjLump=CJLump.generate(frontCode, containerCode, interiorCode)
+				cjLumpList.append(cjLump)
 
 		return cjLumpList
 
