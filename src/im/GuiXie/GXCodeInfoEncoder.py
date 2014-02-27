@@ -11,6 +11,7 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.toCode(), codeInfoList))
 		return isAllWithCode
 
+
 	@classmethod
 	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """
@@ -24,8 +25,8 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	@classmethod
-	def encodeAsEast(cls, codeInfoList):
-		"""運算 "東" """
+	def encodeAsSparrow(cls, codeInfoList):
+		"""運算 "雀" """
 		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 

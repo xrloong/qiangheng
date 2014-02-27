@@ -16,6 +16,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.getBSCodeList(), codeInfoList))
 		return isAllWithCode
 
+
 	@classmethod
 	def encodeAsTurtle(cls, codeInfoList):
 		"""運算 "龜" """
@@ -34,8 +35,8 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	@classmethod
-	def encodeAsEast(cls, codeInfoList):
-		"""運算 "東" """
+	def encodeAsSparrow(cls, codeInfoList):
+		"""運算 "雀" """
 		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
@@ -44,6 +45,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		"""運算 "爲" """
 		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
+
 
 	@classmethod
 	def encodeAsHan(cls, codeInfoList):

@@ -10,7 +10,7 @@ class OperatorManager:
 			'龜':Operator.OperatorTurtle,
 			'爲':Operator.OperatorEqual,
 			'龍':Operator.OperatorLoong,
-			'東':Operator.OperatorEast,
+			'雀':Operator.OperatorSparrow,
 			'蚕':Operator.OperatorSilkworm,
 			'鴻':Operator.OperatorGoose,
 			'回':Operator.OperatorLoop,

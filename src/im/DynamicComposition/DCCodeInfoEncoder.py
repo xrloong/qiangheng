@@ -74,28 +74,34 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=cls.generateDefaultCodeInfo(strokeGroupDB)
 		return codeInfo
 
+
 	@classmethod
 	def encodeAsTurtle(cls, codeInfoList):
+		"""運算 "龜" """
 		print("不合法的運算：龜", file=sys.stderr)
 		codeInfo=cls.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
 	@classmethod
 	def encodeAsLoong(cls, codeInfoList):
+		"""運算 "龍" """
 		print("不合法的運算：龍", file=sys.stderr)
 		codeInfo=cls.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
 	@classmethod
-	def encodeAsEast(cls, codeInfoList):
-		print("不合法的運算：東", file=sys.stderr)
+	def encodeAsSparrow(cls, codeInfoList):
+		"""運算 "雀" """
+		print("不合法的運算：雀", file=sys.stderr)
 		codeInfo=cls.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
 	@classmethod
 	def encodeAsEqual(cls, codeInfoList):
+		"""運算 "爲" """
 		firstCodeInfo=codeInfoList[0]
 		return firstCodeInfo
+
 
 	@classmethod
 	def encodeAsLoop(cls, codeInfoList):

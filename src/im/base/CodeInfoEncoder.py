@@ -16,8 +16,8 @@ class CodeInfoEncoder:
 				codeInfo=cls.encodeAsTurtle(codeInfoList)
 			elif Operator.OperatorLoong.equals(operator):
 				codeInfo=cls.encodeAsLoong(codeInfoList)
-			elif Operator.OperatorEast.equals(operator):
-				codeInfo=cls.encodeAsEast(codeInfoList)
+			elif Operator.OperatorSparrow.equals(operator):
+				codeInfo=cls.encodeAsSparrow(codeInfoList)
 			elif Operator.OperatorEqual.equals(operator):
 				codeInfo=cls.encodeAsEqual(codeInfoList)
 
@@ -97,8 +97,8 @@ class CodeInfoEncoder:
 		return codeInfo
 
 	@classmethod
-	def encodeAsEast(cls, codeInfoList):
-		"""運算 "東" """
+	def encodeAsSparrow(cls, codeInfoList):
+		"""運算 "雀" """
 		codeInfo=cls.generateDefaultCodeInfo()
 		return codeInfo
 
