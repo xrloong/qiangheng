@@ -10,6 +10,24 @@ IBUS_PATH	=	$(TABLES_PATH)/ibus
 GCIN_PATH	=	$(TABLES_PATH)/gcin
 OVIM_PATH	=	$(TABLES_PATH)/ovim
 MSIM_PATH	=	$(TABLES_PATH)/msim
+QHDATA_PATH			=	qhdata
+QHDATA_MAIN_PATH		=	$(QHDATA_PATH)/main
+QHDATA_FREQ_PATH		=	$(QHDATA_PATH)/frequency
+QHDATA_MAIN_COMP_PATH		=	$(QHDATA_MAIN_PATH)/component
+QHDATA_TEMPLATE_FILE		=	$(QHDATA_PATH)/template/main.xml
+QHDATA_STYLE_PATH		=	$(QHDATA_PATH)/style
+QHDATA_COMP_PATH		=	$(QHDATA_PATH)/component
+QHDATA_RADIX_PATH		=	$(QHDATA_PATH)/radix
+QHDATA_STYLE_FILE		=	standard.xml
+QHDATA_STYLE_TRADITIONAL_FILE	=	traditional.xml
+QHDATA_STYLE_SIMPLIFIED_FILE	=	simplified.xml
+GEN_PATH			=	gen
+GEN_QHDATA_PATH			=	$(GEN_PATH)/$(QHDATA_PATH)
+GEN_QHDATA_MAIN_PATH		=	$(GEN_QHDATA_PATH)/main
+GEN_QHDATA_FREQ_PATH		=	$(GEN_QHDATA_MAIN_PATH)/frequency
+GEN_QHDATA_MAIN_COMP_PATH	=	$(GEN_QHDATA_MAIN_PATH)/component
+GEN_QHDATA_TEMPLATE_FILE	=	$(GEN_QHDATA_MAIN_PATH)/template.xml
+GEN_QHDATA_STYLE_FILE		=	style.xml
 PROFILE_PATH	=	profiles
 TARBALLS_PATH	=	tarballs
 XFORM		=	--xform="s:^:qiangheng/:"
@@ -27,13 +45,72 @@ RELEASE_TYPE_LIST	=	standard all
 
 all: xml
 
+prepare-main:
+	mkdir -p $(GEN_QHDATA_MAIN_PATH) $(GEN_QHDATA_FREQ_PATH) $(GEN_QHDATA_MAIN_COMP_PATH)
+	cp $(QHDATA_MAIN_PATH)/CJK.xml $(GEN_QHDATA_MAIN_PATH)/CJK.xml
+	cp $(QHDATA_MAIN_PATH)/CJK-A.xml $(GEN_QHDATA_MAIN_PATH)/CJK-A.xml
+	cp $(QHDATA_MAIN_COMP_PATH)/CJK.xml $(GEN_QHDATA_MAIN_COMP_PATH)/CJK.xml
+	cp $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.xml
+	cp $(QHDATA_FREQ_PATH)/CJK.xml $(GEN_QHDATA_FREQ_PATH)/CJK.xml
+	cp $(QHDATA_FREQ_PATH)/CJK-A.xml $(GEN_QHDATA_FREQ_PATH)/CJK-A.xml
+	cp $(QHDATA_TEMPLATE_FILE) $(GEN_QHDATA_TEMPLATE_FILE)
+
+prepare-tranditional:
+	cp $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_FILE) $(GEN_QHDATA_MAIN_PATH)/$(GEN_QHDATA_STYLE_FILE)
+	cp $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_TRADITIONAL_FILE) $(GEN_QHDATA_PATH)/$(IM)/$(GEN_QHDATA_STYLE_FILE)
+
+prepare-simplified:
+	cp $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_FILE) $(GEN_QHDATA_MAIN_PATH)/$(GEN_QHDATA_STYLE_FILE)
+	cp $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_SIMPLIFIED_FILE) $(GEN_QHDATA_PATH)/$(IM)/$(GEN_QHDATA_STYLE_FILE)
+
+prepare-im:
+	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/component/ $(GEN_QHDATA_PATH)/$(IM)/radix/
+	cp $(QHDATA_COMP_PATH)/CJK/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/component/CJK.xml
+	cp $(QHDATA_COMP_PATH)/CJK-A/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/component/CJK-A.xml
+	cp $(QHDATA_RADIX_PATH)/CJK/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml
+	cp $(QHDATA_RADIX_PATH)/CJK-A/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml
+
+prepare-ar:
+	mkdir -p $(GEN_QHDATA_PATH)/ar
+	make prepare-tranditional IM=ar
+	make prepare-im IM=ar
+
+prepare-bs:
+	mkdir -p $(GEN_QHDATA_PATH)/bs
+	make prepare-tranditional IM=bs
+	make prepare-im IM=bs
+
+prepare-cj:
+	mkdir -p $(GEN_QHDATA_PATH)/cj
+	make prepare-tranditional IM=cj
+	make prepare-im IM=cj
+
+prepare-dy:
+	mkdir -p $(GEN_QHDATA_PATH)/dy
+	make prepare-tranditional IM=dy
+	make prepare-im IM=dy
+
+prepare-zm:
+	mkdir -p $(GEN_QHDATA_PATH)/zm
+	make prepare-simplified IM=zm
+	make prepare-im IM=zm
+
+prepare-dc:
+	mkdir -p $(GEN_QHDATA_PATH)/dc
+	make prepare-tranditional IM=dc
+	make prepare-im IM=dc
+
+prepare:
+	make prepare-main
+	make prepare-ar prepare-bs prepare-cj prepare-dy prepare-zm prepare-dc
+
 $(XML_PATH):
 xml:
 	mkdir -p $(XML_PATH)
 	for im in $(IMLIST);\
 	do\
 		echo $$im;\
-		time src/qiangheng.py -c qhdata/config/$$im.xml --format xml |\
+		time src/qiangheng.py -i $$im --format xml |\
 			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
 	done
 	touch $(XML_PATH)
@@ -172,6 +249,7 @@ python-fontforge:
 
 clean:
 	rm -rf $(ICON_PLATFORM_PATH)
+	rm -rf $(GEN_PATH)
 	rm -rf tables/ tmp/ tarballs/ font/qhdc.ttf
 	rm -f `find src -name "*.pyc"`
 	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log tex/*.pdf

@@ -3,9 +3,7 @@ class IMMgr:
 		pass
 
 	@staticmethod
-	def getIMPackage(imProp):
-		imName=imProp['名稱']
-
+	def getIMPackage(imName):
 		if imName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
 			imName='倉頡'
 		elif imName in ['行', '行列', '行列輸入法', 'array', 'ar',]:

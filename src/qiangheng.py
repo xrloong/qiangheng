@@ -12,7 +12,28 @@ from hanzi.HanZiNetwork import HanZiNetwork
 
 class QiangHeng:
 	def __init__(self, options):
-		configFile=options.config_file
+		inputMethod=options.input_method
+		toTemplateList = [
+			'gen/qhdata/main/template.xml',
+		]
+		toComponentList = [
+			'gen/qhdata/main/frequency/CJK.xml',
+			'gen/qhdata/main/frequency/CJK-A.xml',
+
+			'gen/qhdata/main/CJK.xml',
+			'gen/qhdata/main/CJK-A.xml',
+			'gen/qhdata/main/component/CJK.xml',
+			'gen/qhdata/main/component/CJK-A.xml',
+			'gen/qhdata/main/style.xml',
+			'gen/qhdata/%s/style.xml'%inputMethod,
+			'gen/qhdata/%s/component/CJK.xml'%inputMethod,
+			'gen/qhdata/%s/component/CJK-A.xml'%inputMethod,
+		]
+		toCodeList = [
+			'gen/qhdata/%s/radix/CJK.xml'%inputMethod,
+			'gen/qhdata/%s/radix/CJK-A.xml'%inputMethod,
+		]
+		imPackage=IMMgr.getIMPackage(inputMethod)
 
 		output_format=options.output_format
 		isFormatXML=(output_format=='xml')
@@ -23,10 +44,6 @@ class QiangHeng:
 		quiet=options.quiet or isFormatQuiet
 		isToOutput=not quiet
 
-		configList=ConfigParser.ConfigParser().readConfig(configFile)
-		[imProp, toTemplateList, toComponentList, toCodeList]=configList
-
-		imPackage=IMMgr.getIMPackage(imProp)
 		StateManager.setIMPackage(imPackage)
 
 		StateManager.getCodeInfoManager().loadRadix(toCodeList)
@@ -75,7 +92,7 @@ class QiangHeng:
 
 def main():
 	oparser = OptionParser()
-	oparser.add_option("-c", "--config", dest="config_file", help="輸入法設定檔", default="qhdata/config/default.xml")
+	oparser.add_option("-i", "--im", "--input-method", dest="input_method", help="輸入法", default="cj")
 	oparser.add_option("--format", type="choice", choices=["xml", "yaml", "text", "quiet"], dest="output_format", help="輸出格式，可能的選項有：xml、yaml、text、quiet", default="text")
 	oparser.add_option("-q", "--quiet", action="store_true", dest="quiet")
 	(options, args) = oparser.parse_args()
