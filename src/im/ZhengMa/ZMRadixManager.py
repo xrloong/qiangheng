@@ -1,9 +1,9 @@
 from .ZMCodeInfo import ZMCodeInfo
 from .ZMCodeInfoEncoder import ZMCodeInfoEncoder
-from ..base.RadixManager import RadixParser
+from ..base.RadixManager import RadixParserYAML
 
 
-class ZMRadixParser(RadixParser):
+class ZMRadixParser(RadixParserYAML):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
@@ -18,9 +18,7 @@ class ZMRadixParser(RadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo=radixInfo.getCodeElement()
 
-		infoDict={}
-		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo.attrib
+		infoDict=elementCodeInfo
 
 		extra_code=infoDict.get(ZMRadixParser.ATTRIB_SUPPLEMENTARY_CODE)
 		strCodeList=infoDict.get(ZMRadixParser.ATTRIB_CODE_EXPRESSION)

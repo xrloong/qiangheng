@@ -1,8 +1,8 @@
 from .DYCodeInfo import DYCodeInfo
 from .DYCodeInfoEncoder import DYCodeInfoEncoder
-from ..base.RadixManager import RadixParser
+from ..base.RadixManager import RadixParserYAML
 
-class DYRadixParser(RadixParser):
+class DYRadixParser(RadixParserYAML):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
@@ -16,9 +16,7 @@ class DYRadixParser(RadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo=radixInfo.getCodeElement()
 
-		infoDict={}
-		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo.attrib
+		infoDict=elementCodeInfo
 
 		strCodeList=infoDict.get(DYRadixParser.ATTRIB_CODE_EXPRESSION)
 

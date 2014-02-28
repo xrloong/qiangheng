@@ -67,44 +67,51 @@ prepare-im:
 	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/component/ $(GEN_QHDATA_PATH)/$(IM)/radix/
 	cp $(QHDATA_COMP_PATH)/CJK/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/component/CJK.xml
 	cp $(QHDATA_COMP_PATH)/CJK-A/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/component/CJK-A.xml
-	cp $(QHDATA_RADIX_PATH)/CJK/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml
-	cp $(QHDATA_RADIX_PATH)/CJK-A/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml
+
+prepare-im-general:
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_RADIX_PATH)/CJK/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_RADIX_PATH)/CJK-A/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml
 
 prepare-ar:
 	mkdir -p $(GEN_QHDATA_PATH)/ar
 	make prepare-tranditional IM=ar
-	make prepare-im IM=ar
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_RADIX_PATH)/CJK/ar.xml > $(GEN_QHDATA_PATH)/ar/radix/CJK.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_RADIX_PATH)/CJK-A/ar.xml > $(GEN_QHDATA_PATH)/ar/radix/CJK-A.yaml
+	make prepare-im prepare-im-general IM=ar
 
 prepare-bs:
 	mkdir -p $(GEN_QHDATA_PATH)/bs
 	make prepare-tranditional IM=bs
-	make prepare-im IM=bs
+	make prepare-im prepare-im-general IM=bs
 
 prepare-cj:
 	mkdir -p $(GEN_QHDATA_PATH)/cj
 	make prepare-tranditional IM=cj
-	make prepare-im IM=cj
+	make prepare-im prepare-im-general IM=cj
 
 prepare-dy:
 	mkdir -p $(GEN_QHDATA_PATH)/dy
 	make prepare-tranditional IM=dy
-	make prepare-im IM=dy
+	make prepare-im prepare-im-general IM=dy
+
+prepare-fc:
+	mkdir -p $(GEN_QHDATA_PATH)/fc
+	make prepare-tranditional IM=fc
+	make prepare-im prepare-im-general IM=fc
 
 prepare-zm:
 	mkdir -p $(GEN_QHDATA_PATH)/zm
 	make prepare-simplified IM=zm
-	make prepare-im IM=zm
+	make prepare-im prepare-im-general IM=zm
 
 prepare-dc:
 	mkdir -p $(GEN_QHDATA_PATH)/dc
 	make prepare-tranditional IM=dc
 	make prepare-im IM=dc
+	cp $(QHDATA_RADIX_PATH)/CJK/dc.xml $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
+	cp $(QHDATA_RADIX_PATH)/CJK-A/dc.xml $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml
 
 prepare:
 	make prepare-main
-	make prepare-ar prepare-bs prepare-cj prepare-dy prepare-zm prepare-dc
+	make prepare-ar prepare-bs prepare-cj prepare-dy prepare-fc prepare-zm prepare-dc
 
 $(XML_PATH):
 xml:

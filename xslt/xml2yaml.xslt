@@ -35,7 +35,9 @@
 
           <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
           <xsl:text>註記: </xsl:text>
+          <xsl:text>"</xsl:text>
           <xsl:value-of select="@註記" />
+          <xsl:text>"</xsl:text>
           <xsl:value-of select="$newline" />
 
           <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
@@ -48,11 +50,22 @@
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="$intent" /> <xsl:value-of select="$itemmark" />
               <xsl:text>資訊表示式: </xsl:text>
+              <xsl:text>"</xsl:text>
               <xsl:value-of select="編碼/@資訊表示式" />
+              <xsl:text>"</xsl:text>
               <xsl:value-of select="$newline" />
             </xsl:if>
 
             <xsl:for-each select="./@*">
+              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+              <xsl:value-of select="name()"/> 
+              <xsl:text>: </xsl:text>
+              <xsl:value-of select="." />
+              <xsl:value-of select="$newline" />
+            </xsl:for-each>
+
+            <xsl:for-each select="編碼/@*[name()!='資訊表示式']">
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="name()"/> 

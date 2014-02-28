@@ -1,9 +1,9 @@
 from .FCCodeInfo import FCCodeInfo
 from .FCCodeInfoEncoder import FCCodeInfoEncoder
-from ..base.RadixManager import RadixParser
+from ..base.RadixManager import RadixParserYAML
 
 
-class FCRadixParser(RadixParser):
+class FCRadixParser(RadixParserYAML):
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 
 	# 多型
@@ -14,9 +14,7 @@ class FCRadixParser(RadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo=radixInfo.getCodeElement()
 
-		infoDict={}
-		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo.attrib
+		infoDict=elementCodeInfo
 
 		top_left=''
 		top_right=''

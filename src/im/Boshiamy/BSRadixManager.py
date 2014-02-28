@@ -1,8 +1,8 @@
 from .BSCodeInfo import BSCodeInfo
 from .BSCodeInfoEncoder import BSCodeInfoEncoder
-from ..base.RadixManager import RadixParser
+from ..base.RadixManager import RadixParserYAML
 
-class BSRadixParser(RadixParser):
+class BSRadixParser(RadixParserYAML):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
@@ -18,9 +18,7 @@ class BSRadixParser(RadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo=radixInfo.getCodeElement()
 
-		infoDict={}
-		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo.attrib
+		infoDict=elementCodeInfo
 
 		strCodeList=infoDict.get(BSRadixParser.ATTRIB_CODE_EXPRESSION)
 		supplementCode=infoDict.get(BSRadixParser.ATTRIB_SUPPLEMENTARY_CODE)
