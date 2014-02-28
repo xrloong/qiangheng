@@ -74,6 +74,8 @@ prepare-ar:
 	mkdir -p $(GEN_QHDATA_PATH)/ar
 	make prepare-tranditional IM=ar
 	make prepare-im IM=ar
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_RADIX_PATH)/CJK/ar.xml > $(GEN_QHDATA_PATH)/ar/radix/CJK.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_RADIX_PATH)/CJK-A/ar.xml > $(GEN_QHDATA_PATH)/ar/radix/CJK-A.yaml
 
 prepare-bs:
 	mkdir -p $(GEN_QHDATA_PATH)/bs
