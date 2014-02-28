@@ -66,9 +66,13 @@ class RadixParser:
 
 		return codeInfo
 
-	# 多型
 	def convertElementToRadixInfo(self, elementCodeInfo):
-		radixInfoDescription=RadixCodeInfoDescription(elementCodeInfo)
+		infoDict={}
+		if elementCodeInfo is not None:
+			infoDict=elementCodeInfo.attrib
+
+		codeElementCodeInfo=elementCodeInfo.find(RadixParser.TAG_CODE)
+		radixInfoDescription=RadixCodeInfoDescription(infoDict, codeElementCodeInfo)
 		return radixInfoDescription
 
 	# 多型
@@ -151,17 +155,13 @@ class RadixDescriptionManager:
 		return self.radixDescDB[radixName]
 
 class RadixCodeInfoDescription:
-	def __init__(self, elementCodeInfo):
+	def __init__(self, infoDict, codeElementCodeInfo):
 		self.codeVariance=CodeVarianceTypeFactory.generate()
-		self.codeElementCodeInfo=elementCodeInfo.find(RadixParser.TAG_CODE)
+		self.codeElementCodeInfo=codeElementCodeInfo
 
-		self.setupCodeAttribute(elementCodeInfo)
+		self.setupCodeAttribute(infoDict)
 
-	def setupCodeAttribute(self, elementCodeInfo):
-		infoDict={}
-		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo.attrib
-
+	def setupCodeAttribute(self, infoDict):
 		codeVarianceString=infoDict.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
 		self.setCodeVarianceType(codeVarianceString)
 
