@@ -1,9 +1,8 @@
 from .ARCodeInfo import ARCodeInfo
 from .ARCodeInfoEncoder import ARCodeInfoEncoder
-from ..base.RadixManager import RadixParser
-from ..base.RadixManager import RadixCodeInfoDescription
+from ..base.RadixManager import RadixParserYAML
 
-class ARRadixParser(RadixParser):
+class ARRadixParser(RadixParserYAML):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
@@ -17,9 +16,7 @@ class ARRadixParser(RadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo=radixInfo.getCodeElement()
 
-		infoDict={}
-		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo.attrib
+		infoDict=elementCodeInfo
 
 		codeList=None
 

@@ -31,7 +31,9 @@
 
           <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
           <xsl:text>名稱: </xsl:text>
+          <xsl:text>"</xsl:text>
           <xsl:value-of select="@名稱" />
+          <xsl:text>"</xsl:text>
           <xsl:value-of select="$newline" />
 
           <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
@@ -39,19 +41,58 @@
           <xsl:value-of select="@註記" />
           <xsl:value-of select="$newline" />
 
+          <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+          <xsl:text>編碼資訊: </xsl:text>
+          <xsl:value-of select="$newline" />
+
+
+    <xsl:for-each select="編碼資訊">
+          <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+          <xsl:value-of select="$itemmark" />
+          <xsl:value-of select="$newline" />
+
           <xsl:apply-templates select="組字"/> 
-          <xsl:if test="編碼資訊/編碼/@資訊表示式">
+          <xsl:if test="編碼/@資訊表示式">
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
             <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
             <xsl:text>資訊表示式: </xsl:text>
-            <xsl:value-of select="編碼資訊/編碼/@資訊表示式" />
+            <xsl:value-of select="編碼/@資訊表示式" />
             <xsl:value-of select="$newline" />
           </xsl:if>
-          <xsl:if test="編碼資訊/@補充資訊">
+
+          <xsl:if test="@類型">
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+            <xsl:text>類型: </xsl:text>
+            <xsl:value-of select="@類型" />
+            <xsl:value-of select="$newline" />
+          </xsl:if>
+
+          <xsl:if test="@字符碼">
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+            <xsl:text>字符碼: </xsl:text>
+            <xsl:value-of select="@字符碼" />
+            <xsl:value-of select="$newline" />
+          </xsl:if>
+
+          <xsl:if test="@字根碼">
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+            <xsl:text>字根碼: </xsl:text>
+            <xsl:value-of select="@字根碼" />
+            <xsl:value-of select="$newline" />
+          </xsl:if>
+
+          <xsl:if test="@補充資訊">
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
             <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
             <xsl:text>補充資訊: </xsl:text>
-            <xsl:value-of select="編碼資訊/編碼/@補充資訊" />
+            <xsl:value-of select="編碼/@補充資訊" />
             <xsl:value-of select="$newline" />
           </xsl:if>
+    </xsl:for-each>
+
         </xsl:if>
     </xsl:for-each>
 <!--

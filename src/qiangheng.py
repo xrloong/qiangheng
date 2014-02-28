@@ -29,9 +29,10 @@ class QiangHeng:
 			'gen/qhdata/%s/component/CJK.xml'%inputMethod,
 			'gen/qhdata/%s/component/CJK-A.xml'%inputMethod,
 		]
+		isYaml = inputMethod == "ar"
 		toCodeList = [
-			'gen/qhdata/%s/radix/CJK.xml'%inputMethod,
-			'gen/qhdata/%s/radix/CJK-A.xml'%inputMethod,
+			('gen/qhdata/%s/radix/CJK.yaml' if isYaml else 'gen/qhdata/%s/radix/CJK.xml')%inputMethod,
+			('gen/qhdata/%s/radix/CJK-A.yaml' if isYaml else 'gen/qhdata/%s/radix/CJK-A.xml')%inputMethod,
 		]
 		imPackage=IMMgr.getIMPackage(inputMethod)
 
