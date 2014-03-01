@@ -94,13 +94,13 @@
               </xsl:if>
             </xsl:for-each>
 
-            <xsl:if test="編碼/補充範圍">
+            <xsl:if test="編碼/筆劃組/補充範圍">
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:text>補充範圍: </xsl:text>
               <xsl:value-of select="$newline" />
 
-              <xsl:for-each select="編碼/補充範圍">
+              <xsl:for-each select="編碼/筆劃組/補充範圍">
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$itemmark" />
