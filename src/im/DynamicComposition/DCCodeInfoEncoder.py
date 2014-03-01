@@ -107,6 +107,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsLoop(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
 		codeInfo=cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_LOOP], [DCCodeInfo.PANE_NAME_LOOP])
+		# 颱=(起 風台), 是=(回 [風外]䖝)
 		if firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
 			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
@@ -129,6 +130,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=cls.generateDefaultCodeInfo(strokeGroupDB)
 
 		lastCodeInfo=codeInfoList[-1]
+		# 題=(起 是頁), 是=(志 日[是下])
 		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
 			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 
@@ -162,6 +164,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_LIAO], [DCCodeInfo.PANE_NAME_LIAO])
 
 		lastCodeInfo=codeInfoList[-1]
+		# 屗=(起 尾寸), 尾=(志 尸毛)
 		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
 			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
