@@ -83,29 +83,26 @@ class DCRadixParser(RadixParser):
 	def parseStrokeGroup(self, strokeGroupNode):
 		strokeGroupName=strokeGroupNode.get(DCRadixParser.TAG_NAME)
 
-		pane=self.parsePane("0000FFFF")
-
 		t=strokeGroupNode.get(DCRadixParser.TAG_STROKE_GROUP)
-		strokeGroup=self.parseStroke(pane, t)
+		strokeGroup=self.parseStroke(t)
 		return [strokeGroupName, strokeGroup]
 
-	def parseStroke(self, pane, strokeGroupNode):
+	def parseStroke(self, strokeGroupNode):
 		strokeList=[]
 		strokeNodeList=strokeGroupNode
 		for strokeNode in strokeNodeList:
-			countourPane=self.parsePane("0000FFFF")
-
 			strokeExpression=strokeNode
-			stroke=DCRadixParser.fromStrokeExpression(pane, strokeExpression)
+			stroke=DCRadixParser.fromStrokeExpression(strokeExpression)
 
-			stroke.transform(countourPane)
+			stroke.transform(Pane.DEFAULT_PANE)
 
 			strokeList.append(stroke)
-		strokeGroup=StrokeGroup(pane, strokeList)
+
+		strokeGroup=StrokeGroup(Pane.DEFAULT_PANE, strokeList)
 		return strokeGroup
 
 	@staticmethod
-	def fromStrokeExpression(contourPane, strokeExpression):
+	def fromStrokeExpression(strokeExpression):
 		l=strokeExpression.split(';')
 		name=l[0]
 
