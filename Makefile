@@ -106,8 +106,8 @@ prepare-dc:
 	mkdir -p $(GEN_QHDATA_PATH)/dc
 	make prepare-tranditional IM=dc
 	make prepare-im IM=dc
-	cp $(QHDATA_RADIX_PATH)/CJK/dc.xml $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
-	cp $(QHDATA_RADIX_PATH)/CJK-A/dc.xml $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml
+	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_RADIX_PATH)/CJK/dc.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml
+	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_RADIX_PATH)/CJK-A/dc.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK-A.yaml
 
 prepare:
 	make prepare-main
