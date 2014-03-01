@@ -1,9 +1,8 @@
 from .FCCodeInfo import FCCodeInfo
 from .FCCodeInfoEncoder import FCCodeInfoEncoder
-from ..base.RadixManager import RadixParserYAML
+from ..base.RadixManager import RadixParser
 
-
-class FCRadixParser(RadixParserYAML):
+class FCRadixParser(RadixParser):
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 
 	# 多型

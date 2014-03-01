@@ -1,13 +1,13 @@
 from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
-from ..base.RadixManager import RadixParserYAML
+from ..base.RadixManager import RadixParser
 from calligraphy import Calligraphy
 from calligraphy.Calligraphy import Pane
 from calligraphy.Calligraphy import Stroke
 from calligraphy.Calligraphy import StrokeGroup
 import re
 
-class DCRadixParser(RadixParserYAML):
+class DCRadixParser(RadixParser):
 	TAG_STROKE_GROUP='筆劃組'
 	TAG_GEOMETRY='幾何'
 	TAG_SCOPE='範圍'

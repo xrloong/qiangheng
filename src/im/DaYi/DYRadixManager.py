@@ -1,8 +1,8 @@
 from .DYCodeInfo import DYCodeInfo
 from .DYCodeInfoEncoder import DYCodeInfoEncoder
-from ..base.RadixManager import RadixParserYAML
+from ..base.RadixManager import RadixParser
 
-class DYRadixParser(RadixParserYAML):
+class DYRadixParser(RadixParser):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 

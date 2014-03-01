@@ -1,12 +1,12 @@
 from .CJCodeInfo import CJCodeInfo
 from .CJCodeInfoEncoder import CJCodeInfoEncoder
-from ..base.RadixManager import RadixParserYAML
+from ..base.RadixManager import RadixParser
 from .CJLump import CJLump
 
 import re
 import sys
 
-class CJRadixParser(RadixParserYAML):
+class CJRadixParser(RadixParser):
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 
 	# 多型
