@@ -1,8 +1,9 @@
 from .DCCodeInfo import DCCodeInfo
+from .DCCodeInfo import DCStrokeGroup
 from ..base.CodeInfoEncoder import CodeInfoEncoder
 from ..base.CodeInfo import CodeInfo
 from calligraphy.Calligraphy import Pane
-from calligraphy.Calligraphy import StrokeGroup
+#from calligraphy.Calligraphy import StrokeGroup
 
 import sys
 
@@ -23,7 +24,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		for strokeGroup in strokeGroupList:
 			resultStrokeList.extend(strokeGroup.getStrokeList())
 		pane=Pane.DEFAULT_PANE
-		strokeGroup=StrokeGroup(pane, resultStrokeList)
+		strokeGroup=DCStrokeGroup(pane, resultStrokeList)
 		strokeGroupDB={DCCodeInfo.STROKE_GROUP_NAME_DEFAULT : strokeGroup}
 		return strokeGroupDB
 
@@ -59,8 +60,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		containerCodeInfo=codeInfoList[0]
 
 		newStrokeGroupList=[]
-		for [paneName, strokeGroupName, codeInfo] in zip(paneNameList, strokeGroupNameList, codeInfoList):
-			extraPane=containerCodeInfo.getExtraPane(paneName)
+		for [strokeGroupName, paneName, codeInfo] in zip(strokeGroupNameList, paneNameList, codeInfoList):
+			extraPane=containerCodeInfo.getExtraPane(strokeGroupName, paneName)
 			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
 
 			strokeGroup=codeInfo.getCopyOfStrokeGroup(strokeGroupName)
@@ -107,8 +108,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			[DCCodeInfo.STROKE_GROUP_NAME_LOOP, DCCodeInfo.STROKE_GROUP_NAME_LOOP],
 			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LOOP])
 		# 颱=(起 風台), 是=(回 [風外]䖝)
-		if firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
+		if firstCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI):
+			codeInfo.setExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
 	@classmethod
@@ -130,8 +131,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		lastCodeInfo=codeInfoList[-1]
 		# 題=(起 是頁), 是=(志 日[是下])
-		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
+		if lastCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI):
+			codeInfo.setExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI))
 
 		return codeInfo
 
@@ -168,8 +169,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		lastCodeInfo=codeInfoList[-1]
 		# 屗=(起 尾寸), 尾=(志 尸毛)
-		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
+		if lastCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI):
+			codeInfo.setExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
 	@classmethod

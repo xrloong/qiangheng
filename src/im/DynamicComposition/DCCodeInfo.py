@@ -2,6 +2,22 @@ from ..base.CodeInfo import CodeInfo
 from calligraphy.Calligraphy import Pane
 from calligraphy.Calligraphy import StrokeGroup
 
+class DCStrokeGroup(StrokeGroup):
+	def __init__(self, contourPane, strokeList):
+		super().__init__(contourPane, strokeList)
+		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.DEFAULT_PANE}
+
+	def setExtraPaneDB(self, extranPaneDB):
+		self.extraPaneDB=extranPaneDB
+		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=Pane.DEFAULT_PANE
+
+	def setExtraPane(self, paneName, extraPane):
+		self.extraPaneDB[paneName]=extraPane
+
+	def getExtraPane(self, paneName):
+		return self.extraPaneDB.get(paneName, None)
+
+
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"
 
@@ -44,7 +60,6 @@ class DCCodeInfo(CodeInfo):
 		super().__init__()
 
 		self.strokeGroupDB=strokeGroupDB
-		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.DEFAULT_PANE}
 
 	@staticmethod
 	def generateDefaultCodeInfo(strokeGroupDB):
@@ -81,15 +96,21 @@ class DCCodeInfo(CodeInfo):
 		newPoints = [(isCurve, toValid(point)) for (isCurve, point) in points]
 		return encodePoints(newPoints)
 
-	def setExtraPaneDB(self, extranPaneDB):
-		self.extraPaneDB=extranPaneDB
-		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=Pane.DEFAULT_PANE
+	def setExtraPane(self, strokeGroupName, paneName, extraPane):
+		strokeGroup=self.getStrokeGroup(strokeGroupName)
 
-	def setExtraPane(self, paneName, extraPane):
-		self.extraPaneDB[paneName]=extraPane
+		if strokeGroup==None:
+			strokeGroup=self.getStrokeGroup()
 
-	def getExtraPane(self, paneName):
-		return self.extraPaneDB.get(paneName, None)
+		strokeGroup.setExtraPane(paneName, extraPane)
+
+	def getExtraPane(self, strokeGroupName, paneName):
+		strokeGroup=self.getStrokeGroup(strokeGroupName)
+
+		if strokeGroup==None:
+			strokeGroup=self.getStrokeGroup()
+
+		return strokeGroup.getExtraPane(paneName)
 
 	def getStrokeGroup(self, strokeGroupName=STROKE_GROUP_NAME_DEFAULT):
 		return self.strokeGroupDB.get(strokeGroupName)

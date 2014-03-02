@@ -1,10 +1,11 @@
 from .DCCodeInfo import DCCodeInfo
+from .DCCodeInfo import DCStrokeGroup
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..base.RadixManager import RadixParser
 from calligraphy import Calligraphy
 from calligraphy.Calligraphy import Pane
 from calligraphy.Calligraphy import Stroke
-from calligraphy.Calligraphy import StrokeGroup
+#from calligraphy.Calligraphy import StrokeGroup
 import re
 
 class DCRadixParser(RadixParser):
@@ -39,14 +40,15 @@ class DCRadixParser(RadixParser):
 		strokeGroupNodeList=elementCodeInfo.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
 		for strokeGroupNode in strokeGroupNodeList:
 			[strokeGroupName, strokeGroup]=self.parseStrokeGroup(strokeGroupNode)
+
+			extraPaneDB=self.parseExtraScopeDB(strokeGroupNode)
+			strokeGroup.setExtraPaneDB(extraPaneDB)
+
 			if strokeGroupName==None:
 				strokeGroupName=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT
 			strokeGroupDB[strokeGroupName]=strokeGroup
 
 		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeGroupDB)
-
-		extraPaneDB=self.parseExtraScopeDB(elementCodeInfo)
-		codeInfo.setExtraPaneDB(extraPaneDB)
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):
@@ -98,7 +100,7 @@ class DCRadixParser(RadixParser):
 
 			strokeList.append(stroke)
 
-		strokeGroup=StrokeGroup(Pane.DEFAULT_PANE, strokeList)
+		strokeGroup=DCStrokeGroup(Pane.DEFAULT_PANE, strokeList)
 		return strokeGroup
 
 	@staticmethod
