@@ -58,10 +58,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		containerCodeInfo=codeInfoList[0]
 
-		strokeGroupNameList=cls.extendStrokeGroupNameList(strokeGroupNameList, codeInfoList)
-
 		newStrokeGroupList=[]
-		paneNameList=[DCCodeInfo.PANE_NAME_DEFAULT]+paneNameList
 		for [paneName, strokeGroupName, codeInfo] in zip(paneNameList, strokeGroupNameList, codeInfoList):
 			extraPane=containerCodeInfo.getExtraPane(paneName)
 			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
@@ -106,7 +103,9 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	@classmethod
 	def encodeAsLoop(cls, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
-		codeInfo=cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_LOOP], [DCCodeInfo.PANE_NAME_LOOP])
+		codeInfo=cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_LOOP, DCCodeInfo.STROKE_GROUP_NAME_LOOP],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LOOP])
 		# 颱=(起 風台), 是=(回 [風外]䖝)
 		if firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
 			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
@@ -157,11 +156,15 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	@classmethod
 	def encodeAsQi(cls, codeInfoList):
-		return cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_QI], [DCCodeInfo.PANE_NAME_QI])
+		return cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.STROKE_GROUP_NAME_QI],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_QI])
 
 	@classmethod
 	def encodeAsLiao(cls, codeInfoList):
-		codeInfo=cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_LIAO], [DCCodeInfo.PANE_NAME_LIAO])
+		codeInfo=cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_LIAO, DCCodeInfo.STROKE_GROUP_NAME_LIAO],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIAO])
 
 		lastCodeInfo=codeInfoList[-1]
 		# 屗=(起 尾寸), 尾=(志 尸毛)
@@ -171,30 +174,44 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	@classmethod
 	def encodeAsZai(cls, codeInfoList):
-		return cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_ZAI], [DCCodeInfo.PANE_NAME_ZAI])
+		return cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_ZAI, DCCodeInfo.STROKE_GROUP_NAME_ZAI],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZAI])
 
 	@classmethod
 	def encodeAsDou(cls, codeInfoList):
-		return cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_DOU], [DCCodeInfo.PANE_NAME_DOU])
+		return cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_DOU, DCCodeInfo.STROKE_GROUP_NAME_DOU],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_DOU])
 
 
 	@classmethod
 	def encodeAsMu(cls, codeInfoList):
-		return cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_MU], [DCCodeInfo.PANE_NAME_MU_1, DCCodeInfo.PANE_NAME_MU_2])
+		return cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_MU, DCCodeInfo.STROKE_GROUP_NAME_MU, DCCodeInfo.STROKE_GROUP_NAME_MU],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_MU_1, DCCodeInfo.PANE_NAME_MU_2])
 
 	@classmethod
 	def encodeAsZuo(cls, codeInfoList):
-		return cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_ZUO], [DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
+		return cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_ZUO, DCCodeInfo.STROKE_GROUP_NAME_ZUO, DCCodeInfo.STROKE_GROUP_NAME_ZUO],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
 
 	@classmethod
 	def encodeAsYou(cls, codeInfoList):
-		return cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_YOU], [DCCodeInfo.PANE_NAME_YOU_1, DCCodeInfo.PANE_NAME_YOU_2])
+		return cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_YOU, DCCodeInfo.STROKE_GROUP_NAME_YOU, DCCodeInfo.STROKE_GROUP_NAME_YOU],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_YOU_1, DCCodeInfo.PANE_NAME_YOU_2])
 
 	@classmethod
 	def encodeAsLiang(cls, codeInfoList):
-		return cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_LIANG], [DCCodeInfo.PANE_NAME_LIANG_1, DCCodeInfo.PANE_NAME_LIANG_2])
+		return cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_LIANG, DCCodeInfo.STROKE_GROUP_NAME_LIANG, DCCodeInfo.STROKE_GROUP_NAME_LIANG],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIANG_1, DCCodeInfo.PANE_NAME_LIANG_2])
 
 	@classmethod
 	def encodeAsJia(cls, codeInfoList):
-		return cls.encodeByEmbed(codeInfoList, [DCCodeInfo.STROKE_GROUP_NAME_JIA], [DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
+		return cls.encodeByEmbed(codeInfoList,
+			[DCCodeInfo.STROKE_GROUP_NAME_JIA, DCCodeInfo.STROKE_GROUP_NAME_JIA, DCCodeInfo.STROKE_GROUP_NAME_JIA, ],
+			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
 
