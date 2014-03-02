@@ -8,6 +8,7 @@ import sys
 
 class CJRadixParser(RadixParser):
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
+	ATTRIB_SINGLETON_EXPRESSION='獨體表示式'
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
@@ -21,9 +22,11 @@ class CJRadixParser(RadixParser):
 
 		direction='*'
 		description=infoDict.get(CJRadixParser.ATTRIB_CODE_EXPRESSION)
+		description_singleton=infoDict.get(CJRadixParser.ATTRIB_SINGLETON_EXPRESSION)
 
 		cjLumpList=self.parseCJLumpList(description)
-		codeInfo=CJCodeInfo(direction, cjLumpList)
+		cjLumpList_singleton=self.parseCJLumpList(description_singleton)
+		codeInfo=CJCodeInfo(direction, cjLumpList, cjLumpList_singleton)
 
 		return codeInfo
 
