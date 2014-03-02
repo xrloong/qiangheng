@@ -20,11 +20,12 @@ class CJRadixParser(RadixParser):
 
 		infoDict=elementCodeInfo
 
-		direction='*'
 		description=infoDict.get(CJRadixParser.ATTRIB_CODE_EXPRESSION)
+		direction=description[0]
+
 		description_singleton=infoDict.get(CJRadixParser.ATTRIB_SINGLETON_EXPRESSION)
 
-		cjLumpList=self.parseCJLumpList(description)
+		cjLumpList=self.parseCJLumpList(description[1:])
 		cjLumpList_singleton=self.parseCJLumpList(description_singleton)
 		codeInfo=CJCodeInfo(direction, cjLumpList, cjLumpList_singleton)
 
