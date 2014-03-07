@@ -84,3 +84,5 @@ OperatorLi=BuiltinOperator('瓥')
 OperatorLuan=BuiltinOperator('䜌')
 OperatorBan=BuiltinOperator('辦')
 
+OperatorYi=BuiltinOperator('燚')
+

@@ -68,6 +68,8 @@ class CodeInfoEncoder:
 				codeInfo=cls.encodeAsLin(codeInfoList)
 			elif Operator.OperatorLi.equals(operator):
 				codeInfo=cls.encodeAsLi(codeInfoList)
+			elif Operator.OperatorYi.equals(operator):
+				codeInfo=cls.encodeAsYi(codeInfoList)
 
 			else:
 				codeInfo=cls.encodeAsInvalidate(codeInfoList)
@@ -267,4 +269,11 @@ class CodeInfoEncoder:
 
 		codeInfo=cls.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
+
+	@classmethod
+	def encodeAsYi(cls, codeInfoList):
+		"""運算 "燚" """
+		firstCodeInfo=codeInfoList[0]
+
+		return cls.encodeAsLi([firstCodeInfo, firstCodeInfo, firstCodeInfo, firstCodeInfo, ])
 

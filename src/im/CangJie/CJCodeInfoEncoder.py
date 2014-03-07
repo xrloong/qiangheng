@@ -1,4 +1,5 @@
 from .CJCodeInfo import CJCodeInfo
+from .CJCodeInfo import GridCJCodeInfo
 from .CJLump import CJLump
 from ..base.CodeInfoEncoder import CodeInfoEncoder
 import sys
@@ -104,25 +105,53 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=cls.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
 
+	@classmethod
+	def encodeAsYi(cls, codeInfoList):
+		"""運算 "燚" """
+		firstCodeInfo=codeInfoList[0]
+
+		tmpCodeInfoH=cls.encodeAsGoose([firstCodeInfo, firstCodeInfo])
+		codeInfoV=cls.encodeAsSilkworm([tmpCodeInfoH, tmpCodeInfoH])
+
+		tmpCodeInfoV=cls.encodeAsSilkworm([firstCodeInfo, firstCodeInfo])
+		codeInfoH=cls.encodeAsGoose([tmpCodeInfoV, tmpCodeInfoV])
+
+		codeInfo=GridCJCodeInfo(codeInfoV, codeInfoH)
+
+		return codeInfo
+
 	@staticmethod
 	def computeLumpListInDirection(direction, codeInfo):
 		tmpDirCode=codeInfo.getDirection()
 
-		tmpRadixList=codeInfo.getLumpList()
 		if direction=='$':
 			lumpList=codeInfo.getLumpList()
 		elif tmpDirCode in ['@']:
+			tmpRadixList=codeInfo.getLumpList()
 			tmpCJLump=CJLump.generateContainer(tmpRadixList)
 			lumpList=[tmpCJLump]
 		elif tmpDirCode in ['*']:
+			tmpRadixList=codeInfo.getLumpList()
 			tmpCJLump=CJLump.generateBody(tmpRadixList)
 			lumpList=[tmpCJLump]
+		elif tmpDirCode in ['+'] and isinstance(codeInfo, GridCJCodeInfo):
+			if direction=='-':
+				newCodeInfo=codeInfo.getCodeInfoH()
+				lumpList=newCodeInfo.getLumpList()
+			elif direction=='|':
+				newCodeInfo=codeInfo.getCodeInfoV()
+				lumpList=newCodeInfo.getLumpList()
+			else:
+				ci=codeInfo.getCodeInfoV()
+				tmpCJLump=CJLump.generateBody(ci.getLumpList())
+				lumpList=[tmpCJLump]
 		else:
 			if tmpDirCode==direction:
 				# 同向
 				lumpList=codeInfo.getLumpList()
 			else:
 				# 不同向
+				tmpRadixList=codeInfo.getLumpList()
 				tmpCJLump=CJLump.generateBody(tmpRadixList)
 				lumpList=[tmpCJLump]
 		return lumpList

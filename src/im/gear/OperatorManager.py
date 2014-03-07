@@ -35,6 +35,8 @@ class OperatorManager:
 			'幽':Operator.OperatorYou,
 			'㒳':Operator.OperatorLiang,
 			'夾':Operator.OperatorJia,
+
+			'燚':Operator.OperatorYi,
 		}
 		self.templateOperatorDict={
 		}

@@ -38,3 +38,25 @@ class CJCodeInfo(CodeInfo):
 	def getLumpList(self):
 		return self.cjLumpList
 
+class GridCJCodeInfo(CJCodeInfo):
+	def __init__(self, codeInfoV, codeInfoH):
+		CodeInfo.__init__(self)
+#		super().__init__(codeInfoV.getDirection, codeInfoV.getLumpList, None)
+		self.codeInfoV=codeInfoV
+		self.codeInfoH=codeInfoH
+
+	def toCode(self):
+		return self.codeInfoV.toCode()
+
+	def getDirection(self):
+		return '+'
+
+	def getLumpList(self):
+		return self.codeInfoV.getLumpList()
+
+	def getCodeInfoH(self):
+		return self.codeInfoH
+
+	def getCodeInfoV(self):
+		return self.codeInfoV
+
