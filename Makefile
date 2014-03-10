@@ -69,8 +69,8 @@ prepare-im:
 	cp $(QHDATA_COMP_PATH)/CJK-A/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/component/CJK-A.xml
 
 prepare-im-general:
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_RADIX_PATH)/CJK/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_RADIX_PATH)/CJK-A/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml
+	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_RADIX_PATH)/CJK/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml
+	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_RADIX_PATH)/CJK-A/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml
 
 prepare-ar:
 	mkdir -p $(GEN_QHDATA_PATH)/ar
