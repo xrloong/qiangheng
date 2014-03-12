@@ -3,7 +3,6 @@
 
 import sys
 
-from parser import ConfigParser
 from optparse import OptionParser
 from state import StateManager
 from im.IMMgr import IMMgr
