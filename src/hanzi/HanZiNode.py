@@ -3,20 +3,15 @@ from . import HanZiStructure
 from gear import CharacterInfo
 
 class HanZiNode:
-	def __init__(self, name, characterProperty=None):
+	def __init__(self, name):
 		self.name=name
 		self.structureList=[]
-		self.characterProperty=characterProperty
 
-		freq=characterProperty.getFrequency()
-		characterInfo=CharacterInfo.CharacterInfo(self.name, freq)
+		characterInfo=CharacterInfo.CharacterInfo(self.name)
 		self.characterInfo=characterInfo
 
 	def getName(self):
 		return self.name
-
-#	def getCharacterProperty(self):
-#		return self.characterProperty
 
 	def addStructure(self, structure):
 		self.structureList.append(structure)

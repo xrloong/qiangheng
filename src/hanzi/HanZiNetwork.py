@@ -20,8 +20,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 		# 加入如 "相" "[漢右]" 的節點。
 		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
-			characterProperty=charDesc.getCharacterProperty()
-			self.hanziNetwork.addNode(charName, characterProperty)
+			self.hanziNetwork.addNode(charName)
 
 		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
@@ -114,9 +113,9 @@ class HanZiNetwork:
 			node=self.nodeDict.get(name)
 			node.setNodeTree()
 
-	def addNode(self, name, characterProperty):
+	def addNode(self, name):
 		if name not in self.nodeDict:
-			tmpNode=HanZiNode.HanZiNode(name, characterProperty)
+			tmpNode=HanZiNode.HanZiNode(name)
 			self.nodeDict[name]=tmpNode
 
 	def addStructure(self, structDesc):

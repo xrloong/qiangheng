@@ -12,7 +12,6 @@ OVIM_PATH	=	$(TABLES_PATH)/ovim
 MSIM_PATH	=	$(TABLES_PATH)/msim
 QHDATA_PATH			=	qhdata
 QHDATA_MAIN_PATH		=	$(QHDATA_PATH)/main
-QHDATA_FREQ_PATH		=	$(QHDATA_PATH)/frequency
 QHDATA_MAIN_COMP_PATH		=	$(QHDATA_MAIN_PATH)/component
 QHDATA_TEMPLATE_FILE		=	$(QHDATA_PATH)/template/main.xml
 QHDATA_STYLE_PATH		=	$(QHDATA_PATH)/style
@@ -24,10 +23,8 @@ QHDATA_STYLE_SIMPLIFIED_FILE	=	simplified.xml
 GEN_PATH			=	gen
 GEN_QHDATA_PATH			=	$(GEN_PATH)/$(QHDATA_PATH)
 GEN_QHDATA_MAIN_PATH		=	$(GEN_QHDATA_PATH)/main
-GEN_QHDATA_FREQ_PATH		=	$(GEN_QHDATA_MAIN_PATH)/frequency
 GEN_QHDATA_MAIN_COMP_PATH	=	$(GEN_QHDATA_MAIN_PATH)/component
 GEN_QHDATA_TEMPLATE_FILE	=	$(GEN_QHDATA_MAIN_PATH)/template.xml
-GEN_QHDATA_STYLE_FILE		=	style.xml
 PROFILE_PATH	=	profiles
 TARBALLS_PATH	=	tarballs
 XFORM		=	--xform="s:^:qiangheng/:"
@@ -46,27 +43,25 @@ RELEASE_TYPE_LIST	=	standard all
 all: xml
 
 prepare-main:
-	mkdir -p $(GEN_QHDATA_MAIN_PATH) $(GEN_QHDATA_FREQ_PATH) $(GEN_QHDATA_MAIN_COMP_PATH)
-	cp $(QHDATA_MAIN_PATH)/CJK.xml $(GEN_QHDATA_MAIN_PATH)/CJK.xml
-	cp $(QHDATA_MAIN_PATH)/CJK-A.xml $(GEN_QHDATA_MAIN_PATH)/CJK-A.xml
-	cp $(QHDATA_MAIN_COMP_PATH)/CJK.xml $(GEN_QHDATA_MAIN_COMP_PATH)/CJK.xml
-	cp $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.xml
-	cp $(QHDATA_FREQ_PATH)/CJK.xml $(GEN_QHDATA_FREQ_PATH)/CJK.xml
-	cp $(QHDATA_FREQ_PATH)/CJK-A.xml $(GEN_QHDATA_FREQ_PATH)/CJK-A.xml
+	mkdir -p $(GEN_QHDATA_MAIN_PATH) $(GEN_QHDATA_MAIN_COMP_PATH)
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_PATH)/CJK.xml > $(GEN_QHDATA_MAIN_PATH)/CJK.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_PATH)/CJK-A.xml > $(GEN_QHDATA_MAIN_PATH)/CJK-A.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_COMP_PATH)/CJK.xml > $(GEN_QHDATA_MAIN_COMP_PATH)/CJK.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml > $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.yaml
 	cp $(QHDATA_TEMPLATE_FILE) $(GEN_QHDATA_TEMPLATE_FILE)
 
 prepare-tranditional:
-	cp $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_FILE) $(GEN_QHDATA_MAIN_PATH)/$(GEN_QHDATA_STYLE_FILE)
-	cp $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_TRADITIONAL_FILE) $(GEN_QHDATA_PATH)/$(IM)/$(GEN_QHDATA_STYLE_FILE)
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_FILE) > $(GEN_QHDATA_MAIN_PATH)/style.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_TRADITIONAL_FILE) > $(GEN_QHDATA_PATH)/$(IM)/style.yaml
 
 prepare-simplified:
-	cp $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_FILE) $(GEN_QHDATA_MAIN_PATH)/$(GEN_QHDATA_STYLE_FILE)
-	cp $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_SIMPLIFIED_FILE) $(GEN_QHDATA_PATH)/$(IM)/$(GEN_QHDATA_STYLE_FILE)
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_FILE) > $(GEN_QHDATA_MAIN_PATH)/style.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_SIMPLIFIED_FILE) > $(GEN_QHDATA_PATH)/$(IM)/style.yaml
 
 prepare-im:
 	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/component/ $(GEN_QHDATA_PATH)/$(IM)/radix/
-	cp $(QHDATA_COMP_PATH)/CJK/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/component/CJK.xml
-	cp $(QHDATA_COMP_PATH)/CJK-A/$(IM).xml $(GEN_QHDATA_PATH)/$(IM)/component/CJK-A.xml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_COMP_PATH)/CJK/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/component/CJK.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_COMP_PATH)/CJK-A/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/component/CJK-A.yaml
 
 prepare-im-general:
 	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_RADIX_PATH)/CJK/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml

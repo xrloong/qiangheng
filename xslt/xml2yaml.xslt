@@ -10,7 +10,11 @@
 
   <xsl:template match="/瑲珩">
     <root>
-      <xsl:value-of select="版本號" />
+      <xsl:text>版本號: </xsl:text>
+      <xsl:text>"</xsl:text>
+      <xsl:value-of select="@版本號" />
+      <xsl:text>"</xsl:text>
+      <xsl:value-of select="$newline" />
       <xsl:apply-templates select="字符集"/>
     </root>
   </xsl:template>
@@ -40,10 +44,14 @@
           <xsl:text>"</xsl:text>
           <xsl:value-of select="$newline" />
 
-          <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-          <xsl:text>結構: </xsl:text>
-          <xsl:apply-templates select="組字"/>
-          <xsl:value-of select="$newline" />
+          <xsl:if test="組字">
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+            <xsl:text>結構: </xsl:text>
+            <xsl:text>"</xsl:text>
+            <xsl:apply-templates select="組字"/>
+            <xsl:text>"</xsl:text>
+            <xsl:value-of select="$newline" />
+          </xsl:if>
         </xsl:if>
     </xsl:for-each>
   </xsl:template>
@@ -56,8 +64,10 @@
   <xsl:template match="組字">
     <xsl:text>(</xsl:text>
       <xsl:if test="@運算">
+        <xsl:text>{</xsl:text>
+        <xsl:text>運算=</xsl:text>
         <xsl:value-of select="@運算" />
-        <xsl:text> </xsl:text>
+        <xsl:text>}</xsl:text>
         <xsl:for-each select="字根|組字">
           <xsl:apply-templates select="."/>
         </xsl:for-each>
@@ -66,7 +76,12 @@
   </xsl:template>
 
   <xsl:template match="字根">
+    <xsl:text>(</xsl:text>
+    <xsl:text>{</xsl:text>
+    <xsl:text>置換=</xsl:text>
     <xsl:value-of select="@置換" />
+    <xsl:text>}</xsl:text>
+    <xsl:text>)</xsl:text>
   </xsl:template>
 </xsl:stylesheet>
 

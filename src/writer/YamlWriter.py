@@ -21,7 +21,7 @@ class YamlWriter:
 
 		l=[]
 		for x in codeMappingInfoList:
-			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "頻率":x.getFrequency(), "類型":x.getVariance()}
+			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "類型":x.getVariance()}
 			l.append(attrib)
 		codeMappingSet={"對應集":l}
 

@@ -1,10 +1,8 @@
 
 class CharacterDescription:
-	def __init__(self, name, charProp):
+	def __init__(self, name):
 		self.name=name
 		self.structList=[]
-
-		self.charProp=charProp
 
 	def getName(self):
 		return self.name
@@ -17,10 +15,4 @@ class CharacterDescription:
 
 	def extendStructureList(self, structList):
 		self.structList.extend(structList)
-
-	def getCharacterProperty(self):
-		return self.charProp
-
-	def updateCharacterProperty(self, charProp):
-		self.charProp.update(charProp)
 

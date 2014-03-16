@@ -34,7 +34,7 @@ class XmlWriter:
 		# 對照表
 		charGroup=ET.SubElement(rootNode, "對應集")
 		for x in codeMappingInfoList:
-			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "頻率":x.getFrequency(), "類型":x.getVariance()}
+			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "類型":x.getVariance()}
 			ET.SubElement(charGroup, "對應", attrib)
 		xmlNode=ET.ElementTree(rootNode)
 		print(ET.tounicode(xmlNode, pretty_print=True))

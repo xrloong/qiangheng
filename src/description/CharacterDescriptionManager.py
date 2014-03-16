@@ -25,12 +25,6 @@ class CharacterDescriptionManager:
 	def queryCharacterDescription(self, character):
 		return self.charDescQueryer(character)
 
-	def queryCharacterFrequency(self, character):
-		charDesc=self.queryCharacterDescription(character)
-		freq=charDesc.getFrequency()
-		return freq
-
-
 	def loadData(self, toTemplateList, toComponentList):
 		self.loadTemplate(toTemplateList)
 		self.loadComponent(toComponentList)
@@ -38,9 +32,14 @@ class CharacterDescriptionManager:
 
 	def loadComponent(self, toComponentList):
 		for filename in toComponentList:
-			charDescList=self.parser.loadCharacters(filename)
-			for charDesc in charDescList:
-				self.saveChar(charDesc)
+			if filename.rfind(".xml")>=0:
+				charDescList=self.parser.loadCharacters(filename)
+#				for charDesc in charDescList:
+#					self.saveChar(charDesc)
+			if filename.rfind(".yaml")>=0:
+				charDescList=self.parser.loadCharactersYAML(filename)
+				for charDesc in charDescList:
+					self.saveChar(charDesc)
 
 	def loadTemplate(self, toTemplateList):
 		templateDB={}
@@ -53,12 +52,9 @@ class CharacterDescriptionManager:
 	def saveChar(self, charDesc):
 		charName=charDesc.getName()
 		if charName in self.characterDB:
-			characterProperty=charDesc.getCharacterProperty()
 			origCharDesc=self.characterDB.get(charName)
 			origCharDesc.setStructureList(charDesc.getStructureList())
-			origCharDesc.updateCharacterProperty(charDesc.getCharacterProperty())
 		else:
-			characterProperty=charDesc.getCharacterProperty()
 			self.characterDB[charName]=charDesc
 
 	def queryChildren(self, charDesc):

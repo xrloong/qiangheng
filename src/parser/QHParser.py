@@ -1,7 +1,6 @@
 import sys
 import Constant
 
-from gear.CharacterProperty import CharacterProperty
 from description.CharacterDescription import CharacterDescription
 from description.StructureDescription import HangerStructureDescription
 from description.TemplateDescription import TemplateDescription
@@ -111,8 +110,7 @@ class QHParser:
 			structureList=self.getDesc_StructureList(node)
 			charName=node.get(Constant.TAG_NAME)
 
-			charProp=CharacterProperty(node.attrib)
-			charDesc=CharacterDescription(charName, charProp)
+			charDesc=CharacterDescription(charName)
 			charDesc.setStructureList(structureList)
 
 			charDescList.append(charDesc)
@@ -142,4 +140,120 @@ class QHParser:
 		rootNode=xmlNode.getroot()
 		charDescList=self.loadCharDescriptionByParsingXML(rootNode)
 		return charDescList
+
+	def parseStructure(self, structureExpression):
+		return parse(self, structureExpression)
+
+	def loadCharDescriptionByParsingYAML(self, rootNode):
+		charDescList=[]
+		charGroupNode=rootNode.get(Constant.TAG_CHARACTER_SET)
+		for node in charGroupNode:
+			charName=node.get(Constant.TAG_NAME)
+
+			charDesc=CharacterDescription(charName)
+
+			if Constant.TAG_STRUCTURE in node:
+				structureExpression=node.get(Constant.TAG_STRUCTURE)
+				structureList=self.parseStructure(structureExpression)
+				charDesc.setStructureList(structureList)
+
+			charDescList.append(charDesc)
+		return charDescList
+
+	def loadCharactersYAML(self, filename):
+		import yaml
+		node=yaml.load(open(filename), yaml.CLoader)
+		return self.loadCharDescriptionByParsingYAML(node)
+
+tokens = (
+	'NAME',
+	'PARENTHESIS_LEFT',
+	'PARENTHESIS_RIGHT',
+	'BRACE_LEFT',
+	'BRACE_RIGHT',
+#	'STAR',
+#	'QUESTION',
+#	'PLUS',
+#	'DOT',
+	'EQUAL',
+#	'COMMA',
+	)
+
+t_NAME			= r'[一-龥㐀-䶵\[\]][一-龥㐀-䶵\[\]]*'
+t_PARENTHESIS_LEFT	= r'\('
+t_PARENTHESIS_RIGHT	= r'\)'
+t_BRACE_LEFT		= r'\{'
+t_BRACE_RIGHT		= r'\}'
+#t_STAR			= r'\*'
+#t_QUESTION		= r'\?'
+#t_PLUS			= r'\+'
+#t_DOT			= r'\.'
+t_EQUAL			= r'='
+#t_COMMA			= r','
+
+t_ignore = " \t"
+
+def t_error(t):
+	print("Illegal character '%s'" % t.value[0])
+	t.lexer.skip(1)
+
+
+def p_node_list(t):
+	"""node_list : node
+		| node node_list"""
+	if len(t)==2:
+		t[0]=[t[1]]
+	if len(t)==3:
+		t[0]=[t[1]]+t[2]
+
+def p_node(t):
+	"""node : PARENTHESIS_LEFT PARENTHESIS_RIGHT
+		| PARENTHESIS_LEFT prop node_list PARENTHESIS_RIGHT
+		| PARENTHESIS_LEFT prop PARENTHESIS_RIGHT"""
+	if len(t)==3:
+		comp=parser.generateStructureDescription()
+		t[0]=comp
+
+	if len(t)==4:
+		prop=t[2]
+
+		name=prop.get(Constant.TAG_REPLACEMENT)
+		structDesc=parser.generateStructureDescription()
+		structDesc.setReferenceExpression(name)
+
+		t[0]=structDesc
+
+	if len(t)==5:
+		prop=t[2]
+		structDescList=t[3]
+
+		operatorName=prop.get(Constant.TAG_OPERATOR)
+		comp=parser.generateStructureDescription([operatorName, structDescList])
+
+		t[0]=comp
+
+def p_attrib(t):
+	'attrib : NAME EQUAL NAME'
+	t[0]={t[1]: t[3]}
+#	print(t[1], t[3])
+
+def p_prop(t):
+	'prop : BRACE_LEFT attrib BRACE_RIGHT'
+	t[0]=t[2]
+
+
+def p_error(t):
+	print("Syntax error at '%s'" % t.value)
+
+parser=None
+def parse(p, expression):
+	global parser
+	parser=p
+	return yacc.parse(expression)
+
+import ply.lex as lex
+lex.lex()
+
+import ply.yacc as yacc
+yacc.yacc()
 

@@ -16,17 +16,14 @@ class QiangHeng:
 			'gen/qhdata/main/template.xml',
 		]
 		toComponentList = [
-			'gen/qhdata/main/frequency/CJK.xml',
-			'gen/qhdata/main/frequency/CJK-A.xml',
-
-			'gen/qhdata/main/CJK.xml',
-			'gen/qhdata/main/CJK-A.xml',
-			'gen/qhdata/main/component/CJK.xml',
-			'gen/qhdata/main/component/CJK-A.xml',
-			'gen/qhdata/main/style.xml',
-			'gen/qhdata/%s/style.xml'%inputMethod,
-			'gen/qhdata/%s/component/CJK.xml'%inputMethod,
-			'gen/qhdata/%s/component/CJK-A.xml'%inputMethod,
+			'gen/qhdata/main/CJK.yaml',
+			'gen/qhdata/main/CJK-A.yaml',
+			'gen/qhdata/main/component/CJK.yaml',
+			'gen/qhdata/main/component/CJK-A.yaml',
+			'gen/qhdata/main/style.yaml',
+			'gen/qhdata/%s/style.yaml'%inputMethod,
+			'gen/qhdata/%s/component/CJK.yaml'%inputMethod,
+			'gen/qhdata/%s/component/CJK-A.yaml'%inputMethod,
 		]
 		toCodeList = [
 			'gen/qhdata/%s/radix/CJK.yaml'%inputMethod,

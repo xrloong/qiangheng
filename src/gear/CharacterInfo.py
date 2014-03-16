@@ -2,9 +2,8 @@ from . import CodeMappingInfo
 from state import StateManager
 
 class CharacterInfo:
-	def __init__(self, charName, freq):
+	def __init__(self, charName):
 		self.name=charName
-		self.freq=freq
 
 	def setCodeInfoList(self, codeInfoList):
 		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
@@ -23,7 +22,7 @@ class CharacterInfo:
 		characterInfoList=[]
 		for codeAndType in self.codePropList:
 			code, variance=codeAndType
-			characterInfo=CodeMappingInfo.CodeMappingInfo(self.name, code, self.freq, variance)
+			characterInfo=CodeMappingInfo.CodeMappingInfo(self.name, code, variance)
 			characterInfoList.append(characterInfo)
 		self.characterInfoList=characterInfoList
 
