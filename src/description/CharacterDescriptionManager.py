@@ -2,11 +2,12 @@
 
 import sys
 from .CharacterDescription import CharacterDescription
+from state import StateManager
 from parser import QHParser
 import Constant
 
 class CharacterDescriptionManager:
-	def __init__(self, operationManager):
+	def __init__(self):
 		self.characterDB={}
 
 		def charDescQueryer(charName):
@@ -14,6 +15,8 @@ class CharacterDescriptionManager:
 			return charDesc
 
 		self.charDescQueryer=charDescQueryer
+
+		operationManager=StateManager.getOperationManager()
 
 		self.operationManager=operationManager
 

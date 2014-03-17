@@ -44,8 +44,7 @@ class QiangHeng:
 
 		StateManager.getCodeInfoManager().loadRadix(toCodeList)
 
-		operationManager=StateManager.getOperationManager()
-		self.descMgr=CharacterDescriptionManager(operationManager)
+		self.descMgr=CharacterDescriptionManager()
 		self.descMgr.loadData(toTemplateList, toComponentList)
 
 		self.hanziNetwork=HanZiNetwork.construct(self.descMgr)

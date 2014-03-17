@@ -11,6 +11,7 @@ import yaml
 class QHParser:
 	def __init__(self, operatorGenerator):
 		self.operatorGenerator=operatorGenerator
+		self.g=lambda x=['龜', []]: self.generateStructureDescription(x)
 
 	def generateStructureDescription(self, structInfo=['龜', []]):
 		operatorName, CompList=structInfo
@@ -27,7 +28,7 @@ class QHParser:
 			parameterNameList=node.get(Constant.TAG_PARAMETER_LIST)
 			structureExpression=node.get(Constant.TAG_STRUCTURE)
 
-			comp=parse(self, structureExpression)
+			comp=self.parseStructure(structureExpression)
 			substitutionList=[TemplateSubstitutionDescription(comp), ]
 
 			templateDesc=TemplateDescription(templateName, parameterNameList, substitutionList)
@@ -39,7 +40,7 @@ class QHParser:
 		return self.loadTemplateByParsingYAML(node)
 
 	def parseStructure(self, structureExpression):
-		return parse(self, structureExpression)
+		return parse(structureExpression, self.g)
 
 	def loadCharDescriptionByParsingYAML(self, rootNode):
 		charDescList=[]
@@ -100,14 +101,14 @@ def p_node(t):
 		| PARENTHESIS_LEFT prop node_list PARENTHESIS_RIGHT
 		| PARENTHESIS_LEFT prop PARENTHESIS_RIGHT"""
 	if len(t)==3:
-		comp=parser.generateStructureDescription()
+		comp=_generateStructure()
 		t[0]=comp
 
 	if len(t)==4:
 		prop=t[2]
 
 		name=prop.get(Constant.TAG_REPLACEMENT)
-		structDesc=parser.generateStructureDescription()
+		structDesc=_generateStructure()
 		structDesc.setReferenceExpression(name)
 
 		t[0]=structDesc
@@ -117,7 +118,7 @@ def p_node(t):
 		structDescList=t[3]
 
 		operatorName=prop.get(Constant.TAG_OPERATOR)
-		comp=parser.generateStructureDescription([operatorName, structDescList])
+		comp=_generateStructure([operatorName, structDescList])
 
 		t[0]=comp
 
@@ -142,10 +143,15 @@ def p_prop(t):
 def p_error(t):
 	print("Syntax error at '%s'" % t.value)
 
-parser=None
-def parse(p, expression):
-	global parser
-	parser=p
+def generateStructure(self, structInfo=['龜', []]):
+	structDesc=structInfo
+	return structDesc
+
+_generateStructure=generateStructure
+
+def parse(expression, g=generateStructure):
+	global _generateStructure
+	_generateStructure=g
 	return yacc.parse(expression)
 
 import ply.lex as lex
