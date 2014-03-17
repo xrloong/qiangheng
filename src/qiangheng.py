@@ -13,7 +13,7 @@ class QiangHeng:
 	def __init__(self, options):
 		inputMethod=options.input_method
 		toTemplateList = [
-			'gen/qhdata/main/template.xml',
+			'gen/qhdata/main/template.yaml',
 		]
 		toComponentList = [
 			'gen/qhdata/main/CJK.yaml',

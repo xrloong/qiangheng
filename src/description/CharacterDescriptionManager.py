@@ -32,14 +32,9 @@ class CharacterDescriptionManager:
 
 	def loadComponent(self, toComponentList):
 		for filename in toComponentList:
-			if filename.rfind(".xml")>=0:
-				charDescList=self.parser.loadCharacters(filename)
-#				for charDesc in charDescList:
-#					self.saveChar(charDesc)
-			if filename.rfind(".yaml")>=0:
-				charDescList=self.parser.loadCharactersYAML(filename)
-				for charDesc in charDescList:
-					self.saveChar(charDesc)
+			charDescList=self.parser.loadCharacters(filename)
+			for charDesc in charDescList:
+				self.saveChar(charDesc)
 
 	def loadTemplate(self, toTemplateList):
 		templateDB={}

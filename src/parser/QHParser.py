@@ -6,10 +6,7 @@ from description.StructureDescription import HangerStructureDescription
 from description.TemplateDescription import TemplateDescription
 from description.TemplateDescription import TemplateSubstitutionDescription
 
-#from xml.etree import ElementTree as ET
-from xml.etree import cElementTree as ET
-#import lxml.etree as ET
-#import lxml.objectify as ET
+import yaml
 
 class QHParser:
 	def __init__(self, operatorGenerator):
@@ -22,124 +19,24 @@ class QHParser:
 		structDesc=HangerStructureDescription.generate(operator, CompList)
 		return structDesc
 
-	def getDesc_Radix(self, node):
-		name=node.get(Constant.TAG_REPLACEMENT)
-		structDesc=self.generateStructureDescription()
-		structDesc.setReferenceExpression(name)
-		return structDesc
-
-	def getDesc_AssembleChar(self, assembleChar):
-		structDescList=[]
-		filter_lambda=lambda x: x.tag in [Constant.TAG_RADIX, Constant.TAG_COMPOSITION]
-#		targetChildNodes=filter(filter_lambda , assembleChar.iterchildren())
-		targetChildNodes=filter(filter_lambda , list(assembleChar))
-		for node in targetChildNodes:
-			if node.tag==Constant.TAG_RADIX:
-				structDesc=self.getDesc_Radix(node)
-			elif node.tag==Constant.TAG_COMPOSITION:
-				structDesc=self.getDesc_AssembleChar(node)
-			else:
-				print("getDesc_AssembleChar: 預期外的標籤。", file=sys.stderr)
-			structDescList.append(structDesc)
-
-		operatorName=assembleChar.get(Constant.TAG_OPERATOR)
-		if operatorName:
-			comp=self.generateStructureDescription([operatorName, structDescList])
-		else:
-			comp=self.generateStructureDescription()
-
-		return comp
-
-	def getDesc_StructureList(self, nodeCharacter):
-		assembleCharList=nodeCharacter.findall(Constant.TAG_COMPOSITION)
-		compList=[]
-		for assembleChar in assembleCharList:
-			comp=self.getDesc_AssembleChar(assembleChar)
-
-			comp.setStructureProperties(assembleChar.attrib)
-
-			compList.append(comp)
-		return compList
-
-	def getDesc_ParameterList(self, nodeParameter):
-		parameterList=[]
-		targetParameterNodes=nodeParameter.findall(Constant.TAG_PARAMETER)
-		for node in targetParameterNodes:
-			charName=node.get(Constant.TAG_NAME)
-			parameterList.append(charName)
-		return parameterList
-
-	def getDesc_Template_Substitution(self, nodeStructure):
-		assembleChar=nodeStructure.find(Constant.TAG_COMPOSITION)
-		comp=self.getDesc_AssembleChar(assembleChar)
-		return TemplateSubstitutionDescription(comp)
-
-	def getDesc_Template(self, nodeTemplate):
-		templateName=nodeTemplate.get(Constant.TAG_NAME)
-
-		parameterNodeList=nodeTemplate.find(Constant.TAG_PARAMETER_LIST)
-		parameterNameList=self.getDesc_ParameterList(parameterNodeList)
-
-		substitutionList=[]
-		structureNodes=nodeTemplate.findall(Constant.TAG_COMPOSITION_STRUCTURE)
-		for node in structureNodes:
-			substitution=self.getDesc_Template_Substitution(node)
-			substitutionList.append(substitution)
-
-		return TemplateDescription(templateName, parameterNameList, substitutionList)
-
-	def loadTemplateByParsingXML__0_3(self, rootNode):
-		# 用於 0.3 版
-		templateGroupNode=rootNode.find(Constant.TAG_TEMPLATE_SET)
+	def loadTemplateByParsingYAML(self, node):
 		templateDB={}
-		if None!=templateGroupNode:
-			targetChildNodes=templateGroupNode.findall(Constant.TAG_TEMPLATE)
-			for node in targetChildNodes:
-				templateName=node.get(Constant.TAG_NAME)
-				templateDesc=self.getDesc_Template(node)
-				templateDB[templateName]=templateDesc
+		templateGroupNode=node.get(Constant.TAG_TEMPLATE_SET)
+		for node in templateGroupNode:
+			templateName=node.get(Constant.TAG_NAME)
+			parameterNameList=node.get(Constant.TAG_PARAMETER_LIST)
+			structureExpression=node.get(Constant.TAG_STRUCTURE)
+
+			comp=parse(self, structureExpression)
+			substitutionList=[TemplateSubstitutionDescription(comp), ]
+
+			templateDesc=TemplateDescription(templateName, parameterNameList, substitutionList)
+			templateDB[templateName]=templateDesc
 		return templateDB
-
-	def loadCharDescriptionByParsingXML__0_3(self, rootNode):
-		# 用於 0.3 版
-		charGroupNode=rootNode.find(Constant.TAG_CHARACTER_SET)
-		targetChildNodes=charGroupNode.findall(Constant.TAG_CHARACTER)
-
-		charDescList=[]
-		for node in targetChildNodes:
-			structureList=self.getDesc_StructureList(node)
-			charName=node.get(Constant.TAG_NAME)
-
-			charDesc=CharacterDescription(charName)
-			charDesc.setStructureList(structureList)
-
-			charDescList.append(charDesc)
-		return charDescList
-
-	def loadTemplateByParsingXML(self, node):
-		version=node.get(Constant.TAG_VERSION)
-		templateDB={}
-		if version=='0.3':
-			templateDB=self.loadTemplateByParsingXML__0_3(node)
-		return templateDB
-
-	def loadCharDescriptionByParsingXML(self, node):
-		version=node.get(Constant.TAG_VERSION)
-		charDescList=[]
-		if version=='0.3':
-			charDescList=self.loadCharDescriptionByParsingXML__0_3(node)
-		return charDescList
 
 	def loadTemplates(self, filename):
-		xmlNode=ET.parse(filename)
-		rootNode=xmlNode.getroot()
-		return self.loadTemplateByParsingXML(rootNode)
-
-	def loadCharacters(self, filename):
-		xmlNode=ET.parse(filename)
-		rootNode=xmlNode.getroot()
-		charDescList=self.loadCharDescriptionByParsingXML(rootNode)
-		return charDescList
+		node=yaml.load(open(filename), yaml.CLoader)
+		return self.loadTemplateByParsingYAML(node)
 
 	def parseStructure(self, structureExpression):
 		return parse(self, structureExpression)
@@ -154,14 +51,14 @@ class QHParser:
 
 			if Constant.TAG_STRUCTURE in node:
 				structureExpression=node.get(Constant.TAG_STRUCTURE)
-				structureList=self.parseStructure(structureExpression)
+				comp=self.parseStructure(structureExpression)
+				structureList=[comp, ]
 				charDesc.setStructureList(structureList)
 
 			charDescList.append(charDesc)
 		return charDescList
 
-	def loadCharactersYAML(self, filename):
-		import yaml
+	def loadCharacters(self, filename):
 		node=yaml.load(open(filename), yaml.CLoader)
 		return self.loadCharDescriptionByParsingYAML(node)
 
@@ -179,7 +76,7 @@ tokens = (
 #	'COMMA',
 	)
 
-t_NAME			= r'[一-龥㐀-䶵\[\]][一-龥㐀-䶵\[\]]*'
+t_NAME			= r'[一-龥㐀-䶵\[\]][一-龥㐀-䶵\[\]]*(\.[0-9])?'
 t_PARENTHESIS_LEFT	= r'\('
 t_PARENTHESIS_RIGHT	= r'\)'
 t_BRACE_LEFT		= r'\{'
@@ -197,14 +94,6 @@ def t_error(t):
 	print("Illegal character '%s'" % t.value[0])
 	t.lexer.skip(1)
 
-
-def p_node_list(t):
-	"""node_list : node
-		| node node_list"""
-	if len(t)==2:
-		t[0]=[t[1]]
-	if len(t)==3:
-		t[0]=[t[1]]+t[2]
 
 def p_node(t):
 	"""node : PARENTHESIS_LEFT PARENTHESIS_RIGHT
@@ -231,6 +120,14 @@ def p_node(t):
 		comp=parser.generateStructureDescription([operatorName, structDescList])
 
 		t[0]=comp
+
+def p_node_list(t):
+	"""node_list : node
+		| node node_list"""
+	if len(t)==2:
+		t[0]=[t[1]]
+	if len(t)==3:
+		t[0]=[t[1]]+t[2]
 
 def p_attrib(t):
 	'attrib : NAME EQUAL NAME'
