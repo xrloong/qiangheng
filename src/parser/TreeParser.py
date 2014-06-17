@@ -93,9 +93,9 @@ _generateNode=generateNode
 def parse(expression, g=generateNode):
 	global _generateNode
 	_generateNode=g
-	return yacc.parse(expression)
+	return parser.parse(expression, lexer=lexer)
 
 
-lex.lex()
-yacc.yacc()
+lexer=lex.lex()
+parser=yacc.yacc()
 

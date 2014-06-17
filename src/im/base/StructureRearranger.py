@@ -1,10 +1,30 @@
 from im.gear import OperatorManager
 from description.StructureDescription import HangerStructureDescription
+from description.StructureDescription import StructureDescription
 from im.gear import Operator
+from gear import TreeRegExp
 
 class StructureRearranger:
 	def __init__(self):
-		pass
+		class TProxy(TreeRegExp.BasicTreeProxy):
+			def __init__(self):
+				pass
+
+			def getChildren(self, tree):
+				return tree.getCompList()
+
+			def matchSingle(self, tre, tree):
+				prop=tre.prop
+				isMatch = True
+				if "名稱" in prop:
+					isMatch &= prop.get("名稱") == tree.getReferenceExpression()
+
+				if "運算" in prop:
+					isMatch &= prop.get("運算") == tree.getOperator().getName()
+
+				return isMatch
+		self.treeProxy=TProxy()
+		self.patternList=[(TreeRegExp.compile(re), result) for (re, result) in self.getPatternList()]
 
 	def setOperatorGenerator(self, operatorGenerator):
 		self.operatorGenerator=operatorGenerator
@@ -23,6 +43,7 @@ class StructureRearranger:
 		return structDesc
 
 	def rearrangeDesc(self, structDesc):
+		self.rearrangeByTreeRegExp(structDesc)
 		self.rearrangeSpecial(structDesc)
 
 		operator=structDesc.getOperator()
@@ -180,3 +201,85 @@ class StructureRearranger:
 				structDesc.setCompList(structDescList)
 				structDesc.setOperator(Operator.OperatorGoose)
 
+	def rearrangeByTreeRegExp(self, structDesc):
+		compList=structDesc.getCompList()
+		for (tre, result) in self.patternList:
+			matchResult=TreeRegExp.match(tre, structDesc, self.treeProxy)
+			if matchResult.isMatched():
+				tmpStructDesc=self.genStructDesc(tre, result)
+				structDesc.setOperator(tmpStructDesc.getOperator())
+				structDesc.setCompList(tmpStructDesc.getCompList())
+
+	def generateTokens(self, expression):
+		tokens=[]
+		length=len(expression)
+		i=0
+		while i<length:
+			if expression[i] in ["(", ")"]:
+				tokens.append(expression[i])
+				i+=1
+			elif expression[i] == "\\":
+				j=i+1
+				while j<length and expression[j].isdigit():
+					j+=1
+				tokens.append(expression[i:j])
+				i=j
+			elif expression[i] == " ":
+				i+=1
+			else:
+				j=i+1
+				while j<length and expression[j] not in ["(", ")", "\\", " "]:
+					j+=1
+				tokens.append(expression[i:j])
+				i=j
+		return tokens
+
+	def genStructDescRecursive(self, tre, tokens):
+		if not tokens[0]=="(":
+			return ([], None)
+		operatorName = tokens[1]
+		compList=[]
+		rest=tokens[2:]
+		while len(rest) > 0:
+			if rest[0]=="(":
+				rest, structDesc=self.genStructDescRecursive(tre, rest)
+				if structDesc!=None:
+					compList.append(structDesc)
+			elif rest[0]==")":
+				rest=rest[1:]
+				break
+			elif rest[0][:1]=="\\":
+				index=int(rest[0][1:])
+				rest=rest[1:]
+				compList.extend(tre.getComp(index).getMatched())
+			else:
+				compList.append(self.generateStructureDescriptionWithName(rest[0]))
+				rest=rest[1:]
+		operator=self.operatorGenerator(operatorName)
+		structDesc=StructureDescription.generate(operator, compList)
+		return (rest, structDesc)
+
+	def genStructDesc(self, tre, expression):
+		expression=expression[1:-1]
+		expressionList=expression.split()
+		operatorName=expressionList[0]
+
+		compList=[self.generateStructureDescriptionWithName(expression) for expression in expressionList[1:]]
+
+		compList=[]
+		for expression in expressionList[1:]:
+			if expression[:1]=='\\':
+				index=int(expression[1:])
+				compList.extend(tre.getComp(index).getMatched())
+			else:
+				compList.append(self.generateStructureDescriptionWithName(expression))
+
+		operator=self.operatorGenerator(operatorName)
+		structureDescription=StructureDescription.generate(operator, compList)
+		return structureDescription
+
+	def genStructDesc(self, tre, expression):
+		return self.genStructDescRecursive(tre, self.generateTokens(expression))[1]
+
+	def getPatternList(self):
+		return []

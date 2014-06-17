@@ -15,7 +15,7 @@ tokens = (
 #	'COMMA',
 	)
 
-t_NAME		= r'[一-龥\[\]][一-龥\[\]]*'
+t_NAME		= r'[一-龥㐀-䶵\[\]][一-龥㐀-䶵\[\]\.0-9]*'
 t_PARENTHESIS_LEFT	= r'\('
 t_PARENTHESIS_RIGHT	= r'\)'
 t_BRACE_LEFT	= r'\{'
@@ -78,6 +78,25 @@ class TreeRegExp:
 
 	def getMatched(self):
 		return self.matched
+
+	def getComp(self, n):
+		s, t=self.countComp(0, n)
+		if s==n:
+			return t
+		else:
+			return None
+
+	def countComp(self, m, target):
+		if m==target:
+			return (m, self)
+		else:
+			s=m
+			t=self
+			for c in self.children:
+				s, t=c.countComp(s+1, target)
+				if(s==target):
+					return s, t
+			return (s, t)
 
 class MatchResult:
 	def __init__(self):
@@ -186,10 +205,10 @@ import ply.lex as lex
 lexer=lex.lex()
 #
 import ply.yacc as yacc
-yacc.yacc()
+parser=yacc.yacc()
 
 def compile(tre):
-	root=yacc.parse(tre)
+	root=parser.parse(tre, lexer=lexer)
 	return root
 
 def match(tre, node, proxy):

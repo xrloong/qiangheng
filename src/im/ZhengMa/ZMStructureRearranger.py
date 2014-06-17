@@ -2,28 +2,15 @@ from ..base.StructureRearranger import StructureRearranger
 from im.gear import Operator
 
 class ZMStructureRearranger(StructureRearranger):
+	def getPatternList(self):
+		return [
+			("({運算=範湘} ({名稱=行.0}) .* ({名稱=行.1}) )", "(龍 行 \\2)"),
+			("({運算=範湘} ({名稱=儿.0}) .* ({名稱=儿.1}) )", "(龍 儿 \\2)"),
+			("({運算=範湘} ({名稱=[丨丨].0}) .* ({名稱=[丨丨].1}) )", "(龍 [丨丨] \\2)"),
+			("({運算=範湘} ({名稱=[丨丿].0}) .* ({名稱=[丨丿].1}) )", "(龍 [丨丿] \\2)"),
+			("({運算=範湘} ({名稱=[丿丨].0}) .* ({名稱=[丿丨].1}) )", "(龍 [丿丨] \\2)"),
 
-	def rearrangeSpecial(self, structDesc):
-		operator=structDesc.getOperator()
-		compList=structDesc.getCompList()
-		lenCompList=len(compList)
-		if operator.getName()=='範焤' and lenCompList>=2:
-			self.rearrangeForFanFu(structDesc)
-
-		if operator.getName()=='範湘' and lenCompList>=2:
-			self.rearrangeForFanYan(structDesc)
-
-	def getRearrangeListFanFu(self):
-		rearrangeList=['辰', '廣']
-		return rearrangeList
-
-	def getRearrangeListFanYan(self):
-		rearrangeList=[
-			['行.0', '行.1', '行'],
-			['儿.0', '儿.1', '儿'],
-			['[丨丨].0', '[丨丨].1', '[丨丨]'],
-			['[丨丿].0', '[丨丿].1', '[丨丿]'],
-			['[丿丨].0', '[丿丨].1', '[丿丨]'],
-			]
-		return rearrangeList
+			("({運算=範焤} ({名稱=辰}) .* )", "(廖 辰 \\2)"),
+			("({運算=範焤} ({名稱=廣}) .* )", "(廖 廣 \\2)"),
+		]
 

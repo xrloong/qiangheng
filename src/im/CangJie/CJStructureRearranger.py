@@ -2,40 +2,14 @@ from ..base.StructureRearranger import StructureRearranger
 from im.gear import Operator
 
 class CJStructureRearranger(StructureRearranger):
+	def getPatternList(self):
+		return [
+			("({運算=範焤} ({名稱=厭}) .* )", "(廖 厭 \\2)"),
+			("({運算=範焤} ({名稱=辰}) .* )", "(廖 辰 \\2)"),
+			("({運算=範焤} ({名稱=麻}) .* )", "(廖 麻 \\2)"),
 
-	def rearrangeSpecial(self, structDesc):
-		operator=structDesc.getOperator()
-		compList=structDesc.getCompList()
-		if operator.getName()=='範產':
-			tmpStructDesc_文=self.generateStructureDescriptionWithName('文')
-			tmpStructDesc_厂=self.generateStructureDescriptionWithName('厂')
-			tmpChildStructDesc_0=structDesc.getCompList()[0]
-			tmpStructDesc=self.generateStructureDescription(['範廖', [tmpStructDesc_厂,tmpChildStructDesc_0]])
-			structDesc.setOperator(Operator.OperatorSilkworm)
-			structDesc.setCompList([tmpStructDesc_文, tmpStructDesc])
-		if operator.getName()=='範焤':
-			self.rearrangeForFanFu(structDesc)
-
-		if operator.getName()=='範湘' and len(compList)>=2:
-			firstStructDesc=compList[0]
-			lastStructDesc=compList[-1]
-			if firstStructDesc.getReferenceExpression()=='儿.0' and lastStructDesc.getReferenceExpression()=='儿.1':
-				tmpStructDesc_丨=self.generateStructureDescriptionWithName('丨')
-				tmpStructDesc_乚=self.generateStructureDescriptionWithName('乚')
-				structDesc.setOperator(Operator.OperatorGoose)
-				structDesc.setCompList([tmpStructDesc_丨]+compList[1:-1]+[tmpStructDesc_乚])
-
-		if operator.getName()=='範威' and len(compList)>=1:
-			firstStructDesc=compList[0]
-
-			tmpStructDesc_戊=self.generateStructureDescriptionWithName('戊')
-			tmpStructDesc_一=self.generateStructureDescriptionWithName('一')
-			tmpStructDesc_一女=self.generateStructureDescription(['範志', [tmpStructDesc_一, firstStructDesc]])
-			structDesc.setOperator(Operator.OperatorTong)
-			structDesc.setCompList([tmpStructDesc_戊, tmpStructDesc_一女])
-
-	def getRearrangeListFanFu(self):
-		rearrangeList=['厭', '辰', '麻']
-		return rearrangeList
-
+			("({運算=範湘} ({名稱=儿.0}) .* ({名稱=儿.1}) )", "(鴻 丨 \\2 乚)"),
+			("({運算=範威} . )", "(範同 戊 (範志 一 \\1))"),
+			("({運算=範產} . )", "(範志 文 (範廖 厂 \\1))"),
+		]
 
