@@ -29,6 +29,8 @@ class QiangHeng:
 			'gen/qhdata/%s/radix/CJK.yaml'%inputMethod,
 			'gen/qhdata/%s/radix/CJK-A.yaml'%inputMethod,
 		]
+		toSutstitueFile = 'gen/qhdata/%s/substitute.yaml'%inputMethod
+
 		imPackage=IMMgr.getIMPackage(inputMethod)
 
 		output_format=options.output_format
@@ -43,6 +45,7 @@ class QiangHeng:
 		StateManager.setIMPackage(imPackage)
 
 		StateManager.getCodeInfoManager().loadRadix(toCodeList)
+		StateManager.getOperationManager().loadSubstituteRules(toSutstitueFile)
 
 		self.descMgr=CharacterDescriptionManager()
 		self.descMgr.loadData(toTemplateList, toComponentList)

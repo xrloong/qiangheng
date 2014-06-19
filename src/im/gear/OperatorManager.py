@@ -1,5 +1,6 @@
 from . import Operator
 from . import RearrangeInfo
+from . import StructureRearranger
 import sys
 
 class OperatorManager:
@@ -50,7 +51,7 @@ class OperatorManager:
 			return operator
 
 		self.operatorGenerator=operatorGenerator
-		self.structureRearranger=imPackage.StructureRearranger()
+		self.structureRearranger=StructureRearranger.StructureRearranger()
 		self.structureRearranger.setOperatorGenerator(operatorGenerator)
 
 
@@ -82,3 +83,5 @@ class OperatorManager:
 	def rearrangeStructure(self, structDesc):
 		self.structureRearranger.rearrangeOn(structDesc)
 
+	def loadSubstituteRules(self, toSubstituteFile):
+		self.structureRearranger.loadSubstituteRules(toSubstituteFile)

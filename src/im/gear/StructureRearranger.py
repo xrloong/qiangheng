@@ -1,8 +1,8 @@
-from im.gear import OperatorManager
 from description.StructureDescription import HangerStructureDescription
 from description.StructureDescription import StructureDescription
-from im.gear import Operator
 from gear import TreeRegExp
+
+import yaml
 
 class StructureRearranger:
 	def __init__(self):
@@ -25,6 +25,15 @@ class StructureRearranger:
 				return isMatch
 		self.treeProxy=TProxy()
 		self.patternList=[(TreeRegExp.compile(re), result) for (re, result) in self.getPatternList()]
+
+	def loadSubstituteRules(self, toSubstituteFile):
+		rootNode=yaml.load(open(toSubstituteFile))
+		ruleSetNode=rootNode.get("規則集")
+		self.patternList=[]
+		for node in ruleSetNode:
+			matchPattern=node.get("比對")
+			resultPattern=node.get("替換")
+			self.patternList.append([TreeRegExp.compile(matchPattern), resultPattern])
 
 	def setOperatorGenerator(self, operatorGenerator):
 		self.operatorGenerator=operatorGenerator
