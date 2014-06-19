@@ -13,18 +13,15 @@ MSIM_PATH	=	$(TABLES_PATH)/msim
 QHDATA_PATH			=	qhdata
 QHDATA_MAIN_PATH		=	$(QHDATA_PATH)/main
 QHDATA_MAIN_COMP_PATH		=	$(QHDATA_MAIN_PATH)/component
-QHDATA_TEMPLATE_FILE		=	$(QHDATA_PATH)/template/main.xml
-QHDATA_STYLE_PATH		=	$(QHDATA_PATH)/style
-QHDATA_COMP_PATH		=	$(QHDATA_PATH)/component
-QHDATA_RADIX_PATH		=	$(QHDATA_PATH)/radix
-QHDATA_STYLE_FILE		=	standard.xml
-QHDATA_STYLE_TRADITIONAL_FILE	=	traditional.xml
-QHDATA_STYLE_SIMPLIFIED_FILE	=	simplified.xml
+QHDATA_TEMPLATE_FILE		=	$(QHDATA_MAIN_PATH)/template.xml
+QHDATA_STYLE_PATH		=	$(QHDATA_MAIN_PATH)/style
+QHDATA_STYLE_FILE		=	$(QHDATA_STYLE_PATH)/standard.xml
+QHDATA_STYLE_TRADITIONAL_FILE	=	$(QHDATA_STYLE_PATH)/traditional.xml
+QHDATA_STYLE_SIMPLIFIED_FILE	=	$(QHDATA_STYLE_PATH)/simplified.xml
 GEN_PATH			=	gen
 GEN_QHDATA_PATH			=	$(GEN_PATH)/$(QHDATA_PATH)
 GEN_QHDATA_MAIN_PATH		=	$(GEN_QHDATA_PATH)/main
 GEN_QHDATA_MAIN_COMP_PATH	=	$(GEN_QHDATA_MAIN_PATH)/component
-GEN_QHDATA_TEMPLATE_FILE	=	$(GEN_QHDATA_MAIN_PATH)/template.xml
 PROFILE_PATH	=	profiles
 TARBALLS_PATH	=	tarballs
 XFORM		=	--xform="s:^:qiangheng/:"
@@ -51,21 +48,21 @@ prepare-main:
 	xalan -xsl xslt/xml2yaml-template.xslt -in $(QHDATA_TEMPLATE_FILE) > $(GEN_QHDATA_MAIN_PATH)/template.yaml
 
 prepare-tranditional:
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_FILE) > $(GEN_QHDATA_MAIN_PATH)/style.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_TRADITIONAL_FILE) > $(GEN_QHDATA_PATH)/$(IM)/style.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_FILE) > $(GEN_QHDATA_MAIN_PATH)/style.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_TRADITIONAL_FILE) > $(GEN_QHDATA_PATH)/$(IM)/style.yaml
 
 prepare-simplified:
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_FILE) > $(GEN_QHDATA_MAIN_PATH)/style.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_PATH)/$(QHDATA_STYLE_SIMPLIFIED_FILE) > $(GEN_QHDATA_PATH)/$(IM)/style.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_FILE) > $(GEN_QHDATA_MAIN_PATH)/style.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_SIMPLIFIED_FILE) > $(GEN_QHDATA_PATH)/$(IM)/style.yaml
 
 prepare-im:
 	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/component/ $(GEN_QHDATA_PATH)/$(IM)/radix/
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_COMP_PATH)/CJK/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/component/CJK.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_COMP_PATH)/CJK-A/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/component/CJK-A.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_PATH)/$(IM)/component/CJK.xml > $(GEN_QHDATA_PATH)/$(IM)/component/CJK.yaml
+	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_PATH)/$(IM)/component/CJK-A.xml > $(GEN_QHDATA_PATH)/$(IM)/component/CJK-A.yaml
 
 prepare-im-general:
-	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_RADIX_PATH)/CJK/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml
-	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_RADIX_PATH)/CJK-A/$(IM).xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml
+	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_PATH)/$(IM)/radix/CJK.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml
+	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_PATH)/$(IM)/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml
 
 prepare-ar:
 	mkdir -p $(GEN_QHDATA_PATH)/ar
@@ -101,8 +98,8 @@ prepare-dc:
 	mkdir -p $(GEN_QHDATA_PATH)/dc
 	make prepare-tranditional IM=dc
 	make prepare-im IM=dc
-	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_RADIX_PATH)/CJK/dc.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml
-	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_RADIX_PATH)/CJK-A/dc.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK-A.yaml
+	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_PATH)/dc/radix/CJK.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml
+	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_PATH)/dc/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK-A.yaml
 
 prepare:
 	make prepare-main
