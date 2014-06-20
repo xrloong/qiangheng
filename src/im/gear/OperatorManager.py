@@ -1,6 +1,8 @@
 from . import Operator
 from . import RearrangeInfo
 from . import StructureRearranger
+from parser import QHParser
+from description.StructureDescription import HangerStructureDescription
 import sys
 
 class OperatorManager:
@@ -54,7 +56,6 @@ class OperatorManager:
 		self.structureRearranger=StructureRearranger.StructureRearranger()
 		self.structureRearranger.setOperatorGenerator(operatorGenerator)
 
-
 	def addTemplateOperatorIfNotExist(self, templateName):
 		if templateName in self.templateOperatorDict:
 			operator=self.templateOperatorDict[templateName]
@@ -82,6 +83,15 @@ class OperatorManager:
 
 	def rearrangeStructure(self, structDesc):
 		self.structureRearranger.rearrangeOn(structDesc)
+
+	def loadTemplate(self, toTemplateList):
+		parser=QHParser.QHParser(self.operatorGenerator)
+		templateDB={}
+		for filename in toTemplateList:
+			tmpTemplateDB=parser.loadTemplates(filename)
+			templateDB.update(tmpTemplateDB)
+
+		self.setTemplateDB(templateDB)
 
 	def loadSubstituteRules(self, toSubstituteFile):
 		self.structureRearranger.loadSubstituteRules(toSubstituteFile)

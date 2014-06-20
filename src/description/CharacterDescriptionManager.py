@@ -16,11 +16,7 @@ class CharacterDescriptionManager:
 
 		self.charDescQueryer=charDescQueryer
 
-		operationManager=StateManager.getOperationManager()
-
-		self.operationManager=operationManager
-
-		self.parser=QHParser.QHParser(operationManager.getOperatorGenerator())
+		self.operationManager=StateManager.getOperationManager()
 
 	def getAllCharacters(self):
 		return self.characterDB.keys()
@@ -28,24 +24,17 @@ class CharacterDescriptionManager:
 	def queryCharacterDescription(self, character):
 		return self.charDescQueryer(character)
 
-	def loadData(self, toTemplateList, toComponentList):
-		self.loadTemplate(toTemplateList)
+	def loadData(self, toComponentList):
 		self.loadComponent(toComponentList)
 		self.adjustData()
 
 	def loadComponent(self, toComponentList):
+		operatorGenerator=self.operationManager.getOperatorGenerator()
+		parser=QHParser.QHParser(operatorGenerator)
 		for filename in toComponentList:
-			charDescList=self.parser.loadCharacters(filename)
+			charDescList=parser.loadCharacters(filename)
 			for charDesc in charDescList:
 				self.saveChar(charDesc)
-
-	def loadTemplate(self, toTemplateList):
-		templateDB={}
-		for filename in toTemplateList:
-			tmpTemplateDB=self.parser.loadTemplates(filename)
-			templateDB.update(tmpTemplateDB)
-
-		self.operationManager.setTemplateDB(templateDB)
 
 	def saveChar(self, charDesc):
 		charName=charDesc.getName()

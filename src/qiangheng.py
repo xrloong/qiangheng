@@ -44,11 +44,12 @@ class QiangHeng:
 
 		StateManager.setIMPackage(imPackage)
 
-		StateManager.getCodeInfoManager().loadRadix(toCodeList)
+		StateManager.getOperationManager().loadTemplate(toTemplateList)
 		StateManager.getOperationManager().loadSubstituteRules(toSutstitueFile)
+		StateManager.getCodeInfoManager().loadRadix(toCodeList)
 
 		self.descMgr=CharacterDescriptionManager()
-		self.descMgr.loadData(toTemplateList, toComponentList)
+		self.descMgr.loadData(toComponentList)
 
 		self.hanziNetwork=HanZiNetwork.construct(self.descMgr)
 
