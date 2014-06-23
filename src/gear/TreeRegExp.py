@@ -79,6 +79,15 @@ class TreeRegExp:
 	def getMatched(self):
 		return self.matched
 
+	def getAll(self):
+		def traversal(c):
+			l.append(c)
+			for child in c.children:
+				traversal(child)
+		l=[]
+		traversal(self);
+		return l;
+
 	def getComp(self, n):
 		s, t=self.countComp(0, n)
 		if s==n:
@@ -140,6 +149,12 @@ class BasicTreeProxy:
 			isMatch &= prop.get("運算") == tree.get("operator")
 
 		return isMatch
+
+	def generateLeafNode(self, nodeName):
+		return None
+
+	def generateNode(self, operatorName, children):
+		return None
 
 def p_node(t):
 	"""node : PARENTHESIS_LEFT prop PARENTHESIS_RIGHT
@@ -210,6 +225,67 @@ parser=yacc.yacc()
 def compile(tre):
 	root=parser.parse(tre, lexer=lexer)
 	return root
+
+def matchAndReplace(tre, node, result, proxy):
+	def generateTokens(expression):
+		tokens=[]
+		length=len(expression)
+		i=0
+		while i<length:
+			if expression[i] in ["(", ")"]:
+				tokens.append(expression[i])
+				i+=1
+			elif expression[i] == "\\":
+				j=i+1
+				while j<length and expression[j].isdigit():
+					j+=1
+				tokens.append(expression[i:j])
+				i=j
+			elif expression[i] == " ":
+				i+=1
+			else:
+				j=i+1
+				while j<length and expression[j] not in ["(", ")", "\\", " "]:
+					j+=1
+				tokens.append(expression[i:j])
+				i=j
+		return tokens
+
+	def genStructDesc(expression, allComps):
+		return genStructDescRecursive(generateTokens(expression), allComps)[1]
+
+	def genStructDescRecursive(tokens, allComps):
+		if not tokens[0]=="(":
+			return ([], None)
+		operatorName = tokens[1]
+		compList=[]
+		rest=tokens[2:]
+		while len(rest) > 0:
+			if rest[0]=="(":
+				rest, structDesc=genStructDescRecursive(rest, allComps)
+				if structDesc!=None:
+					compList.append(structDesc)
+			elif rest[0]==")":
+				rest=rest[1:]
+				break
+			elif rest[0][:1]=="\\":
+				index=int(rest[0][1:])
+				rest=rest[1:]
+				compList.extend(allComps[index].getMatched())
+			else:
+#				compList.append(self.generateStructureDescriptionWithName(rest[0]))
+				compList.append(proxy.generateLeafNode(rest[0]))
+				rest=rest[1:]
+		structDesc=proxy.generateNode(operatorName, compList)
+#		operator=self.operatorGenerator(operatorName)
+#		structDesc=StructureDescription.generate(operator, compList)
+		return (rest, structDesc)
+
+	matchResult=matchTree(tre, node, proxy)
+	if matchResult.isMatched():
+		return genStructDesc(result, tre.getAll())
+	else:
+		return None
 
 def match(tre, node, proxy):
 	return matchTree(tre, node, proxy)
