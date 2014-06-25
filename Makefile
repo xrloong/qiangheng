@@ -46,6 +46,7 @@ prepare-main:
 	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_COMP_PATH)/CJK.xml > $(GEN_QHDATA_MAIN_COMP_PATH)/CJK.yaml
 	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml > $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.yaml
 	xalan -xsl xslt/xml2yaml-template.xslt -in $(QHDATA_TEMPLATE_FILE) > $(GEN_QHDATA_MAIN_PATH)/template.yaml
+#	java -jar /usr/share/java/xalan2.jar -xsl xslt/xml2yaml-template.xslt -in $(QHDATA_TEMPLATE_FILE) > $(GEN_QHDATA_MAIN_PATH)/template.yaml
 
 prepare-tranditional:
 	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_FILE) > $(GEN_QHDATA_MAIN_PATH)/style.yaml
