@@ -237,7 +237,7 @@ def matchAndReplace(tre, node, result, proxy):
 				i+=1
 			elif expression[i] == "\\":
 				j=i+1
-				while j<length and expression[j].isdigit():
+				while j<length and expression[j].isdigit() or expression[j]==".":
 					j+=1
 				tokens.append(expression[i:j])
 				i=j
@@ -269,16 +269,25 @@ def matchAndReplace(tre, node, result, proxy):
 				rest=rest[1:]
 				break
 			elif rest[0][:1]=="\\":
-				index=int(rest[0][1:])
+				refExp=rest[0][1:]
+				refExpList=refExp.split(".")
+				if len(refExpList)<2:
+					# \1
+					index=int(refExpList[0])
+					compList.extend(allComps[index].getMatched())
+				else:
+					# \1.1
+					index=int(refExpList[0])
+					x=int(refExpList[1])
+					c=allComps[index].getMatched()[0]
+					nodeName="%s.%d"%(c.getReferenceName(), x)
+					node=proxy.generateLeafNode(nodeName)
+					compList.append(node)
 				rest=rest[1:]
-				compList.extend(allComps[index].getMatched())
 			else:
-#				compList.append(self.generateStructureDescriptionWithName(rest[0]))
 				compList.append(proxy.generateLeafNode(rest[0]))
 				rest=rest[1:]
 		structDesc=proxy.generateNode(operatorName, compList)
-#		operator=self.operatorGenerator(operatorName)
-#		structDesc=StructureDescription.generate(operator, compList)
 		return (rest, structDesc)
 
 	matchResult=matchTree(tre, node, proxy)

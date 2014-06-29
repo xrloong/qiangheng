@@ -1,9 +1,6 @@
-from . import RearrangeInfo
-
 class Operator:
 	def __init__(self, name):
 		self.name=name
-		self.rearrangeInfo=RearrangeInfo.RearrangeInfoSame()
 
 	def __str__(self):
 		return "%s"%self.name
@@ -17,16 +14,10 @@ class Operator:
 	def setName(self, name):
 		self.name=name
 
-	def getRearrangeInfo(self):
-		return self.rearrangeInfo
-
 	def isBuiltin(self):
 		return False
 
 class BuiltinOperator(Operator):
-	def getRearrangeInfo(self):
-		return self.rearrangeInfo
-
 	def isBuiltin(self):
 		return True
 
@@ -34,9 +25,13 @@ class TemplateOperator(Operator):
 	def __init__(self, name):
 		super().__init__(name)
 		self.rearrangeInfo=None
+		self.templateDesc=None
 
-	def setRearrangeInfo(self, rearrangeInfo):
-		self.rearrangeInfo=rearrangeInfo
+	def setTemplateDesc(self, templateDesc):
+		self.templateDesc=templateDesc
+
+	def getTemplateDesc(self):
+		return self.templateDesc
 
 	def isBuiltin(self):
 		return False

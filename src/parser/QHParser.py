@@ -3,8 +3,6 @@ import Constant
 
 from description.CharacterDescription import CharacterDescription
 from description.StructureDescription import HangerStructureDescription
-from description.TemplateDescription import TemplateDescription
-from description.TemplateDescription import TemplateSubstitutionDescription
 
 from parser import TreeParser
 import yaml
@@ -20,25 +18,6 @@ class QHParser:
 			structDesc=HangerStructureDescription.generate(operator, CompList)
 			return structDesc
 		self.g=generateNode
-
-	def loadTemplateByParsingYAML(self, node):
-		templateDB={}
-		templateGroupNode=node.get(Constant.TAG_TEMPLATE_SET)
-		for node in templateGroupNode:
-			templateName=node.get(Constant.TAG_NAME)
-			parameterNameList=node.get(Constant.TAG_PARAMETER_LIST)
-			structureExpression=node.get(Constant.TAG_STRUCTURE)
-
-			comp=self.parseStructure(structureExpression)
-			substitutionList=[TemplateSubstitutionDescription(comp), ]
-
-			templateDesc=TemplateDescription(templateName, parameterNameList, substitutionList)
-			templateDB[templateName]=templateDesc
-		return templateDB
-
-	def loadTemplates(self, filename):
-		node=yaml.load(open(filename), yaml.CLoader)
-		return self.loadTemplateByParsingYAML(node)
 
 	def parseStructure(self, structureExpression):
 		return TreeParser.parse(structureExpression, self.g)

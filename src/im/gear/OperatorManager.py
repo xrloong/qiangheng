@@ -1,8 +1,10 @@
+import Constant
+
 from . import Operator
-from . import RearrangeInfo
 from parser import QHParser
 from description.StructureDescription import HangerStructureDescription
 from description.StructureDescription import StructureDescription
+from description.TemplateDescription import TemplateDescription
 from gear import TreeRegExp
 import yaml
 
@@ -68,12 +70,11 @@ class OperatorManager:
 		return templateOperator
 
 	def setTemplateDB(self, templateDB):
+		self.templateDB=templateDB
 		for templateName, templateDesc in templateDB.items():
-			rearrangeInfoTemplate=RearrangeInfo.RearrangeInfoTemplate(templateDesc)
-
 			self.addTemplateOperatorIfNotExist(templateName)
 			templateOperator=self.findTemplateOperator(templateName)
-			templateOperator.setRearrangeInfo(rearrangeInfoTemplate)
+			templateOperator.setTemplateDesc(templateDesc)
 
 	def getOperatorGenerator(self):
 		return self.operatorGenerator
@@ -81,13 +82,17 @@ class OperatorManager:
 	def rearrangeStructure(self, structDesc):
 		self.structureRearranger.rearrangeOn(structDesc)
 
-	def loadTemplate(self, toTemplateList):
-		parser=QHParser.QHParser(self.operatorGenerator)
+	def loadTemplates(self, toTemplateFile):
+		node=yaml.load(open(toTemplateFile), yaml.CLoader)
 		templateDB={}
-		for filename in toTemplateList:
-			tmpTemplateDB=parser.loadTemplates(filename)
-			templateDB.update(tmpTemplateDB)
+		templateGroupNode=node.get(Constant.TAG_TEMPLATE_SET)
+		for node in templateGroupNode:
+			templateName=node.get(Constant.TAG_NAME)
+			matchPattern=node.get(Constant.TAG_MATCH)
+			replacePattern=node.get(Constant.TAG_PATTERN)
 
+			templateDesc=TemplateDescription(templateName, matchPattern, replacePattern)
+			templateDB[templateName]=templateDesc
 		self.setTemplateDB(templateDB)
 
 	def loadSubstituteRules(self, toSubstituteFile):
@@ -139,11 +144,11 @@ class StructureRearranger:
 
 	def loadSubstituteRules(self, toSubstituteFile):
 		rootNode=yaml.load(open(toSubstituteFile))
-		ruleSetNode=rootNode.get("規則集")
+		ruleSetNode=rootNode.get(Constant.TAG_RULE_SET)
 		self.patternList=[]
 		for node in ruleSetNode:
-			matchPattern=node.get("比對")
-			resultPattern=node.get("替換")
+			matchPattern=node.get(Constant.TAG_MATCH)
+			resultPattern=node.get(Constant.TAG_SUBSTITUTE)
 			self.patternList.append([TreeRegExp.compile(matchPattern), resultPattern])
 
 	def rearrangeOn(self, structDesc):
@@ -156,27 +161,34 @@ class StructureRearranger:
 		return structDesc
 
 	def rearrangeDesc(self, structDesc):
-		self.rearrangeByTreeRegExp(structDesc)
+		self.rearrangeAllByTreeRegExp(structDesc, self.patternList)
 
 		operator=structDesc.getOperator()
 		while not operator.isBuiltin():
-			rearrangeInfo=operator.getRearrangeInfo()
+			templateDesc=operator.getTemplateDesc()
 
-			if rearrangeInfo!=None:
-				rearrangeInfo.rearrange(structDesc)
+			if templateDesc!=None:
+				r=self.rearrangeByTreeRegExp(structDesc, [templateDesc.tre, templateDesc.replacePattern, ])
+				if not r: break
 				self.rearrangeDesc(structDesc)
 				operator=structDesc.getOperator()
 			else:
 				break
 
 
-	def rearrangeByTreeRegExp(self, structDesc):
+	def rearrangeAllByTreeRegExp(self, structDesc, patternList):
 		compList=structDesc.getCompList()
-		for (tre, result) in self.patternList:
-			tmpStructDesc=TreeRegExp.matchAndReplace(tre, structDesc, result, self.treeProxy)
-			if tmpStructDesc!=None:
-				structDesc.setOperator(tmpStructDesc.getOperator())
-				structDesc.setCompList(tmpStructDesc.getCompList())
+		for pattern in patternList:
+			self.rearrangeByTreeRegExp(structDesc, pattern)
+
+	def rearrangeByTreeRegExp(self, structDesc, pattern):
+		compList=structDesc.getCompList()
+		(tre, result)=pattern
+		tmpStructDesc=TreeRegExp.matchAndReplace(tre, structDesc, result, self.treeProxy)
+		if tmpStructDesc!=None:
+			structDesc.setOperator(tmpStructDesc.getOperator())
+			structDesc.setCompList(tmpStructDesc.getCompList())
+		return tmpStructDesc
 
 	def getPatternList(self):
 		return []

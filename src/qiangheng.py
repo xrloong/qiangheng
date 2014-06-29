@@ -12,9 +12,6 @@ from hanzi.HanZiNetwork import HanZiNetwork
 class QiangHeng:
 	def __init__(self, options):
 		inputMethod=options.input_method
-		toTemplateList = [
-			'gen/qhdata/main/template.yaml',
-		]
 		toComponentList = [
 			'gen/qhdata/main/CJK.yaml',
 			'gen/qhdata/main/CJK-A.yaml',
@@ -29,6 +26,7 @@ class QiangHeng:
 			'gen/qhdata/%s/radix/CJK.yaml'%inputMethod,
 			'gen/qhdata/%s/radix/CJK-A.yaml'%inputMethod,
 		]
+		toTemplateFile = 'gen/qhdata/main/template.yaml'
 		toSutstitueFile = 'gen/qhdata/%s/substitute.yaml'%inputMethod
 
 		imPackage=IMMgr.getIMPackage(inputMethod)
@@ -44,7 +42,7 @@ class QiangHeng:
 
 		StateManager.setIMPackage(imPackage)
 
-		StateManager.getOperationManager().loadTemplate(toTemplateList)
+		StateManager.getOperationManager().loadTemplates(toTemplateFile)
 		StateManager.getOperationManager().loadSubstituteRules(toSutstitueFile)
 		StateManager.getCodeInfoManager().loadRadix(toCodeList)
 
