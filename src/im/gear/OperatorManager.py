@@ -158,11 +158,11 @@ class StructureRearranger:
 		self.rearrangeDesc(structDesc)
 		for childDesc in structDesc.getCompList():
 			self.rearrangeRecursively(childDesc)
+		self.rearrangeAllByTreeRegExp(structDesc, self.patternList)
+
 		return structDesc
 
 	def rearrangeDesc(self, structDesc):
-		self.rearrangeAllByTreeRegExp(structDesc, self.patternList)
-
 		operator=structDesc.getOperator()
 		while not operator.isBuiltin():
 			templateDesc=operator.getTemplateDesc()
