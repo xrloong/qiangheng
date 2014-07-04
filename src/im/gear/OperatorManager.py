@@ -157,12 +157,12 @@ class StructureRearranger:
 
 	def rearrangeOn(self, structDesc):
 		self.rearrangeRecursively(structDesc)
+		self.rearrangeAllByTreeRegExpRecursively(structDesc)
 
 	def rearrangeRecursively(self, structDesc):
 		self.rearrangeDesc(structDesc)
 		for childDesc in structDesc.getCompList():
 			self.rearrangeRecursively(childDesc)
-		self.rearrangeAllByTreeRegExp(structDesc, self.patternList)
 
 		return structDesc
 
@@ -179,6 +179,11 @@ class StructureRearranger:
 			else:
 				break
 
+
+	def rearrangeAllByTreeRegExpRecursively(self, structDesc):
+		for childDesc in structDesc.getCompList():
+			self.rearrangeAllByTreeRegExpRecursively(childDesc)
+		self.rearrangeAllByTreeRegExp(structDesc, self.patternList)
 
 	def rearrangeAllByTreeRegExp(self, structDesc, patternList):
 		compList=structDesc.getCompList()
