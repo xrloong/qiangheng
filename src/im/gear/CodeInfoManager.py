@@ -6,16 +6,20 @@ class CodeInfoManager:
 		self.radixParser=imPackage.RadixParser(imName, codeInfoEncoder)
 		self.codeInfoEncoder=imPackage.CodeInfoEncoder
 		self.radixCodeInfoDB={}
+		self.resetRadixList=[]
 
 
 	def loadRadix(self, radixFileList):
-		self.radixCodeInfoDB=self.radixParser.loadRadix(radixFileList)
+		[self.resetRadixList, self.radixCodeInfoDB]=self.radixParser.loadRadix(radixFileList)
 
 	def getRadixCodeInfoList(self, radixName):
 		return self.radixCodeInfoDB.get(radixName)
 
 	def hasRadix(self, radixName):
 		return (radixName in self.radixCodeInfoDB)
+
+	def hasResetRadix(self, radixName):
+		return (radixName in self.resetRadixList)
 
 
 	def interpretCodeInfo(self, codeInfo):

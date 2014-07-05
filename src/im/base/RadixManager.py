@@ -16,6 +16,7 @@ class RadixParser:
 		self.codeInfoEncoder=codeInfoEncoder
 
 		self.radixCodeInfoDB={}
+		self.resetRadixList=[]
 
 		self.radixDescriptionManager=self.createRadixDescriptionManager()
 
@@ -23,7 +24,7 @@ class RadixParser:
 		self.parse(radixFileList)
 
 		self.convert()
-		return self.radixDescriptionManager.getCodeInfoDB()
+		return (self.resetRadixList, self.radixDescriptionManager.getCodeInfoDB())
 
 
 	def getEncoder(self):
@@ -93,7 +94,13 @@ class RadixParser:
 #		assert nameInputMethod==self.nameInputMethod, \
 #			"輸入法錯誤，預期為＜%s＞，實際為＜%s＞。"%(self.nameInputMethod, nameInputMethod)
 
+		self.parseResetRadix(rootNode)
 		self.parseRadixInfo(rootNode)
+
+	def parseResetRadix(self, rootNode):
+		resetCharacterSetNode=rootNode.get("重設字符集")
+		if resetCharacterSetNode:
+			self.resetRadixList.extend(resetCharacterSetNode)
 
 	def parseRadixInfo(self, rootNode):
 		characterSetNode=rootNode.get(Constant.TAG_CHARACTER_SET)

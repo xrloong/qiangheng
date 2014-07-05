@@ -146,6 +146,10 @@ class StructureRearranger:
 		rootNode=yaml.load(open(toSubstituteFile))
 		ruleSetNode=rootNode.get(Constant.TAG_RULE_SET)
 		self.patternList=[]
+
+		if not ruleSetNode:
+			return
+
 		for node in ruleSetNode:
 			matchPattern=node.get(Constant.TAG_MATCH)
 			resultPattern=node.get(Constant.TAG_SUBSTITUTE)

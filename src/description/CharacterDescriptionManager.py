@@ -38,6 +38,13 @@ class CharacterDescriptionManager:
 
 	def saveChar(self, charDesc):
 		charName=charDesc.getName()
+
+		codeInfoManager=StateManager.getCodeInfoManager()
+		if codeInfoManager.hasResetRadix(charName):
+			charDesc=CharacterDescription(charName)
+			self.characterDB[charName]=charDesc
+			return
+
 		if charName in self.characterDB:
 			origCharDesc=self.characterDB.get(charName)
 			origCharDesc.setStructureList(charDesc.getStructureList())
