@@ -183,21 +183,24 @@ class StructureRearranger:
 	def rearrangeAllByTreeRegExpRecursively(self, structDesc):
 		for childDesc in structDesc.getCompList():
 			self.rearrangeAllByTreeRegExpRecursively(childDesc)
-		self.rearrangeAllByTreeRegExp(structDesc, self.patternList)
+		success=True
+		while success:
+			success=self.rearrangeAllByTreeRegExp(structDesc, self.patternList)
 
 	def rearrangeAllByTreeRegExp(self, structDesc, patternList):
-		compList=structDesc.getCompList()
+		success=False
 		for pattern in patternList:
-			self.rearrangeByTreeRegExp(structDesc, pattern)
+			success=success or self.rearrangeByTreeRegExp(structDesc, pattern)
+		return success
 
 	def rearrangeByTreeRegExp(self, structDesc, pattern):
-		compList=structDesc.getCompList()
 		(tre, result)=pattern
 		tmpStructDesc=TreeRegExp.matchAndReplace(tre, structDesc, result, self.treeProxy)
 		if tmpStructDesc!=None:
 			structDesc.setOperator(tmpStructDesc.getOperator())
 			structDesc.setCompList(tmpStructDesc.getCompList())
-		return tmpStructDesc
+			return True
+		return False
 
 	def getPatternList(self):
 		return []
