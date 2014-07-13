@@ -21,6 +21,9 @@ class CodeInfoManager:
 	def hasResetRadix(self, radixName):
 		return (radixName in self.resetRadixList)
 
+	def getResetRadixList(self):
+		return self.resetRadixList
+
 
 	def interpretCodeInfo(self, codeInfo):
 		return codeInfo.toCode()

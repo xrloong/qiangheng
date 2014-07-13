@@ -40,10 +40,6 @@ class CharacterDescriptionManager:
 		charName=charDesc.getName()
 
 		codeInfoManager=StateManager.getCodeInfoManager()
-		if codeInfoManager.hasResetRadix(charName):
-			charDesc=CharacterDescription(charName)
-			self.characterDB[charName]=charDesc
-			return
 
 		if charName in self.characterDB:
 			origCharDesc=self.characterDB.get(charName)
@@ -58,6 +54,11 @@ class CharacterDescriptionManager:
 		return charDesc.getStructureList()
 
 	def adjustData(self):
+		codeInfoManager=StateManager.getCodeInfoManager()
+		for resetRadixName in codeInfoManager.getResetRadixList():
+			charDesc=CharacterDescription(resetRadixName)
+			self.characterDB[resetRadixName]=charDesc
+
 		operationManager=self.operationManager
 		for charName in self.characterDB.keys():
 #			print("name: %s"%charName, file=sys.stderr);
