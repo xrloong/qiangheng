@@ -19,8 +19,6 @@ class QiangHeng:
 			'gen/qhdata/main/component/CJK-A.yaml',
 			'gen/qhdata/main/style.yaml',
 			'gen/qhdata/%s/style.yaml'%inputMethod,
-			'gen/qhdata/%s/component/CJK.yaml'%inputMethod,
-			'gen/qhdata/%s/component/CJK-A.yaml'%inputMethod,
 		]
 		toCodeList = [
 			'gen/qhdata/%s/radix/CJK.yaml'%inputMethod,
