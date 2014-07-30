@@ -2,7 +2,6 @@ import Constant
 
 from . import Operator
 from parser import QHParser
-from description.StructureDescription import HangerStructureDescription
 from description.StructureDescription import StructureDescription
 from description.TemplateDescription import TemplateDescription
 from gear import TreeRegExp
@@ -117,23 +116,15 @@ class TProxy(TreeRegExp.BasicTreeProxy):
 		return isMatch
 
 	def generateLeafNode(self, nodeName):
-		return self.generateStructureDescriptionWithName(nodeName)
+		operatorName='龜'
+		operator=self.operatorGenerator(operatorName)
+		structDesc=StructureDescription.generate(operator, [])
+		structDesc.setReferenceExpression(nodeName)
+		return structDesc
 
 	def generateNode(self, operatorName, children):
 		operator=self.operatorGenerator(operatorName)
 		structDesc=StructureDescription.generate(operator, children)
-		return structDesc
-
-	def generateStructureDescription(self, structInfo=['龜', []]):
-		operatorName, CompList=structInfo
-		operator=self.operatorGenerator(operatorName)
-
-		structDesc=HangerStructureDescription.generate(operator, CompList)
-		return structDesc
-
-	def generateStructureDescriptionWithName(self, name):
-		structDesc=self.generateStructureDescription()
-		structDesc.setReferenceExpression(name)
 		return structDesc
 
 

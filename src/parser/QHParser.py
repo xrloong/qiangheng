@@ -2,7 +2,7 @@ import sys
 import Constant
 
 from description.CharacterDescription import CharacterDescription
-from description.StructureDescription import HangerStructureDescription
+from description.StructureDescription import StructureDescription
 
 from parser import TreeParser
 import yaml
@@ -15,7 +15,7 @@ class QHParser:
 			operatorName, CompList=structInfo
 			operator=operatorGenerator(operatorName)
 
-			structDesc=HangerStructureDescription.generate(operator, CompList)
+			structDesc=StructureDescription.generate(operator, CompList)
 			return structDesc
 		self.g=generateNode
 
