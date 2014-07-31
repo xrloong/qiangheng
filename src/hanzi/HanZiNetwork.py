@@ -34,7 +34,8 @@ class DescriptionManagerToHanZiNetworkConverter:
 			if codeInfoManager.hasRadix(charName):
 				radixInfoList=codeInfoManager.getRadixCodeInfoList(charName)
 				for radixCodeInfo in radixInfoList:
-					self.hanziNetwork.addRadixStructure(charName, radixCodeInfo)
+					structure=self.generateUnitLink(radixCodeInfo)
+					self.hanziNetwork.addStructureIntoNode(structure, charName)
 
 		self.hanziNetwork.setNodeTreeByOrder(sortedNameList)
 		return self.hanziNetwork
@@ -89,11 +90,44 @@ class DescriptionManagerToHanZiNetworkConverter:
 		for childSrcDesc in childDescList:
 			self.recursivelyAddStructure(childSrcDesc)
 
-		self.hanziNetwork.addStructure(structDesc)
+		if structDesc.isLeaf():
+			structure=self.generateReferenceLink(structDesc)
+		else:
+			structure=self.generateLink(structDesc)
+
+		if structDesc.isRoot():
+			self.hanziNetwork.addStructureIntoNode(structure, structDesc.getRootName())
+
+		structureName=structDesc.getUniqueName()
+		self.hanziNetwork.addStructure(structureName, structure)
+
 
 	def queryDescription(self, characterName):
 		return self.descriptionManager.queryCharacterDescription(characterName)
 
+	def generateReferenceLink(self, structDesc):
+		expression=structDesc.getReferenceExpression()
+		name=structDesc.getReferenceName()
+		rootNode=self.hanziNetwork.findNode(name)
+
+		structure=HanZiStructure.HanZiWrapperStructure(rootNode, expression)
+
+		return structure
+
+	def generateUnitLink(self, radixCodeInfo):
+		structure=HanZiStructure.HanZiUnitStructure(radixCodeInfo)
+		return structure
+
+	def generateLink(self, structDesc):
+		operator=structDesc.getOperator()
+		childDescList=structDesc.getCompList()
+
+		childStructureList=[self.hanziNetwork.findStructure(childDesc.getUniqueName()) for childDesc in childDescList]
+
+		codeVariance=structDesc.getCodeVarianceType()
+		structure=HanZiStructure.HanZiAssemblageStructure(codeVariance, operator, childStructureList)
+
+		return structure
 
 
 class HanZiNetwork:
@@ -118,57 +152,17 @@ class HanZiNetwork:
 			tmpNode=HanZiNode.HanZiNode(name)
 			self.nodeDict[name]=tmpNode
 
-	def addStructure(self, structDesc):
-		if structDesc.isLeaf():
-			structure=self.addReferenceLink(structDesc)
-		elif structDesc.isRoot():
-			structure=self.addLink(structDesc)
-			self.addStructureIntoNode(structure, structDesc.getRootName())
-		else:
-			structure=self.addLink(structDesc)
-
-		structureName=structDesc.getUniqueName()
+	def addStructure(self, structureName, structure):
 		self.structureDict[structureName]=structure
-
-	def addRadixStructure(self, radixName, radixCodeInfo):
-		structure=self.addUnitLink(radixCodeInfo)
-		self.addStructureIntoNode(structure, radixName)
-#		structureName=radixName
-#		self.structureDict[structureName]=structure
 
 	def addStructureIntoNode(self, structure, nodeName):
 		dstNode=self.findNode(nodeName)
 		dstNode.addStructure(structure)
 
-	def addReferenceLink(self, structDesc):
-		expression=structDesc.getReferenceExpression()
-		name=structDesc.getReferenceName()
-		rootNode=self.nodeDict.get(name)
-
-		structure=HanZiStructure.HanZiWrapperStructure(rootNode, expression)
-
-		return structure
-
-	def addUnitLink(self, radixCodeInfo):
-		structure=HanZiStructure.HanZiUnitStructure(radixCodeInfo)
-		return structure
-
-	def addLink(self, structDesc):
-		operator=structDesc.getOperator()
-		childDescList=structDesc.getCompList()
-
-		childStructureList=[self.findStructure(childDesc) for childDesc in childDescList]
-
-		codeVariance=structDesc.getCodeVarianceType()
-		structure=HanZiStructure.HanZiAssemblageStructure(codeVariance, operator, childStructureList)
-
-		return structure
-
 	def findNode(self, nodeName):
 		return self.nodeDict.get(nodeName)
 
-	def findStructure(self, structDesc):
-		structureName=structDesc.getUniqueName()
+	def findStructure(self, structureName):
 		return self.structureDict.get(structureName)
 
 	def getCharacterInfo(self, charName):
