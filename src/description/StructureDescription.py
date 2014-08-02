@@ -5,6 +5,24 @@ import Constant
 from gear.CodeVarianceType import CodeVarianceTypeFactory
 
 class StructureDescription:
+	class Generator:
+		def __init__(self):
+			pass
+
+		def generateLeafNode(self, nodeName):
+			structDesc=self.generateNode()
+			structDesc.setReferenceExpression(nodeName)
+			return structDesc
+
+		def generateNode(self, structInfo=['龜', []]):
+			from state import StateManager
+			operationManager = StateManager.getOperationManager()
+
+			operatorName, CompList=structInfo
+			operator=operationManager.generateOperator(operatorName)
+			structDesc=StructureDescription.generate(operator, CompList)
+			return structDesc
+
 	"""字符描述"""
 	countAnonymousName=0
 	def __init__(self, operator, compList):

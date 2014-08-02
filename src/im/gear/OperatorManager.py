@@ -1,8 +1,6 @@
 import Constant
 
 from . import Operator
-from parser import QHParser
-from description.StructureDescription import StructureDescription
 from description.TemplateDescription import TemplateDescription
 from gear import TreeRegExp
 import yaml
@@ -46,16 +44,18 @@ class OperatorManager:
 		self.templateOperatorDict={
 		}
 
-		def operatorGenerator(operatorName):
-			if operatorName in self.builtinOperatorDict:
-				operator=self.builtinOperatorDict.get(operatorName)
-			else:
-				self.addTemplateOperatorIfNotExist(operatorName)
-				operator=self.findTemplateOperator(operatorName)
-			return operator
+		self.structureRearranger=StructureRearranger()
 
-		self.operatorGenerator=operatorGenerator
-		self.structureRearranger=StructureRearranger(operatorGenerator)
+	def generateOperatorTurtle(self):
+		return self.generateOperator()
+
+	def generateOperator(self, operatorName):
+		if operatorName in self.builtinOperatorDict:
+			operator=self.builtinOperatorDict.get(operatorName)
+		else:
+			self.addTemplateOperatorIfNotExist(operatorName)
+			operator=self.findTemplateOperator(operatorName)
+		return operator
 
 	def addTemplateOperatorIfNotExist(self, templateName):
 		if templateName in self.templateOperatorDict:
@@ -74,9 +74,6 @@ class OperatorManager:
 			self.addTemplateOperatorIfNotExist(templateName)
 			templateOperator=self.findTemplateOperator(templateName)
 			templateOperator.setTemplateDesc(templateDesc)
-
-	def getOperatorGenerator(self):
-		return self.operatorGenerator
 
 	def rearrangeStructure(self, structDesc):
 		self.structureRearranger.rearrangeOn(structDesc)
@@ -98,8 +95,9 @@ class OperatorManager:
 		self.structureRearranger.loadSubstituteRules(toSubstituteFile)
 
 class TProxy(TreeRegExp.BasicTreeProxy):
-	def __init__(self, operatorGenerator):
-		self.operatorGenerator=operatorGenerator
+	def __init__(self):
+		from description.StructureDescription import StructureDescription
+		self.structureGenerator=StructureDescription.Generator()
 
 	def getChildren(self, tree):
 		return tree.getCompList()
@@ -115,22 +113,16 @@ class TProxy(TreeRegExp.BasicTreeProxy):
 
 		return isMatch
 
-	def generateLeafNode(self, nodeName):
-		operatorName='龜'
-		operator=self.operatorGenerator(operatorName)
-		structDesc=StructureDescription.generate(operator, [])
-		structDesc.setReferenceExpression(nodeName)
-		return structDesc
+	def generateLeafNode(self, nodeExpression):
+		return self.structureGenerator.generateLeafNode(nodeExpression)
 
 	def generateNode(self, operatorName, children):
-		operator=self.operatorGenerator(operatorName)
-		structDesc=StructureDescription.generate(operator, children)
-		return structDesc
+		return self.structureGenerator.generateNode([operatorName, children])
 
 
 class StructureRearranger:
-	def __init__(self, operatorGenerator):
-		self.treeProxy=TProxy(operatorGenerator)
+	def __init__(self):
+		self.treeProxy=TProxy()
 		self.patternList=[(TreeRegExp.compile(re), result) for (re, result) in self.getPatternList()]
 
 	def loadSubstituteRules(self, toSubstituteFile):

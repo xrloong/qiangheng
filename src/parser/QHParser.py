@@ -2,25 +2,16 @@ import sys
 import Constant
 
 from description.CharacterDescription import CharacterDescription
-from description.StructureDescription import StructureDescription
 
 from parser import TreeParser
 import yaml
 
 class QHParser:
-	def __init__(self, operatorGenerator):
-		self.operatorGenerator=operatorGenerator
-
-		def generateNode(structInfo=['龜', []]):
-			operatorName, CompList=structInfo
-			operator=operatorGenerator(operatorName)
-
-			structDesc=StructureDescription.generate(operator, CompList)
-			return structDesc
-		self.g=generateNode
+	def __init__(self):
+		pass
 
 	def parseStructure(self, structureExpression):
-		return TreeParser.parse(structureExpression, self.g)
+		return TreeParser.parse(structureExpression)
 
 	def loadCharDescriptionByParsingYAML(self, rootNode):
 		charDescList=[]

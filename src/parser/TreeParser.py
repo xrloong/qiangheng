@@ -41,15 +41,14 @@ def p_node(t):
 		| PARENTHESIS_LEFT prop node_list PARENTHESIS_RIGHT
 		| PARENTHESIS_LEFT prop PARENTHESIS_RIGHT"""
 	if len(t)==3:
-		comp=_generateNode()
+		comp=nodeGenerator.generateNode()
 		t[0]=comp
 
 	if len(t)==4:
 		prop=t[2]
 
-		name=prop.get(Constant.TAG_REPLACEMENT)
-		structDesc=_generateNode()
-		structDesc.setReferenceExpression(name)
+		nodeExpression=prop.get(Constant.TAG_REPLACEMENT)
+		structDesc=nodeGenerator.generateLeafNode(nodeExpression)
 
 		t[0]=structDesc
 
@@ -58,7 +57,7 @@ def p_node(t):
 		structDescList=t[3]
 
 		operatorName=prop.get(Constant.TAG_OPERATOR)
-		comp=_generateNode([operatorName, structDescList])
+		comp=nodeGenerator.generateNode([operatorName, structDescList])
 
 		t[0]=comp
 
@@ -84,15 +83,10 @@ def p_error(t):
 	print("Syntax error at '%s'" % t.value)
 
 
-def generateNode(self, structInfo=['龜', []]):
-	structDesc=structInfo
-	return structDesc
+from description.StructureDescription import StructureDescription
+nodeGenerator=StructureDescription.Generator()
 
-_generateNode=generateNode
-
-def parse(expression, g=generateNode):
-	global _generateNode
-	_generateNode=g
+def parse(expression):
 	return parser.parse(expression, lexer=lexer)
 
 

@@ -29,8 +29,7 @@ class CharacterDescriptionManager:
 		self.adjustData()
 
 	def loadComponent(self, toComponentList):
-		operatorGenerator=self.operationManager.getOperatorGenerator()
-		parser=QHParser.QHParser(operatorGenerator)
+		parser=QHParser.QHParser()
 		for filename in toComponentList:
 			charDescList=parser.loadCharacters(filename)
 			for charDesc in charDescList:
