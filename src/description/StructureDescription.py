@@ -2,7 +2,6 @@
 
 import sys
 import Constant
-from gear.CodeVarianceType import CodeVarianceTypeFactory
 
 class StructureDescription:
 	class Generator:
@@ -27,8 +26,6 @@ class StructureDescription:
 		self.operator=operator
 		self.compList=compList
 
-		self.codeVariance=CodeVarianceTypeFactory.generate()
-
 	def __str__(self):
 		return '<{0}={1}|({2})>'.format(self.getReferenceExpression(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
 
@@ -38,10 +35,7 @@ class StructureDescription:
 	def clone(self):
 		compList=[c.clone() for c in self.getCompList()]
 		structureDescription=StructureDescription.generate(self.getOperator(), compList)
-
-		if self.getOperator().getName()=='龜':
-			structureDescription.setReferenceExpression(self.getReferenceExpression())
-			structureDescription.setCodeVarianceType(self.getCodeVarianceType())
+		structureDescription.setReferenceExpression(self.getReferenceExpression())
 
 		return structureDescription
 
@@ -61,17 +55,6 @@ class StructureDescription:
 		structDesc=StructureDescription(operator, compList)
 		structDesc.generateName()
 		return structDesc
-
-	def setStructureProperties(self, structProp):
-		codeVarianceString=structProp.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
-		codeVarianceType=CodeVarianceTypeFactory.generateByString(codeVarianceString)
-		self.setCodeVarianceType(codeVarianceType)
-
-	def getCodeVarianceType(self):
-		return self.codeVariance
-
-	def setCodeVarianceType(self, codeVariance):
-		self.codeVariance=codeVariance
 
 	def getUniqueName(self):
 		return self.name

@@ -72,14 +72,13 @@ class HanZiWrapperStructure(HanZiStructure):
 		self.referenceNode.setNodeTree()
 
 class HanZiAssemblageStructure(HanZiStructure):
-	def __init__(self, codeVariance, operator, structureList):
+	def __init__(self, operator, structureList):
 		super().__init__()
 
 		self.operator=operator
 		self.structureList=structureList
 
 		self.codeInfoList=[]
-		self.codeVariance=codeVariance
 
 	def getCodeInfoList(self):
 		return self.codeInfoList
@@ -95,8 +94,6 @@ class HanZiAssemblageStructure(HanZiStructure):
 		for infoList in infoListList:
 			codeInfo=codeInfoManager.encodeToCodeInfo(self.operator, infoList)
 			if codeInfo!=None:
-				codeInfo.multiplyCodeVarianceType(self.codeVariance)
-
 				for childCodeInfo in infoList:
 					codeVariance=childCodeInfo.getCodeVarianceType()
 					codeInfo.multiplyCodeVarianceType(codeVariance)

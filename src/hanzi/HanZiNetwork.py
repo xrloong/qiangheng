@@ -124,8 +124,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 		childStructureList=[self.hanziNetwork.findStructure(childDesc.getUniqueName()) for childDesc in childDescList]
 
-		codeVariance=structDesc.getCodeVarianceType()
-		structure=HanZiStructure.HanZiAssemblageStructure(codeVariance, operator, childStructureList)
+		structure=HanZiStructure.HanZiAssemblageStructure(operator, childStructureList)
 
 		return structure
 
