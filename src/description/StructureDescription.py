@@ -9,24 +9,16 @@ class StructureDescription:
 		def __init__(self):
 			pass
 
-		def generateLeafNode(self, nodeName):
-			structDesc=self.generateNode()
-			structDesc.setReferenceExpression(nodeName)
+		def generateLeafNode(self, nodeExpression):
+			structDesc=StructureDescription.generateLeafNode(nodeExpression)
 			return structDesc
 
 		def generateNode(self, structInfo=['龜', []]):
-			from state import StateManager
-			operationManager = StateManager.getOperationManager()
-
-			operatorName, CompList=structInfo
-			operator=operationManager.generateOperator(operatorName)
-			structDesc=StructureDescription.generate(operator, CompList)
+			operatorName, compList=structInfo
+			structDesc=StructureDescription.generateNode(operatorName, compList)
 			return structDesc
 
-	"""字符描述"""
-	countAnonymousName=0
 	def __init__(self, operator, compList):
-		self.name=StructureDescription.generateNewAnonymousName()
 		self.referenceExpression=None
 
 		self.rootName=None
@@ -54,9 +46,21 @@ class StructureDescription:
 		return structureDescription
 
 	@staticmethod
-	def generate(operator, compList):
-		targetDescription=StructureDescription(operator, compList)
-		return targetDescription
+	def generateLeafNode(nodeExpression):
+		structDesc=StructureDescription.generateNode('龜', [])
+		structDesc.setReferenceExpression(nodeExpression)
+		structDesc.generateName()
+		return structDesc
+
+	@staticmethod
+	def generateNode(operatorName, compList):
+		from state import StateManager
+		operationManager = StateManager.getOperationManager()
+
+		operator=operationManager.generateOperator(operatorName)
+		structDesc=StructureDescription(operator, compList)
+		structDesc.generateName()
+		return structDesc
 
 	def setStructureProperties(self, structProp):
 		codeVarianceString=structProp.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
@@ -71,6 +75,14 @@ class StructureDescription:
 
 	def getUniqueName(self):
 		return self.name
+
+	def generateName(self):
+		if self.isLeaf():
+			self.name=self.getReferenceExpression()
+		else:
+			strList = [self.getOperator().getName()]
+			strList.extend([comp.getUniqueName() for comp in self.compList])
+			self.name="({0})".format(" ".join(strList))
 
 	def setReferenceExpression(self, referenceExpression):
 		self.referenceExpression=referenceExpression
@@ -99,12 +111,14 @@ class StructureDescription:
 
 	def setOperator(self, operator):
 		self.operator=operator
+		self.generateName()
 
 	def getOperator(self):
 		return self.operator
 
 	def setCompList(self, compList):
 		self.compList=compList
+		self.generateName()
 
 	def getCompList(self):
 		return self.compList
@@ -112,13 +126,4 @@ class StructureDescription:
 	@property
 	def target(self):
 		return self
-
-	# 匿名結構是指沒有對應到名字的部分。
-	# 若定義 夠=(好 (爻 夕)句) ，則 (爻 夕) 的部分為匿名
-	# 若定義 夠=(好 多句) ，則沒有匿名結構
-	@staticmethod
-	def generateNewAnonymousName():
-		name="[瑲珩匿名-{0}]".format(StructureDescription.countAnonymousName)
-		StructureDescription.countAnonymousName+=1
-		return name
 
