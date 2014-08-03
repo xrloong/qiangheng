@@ -26,8 +26,12 @@ class DescriptionManagerToHanZiNetworkConverter:
 			charDesc=self.queryDescription(charName)
 			structDescList=self.descriptionManager.queryStructureList(charDesc)
 			for structDesc in structDescList:
-				structDesc.setRootName(charName)
-				self.recursivelyAddStructure(structDesc)
+				if structDesc.isEmpty():
+					continue
+
+				structure=self.recursivelyAddStructure(structDesc)
+				self.hanziNetwork.addStructureIntoNode(structure, charName)
+
 
 		codeInfoManager=StateManager.getCodeInfoManager()
 		for charName in sortedNameList:
@@ -95,11 +99,10 @@ class DescriptionManagerToHanZiNetworkConverter:
 		else:
 			structure=self.generateLink(structDesc)
 
-		if structDesc.isRoot():
-			self.hanziNetwork.addStructureIntoNode(structure, structDesc.getRootName())
-
 		structureName=structDesc.getUniqueName()
 		self.hanziNetwork.addStructure(structureName, structure)
+
+		return structure
 
 
 	def queryDescription(self, characterName):

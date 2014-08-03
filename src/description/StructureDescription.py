@@ -20,7 +20,6 @@ class StructureDescription:
 	def __init__(self, operator, compList):
 		self.referenceExpression=None
 
-		self.rootName=None
 		self.flagIsRoot=False
 
 		self.operator=operator
@@ -80,17 +79,11 @@ class StructureDescription:
 		else:
 			return expression
 
-	def setRootName(self, rootName):
-		self.rootName=rootName
-
-	def getRootName(self):
-		return self.rootName
-
-	def isRoot(self):
-		return bool(self.getRootName())
-
 	def isLeaf(self):
 		return bool(self.getReferenceName())
+
+	def isEmpty(self):
+		return self.getOperator().getName()=='龜' or len(self.compList)==0
 
 	def setOperator(self, operator):
 		self.operator=operator
