@@ -94,6 +94,9 @@ class OperatorManager:
 	def loadSubstituteRules(self, toSubstituteFile):
 		self.structureRearranger.loadSubstituteRules(toSubstituteFile)
 
+	def getSubstitutePatternList(self):
+		return self.structureRearranger.patternList
+
 class TProxy(TreeRegExp.BasicTreeProxy):
 	def __init__(self):
 		from description.StructureDescription import StructureDescription
@@ -140,7 +143,6 @@ class StructureRearranger:
 
 	def rearrangeOn(self, structDesc):
 		self.rearrangeRecursively(structDesc)
-		self.rearrangeAllByTreeRegExpRecursively(structDesc)
 
 	def rearrangeRecursively(self, structDesc):
 		self.rearrangeDesc(structDesc)
@@ -161,20 +163,6 @@ class StructureRearranger:
 				operator=structDesc.getOperator()
 			else:
 				break
-
-
-	def rearrangeAllByTreeRegExpRecursively(self, structDesc):
-		for childDesc in structDesc.getCompList():
-			self.rearrangeAllByTreeRegExpRecursively(childDesc)
-		success=True
-		while success:
-			success=self.rearrangeAllByTreeRegExp(structDesc, self.patternList)
-
-	def rearrangeAllByTreeRegExp(self, structDesc, patternList):
-		success=False
-		for pattern in patternList:
-			success=success or self.rearrangeByTreeRegExp(structDesc, pattern)
-		return success
 
 	def rearrangeByTreeRegExp(self, structDesc, pattern):
 		(tre, result)=pattern
