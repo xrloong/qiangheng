@@ -29,7 +29,8 @@ class DescriptionManagerToHanZiNetworkConverter:
 				if structDesc.isEmpty():
 					continue
 
-				structure=self.recursivelyAddStructure(structDesc)
+				structure=self.recursivelyConvertDescriptionToStructure(structDesc)
+				self.recursivelyAddStructure(structure)
 				self.hanziNetwork.addStructureIntoNode(structure, charName)
 
 
@@ -89,20 +90,21 @@ class DescriptionManagerToHanZiNetworkConverter:
 				nameSet=nameSet|childNameSet
 		return nameSet
 
-	def recursivelyAddStructure(self, structDesc):
-		childDescList=self.descriptionManager.queryChildren(structDesc)
-		for childSrcDesc in childDescList:
-			self.recursivelyAddStructure(childSrcDesc)
-
+	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():
 			structure=self.generateReferenceLink(structDesc)
 		else:
 			structure=self.generateLink(structDesc)
 
-		structureName=structDesc.getUniqueName()
-		self.hanziNetwork.addStructure(structureName, structure)
-
+		structure.setUniqueName(structDesc.getUniqueName())
 		return structure
+
+	def recursivelyAddStructure(self, structure):
+		for childStructure in structure.getStructureList():
+			self.recursivelyAddStructure(childStructure)
+
+		structureName=structure.getUniqueName()
+		self.hanziNetwork.addStructure(structureName, structure)
 
 
 	def queryDescription(self, characterName):
@@ -122,13 +124,15 @@ class DescriptionManagerToHanZiNetworkConverter:
 		return structure
 
 	def generateLink(self, structDesc):
-		operator=structDesc.getOperator()
-		childDescList=structDesc.getCompList()
+		childStructureList = []
+		childDescList=self.descriptionManager.queryChildren(structDesc)
+		for childSrcDesc in childDescList:
+			childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
+			childStructureList.append(childStructure)
 
-		childStructureList=[self.hanziNetwork.findStructure(childDesc.getUniqueName()) for childDesc in childDescList]
+		operator=structDesc.getOperator()
 
 		structure=HanZiStructure.HanZiAssemblageStructure(operator, childStructureList)
-
 		return structure
 
 
@@ -163,9 +167,6 @@ class HanZiNetwork:
 
 	def findNode(self, nodeName):
 		return self.nodeDict.get(nodeName)
-
-	def findStructure(self, structureName):
-		return self.structureDict.get(structureName)
 
 	def getCharacterInfo(self, charName):
 		charNode=self.nodeDict.get(charName)

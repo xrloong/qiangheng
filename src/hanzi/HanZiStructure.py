@@ -5,6 +5,12 @@ class HanZiStructure:
 	def __init__(self):
 		self.flagIsSet=False
 
+	def getUniqueName(self):
+		return self.uniqueName
+
+	def setUniqueName(self, uniqueName):
+		self.uniqueName=uniqueName
+
 	def getCodeInfoList(self):
 		return []
 
