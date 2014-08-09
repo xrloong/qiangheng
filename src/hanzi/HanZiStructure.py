@@ -36,6 +36,20 @@ class HanZiStructure:
 		for codeInfo in self.getCodeInfoList():
 			pass
 
+class HanZiProxyStructure(HanZiStructure):
+	def __init__(self, targetStructure):
+		super().__init__()
+		self.targetStructure=targetStructure
+
+	def getCodeInfoList(self):
+		return self.targetStructure.getCodeInfoList()
+
+	def getStructureList(self):
+		return self.targetStructure.getStructureList()
+
+	def setCompositions(self):
+		self.targetStructure.setCompositions()
+
 class HanZiUnitStructure(HanZiStructure):
 	def __init__(self, radixCodeInfo):
 		super().__init__()

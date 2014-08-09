@@ -28,9 +28,8 @@ class HanZiNode:
 	def getSubStructureList(self, index):
 		subStructureList=[]
 		for structure in self.structureList:
-			if isinstance(structure, HanZiStructure.HanZiAssemblageStructure):
-				structureList=structure.getStructureList()
-				subStructureList.append(structureList[index])
+			structureList=structure.getStructureList()
+			subStructureList.append(structureList[index])
 		return subStructureList
 
 	def getCodeInfoList(self):

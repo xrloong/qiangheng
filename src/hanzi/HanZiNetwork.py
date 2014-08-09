@@ -96,6 +96,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 		else:
 			structure=self.generateLink(structDesc)
 
+		structure=HanZiStructure.HanZiProxyStructure(structure)
 		structure.setUniqueName(structDesc.getUniqueName())
 		return structure
 
