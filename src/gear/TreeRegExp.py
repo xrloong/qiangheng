@@ -290,7 +290,7 @@ def matchAndReplace(tre, node, result, proxy):
 		structDesc=proxy.generateNode(operatorName, compList)
 		return (rest, structDesc)
 
-	matchResult=matchTree(tre, node, proxy)
+	matchResult=match(tre, node, proxy)
 	if matchResult.isMatched():
 		return genStructDesc(result, tre.getAll())
 	else:
@@ -318,6 +318,11 @@ def matchNode(tre, node, proxy):
 def matchChildren(tre, node, proxy):
 	re_list = tre.children
 	node_list = proxy.getChildren(node)
+
+	if len(re_list)==0:
+		result=MatchResult()
+		result.setTrue()
+		return result
 
 	return matchList(re_list, node_list, proxy)
 
