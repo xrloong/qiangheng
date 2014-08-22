@@ -68,7 +68,7 @@ class HanZiWrapperStructure(HanZiStructure):
 			structureList=self.referenceNode.getStructureList()
 		return structureList
 
-	def setCompositions(self):
+	def setStructureTree(self):
 		self.referenceNode.setNodeTree()
 
 class HanZiAssemblageStructure(HanZiStructure):
