@@ -5,6 +5,32 @@ class HanZiStructure:
 	def __init__(self):
 		self.flagIsSet=False
 
+	def __str__(self):
+		return self.getUniqueName()
+
+	def getUniqueName(self):
+		if self.isWrapper():
+			return self.getReferenceExpression()
+		elif self.isAssemblage():
+			structureList=self.getStructureList()
+			nameList=[structure.getUniqueName() for structure in structureList]
+			return "(%s %s)"%(self.getOperator().getName(), " ".join(nameList))
+
+	def getReferenceExpression(self):
+		return None
+
+	def getOperator(self):
+		return None
+
+	def isUnit(self):
+		return False
+
+	def isWrapper(self):
+		return False
+
+	def isAssemblage(self):
+		return False
+
 	def getCodeInfoList(self):
 		return []
 
@@ -30,10 +56,47 @@ class HanZiStructure:
 		for codeInfo in self.getCodeInfoList():
 			pass
 
+class HanZiProxyStructure(HanZiStructure):
+	def __init__(self, targetStructure):
+		super().__init__()
+		self.targetStructure=targetStructure
+		self.historyStructures=[]
+
+	def setNewStructure(self, newTargetStructure):
+		self.historyStructures.append(self.targetStructure)
+		self.targetStructure=newTargetStructure
+
+	def getReferenceExpression(self):
+		return self.targetStructure.getReferenceExpression()
+
+	def getOperator(self):
+		return self.targetStructure.getOperator()
+
+	def isUnit(self):
+		return self.targetStructure.isUnit()
+
+	def isWrapper(self):
+		return self.targetStructure.isWrapper()
+
+	def isAssemblage(self):
+		return self.targetStructure.isAssemblage()
+
+	def getCodeInfoList(self):
+		return self.targetStructure.getCodeInfoList()
+
+	def getStructureList(self):
+		return self.targetStructure.getStructureList()
+
+	def setCompositions(self):
+		self.targetStructure.setCompositions()
+
 class HanZiUnitStructure(HanZiStructure):
 	def __init__(self, radixCodeInfo):
 		super().__init__()
 		self.codeInfoList=[radixCodeInfo]
+
+	def isUnit(self):
+		return True
 
 	def getCodeInfoList(self):
 		return self.codeInfoList
@@ -51,6 +114,12 @@ class HanZiWrapperStructure(HanZiStructure):
 		self.referenceNode=referenceNode
 		self.expression=expression
 		self.codeInfoList=[]
+
+	def isWrapper(self):
+		return True
+
+	def getReferenceExpression(self):
+		return self.expression
 
 	def getCodeInfoList(self):
 		codeInfoList=[]
@@ -79,6 +148,12 @@ class HanZiAssemblageStructure(HanZiStructure):
 		self.structureList=structureList
 
 		self.codeInfoList=[]
+
+	def isAssemblage(self):
+		return True
+
+	def getOperator(self):
+		return self.operator
 
 	def getCodeInfoList(self):
 		return self.codeInfoList

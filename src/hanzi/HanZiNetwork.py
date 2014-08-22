@@ -4,6 +4,7 @@ from util.topsort import topsort
 from util.topsort import CycleError
 from im.gear import Operator
 from state import StateManager
+from gear import TreeRegExp
 
 from . import HanZiStructure
 from . import HanZiNode
@@ -12,6 +13,10 @@ class DescriptionManagerToHanZiNetworkConverter:
 	def __init__(self, descriptionManager):
 		self.descriptionManager=descriptionManager
 		self.hanziNetwork=HanZiNetwork()
+		self.treeProxy=TProxy(self.hanziNetwork)
+
+		operationManager=StateManager.getOperationManager()
+		self.substitutePatternList=operationManager.getSubstitutePatternList()
 
 	def constructDescriptionNetwork(self):
 		sortedNameList=self.getSortedNameList()
@@ -29,7 +34,8 @@ class DescriptionManagerToHanZiNetworkConverter:
 				if structDesc.isEmpty():
 					continue
 
-				structure=self.recursivelyAddStructure(structDesc)
+				structure=self.recursivelyConvertDescriptionToStructure(structDesc)
+				self.recursivelyAddStructure(structure)
 				self.hanziNetwork.addStructureIntoNode(structure, charName)
 
 
@@ -89,20 +95,40 @@ class DescriptionManagerToHanZiNetworkConverter:
 				nameSet=nameSet|childNameSet
 		return nameSet
 
-	def recursivelyAddStructure(self, structDesc):
-		childDescList=self.descriptionManager.queryChildren(structDesc)
-		for childSrcDesc in childDescList:
-			self.recursivelyAddStructure(childSrcDesc)
-
+	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():
 			structure=self.generateReferenceLink(structDesc)
 		else:
 			structure=self.generateLink(structDesc)
 
-		structureName=structDesc.getUniqueName()
-		self.hanziNetwork.addStructure(structureName, structure)
+		structure=HanZiStructure.HanZiProxyStructure(structure)
 
+		self.rearrangeStructure(structure)
 		return structure
+
+	def rearrangeStructure(self, structure):
+		changed=True
+		while changed:
+			changed=self.rearrangeAllStructure(structure)
+
+	def rearrangeAllStructure(self, structure):
+		changed=False
+		for pattern in self.substitutePatternList:
+			tre, result = pattern
+
+			tmpStructure=TreeRegExp.matchAndReplace(tre, structure, result, self.treeProxy)
+			if tmpStructure!=None:
+				structure.setNewStructure(tmpStructure)
+				structure=tmpStructure
+				changed=True
+		return changed
+
+	def recursivelyAddStructure(self, structure):
+		for childStructure in structure.getStructureList():
+			self.recursivelyAddStructure(childStructure)
+
+		structureName=structure.getUniqueName()
+		self.hanziNetwork.addStructure(structureName, structure)
 
 
 	def queryDescription(self, characterName):
@@ -122,13 +148,54 @@ class DescriptionManagerToHanZiNetworkConverter:
 		return structure
 
 	def generateLink(self, structDesc):
-		operator=structDesc.getOperator()
-		childDescList=structDesc.getCompList()
+		childStructureList = []
+		childDescList=self.descriptionManager.queryChildren(structDesc)
+		for childSrcDesc in childDescList:
+			childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
+			childStructureList.append(childStructure)
 
-		childStructureList=[self.hanziNetwork.findStructure(childDesc.getUniqueName()) for childDesc in childDescList]
+		operator=structDesc.getOperator()
 
 		structure=HanZiStructure.HanZiAssemblageStructure(operator, childStructureList)
+		return structure
 
+
+class TProxy(TreeRegExp.BasicTreeProxy):
+	def __init__(self, hanziNetwork):
+		self.hanziNetwork = hanziNetwork
+
+	def getChildren(self, tree):
+		return tree.getStructureList()
+
+	def matchSingle(self, tre, tree):
+		prop=tre.prop
+		isMatch = True
+		if "名稱" in prop:
+			if tree.isWrapper():
+				isMatch &= prop.get("名稱") == tree.getReferenceExpression()
+			else:
+				isMatch = False
+
+		if "運算" in prop:
+			if tree.isAssemblage():
+				isMatch &= prop.get("運算") == tree.getOperator().getName()
+			else:
+				isMatch = False
+
+		return isMatch
+
+	def generateLeafNode(self, nodeExpression):
+		name=nodeExpression.split(".")[0]
+		rootNode=self.hanziNetwork.findNode(name)
+		structure=HanZiStructure.HanZiWrapperStructure(rootNode, nodeExpression)
+		structure=HanZiStructure.HanZiProxyStructure(structure)
+		return structure
+
+	def generateNode(self, operatorName, children):
+		from state import StateManager
+		operator=StateManager.getOperationManager().generateOperator(operatorName)
+		structure=HanZiStructure.HanZiAssemblageStructure(operator, children)
+		structure=HanZiStructure.HanZiProxyStructure(structure)
 		return structure
 
 
@@ -163,9 +230,6 @@ class HanZiNetwork:
 
 	def findNode(self, nodeName):
 		return self.nodeDict.get(nodeName)
-
-	def findStructure(self, structureName):
-		return self.structureDict.get(structureName)
 
 	def getCharacterInfo(self, charName):
 		charNode=self.nodeDict.get(charName)
