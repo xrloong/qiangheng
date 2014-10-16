@@ -101,8 +101,6 @@ class DescriptionManagerToHanZiNetworkConverter:
 		else:
 			structure=self.generateLink(structDesc)
 
-		structure=HanZiStructure.HanZiProxyStructure(structure)
-
 		self.rearrangeStructure(structure)
 		return structure
 
@@ -140,11 +138,13 @@ class DescriptionManagerToHanZiNetworkConverter:
 		rootNode=self.hanziNetwork.findNode(name)
 
 		structure=HanZiStructure.HanZiWrapperStructure(rootNode, expression)
+		structure=HanZiStructure.HanZiProxyStructure(structure)
 
 		return structure
 
 	def generateUnitLink(self, radixCodeInfo):
 		structure=HanZiStructure.HanZiUnitStructure(radixCodeInfo)
+		structure=HanZiStructure.HanZiProxyStructure(structure)
 		return structure
 
 	def generateLink(self, structDesc):
@@ -157,6 +157,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 		operator=structDesc.getOperator()
 
 		structure=HanZiStructure.HanZiAssemblageStructure(operator, childStructureList)
+		structure=HanZiStructure.HanZiProxyStructure(structure)
 		return structure
 
 
