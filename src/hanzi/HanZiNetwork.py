@@ -137,15 +137,10 @@ class DescriptionManagerToHanZiNetworkConverter:
 		name=structDesc.getReferenceName()
 		rootNode=self.hanziNetwork.findNode(name)
 
-		structure=HanZiStructure.HanZiWrapperStructure(rootNode, expression)
-		structure=HanZiStructure.HanZiProxyStructure(structure)
-
-		return structure
+		return HanZiStructure.generateWrapper(rootNode, expression)
 
 	def generateUnitLink(self, radixCodeInfo):
-		structure=HanZiStructure.HanZiUnitStructure(radixCodeInfo)
-		structure=HanZiStructure.HanZiProxyStructure(structure)
-		return structure
+		return HanZiStructure.generateUnit(radixCodeInfo)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
@@ -156,9 +151,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 		operator=structDesc.getOperator()
 
-		structure=HanZiStructure.HanZiAssemblageStructure(operator, childStructureList)
-		structure=HanZiStructure.HanZiProxyStructure(structure)
-		return structure
+		return HanZiStructure.generateAssemblage(operator, childStructureList)
 
 
 class TProxy(TreeRegExp.BasicTreeProxy):
@@ -188,16 +181,12 @@ class TProxy(TreeRegExp.BasicTreeProxy):
 	def generateLeafNode(self, nodeExpression):
 		name=nodeExpression.split(".")[0]
 		rootNode=self.hanziNetwork.findNode(name)
-		structure=HanZiStructure.HanZiWrapperStructure(rootNode, nodeExpression)
-		structure=HanZiStructure.HanZiProxyStructure(structure)
-		return structure
+		return HanZiStructure.generateWrapper(rootNode, nodeExpression)
 
 	def generateNode(self, operatorName, children):
 		from state import StateManager
 		operator=StateManager.getOperationManager().generateOperator(operatorName)
-		structure=HanZiStructure.HanZiAssemblageStructure(operator, children)
-		structure=HanZiStructure.HanZiProxyStructure(structure)
-		return structure
+		return HanZiStructure.generateAssemblage(operator, children)
 
 
 class HanZiNetwork:

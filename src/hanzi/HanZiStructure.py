@@ -199,4 +199,19 @@ class HanZiAssemblageStructure(HanZiStructure):
 
 		return infoListList
 
+def generateAssemblage(operator, structureList):
+	structure=HanZiAssemblageStructure(operator, structureList)
+	structure=HanZiProxyStructure(structure)
+	return structure
+
+def generateWrapper(referenceNode, expression):
+	structure=HanZiWrapperStructure(referenceNode, expression)
+	structure=HanZiProxyStructure(structure)
+	return structure
+
+def generateUnit(radixCodeInfo):
+	structure=HanZiUnitStructure(radixCodeInfo)
+	structure=HanZiProxyStructure(structure)
+	return structure
+
 
