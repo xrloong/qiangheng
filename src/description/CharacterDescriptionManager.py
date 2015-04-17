@@ -26,7 +26,7 @@ class CharacterDescriptionManager:
 
 	def loadData(self, toComponentList):
 		self.loadComponent(toComponentList)
-		self.adjustData()
+		self.adjustResetRadix()
 
 	def loadComponent(self, toComponentList):
 		parser=QHParser.QHParser()
@@ -68,11 +68,6 @@ class CharacterDescriptionManager:
 			for structDesc in structDescList:
 				operationManager.rearrangeStructure(structDesc)
 #				print("name: %s %s"%(charName, structDesc), file=sys.stderr);
-
-	def adjustData(self):
-		self.adjustResetRadix()
-
-		self.adjustStructure()
 
 if __name__=='__main__':
 	pass

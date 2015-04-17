@@ -19,6 +19,8 @@ class DescriptionManagerToHanZiNetworkConverter:
 		self.substitutePatternList=operationManager.getSubstitutePatternList()
 
 	def constructDescriptionNetwork(self):
+		self.descriptionManager.adjustStructure()
+
 		sortedNameList=self.getSortedNameList()
 #		print(sortedNameList, file=sys.stderr)
 
@@ -37,7 +39,6 @@ class DescriptionManagerToHanZiNetworkConverter:
 				structure=self.recursivelyConvertDescriptionToStructure(structDesc)
 				self.recursivelyAddStructure(structure)
 				self.hanziNetwork.addStructureIntoNode(structure, charName)
-
 
 		codeInfoManager=StateManager.getCodeInfoManager()
 		for charName in sortedNameList:
