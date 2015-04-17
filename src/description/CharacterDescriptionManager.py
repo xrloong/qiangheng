@@ -52,12 +52,13 @@ class CharacterDescriptionManager:
 	def queryStructureList(self, charDesc):
 		return charDesc.getStructureList()
 
-	def adjustData(self):
+	def adjustResetRadix(self):
 		codeInfoManager=StateManager.getCodeInfoManager()
 		for resetRadixName in codeInfoManager.getResetRadixList():
 			charDesc=CharacterDescription(resetRadixName)
 			self.characterDB[resetRadixName]=charDesc
 
+	def adjustStructure(self):
 		operationManager=self.operationManager
 		for charName in self.characterDB.keys():
 #			print("name: %s"%charName, file=sys.stderr);
@@ -67,6 +68,11 @@ class CharacterDescriptionManager:
 			for structDesc in structDescList:
 				operationManager.rearrangeStructure(structDesc)
 #				print("name: %s %s"%(charName, structDesc), file=sys.stderr);
+
+	def adjustData(self):
+		self.adjustResetRadix()
+
+		self.adjustStructure()
 
 if __name__=='__main__':
 	pass
