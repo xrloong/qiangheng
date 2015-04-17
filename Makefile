@@ -57,7 +57,7 @@ prepare-simplified:
 	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_SIMPLIFIED_FILE) > $(GEN_QHDATA_PATH)/$(IM)/style.yaml
 
 prepare-im:
-	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/component/ $(GEN_QHDATA_PATH)/$(IM)/radix/
+	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/radix/
 	xalan -xsl xslt/xml2yaml-substitute.xslt -in $(QHDATA_PATH)/$(IM)/substitute.xml > $(GEN_QHDATA_PATH)/$(IM)/substitute.yaml
 
 prepare-im-general:
