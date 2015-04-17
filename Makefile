@@ -241,12 +241,19 @@ tarballs-platform: all-icons
 tarball-all:
 	tar cjf $(TARBALLS_PATH)/qiangheng-$(VERSION).tar.bz2 --exclude-vcs --exclude=tarballs -C .. qiangheng
 
-python-fontforge:
-	cd fontforge; wget -O fontforge_full-20110222.tar.bz2 http://sourceforge.net/projects/fontforge/files/fontforge-source/fontforge_full-20110222.tar.bz2/download
-	cd fontforge/; tar xjf fontforge_full-20110222.tar.bz2
-	cd fontforge/fontforge-20110222; patch -Np1 < ../fontforge-20110222.patch
-	cd fontforge/fontforge-20110222; ./configure --enable-pyextension --with-python=python3; make
-	cd src/; ln -s ../fontforge/fontforge-20110222/.libs/libfontforge.so fontforge.so
+python-fontforge: fontforge/Makefile
+	cd fontforge; make
+	cd src/; ln -s ../fontforge/pyhook/.libs/fontforge.so .
+
+fontforge/Makefile: fontforge/configure
+	cd fontforge; PYTHON=python3 ./configure --enable-pyextention --disable-programes
+
+fontforge/configure: fontforge/bootstrape
+	cd fontforge/; ./bootstrap
+
+fontforge/bootstrape:
+	git submodule init
+	git submodule update
 
 clean:
 	rm -rf $(ICON_PLATFORM_PATH)
