@@ -1,4 +1,5 @@
 __pycache__
 tables/
 gen/
+src/fontforge.so
 

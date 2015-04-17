@@ -56,14 +56,13 @@ Options:
 		src/hanzitk.py -s -i tables/puretable/qhdc-standard.txt
 
 == 產生字型說明 ==
-	本程式使用 FontForge 來產生字型。目前尚未正式支援 Python3 。
+	本程式使用 FontForge 來產生字型。目前因用於 Python3 的 extention 尚未有預先編譯好的版本，所以要自行編譯。
 	請使用下列命令：
 		make python-fontforge
 	其大致會做以下幾件事：
-		一、下載 FontForge 源碼（http://sourceforge.net/projects/fontforge/files/fontforge-source/fontforge_full-20110222.tar.bz2/download）
-		二、以 fontforge/fontforge-20110222.patch 進行補行。
-		三、以 Python3 來組態與編譯，
-		四、產生連結檔 src/fontforge.so ，會連結到 fontforge/fontforge-20110222/.libs/libfontforge.so
+		一、下載 FontForge 源碼（https://github.com/fontforge/fontforge.git）
+		二、以 Python3 來組態與編譯
+		三、產生連結檔 src/fontforge.so ，會連結到 fontforge/pyhook/.libs/fontforge.so
 	此外，在執行前，應確認系統有安裝 Python3 的開發資源，如在 Ubuntu 上應安裝 python3-dev 套件。
 
 	產生字型檔指令如下，預設輸出檔為 font/qhdc.ttf ：

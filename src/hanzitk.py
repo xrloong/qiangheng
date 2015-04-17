@@ -146,6 +146,12 @@ class RadicalManager:
 	def getCharacters(self):
 		return self.fontDB.keys()
 
+def makeSureDirCreated(filename):
+	import os
+	dirname = os.path.dirname(filename)
+	if not os.path.exists(dirname):
+		os.makedirs(dirname)
+
 def generateTTF(filename):
 	import fontforge
 
@@ -185,6 +191,7 @@ def generateTTF(filename):
 		g.removeOverlap()
 		g.correctDirection()
 
+	makeSureDirCreated(filename)
 	f.generate(filename)
 	print('結束')
 

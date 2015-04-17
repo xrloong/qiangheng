@@ -300,13 +300,16 @@ def match(tre, node, proxy):
 	return matchTree(tre, node, proxy)
 
 def matchTree(tre, node, proxy):
-	result1=matchNode(tre, node, proxy)
-	result2=matchChildren(tre, node, proxy)
-
 	result=MatchResult()
-	if result1 and result2.isMatched():
-		tre.setMatched([node])
-		result.setTrue()
+	result1=matchNode(tre, node, proxy)
+	if result1:
+		result2=matchChildren(tre, node, proxy)
+		if result2.isMatched():
+			tre.setMatched([node])
+			result.setTrue()
+		else:
+			tre.setMatched([])
+			result.setFalse()
 	else:
 		tre.setMatched([])
 		result.setFalse()
