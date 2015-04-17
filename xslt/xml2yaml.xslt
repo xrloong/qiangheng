@@ -46,11 +46,6 @@
             <xsl:call-template name="generate-結構-top-字根"/>
             <xsl:text>"</xsl:text>
             <xsl:value-of select="$newline" />
-
-            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-            <xsl:text>結構二: </xsl:text>
-            <xsl:call-template name="generate-結構二-top-字根"/>
-            <xsl:value-of select="$newline" />
           </xsl:if>
         </xsl:if>
     </xsl:for-each>
@@ -93,42 +88,6 @@
     <xsl:value-of select="@置換" />
     <xsl:text>}</xsl:text>
     <xsl:text>)</xsl:text>
-  </xsl:template>
-
-  <xsl:template name="generate-結構二-top-字根">
-    <xsl:for-each select="組字">
-      <xsl:call-template name="generate-結構二-組字"/>
-    </xsl:for-each>
-  </xsl:template>
-
-  <xsl:template name="generate-結構二-組字">
-      <xsl:if test="@運算">
-        <xsl:text>{</xsl:text>
-        <xsl:text>運算: </xsl:text>
-        <xsl:value-of select="@運算" />
-        <xsl:text>, </xsl:text>
-        <xsl:text>結構: </xsl:text>
-        <xsl:text>[</xsl:text>
-        <xsl:for-each select="字根|組字">
-          <xsl:if test="name()='組字'">
-            <xsl:call-template name="generate-結構二-組字"/>
-          </xsl:if>
-          <xsl:if test="name()='字根'">
-            <xsl:call-template name="generate-結構二-字根"/>
-          </xsl:if>
-          <xsl:if test="position()!=last()">
-            <xsl:text>, </xsl:text>
-          </xsl:if>
-        </xsl:for-each>
-        <xsl:text>]</xsl:text>
-        <xsl:text>}</xsl:text>
-      </xsl:if>
-  </xsl:template>
-
-  <xsl:template name="generate-結構二-字根">
-    <xsl:text>"</xsl:text>
-    <xsl:value-of select="@置換" />
-    <xsl:text>"</xsl:text>
   </xsl:template>
 </xsl:stylesheet>
 
