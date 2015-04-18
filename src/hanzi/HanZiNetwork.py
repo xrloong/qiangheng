@@ -3,15 +3,14 @@ import sys
 from util.topsort import topsort
 from util.topsort import CycleError
 from im.gear import Operator
-from state import StateManager
 from gear import TreeRegExp
 
 from . import HanZiStructure
 from . import HanZiNode
 
 class DescriptionManagerToHanZiNetworkConverter:
-	def __init__(self, descriptionManager):
-		self.descriptionManager=descriptionManager
+	def __init__(self, structureManager):
+		self.structureManager=structureManager
 		self.hanziNetwork=HanZiNetwork()
 		self.treeProxy=TProxy(self.hanziNetwork)
 
@@ -39,7 +38,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 				self.recursivelyAddStructure(structure)
 				self.hanziNetwork.addStructureIntoNode(structure, charName)
 
-		codeInfoManager=StateManager.getCodeInfoManager()
+		codeInfoManager=self.structureManager.getCodeInfoManager()
 		for charName in sortedNameList:
 			if codeInfoManager.hasRadix(charName):
 				radixInfoList=codeInfoManager.getRadixCodeInfoList(charName)
@@ -51,7 +50,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 		return self.hanziNetwork
 
 	def getSortedNameList(self, usingTopologicSorting=True):
-		charNameList=self.descriptionManager.getAllCharacters()
+		charNameList=self.structureManager.getAllCharacters()
 
 		if usingTopologicSorting:
 			try:
@@ -96,8 +95,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 		return nameSet
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
-		operationManager=StateManager.getOperationManager()
-		operationManager.rearrangeStructureSingleLevel(structDesc)
+		self.structureManager.rearrangeStructureSingleLevel(structDesc)
 
 		if structDesc.isLeaf():
 			structure=self.generateReferenceLink(structDesc)
@@ -113,8 +111,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 			changed=self.rearrangeAllStructure(structure)
 
 	def rearrangeAllStructure(self, structure):
-		operationManager=StateManager.getOperationManager()
-		substitutePatternList=operationManager.getSubstitutePatternList()
+		substitutePatternList=self.structureManager.getSubstitutePatternList()
 
 		changed=False
 		for pattern in substitutePatternList:
@@ -136,7 +133,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 
 	def queryDescription(self, characterName):
-		return self.descriptionManager.queryCharacterDescription(characterName)
+		return self.structureManager.queryCharacterDescription(characterName)
 
 	def generateReferenceLink(self, structDesc):
 		expression=structDesc.getReferenceExpression()
@@ -150,7 +147,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 	def generateLink(self, structDesc):
 		childStructureList = []
-		childDescList=self.descriptionManager.queryChildren(structDesc)
+		childDescList=self.structureManager.queryChildren(structDesc)
 		for childSrcDesc in childDescList:
 			childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
 			childStructureList.append(childStructure)
@@ -201,8 +198,8 @@ class HanZiNetwork:
 		self.structureDict={}
 
 	@staticmethod
-	def construct(descriptionManager):
-		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(descriptionManager)
+	def construct(structureManager):
+		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(structureManager)
 		hanziNetwork=toHanZiNetworkConverter.constructDescriptionNetwork()
 		return hanziNetwork
 

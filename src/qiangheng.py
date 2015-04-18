@@ -6,28 +6,20 @@ import sys
 from optparse import OptionParser
 from state import StateManager
 from im.IMMgr import IMMgr
-from description.CharacterDescriptionManager import CharacterDescriptionManager
+from model.StructureManager import StructureManager
 from hanzi.HanZiNetwork import HanZiNetwork
 
 class QiangHeng:
 	def __init__(self, options):
 		inputMethod=options.input_method
-		toComponentList = [
-			'gen/qhdata/main/CJK.yaml',
-			'gen/qhdata/main/CJK-A.yaml',
-			'gen/qhdata/main/component/CJK.yaml',
-			'gen/qhdata/main/component/CJK-A.yaml',
-			'gen/qhdata/main/style.yaml',
-			'gen/qhdata/%s/style.yaml'%inputMethod,
-		]
-		toCodeList = [
-			'gen/qhdata/%s/radix/CJK.yaml'%inputMethod,
-			'gen/qhdata/%s/radix/CJK-A.yaml'%inputMethod,
-		]
-		toTemplateFile = 'gen/qhdata/main/template.yaml'
-		toSutstitueFile = 'gen/qhdata/%s/substitute.yaml'%inputMethod
+		self.structureManager = StructureManager(inputMethod)
 
-		imPackage=IMMgr.getIMPackage(inputMethod)
+		self.hanziNetwork=HanZiNetwork.construct(self.structureManager)
+
+		codeMappingInfoList=self.genIMMapping()
+#		sortedCodeMappingInfoList=codeMappingInfoList
+		sortedCodeMappingInfoList=sorted(codeMappingInfoList, key=lambda y: y.getKey())
+
 
 		output_format=options.output_format
 		isFormatXML=(output_format=='xml')
@@ -37,21 +29,6 @@ class QiangHeng:
 
 		quiet=options.quiet or isFormatQuiet
 		isToOutput=not quiet
-
-		StateManager.setIMPackage(imPackage)
-
-		StateManager.getOperationManager().loadTemplates(toTemplateFile)
-		StateManager.getOperationManager().loadSubstituteRules(toSutstitueFile)
-		StateManager.getCodeInfoManager().loadRadix(toCodeList)
-
-		self.descMgr=CharacterDescriptionManager()
-		self.descMgr.loadData(toComponentList)
-
-		self.hanziNetwork=HanZiNetwork.construct(self.descMgr)
-
-		codeMappingInfoList=self.genIMMapping()
-#		sortedCodeMappingInfoList=codeMappingInfoList
-		sortedCodeMappingInfoList=sorted(codeMappingInfoList, key=lambda y: y.getKey())
 
 		if isToOutput:
 			if isFormatXML:
@@ -71,13 +48,13 @@ class QiangHeng:
 			from writer import QuietWriter
 			writer = QuietWriter.QuietWriter()
 
-		imInfo=imPackage.IMInfo()
+		imInfo=self.structureManager.getImInfo()
 		writer.write(imInfo, sortedCodeMappingInfoList)
 
 	def genIMMapping(self):
 		characterFilter=lambda charName: (len(charName)==1)
 #		targetCharacterList=[]
-		targetCharacterList=filter(characterFilter, self.descMgr.getAllCharacters())
+		targetCharacterList=filter(characterFilter, self.structureManager.getAllCharacters())
 		table=[]
 		for charName in sorted(targetCharacterList):
 #			print("<-- %s -->"%charName, sys.stderr)
