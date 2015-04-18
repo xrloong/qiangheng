@@ -16,8 +16,6 @@ class CharacterDescriptionManager:
 
 		self.charDescQueryer=charDescQueryer
 
-		self.operationManager=StateManager.getOperationManager()
-
 	def getAllCharacters(self):
 		return self.characterDB.keys()
 
@@ -38,8 +36,6 @@ class CharacterDescriptionManager:
 	def saveChar(self, charDesc):
 		charName=charDesc.getName()
 
-		codeInfoManager=StateManager.getCodeInfoManager()
-
 		if charName in self.characterDB:
 			origCharDesc=self.characterDB.get(charName)
 			origCharDesc.setStructureList(charDesc.getStructureList())
@@ -57,17 +53,6 @@ class CharacterDescriptionManager:
 		for resetRadixName in codeInfoManager.getResetRadixList():
 			charDesc=CharacterDescription(resetRadixName)
 			self.characterDB[resetRadixName]=charDesc
-
-	def adjustStructure(self):
-		operationManager=self.operationManager
-		for charName in self.characterDB.keys():
-#			print("name: %s"%charName, file=sys.stderr);
-			charDesc=self.characterDB.get(charName)
-
-			structDescList=charDesc.getStructureList()
-			for structDesc in structDescList:
-				operationManager.rearrangeStructure(structDesc)
-#				print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 if __name__=='__main__':
 	pass
