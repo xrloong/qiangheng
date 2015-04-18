@@ -278,10 +278,9 @@ def matchAndReplace(tre, node, result, proxy):
 				else:
 					# \1.1
 					index=int(refExpList[0])
-					x=int(refExpList[1])
-					c=allComps[index].getMatched()[0]
-					nodeName="%s.%d"%(c.getReferenceName(), x)
-					node=proxy.generateLeafNode(nodeName)
+					subIndex=int(refExpList[1])
+					referenceNode=allComps[index].getMatched()[0]
+					node=proxy.generateLeafNodeByReference(referenceNode, subIndex)
 					compList.append(node)
 				rest=rest[1:]
 			else:

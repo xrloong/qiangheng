@@ -151,6 +151,10 @@ class TProxy(TreeRegExp.BasicTreeProxy):
 	def generateLeafNode(self, nodeExpression):
 		return self.structureGenerator.generateLeafNode(nodeExpression)
 
+	def generateLeafNodeByReference(self, referencedNode, index):
+		nodeExpression="%s.%d"%(referencedNode.getReferenceName(), index)
+		return self.generateLeafNode(nodeExpression)
+
 	def generateNode(self, operatorName, children):
 		return self.structureGenerator.generateNode([operatorName, children])
 
