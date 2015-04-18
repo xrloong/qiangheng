@@ -8,48 +8,63 @@ class StructureManager:
 		StateManager.setIMPackage(imPackage)
 		self.imInfo=imPackage.IMInfo()
 
+		self.mainDescMgr=CharacterDescriptionManager()
+		self.imDescMgr=CharacterDescriptionManager()
+		self.operationManager=StateManager.getOperationManager()
+		self.codeInfoManager=StateManager.getCodeInfoManager()
+
+		self._loadData(inputMethod)
+
+	def _loadData(self, inputMethod):
+		self._loadMainData()
+		self._loadImData(inputMethod)
+
+	def _loadMainData(self):
+		mainDir = "gen/qhdata/main/"
 		mainComponentList = [
-			'gen/qhdata/main/CJK.yaml',
-			'gen/qhdata/main/CJK-A.yaml',
-			'gen/qhdata/main/component/CJK.yaml',
-			'gen/qhdata/main/component/CJK-A.yaml',
-			'gen/qhdata/main/style.yaml',
+			mainDir + 'CJK.yaml',
+			mainDir + 'CJK-A.yaml',
+			mainDir + 'component/CJK.yaml',
+			mainDir + 'component/CJK-A.yaml',
+			mainDir + 'style.yaml',
 		]
+		mainTemplateFile = mainDir + 'template.yaml'
+
+		self.mainDescMgr.loadData(mainComponentList)
+		self.operationManager.loadTemplates(mainTemplateFile)
+
+	def _loadImData(self, inputMethod):
+		imDir = "gen/qhdata/%s/"%inputMethod
 		imComponentList = [
-			'gen/qhdata/%s/style.yaml'%inputMethod,
+			imDir + 'style.yaml'
 		]
 		imRadixList = [
-			'gen/qhdata/%s/radix/CJK.yaml'%inputMethod,
-			'gen/qhdata/%s/radix/CJK-A.yaml'%inputMethod,
+			imDir + 'radix/CJK.yaml',
+			imDir + 'radix/CJK-A.yaml'
 		]
-		mainTemplateFile = 'gen/qhdata/main/template.yaml'
-		imSutstitueFile = 'gen/qhdata/%s/substitute.yaml'%inputMethod
+		imSutstitueFile = imDir + 'substitute.yaml'
 
-		StateManager.getOperationManager().loadTemplates(mainTemplateFile)
-		StateManager.getOperationManager().loadSubstituteRules(imSutstitueFile)
-		StateManager.getCodeInfoManager().loadRadix(imRadixList)
+		self.imDescMgr.loadData(imComponentList)
+		self.operationManager.loadSubstituteRules(imSutstitueFile)
+		self.codeInfoManager.loadRadix(imRadixList)
 
-		self.descMgr=CharacterDescriptionManager()
-
-		self.loadData(mainComponentList, imComponentList)
+		resetRadixNameList=self.codeInfoManager.getResetRadixList()
+		self.imDescMgr.resetCompoundCharactersToBeRadix(resetRadixNameList)
 
 	def getImInfo(self):
 		return self.imInfo
 
-	def loadData(self, mainComponentList, imComponentList):
-		self.descMgr.loadData(mainComponentList + imComponentList)
-
 	def getAllCharacters(self):
-		return self.descMgr.getAllCharacters()
-
-	def getDescriptionManager(self):
-		return self.descMgr
+		return set(self.mainDescMgr.getAllCharacters()) | set(self.imDescMgr.getAllCharacters()) 
 
 	def queryCharacterDescription(self, character):
-		return self.descMgr.queryCharacterDescription(character)
+		charDesc = self.imDescMgr.queryCharacterDescription(character)
+		if not charDesc:
+			charDesc = self.mainDescMgr.queryCharacterDescription(character)
+		return charDesc
 
 	def queryChildren(self, charDesc):
-		return self.descMgr.queryChildren(charDesc)
+		return charDesc.getCompList()
 
 	def getTemplatePatternList(self):
                 operationManager=StateManager.getOperationManager()

@@ -2,7 +2,6 @@
 
 import sys
 from .CharacterDescription import CharacterDescription
-from state import StateManager
 from parser import QHParser
 import Constant
 
@@ -24,7 +23,6 @@ class CharacterDescriptionManager:
 
 	def loadData(self, toComponentList):
 		self.loadComponent(toComponentList)
-		self.adjustResetRadix()
 
 	def loadComponent(self, toComponentList):
 		parser=QHParser.QHParser()
@@ -48,9 +46,8 @@ class CharacterDescriptionManager:
 	def queryStructureList(self, charDesc):
 		return charDesc.getStructureList()
 
-	def adjustResetRadix(self):
-		codeInfoManager=StateManager.getCodeInfoManager()
-		for resetRadixName in codeInfoManager.getResetRadixList():
+	def resetCompoundCharactersToBeRadix(self, resetRadixNameList):
+		for resetRadixName in resetRadixNameList:
 			charDesc=CharacterDescription(resetRadixName)
 			self.characterDB[resetRadixName]=charDesc
 
