@@ -75,9 +75,6 @@ class OperatorManager:
 			templateOperator=self.findTemplateOperator(templateName)
 			templateOperator.setTemplateDesc(templateDesc)
 
-	def rearrangeStructure(self, structDesc):
-		self.structureRearranger.rearrangeOn(structDesc)
-
 	def loadTemplates(self, toTemplateFile):
 		node=yaml.load(open(toTemplateFile), yaml.CLoader)
 		templateDB={}
@@ -91,11 +88,14 @@ class OperatorManager:
 			templateDB[templateName]=templateDesc
 		self.setTemplateDB(templateDB)
 
+	def rearrangeStructureSingleLevel(self, structDesc):
+		self.structureRearranger.rearrangeDesc(structDesc)
+
 	def loadSubstituteRules(self, toSubstituteFile):
 		self.structureRearranger.loadSubstituteRules(toSubstituteFile)
 
 	def getSubstitutePatternList(self):
-		return self.structureRearranger.patternList
+		return self.structureRearranger.getPatternList()
 
 class TProxy(TreeRegExp.BasicTreeProxy):
 	def __init__(self):
@@ -126,7 +126,7 @@ class TProxy(TreeRegExp.BasicTreeProxy):
 class StructureRearranger:
 	def __init__(self):
 		self.treeProxy=TProxy()
-		self.patternList=[(TreeRegExp.compile(re), result) for (re, result) in self.getPatternList()]
+		self.patternList=[]
 
 	def loadSubstituteRules(self, toSubstituteFile):
 		rootNode=yaml.load(open(toSubstituteFile))
@@ -140,16 +140,6 @@ class StructureRearranger:
 			matchPattern=node.get(Constant.TAG_MATCH)
 			resultPattern=node.get(Constant.TAG_SUBSTITUTE)
 			self.patternList.append([TreeRegExp.compile(matchPattern), resultPattern])
-
-	def rearrangeOn(self, structDesc):
-		self.rearrangeRecursively(structDesc)
-
-	def rearrangeRecursively(self, structDesc):
-		self.rearrangeDesc(structDesc)
-		for childDesc in structDesc.getCompList():
-			self.rearrangeRecursively(childDesc)
-
-		return structDesc
 
 	def rearrangeDesc(self, structDesc):
 		operator=structDesc.getOperator()
@@ -174,4 +164,4 @@ class StructureRearranger:
 		return False
 
 	def getPatternList(self):
-		return []
+		return self.patternList

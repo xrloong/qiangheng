@@ -15,9 +15,6 @@ class DescriptionManagerToHanZiNetworkConverter:
 		self.hanziNetwork=HanZiNetwork()
 		self.treeProxy=TProxy(self.hanziNetwork)
 
-		operationManager=StateManager.getOperationManager()
-		self.substitutePatternList=operationManager.getSubstitutePatternList()
-
 	def constructDescriptionNetwork(self):
 		sortedNameList=self.getSortedNameList()
 #		print(sortedNameList, file=sys.stderr)
@@ -28,7 +25,6 @@ class DescriptionManagerToHanZiNetworkConverter:
 			self.hanziNetwork.addNode(charName)
 
 
-		operationManager=StateManager.getOperationManager()
 		for charName in sortedNameList:
 			charDesc=self.queryDescription(charName)
 
@@ -37,7 +33,6 @@ class DescriptionManagerToHanZiNetworkConverter:
 				if structDesc.isEmpty():
 					continue
 
-				operationManager.rearrangeStructure(structDesc)
 #				print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 				structure=self.recursivelyConvertDescriptionToStructure(structDesc)
@@ -101,6 +96,9 @@ class DescriptionManagerToHanZiNetworkConverter:
 		return nameSet
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
+		operationManager=StateManager.getOperationManager()
+		operationManager.rearrangeStructureSingleLevel(structDesc)
+
 		if structDesc.isLeaf():
 			structure=self.generateReferenceLink(structDesc)
 		else:
@@ -115,8 +113,11 @@ class DescriptionManagerToHanZiNetworkConverter:
 			changed=self.rearrangeAllStructure(structure)
 
 	def rearrangeAllStructure(self, structure):
+		operationManager=StateManager.getOperationManager()
+		substitutePatternList=operationManager.getSubstitutePatternList()
+
 		changed=False
-		for pattern in self.substitutePatternList:
+		for pattern in substitutePatternList:
 			tre, result = pattern
 
 			tmpStructure=TreeRegExp.matchAndReplace(tre, structure, result, self.treeProxy)
