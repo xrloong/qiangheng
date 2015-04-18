@@ -1,6 +1,7 @@
 class Operator:
-	def __init__(self, name):
+	def __init__(self, name, builtin=False):
 		self.name=name
+		self.builtin=builtin
 
 	def __str__(self):
 		return "%s"%self.name
@@ -15,26 +16,10 @@ class Operator:
 		self.name=name
 
 	def isBuiltin(self):
-		return False
+		return self.builtin
 
-class BuiltinOperator(Operator):
-	def isBuiltin(self):
-		return True
-
-class TemplateOperator(Operator):
-	def __init__(self, name):
-		super().__init__(name)
-		self.rearrangeInfo=None
-		self.templateDesc=None
-
-	def setTemplateDesc(self, templateDesc):
-		self.templateDesc=templateDesc
-
-	def getTemplateDesc(self):
-		return self.templateDesc
-
-	def isBuiltin(self):
-		return False
+def _generateBuiltinOperator(operatorName):
+	return Operator(operatorName, builtin=True)
 
 # 龜
 # 爲
@@ -45,39 +30,39 @@ class TemplateOperator(Operator):
 # 衍衷瓥粦
 # 錯
 
-OperatorTurtle=BuiltinOperator('龜')
-OperatorLoong=BuiltinOperator('龍')
-OperatorSparrow=BuiltinOperator('雀')
-OperatorEqual=BuiltinOperator('爲')
+OperatorTurtle=_generateBuiltinOperator('龜')
+OperatorLoong=_generateBuiltinOperator('龍')
+OperatorSparrow=_generateBuiltinOperator('雀')
+OperatorEqual=_generateBuiltinOperator('爲')
 
-OperatorSilkworm=BuiltinOperator('蚕')
-OperatorGoose=BuiltinOperator('鴻')
-OperatorLoop=BuiltinOperator('回')
+OperatorSilkworm=_generateBuiltinOperator('蚕')
+OperatorGoose=_generateBuiltinOperator('鴻')
+OperatorLoop=_generateBuiltinOperator('回')
 
-OperatorQi=BuiltinOperator('起')
-OperatorZhe=BuiltinOperator('這')
-OperatorLiao=BuiltinOperator('廖')
-OperatorZai=BuiltinOperator('載')
-OperatorDou=BuiltinOperator('斗')
+OperatorQi=_generateBuiltinOperator('起')
+OperatorZhe=_generateBuiltinOperator('這')
+OperatorLiao=_generateBuiltinOperator('廖')
+OperatorZai=_generateBuiltinOperator('載')
+OperatorDou=_generateBuiltinOperator('斗')
 
-OperatorTong=BuiltinOperator('同')
-OperatorHan=BuiltinOperator('函')
-OperatorQu=BuiltinOperator('區')
-OperatorLeft=BuiltinOperator('左')
+OperatorTong=_generateBuiltinOperator('同')
+OperatorHan=_generateBuiltinOperator('函')
+OperatorQu=_generateBuiltinOperator('區')
+OperatorLeft=_generateBuiltinOperator('左')
 
-OperatorYan=BuiltinOperator('衍')
-OperatorZhong=BuiltinOperator('衷')
+OperatorYan=_generateBuiltinOperator('衍')
+OperatorZhong=_generateBuiltinOperator('衷')
 
-OperatorMu=BuiltinOperator('畞')
-OperatorZuo=BuiltinOperator('㘴')
-OperatorYou=BuiltinOperator('幽')
-OperatorLiang=BuiltinOperator('㒳')
-OperatorJia=BuiltinOperator('夾')
+OperatorMu=_generateBuiltinOperator('畞')
+OperatorZuo=_generateBuiltinOperator('㘴')
+OperatorYou=_generateBuiltinOperator('幽')
+OperatorLiang=_generateBuiltinOperator('㒳')
+OperatorJia=_generateBuiltinOperator('夾')
 
-OperatorLin=BuiltinOperator('粦')
-OperatorLi=BuiltinOperator('瓥')
-OperatorLuan=BuiltinOperator('䜌')
-OperatorBan=BuiltinOperator('辦')
+OperatorLin=_generateBuiltinOperator('粦')
+OperatorLi=_generateBuiltinOperator('瓥')
+OperatorLuan=_generateBuiltinOperator('䜌')
+OperatorBan=_generateBuiltinOperator('辦')
 
-OperatorYi=BuiltinOperator('燚')
+OperatorYi=_generateBuiltinOperator('燚')
 

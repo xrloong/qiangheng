@@ -1,7 +1,6 @@
 import Constant
 
 from . import Operator
-from description.TemplateDescription import TemplateDescription
 from gear import TreeRegExp
 import yaml
 
@@ -44,7 +43,11 @@ class OperatorManager:
 		self.templateOperatorDict={
 		}
 
-		self.structureRearranger=StructureRearranger()
+		self.templatePatternDict={
+		}
+
+		self.treeProxy=TProxy()
+		self.substitutePatternList=[]
 
 	def generateOperatorTurtle(self):
 		return self.generateOperator()
@@ -58,44 +61,73 @@ class OperatorManager:
 		return operator
 
 	def addTemplateOperatorIfNotExist(self, templateName):
-		if templateName in self.templateOperatorDict:
-			operator=self.templateOperatorDict[templateName]
-		else:
-			operator=Operator.TemplateOperator(templateName)
+		if templateName not in self.templateOperatorDict:
+			operator=Operator.Operator(templateName)
 			self.templateOperatorDict[templateName]=operator
 
 	def findTemplateOperator(self, templateName):
 		templateOperator=self.templateOperatorDict.get(templateName)
 		return templateOperator
 
-	def setTemplateDB(self, templateDB):
-		self.templateDB=templateDB
-		for templateName, templateDesc in templateDB.items():
-			self.addTemplateOperatorIfNotExist(templateName)
-			templateOperator=self.findTemplateOperator(templateName)
-			templateOperator.setTemplateDesc(templateDesc)
-
 	def loadTemplates(self, toTemplateFile):
 		node=yaml.load(open(toTemplateFile), yaml.CLoader)
-		templateDB={}
+		templatePatternDict={}
 		templateGroupNode=node.get(Constant.TAG_TEMPLATE_SET)
 		for node in templateGroupNode:
 			templateName=node.get(Constant.TAG_NAME)
 			matchPattern=node.get(Constant.TAG_MATCH)
 			replacePattern=node.get(Constant.TAG_PATTERN)
+			tre=TreeRegExp.compile(matchPattern)
 
-			templateDesc=TemplateDescription(templateName, matchPattern, replacePattern)
-			templateDB[templateName]=templateDesc
-		self.setTemplateDB(templateDB)
+			templatePatternDict[templateName]=[tre, replacePattern]
 
-	def rearrangeStructureSingleLevel(self, structDesc):
-		self.structureRearranger.rearrangeDesc(structDesc)
+		self.templatePatternDict=templatePatternDict
 
 	def loadSubstituteRules(self, toSubstituteFile):
-		self.structureRearranger.loadSubstituteRules(toSubstituteFile)
+		rootNode=yaml.load(open(toSubstituteFile))
+		ruleSetNode=rootNode.get(Constant.TAG_RULE_SET)
+		self.substitutePatternList=[]
+
+		if not ruleSetNode:
+			return
+
+		for node in ruleSetNode:
+			matchPattern=node.get(Constant.TAG_MATCH)
+			resultPattern=node.get(Constant.TAG_SUBSTITUTE)
+			self.substitutePatternList.append([TreeRegExp.compile(matchPattern), resultPattern])
+
+	def getTemplatePatternList(self):
+		return list(self.templatePatternDict.values())
 
 	def getSubstitutePatternList(self):
-		return self.structureRearranger.getPatternList()
+		return self.substitutePatternList
+
+	def rearrangeStructureSingleLevel(self, structDesc):
+		self.rearrangeDesc(structDesc)
+
+	def rearrangeDesc(self, structDesc):
+		operator=structDesc.getOperator()
+		while not operator.isBuiltin():
+			templateName=operator.getName()
+
+			if templateName not in self.templatePatternDict:
+				break
+
+			[tre, replacePattern,]=self.templatePatternDict[templateName]
+
+			r=self.rearrangeByTreeRegExp(structDesc, [tre, replacePattern, ])
+			if not r: break
+			self.rearrangeDesc(structDesc)
+			operator=structDesc.getOperator()
+
+	def rearrangeByTreeRegExp(self, structDesc, pattern):
+		(tre, result)=pattern
+		tmpStructDesc=TreeRegExp.matchAndReplace(tre, structDesc, result, self.treeProxy)
+		if tmpStructDesc!=None:
+			structDesc.setOperator(tmpStructDesc.getOperator())
+			structDesc.setCompList(tmpStructDesc.getCompList())
+			return True
+		return False
 
 class TProxy(TreeRegExp.BasicTreeProxy):
 	def __init__(self):
@@ -122,46 +154,3 @@ class TProxy(TreeRegExp.BasicTreeProxy):
 	def generateNode(self, operatorName, children):
 		return self.structureGenerator.generateNode([operatorName, children])
 
-
-class StructureRearranger:
-	def __init__(self):
-		self.treeProxy=TProxy()
-		self.patternList=[]
-
-	def loadSubstituteRules(self, toSubstituteFile):
-		rootNode=yaml.load(open(toSubstituteFile))
-		ruleSetNode=rootNode.get(Constant.TAG_RULE_SET)
-		self.patternList=[]
-
-		if not ruleSetNode:
-			return
-
-		for node in ruleSetNode:
-			matchPattern=node.get(Constant.TAG_MATCH)
-			resultPattern=node.get(Constant.TAG_SUBSTITUTE)
-			self.patternList.append([TreeRegExp.compile(matchPattern), resultPattern])
-
-	def rearrangeDesc(self, structDesc):
-		operator=structDesc.getOperator()
-		while not operator.isBuiltin():
-			templateDesc=operator.getTemplateDesc()
-
-			if templateDesc!=None:
-				r=self.rearrangeByTreeRegExp(structDesc, [templateDesc.tre, templateDesc.replacePattern, ])
-				if not r: break
-				self.rearrangeDesc(structDesc)
-				operator=structDesc.getOperator()
-			else:
-				break
-
-	def rearrangeByTreeRegExp(self, structDesc, pattern):
-		(tre, result)=pattern
-		tmpStructDesc=TreeRegExp.matchAndReplace(tre, structDesc, result, self.treeProxy)
-		if tmpStructDesc!=None:
-			structDesc.setOperator(tmpStructDesc.getOperator())
-			structDesc.setCompList(tmpStructDesc.getCompList())
-			return True
-		return False
-
-	def getPatternList(self):
-		return self.patternList
