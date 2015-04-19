@@ -102,27 +102,26 @@ class DescriptionManagerToHanZiNetworkConverter:
 		else:
 			structure=self.generateLink(structDesc)
 
-		self.rearrangeStructure(structure)
+		substitutePatternList=self.structureManager.getSubstitutePatternList()
+		self.rearrangeStructure(structure, substitutePatternList)
 		return structure
 
-	def rearrangeStructure(self, structure):
+	def rearrangeStructure(self, structure, substitutePatternList):
+		def rearrangeStructureOneTurn(structure, substitutePatternList):
+			changed=False
+			for pattern in substitutePatternList:
+				tre, result = pattern
+
+				tmpStructure=TreeRegExp.matchAndReplace(tre, structure, result, self.treeProxy)
+				if tmpStructure!=None:
+					structure.setNewStructure(tmpStructure)
+					structure=tmpStructure
+					changed=True
+			return changed
+
 		changed=True
 		while changed:
-			changed=self.rearrangeAllStructure(structure)
-
-	def rearrangeAllStructure(self, structure):
-		substitutePatternList=self.structureManager.getSubstitutePatternList()
-
-		changed=False
-		for pattern in substitutePatternList:
-			tre, result = pattern
-
-			tmpStructure=TreeRegExp.matchAndReplace(tre, structure, result, self.treeProxy)
-			if tmpStructure!=None:
-				structure.setNewStructure(tmpStructure)
-				structure=tmpStructure
-				changed=True
-		return changed
+			changed=rearrangeStructureOneTurn(structure, substitutePatternList)
 
 	def recursivelyAddStructure(self, structure):
 		for childStructure in structure.getStructureList():
