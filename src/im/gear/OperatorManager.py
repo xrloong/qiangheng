@@ -46,7 +46,6 @@ class OperatorManager:
 		self.templatePatternDict={
 		}
 
-		self.treeProxy=TProxy()
 		self.substitutePatternList=[]
 
 	def generateOperatorTurtle(self):
@@ -101,60 +100,4 @@ class OperatorManager:
 
 	def getSubstitutePatternList(self):
 		return self.substitutePatternList
-
-	def rearrangeStructureSingleLevel(self, structDesc):
-		self.rearrangeDesc(structDesc)
-
-	def rearrangeDesc(self, structDesc):
-		operator=structDesc.getOperator()
-		while not operator.isBuiltin():
-			templateName=operator.getName()
-
-			if templateName not in self.templatePatternDict:
-				break
-
-			[tre, replacePattern,]=self.templatePatternDict[templateName]
-
-			r=self.rearrangeByTreeRegExp(structDesc, [tre, replacePattern, ])
-			if not r: break
-			self.rearrangeDesc(structDesc)
-			operator=structDesc.getOperator()
-
-	def rearrangeByTreeRegExp(self, structDesc, pattern):
-		(tre, result)=pattern
-		tmpStructDesc=TreeRegExp.matchAndReplace(tre, structDesc, result, self.treeProxy)
-		if tmpStructDesc!=None:
-			structDesc.setOperator(tmpStructDesc.getOperator())
-			structDesc.setCompList(tmpStructDesc.getCompList())
-			return True
-		return False
-
-class TProxy(TreeRegExp.BasicTreeProxy):
-	def __init__(self):
-		from description.StructureDescription import StructureDescription
-		self.structureGenerator=StructureDescription.Generator()
-
-	def getChildren(self, tree):
-		return tree.getCompList()
-
-	def matchSingle(self, tre, tree):
-		prop=tre.prop
-		isMatch = True
-		if "名稱" in prop:
-			isMatch &= prop.get("名稱") == tree.getReferenceExpression()
-
-		if "運算" in prop:
-			isMatch &= prop.get("運算") == tree.getOperator().getName()
-
-		return isMatch
-
-	def generateLeafNode(self, nodeExpression):
-		return self.structureGenerator.generateLeafNode(nodeExpression)
-
-	def generateLeafNodeByReference(self, referencedNode, index):
-		nodeExpression="%s.%d"%(referencedNode.getReferenceName(), index)
-		return self.generateLeafNode(nodeExpression)
-
-	def generateNode(self, operatorName, children):
-		return self.structureGenerator.generateNode([operatorName, children])
 

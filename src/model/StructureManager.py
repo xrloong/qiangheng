@@ -74,10 +74,6 @@ class StructureManager:
                 operationManager=StateManager.getOperationManager()
                 return operationManager.getSubstitutePatternList()
 
-	def rearrangeStructureSingleLevel(self, structDesc):
-                operationManager=StateManager.getOperationManager()
-                return operationManager.rearrangeStructureSingleLevel(structDesc)
-
 	def generateOperator(self, operatorName):
                 operationManager=StateManager.getOperationManager()
                 return operationManager.generateOperator(operatorName)

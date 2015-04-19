@@ -35,6 +35,12 @@ class DescriptionManagerToHanZiNetworkConverter:
 #				print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 				structure=self.recursivelyConvertDescriptionToStructure(structDesc)
+
+				templatePatternList=self.structureManager.getTemplatePatternList()
+				self.recursivelyRearrangeStructure(structure, templatePatternList)
+				substitutePatternList=self.structureManager.getSubstitutePatternList()
+				self.recursivelyRearrangeStructure(structure, substitutePatternList)
+
 				self.recursivelyAddStructure(structure)
 				self.hanziNetwork.addStructureIntoNode(structure, charName)
 
@@ -95,16 +101,17 @@ class DescriptionManagerToHanZiNetworkConverter:
 		return nameSet
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
-		self.structureManager.rearrangeStructureSingleLevel(structDesc)
-
 		if structDesc.isLeaf():
 			structure=self.generateReferenceLink(structDesc)
 		else:
 			structure=self.generateLink(structDesc)
 
-		substitutePatternList=self.structureManager.getSubstitutePatternList()
-		self.rearrangeStructure(structure, substitutePatternList)
 		return structure
+
+	def recursivelyRearrangeStructure(self, structure, substitutePatternList):
+		self.rearrangeStructure(structure, substitutePatternList)
+		for childStructure in structure.getStructureList():
+			self.recursivelyRearrangeStructure(childStructure, substitutePatternList)
 
 	def rearrangeStructure(self, structure, substitutePatternList):
 		def rearrangeStructureOneTurn(structure, substitutePatternList):
@@ -184,6 +191,10 @@ class TProxy(TreeRegExp.BasicTreeProxy):
 		name=nodeExpression.split(".")[0]
 		rootNode=self.hanziNetwork.findNode(name)
 		return HanZiStructure.generateWrapper(rootNode, nodeExpression)
+
+	def generateLeafNodeByReference(self, referencedNode, index):
+		nodeExpression="%s.%d"%(referencedNode.getReferenceExpression(), index)
+		return self.generateLeafNode(nodeExpression)
 
 	def generateNode(self, operatorName, children):
 		from state import StateManager
