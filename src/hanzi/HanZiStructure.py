@@ -5,9 +5,6 @@ class HanZiStructure:
 	def __init__(self):
 		self.flagIsSet=False
 
-	def __str__(self):
-		return self.getUniqueName()
-
 	def getUniqueName(self):
 		if self.isWrapper():
 			return self.getReferenceExpression()
@@ -62,6 +59,9 @@ class HanZiProxyStructure(HanZiStructure):
 		self.targetStructure=targetStructure
 		self.historyStructures=[]
 
+	def __str__(self):
+		return str(self.targetStructure)
+
 	def setNewStructure(self, newTargetStructure):
 		self.historyStructures.append(self.targetStructure)
 		self.targetStructure=newTargetStructure
@@ -95,6 +95,9 @@ class HanZiUnitStructure(HanZiStructure):
 		super().__init__()
 		self.codeInfoList=[radixCodeInfo]
 
+	def __str__(self):
+		return str(self.codeInfoList)
+
 	def isUnit(self):
 		return True
 
@@ -114,6 +117,9 @@ class HanZiWrapperStructure(HanZiStructure):
 		self.referenceNode=referenceNode
 		self.expression=expression
 		self.codeInfoList=[]
+
+	def __str__(self):
+		return self.getReferenceExpression()
 
 	def isWrapper(self):
 		return True
@@ -148,6 +154,11 @@ class HanZiAssemblageStructure(HanZiStructure):
 		self.structureList=structureList
 
 		self.codeInfoList=[]
+
+	def __str__(self):
+		structureList=self.getStructureList()
+		nameList=[structure.getUniqueName() for structure in structureList]
+		return "(%s %s)"%(self.getOperator().getName(), " ".join(nameList))
 
 	def isAssemblage(self):
 		return True
