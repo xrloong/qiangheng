@@ -121,7 +121,7 @@ profile:
 	for im in $(IMLIST);\
 	do\
 		echo $$im;\
-		src/profiler.py -q -c qhdata/config/$$im.xml > $(PROFILE_PATH)/$$im.txt;\
+		src/profiler.py -q -i $$im > $(PROFILE_PATH)/$$im.txt;\
 	done
 	touch $(XML_PATH)
 
