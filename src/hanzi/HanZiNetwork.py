@@ -35,8 +35,8 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 		def generateLeafNode(self, nodeExpression):
 			name=nodeExpression.split(".")[0]
-			rootNode=self.hanziNetwork.findNode(name)
-			return self.hanziNetwork.generateWrapperStructure(rootNode, nodeExpression)
+			structure = self.hanziNetwork.generateWrapperStructure(name, nodeExpression)
+			return structure
 
 		def generateLeafNodeByReference(self, referencedNode, index):
 			nodeExpression="%s.%d"%(referencedNode.getReferenceExpression(), index)
@@ -44,7 +44,8 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 		def generateNode(self, operatorName, children):
 			operator=self.hanziNetwork.generateOperator(operatorName)
-			return self.hanziNetwork.generateAssemblageStructure(operator, children)
+			structure = self.hanziNetwork.generateAssemblageStructure(operator, children)
+			return structure
 
 
 	def __init__(self, structureManager):
@@ -181,13 +182,14 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 	def generateReferenceLink(self, structDesc):
 		name=structDesc.getReferenceName()
-		rootNode=self.hanziNetwork.findNode(name)
 		nodeExpression=structDesc.getReferenceExpression()
 
-		return self.hanziNetwork.generateWrapperStructure(rootNode, nodeExpression)
+		structure=self.hanziNetwork.generateWrapperStructure(name, nodeExpression)
+		return structure
 
 	def generateUnitLink(self, radixCodeInfo):
-		return self.hanziNetwork.generateUnitStructure(radixCodeInfo)
+		structure=self.hanziNetwork.generateUnitStructure(radixCodeInfo)
+		return structure
 
 	def generateLink(self, structDesc):
 		childStructureList = []
@@ -197,13 +199,16 @@ class DescriptionManagerToHanZiNetworkConverter:
 			childStructureList.append(childStructure)
 
 		operator=structDesc.getOperator()
-		return self.hanziNetwork.generateAssemblageStructure(operator, childStructureList)
+		structure=self.hanziNetwork.generateAssemblageStructure(operator, childStructureList)
+		return structure
 
 
 class HanZiNetwork:
 	def __init__(self):
 		self.nodeDict={}
 		self.structureDict={}
+
+		self.nodeExpressionDict={}
 
 	@staticmethod
 	def construct(structureManager):
@@ -245,11 +250,18 @@ class HanZiNetwork:
 		return operator
 
 	def generateAssemblageStructure(self, operator, structureList):
-		return HanZiStructure.generateAssemblage(operator, structureList)
+		structure=HanZiStructure.generateAssemblage(operator, structureList)
+		return structure
 
-	def generateWrapperStructure(self, rootNode, nodeExpression):
-		return HanZiStructure.generateWrapper(rootNode, nodeExpression)
+	def generateWrapperStructure(self, name, nodeExpression):
+		if nodeExpression in self.nodeExpressionDict:
+			return self.nodeExpressionDict[nodeExpression]
+		rootNode=self.findNode(name)
+		structure=HanZiStructure.generateWrapper(rootNode, nodeExpression)
+		self.nodeExpressionDict[nodeExpression]=structure
+		return structure
 
 	def generateUnitStructure(self, radixCodeInfo):
-		return HanZiStructure.generateUnit(radixCodeInfo)
+		structure=HanZiStructure.generateUnit(radixCodeInfo)
+		return structure
 
