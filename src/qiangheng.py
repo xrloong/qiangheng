@@ -59,7 +59,8 @@ class QiangHeng:
 		for charName in sorted(targetCharacterList):
 #			print("<-- %s -->"%charName, sys.stderr)
 			characterInfo=self.hanziNetwork.getCharacterInfo(charName)
-			table.extend(characterInfo.getCodeMappingInfoList())
+			if characterInfo:
+				table.extend(characterInfo.getCodeMappingInfoList())
 		return table
 
 def main():

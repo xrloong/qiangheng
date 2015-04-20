@@ -236,6 +236,8 @@ class HanZiNetwork:
 
 	def getCharacterInfo(self, charName):
 		charNode=self.nodeDict.get(charName)
-		characterInfo=charNode.getCharacterInfo()
+		characterInfo=None
+		if charNode:
+			characterInfo=charNode.getCharacterInfo()
 		return characterInfo
 
