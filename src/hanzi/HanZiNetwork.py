@@ -9,10 +9,48 @@ from . import HanZiStructure
 from . import HanZiNode
 
 class DescriptionManagerToHanZiNetworkConverter:
+	class TreeProxy(TreeRegExp.BasicTreeProxy):
+		def __init__(self, hanziNetwork):
+			self.hanziNetwork = hanziNetwork
+
+		def getChildren(self, tree):
+			return tree.getStructureList()
+
+		def matchSingle(self, tre, tree):
+			prop=tre.prop
+			isMatch = True
+			if "名稱" in prop:
+				if tree.isWrapper():
+					isMatch &= prop.get("名稱") == tree.getReferenceExpression()
+				else:
+					isMatch = False
+
+			if "運算" in prop:
+				if tree.isAssemblage():
+					isMatch &= prop.get("運算") == tree.getOperator().getName()
+				else:
+					isMatch = False
+
+			return isMatch
+
+		def generateLeafNode(self, nodeExpression):
+			name=nodeExpression.split(".")[0]
+			rootNode=self.hanziNetwork.findNode(name)
+			return self.hanziNetwork.generateWrapperStructure(rootNode, nodeExpression)
+
+		def generateLeafNodeByReference(self, referencedNode, index):
+			nodeExpression="%s.%d"%(referencedNode.getReferenceExpression(), index)
+			return self.generateLeafNode(nodeExpression)
+
+		def generateNode(self, operatorName, children):
+			operator=self.hanziNetwork.generateOperator(operatorName)
+			return self.hanziNetwork.generateAssemblageStructure(operator, children)
+
+
 	def __init__(self, structureManager):
 		self.structureManager=structureManager
 		self.hanziNetwork=HanZiNetwork()
-		self.treeProxy=TProxy(self.hanziNetwork)
+		self.treeProxy=DescriptionManagerToHanZiNetworkConverter.TreeProxy(self.hanziNetwork)
 
 	def constructDescriptionNetwork(self):
 		sortedNameList=self.getSortedNameList()
@@ -142,14 +180,14 @@ class DescriptionManagerToHanZiNetworkConverter:
 		return self.structureManager.queryCharacterDescription(characterName)
 
 	def generateReferenceLink(self, structDesc):
-		expression=structDesc.getReferenceExpression()
 		name=structDesc.getReferenceName()
 		rootNode=self.hanziNetwork.findNode(name)
+		nodeExpression=structDesc.getReferenceExpression()
 
-		return HanZiStructure.generateWrapper(rootNode, expression)
+		return self.hanziNetwork.generateWrapperStructure(rootNode, nodeExpression)
 
 	def generateUnitLink(self, radixCodeInfo):
-		return HanZiStructure.generateUnit(radixCodeInfo)
+		return self.hanziNetwork.generateUnitStructure(radixCodeInfo)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
@@ -159,47 +197,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 			childStructureList.append(childStructure)
 
 		operator=structDesc.getOperator()
-
-		return HanZiStructure.generateAssemblage(operator, childStructureList)
-
-
-class TProxy(TreeRegExp.BasicTreeProxy):
-	def __init__(self, hanziNetwork):
-		self.hanziNetwork = hanziNetwork
-
-	def getChildren(self, tree):
-		return tree.getStructureList()
-
-	def matchSingle(self, tre, tree):
-		prop=tre.prop
-		isMatch = True
-		if "名稱" in prop:
-			if tree.isWrapper():
-				isMatch &= prop.get("名稱") == tree.getReferenceExpression()
-			else:
-				isMatch = False
-
-		if "運算" in prop:
-			if tree.isAssemblage():
-				isMatch &= prop.get("運算") == tree.getOperator().getName()
-			else:
-				isMatch = False
-
-		return isMatch
-
-	def generateLeafNode(self, nodeExpression):
-		name=nodeExpression.split(".")[0]
-		rootNode=self.hanziNetwork.findNode(name)
-		return HanZiStructure.generateWrapper(rootNode, nodeExpression)
-
-	def generateLeafNodeByReference(self, referencedNode, index):
-		nodeExpression="%s.%d"%(referencedNode.getReferenceExpression(), index)
-		return self.generateLeafNode(nodeExpression)
-
-	def generateNode(self, operatorName, children):
-		from state import StateManager
-		operator=StateManager.getOperationManager().generateOperator(operatorName)
-		return HanZiStructure.generateAssemblage(operator, children)
+		return self.hanziNetwork.generateAssemblageStructure(operator, childStructureList)
 
 
 class HanZiNetwork:
@@ -240,4 +238,18 @@ class HanZiNetwork:
 		if charNode:
 			characterInfo=charNode.getCharacterInfo()
 		return characterInfo
+
+	def generateOperator(self, operatorName):
+		from state import StateManager
+		operator=StateManager.getOperationManager().generateOperator(operatorName)
+		return operator
+
+	def generateAssemblageStructure(self, operator, structureList):
+		return HanZiStructure.generateAssemblage(operator, structureList)
+
+	def generateWrapperStructure(self, rootNode, nodeExpression):
+		return HanZiStructure.generateWrapper(rootNode, nodeExpression)
+
+	def generateUnitStructure(self, radixCodeInfo):
+		return HanZiStructure.generateUnit(radixCodeInfo)
 
