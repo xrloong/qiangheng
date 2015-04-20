@@ -78,7 +78,7 @@ class OperatorManager:
 			replacePattern=node.get(Constant.TAG_PATTERN)
 			tre=TreeRegExp.compile(matchPattern)
 
-			templatePatternDict[templateName]=[tre, replacePattern]
+			templatePatternDict[templateName]=[templateName, tre, replacePattern]
 
 		self.templatePatternDict=templatePatternDict
 
@@ -93,7 +93,7 @@ class OperatorManager:
 		for node in ruleSetNode:
 			matchPattern=node.get(Constant.TAG_MATCH)
 			resultPattern=node.get(Constant.TAG_SUBSTITUTE)
-			self.substitutePatternList.append([TreeRegExp.compile(matchPattern), resultPattern])
+			self.substitutePatternList.append([None, TreeRegExp.compile(matchPattern), resultPattern])
 
 	def getTemplatePatternList(self):
 		return list(self.templatePatternDict.values())

@@ -154,15 +154,23 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 	def rearrangeStructure(self, structure, substitutePatternList):
 		def rearrangeStructureOneTurn(structure, substitutePatternList):
+			operator=structure.getOperator()
+
+			if operator:
+				filteredList = [pattern for pattern in substitutePatternList if pattern[0] in [None, operator.getName()]]
+			else:
+				return False
+
 			changed=False
-			for pattern in substitutePatternList:
-				tre, result = pattern
+			for pattern in filteredList:
+				operatorName, tre, result = pattern
 
 				tmpStructure=TreeRegExp.matchAndReplace(tre, structure, result, self.treeProxy)
 				if tmpStructure!=None:
 					structure.setNewStructure(tmpStructure)
 					structure=tmpStructure
 					changed=True
+					break
 			return changed
 
 		changed=True
