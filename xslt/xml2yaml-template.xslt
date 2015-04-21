@@ -16,7 +16,7 @@
   </xsl:template>
 
   <xsl:template match="範本集">
-    <xsl:text>範本集: </xsl:text>
+    <xsl:text>規則集: </xsl:text>
     <xsl:value-of select="$newline" />
     <xsl:for-each select="範本|comment()">
         <xsl:if test="self::範本">
@@ -65,7 +65,7 @@
   <xsl:template name="generate-模式-top-組字">
     <xsl:for-each select="組字結構/組字">
       <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-      <xsl:text>模式: </xsl:text>
+      <xsl:text>替換: </xsl:text>
       <xsl:call-template name="generate-模式-組字" />
       <xsl:value-of select="$newline" />
     </xsl:for-each>

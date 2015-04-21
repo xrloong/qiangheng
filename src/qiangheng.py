@@ -16,9 +16,8 @@ class QiangHeng:
 
 		self.hanziNetwork=HanZiNetwork.construct(self.structureManager)
 
-		codeMappingInfoList=self.genIMMapping()
-#		sortedCodeMappingInfoList=codeMappingInfoList
-		sortedCodeMappingInfoList=sorted(codeMappingInfoList, key=lambda y: y.getKey())
+		sortKey=lambda y: y.getKey()
+		sortedCodeMappingInfoList=sorted(self.genIMMapping(), key=sortKey)
 
 
 		output_format=options.output_format

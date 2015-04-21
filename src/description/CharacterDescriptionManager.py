@@ -4,6 +4,8 @@ import sys
 from .CharacterDescription import CharacterDescription
 from parser import QHParser
 import Constant
+from gear import TreeRegExp
+import yaml
 
 class CharacterDescriptionManager:
 	def __init__(self):
@@ -14,6 +16,7 @@ class CharacterDescriptionManager:
 			return charDesc
 
 		self.charDescQueryer=charDescQueryer
+		self.substitutePatternList=[]
 
 	def getAllCharacters(self):
 		return self.characterDB.keys()
@@ -30,6 +33,30 @@ class CharacterDescriptionManager:
 			charDescList=parser.loadCharacters(filename)
 			for charDesc in charDescList:
 				self.saveChar(charDesc)
+
+	def loadSubstituteRules(self, toSubstituteFile):
+		self.substitutePatternList=self._loadSubstituteRules(toSubstituteFile)
+
+	def _loadSubstituteRules(self, toSubstituteFile):
+		node=yaml.load(open(toSubstituteFile), yaml.CLoader)
+		ruleSetNode=node.get(Constant.TAG_RULE_SET)
+
+		if not ruleSetNode:
+			return []
+
+		templatePatternList=[]
+		for node in ruleSetNode:
+			templateName=node.get(Constant.TAG_NAME)
+			matchPattern=node.get(Constant.TAG_MATCH)
+			replacePattern=node.get(Constant.TAG_SUBSTITUTE)
+			tre=TreeRegExp.compile(matchPattern)
+
+			templatePatternList.append([templateName, tre, replacePattern])
+
+		return templatePatternList
+
+	def getSubstitutePatternList(self):
+		return self.substitutePatternList
 
 	def saveChar(self, charDesc):
 		charName=charDesc.getName()

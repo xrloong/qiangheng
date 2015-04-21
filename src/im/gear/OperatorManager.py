@@ -1,8 +1,4 @@
-import Constant
-
 from . import Operator
-from gear import TreeRegExp
-import yaml
 
 class OperatorManager:
 	# 使用享元模式
@@ -43,9 +39,7 @@ class OperatorManager:
 		self.templateOperatorDict={
 		}
 
-		self.templatePatternDict={
-		}
-
+		self.templatePatternList=[]
 		self.substitutePatternList=[]
 
 	def generateOperatorTurtle(self):
@@ -67,37 +61,4 @@ class OperatorManager:
 	def findTemplateOperator(self, templateName):
 		templateOperator=self.templateOperatorDict.get(templateName)
 		return templateOperator
-
-	def loadTemplates(self, toTemplateFile):
-		node=yaml.load(open(toTemplateFile), yaml.CLoader)
-		templatePatternDict={}
-		templateGroupNode=node.get(Constant.TAG_TEMPLATE_SET)
-		for node in templateGroupNode:
-			templateName=node.get(Constant.TAG_NAME)
-			matchPattern=node.get(Constant.TAG_MATCH)
-			replacePattern=node.get(Constant.TAG_PATTERN)
-			tre=TreeRegExp.compile(matchPattern)
-
-			templatePatternDict[templateName]=[templateName, tre, replacePattern]
-
-		self.templatePatternDict=templatePatternDict
-
-	def loadSubstituteRules(self, toSubstituteFile):
-		rootNode=yaml.load(open(toSubstituteFile))
-		ruleSetNode=rootNode.get(Constant.TAG_RULE_SET)
-		self.substitutePatternList=[]
-
-		if not ruleSetNode:
-			return
-
-		for node in ruleSetNode:
-			matchPattern=node.get(Constant.TAG_MATCH)
-			resultPattern=node.get(Constant.TAG_SUBSTITUTE)
-			self.substitutePatternList.append([None, TreeRegExp.compile(matchPattern), resultPattern])
-
-	def getTemplatePatternList(self):
-		return list(self.templatePatternDict.values())
-
-	def getSubstitutePatternList(self):
-		return self.substitutePatternList
 

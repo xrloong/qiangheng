@@ -31,7 +31,7 @@ class StructureManager:
 		mainTemplateFile = mainDir + 'template.yaml'
 
 		self.mainDescMgr.loadData(mainComponentList)
-		self.operationManager.loadTemplates(mainTemplateFile)
+		self.mainDescMgr.loadSubstituteRules(mainTemplateFile)
 
 	def _loadImData(self, inputMethod):
 		imDir = "gen/qhdata/%s/"%inputMethod
@@ -45,7 +45,8 @@ class StructureManager:
 		imSutstitueFile = imDir + 'substitute.yaml'
 
 		self.imDescMgr.loadData(imComponentList)
-		self.operationManager.loadSubstituteRules(imSutstitueFile)
+		self.imDescMgr.loadSubstituteRules(imSutstitueFile)
+
 		self.codeInfoManager.loadRadix(imRadixList)
 
 		resetRadixNameList=self.codeInfoManager.getResetRadixList()
@@ -67,12 +68,10 @@ class StructureManager:
 		return charDesc.getCompList()
 
 	def getTemplatePatternList(self):
-                operationManager=StateManager.getOperationManager()
-                return operationManager.getTemplatePatternList()
+		return self.mainDescMgr.getSubstitutePatternList()
 
 	def getSubstitutePatternList(self):
-                operationManager=StateManager.getOperationManager()
-                return operationManager.getSubstitutePatternList()
+		return self.imDescMgr.getSubstitutePatternList()
 
 	def generateOperator(self, operatorName):
                 operationManager=StateManager.getOperationManager()
