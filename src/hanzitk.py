@@ -132,10 +132,10 @@ class RadicalManager:
 				ll=line.split('\t')
 
 				if len(ll)>=2:
-					def_char=ll[0]
+					def_char=ll[1]
 					def_list=re.split(',|;', def_char)
 
-					self.setFont(ll[1], def_list)
+					self.setFont(ll[0], def_list)
 
 	def setFont(self, strIndex, f):
 		self.fontDB[strIndex]=f

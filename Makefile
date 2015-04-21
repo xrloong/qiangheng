@@ -192,7 +192,18 @@ $(PURETABLE_PATH): $(XML_PATH)
 	do\
 		for im in $(IMLIST);\
 		do\
-			time xalan -xsl xslt/puretable-$$type.xslt -in $(XML_PATH)/qh$$im.xml -out $(PURETABLE_PATH)/qh$$im-$$type.txt;\
+			if [ $$im = dc ]; \
+			then\
+				main=character;\
+			else\
+				main=keybinding;\
+			fi;\
+			time xalan -xsl xslt/puretable.xslt\
+				-param type "'$$type'"\
+				-param main "'$$main'"\
+				-param onlycharacter "'true'"\
+				-in $(XML_PATH)/qh$$im.xml\
+				-out $(PURETABLE_PATH)/qh$$im-$$type.txt;\
 		done;\
 	done
 	touch $(PURETABLE_PATH)

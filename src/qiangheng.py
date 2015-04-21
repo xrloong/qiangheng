@@ -16,8 +16,7 @@ class QiangHeng:
 
 		self.hanziNetwork=HanZiNetwork.construct(self.structureManager)
 
-		sortKey=lambda y: y.getKey()
-		sortedCodeMappingInfoList=sorted(self.genIMMapping(), key=sortKey)
+		sortedCodeMappingInfoList=self.genIMMapping()
 
 
 		output_format=options.output_format
@@ -52,8 +51,7 @@ class QiangHeng:
 
 	def genIMMapping(self):
 		characterFilter=lambda charName: (len(charName)==1)
-#		targetCharacterList=[]
-		targetCharacterList=filter(characterFilter, self.structureManager.getAllCharacters())
+		targetCharacterList=self.structureManager.getAllCharacters()
 		table=[]
 		for charName in sorted(targetCharacterList):
 #			print("<-- %s -->"%charName, sys.stderr)
