@@ -2,7 +2,7 @@
 # coding=utf8
 
 from optparse import OptionParser
-from gear.shape import *
+from graphics.shape import *
 import re
 
 
@@ -92,7 +92,7 @@ class ShowHanziWidget():
 		self.canvasHanzi=tkinter.Canvas(master=frame, width=self.canvasW, height=self.canvasH)
 		self.canvasHanzi.grid(row=3, columnspan=3)
 
-		from canvas import TkHanZiCanvas
+		from graphics.canvas import TkHanZiCanvas
 		canvas=TkHanZiCanvas.TkHanZiCanvas(self.canvasHanzi, self.canvasW, self.canvasH)
 		self.dh=HanZiDrawingSystem(canvas)
 
@@ -165,7 +165,7 @@ def generateTTF(filename):
 
 	start, end=0x4E00, 0x9FA6 # 全部
 
-	from canvas import TrueTypeGlyphHanZiCanvas
+	from graphics.canvas import TrueTypeGlyphHanZiCanvas
 
 	characters=sorted(rm.getCharacters())
 	print("總共有 %s 個字符"%len(characters))

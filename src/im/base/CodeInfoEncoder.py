@@ -1,5 +1,5 @@
 from .CodeInfo import CodeInfo
-from ..gear import Operator
+from model.element import Operator
 
 class CodeInfoEncoder:
 	@classmethod

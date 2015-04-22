@@ -2,10 +2,9 @@ from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfo import DCStrokeGroup
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..base.RadixManager import RadixParser
-from calligraphy import Calligraphy
-from calligraphy.Calligraphy import Pane
-from calligraphy.Calligraphy import Stroke
-#from calligraphy.Calligraphy import StrokeGroup
+from model.calligraphy import Calligraphy
+from model.calligraphy.Calligraphy import Pane
+from model.calligraphy.Calligraphy import Stroke
 import re
 
 class DCRadixParser(RadixParser):

@@ -1,8 +1,8 @@
 from .SOCodeInfo import SOCodeInfo
 from ..DynamicComposition.DCCodeInfoEncoder import DCCodeInfoEncoder
-from calligraphy.Calligraphy import Pane
-from calligraphy.Calligraphy import StrokeGroup
 from ..base.CodeInfo import CodeInfo
+from model.calligraphy.Calligraphy import Pane
+from model.calligraphy.Calligraphy import StrokeGroup
 
 class SOCodeInfoEncoder(DCCodeInfoEncoder):
 	@classmethod

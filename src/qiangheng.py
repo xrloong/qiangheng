@@ -4,10 +4,10 @@
 import sys
 
 from optparse import OptionParser
-from state import StateManager
+from model import StateManager
 from im.IMMgr import IMMgr
 from model.StructureManager import StructureManager
-from hanzi.HanZiNetwork import HanZiNetwork
+from model.hanzi.HanZiNetwork import HanZiNetwork
 
 class QiangHeng:
 	def __init__(self, options):

@@ -1,7 +1,7 @@
 
 # 視此模式為獨體模式（Singleton）。
-from im.gear.CodeInfoManager import CodeInfoManager
-from im.gear.OperatorManager import OperatorManager
+from .CodeInfoManager import CodeInfoManager
+from .OperatorManager import OperatorManager
 
 __state_IMPackage=None
 codeInfoManager=None

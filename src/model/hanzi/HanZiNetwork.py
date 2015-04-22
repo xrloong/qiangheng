@@ -2,8 +2,8 @@ import sys
 
 from util.topsort import topsort
 from util.topsort import CycleError
-from im.gear import Operator
-from gear import TreeRegExp
+from ..element import Operator
+from model.util import TreeRegExp
 
 from . import HanZiStructure
 from . import HanZiNode
@@ -253,7 +253,7 @@ class HanZiNetwork:
 		return characterInfo
 
 	def generateOperator(self, operatorName):
-		from state import StateManager
+		from model import StateManager
 		operator=StateManager.getOperationManager().generateOperator(operatorName)
 		return operator
 

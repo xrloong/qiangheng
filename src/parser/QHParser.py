@@ -1,7 +1,7 @@
 import sys
 import Constant
 
-from description.CharacterDescription import CharacterDescription
+from model.element.CharacterDescription import CharacterDescription
 
 from parser import TreeParser
 import yaml

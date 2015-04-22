@@ -1,6 +1,6 @@
 from ..base.CodeInfo import CodeInfo
-from calligraphy.Calligraphy import Pane
-from calligraphy.Calligraphy import StrokeGroup
+from model.calligraphy.Calligraphy import Pane
+from model.calligraphy.Calligraphy import StrokeGroup
 
 class DCStrokeGroup(StrokeGroup):
 	def __init__(self, contourPane, strokeList):

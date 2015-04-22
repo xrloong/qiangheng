@@ -1,6 +1,6 @@
 import sys
 from . import HanZiStructure
-from gear import CharacterInfo
+from model.element import CharacterInfo
 
 class HanZiNode:
 	def __init__(self, name):

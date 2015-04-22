@@ -1,5 +1,5 @@
-from description.CharacterDescriptionManager import CharacterDescriptionManager
-from state import StateManager
+from .CharacterDescriptionManager import CharacterDescriptionManager
+from model import StateManager
 from im.IMMgr import IMMgr
 
 class StructureManager:

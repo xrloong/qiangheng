@@ -2,8 +2,7 @@ from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfo import DCStrokeGroup
 from ..base.CodeInfoEncoder import CodeInfoEncoder
 from ..base.CodeInfo import CodeInfo
-from calligraphy.Calligraphy import Pane
-#from calligraphy.Calligraphy import StrokeGroup
+from model.calligraphy.Calligraphy import Pane
 
 import sys
 

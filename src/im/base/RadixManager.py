@@ -2,8 +2,8 @@ from .CodeInfo import CodeInfo
 from .CodeInfoEncoder import CodeInfoEncoder
 
 import Constant
-from ..gear import OperatorManager
-from gear.CodeVarianceType import CodeVarianceTypeFactory
+from model import OperatorManager
+from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
 import yaml
 

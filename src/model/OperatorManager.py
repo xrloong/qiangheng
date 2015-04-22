@@ -1,4 +1,4 @@
-from . import Operator
+from .element import Operator
 
 class OperatorManager:
 	# 使用享元模式

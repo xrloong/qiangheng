@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 import sys
-from .CharacterDescription import CharacterDescription
+from .element.CharacterDescription import CharacterDescription
+from .util import TreeRegExp
 from parser import QHParser
 import Constant
-from gear import TreeRegExp
-import yaml
 
 class CharacterDescriptionManager:
 	def __init__(self):
@@ -38,6 +37,7 @@ class CharacterDescriptionManager:
 		self.substitutePatternList=self._loadSubstituteRules(toSubstituteFile)
 
 	def _loadSubstituteRules(self, toSubstituteFile):
+		import yaml
 		node=yaml.load(open(toSubstituteFile), yaml.CLoader)
 		ruleSetNode=node.get(Constant.TAG_RULE_SET)
 

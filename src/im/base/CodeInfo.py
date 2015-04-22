@@ -1,4 +1,4 @@
-from gear.CodeVarianceType import CodeVarianceTypeFactory
+from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
 class CodeInfo:
 	def __init__(self):

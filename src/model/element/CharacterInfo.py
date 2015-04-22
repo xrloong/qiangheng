@@ -1,5 +1,5 @@
 from . import CodeMappingInfo
-from state import StateManager
+from model import StateManager
 
 class CharacterInfo:
 	def __init__(self, charName):

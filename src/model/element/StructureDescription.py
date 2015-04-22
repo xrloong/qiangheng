@@ -47,7 +47,7 @@ class StructureDescription:
 
 	@staticmethod
 	def generateNode(operatorName, compList):
-		from state import StateManager
+		from model import StateManager
 		operationManager = StateManager.getOperationManager()
 
 		operator=operationManager.generateOperator(operatorName)

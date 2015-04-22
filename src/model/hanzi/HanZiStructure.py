@@ -1,5 +1,5 @@
 import sys
-from state import StateManager
+from model import StateManager
 
 class HanZiStructure:
 	def __init__(self):
