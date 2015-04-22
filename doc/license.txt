@@ -1,19 +1,7 @@
-瑲珩使用拓樸排序，然而這並非為必要。
-拓樸排序使用 topsort (http://pypi.python.org/pypi/topsort)，
-其原始授權為 LGPL 。
-此外， topsort 使用 rad_util ，
-其授權為 MIT/X11 。
-
-在本程式中，拓樸排序並非為必要，只是用來判斷字形描述是否形成迴圈。
-拓樸排序相關程式碼在 src/hanzi/HanZiNetwork.py 中的
-DescriptionManagerToHanZiNetworkConverter.getSortedNameList() 。
-
-
-
- qhdata/radix/CJK/dc.xml 所用的字形描述是由 "動態組字函式庫" 所提供的
-字型檔所擷取或轉換出來。
-其原本授權條款為 " GNU自由文件授權條款"，故而相關修改應遵守其規範。
-
+一開始動態組字所用的字型形描是由 "動態組字函式庫" 所提供的字型檔所擷取並轉換出來。
+其原本授權條款為 " GNU自由文件授權條款"。
 請參見動態組字函式庫（http://www.openfoundry.org/of/projects/690） 。
 或參見魔法設計的藝術：漢字研究（http://magicdesign.blogspot.com/search/label/漢字研究）。
+
+而目前所用的字型形描(qhdata/cj/radix/CJK*.xml)，其所用的格式、資訊以與原先的字型檔大不同。
 
