@@ -2,7 +2,7 @@
 
 import sys
 from .element.CharacterDescription import CharacterDescription
-from .util import TreeRegExp
+from .element.SubstituteRule import SubstituteRule
 from parser import QHParser
 import Constant
 
@@ -15,7 +15,7 @@ class CharacterDescriptionManager:
 			return charDesc
 
 		self.charDescQueryer=charDescQueryer
-		self.substitutePatternList=[]
+		self.substituteRuleList=[]
 
 	def getAllCharacters(self):
 		return self.characterDB.keys()
@@ -34,7 +34,7 @@ class CharacterDescriptionManager:
 				self.saveChar(charDesc)
 
 	def loadSubstituteRules(self, toSubstituteFile):
-		self.substitutePatternList=self._loadSubstituteRules(toSubstituteFile)
+		self.substituteRuleList=self._loadSubstituteRules(toSubstituteFile)
 
 	def _loadSubstituteRules(self, toSubstituteFile):
 		import yaml
@@ -44,19 +44,19 @@ class CharacterDescriptionManager:
 		if not ruleSetNode:
 			return []
 
-		templatePatternList=[]
+		substitueRuleList=[]
 		for node in ruleSetNode:
-			templateName=node.get(Constant.TAG_NAME)
+			substitueName=node.get(Constant.TAG_NAME)
 			matchPattern=node.get(Constant.TAG_MATCH)
 			replacePattern=node.get(Constant.TAG_SUBSTITUTE)
-			tre=TreeRegExp.compile(matchPattern)
 
-			templatePatternList.append([templateName, tre, replacePattern])
+			substitueRule=SubstituteRule(substitueName, matchPattern, replacePattern)
+			substitueRuleList.append(substitueRule)
 
-		return templatePatternList
+		return substitueRuleList
 
-	def getSubstitutePatternList(self):
-		return self.substitutePatternList
+	def getSubstituteRuleList(self):
+		return self.substituteRuleList
 
 	def saveChar(self, charDesc):
 		charName=charDesc.getName()

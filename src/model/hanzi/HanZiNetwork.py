@@ -72,10 +72,10 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 				structure=self.recursivelyConvertDescriptionToStructure(structDesc)
 
-				templatePatternList=self.structureManager.getTemplatePatternList()
-				self.recursivelyRearrangeStructure(structure, templatePatternList)
-				substitutePatternList=self.structureManager.getSubstitutePatternList()
-				self.recursivelyRearrangeStructure(structure, substitutePatternList)
+				templateRuleList=self.structureManager.getTemplateRuleList()
+				self.recursivelyRearrangeStructure(structure, templateRuleList)
+				substituteRuleList=self.structureManager.getSubstituteRuleList()
+				self.recursivelyRearrangeStructure(structure, substituteRuleList)
 
 				self.recursivelyAddStructure(structure)
 				self.hanziNetwork.addStructureIntoNode(structure, charName)
@@ -111,23 +111,24 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 		return structure
 
-	def recursivelyRearrangeStructure(self, structure, substitutePatternList):
-		self.rearrangeStructure(structure, substitutePatternList)
+	def recursivelyRearrangeStructure(self, structure, substituteRuleList):
+		self.rearrangeStructure(structure, substituteRuleList)
 		for childStructure in structure.getStructureList():
-			self.recursivelyRearrangeStructure(childStructure, substitutePatternList)
+			self.recursivelyRearrangeStructure(childStructure, substituteRuleList)
 
-	def rearrangeStructure(self, structure, substitutePatternList):
-		def rearrangeStructureOneTurn(structure, substitutePatternList):
+	def rearrangeStructure(self, structure, substituteRuleList):
+		def rearrangeStructureOneTurn(structure, substituteRuleList):
 			operator=structure.getOperator()
 
 			if operator:
-				filteredList = [pattern for pattern in substitutePatternList if pattern[0] in [None, operator.getName()]]
+				filteredList = [rule for rule in substituteRuleList if rule.getName() in [None, operator.getName()]]
 			else:
 				return False
 
 			changed=False
-			for pattern in filteredList:
-				operatorName, tre, result = pattern
+			for rule in filteredList:
+				tre = rule.getTRE()
+				result = rule.getReplacement()
 
 				tmpStructure=TreeRegExp.matchAndReplace(tre, structure, result, self.treeProxy)
 				if tmpStructure!=None:
@@ -139,7 +140,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 		changed=True
 		while changed:
-			changed=rearrangeStructureOneTurn(structure, substitutePatternList)
+			changed=rearrangeStructureOneTurn(structure, substituteRuleList)
 
 	def recursivelyAddStructure(self, structure):
 		for childStructure in structure.getStructureList():

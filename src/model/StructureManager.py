@@ -67,11 +67,11 @@ class StructureManager:
 	def queryChildren(self, charDesc):
 		return charDesc.getCompList()
 
-	def getTemplatePatternList(self):
-		return self.mainDescMgr.getSubstitutePatternList()
+	def getTemplateRuleList(self):
+		return self.mainDescMgr.getSubstituteRuleList()
 
-	def getSubstitutePatternList(self):
-		return self.imDescMgr.getSubstitutePatternList()
+	def getSubstituteRuleList(self):
+		return self.imDescMgr.getSubstituteRuleList()
 
 	def generateOperator(self, operatorName):
                 operationManager=StateManager.getOperationManager()
