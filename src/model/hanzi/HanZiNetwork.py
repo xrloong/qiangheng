@@ -117,16 +117,9 @@ class DescriptionManagerToHanZiNetworkConverter:
 			self.recursivelyRearrangeStructure(childStructure, substituteRuleList)
 
 	def rearrangeStructure(self, structure, substituteRuleList):
-		def rearrangeStructureOneTurn(structure, substituteRuleList):
-			operator=structure.getOperator()
-
-			if operator:
-				filteredList = [rule for rule in substituteRuleList if rule.getName() in [None, operator.getName()]]
-			else:
-				return False
-
+		def rearrangeStructureOneTurn(structure, filteredSubstituteRuleList):
 			changed=False
-			for rule in filteredList:
+			for rule in filteredSubstituteRuleList:
 				tre = rule.getTRE()
 				result = rule.getReplacement()
 
@@ -140,7 +133,14 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 		changed=True
 		while changed:
-			changed=rearrangeStructureOneTurn(structure, substituteRuleList)
+			operator=structure.getOperator()
+
+			if operator:
+				availableNameList = [None, operator.getName()]
+				filteredSubstituteRuleList = [rule for rule in substituteRuleList if rule.getName() in availableNameList]
+				changed=rearrangeStructureOneTurn(structure, filteredSubstituteRuleList)
+			else:
+				changed=False
 
 	def recursivelyAddStructure(self, structure):
 		for childStructure in structure.getStructureList():
