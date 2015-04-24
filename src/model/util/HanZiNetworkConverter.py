@@ -81,7 +81,10 @@ class HanZiNetworkConverter:
 					structure=self.generateUnitLink(radixCodeInfo)
 					self.hanziNetwork.addStructureIntoNode(structure, charName)
 
-		self.hanziNetwork.setNodeTreeByOrder(charNameList)
+		for charName in charNameList:
+			node=self.hanziNetwork.findNode(charName)
+			self.setNodeTree(node)
+
 		return self.hanziNetwork
 
 	def recursivelyFindAllReferenceNameSet(self, structDesc):
@@ -182,4 +185,24 @@ class HanZiNetworkConverter:
 		operator=structDesc.getOperator()
 		structure=self.hanziNetwork.generateAssemblageStructure(operator, childStructureList)
 		return structure
+
+	def setNodeTree(self, node):
+		"""設定某一個字符所包含的部件的碼"""
+
+		structureList=node.getStructureListWithCondition()
+
+		for structure in structureList:
+			self.setStructureTree(structure)
+
+	def setStructureTree(self, structure):
+		if structure.flagIsSet:
+			return
+
+		structure.flagIsSet=True
+
+		structureList=structure.getStructureList()
+		for s in structureList:
+			self.setStructureTree(s)
+
+		structure.setCompositions()
 

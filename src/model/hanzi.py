@@ -39,18 +39,6 @@ class HanZiStructure:
 	def setCompositions(self):
 		pass
 
-	def setStructureTree(self):
-		if self.flagIsSet:
-			return
-
-		self.flagIsSet=True
-
-		structureList=self.getStructureList()
-		for structure in structureList:
-			structure.setStructureTree()
-
-		self.setCompositions()
-
 	def printAllCodeInfo(self):
 		for codeInfo in self.getCodeInfoList():
 			pass
@@ -176,9 +164,6 @@ class HanZiWrapperStructure(HanZiStructure):
 			structureList=self.referenceNode.getStructureList()
 		return structureList
 
-	def setStructureTree(self):
-		self.referenceNode.setNodeTree()
-
 class HanZiAssemblageStructure(HanZiStructure):
 	def __init__(self, operator, structureList):
 		super().__init__()
@@ -285,14 +270,6 @@ class HanZiNode:
 
 		return self.characterInfo
 
-	def setNodeTree(self):
-		"""設定某一個字符所包含的部件的碼"""
-
-		structureList=self.getStructureListWithCondition()
-
-		for structure in structureList:
-			structure.setStructureTree()
-
 	def printAllCodeInfoInStructure(self):
 		structureList=self.getStructureListWithCondition()
 		for struct in structureList:
@@ -305,11 +282,6 @@ class HanZiNetwork:
 		self.structureDict={}
 
 		self.nodeExpressionDict={}
-
-	def setNodeTreeByOrder(self, nameList):
-		for name in nameList:
-			node=self.nodeDict.get(name)
-			node.setNodeTree()
 
 	def addNode(self, name):
 		if name not in self.nodeDict:
