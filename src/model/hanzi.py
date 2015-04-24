@@ -4,6 +4,8 @@ from model.element import CharacterInfo
 class HanZiStructure:
 	def __init__(self):
 		self.flagIsSet=False
+		self.flagTemplateIsDone=False
+		self.flagSubstituteIsDone=False
 
 	def getUniqueName(self):
 		if self.isWrapper():
@@ -52,6 +54,18 @@ class HanZiStructure:
 	def printAllCodeInfo(self):
 		for codeInfo in self.getCodeInfoList():
 			pass
+
+	def setTemplateDone(self):
+		self.flagTemplateIsDone=True
+
+	def setSubstituteDone(self):
+		self.flagSubstituteIsDone=True
+
+	def isTemplateDone(self):
+		return self.flagTemplateIsDone
+
+	def isSubstituteDone(self):
+		return self.flagSubstituteIsDone
 
 	@staticmethod
 	def generateAssemblage(operator, structureList):

@@ -66,9 +66,9 @@ class HanZiNetworkConverter:
 				structure=self.recursivelyConvertDescriptionToStructure(structDesc)
 
 				templateRuleList=self.structureManager.getTemplateRuleList()
-				self.recursivelyRearrangeStructure(structure, templateRuleList)
+				self.recursivelyRearrangeStructureByTemplate(structure, templateRuleList)
 				substituteRuleList=self.structureManager.getSubstituteRuleList()
-				self.recursivelyRearrangeStructure(structure, substituteRuleList)
+				self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
 
 				self.recursivelyAddStructure(structure)
 				self.hanziNetwork.addStructureIntoNode(structure, charName)
@@ -104,10 +104,25 @@ class HanZiNetworkConverter:
 
 		return structure
 
-	def recursivelyRearrangeStructure(self, structure, substituteRuleList):
+	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList):
+		if structure.isTemplateDone():
+			return
+
 		self.rearrangeStructure(structure, substituteRuleList)
+		structure.setTemplateDone()
+
 		for childStructure in structure.getStructureList():
-			self.recursivelyRearrangeStructure(childStructure, substituteRuleList)
+			self.recursivelyRearrangeStructureByTemplate(childStructure, substituteRuleList)
+
+	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList):
+		if structure.isSubstituteDone():
+			return
+
+		self.rearrangeStructure(structure, substituteRuleList)
+		structure.setSubstituteDone()
+
+		for childStructure in structure.getStructureList():
+			self.recursivelyRearrangeStructureBySubstitute(childStructure, substituteRuleList)
 
 	def rearrangeStructure(self, structure, substituteRuleList):
 		def rearrangeStructureOneTurn(structure, filteredSubstituteRuleList):
