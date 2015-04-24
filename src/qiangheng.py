@@ -7,17 +7,17 @@ from optparse import OptionParser
 from model import StateManager
 from im.IMMgr import IMMgr
 from model.StructureManager import StructureManager
-from model.util.HanZiNetworkConverter import HanZiNetworkConverter
+from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 
 class QiangHeng:
 	def __init__(self, options):
 		inputMethod=options.input_method
-		self.structureManager = StructureManager(inputMethod)
 
-		toHanZiNetworkConverter=HanZiNetworkConverter(self.structureManager)
-		self.hanziNetwork=toHanZiNetworkConverter.constructDescriptionNetwork()
+		structureManager=StructureManager(inputMethod)
+		computeCharacterInfo=ComputeCharacterInfo()
+		characterInfoList=computeCharacterInfo.compute(structureManager)
 
-		sortedCodeMappingInfoList=self.genIMMapping()
+		codeMappingInfoList=self.genIMMapping(characterInfoList)
 
 
 		output_format=options.output_format
@@ -47,18 +47,13 @@ class QiangHeng:
 			from writer import QuietWriter
 			writer = QuietWriter.QuietWriter()
 
-		imInfo=self.structureManager.getImInfo()
-		writer.write(imInfo, sortedCodeMappingInfoList)
+		imInfo=structureManager.getImInfo()
+		writer.write(imInfo, codeMappingInfoList)
 
-	def genIMMapping(self):
-		characterFilter=lambda charName: (len(charName)==1)
-		targetCharacterList=self.structureManager.getAllCharacters()
+	def genIMMapping(self, characterInfoList):
 		table=[]
-		for charName in sorted(targetCharacterList):
-#			print("<-- %s -->"%charName, sys.stderr)
-			characterInfo=self.hanziNetwork.getCharacterInfo(charName)
-			if characterInfo:
-				table.extend(characterInfo.getCodeMappingInfoList())
+		for characterInfo in characterInfoList:
+			table.extend(characterInfo.getCodeMappingInfoList())
 		return table
 
 def main():

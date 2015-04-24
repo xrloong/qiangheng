@@ -298,13 +298,6 @@ class HanZiNetwork:
 	def findNode(self, nodeName):
 		return self.nodeDict.get(nodeName)
 
-	def getCharacterInfo(self, charName):
-		charNode=self.nodeDict.get(charName)
-		characterInfo=None
-		if charNode:
-			characterInfo=charNode.getCharacterInfo()
-		return characterInfo
-
 	def generateOperator(self, operatorName):
 		operator=StateManager.getOperationManager().generateOperator(operatorName)
 		return operator

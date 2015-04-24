@@ -211,18 +211,41 @@ class StageSetNodeTree(ConversionStage):
 
 		structure.setCompositions()
 
-class HanZiNetworkConverter:
-	def __init__(self, structureManager):
-		self.structureManager=structureManager
-		self.hanziNetwork=HanZiNetwork()
+class StageGetCharacterInfo(ConversionStage):
+	def __init__(self, hanziNetwork, structureManager):
+		super().__init__(hanziNetwork, structureManager)
+		self.characterInfoList=[]
 
-	def constructDescriptionNetwork(self):
-		structureManager=self.structureManager
-		hanziNetwork=self.hanziNetwork
+	def execute(self):
+		characterInfoList=[]
+		for charName in sorted(self.getCharNameList()):
+			characterInfo=None
+
+			charNode=self.hanziNetwork.findNode(charName)
+			if charNode:
+				characterInfo=charNode.getCharacterInfo()
+
+			if characterInfo:
+				characterInfoList.append(characterInfo)
+		self.characterInfoList=characterInfoList
+
+	def getCharacterInfoList(self):
+		return self.characterInfoList
+
+class ComputeCharacterInfo:
+	def __init__(self):
+		pass
+
+	def compute(self, structureManager):
+		hanziNetwork=HanZiNetwork()
+
 		StageAddNode(hanziNetwork, structureManager).execute()
 		StageAddStructure(hanziNetwork, structureManager).execute()
 		StageAddCodeInfo(hanziNetwork, structureManager).execute()
 		StageSetNodeTree(hanziNetwork, structureManager).execute()
 
-		return self.hanziNetwork
+		stage=StageGetCharacterInfo(hanziNetwork, structureManager)
+		stage.execute()
+
+		return stage.getCharacterInfoList()
 
