@@ -1,12 +1,7 @@
-import sys
+from . import TreeRegExp
+from ..hanzi import HanZiNetwork
 
-from ..element import Operator
-from model.util import TreeRegExp
-
-from . import HanZiStructure
-from . import HanZiNode
-
-class DescriptionManagerToHanZiNetworkConverter:
+class HanZiNetworkConverter:
 	class TreeProxy(TreeRegExp.BasicTreeProxy):
 		def __init__(self, hanziNetwork):
 			self.hanziNetwork = hanziNetwork
@@ -49,7 +44,7 @@ class DescriptionManagerToHanZiNetworkConverter:
 	def __init__(self, structureManager):
 		self.structureManager=structureManager
 		self.hanziNetwork=HanZiNetwork()
-		self.treeProxy=DescriptionManagerToHanZiNetworkConverter.TreeProxy(self.hanziNetwork)
+		self.treeProxy=HanZiNetworkConverter.TreeProxy(self.hanziNetwork)
 
 	def constructDescriptionNetwork(self):
 		charNameList=self.structureManager.getAllCharacters()
@@ -67,8 +62,6 @@ class DescriptionManagerToHanZiNetworkConverter:
 			for structDesc in structDescList:
 				if structDesc.isEmpty():
 					continue
-
-#				print("name: %s %s"%(charName, structDesc), file=sys.stderr);
 
 				structure=self.recursivelyConvertDescriptionToStructure(structDesc)
 
@@ -173,68 +166,5 @@ class DescriptionManagerToHanZiNetworkConverter:
 
 		operator=structDesc.getOperator()
 		structure=self.hanziNetwork.generateAssemblageStructure(operator, childStructureList)
-		return structure
-
-
-class HanZiNetwork:
-	def __init__(self):
-		self.nodeDict={}
-		self.structureDict={}
-
-		self.nodeExpressionDict={}
-
-	@staticmethod
-	def construct(structureManager):
-		toHanZiNetworkConverter=DescriptionManagerToHanZiNetworkConverter(structureManager)
-		hanziNetwork=toHanZiNetworkConverter.constructDescriptionNetwork()
-		return hanziNetwork
-
-	def setNodeTreeByOrder(self, nameList):
-		for name in nameList:
-#			print(name, file=sys.stderr)
-			node=self.nodeDict.get(name)
-			node.setNodeTree()
-
-	def addNode(self, name):
-		if name not in self.nodeDict:
-			tmpNode=HanZiNode.HanZiNode(name)
-			self.nodeDict[name]=tmpNode
-
-	def addStructure(self, structureName, structure):
-		self.structureDict[structureName]=structure
-
-	def addStructureIntoNode(self, structure, nodeName):
-		dstNode=self.findNode(nodeName)
-		dstNode.addStructure(structure)
-
-	def findNode(self, nodeName):
-		return self.nodeDict.get(nodeName)
-
-	def getCharacterInfo(self, charName):
-		charNode=self.nodeDict.get(charName)
-		characterInfo=None
-		if charNode:
-			characterInfo=charNode.getCharacterInfo()
-		return characterInfo
-
-	def generateOperator(self, operatorName):
-		from model import StateManager
-		operator=StateManager.getOperationManager().generateOperator(operatorName)
-		return operator
-
-	def generateAssemblageStructure(self, operator, structureList):
-		structure=HanZiStructure.generateAssemblage(operator, structureList)
-		return structure
-
-	def generateWrapperStructure(self, name, nodeExpression):
-		if nodeExpression in self.nodeExpressionDict:
-			return self.nodeExpressionDict[nodeExpression]
-		rootNode=self.findNode(name)
-		structure=HanZiStructure.generateWrapper(rootNode, nodeExpression)
-		self.nodeExpressionDict[nodeExpression]=structure
-		return structure
-
-	def generateUnitStructure(self, radixCodeInfo):
-		structure=HanZiStructure.generateUnit(radixCodeInfo)
 		return structure
 

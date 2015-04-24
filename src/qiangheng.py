@@ -7,14 +7,15 @@ from optparse import OptionParser
 from model import StateManager
 from im.IMMgr import IMMgr
 from model.StructureManager import StructureManager
-from model.hanzi.HanZiNetwork import HanZiNetwork
+from model.util.HanZiNetworkConverter import HanZiNetworkConverter
 
 class QiangHeng:
 	def __init__(self, options):
 		inputMethod=options.input_method
 		self.structureManager = StructureManager(inputMethod)
 
-		self.hanziNetwork=HanZiNetwork.construct(self.structureManager)
+		toHanZiNetworkConverter=HanZiNetworkConverter(self.structureManager)
+		self.hanziNetwork=toHanZiNetworkConverter.constructDescriptionNetwork()
 
 		sortedCodeMappingInfoList=self.genIMMapping()
 

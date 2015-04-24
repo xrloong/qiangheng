@@ -1,5 +1,5 @@
-import sys
 from model import StateManager
+from model.element import CharacterInfo
 
 class HanZiStructure:
 	def __init__(self):
@@ -52,6 +52,25 @@ class HanZiStructure:
 	def printAllCodeInfo(self):
 		for codeInfo in self.getCodeInfoList():
 			pass
+
+	@staticmethod
+	def generateAssemblage(operator, structureList):
+		structure=HanZiAssemblageStructure(operator, structureList)
+		structure=HanZiProxyStructure(structure)
+		return structure
+
+	@staticmethod
+	def generateWrapper(referenceNode, expression):
+		structure=HanZiWrapperStructure(referenceNode, expression)
+		structure=HanZiProxyStructure(structure)
+		return structure
+
+	@staticmethod
+	def generateUnit(radixCodeInfo):
+		structure=HanZiUnitStructure(radixCodeInfo)
+		structure=HanZiProxyStructure(structure)
+		return structure
+
 
 class HanZiProxyStructure(HanZiStructure):
 	def __init__(self, targetStructure):
@@ -210,19 +229,113 @@ class HanZiAssemblageStructure(HanZiStructure):
 
 		return infoListList
 
-def generateAssemblage(operator, structureList):
-	structure=HanZiAssemblageStructure(operator, structureList)
-	structure=HanZiProxyStructure(structure)
-	return structure
 
-def generateWrapper(referenceNode, expression):
-	structure=HanZiWrapperStructure(referenceNode, expression)
-	structure=HanZiProxyStructure(structure)
-	return structure
+class HanZiNode:
+	def __init__(self, name):
+		self.name=name
+		self.structureList=[]
 
-def generateUnit(radixCodeInfo):
-	structure=HanZiUnitStructure(radixCodeInfo)
-	structure=HanZiProxyStructure(structure)
-	return structure
+		characterInfo=CharacterInfo.CharacterInfo(self.name)
+		self.characterInfo=characterInfo
 
+	def getName(self):
+		return self.name
+
+	def addStructure(self, structure):
+		self.structureList.append(structure)
+
+	def setStructureList(self, structureList):
+		self.structureList=structureList
+
+	def getStructureList(self):
+		return self.structureList
+
+	def getStructureListWithCondition(self):
+		return self.structureList
+
+	def getSubStructureList(self, index):
+		subStructureList=[]
+		for structure in self.structureList:
+			structureList=structure.getStructureList()
+			subStructureList.append(structureList[index])
+		return subStructureList
+
+	def getCodeInfoList(self):
+		structureList=self.getStructureListWithCondition()
+
+		return sum(map(lambda s: s.getCodeInfoList(), structureList), [])
+
+	def getCharacterInfo(self):
+		codeInfoList=self.getCodeInfoList()
+		self.characterInfo.setCodeInfoList(codeInfoList)
+
+		return self.characterInfo
+
+	def setNodeTree(self):
+		"""設定某一個字符所包含的部件的碼"""
+
+		structureList=self.getStructureListWithCondition()
+
+		for structure in structureList:
+			structure.setStructureTree()
+
+	def printAllCodeInfoInStructure(self):
+		structureList=self.getStructureListWithCondition()
+		for struct in structureList:
+			struct.printAllCodeInfo()
+
+
+class HanZiNetwork:
+	def __init__(self):
+		self.nodeDict={}
+		self.structureDict={}
+
+		self.nodeExpressionDict={}
+
+	def setNodeTreeByOrder(self, nameList):
+		for name in nameList:
+			node=self.nodeDict.get(name)
+			node.setNodeTree()
+
+	def addNode(self, name):
+		if name not in self.nodeDict:
+			tmpNode=HanZiNode(name)
+			self.nodeDict[name]=tmpNode
+
+	def addStructure(self, structureName, structure):
+		self.structureDict[structureName]=structure
+
+	def addStructureIntoNode(self, structure, nodeName):
+		dstNode=self.findNode(nodeName)
+		dstNode.addStructure(structure)
+
+	def findNode(self, nodeName):
+		return self.nodeDict.get(nodeName)
+
+	def getCharacterInfo(self, charName):
+		charNode=self.nodeDict.get(charName)
+		characterInfo=None
+		if charNode:
+			characterInfo=charNode.getCharacterInfo()
+		return characterInfo
+
+	def generateOperator(self, operatorName):
+		operator=StateManager.getOperationManager().generateOperator(operatorName)
+		return operator
+
+	def generateAssemblageStructure(self, operator, structureList):
+		structure=HanZiStructure.generateAssemblage(operator, structureList)
+		return structure
+
+	def generateWrapperStructure(self, name, nodeExpression):
+		if nodeExpression in self.nodeExpressionDict:
+			return self.nodeExpressionDict[nodeExpression]
+		rootNode=self.findNode(name)
+		structure=HanZiStructure.generateWrapper(rootNode, nodeExpression)
+		self.nodeExpressionDict[nodeExpression]=structure
+		return structure
+
+	def generateUnitStructure(self, radixCodeInfo):
+		structure=HanZiStructure.generateUnit(radixCodeInfo)
+		return structure
 
