@@ -1,6 +1,6 @@
 from .CharacterDescriptionManager import CharacterDescriptionManager
 from model import StateManager
-from im.IMMgr import IMMgr
+from model.im.IMMgr import IMMgr
 
 class StructureManager:
 	def __init__(self, inputMethod):

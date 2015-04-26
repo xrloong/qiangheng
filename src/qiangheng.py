@@ -5,7 +5,6 @@ import sys
 
 from optparse import OptionParser
 from model import StateManager
-from im.IMMgr import IMMgr
 from model.StructureManager import StructureManager
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 
