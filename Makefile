@@ -201,13 +201,12 @@ $(PURETABLE_PATH): $(XML_PATH)
 		do\
 			if [ $$im = dc ]; \
 			then\
-				main=character;\
+				xslt=puretable-dc.xslt;\
 			else\
-				main=keybinding;\
+				xslt=puretable.xslt;\
 			fi;\
-			time xalan -xsl xslt/puretable.xslt\
+			time xalan -xsl xslt/$$xslt\
 				-param type "'$$type'"\
-				-param main "'$$main'"\
 				-param onlycharacter "'true'"\
 				-in $(XML_PATH)/qh$$im.xml\
 				-out $(PURETABLE_PATH)/qh$$im-$$type.txt;\

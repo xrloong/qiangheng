@@ -11,54 +11,45 @@
 </xsl:text></xsl:variable>
 
   <xsl:template match="/">
-    <xsl:call-template name="輸出編碼對應"/>
+    <xsl:call-template name="輸出描繪對應"/>
   </xsl:template>
 
-  <xsl:template name="輸出標题">
-  </xsl:template>
-
-  <xsl:template name="輸出設定">
-  </xsl:template>
-
-  <xsl:template name="輸出按鍵對應">
-  </xsl:template>
-
-  <xsl:template name="輸出編碼對應">
-    <xsl:apply-templates select="輸入法/對應集/對應">
-      <xsl:sort select="@按鍵序列"/>
+  <xsl:template name="輸出描繪對應">
+    <xsl:apply-templates select="描繪法/描繪集/描繪">
+      <xsl:sort select="@名稱"/>
     </xsl:apply-templates>
   </xsl:template>
 
-  <xsl:template match="對應">
+  <xsl:template match="描繪">
     <xsl:choose>
       <xsl:when test="($onlycharacter = 'false')">
-        <xsl:call-template name="輸出對應-判斷類型"/>
+        <xsl:call-template name="輸出描繪-判斷類型"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:if test="string-length(@字符) = 1">
-          <xsl:call-template name="輸出對應-判斷類型"/>
+        <xsl:if test="string-length(@名稱) = 1">
+          <xsl:call-template name="輸出描繪-判斷類型"/>
         </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="輸出對應-判斷類型">
+  <xsl:template name="輸出描繪-判斷類型">
     <xsl:choose>
       <xsl:when test="($type = 'standard')">
         <xsl:if test="@類型 = '標準'">
-          <xsl:call-template name="輸出對應"/>
+          <xsl:call-template name="輸出描繪"/>
         </xsl:if>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:call-template name="輸出對應"/>
+        <xsl:call-template name="輸出描繪"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="輸出對應">
-    <xsl:value-of select="@按鍵序列"/>
+  <xsl:template name="輸出描繪">
+    <xsl:value-of select="@名稱"/>
     <xsl:value-of select="$tab"/>
-    <xsl:value-of select="@字符"/>
+    <xsl:value-of select="@描繪序列"/>
     <xsl:value-of select="$newline"/>
   </xsl:template>
 </xsl:stylesheet>
