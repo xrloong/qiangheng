@@ -1,6 +1,7 @@
 
 VERSION	=	0.27
 IMLIST	=	ar bs cj dy fc zm
+DMLIST	=	dc
 PLATFORM_LIST	=	puretable scim gcin msim
 TABLES_PATH	=	tables
 PURETABLE_PATH	=	$(TABLES_PATH)/puretable
@@ -114,11 +115,17 @@ xml:
 		time src/qiangheng.py -i $$im --format xml |\
 			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
 	done
+	for im in $(DMLIST);\
+	do\
+		echo $$im;\
+		time src/qiangheng.py -d $$im --format xml |\
+			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
+	done
 	touch $(XML_PATH)
 
 profile:
 	mkdir -p $(PROFILE_PATH)
-	for im in $(IMLIST);\
+	for im in $(IMLIST) $(DMLIST);\
 	do\
 		echo $$im;\
 		src/profiler.py -q -i $$im > $(PROFILE_PATH)/$$im.txt;\
@@ -126,7 +133,7 @@ profile:
 	touch $(XML_PATH)
 
 dc:
-	make xml puretable IMLIST=dc
+	make xml puretable DMLIST=dc
 
 test:
 	PYTHONPATH=src python3 -m unittest discover -s tests/ -p "*.py"
@@ -190,7 +197,7 @@ $(PURETABLE_PATH): $(XML_PATH)
 	mkdir -p $(PURETABLE_PATH)
 	for type in $(RELEASE_TYPE_LIST);\
 	do\
-		for im in $(IMLIST);\
+		for im in $(IMLIST) $(DMLIST);\
 		do\
 			if [ $$im = dc ]; \
 			then\

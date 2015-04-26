@@ -1,13 +1,8 @@
+from . import StateManager
 from .CharacterDescriptionManager import CharacterDescriptionManager
-from model import StateManager
-from model.im.IMMgr import IMMgr
 
 class StructureManager:
 	def __init__(self, inputMethod):
-		imPackage=IMMgr.getIMPackage(inputMethod)
-		StateManager.setIMPackage(imPackage)
-		self.imInfo=imPackage.IMInfo()
-
 		self.mainDescMgr=CharacterDescriptionManager()
 		self.imDescMgr=CharacterDescriptionManager()
 		self.operationManager=StateManager.getOperationManager()
