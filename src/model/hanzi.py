@@ -1,5 +1,4 @@
 from model import StateManager
-from model.element import CharacterInfo
 
 class HanZiStructure:
 	def __init__(self):
@@ -230,12 +229,10 @@ class HanZiAssemblageStructure(HanZiStructure):
 
 
 class HanZiNode:
-	def __init__(self, name):
+	def __init__(self, name, tag):
 		self.name=name
 		self.structureList=[]
-
-		characterInfo=CharacterInfo.CharacterInfo(self.name)
-		self.characterInfo=characterInfo
+		self.tag=tag
 
 	def getName(self):
 		return self.name
@@ -249,9 +246,6 @@ class HanZiNode:
 	def getStructureList(self):
 		return self.structureList
 
-	def getStructureListWithCondition(self):
-		return self.structureList
-
 	def getSubStructureList(self, index):
 		subStructureList=[]
 		for structure in self.structureList:
@@ -259,22 +253,8 @@ class HanZiNode:
 			subStructureList.append(structureList[index])
 		return subStructureList
 
-	def getCodeInfoList(self):
-		structureList=self.getStructureListWithCondition()
-
-		return sum(map(lambda s: s.getCodeInfoList(), structureList), [])
-
-	def getCharacterInfo(self):
-		codeInfoList=self.getCodeInfoList()
-		self.characterInfo.setCodeInfoList(codeInfoList)
-
-		return self.characterInfo
-
-	def printAllCodeInfoInStructure(self):
-		structureList=self.getStructureListWithCondition()
-		for struct in structureList:
-			struct.printAllCodeInfo()
-
+	def getTag(self):
+		return self.tag
 
 class HanZiNetwork:
 	def __init__(self):
@@ -283,10 +263,10 @@ class HanZiNetwork:
 
 		self.nodeExpressionDict={}
 
-	def addNode(self, name):
+	def addNode(self, name, tag):
 		if name not in self.nodeDict:
-			tmpNode=HanZiNode(name)
-			self.nodeDict[name]=tmpNode
+			node=HanZiNode(name, tag)
+			self.nodeDict[name]=node
 
 	def addStructure(self, structureName, structure):
 		self.structureDict[structureName]=structure

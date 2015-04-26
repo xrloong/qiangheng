@@ -17,9 +17,11 @@ class StageAddNode(ConversionStage):
 		super().__init__(hanziNetwork, structureManager)
 
 	def execute(self):
+		from model.element import CharacterInfo
 		# 加入如 "相" "[漢右]" 的節點。
 		for charName in self.getCharNameList():
-			self.hanziNetwork.addNode(charName)
+			characterInfo=CharacterInfo.CharacterInfo(charName)
+			self.hanziNetwork.addNode(charName, characterInfo)
 
 class StageAddStructure(ConversionStage):
 	class TreeProxy(TreeRegExp.BasicTreeProxy):
@@ -194,7 +196,7 @@ class StageSetNodeTree(ConversionStage):
 	def setNodeTree(self, node):
 		"""設定某一個字符所包含的部件的碼"""
 
-		structureList=node.getStructureListWithCondition()
+		structureList=node.getStructureList()
 
 		for structure in structureList:
 			self.setStructureTree(structure)
@@ -223,7 +225,7 @@ class StageGetCharacterInfo(ConversionStage):
 
 			charNode=self.hanziNetwork.findNode(charName)
 			if charNode:
-				characterInfo=charNode.getCharacterInfo()
+				characterInfo=self.getNodeCharacterInfo(charNode)
 
 			if characterInfo:
 				characterInfoList.append(characterInfo)
@@ -231,6 +233,17 @@ class StageGetCharacterInfo(ConversionStage):
 
 	def getCharacterInfoList(self):
 		return self.characterInfoList
+
+	def getNodeCharacterInfo(self, hanziNode):
+		def getNodeCodeInfoList(hanziNode):
+			structureList=hanziNode.getStructureList()
+
+			return sum(map(lambda s: s.getCodeInfoList(), structureList), [])
+		codeInfoList=getNodeCodeInfoList(hanziNode)
+		characterInfo=hanziNode.getTag()
+		characterInfo.setCodeInfoList(codeInfoList)
+
+		return characterInfo
 
 class ComputeCharacterInfo:
 	def __init__(self):
