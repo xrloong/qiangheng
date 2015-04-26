@@ -43,7 +43,7 @@ class IMMgr:
 			from . import ZhengMa
 			imPackage=ZhengMa
 		elif imName == '動組':
-			from . import DynamicComposition
+			from ..dm import DynamicComposition
 			imPackage=DynamicComposition
 		elif imName == '筆順':
 			from . import StrokeOrder
