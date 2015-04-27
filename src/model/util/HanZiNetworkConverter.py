@@ -97,24 +97,26 @@ class StageAddStructure(ConversionStage):
 		return structure
 
 	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList):
-		if structure.isTemplateDone():
+		tag=structure.getTag()
+		if tag.isTemplateApplied():
 			return
 
 		self.rearrangeStructure(structure, substituteRuleList)
-		structure.setTemplateDone()
-
 		for childStructure in structure.getStructureList():
 			self.recursivelyRearrangeStructureByTemplate(childStructure, substituteRuleList)
 
+		tag.setTemplateApplied()
+
 	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList):
-		if structure.isSubstituteDone():
+		tag=structure.getTag()
+		if tag.isSubstituteApplied():
 			return
 
 		self.rearrangeStructure(structure, substituteRuleList)
-		structure.setSubstituteDone()
-
 		for childStructure in structure.getStructureList():
 			self.recursivelyRearrangeStructureBySubstitute(childStructure, substituteRuleList)
+
+		tag.setSubstituteApplied()
 
 	def rearrangeStructure(self, structure, substituteRuleList):
 		def rearrangeStructureOneTurn(structure, filteredSubstituteRuleList):
@@ -199,19 +201,18 @@ class StageSetNodeTree(ConversionStage):
 		structureList=node.getStructureList()
 
 		for structure in structureList:
-			self.setStructureTree(structure)
+			self.recursivelyGenerateCodeInfoByStructureTree(structure)
 
-	def setStructureTree(self, structure):
-		if structure.flagIsSet:
+	def recursivelyGenerateCodeInfoByStructureTree(self, structure):
+		tag=structure.getTag()
+		if tag.isCodeInfoGenerated():
 			return
 
-		structure.flagIsSet=True
+		for cihldStructure in structure.getStructureList():
+			self.recursivelyGenerateCodeInfoByStructureTree(cihldStructure)
+		structure.generateCodeInfos()
 
-		structureList=structure.getStructureList()
-		for s in structureList:
-			self.setStructureTree(s)
-
-		structure.setCompositions()
+		tag.setCodeInfoGenerated()
 
 class StageGetCharacterInfo(ConversionStage):
 	def __init__(self, hanziNetwork, structureManager):

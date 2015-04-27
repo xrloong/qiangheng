@@ -4,6 +4,10 @@ class StructureTag:
 	def __init__(self):
 		self.codeInfoList=[]
 
+		self.flagIsCodeInfoGenerated=False
+		self.flagIsTemplateApplied=False
+		self.flagIsSubstituteApplied=False
+
 	def isUnit(self):
 		return False
 
@@ -12,6 +16,24 @@ class StructureTag:
 
 	def isAssemblage(self):
 		return False
+
+	def isCodeInfoGenerated(self):
+		return self.flagIsCodeInfoGenerated
+
+	def isTemplateApplied(self):
+		return self.flagIsTemplateApplied
+
+	def isSubstituteApplied(self):
+		return self.flagIsSubstituteApplied
+
+	def setCodeInfoGenerated(self):
+		self.flagIsCodeInfoGenerated=True
+
+	def setTemplateApplied(self):
+		self.flagIsTemplateApplied=True
+
+	def setSubstituteApplied(self):
+		self.flagIsSubstituteApplied=True
 
 	def setCodeInfoList(self, codeInfoList):
 		self.codeInfoList=codeInfoList
@@ -26,7 +48,7 @@ class StructureTag:
 	def getReferenceExpression(self):
 		return None
 
-	def setCompositions(self, operator, tagList):
+	def generateCodeInfos(self, operator, tagList):
 		pass
 
 class StructureUnitTag(StructureTag):
@@ -57,7 +79,7 @@ class StructureWrapperTag(StructureTag):
 	def getReferenceExpression(self):
 		return self.referenceExpression
 
-	def setCompositions(self, operator, tagList):
+	def generateCodeInfos(self, operator, tagList):
 		codeInfoList=[]
 		for tag in tagList:
 			codeInfoList.extend(tag.getCodeInfoList())
@@ -83,7 +105,7 @@ class StructureAssemblageTag(StructureTag):
 				codeInfoList.append(codeInfo)
 		self.setCodeInfoList(codeInfoList)
 
-	def setCompositions(self, operator, tagList):
+	def generateCodeInfos(self, operator, tagList):
 		infoListList=StructureAssemblageTag.getAllCodeInfoListFragTagList(tagList)
 		self.setInfoListList(operator, infoListList)
 
@@ -113,10 +135,6 @@ class StructureAssemblageTag(StructureTag):
 
 class HanZiStructure:
 	def __init__(self, tag):
-		self.flagIsSet=False
-		self.flagTemplateIsDone=False
-		self.flagSubstituteIsDone=False
-
 		self.referenceNode=None
 		self.operator=None
 		self.structureList=[]
@@ -182,40 +200,8 @@ class HanZiStructure:
 	def getTagList(self):
 		return [structure.getTag() for structure in self.getStructureList()]
 
-	def setCompositions(self):
-		self.getTag().setCompositions(self.getOperator(), self.getTagList())
-
-	def setTemplateDone(self):
-		self.flagTemplateIsDone=True
-
-	def setSubstituteDone(self):
-		self.flagSubstituteIsDone=True
-
-	def isTemplateDone(self):
-		return self.flagTemplateIsDone
-
-	def isSubstituteDone(self):
-		return self.flagSubstituteIsDone
-
-	@staticmethod
-	def generateAssemblage(operator, structureList):
-		tag=StructureAssemblageTag()
-		structure=HanZiStructure(tag)
-		structure.setAsCompound(operator, structureList)
-		return structure
-
-	@staticmethod
-	def generateWrapper(referenceNode, expression):
-		tag=StructureWrapperTag(expression)
-		structure=HanZiStructure(tag)
-		structure.setAsWrapper(referenceNode)
-		return structure
-
-	@staticmethod
-	def generateUnit(radixCodeInfo):
-		tag=StructureUnitTag(radixCodeInfo)
-		structure=HanZiStructure(tag)
-		return structure
+	def generateCodeInfos(self):
+		self.getTag().generateCodeInfos(self.getOperator(), self.getTagList())
 
 
 class HanZiNode:
@@ -273,18 +259,25 @@ class HanZiNetwork:
 		return operator
 
 	def generateAssemblageStructure(self, operator, structureList):
-		structure=HanZiStructure.generateAssemblage(operator, structureList)
+		tag=StructureAssemblageTag()
+		structure=HanZiStructure(tag)
+		structure.setAsCompound(operator, structureList)
 		return structure
 
 	def generateWrapperStructure(self, name, nodeExpression):
 		if nodeExpression in self.nodeExpressionDict:
 			return self.nodeExpressionDict[nodeExpression]
 		rootNode=self.findNode(name)
-		structure=HanZiStructure.generateWrapper(rootNode, nodeExpression)
+
+		tag=StructureWrapperTag(nodeExpression)
+		structure=HanZiStructure(tag)
+		structure.setAsWrapper(rootNode)
+
 		self.nodeExpressionDict[nodeExpression]=structure
 		return structure
 
 	def generateUnitStructure(self, radixCodeInfo):
-		structure=HanZiStructure.generateUnit(radixCodeInfo)
+		tag=StructureUnitTag(radixCodeInfo)
+		structure=HanZiStructure(tag)
 		return structure
 
