@@ -1,5 +1,141 @@
 from . import TreeRegExp
 from ..hanzi import HanZiNetwork
+from model import StateManager
+
+class StructureTag:
+	def __init__(self):
+		self.codeInfoList=[]
+
+		self.flagIsCodeInfoGenerated=False
+		self.flagIsTemplateApplied=False
+		self.flagIsSubstituteApplied=False
+
+	def isUnit(self):
+		return False
+
+	def isWrapper(self):
+		return False
+
+	def isAssemblage(self):
+		return False
+
+	def isCodeInfoGenerated(self):
+		return self.flagIsCodeInfoGenerated
+
+	def isTemplateApplied(self):
+		return self.flagIsTemplateApplied
+
+	def isSubstituteApplied(self):
+		return self.flagIsSubstituteApplied
+
+	def setCodeInfoGenerated(self):
+		self.flagIsCodeInfoGenerated=True
+
+	def setTemplateApplied(self):
+		self.flagIsTemplateApplied=True
+
+	def setSubstituteApplied(self):
+		self.flagIsSubstituteApplied=True
+
+	def setCodeInfoList(self, codeInfoList):
+		self.codeInfoList=codeInfoList
+
+	def getCodeInfoList(self):
+		return self.codeInfoList
+
+	def printAllCodeInfo(self):
+		for codeInfo in self.getCodeInfoList():
+			pass
+
+	def getReferenceExpression(self):
+		return None
+
+	def generateCodeInfos(self, operator, tagList):
+		pass
+
+class StructureUnitTag(StructureTag):
+	def __init__(self, radixCodeInfo):
+		super().__init__()
+		self.codeInfoList=[radixCodeInfo]
+
+	def __str__(self):
+		return str(self.codeInfoList)
+
+	def isUnit(self):
+		return True
+
+	def getCodeInfoList(self):
+		return self.codeInfoList
+
+class StructureWrapperTag(StructureTag):
+	def __init__(self, referenceExpression):
+		super().__init__()
+		self.referenceExpression=referenceExpression
+
+	def __str__(self):
+		return self.getReferenceExpression()
+
+	def isWrapper(self):
+		return True
+
+	def getReferenceExpression(self):
+		return self.referenceExpression
+
+	def generateCodeInfos(self, operator, tagList):
+		codeInfoList=[]
+		for tag in tagList:
+			codeInfoList.extend(tag.getCodeInfoList())
+		self.setCodeInfoList(codeInfoList)
+
+class StructureAssemblageTag(StructureTag):
+	def __init__(self):
+		super().__init__()
+
+	def isAssemblage(self):
+		return True
+
+	def setInfoListList(self, operator, infoListList):
+		codeInfoManager=StateManager.getCodeInfoManager()
+		codeInfoList=[]
+		for infoList in infoListList:
+			codeInfo=codeInfoManager.encodeToCodeInfo(operator, infoList)
+			if codeInfo!=None:
+				for childCodeInfo in infoList:
+					codeVariance=childCodeInfo.getCodeVarianceType()
+					codeInfo.multiplyCodeVarianceType(codeVariance)
+
+				codeInfoList.append(codeInfo)
+		self.setCodeInfoList(codeInfoList)
+
+	def generateCodeInfos(self, operator, tagList):
+		infoListList=StructureAssemblageTag.getAllCodeInfoListFragTagList(tagList)
+		self.setInfoListList(operator, infoListList)
+
+	@staticmethod
+	def getAllCodeInfoListFragTagList(tagList):
+		def combineList(infoListList, infoListOfNode):
+			if len(infoListList)==0:
+				ansListList=[]
+				for codeInfo in infoListOfNode:
+					ansListList.append([codeInfo])
+			else:
+				ansListList=[]
+				for infoList in infoListList:
+					for codeInfo in infoListOfNode:
+						ansListList.append(infoList+[codeInfo])
+
+			return ansListList
+
+		infoListList=[]
+
+		for tag in tagList:
+			tmpCodeInfoList=tag.getCodeInfoList()
+			codeInfoList=filter(lambda x: x.isSupportRadixCode(), tmpCodeInfoList)
+			infoListList=combineList(infoListList, codeInfoList)
+
+		return infoListList
+
+
 
 class ConversionStage:
 	def __init__(self, hanziNetwork, structureManager):
@@ -25,8 +161,9 @@ class StageAddNode(ConversionStage):
 
 class StageAddStructure(ConversionStage):
 	class TreeProxy(TreeRegExp.BasicTreeProxy):
-		def __init__(self, hanziNetwork):
+		def __init__(self, hanziNetwork, stage):
 			self.hanziNetwork = hanziNetwork
+			self.stage = stage
 
 		def getChildren(self, tree):
 			return tree.getStructureList()
@@ -50,7 +187,7 @@ class StageAddStructure(ConversionStage):
 
 		def generateLeafNode(self, nodeExpression):
 			name=nodeExpression.split(".")[0]
-			structure = self.hanziNetwork.generateWrapperStructure(name, nodeExpression)
+			structure = self.stage.generateWrapperStructure(name, nodeExpression)
 			return structure
 
 		def generateLeafNodeByReference(self, referencedNode, index):
@@ -58,13 +195,14 @@ class StageAddStructure(ConversionStage):
 			return self.generateLeafNode(nodeExpression)
 
 		def generateNode(self, operatorName, children):
-			operator=self.hanziNetwork.generateOperator(operatorName)
-			structure = self.hanziNetwork.generateAssemblageStructure(operator, children)
+			operator=self.stage.generateOperator(operatorName)
+			structure = self.stage.generateAssemblageStructure(operator, children)
 			return structure
 
 	def __init__(self, hanziNetwork, structureManager):
 		super().__init__(hanziNetwork, structureManager)
-		self.treeProxy=StageAddStructure.TreeProxy(self.hanziNetwork)
+		self.treeProxy=StageAddStructure.TreeProxy(self.hanziNetwork, self)
+		self.nodeExpressionDict={}
 
 	def execute(self):
 		for charName in self.getCharNameList():
@@ -155,7 +293,7 @@ class StageAddStructure(ConversionStage):
 		name=structDesc.getReferenceName()
 		nodeExpression=structDesc.getReferenceExpression()
 
-		structure=self.hanziNetwork.generateWrapperStructure(name, nodeExpression)
+		structure=self.generateWrapperStructure(name, nodeExpression)
 		return structure
 
 	def generateLink(self, structDesc):
@@ -166,7 +304,28 @@ class StageAddStructure(ConversionStage):
 			childStructureList.append(childStructure)
 
 		operator=structDesc.getOperator()
-		structure=self.hanziNetwork.generateAssemblageStructure(operator, childStructureList)
+		structure=self.generateAssemblageStructure(operator, childStructureList)
+		return structure
+
+	def generateOperator(self, operatorName):
+		operator=StateManager.getOperationManager().generateOperator(operatorName)
+		return operator
+
+	def generateAssemblageStructure(self, operator, structureList):
+		tag=StructureAssemblageTag()
+		structure=self.hanziNetwork.generateStructure(tag, compound=[operator, structureList])
+		return structure
+
+	def generateWrapperStructure(self, name, nodeExpression):
+		if nodeExpression in self.nodeExpressionDict:
+			return self.nodeExpressionDict[nodeExpression]
+
+		rootNode=self.hanziNetwork.findNode(name)
+
+		tag=StructureWrapperTag(nodeExpression)
+		structure=self.hanziNetwork.generateStructure(tag, referenceNode=rootNode)
+
+		self.nodeExpressionDict[nodeExpression]=structure
 		return structure
 
 class StageAddCodeInfo(ConversionStage):
@@ -183,7 +342,8 @@ class StageAddCodeInfo(ConversionStage):
 					self.hanziNetwork.addStructureIntoNode(structure, charName)
 
 	def generateUnitLink(self, radixCodeInfo):
-		structure=self.hanziNetwork.generateUnitStructure(radixCodeInfo)
+		tag=StructureUnitTag(radixCodeInfo)
+		structure=self.hanziNetwork.generateStructure(tag)
 		return structure
 
 class StageSetNodeTree(ConversionStage):
