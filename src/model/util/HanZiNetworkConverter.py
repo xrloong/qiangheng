@@ -180,6 +180,14 @@ class StageAddStructure(ConversionStage):
 			if "運算" in prop:
 				if tree.isAssemblage():
 					isMatch &= prop.get("運算") == tree.getOperator().getName()
+				elif tree.isWrapper():
+					referenceNode=tree.getReferenceNode()
+					structureList=referenceNode.getStructureList()
+					if structureList:
+						structure=referenceNode.getStructureList()[0]
+						isMatch &= prop.get("運算") == structure.getOperator().getName()
+					else:
+						isMatch = False
 				else:
 					isMatch = False
 
@@ -206,25 +214,31 @@ class StageAddStructure(ConversionStage):
 
 	def execute(self):
 		for charName in self.getCharNameList():
-			charDesc=self.queryDescription(charName)
-
-			structDescList=charDesc.getStructureList()
-			for structDesc in structDescList:
-				if structDesc.isEmpty():
-					continue
-
-				structure=self.recursivelyConvertDescriptionToStructure(structDesc)
-
-				templateRuleList=self.structureManager.getTemplateRuleList()
-				self.recursivelyRearrangeStructureByTemplate(structure, templateRuleList)
-				substituteRuleList=self.structureManager.getSubstituteRuleList()
-				self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
-
-				self.recursivelyAddStructure(structure)
-				self.hanziNetwork.addStructureIntoNode(structure, charName)
+			self.expandNode(charName)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
+
+	def expandNode(self, nodeName):
+		if self.hanziNetwork.isNodeExpanded(nodeName):
+			return
+
+		charDesc=self.queryDescription(nodeName)
+
+		structDescList=charDesc.getStructureList()
+		for structDesc in structDescList:
+			if structDesc.isEmpty():
+				continue
+
+			structure=self.recursivelyConvertDescriptionToStructure(structDesc)
+
+			templateRuleList=self.structureManager.getTemplateRuleList()
+			self.recursivelyRearrangeStructureByTemplate(structure, templateRuleList)
+			substituteRuleList=self.structureManager.getSubstituteRuleList()
+			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
+
+			self.recursivelyAddStructure(structure)
+			self.hanziNetwork.addStructureIntoNode(structure, nodeName)
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():
@@ -235,6 +249,10 @@ class StageAddStructure(ConversionStage):
 		return structure
 
 	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList):
+		referenceNode=structure.getReferenceNode()
+		if referenceNode:
+			self.expandNode(referenceNode.getName())
+
 		tag=structure.getTag()
 		if tag.isTemplateApplied():
 			return
@@ -246,6 +264,10 @@ class StageAddStructure(ConversionStage):
 		tag.setTemplateApplied()
 
 	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList):
+		referenceNode=structure.getReferenceNode()
+		if referenceNode:
+			self.expandNode(referenceNode.getName())
+
 		tag=structure.getTag()
 		if tag.isSubstituteApplied():
 			return

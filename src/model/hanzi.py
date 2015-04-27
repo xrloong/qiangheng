@@ -21,6 +21,9 @@ class HanZiStructure:
 			nameList=[structure.getUniqueName() for structure in structureList]
 			return "(%s %s)"%(self.getOperator().getName(), " ".join(nameList))
 
+	def getReferenceNode(self):
+		return self.referenceNode
+
 	def isUnit(self):
 		return self.tag.isUnit()
 
@@ -75,6 +78,9 @@ class HanZiNode:
 		self.structureList=[]
 		self.tag=tag
 
+	def __str__(self):
+		return self.name
+
 	def getName(self):
 		return self.name
 
@@ -107,15 +113,20 @@ class HanZiNetwork:
 			node=HanZiNode(name, tag)
 			self.nodeDict[name]=node
 
+	def findNode(self, nodeName):
+		return self.nodeDict.get(nodeName)
+
+	def isNodeExpanded(self, nodeName):
+		node=self.nodeDict.get(nodeName)
+		structureList=node.getStructureList()
+		return len(structureList)>0
+
 	def addStructure(self, structureName, structure):
 		self.structureDict[structureName]=structure
 
 	def addStructureIntoNode(self, structure, nodeName):
 		dstNode=self.findNode(nodeName)
 		dstNode.addStructure(structure)
-
-	def findNode(self, nodeName):
-		return self.nodeDict.get(nodeName)
 
 	def generateStructure(self, tag, referenceNode=None, compound=[]):
 		structure=HanZiStructure(tag)
