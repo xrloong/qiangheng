@@ -36,7 +36,7 @@ class StageAddStructure(ConversionStage):
 			isMatch = True
 			if "名稱" in prop:
 				if tree.isWrapper():
-					isMatch &= prop.get("名稱") == tree.getReferenceExpression()
+					isMatch &= prop.get("名稱") == tree.getTag().getReferenceExpression()
 				else:
 					isMatch = False
 
@@ -54,7 +54,7 @@ class StageAddStructure(ConversionStage):
 			return structure
 
 		def generateLeafNodeByReference(self, referencedNode, index):
-			nodeExpression="%s.%d"%(referencedNode.getReferenceExpression(), index)
+			nodeExpression="%s.%d"%(referencedNode.getTag().getReferenceExpression(), index)
 			return self.generateLeafNode(nodeExpression)
 
 		def generateNode(self, operatorName, children):
@@ -238,7 +238,7 @@ class StageGetCharacterInfo(ConversionStage):
 		def getNodeCodeInfoList(hanziNode):
 			structureList=hanziNode.getStructureList()
 
-			return sum(map(lambda s: s.getCodeInfoList(), structureList), [])
+			return sum(map(lambda s: s.getTag().getCodeInfoList(), structureList), [])
 		codeInfoList=getNodeCodeInfoList(hanziNode)
 		characterInfo=hanziNode.getTag()
 		characterInfo.setCodeInfoList(codeInfoList)

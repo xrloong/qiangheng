@@ -1,24 +1,8 @@
 from model import StateManager
 
-class HanZiStructure:
+class StructureTag:
 	def __init__(self):
-		self.flagIsSet=False
-		self.flagTemplateIsDone=False
-		self.flagSubstituteIsDone=False
-
-	def getUniqueName(self):
-		if self.isWrapper():
-			return self.getReferenceExpression()
-		elif self.isAssemblage():
-			structureList=self.getStructureList()
-			nameList=[structure.getUniqueName() for structure in structureList]
-			return "(%s %s)"%(self.getOperator().getName(), " ".join(nameList))
-
-	def getReferenceExpression(self):
-		return None
-
-	def getOperator(self):
-		return None
+		self.codeInfoList=[]
 
 	def isUnit(self):
 		return False
@@ -29,88 +13,23 @@ class HanZiStructure:
 	def isAssemblage(self):
 		return False
 
+	def setCodeInfoList(self, codeInfoList):
+		self.codeInfoList=codeInfoList
+
 	def getCodeInfoList(self):
-		return []
-
-	def getStructureList(self):
-		return []
-
-	def setCompositions(self):
-		pass
+		return self.codeInfoList
 
 	def printAllCodeInfo(self):
 		for codeInfo in self.getCodeInfoList():
 			pass
 
-	def setTemplateDone(self):
-		self.flagTemplateIsDone=True
-
-	def setSubstituteDone(self):
-		self.flagSubstituteIsDone=True
-
-	def isTemplateDone(self):
-		return self.flagTemplateIsDone
-
-	def isSubstituteDone(self):
-		return self.flagSubstituteIsDone
-
-	@staticmethod
-	def generateAssemblage(operator, structureList):
-		structure=HanZiAssemblageStructure(operator, structureList)
-		structure=HanZiProxyStructure(structure)
-		return structure
-
-	@staticmethod
-	def generateWrapper(referenceNode, expression):
-		structure=HanZiWrapperStructure(referenceNode, expression)
-		structure=HanZiProxyStructure(structure)
-		return structure
-
-	@staticmethod
-	def generateUnit(radixCodeInfo):
-		structure=HanZiUnitStructure(radixCodeInfo)
-		structure=HanZiProxyStructure(structure)
-		return structure
-
-
-class HanZiProxyStructure(HanZiStructure):
-	def __init__(self, targetStructure):
-		super().__init__()
-		self.targetStructure=targetStructure
-		self.historyStructures=[]
-
-	def __str__(self):
-		return str(self.targetStructure)
-
-	def setNewStructure(self, newTargetStructure):
-		self.historyStructures.append(self.targetStructure)
-		self.targetStructure=newTargetStructure
-
 	def getReferenceExpression(self):
-		return self.targetStructure.getReferenceExpression()
+		return None
 
-	def getOperator(self):
-		return self.targetStructure.getOperator()
+	def setCompositions(self, operator, tagList):
+		pass
 
-	def isUnit(self):
-		return self.targetStructure.isUnit()
-
-	def isWrapper(self):
-		return self.targetStructure.isWrapper()
-
-	def isAssemblage(self):
-		return self.targetStructure.isAssemblage()
-
-	def getCodeInfoList(self):
-		return self.targetStructure.getCodeInfoList()
-
-	def getStructureList(self):
-		return self.targetStructure.getStructureList()
-
-	def setCompositions(self):
-		self.targetStructure.setCompositions()
-
-class HanZiUnitStructure(HanZiStructure):
+class StructureUnitTag(StructureTag):
 	def __init__(self, radixCodeInfo):
 		super().__init__()
 		self.codeInfoList=[radixCodeInfo]
@@ -124,19 +43,10 @@ class HanZiUnitStructure(HanZiStructure):
 	def getCodeInfoList(self):
 		return self.codeInfoList
 
-	def getStructureList(self):
-		return []
-
-	def setCompositions(self):
-		pass
-
-class HanZiWrapperStructure(HanZiStructure):
-	def __init__(self, referenceNode, expression):
+class StructureWrapperTag(StructureTag):
+	def __init__(self, referenceExpression):
 		super().__init__()
-
-		self.referenceNode=referenceNode
-		self.expression=expression
-		self.codeInfoList=[]
+		self.referenceExpression=referenceExpression
 
 	def __str__(self):
 		return self.getReferenceExpression()
@@ -145,66 +55,40 @@ class HanZiWrapperStructure(HanZiStructure):
 		return True
 
 	def getReferenceExpression(self):
-		return self.expression
+		return self.referenceExpression
 
-	def getCodeInfoList(self):
+	def setCompositions(self, operator, tagList):
 		codeInfoList=[]
-		for structure in self.getStructureList():
-			codeInfoList.extend(structure.getCodeInfoList())
-		return codeInfoList
+		for tag in tagList:
+			codeInfoList.extend(tag.getCodeInfoList())
+		self.setCodeInfoList(codeInfoList)
 
-	def getStructureList(self):
-		tempList=self.expression.split(".")
-		if(len(tempList)>1):
-			referenceName=tempList[0]
-			index=int(tempList[1])
-			structureList=self.referenceNode.getSubStructureList(index)
-		else:
-			structureList=self.referenceNode.getStructureList()
-		return structureList
-
-class HanZiAssemblageStructure(HanZiStructure):
-	def __init__(self, operator, structureList):
+class StructureAssemblageTag(StructureTag):
+	def __init__(self):
 		super().__init__()
-
-		self.operator=operator
-		self.structureList=structureList
-
-		self.codeInfoList=[]
-
-	def __str__(self):
-		structureList=self.getStructureList()
-		nameList=[structure.getUniqueName() for structure in structureList]
-		return "(%s %s)"%(self.getOperator().getName(), " ".join(nameList))
 
 	def isAssemblage(self):
 		return True
 
-	def getOperator(self):
-		return self.operator
-
-	def getCodeInfoList(self):
-		return self.codeInfoList
-
-	def getStructureList(self):
-		return self.structureList
-
-	def setCompositions(self):
-		structureList=self.getStructureList()
-		infoListList=HanZiAssemblageStructure.getAllCodeInfoListFromNodeList(structureList)
-
+	def setInfoListList(self, operator, infoListList):
 		codeInfoManager=StateManager.getCodeInfoManager()
+		codeInfoList=[]
 		for infoList in infoListList:
-			codeInfo=codeInfoManager.encodeToCodeInfo(self.operator, infoList)
+			codeInfo=codeInfoManager.encodeToCodeInfo(operator, infoList)
 			if codeInfo!=None:
 				for childCodeInfo in infoList:
 					codeVariance=childCodeInfo.getCodeVarianceType()
 					codeInfo.multiplyCodeVarianceType(codeVariance)
 
-				self.codeInfoList.append(codeInfo)
+				codeInfoList.append(codeInfo)
+		self.setCodeInfoList(codeInfoList)
+
+	def setCompositions(self, operator, tagList):
+		infoListList=StructureAssemblageTag.getAllCodeInfoListFragTagList(tagList)
+		self.setInfoListList(operator, infoListList)
 
 	@staticmethod
-	def getAllCodeInfoListFromNodeList(structureList):
+	def getAllCodeInfoListFragTagList(tagList):
 		def combineList(infoListList, infoListOfNode):
 			if len(infoListList)==0:
 				ansListList=[]
@@ -220,12 +104,118 @@ class HanZiAssemblageStructure(HanZiStructure):
 
 		infoListList=[]
 
-		for structure in structureList:
-			tmpCodeInfoList=structure.getCodeInfoList()
+		for tag in tagList:
+			tmpCodeInfoList=tag.getCodeInfoList()
 			codeInfoList=filter(lambda x: x.isSupportRadixCode(), tmpCodeInfoList)
 			infoListList=combineList(infoListList, codeInfoList)
 
 		return infoListList
+
+class HanZiStructure:
+	def __init__(self, tag):
+		self.flagIsSet=False
+		self.flagTemplateIsDone=False
+		self.flagSubstituteIsDone=False
+
+		self.referenceNode=None
+		self.operator=None
+		self.structureList=[]
+
+		self.tag=tag
+
+	def __str__(self):
+		if self.isAssemblage():
+			structureList=self.getStructureList()
+			nameList=[structure.getUniqueName() for structure in structureList]
+			return "(%s %s)"%(self.getOperator().getName(), " ".join(nameList))
+		return str(self.tag)
+
+	def getUniqueName(self):
+		if self.isWrapper():
+			return self.getTag().getReferenceExpression()
+		elif self.isAssemblage():
+			structureList=self.getStructureList()
+			nameList=[structure.getUniqueName() for structure in structureList]
+			return "(%s %s)"%(self.getOperator().getName(), " ".join(nameList))
+
+	def isUnit(self):
+		return self.tag.isUnit()
+
+	def isWrapper(self):
+		return self.tag.isWrapper()
+
+	def isAssemblage(self):
+		return self.tag.isAssemblage()
+
+	def getOperator(self):
+		return self.operator
+
+	def getStructureList(self):
+		if self.referenceNode:
+			return self.getWrapperStructureList()
+		return self.structureList
+
+	def getWrapperStructureList(self):
+		expression=self.getTag().getReferenceExpression()
+		tempList=expression.split(".")
+		if(len(tempList)>1):
+			referenceName=tempList[0]
+			index=int(tempList[1])
+			structureList=self.referenceNode.getSubStructureList(index)
+		else:
+			structureList=self.referenceNode.getStructureList()
+		return structureList
+
+	def setAsCompound(self, operator, structureList):
+		self.operator=operator
+		self.structureList=structureList
+
+	def setAsWrapper(self, referenceNode):
+		self.referenceNode=referenceNode
+
+	def setNewStructure(self, newTargetStructure):
+		self.setAsCompound(newTargetStructure.operator, newTargetStructure.structureList)
+
+	def getTag(self):
+		return self.tag
+
+	def getTagList(self):
+		return [structure.getTag() for structure in self.getStructureList()]
+
+	def setCompositions(self):
+		self.getTag().setCompositions(self.getOperator(), self.getTagList())
+
+	def setTemplateDone(self):
+		self.flagTemplateIsDone=True
+
+	def setSubstituteDone(self):
+		self.flagSubstituteIsDone=True
+
+	def isTemplateDone(self):
+		return self.flagTemplateIsDone
+
+	def isSubstituteDone(self):
+		return self.flagSubstituteIsDone
+
+	@staticmethod
+	def generateAssemblage(operator, structureList):
+		tag=StructureAssemblageTag()
+		structure=HanZiStructure(tag)
+		structure.setAsCompound(operator, structureList)
+		return structure
+
+	@staticmethod
+	def generateWrapper(referenceNode, expression):
+		tag=StructureWrapperTag(expression)
+		structure=HanZiStructure(tag)
+		structure.setAsWrapper(referenceNode)
+		return structure
+
+	@staticmethod
+	def generateUnit(radixCodeInfo):
+		tag=StructureUnitTag(radixCodeInfo)
+		structure=HanZiStructure(tag)
+		return structure
 
 
 class HanZiNode:
