@@ -7,31 +7,30 @@ class HanZiStructure:
 		self.tag=tag
 
 	def __str__(self):
-		if self.isAssemblage():
+		tag=self.getTag()
+		if tag.isAssemblage():
 			structureList=self.getStructureList()
-			nameList=[structure.getUniqueName() for structure in structureList]
-			return "(%s %s)"%(self.getOperator().getName(), " ".join(nameList))
+			nameList=[str(structure) for structure in structureList]
+			return "(%s %s)"%(self.getOperator(), " ".join(nameList))
 		return str(self.tag)
 
 	def getUniqueName(self):
-		if self.isWrapper():
-			return self.getTag().getReferenceExpression()
-		elif self.isAssemblage():
+		strucutreExpression=""
+		referenceExpression=""
+
+		if self.operator:
 			structureList=self.getStructureList()
 			nameList=[structure.getUniqueName() for structure in structureList]
-			return "(%s %s)"%(self.getOperator().getName(), " ".join(nameList))
+			strucutreExpression="%s %s"%(self.getOperator(), " ".join(nameList))
+
+		if self.referenceNode:
+			tag=self.getTag()
+			referenceExpression=tag.getReferenceExpression()
+
+		return "(%s|%s)"%(referenceExpression, strucutreExpression)
 
 	def getReferenceNode(self):
 		return self.referenceNode
-
-	def isUnit(self):
-		return self.tag.isUnit()
-
-	def isWrapper(self):
-		return self.tag.isWrapper()
-
-	def isAssemblage(self):
-		return self.tag.isAssemblage()
 
 	def getOperator(self):
 		return self.operator

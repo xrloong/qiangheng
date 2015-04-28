@@ -4,7 +4,7 @@ class Operator:
 		self.builtin=builtin
 
 	def __str__(self):
-		return "%s"%self.name
+		return self.name
 
 	def equals(self, other):
 		return self.getName()==other.getName()

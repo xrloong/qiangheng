@@ -171,16 +171,17 @@ class StageAddStructure(ConversionStage):
 		def matchSingle(self, tre, tree):
 			prop=tre.prop
 			isMatch = True
+			tag=tree.getTag()
 			if "名稱" in prop:
-				if tree.isWrapper():
-					isMatch &= prop.get("名稱") == tree.getTag().getReferenceExpression()
+				if tag.isWrapper():
+					isMatch &= prop.get("名稱") == tag.getReferenceExpression()
 				else:
 					isMatch = False
 
 			if "運算" in prop:
-				if tree.isAssemblage():
+				if tag.isAssemblage():
 					isMatch &= prop.get("運算") == tree.getOperator().getName()
-				elif tree.isWrapper():
+				elif tag.isWrapper():
 					referenceNode=tree.getReferenceNode()
 					structureList=referenceNode.getStructureList()
 					if structureList:
