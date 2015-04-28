@@ -168,6 +168,11 @@ class StageAddStructure(ConversionStage):
 		def getChildren(self, tree):
 			return tree.getStructureList()
 
+		def matchSingleQuickly(self, tre, tree):
+			treOperatorName=tre.prop.get("運算")
+			treeOperator=tree.getOperator()
+			return treeOperator and (treOperatorName==None or treOperatorName==treeOperator.getName())
+
 		def matchSingle(self, tre, tree):
 			prop=tre.prop
 			isMatch = True
@@ -296,14 +301,9 @@ class StageAddStructure(ConversionStage):
 
 		changed=True
 		while changed:
-			operator=structure.getOperator()
-
-			if operator:
-				availableNameList = [None, operator.getName()]
-				filteredSubstituteRuleList = [rule for rule in substituteRuleList if rule.getName() in availableNameList]
-				changed=rearrangeStructureOneTurn(structure, filteredSubstituteRuleList)
-			else:
-				changed=False
+			availableRuleFilter = lambda rule: TreeRegExp.matchQuickly(rule.getTRE(), structure, self.treeProxy)
+			filteredSubstituteRuleList = filter(availableRuleFilter, substituteRuleList)
+			changed=rearrangeStructureOneTurn(structure, filteredSubstituteRuleList)
 
 	def recursivelyAddStructure(self, structure):
 		for childStructure in structure.getStructureList():

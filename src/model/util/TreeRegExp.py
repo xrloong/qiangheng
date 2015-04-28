@@ -298,6 +298,9 @@ def matchAndReplace(tre, node, result, proxy):
 def match(tre, node, proxy):
 	return matchTree(tre, node, proxy)
 
+def matchQuickly(tre, node, proxy):
+	return proxy.matchSingleQuickly(tre, node)
+
 def matchTree(tre, node, proxy):
 	result=MatchResult()
 	result1=matchNode(tre, node, proxy)
