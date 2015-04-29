@@ -1,14 +1,10 @@
 from ..util import TreeRegExp
 
 class SubstituteRule:
-	def __init__(self, name, pattern, replacement):
-		self.name=name
+	def __init__(self, pattern, replacement):
 		self.pattern=pattern
 		self.replacement=replacement
 		self.tre=TreeRegExp.compile(pattern)
-
-	def getName(self):
-		return self.name
 
 	def getPattern(self):
 		return self.pattern

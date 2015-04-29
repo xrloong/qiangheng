@@ -46,11 +46,10 @@ class CharacterDescriptionManager:
 
 		substitueRuleList=[]
 		for node in ruleSetNode:
-			substitueName=node.get(Constant.TAG_NAME)
 			matchPattern=node.get(Constant.TAG_MATCH)
 			replacePattern=node.get(Constant.TAG_SUBSTITUTE)
 
-			substitueRule=SubstituteRule(substitueName, matchPattern, replacePattern)
+			substitueRule=SubstituteRule(matchPattern, replacePattern)
 			substitueRuleList.append(substitueRule)
 
 		return substitueRuleList
