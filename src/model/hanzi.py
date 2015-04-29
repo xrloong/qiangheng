@@ -45,7 +45,7 @@ class HanZiStructure:
 		tempList=expression.split(".")
 		if(len(tempList)>1):
 			referenceName=tempList[0]
-			index=int(tempList[1])
+			index=int(tempList[1])-1
 			structureList=self.referenceNode.getSubStructureList(index)
 		else:
 			structureList=self.referenceNode.getStructureList()
