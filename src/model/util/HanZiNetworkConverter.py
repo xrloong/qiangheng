@@ -47,9 +47,6 @@ class StructureTag:
 		for codeInfo in self.getCodeInfoList():
 			pass
 
-	def getReferenceExpression(self):
-		return None
-
 	def generateCodeInfos(self, operator, tagList):
 		pass
 
@@ -68,8 +65,15 @@ class StructureUnitTag(StructureTag):
 		return self.codeInfoList
 
 class StructureWrapperTag(StructureTag):
-	def __init__(self, referenceExpression):
+	def __init__(self, name, index):
 		super().__init__()
+		if index==0:
+			referenceExpression="%s"%name
+		else:
+			referenceExpression="%s.%d"%(name, index)
+
+		self.referenceName=name
+		self.index=index
 		self.referenceExpression=referenceExpression
 
 	def __str__(self):
@@ -77,6 +81,12 @@ class StructureWrapperTag(StructureTag):
 
 	def isWrapper(self):
 		return True
+
+	def getIndex(self):
+		return self.index
+
+	def getReferenceName(self):
+		return self.referenceName
 
 	def getReferenceExpression(self):
 		return self.referenceExpression
@@ -178,20 +188,22 @@ class StageAddStructure(ConversionStage):
 			isMatch = True
 			tag=tree.getTag()
 			if "名稱" in prop:
+				expressionName=prop.get("名稱")
 				if tag.isWrapper():
-					isMatch &= prop.get("名稱") == tag.getReferenceExpression()
+					isMatch &= expressionName == tag.getReferenceExpression()
 				else:
 					isMatch = False
 
 			if "運算" in prop:
+				operatorName=prop.get("運算")
 				if tag.isAssemblage():
-					isMatch &= prop.get("運算") == tree.getOperator().getName()
+					isMatch &= operatorName == tree.getOperator().getName()
 				elif tag.isWrapper():
 					referenceNode=tree.getReferenceNode()
 					structureList=referenceNode.getStructureList()
 					if structureList:
 						structure=referenceNode.getStructureList()[0]
-						isMatch &= prop.get("運算") == structure.getOperator().getName()
+						isMatch &= operatorName == structure.getOperator().getName()
 					else:
 						isMatch = False
 				else:
@@ -199,14 +211,14 @@ class StageAddStructure(ConversionStage):
 
 			return isMatch
 
-		def generateLeafNode(self, nodeExpression):
-			name=nodeExpression.split(".")[0]
-			structure = self.stage.generateWrapperStructure(name, nodeExpression)
+		def generateLeafNode(self, nodeName):
+			structure = self.stage.generateWrapperStructure(nodeName)
 			return structure
 
 		def generateLeafNodeByReference(self, referencedNode, index):
-			nodeExpression="%s.%d"%(referencedNode.getTag().getReferenceExpression(), index)
-			return self.generateLeafNode(nodeExpression)
+			nodeName=referencedNode.getTag().getReferenceName()
+			structure = self.stage.generateWrapperStructure(nodeName, index)
+			return structure
 
 		def generateNode(self, operatorName, children):
 			operator=self.stage.generateOperator(operatorName)
@@ -316,7 +328,13 @@ class StageAddStructure(ConversionStage):
 		name=structDesc.getReferenceName()
 		nodeExpression=structDesc.getReferenceExpression()
 
-		structure=self.generateWrapperStructure(name, nodeExpression)
+		l=nodeExpression.split(".")
+		if len(l)>1:
+			subIndex=int(l[1])
+		else:
+			subIndex=0
+
+		structure=self.generateWrapperStructure(name, subIndex)
 		return structure
 
 	def generateLink(self, structDesc):
@@ -339,16 +357,16 @@ class StageAddStructure(ConversionStage):
 		structure=self.hanziNetwork.generateStructure(tag, compound=[operator, structureList])
 		return structure
 
-	def generateWrapperStructure(self, name, nodeExpression):
-		if nodeExpression in self.nodeExpressionDict:
-			return self.nodeExpressionDict[nodeExpression]
+	def generateWrapperStructure(self, name, index=0):
+		if (name, index) in self.nodeExpressionDict:
+			return self.nodeExpressionDict[(name, index)]
 
 		rootNode=self.hanziNetwork.findNode(name)
 
-		tag=StructureWrapperTag(nodeExpression)
-		structure=self.hanziNetwork.generateStructure(tag, referenceNode=rootNode)
+		tag=StructureWrapperTag(name, index)
+		structure=self.hanziNetwork.generateStructure(tag, reference=[name, index])
 
-		self.nodeExpressionDict[nodeExpression]=structure
+		self.nodeExpressionDict[(name, index)]=structure
 		return structure
 
 class StageAddCodeInfo(ConversionStage):

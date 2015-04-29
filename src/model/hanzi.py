@@ -55,8 +55,9 @@ class HanZiStructure:
 		self.operator=operator
 		self.structureList=structureList
 
-	def setAsWrapper(self, referenceNode):
+	def setAsWrapper(self, referenceNode, index):
 		self.referenceNode=referenceNode
+		self.index=index
 
 	def setNewStructure(self, newTargetStructure):
 		self.setAsCompound(newTargetStructure.operator, newTargetStructure.structureList)
@@ -127,11 +128,13 @@ class HanZiNetwork:
 		dstNode=self.findNode(nodeName)
 		dstNode.addStructure(structure)
 
-	def generateStructure(self, tag, referenceNode=None, compound=[]):
+	def generateStructure(self, tag, reference=[], compound=[]):
 		structure=HanZiStructure(tag)
 
-		if referenceNode:
-			structure.setAsWrapper(referenceNode)
+		if reference:
+			referenceName, index = reference
+			referenceNode=self.findNode(referenceName)
+			structure.setAsWrapper(referenceNode, index)
 
 		if compound:
 			operator, structureList = compound
