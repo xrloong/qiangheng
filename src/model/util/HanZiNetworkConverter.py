@@ -10,15 +10,6 @@ class StructureTag:
 		self.flagIsTemplateApplied=False
 		self.flagIsSubstituteApplied=False
 
-	def isUnit(self):
-		return False
-
-	def isWrapper(self):
-		return False
-
-	def isAssemblage(self):
-		return False
-
 	def isCodeInfoGenerated(self):
 		return self.flagIsCodeInfoGenerated
 
@@ -58,9 +49,6 @@ class StructureUnitTag(StructureTag):
 	def __str__(self):
 		return str(self.codeInfoList)
 
-	def isUnit(self):
-		return True
-
 	def getCodeInfoList(self):
 		return self.codeInfoList
 
@@ -78,9 +66,6 @@ class StructureWrapperTag(StructureTag):
 
 	def __str__(self):
 		return self.getReferenceExpression()
-
-	def isWrapper(self):
-		return True
 
 	def getIndex(self):
 		return self.index
@@ -100,9 +85,6 @@ class StructureWrapperTag(StructureTag):
 class StructureAssemblageTag(StructureTag):
 	def __init__(self):
 		super().__init__()
-
-	def isAssemblage(self):
-		return True
 
 	def setInfoListList(self, operator, infoListList):
 		codeInfoManager=StateManager.getCodeInfoManager()
@@ -189,25 +171,11 @@ class StageAddStructure(ConversionStage):
 			tag=tree.getTag()
 			if "名稱" in prop:
 				expressionName=prop.get("名稱")
-				if tag.isWrapper():
-					isMatch &= expressionName == tag.getReferenceExpression()
-				else:
-					isMatch = False
+				isMatch = expressionName == tree.getReferenceExpression()
 
 			if "運算" in prop:
 				operatorName=prop.get("運算")
-				if tag.isAssemblage():
-					isMatch &= operatorName == tree.getOperator().getName()
-				elif tag.isWrapper():
-					referenceNode=tree.getReferenceNode()
-					structureList=referenceNode.getStructureList()
-					if structureList:
-						structure=referenceNode.getStructureList()[0]
-						isMatch &= operatorName == structure.getOperator().getName()
-					else:
-						isMatch = False
-				else:
-					isMatch = False
+				isMatch = operatorName == tree.getOperatorName()
 
 			return isMatch
 
