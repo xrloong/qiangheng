@@ -146,10 +146,24 @@ class StageAddNode(ConversionStage):
 
 	def execute(self):
 		from model.element import CharacterInfo
+
+		codeInfoManager=self.structureManager.getCodeInfoManager()
 		# 加入如 "相" "[漢右]" 的節點。
 		for charName in self.getCharNameList():
 			characterInfo=CharacterInfo.CharacterInfo(charName)
 			self.hanziNetwork.addNode(charName, characterInfo)
+
+			if codeInfoManager.hasRadix(charName):
+				radixInfoList=codeInfoManager.getRadixCodeInfoList(charName)
+				for radixCodeInfo in radixInfoList:
+					structure=self.generateUnitLink(radixCodeInfo)
+					self.hanziNetwork.addUnitStructureIntoNode(structure, charName)
+
+	def generateUnitLink(self, radixCodeInfo):
+		tag=StructureUnitTag(radixCodeInfo)
+		structure=self.hanziNetwork.generateStructure(tag)
+		return structure
+
 
 class StageAddStructure(ConversionStage):
 	class TreeProxy(TreeRegExp.BasicTreeProxy):
@@ -337,24 +351,6 @@ class StageAddStructure(ConversionStage):
 		self.nodeExpressionDict[(name, index)]=structure
 		return structure
 
-class StageAddCodeInfo(ConversionStage):
-	def __init__(self, hanziNetwork, structureManager):
-		super().__init__(hanziNetwork, structureManager)
-
-	def execute(self):
-		codeInfoManager=self.structureManager.getCodeInfoManager()
-		for charName in self.getCharNameList():
-			if codeInfoManager.hasRadix(charName):
-				radixInfoList=codeInfoManager.getRadixCodeInfoList(charName)
-				for radixCodeInfo in radixInfoList:
-					structure=self.generateUnitLink(radixCodeInfo)
-					self.hanziNetwork.addStructureIntoNode(structure, charName)
-
-	def generateUnitLink(self, radixCodeInfo):
-		tag=StructureUnitTag(radixCodeInfo)
-		structure=self.hanziNetwork.generateStructure(tag)
-		return structure
-
 class StageSetNodeTree(ConversionStage):
 	def __init__(self, hanziNetwork, structureManager):
 		super().__init__(hanziNetwork, structureManager)
@@ -367,12 +363,17 @@ class StageSetNodeTree(ConversionStage):
 	def setNodeTree(self, node):
 		"""設定某一個字符所包含的部件的碼"""
 
-		structureList=node.getStructureList()
-
+		structureList=node.getUnitStructureList()
 		for structure in structureList:
-			self.recursivelyGenerateCodeInfoByStructureTree(structure)
+			structure.generateCodeInfos()
+
+		structure=node.getStructure()
+		self.recursivelyGenerateCodeInfoByStructureTree(structure)
 
 	def recursivelyGenerateCodeInfoByStructureTree(self, structure):
+		if not structure:
+			return
+
 		tag=structure.getTag()
 		if tag.isCodeInfoGenerated():
 			return
@@ -405,11 +406,8 @@ class StageGetCharacterInfo(ConversionStage):
 		return self.characterInfoList
 
 	def getNodeCharacterInfo(self, hanziNode):
-		def getNodeCodeInfoList(hanziNode):
-			structureList=hanziNode.getStructureList()
-
-			return sum(map(lambda s: s.getTag().getCodeInfoList(), structureList), [])
-		codeInfoList=getNodeCodeInfoList(hanziNode)
+		structureList=hanziNode.getStructureList(True)
+		codeInfoList=sum(map(lambda s: s.getTag().getCodeInfoList(), structureList), [])
 		characterInfo=hanziNode.getTag()
 		characterInfo.setCodeInfoList(codeInfoList)
 
@@ -424,7 +422,6 @@ class ComputeCharacterInfo:
 
 		StageAddNode(hanziNetwork, structureManager).execute()
 		StageAddStructure(hanziNetwork, structureManager).execute()
-		StageAddCodeInfo(hanziNetwork, structureManager).execute()
 		StageSetNodeTree(hanziNetwork, structureManager).execute()
 
 		stage=StageGetCharacterInfo(hanziNetwork, structureManager)

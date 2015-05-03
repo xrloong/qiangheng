@@ -1,6 +1,7 @@
 class HanZiStructure:
 	def __init__(self, tag):
 		self.referenceNode=None
+		self.index=0
 		self.operator=None
 		self.structureList=[]
 
@@ -42,9 +43,8 @@ class HanZiStructure:
 	def getOperatorName(self):
 		if self.isWrapper():
 			referenceNode=self.getReferenceNode()
-			structureList=referenceNode.getStructureList()
-			if structureList:
-				structure=referenceNode.getStructureList()[0]
+			structure=referenceNode.getStructure()
+			if structure:
 				return structure.getOperator().getName()
 			else:
 				return ""
@@ -61,19 +61,12 @@ class HanZiStructure:
 
 	def getStructureList(self):
 		if self.isWrapper():
-			return self.getWrapperStructureList()
+			structure=self.referenceNode.getStructure()
+			if structure:
+				return [structure]
+			else:
+				return []
 		return self.structureList
-
-	def getWrapperStructureList(self):
-		expression=self.getTag().getReferenceExpression()
-		tempList=expression.split(".")
-		if(len(tempList)>1):
-			referenceName=tempList[0]
-			index=int(tempList[1])-1
-			structureList=self.referenceNode.getSubStructureList(index)
-		else:
-			structureList=self.referenceNode.getStructureList()
-		return structureList
 
 	def setAsCompound(self, operator, structureList):
 		self.operator=operator
@@ -89,17 +82,35 @@ class HanZiStructure:
 	def getTag(self):
 		return self.tag
 
-	def getTagList(self):
-		return [structure.getTag() for structure in self.getStructureList()]
-
 	def generateCodeInfos(self):
-		self.getTag().generateCodeInfos(self.getOperator(), self.getTagList())
+		def getAllWrapperStructureList():
+			expression=self.getTag().getReferenceExpression()
+			tempList=expression.split(".")
+			if(len(tempList)>1):
+				referenceName=tempList[0]
+				index=int(tempList[1])-1
+				structure=self.referenceNode.getSubStructure(index)
+				structureList=[structure]
+			else:
+				structureList=self.referenceNode.getStructureList(True)
+			return structureList
+
+		def getTagList():
+			if self.isWrapper():
+				structureList=getAllWrapperStructureList()
+			else:
+				structureList=self.structureList
+
+			return [structure.getTag() for structure in structureList]
+
+		self.getTag().generateCodeInfos(self.getOperator(), getTagList())
 
 
 class HanZiNode:
 	def __init__(self, name, tag):
 		self.name=name
-		self.structureList=[]
+		self.structure=None
+		self.unitStructureList=[]
 		self.tag=tag
 
 	def __str__(self):
@@ -108,21 +119,36 @@ class HanZiNode:
 	def getName(self):
 		return self.name
 
-	def addStructure(self, structure):
-		self.structureList.append(structure)
+	def setStructure(self, structure):
+		self.structure=structure
 
-	def setStructureList(self, structureList):
-		self.structureList=structureList
+	def getStructure(self):
+		return self.structure
 
-	def getStructureList(self):
-		return self.structureList
+	def getStructureList(self, isWithUnit=False):
+		structureList=[]
 
-	def getSubStructureList(self, index):
-		subStructureList=[]
-		for structure in self.structureList:
-			structureList=structure.getStructureList()
-			subStructureList.append(structureList[index])
-		return subStructureList
+		if self.structure:
+			structureList=[self.structure]
+
+		if isWithUnit:
+			structureList.extend(self.unitStructureList)
+
+		return structureList
+
+	def addUnitStructure(self, structure):
+		self.unitStructureList.append(structure)
+
+	def getUnitStructureList(self):
+		return self.unitStructureList
+
+	def getSubStructure(self, index):
+		structure=self.getStructure()
+		if not structure:
+			return None
+
+		structureList=structure.getStructureList()
+		return structureList[index]
 
 	def getTag(self):
 		return self.tag
@@ -142,15 +168,19 @@ class HanZiNetwork:
 
 	def isNodeExpanded(self, nodeName):
 		node=self.nodeDict.get(nodeName)
-		structureList=node.getStructureList()
-		return len(structureList)>0
+		structure=node.getStructure()
+		return bool(structure)
 
 	def addStructure(self, structureName, structure):
 		self.structureDict[structureName]=structure
 
 	def addStructureIntoNode(self, structure, nodeName):
 		dstNode=self.findNode(nodeName)
-		dstNode.addStructure(structure)
+		dstNode.setStructure(structure)
+
+	def addUnitStructureIntoNode(self, structure, nodeName):
+		dstNode=self.findNode(nodeName)
+		dstNode.addUnitStructure(structure)
 
 	def generateStructure(self, tag, reference=[], compound=[]):
 		structure=HanZiStructure(tag)
