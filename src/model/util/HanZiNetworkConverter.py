@@ -172,7 +172,8 @@ class StageAddStructure(ConversionStage):
 			self.stage = stage
 
 		def getChildren(self, tree):
-			return tree.getStructureList()
+			expanedStructure=tree.getExpandedStructure()
+			return expanedStructure.getStructureList()
 
 		def matchSingleQuickly(self, tre, tree):
 			treOperatorName=tre.prop.get("運算")
@@ -185,11 +186,13 @@ class StageAddStructure(ConversionStage):
 			tag=tree.getTag()
 			if "名稱" in prop:
 				expressionName=prop.get("名稱")
+				expanedStructure=tree.getExpandedStructure()
 				isMatch = expressionName == tree.getReferenceExpression()
 
 			if "運算" in prop:
 				operatorName=prop.get("運算")
-				isMatch = operatorName == tree.getOperatorName()
+				expanedStructure=tree.getExpandedStructure()
+				isMatch = operatorName == expanedStructure.getOperatorName()
 
 			return isMatch
 
@@ -279,7 +282,19 @@ class StageAddStructure(ConversionStage):
 		tag.setSubstituteApplied()
 
 	def rearrangeStructure(self, structure, substituteRuleList):
+		def expandLeaf(structure):
+			nodeName=structure.getReferenceName()
+
+			if nodeName:
+				self.expandNode(nodeName)
+
+			children=structure.getStructureList()
+			for child in children:
+				expandLeaf(child)
+
 		def rearrangeStructureOneTurn(structure, filteredSubstituteRuleList):
+#			expandLeaf(structure)
+
 			changed=False
 			for rule in filteredSubstituteRuleList:
 				tre = rule.getTRE()
