@@ -92,9 +92,16 @@
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$itemmark" />
-                <xsl:text>"</xsl:text>
-                <xsl:value-of select="@筆劃資訊"/> 
-                <xsl:text>"</xsl:text>
+                <xsl:text>{</xsl:text>
+                <xsl:text>類型: </xsl:text>
+                <xsl:value-of select="@類型"/> 
+                <xsl:text>, </xsl:text>
+                <xsl:text>起始點: </xsl:text>
+                <xsl:value-of select="@起始點"/> 
+                <xsl:text>, </xsl:text>
+                <xsl:text>參數: </xsl:text>
+                <xsl:value-of select="@參數"/> 
+                <xsl:text>}</xsl:text>
                 <xsl:value-of select="$newline" />
               </xsl:for-each>
               <xsl:if test="@名稱">

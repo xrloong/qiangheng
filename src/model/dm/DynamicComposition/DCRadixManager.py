@@ -14,6 +14,9 @@ class DCRadixParser(RadixParser):
 	TAG_STROKE='筆劃'
 	TAG_NAME='名稱'
 	TAG_EXTRA_SCOPE='補充範圍'
+	TAG_TYPE='類型'
+	TAG_START_POINT='起始點'
+	TAG_PARAMETER='參數'
 
 	TAG_CODE_INFORMATION='編碼資訊'
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
@@ -93,7 +96,7 @@ class DCRadixParser(RadixParser):
 		strokeNodeList=strokeGroupNode
 		for strokeNode in strokeNodeList:
 			strokeExpression=strokeNode
-			stroke=DCRadixParser.fromStrokeExpression(strokeExpression)
+			stroke=DCRadixParser.fromStrokeNode(strokeExpression)
 
 			stroke.transform(Pane.DEFAULT_PANE)
 
@@ -103,17 +106,12 @@ class DCRadixParser(RadixParser):
 		return strokeGroup
 
 	@staticmethod
-	def fromStrokeExpression(strokeExpression):
-		l=strokeExpression.split(';')
-		name=l[0]
+	def fromStrokeNode(strokeNode):
+		name=strokeNode.get(DCRadixParser.TAG_TYPE)
 
-		startPointDesc=l[1]
-		startX, startY=int(startPointDesc.split(',')[0]), int(startPointDesc.split(',')[1])
-		startPoint=(startX, startY)
+		startPoint=strokeNode.get(DCRadixParser.TAG_START_POINT)
 
-		strokeDesc=l[2]
-		parameterExpression = strokeDesc[1:-1]
-		parameterExpressionList = parameterExpression.split(',')
+		parameterExpressionList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
 
 		clsStrokeInfo = Calligraphy.StrokeInfoMap.get(name, None)
 		assert clsStrokeInfo!=None
