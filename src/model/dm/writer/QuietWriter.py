@@ -1,4 +1,6 @@
-class QuietWriter:
-	def write(self, imInfo, codeMappingInfoList):
+from .BaseImWriter import BaseImWriter
+
+class QuietWriter(BaseImWriter):
+	def writeCodeMapping(self, imInfo, codeMappingInfoList):
 		pass
 

@@ -2,9 +2,10 @@
 #from xml.etree import cElementTree as ET
 import lxml.etree as ET
 #import lxml.objectify as ET
+from .BaseImWriter import BaseImWriter
 
-class XmlWriter:
-	def write(self, imInfo, codeMappingInfoList):
+class XmlWriter(BaseImWriter):
+	def writeCodeMapping(self, imInfo, codeMappingInfoList):
 		keyMaps=imInfo.getKeyMaps()
 
 		rootNode=ET.Element("描繪法")

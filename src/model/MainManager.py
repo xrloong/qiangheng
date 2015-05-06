@@ -26,17 +26,10 @@ class MainManager:
 		return mainManager
 
 	def write(self, quiet, output_format):
-		codeMappingInfoList=self.genIMMapping(self.characterInfoList)
 		imInfo=self.imInfo
 
 		writer=self.getWriter(quiet, output_format)
-		writer.write(imInfo, codeMappingInfoList)
-
-	def genIMMapping(self, characterInfoList):
-		table=[]
-		for characterInfo in characterInfoList:
-			table.extend(characterInfo.getCodeMappingInfoList())
-		return table
+		writer.write(imInfo, self.characterInfoList)
 
 	def getWriter(self, quiet=False, output_format="text"):
 		isFormatXML=(output_format=='xml')

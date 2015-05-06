@@ -1,7 +1,8 @@
 import yaml
+from .BaseImWriter import BaseImWriter
 
-class YamlWriter:
-	def write(self, imInfo, codeMappingInfoList):
+class YamlWriter(BaseImWriter):
+	def writeCodeMapping(self, imInfo, codeMappingInfoList):
 		rootNode="輸入法"
 		nameNode={"輸入法名稱": {
 				"EN":imInfo.getName('en'),
