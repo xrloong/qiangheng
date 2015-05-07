@@ -102,15 +102,6 @@ class ShowHanziWidget():
 		length=len(self.entryInput.get())
 		self.entryInput.delete(0, length)
 
-	def genTTF(self):
-		filename=self.ttfFilename.get()
-		if not filename:
-			print('沒有指定檔名')
-			return
-
-		generateTTF(filename)
-
-
 	def byKnownChar(self):
 #		string=self.entryInput.get()
 #		def_list=self.rm.getFont(string)
@@ -151,6 +142,52 @@ def makeSureDirCreated(filename):
 	dirname = os.path.dirname(filename)
 	if not os.path.exists(dirname):
 		os.makedirs(dirname)
+
+def generateSVG(dirname):
+	import os
+	if not os.path.exists(dirname):
+		os.makedirs(dirname)
+
+	from graphics.canvas import SvgHanZiCanvas
+	import lxml.etree as ET
+	emsize=100
+
+	width=emsize
+	height=emsize
+	strokeWidth=5
+
+	characters=sorted(rm.getCharacters())
+	print("總共有 %s 個字符"%len(characters))
+	for index, ch in enumerate(characters):
+		if index%100==0:
+			print("正在描繪 %s 到 %s 個字符"%(index*1, index+100))
+
+		canvas=SvgHanZiCanvas.SvgHanZiCanvas(width, height)
+		drawSystem=HanZiDrawingSystem(canvas)
+
+		ct=rm.getFont(ch)
+		drawSystem.draw(ct, canvas=canvas)
+
+		attrib={
+			"width": str(width),
+			"height": str(height),
+			}
+		rootNode=ET.Element("svg", attrib)
+
+		expression=canvas.getExpression()
+		attrib={
+			"stroke": "black",
+			"stroke-width": str(strokeWidth),
+			"fill": "none",
+			"d": expression
+			}
+		pathNode=ET.SubElement(rootNode, "path", attrib)
+
+		xmlNode=ET.ElementTree(rootNode)
+
+		filename="%x.svg"%ord(ch)
+		f=open(dirname + os.sep + filename, "w")
+		print(ET.tounicode(xmlNode, pretty_print=True), file=f)
 
 def generateTTF(filename):
 	import fontforge
@@ -197,10 +234,10 @@ def generateTTF(filename):
 
 oparser = OptionParser()
 oparser.add_option("-s", action="store_true", dest="show_font", help="秀出字形", default=False)
-oparser.add_option("-g", action="store_true", dest="gen_font", help="產生字型檔", default=False)
+oparser.add_option("-g", dest="font_format", help="產生字型檔", default="svg")
 oparser.add_option("-i", "--in-fontfile", dest="fontfile", help="字型來源檔")
-#oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔", default="font/qhdc.sfd")
 oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔", default="font/qhdc.ttf")
+oparser.add_option("-d", "--out-fontdir", dest="outdir", help="字型輸出檔", default="font/svg")
 (options, args) = oparser.parse_args()
 
 fontfile=options.fontfile
@@ -212,9 +249,14 @@ if options.show_font:
 	root=tkinter.Tk()
 	app=ShowHanziWidget(root, rm)
 	root.mainloop()
-elif options.gen_font:
-	outfile=options.outfile
-	generateTTF(outfile)
+elif options.font_format:
+	font_format=options.font_format
+	if font_format=="svg":
+		outdir=options.outdir
+		generateSVG(outdir)
+	elif font_format=="ttf":
+		outfile=options.outfile
+		generateTTF(outfile)
 else:
 	oparser.print_usage()
 
