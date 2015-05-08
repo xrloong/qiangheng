@@ -1,7 +1,7 @@
 import yaml
-from .BaseImWriter import BaseImWriter
+from .BaseDmWriter import BaseDmWriter
 
-class YamlWriter(BaseImWriter):
+class YamlWriter(BaseDmWriter):
 	def writeCodeMapping(self, imInfo, codeMappingInfoList):
 		rootNode="描繪法"
 

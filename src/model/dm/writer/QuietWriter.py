@@ -1,6 +1,6 @@
-from .BaseImWriter import BaseImWriter
+from .BaseDmWriter import BaseDmWriter
 
-class QuietWriter(BaseImWriter):
+class QuietWriter(BaseDmWriter):
 	def writeCodeMapping(self, imInfo, codeMappingInfoList):
 		pass
 

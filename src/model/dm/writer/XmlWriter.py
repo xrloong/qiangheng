@@ -2,9 +2,9 @@
 #from xml.etree import cElementTree as ET
 import lxml.etree as ET
 #import lxml.objectify as ET
-from .BaseImWriter import BaseImWriter
+from .BaseDmWriter import BaseDmWriter
 
-class XmlWriter(BaseImWriter):
+class XmlWriter(BaseDmWriter):
 	def writeCodeMapping(self, imInfo, codeMappingInfoList):
 		keyMaps=imInfo.getKeyMaps()
 

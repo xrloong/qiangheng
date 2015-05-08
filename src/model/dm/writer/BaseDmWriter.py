@@ -1,4 +1,4 @@
-class BaseImWriter:
+class BaseDmWriter:
 	def write(self, imInfo, characterInfoList):
 		codeMappingInfoList=self.genIMMapping(characterInfoList)
 		self.writeCodeMapping(imInfo, codeMappingInfoList)
