@@ -117,7 +117,7 @@ class DCRadixParser(RadixParser):
 		assert clsStrokeInfo!=None
 
 		parameterList = clsStrokeInfo.parseExpression(parameterExpressionList)
-		strokeInfo = clsStrokeInfo(parameterList)
+		strokeInfo = clsStrokeInfo(name, parameterList)
 
 		return Stroke(startPoint, strokeInfo)
 

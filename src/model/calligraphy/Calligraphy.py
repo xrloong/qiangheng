@@ -27,11 +27,15 @@ class StrokeDrawing:
 			)
 
 class StrokeInfo:
-	def __init__(self, parameterList):
+	def __init__(self, name, parameterList):
+		self.name=name
 		self.parameterList=parameterList
 
 	def isValid(self):
 		return false
+
+	def getName(self):
+		return self.name
 
 	@classmethod
 	def parseExpression(cls, parameterExpressionList):
@@ -1530,6 +1534,34 @@ class Stroke(Writing):
 
 	def clone(self):
 		return Stroke(self.startPoint, self.strokeInfo, self.state.clone())
+
+	def getExpression(self):
+		def toValid(point):
+			x, y = point
+			newX = max(0, min(0xFF, x))
+			newY = max(0, min(0xFF, y))
+			return (newX, newY)
+
+		def encodeStroke(stroke):
+			points=stroke.getPoints()
+			points = [(isCurve, toValid(point)) for (isCurve, point) in points]
+			point = points[0]
+			isCurve = point[0]
+			assert isCurve is False
+			pointExpressionList = ["0000{0[0]:02X}{0[1]:02X}".format(point[1]), ]
+
+			for point in points[1:]:
+				isCurve = point[0]
+				if isCurve:
+					pointExpressionList.append("0002{0[0]:02X}{0[1]:02X}".format(point[1]))
+				else:
+					pointExpressionList.append("0001{0[0]:02X}{0[1]:02X}".format(point[1]))
+			return ",".join(pointExpressionList)
+		return encodeStroke(self)
+
+
+	def getName(self):
+		return self.getStrokeInfo().getName()
 
 	def getState(self):
 		return self.state

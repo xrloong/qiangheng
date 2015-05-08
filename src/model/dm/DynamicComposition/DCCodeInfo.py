@@ -68,33 +68,7 @@ class DCCodeInfo(CodeInfo):
 
 	def toCode(self):
 		strokeList=self.getStrokeGroup().getStrokeList()
-		codeList=[self.encodeStroke(stroke) for stroke in strokeList]
-		return ';'.join(codeList)
-
-	def encodeStroke(self, stroke):
-		def encodePoints(points):
-			point = points[0]
-			isCurve = point[0]
-			assert isCurve is False
-			pointExpressionList = ["0000{0[0]:02X}{0[1]:02X}".format(point[1]), ]
-
-			for point in points[1:]:
-				isCurve = point[0]
-				if isCurve:
-					pointExpressionList.append("0002{0[0]:02X}{0[1]:02X}".format(point[1]))
-				else:
-					pointExpressionList.append("0001{0[0]:02X}{0[1]:02X}".format(point[1]))
-			return ",".join(pointExpressionList)
-
-		def toValid(point):
-			x, y = point
-			newX = max(0, min(0xFF, x))
-			newY = max(0, min(0xFF, y))
-			return (newX, newY)
-
-		points=stroke.getPoints()
-		newPoints = [(isCurve, toValid(point)) for (isCurve, point) in points]
-		return encodePoints(newPoints)
+		return strokeList
 
 	def setExtraPane(self, strokeGroupName, paneName, extraPane):
 		strokeGroup=self.getStrokeGroup(strokeGroupName)

@@ -15,12 +15,12 @@
   </xsl:template>
 
   <xsl:template name="輸出描繪對應">
-    <xsl:apply-templates select="描繪法/描繪集/描繪">
+    <xsl:apply-templates select="描繪法/字圖集/字圖">
       <xsl:sort select="@名稱"/>
     </xsl:apply-templates>
   </xsl:template>
 
-  <xsl:template match="描繪">
+  <xsl:template match="字圖">
     <xsl:choose>
       <xsl:when test="($onlycharacter = 'false')">
         <xsl:call-template name="輸出描繪-判斷類型"/>
@@ -49,7 +49,12 @@
   <xsl:template name="輸出描繪">
     <xsl:value-of select="@名稱"/>
     <xsl:value-of select="$tab"/>
-    <xsl:value-of select="@描繪序列"/>
+    <xsl:for-each select="筆劃">
+      <xsl:if test="position()>1">
+        <xsl:text>;</xsl:text>
+      </xsl:if>
+      <xsl:value-of select="@描繪"/>
+    </xsl:for-each>
     <xsl:value-of select="$newline"/>
   </xsl:template>
 </xsl:stylesheet>
