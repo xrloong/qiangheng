@@ -1,12 +1,10 @@
-# coding=utf8
-
-#import fontforge
 from . import HanZiCanvas
 
 class TrueTypeGlyphHanZiCanvas(HanZiCanvas.HanZiCanvas):
-	def __init__(self, glyph, width, height):
+	def __init__(self, width, height):
 		super().__init__(width, height)
 
+	def changeGlyph(self, glyph):
 		self.glyph=glyph
 		self.glyphPen=glyph.glyphPen()
 		self.clear()

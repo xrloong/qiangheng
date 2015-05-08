@@ -67,9 +67,7 @@ class HanZiDrawingSystem():
         return (x + tx*cw/self.dw, y + ty*ch/self.dh)
 
 class ShowHanziWidget():
-	def __init__(self, master, rm):
-		self.rm=rm
-
+	def __init__(self, master):
 		self.canvasH=512
 		self.canvasW=512
 
@@ -103,8 +101,6 @@ class ShowHanziWidget():
 		self.entryInput.delete(0, length)
 
 	def byKnownChar(self):
-#		string=self.entryInput.get()
-#		def_list=self.rm.getFont(string)
 		string=self.entryInput.get()
 		def_list=re.split(',|;', string)
 		self.dh.draw(def_list)
@@ -148,13 +144,17 @@ def generateSVG(dirname):
 	if not os.path.exists(dirname):
 		os.makedirs(dirname)
 
-	from graphics.canvas import SvgHanZiCanvas
-	import lxml.etree as ET
 	emsize=100
-
 	width=emsize
 	height=emsize
+
+	from graphics.canvas import SvgHanZiCanvas
+	canvas=SvgHanZiCanvas.SvgHanZiCanvas(width, height)
+	drawSystem=HanZiDrawingSystem(canvas)
+
 	strokeWidth=5
+
+	import lxml.etree as ET
 
 	characters=sorted(rm.getCharacters())
 	print("總共有 %s 個字符"%len(characters))
@@ -162,11 +162,8 @@ def generateSVG(dirname):
 		if index%100==0:
 			print("正在描繪 %s 到 %s 個字符"%(index*1, index+100))
 
-		canvas=SvgHanZiCanvas.SvgHanZiCanvas(width, height)
-		drawSystem=HanZiDrawingSystem(canvas)
-
 		ct=rm.getFont(ch)
-		drawSystem.draw(ct, canvas=canvas)
+		drawSystem.draw(ct)
 
 		attrib={
 			"width": str(width),
@@ -190,19 +187,20 @@ def generateSVG(dirname):
 		print(ET.tounicode(xmlNode, pretty_print=True), file=f)
 
 def generateTTF(filename):
-	import fontforge
-
 	emsize=1024
+	width=emsize
+	height=emsize
 
+	from graphics.canvas import TrueTypeGlyphHanZiCanvas
+	canvas=TrueTypeGlyphHanZiCanvas.TrueTypeGlyphHanZiCanvas(width, height)
+	drawSystem=HanZiDrawingSystem(canvas)
+
+	import fontforge
 	f=fontforge.font()
 	f.is_quadratic=True
 #	f.strokedfont=True
 #	f.strokewidth=50
 	f.em=emsize
-
-	start, end=0x4E00, 0x9FA6 # 全部
-
-	from graphics.canvas import TrueTypeGlyphHanZiCanvas
 
 	characters=sorted(rm.getCharacters())
 	print("總共有 %s 個字符"%len(characters))
@@ -214,12 +212,10 @@ def generateTTF(filename):
 		g=f.createChar(o)
 		g.left_side_bearing=100
 		g.right_side_bearing=100
-
-		canvas=TrueTypeGlyphHanZiCanvas.TrueTypeGlyphHanZiCanvas(g, emsize, emsize)
-		drawSystem=HanZiDrawingSystem(canvas)
+		canvas.changeGlyph(g)
 
 		ct=rm.getFont(ch)
-		drawSystem.draw(ct, canvas=canvas)
+		drawSystem.draw(ct)
 
 		# stroke(penType, strokeWidth, lineCap, lineJoin)
 		# stroke(circular|calligraphic|polygon, strokeWidth, square|round|butt, miter|round|bevel)
@@ -240,16 +236,16 @@ oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔
 oparser.add_option("-d", "--out-fontdir", dest="outdir", help="字型輸出檔", default="font/svg")
 (options, args) = oparser.parse_args()
 
-fontfile=options.fontfile
-rm=RadicalManager(fontfile)
-
 if options.show_font:
 	import tkinter
 
 	root=tkinter.Tk()
-	app=ShowHanziWidget(root, rm)
+	app=ShowHanziWidget(root)
 	root.mainloop()
 elif options.font_format:
+	fontfile=options.fontfile
+	rm=RadicalManager(fontfile)
+
 	font_format=options.font_format
 	if font_format=="svg":
 		outdir=options.outdir
