@@ -2,10 +2,9 @@ from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfo import DCStrokeGroup
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from model.base.RadixManager import RadixParser
-from model.calligraphy import Calligraphy
+from model.calligraphy import stroke
 from model.calligraphy.Calligraphy import Pane
 from model.calligraphy.Calligraphy import Stroke
-import re
 
 class DCRadixParser(RadixParser):
 	TAG_STROKE_GROUP='筆劃組'
@@ -113,7 +112,7 @@ class DCRadixParser(RadixParser):
 
 		parameterExpressionList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
 
-		clsStrokeInfo = Calligraphy.StrokeInfoMap.get(name, None)
+		clsStrokeInfo = stroke.StrokeInfoMap.get(name, None)
 		assert clsStrokeInfo!=None
 
 		parameterList = clsStrokeInfo.parseExpression(parameterExpressionList)
