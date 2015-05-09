@@ -101,7 +101,7 @@ class DCRadixParser(RadixParser):
 
 			strokeList.append(stroke)
 
-		strokeGroup=DCStrokeGroup(Pane.DEFAULT_PANE, strokeList)
+		strokeGroup=DCStrokeGroup(strokeList)
 		return strokeGroup
 
 	@staticmethod
