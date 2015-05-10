@@ -94,11 +94,7 @@ class DCRadixParser(RadixParser):
 		strokeList=[]
 		strokeNodeList=strokeGroupNode
 		for strokeNode in strokeNodeList:
-			strokeExpression=strokeNode
-			stroke=DCRadixParser.fromStrokeNode(strokeExpression)
-
-			stroke.transform(Pane.DEFAULT_PANE)
-
+			stroke=DCRadixParser.fromStrokeNode(strokeNode)
 			strokeList.append(stroke)
 
 		strokeGroup=DCStrokeGroup(strokeList)

@@ -23,14 +23,22 @@ class StrokeDrawing:
 			)
 
 class Pane:
-	WIDTH=0x100
-	HEIGHT=0x100
-	X_MAX=0xFF
-	Y_MAX=0xFF
+	EMBOX_X_MIN=0x00
+	EMBOX_Y_MIN=0x00
+	EMBOX_X_MAX=0xFF
+	EMBOX_Y_MAX=0xFF
+	EMBOX_WIDTH=EMBOX_X_MAX-EMBOX_X_MIN+1
+	EMBOX_HEIGHT=EMBOX_Y_MAX-EMBOX_Y_MIN+1
 
-	DEFAULT_REGION=[0, 0, X_MAX, Y_MAX]
+	BBOX_X_MIN=0x08
+	BBOX_Y_MIN=0x08
+	BBOX_X_MAX=0xF7
+	BBOX_Y_MAX=0xF7
 
-	def __init__(self, region=DEFAULT_REGION):
+
+	EMBOX_REGION=[EMBOX_X_MIN, EMBOX_Y_MIN, EMBOX_X_MAX, EMBOX_Y_MAX]
+
+	def __init__(self, region=EMBOX_REGION):
 		[left, top, right, bottom]=region
 		self.left=left
 		self.top=top
@@ -43,8 +51,16 @@ class Pane:
 		return Pane(self.getAsList())
 
 	def setup(self):
-		self.hScale=self.width*1./Pane.WIDTH
-		self.vScale=self.height*1./Pane.HEIGHT
+		self.hScale=self.width*1./Pane.EMBOX_WIDTH
+		self.vScale=self.height*1./Pane.EMBOX_HEIGHT
+
+	def offsetLeftAndRight(self, offset):
+		self.left += offset
+		self.right += offset
+
+	def offsetTopAndBottom(self, offset):
+		self.top += offset
+		self.bottom += offset
 
 	@property
 	def width(self):
@@ -105,12 +121,21 @@ class Pane:
 
 		pane.setup()
 
-Pane.DEFAULT_PANE=Pane()
+# 字身框（Em Box）
+Pane.EMBOX=Pane()
+
+# 字面框（Bounding Box）
+Pane.BBOX=Pane([
+	Pane.BBOX_X_MIN,
+	Pane.BBOX_Y_MIN,
+	Pane.BBOX_X_MAX,
+	Pane.BBOX_Y_MAX,
+	])
 
 
 class Writing:
 	def __init__(self, contourPane):
-		self.boundaryPane=Pane.DEFAULT_PANE
+		self.boundaryPane=Pane.EMBOX
 		self.contourPane=contourPane
 
 	def getBoundaryPane(self):

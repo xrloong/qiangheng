@@ -112,15 +112,24 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	@classmethod
 	def encodeAsSilkworm(cls, codeInfoList):
+		def genPaneList(weightList):
+			pane=Pane.BBOX
+			pointList=cls.splitLengthToList(pane.getHeight(), weightList)
+			paneList=[]
+			offset=pane.getTop()
+			for [pointStart, pointEnd] in zip(pointList[:-1], pointList[1:]):
+				tmpPane=Pane([pane.getLeft(), pointStart, pane.getRight(), pointEnd])
+				tmpPane.offsetTopAndBottom(offset)
+				paneList.append(tmpPane)
+			return paneList
+
 		weightList=list(map(lambda x: x.getStrokeCount()+1, codeInfoList))
-		pointList=cls.splitLengthToList(Pane.HEIGHT, weightList)
+		paneList=genPaneList(weightList)
 
 		strokeGroupNameList=cls.extendStrokeGroupNameList(['蚕'], codeInfoList)
 
 		newStrokeGroupList=[]
-		for [pointStart, pointEnd, strokeGroupName, codeInfo] in zip(pointList[:-1], pointList[1:], strokeGroupNameList, codeInfoList):
-			pane=Pane([0, pointStart, Pane.X_MAX, pointEnd])
-
+		for [pane, strokeGroupName, codeInfo] in zip(paneList, strokeGroupNameList, codeInfoList):
 			newStrokeGroup=codeInfo.getCopyOfStrokeGroup(strokeGroupName)
 			newStrokeGroup.transform(pane)
 			newStrokeGroupList.append(newStrokeGroup)
@@ -136,14 +145,24 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	@classmethod
 	def encodeAsGoose(cls, codeInfoList):
+		def genPaneList(weightList):
+			pane=Pane.BBOX
+			pointList=cls.splitLengthToList(pane.getWidth(), weightList)
+			paneList=[]
+			offset=pane.getLeft()
+			for [pointStart, pointEnd] in zip(pointList[:-1], pointList[1:]):
+				tmpPane=Pane([pointStart, pane.getTop(), pointEnd, pane.getBottom()])
+				tmpPane.offsetLeftAndRight(offset)
+				paneList.append(tmpPane)
+			return paneList
+
 		weightList=list(map(lambda x: x.getStrokeCount(), codeInfoList))
-		pointList=cls.splitLengthToList(Pane.WIDTH, weightList)
+		paneList=genPaneList(weightList)
 
 		strokeGroupNameList=cls.extendStrokeGroupNameList(['鴻'], codeInfoList)
 
 		newStrokeGroupList=[]
-		for [pointStart, pointEnd, strokeGroupName, codeInfo] in zip(pointList[:-1], pointList[1:], strokeGroupNameList, codeInfoList):
-			pane=Pane([pointStart, 0, pointEnd, Pane.Y_MAX])
+		for [pane, strokeGroupName, codeInfo] in zip(paneList, strokeGroupNameList, codeInfoList):
 
 			newStrokeGroup=codeInfo.getCopyOfStrokeGroup(strokeGroupName)
 			newStrokeGroup.transform(pane)

@@ -4,12 +4,12 @@ from model.calligraphy.Calligraphy import StrokeGroup
 
 class DCStrokeGroup(StrokeGroup):
 	def __init__(self, strokeList):
-		super().__init__(Pane.DEFAULT_PANE, strokeList)
-		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.DEFAULT_PANE}
+		super().__init__(Pane.EMBOX, strokeList)
+		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.EMBOX}
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
-		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=Pane.DEFAULT_PANE
+		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=Pane.EMBOX
 
 	def setExtraPane(self, paneName, extraPane):
 		self.extraPaneDB[paneName]=extraPane
