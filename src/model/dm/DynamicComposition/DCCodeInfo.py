@@ -98,6 +98,3 @@ class DCCodeInfo(CodeInfo):
 	def getStrokeCount(self):
 		return self.getStrokeGroup().getCount()
 
-	def transform(self, pane):
-		self.getStrokeGroup().transform(pane)
-
