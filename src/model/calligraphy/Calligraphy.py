@@ -1,4 +1,5 @@
 from . import quadratic
+from .stroke import StrokeInfo
 
 class StrokeDrawing:
 	def __init__(self, points):
