@@ -17,12 +17,6 @@ class StrokeDrawing:
 	def computeBottom(self):
 		return StrokeInfo.computeExtreme(self.points, max, quadratic.solveMax, lambda p: p[1])
 
-	def computeScope(self):
-		return (
-			self.computeLeft(), self.computeTop(),
-			self.computeRight(), self.computeBottom(),
-			)
-
 class Pane:
 	EMBOX_X_MIN=0x00
 	EMBOX_Y_MIN=0x00
@@ -203,27 +197,38 @@ class Stroke(Writing):
 	def transform(self, pane):
 		pane.transformPane(self.state.getTargetPane())
 
-	def getPoints(self):
-		strokeState=self.getState()
-		pane=strokeState.getTargetPane()
-
+	def getPointsOnPane(self, pane):
 		startPoint=self.strokeInfo.getStartPoint()
 		points=self.strokeInfo.computePoints(startPoint)
 		newPoints = [(isCurve, pane.transformPoint(point)) for (isCurve, point) in points]
 		return newPoints
 
-	def computeScope(self):
-		return StrokeDrawing(self.getPoints()).computeScope()
+	def getPoints(self):
+		strokeState=self.getState()
+		pane=strokeState.getTargetPane()
+		return self.getPointsOnPane(pane)
 
 class StrokeGroup(Writing):
-	def __init__(self, contourPane, strokeList):
+	def __init__(self, contourPane, strokeList, bBox):
 		super().__init__(contourPane)
 
+		if not bBox:
+			bBoxList = [stroke.getStrokeInfo().getBBox() for stroke in strokeList]
+			left=min(list(zip(*bBoxList))[0])
+			top=min(list(zip(*bBoxList))[1])
+			right=max(list(zip(*bBoxList))[2])
+			bottom=max(list(zip(*bBoxList))[3])
+			bBox=(left, top, right, bottom)
+
 		self.strokeList=strokeList
+		self.bBox=bBox
 
 	def clone(self):
 		strokeList=[s.clone() for s in self.strokeList]
-		return StrokeGroup(self.contourPane, strokeList)
+		return StrokeGroup(self.contourPane, strokeList, self.bBox)
+
+	def getBBox(self):
+		return self.bBox
 
 	def getStrokeList(self):
 		return self.strokeList
@@ -238,12 +243,4 @@ class StrokeGroup(Writing):
 	def transform(self, pane):
 		for stroke in self.strokeList:
 			stroke.transform(pane)
-
-	def computeScope(self):
-		scopes=[s.computeScope() for s in self.strokeList]
-		left=min(list(zip(*scopes))[0])
-		top=min(list(zip(*scopes))[1])
-		right=min(list(zip(*scopes))[2])
-		bottom=min(list(zip(*scopes))[3])
-		return (left, top, right, bottom)
 

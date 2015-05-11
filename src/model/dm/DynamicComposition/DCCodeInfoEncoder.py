@@ -22,7 +22,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		resultStrokeList=[]
 		for strokeGroup in strokeGroupList:
 			resultStrokeList.extend(strokeGroup.getStrokeList())
-		strokeGroup=DCStrokeGroup(resultStrokeList)
+		strokeGroup=DCStrokeGroup(resultStrokeList, None)
 		strokeGroupDB={DCCodeInfo.STROKE_GROUP_NAME_DEFAULT : strokeGroup}
 		return strokeGroupDB
 

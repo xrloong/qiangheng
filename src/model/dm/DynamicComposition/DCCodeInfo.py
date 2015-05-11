@@ -3,8 +3,8 @@ from model.calligraphy.Calligraphy import Pane
 from model.calligraphy.Calligraphy import StrokeGroup
 
 class DCStrokeGroup(StrokeGroup):
-	def __init__(self, strokeList):
-		super().__init__(Pane.EMBOX, strokeList)
+	def __init__(self, strokeList, bBox):
+		super().__init__(Pane.EMBOX, strokeList, bBox)
 		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.EMBOX}
 
 	def setExtraPaneDB(self, extranPaneDB):

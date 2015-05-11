@@ -8,6 +8,7 @@ from model.calligraphy.Calligraphy import Stroke
 
 class DCRadixParser(RadixParser):
 	TAG_STROKE_GROUP='筆劃組'
+	TAG_STROKE='筆劃'
 	TAG_GEOMETRY='幾何'
 	TAG_SCOPE='範圍'
 	TAG_STROKE='筆劃'
@@ -16,6 +17,7 @@ class DCRadixParser(RadixParser):
 	TAG_TYPE='類型'
 	TAG_START_POINT='起始點'
 	TAG_PARAMETER='參數'
+	TAG_BBOX='字面框'
 
 	TAG_CODE_INFORMATION='編碼資訊'
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
@@ -87,18 +89,19 @@ class DCRadixParser(RadixParser):
 		strokeGroupName=strokeGroupNode.get(DCRadixParser.TAG_NAME)
 
 		t=strokeGroupNode.get(DCRadixParser.TAG_STROKE_GROUP)
-		strokeGroup=self.parseStroke(t)
+		bBox=strokeGroupNode.get(DCRadixParser.TAG_BBOX)
+		strokeList=self.parseStrokeList(t)
+
+		strokeGroup=DCStrokeGroup(strokeList, bBox)
 		return [strokeGroupName, strokeGroup]
 
-	def parseStroke(self, strokeGroupNode):
+	def parseStrokeList(self, strokeGroupNode):
 		strokeList=[]
-		strokeNodeList=strokeGroupNode
+		strokeNodeList=strokeGroupNode.get(DCRadixParser.TAG_STROKE)
 		for strokeNode in strokeNodeList:
 			stroke=DCRadixParser.fromStrokeNode(strokeNode)
 			strokeList.append(stroke)
-
-		strokeGroup=DCStrokeGroup(strokeList)
-		return strokeGroup
+		return strokeList
 
 	@staticmethod
 	def fromStrokeNode(strokeNode):
@@ -107,12 +110,13 @@ class DCRadixParser(RadixParser):
 		startPoint=strokeNode.get(DCRadixParser.TAG_START_POINT)
 
 		parameterExpressionList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
+		bBox = strokeNode.get(DCRadixParser.TAG_BBOX)
 
 		clsStrokeInfo = stroke.StrokeInfoMap.get(name, None)
 		assert clsStrokeInfo!=None
 
 		parameterList = clsStrokeInfo.parseExpression(parameterExpressionList)
-		strokeInfo = clsStrokeInfo(name, startPoint, parameterList)
+		strokeInfo = clsStrokeInfo(name, startPoint, parameterList, bBox)
 
 		return Stroke(strokeInfo)
 

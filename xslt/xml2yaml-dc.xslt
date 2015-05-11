@@ -87,7 +87,24 @@
               <xsl:value-of select="$intent" /> <xsl:value-of select="$itemmark" />
               <xsl:text>筆劃組: </xsl:text>
               <xsl:value-of select="$newline" />
+
+              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+              <xsl:value-of select="$intent" />
+              <xsl:text>字面框: </xsl:text>
+              <xsl:value-of select="@字面框"/> 
+              <xsl:value-of select="$newline" />
+
+              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+              <xsl:value-of select="$intent" />
+              <xsl:text>筆劃: </xsl:text>
+              <xsl:value-of select="$newline" />
+
               <xsl:for-each select="筆劃">
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
@@ -115,13 +132,6 @@
                 <xsl:value-of select="@名稱"/> 
                 <xsl:value-of select="$newline" />
               </xsl:if>
-
-            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-            <xsl:text>字面框: </xsl:text>
-            <xsl:value-of select="@字面框"/> 
-            <xsl:value-of select="$newline" />
 
             <xsl:if test="補充範圍">
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
