@@ -160,15 +160,14 @@ class StrokeState:
 		return self.targetPane
 
 class Stroke(Writing):
-	def __init__(self, startPoint, strokeInfo, state=StrokeState()):
+	def __init__(self, strokeInfo, state=StrokeState()):
 		super().__init__(Pane())
 
-		self.startPoint=startPoint
 		self.strokeInfo=strokeInfo
 		self.state=state
 
 	def clone(self):
-		return Stroke(self.startPoint, self.strokeInfo, self.state.clone())
+		return Stroke(self.strokeInfo, self.state.clone())
 
 	def getExpression(self):
 		def encodeStroke(stroke):
@@ -208,7 +207,7 @@ class Stroke(Writing):
 		strokeState=self.getState()
 		pane=strokeState.getTargetPane()
 
-		startPoint=self.startPoint
+		startPoint=self.strokeInfo.getStartPoint()
 		points=self.strokeInfo.computePoints(startPoint)
 		newPoints = [(isCurve, pane.transformPoint(point)) for (isCurve, point) in points]
 		return newPoints

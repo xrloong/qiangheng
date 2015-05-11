@@ -1,6 +1,7 @@
 class StrokeInfo:
-	def __init__(self, name, parameterList):
+	def __init__(self, name, startPoint, parameterList):
 		self.name=name
+		self.startPoint=startPoint
 		self.parameterList=parameterList
 
 	def isValid(self):
@@ -8,6 +9,9 @@ class StrokeInfo:
 
 	def getName(self):
 		return self.name
+
+	def getStartPoint(self):
+		return self.startPoint
 
 	@classmethod
 	def parseExpression(cls, parameterExpressionList):
@@ -1280,13 +1284,6 @@ class StrokeInfo_提捺(StrokeInfo):
 		assert int(l[3])>0
 		return [int(l[0]), int(l[1]), int(l[2]), int(l[3]), ]
 
-	def getStartPoint(self):
-		paramList=self.parameterList
-		h1=paramList[1]
-
-		topLeft = self.getTopLeft()
-		return (topLeft[0], topLeft[1]+h1)
-
 	def isValid(self):
 		paramList=self.parameterList
 		w1=paramList[0]
@@ -1316,9 +1313,6 @@ class StrokeInfo_橫捺(StrokeInfo):
 		assert int(l[1])>0
 		assert int(l[2])>0
 		return [int(l[0]), int(l[1]), int(l[2]), ]
-
-	def getStartPoint(self):
-		return self.getTopLeft()
 
 	def isValid(self):
 		paramList=self.parameterList
