@@ -3,6 +3,7 @@ from .DCCodeInfo import DCStrokeGroup
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 from model.base.CodeInfo import CodeInfo
 from model.calligraphy.Calligraphy import Pane
+from model.calligraphy.Calligraphy import StrokeGroupInfo
 
 import sys
 
@@ -19,10 +20,22 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	@classmethod
 	def mergeStrokeGroupListToDB(cls, strokeGroupList):
+		def computeBBox(bBoxList):
+			left=min(list(zip(*bBoxList))[0])
+			top=min(list(zip(*bBoxList))[1])
+			right=max(list(zip(*bBoxList))[2])
+			bottom=max(list(zip(*bBoxList))[3])
+			bBox=(left, top, right, bottom)
+			return bBox
+
 		resultStrokeList=[]
 		for strokeGroup in strokeGroupList:
 			resultStrokeList.extend(strokeGroup.getStrokeList())
-		strokeGroup=DCStrokeGroup(resultStrokeList, None)
+
+		bBoxList=[stroke.getBBox() for stroke in resultStrokeList]
+		bBox=computeBBox(bBoxList)
+		strokeGroupInfo=StrokeGroupInfo(resultStrokeList, bBox)
+		strokeGroup=DCStrokeGroup(strokeGroupInfo)
 		strokeGroupDB={DCCodeInfo.STROKE_GROUP_NAME_DEFAULT : strokeGroup}
 		return strokeGroupDB
 

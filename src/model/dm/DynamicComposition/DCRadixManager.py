@@ -5,6 +5,7 @@ from model.base.RadixManager import RadixParser
 from model.calligraphy import stroke
 from model.calligraphy.Calligraphy import Pane
 from model.calligraphy.Calligraphy import Stroke
+from model.calligraphy.Calligraphy import StrokeGroupInfo
 
 class DCRadixParser(RadixParser):
 	TAG_STROKE_GROUP='筆劃組'
@@ -92,7 +93,8 @@ class DCRadixParser(RadixParser):
 		bBox=strokeGroupNode.get(DCRadixParser.TAG_BBOX)
 		strokeList=self.parseStrokeList(t)
 
-		strokeGroup=DCStrokeGroup(strokeList, bBox)
+		strokeGroupInfo=StrokeGroupInfo(strokeList, bBox)
+		strokeGroup=DCStrokeGroup(strokeGroupInfo)
 		return [strokeGroupName, strokeGroup]
 
 	def parseStrokeList(self, strokeGroupNode):

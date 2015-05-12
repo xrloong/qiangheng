@@ -128,21 +128,6 @@ Pane.BBOX=Pane([
 	])
 
 
-class Writing:
-	def __init__(self, contourPane):
-		self.boundaryPane=Pane.EMBOX
-		self.contourPane=contourPane
-
-	def getBoundaryPane(self):
-		return self.boundaryPane
-
-	def getContourPane(self):
-		return self.contourPane
-
-	# 多型
-	def transform(self, pane):
-		pass
-
 class StrokeState:
 	def __init__(self, targetPane=Pane()):
 		self.targetPane=targetPane
@@ -153,10 +138,8 @@ class StrokeState:
 	def getTargetPane(self):
 		return self.targetPane
 
-class Stroke(Writing):
+class Stroke:
 	def __init__(self, strokeInfo, state=StrokeState()):
-		super().__init__(Pane())
-
 		self.strokeInfo=strokeInfo
 		self.state=state
 
@@ -208,39 +191,57 @@ class Stroke(Writing):
 		pane=strokeState.getTargetPane()
 		return self.getPointsOnPane(pane)
 
-class StrokeGroup(Writing):
-	def __init__(self, contourPane, strokeList, bBox):
-		super().__init__(contourPane)
+	def getBBox(self):
+		return self.strokeInfo.getBBox()
 
-		if not bBox:
-			bBoxList = [stroke.getStrokeInfo().getBBox() for stroke in strokeList]
-			left=min(list(zip(*bBoxList))[0])
-			top=min(list(zip(*bBoxList))[1])
-			right=max(list(zip(*bBoxList))[2])
-			bottom=max(list(zip(*bBoxList))[3])
-			bBox=(left, top, right, bottom)
-
+class StrokeGroupInfo:
+	def __init__(self, strokeList, bBox):
 		self.strokeList=strokeList
 		self.bBox=bBox
 
+	def getStrokeList(self):
+		return self.strokeList
+
+	def getBBox(self):
+		return self.bBox
+
+	def setBBox(self, bBox):
+		self.bBox=bBox
+
+class StrokeGroupState:
+	def __init__(self, targetPane=Pane()):
+		self.targetPane=targetPane
+
 	def clone(self):
-		strokeList=[s.clone() for s in self.strokeList]
-		return StrokeGroup(self.contourPane, strokeList, self.bBox)
+		return StrokeState(self.targetPane.clone())
+
+	def getTargetPane(self):
+		return self.targetPane
+
+class StrokeGroup:
+	def __init__(self, strokeGroupInfo, state=StrokeGroupState()):
+		self.strokeGroupInfo=strokeGroupInfo
+		self.state=state
+
+	def clone(self):
+		strokeList=[s.clone() for s in self.getStrokeList()]
+		strokeGroupInfo=StrokeGroupInfo(strokeList, self.strokeGroupInfo.getBBox())
+		return StrokeGroup(strokeGroupInfo, self.state.clone())
 
 	def getBBox(self):
 		return self.bBox
 
 	def getStrokeList(self):
-		return self.strokeList
+		return self.strokeGroupInfo.getStrokeList()
 
 	def getCount(self):
-		return len(self.strokeList)
+		return len(self.getStrokeList())
 
 	def isValid(self):
-		return all([stroke.isValid() for stroke in self.strokeList])
+		return all([stroke.isValid() for stroke in self.getStrokeList()])
 
 	# 多型
 	def transform(self, pane):
-		for stroke in self.strokeList:
+		for stroke in self.getStrokeList():
 			stroke.transform(pane)
 
