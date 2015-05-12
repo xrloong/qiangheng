@@ -52,7 +52,7 @@ class DCRadixParser(RadixParser):
 				strokeGroupName=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT
 			strokeGroupDB[strokeGroupName]=strokeGroup
 
-		codeInfo=self.getEncoder().generateDefaultCodeInfo(strokeGroupDB)
+		codeInfo=DCCodeInfo(strokeGroupDB)
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):

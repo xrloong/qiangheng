@@ -18,6 +18,11 @@ class DCStrokeGroup(StrokeGroup):
 	def getExtraPane(self, paneName):
 		return self.extraPaneDB.get(paneName, None)
 
+	@staticmethod
+	def generateDefaultStrokeGroup(strokeGroupPanePair):
+		strokeGroupInfo=StrokeGroup.generateStrokeGroupInfo(strokeGroupPanePair)
+		strokeGroup=DCStrokeGroup(strokeGroupInfo)
+		return strokeGroup
 
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"
@@ -63,7 +68,10 @@ class DCCodeInfo(CodeInfo):
 		self.strokeGroupDB=strokeGroupDB
 
 	@staticmethod
-	def generateDefaultCodeInfo(strokeGroupDB):
+	def generateDefaultCodeInfo(strokeGroupPanePair):
+		strokeGroup=DCStrokeGroup.generateDefaultStrokeGroup(strokeGroupPanePair)
+		strokeGroupDB={DCCodeInfo.STROKE_GROUP_NAME_DEFAULT : strokeGroup}
+
 		codeInfo=DCCodeInfo(strokeGroupDB)
 		return codeInfo
 
@@ -88,13 +96,10 @@ class DCCodeInfo(CodeInfo):
 		return strokeGroup.getExtraPane(paneName)
 
 	def getStrokeGroup(self, strokeGroupName=STROKE_GROUP_NAME_DEFAULT):
-		return self.strokeGroupDB.get(strokeGroupName)
-
-	def getCopyOfStrokeGroup(self, strokeGroupName=STROKE_GROUP_NAME_DEFAULT):
-		strokeGroup=self.getStrokeGroup(strokeGroupName)
+		strokeGroup=self.strokeGroupDB.get(strokeGroupName)
 		if strokeGroupName!=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT and strokeGroup==None:
 			strokeGroup=self.getStrokeGroup(DCCodeInfo.STROKE_GROUP_NAME_DEFAULT)
-		return strokeGroup.clone()
+		return strokeGroup
 
 	def getStrokeCount(self):
 		return self.getStrokeGroup().getCount()

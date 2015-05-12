@@ -1,43 +1,18 @@
 from .DCCodeInfo import DCCodeInfo
-from .DCCodeInfo import DCStrokeGroup
 from model.base.CodeInfoEncoder import CodeInfoEncoder
-from model.base.CodeInfo import CodeInfo
 from model.calligraphy.Calligraphy import Pane
-from model.calligraphy.Calligraphy import StrokeGroupInfo
 
 import sys
 
 class DCCodeInfoEncoder(CodeInfoEncoder):
 	@classmethod
-	def generateDefaultCodeInfo(cls, strokeGroupDB):
-		return DCCodeInfo.generateDefaultCodeInfo(strokeGroupDB)
-
+	def generateDefaultCodeInfo(cls, strokeGroupPanePair):
+		return DCCodeInfo.generateDefaultCodeInfo(strokeGroupPanePair)
 
 	@classmethod
 	def isAvailableOperation(cls, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
 		return isAllWithCode
-
-	@classmethod
-	def mergeStrokeGroupListToDB(cls, strokeGroupList):
-		def computeBBox(bBoxList):
-			left=min(list(zip(*bBoxList))[0])
-			top=min(list(zip(*bBoxList))[1])
-			right=max(list(zip(*bBoxList))[2])
-			bottom=max(list(zip(*bBoxList))[3])
-			bBox=(left, top, right, bottom)
-			return bBox
-
-		resultStrokeList=[]
-		for strokeGroup in strokeGroupList:
-			resultStrokeList.extend(strokeGroup.getStrokeList())
-
-		bBoxList=[stroke.getBBox() for stroke in resultStrokeList]
-		bBox=computeBBox(bBoxList)
-		strokeGroupInfo=StrokeGroupInfo(resultStrokeList, bBox)
-		strokeGroup=DCStrokeGroup(strokeGroupInfo)
-		strokeGroupDB={DCCodeInfo.STROKE_GROUP_NAME_DEFAULT : strokeGroup}
-		return strokeGroupDB
 
 	@classmethod
 	def extendStrokeGroupNameList(cls, strokeGroupNameList, codeInfoList):
@@ -75,12 +50,22 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			extraPane=containerCodeInfo.getExtraPane(strokeGroupName, paneName)
 			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
 
-			strokeGroup=codeInfo.getCopyOfStrokeGroup(strokeGroupName)
-			strokeGroup.transform(extraPane)
+			strokeGroup=codeInfo.getStrokeGroup(strokeGroupName).generateStrokeGroup(extraPane)
 			newStrokeGroupList.append(strokeGroup)
 
-		strokeGroupDB=cls.mergeStrokeGroupListToDB(newStrokeGroupList)
-		codeInfo=cls.generateDefaultCodeInfo(strokeGroupDB)
+		paneList=[]
+		for [strokeGroupName, paneName] in zip(strokeGroupNameList, paneNameList):
+			extraPane=containerCodeInfo.getExtraPane(strokeGroupName, paneName)
+			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
+			paneList.append(extraPane)
+
+		strokeGroupList=[]
+		for [strokeGroupName, codeInfo] in zip(strokeGroupNameList, codeInfoList):
+			strokeGroup=codeInfo.getStrokeGroup(strokeGroupName)
+			strokeGroupList.append(strokeGroup)
+
+		strokeGroupPanePair=zip(strokeGroupList, paneList)
+		codeInfo=cls.generateDefaultCodeInfo(strokeGroupPanePair)
 		return codeInfo
 
 
@@ -141,13 +126,13 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		strokeGroupNameList=cls.extendStrokeGroupNameList(['蚕'], codeInfoList)
 
-		newStrokeGroupList=[]
-		for [pane, strokeGroupName, codeInfo] in zip(paneList, strokeGroupNameList, codeInfoList):
-			newStrokeGroup=codeInfo.getCopyOfStrokeGroup(strokeGroupName)
-			newStrokeGroup.transform(pane)
-			newStrokeGroupList.append(newStrokeGroup)
-		strokeGroupDB=cls.mergeStrokeGroupListToDB(newStrokeGroupList)
-		codeInfo=cls.generateDefaultCodeInfo(strokeGroupDB)
+		strokeGroupList=[]
+		for [strokeGroupName, codeInfo] in zip(strokeGroupNameList, codeInfoList):
+			strokeGroup=codeInfo.getStrokeGroup(strokeGroupName)
+			strokeGroupList.append(strokeGroup)
+
+		strokeGroupPanePair=zip(strokeGroupList, paneList)
+		codeInfo=cls.generateDefaultCodeInfo(strokeGroupPanePair)
 
 		lastCodeInfo=codeInfoList[-1]
 		# 題=(起 是頁), 是=(志 日[是下])
@@ -174,15 +159,13 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		strokeGroupNameList=cls.extendStrokeGroupNameList(['鴻'], codeInfoList)
 
-		newStrokeGroupList=[]
-		for [pane, strokeGroupName, codeInfo] in zip(paneList, strokeGroupNameList, codeInfoList):
+		strokeGroupList=[]
+		for [strokeGroupName, codeInfo] in zip(strokeGroupNameList, codeInfoList):
+			strokeGroup=codeInfo.getStrokeGroup(strokeGroupName)
+			strokeGroupList.append(strokeGroup)
 
-			newStrokeGroup=codeInfo.getCopyOfStrokeGroup(strokeGroupName)
-			newStrokeGroup.transform(pane)
-			newStrokeGroupList.append(newStrokeGroup)
-
-		strokeGroupDB=cls.mergeStrokeGroupListToDB(newStrokeGroupList)
-		codeInfo=cls.generateDefaultCodeInfo(strokeGroupDB)
+		strokeGroupPanePair=zip(strokeGroupList, paneList)
+		codeInfo=cls.generateDefaultCodeInfo(strokeGroupPanePair)
 		return codeInfo
 
 	@classmethod

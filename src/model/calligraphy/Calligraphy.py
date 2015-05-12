@@ -245,3 +245,33 @@ class StrokeGroup:
 		for stroke in self.getStrokeList():
 			stroke.transform(pane)
 
+	def generateStrokeGroup(self, pane):
+		strokeGroup=self.clone()
+		strokeGroup.transform(pane)
+		return strokeGroup
+
+	@staticmethod
+	def generateStrokeGroupInfo(strokeGroupPanePair):
+		def computeBBox(bBoxList):
+			left=min(list(zip(*bBoxList))[0])
+			top=min(list(zip(*bBoxList))[1])
+			right=max(list(zip(*bBoxList))[2])
+			bottom=max(list(zip(*bBoxList))[3])
+			bBox=(left, top, right, bottom)
+			return bBox
+
+		strokeGroupList=[]
+		for strokeGroup, pane in strokeGroupPanePair:
+			strokeGroup=strokeGroup.generateStrokeGroup(pane)
+			strokeGroupList.append(strokeGroup)
+
+		resultStrokeList=[]
+		for strokeGroup in strokeGroupList:
+			resultStrokeList.extend(strokeGroup.getStrokeList())
+
+		bBoxList=[stroke.getBBox() for stroke in resultStrokeList]
+		bBox=computeBBox(bBoxList)
+		strokeGroupInfo=StrokeGroupInfo(resultStrokeList, bBox)
+
+		return strokeGroupInfo
+
