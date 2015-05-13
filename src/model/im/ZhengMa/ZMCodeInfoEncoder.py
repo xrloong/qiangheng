@@ -1,6 +1,5 @@
 from .ZMCodeInfo import ZMCodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
-from model.base.CodeInfo import CodeInfo
 
 class ZMCodeInfoEncoder(CodeInfoEncoder):
 	@classmethod

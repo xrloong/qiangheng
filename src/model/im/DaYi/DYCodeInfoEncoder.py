@@ -1,6 +1,5 @@
 from .DYCodeInfo import DYCodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
-from model.base.CodeInfo import CodeInfo
 
 import sys
 

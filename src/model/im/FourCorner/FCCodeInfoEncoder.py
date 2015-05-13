@@ -1,6 +1,5 @@
 from .FCCodeInfo import FCCodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
-from model.base.CodeInfo import CodeInfo
 
 import sys
 

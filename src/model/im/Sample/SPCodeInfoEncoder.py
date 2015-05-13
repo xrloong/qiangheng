@@ -1,6 +1,5 @@
 from .SPCodeInfo import SPCodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
-from model.base.CodeInfo import CodeInfo
 
 class SPCodeInfoEncoder(CodeInfoEncoder):
 	@classmethod

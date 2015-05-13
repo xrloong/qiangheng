@@ -2,6 +2,7 @@ from .CJCodeInfo import CJCodeInfo
 from .CJCodeInfo import GridCJCodeInfo
 from .CJLump import CJLump
 from model.base.CodeInfoEncoder import CodeInfoEncoder
+
 import sys
 
 class CJCodeInfoEncoder(CodeInfoEncoder):
