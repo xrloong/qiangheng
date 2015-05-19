@@ -90,7 +90,7 @@ class DCRadixParser(RadixParser):
 		strokeGroupName=strokeGroupNode.get(DCRadixParser.TAG_NAME)
 
 		t=strokeGroupNode.get(DCRadixParser.TAG_STROKE_GROUP)
-		bBox=strokeGroupNode.get(DCRadixParser.TAG_BBOX)
+		bBox=t.get(DCRadixParser.TAG_BBOX)
 		strokeList=self.parseStrokeList(t)
 
 		strokeGroupInfo=StrokeGroupInfo(strokeList, bBox)
@@ -111,15 +111,10 @@ class DCRadixParser(RadixParser):
 
 		startPoint=strokeNode.get(DCRadixParser.TAG_START_POINT)
 
-		parameterExpressionList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
+		parameterList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
 		bBox = strokeNode.get(DCRadixParser.TAG_BBOX)
 
-		clsStrokeInfo = stroke.StrokeInfoMap.get(name, None)
-		assert clsStrokeInfo!=None
-
-		parameterList = clsStrokeInfo.parseExpression(parameterExpressionList)
-		strokeInfo = clsStrokeInfo(name, startPoint, parameterList, bBox)
-
+		strokeInfo = Stroke.generateStrokeInfo(name, startPoint, parameterList, bBox)
 		return Stroke(strokeInfo)
 
 	def parsePane(self, descriptionRegion):

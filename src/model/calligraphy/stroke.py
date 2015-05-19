@@ -1,9 +1,9 @@
 class StrokeInfo:
-	def __init__(self, name, startPoint, parameterList, bBox):
+	def __init__(self, name, startPoint, parameterList, bBoxPane):
 		self.name=name
 		self.startPoint=startPoint
 		self.parameterList=parameterList
-		self.bBox=bBox
+		self.bBoxPane=bBoxPane
 
 	def isValid(self):
 		return false
@@ -14,8 +14,8 @@ class StrokeInfo:
 	def getStartPoint(self):
 		return self.startPoint
 
-	def getBBox(self):
-		return self.bBox
+	def getBBoxPane(self):
+		return self.bBoxPane
 
 	@classmethod
 	def parseExpression(cls, parameterExpressionList):

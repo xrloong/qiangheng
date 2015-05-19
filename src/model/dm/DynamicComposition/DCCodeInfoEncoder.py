@@ -35,7 +35,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		for weight in weightList:
 			pointList.append(int(base))
 			base=base+unitLength*weight
-		pointList.append(base)
+		pointList.append(int(base))
 		return pointList
 
 	@classmethod
@@ -116,7 +116,10 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			paneList=[]
 			offset=pane.getTop()
 			for [pointStart, pointEnd] in zip(pointList[:-1], pointList[1:]):
-				tmpPane=Pane([pane.getLeft(), pointStart, pane.getRight(), pointEnd])
+				height=pointEnd-pointStart
+				targetHeight=int(height*0.90)
+				offset=int(height-targetHeight)//2
+				tmpPane=Pane([pane.getLeft(), pointStart+offset, pane.getRight(), pointEnd-offset])
 				tmpPane.offsetTopAndBottom(offset)
 				paneList.append(tmpPane)
 			return paneList
@@ -149,7 +152,10 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			paneList=[]
 			offset=pane.getLeft()
 			for [pointStart, pointEnd] in zip(pointList[:-1], pointList[1:]):
-				tmpPane=Pane([pointStart, pane.getTop(), pointEnd, pane.getBottom()])
+				width=pointEnd-pointStart
+				targetWidth=int(width*0.90)
+				offset=int(width-targetWidth)//2
+				tmpPane=Pane([pointStart+offset, pane.getTop(), pointEnd-offset, pane.getBottom()])
 				tmpPane.offsetLeftAndRight(offset)
 				paneList.append(tmpPane)
 			return paneList

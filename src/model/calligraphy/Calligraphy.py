@@ -1,5 +1,6 @@
 from . import quadratic
 from .stroke import StrokeInfo
+from .stroke import StrokeInfoMap
 
 class StrokeDrawing:
 	def __init__(self, points):
@@ -42,6 +43,9 @@ class Pane:
 
 		self.setup()
 
+	def __str__(self):
+		return "%s"%((self.left, self.top, self.right, self.bottom), )
+
 	def clone(self):
 		return Pane(self.getAsList())
 
@@ -64,6 +68,26 @@ class Pane:
 	@property
 	def height(self):
 		return self.bottom-self.top+1
+
+	def containsPoint(self, point):
+		x, y = point
+		return (self.left<=x<=self.right) and (self.top<=y<=self.bottom)
+
+	def containsPane(self, pane):
+		return self.containsPoint(pane.getLeftTop()) and self.containsPoint(pane.getRightBottom())
+
+	def limitedToPane(self, pane):
+		left=max(self.left, pane.left)
+		top=max(self.top, pane.top)
+		right=min(self.right, pane.right)
+		bottom=min(self.bottom, pane.bottom)
+
+		self.left=left
+		self.top=top
+		self.right=right
+		self.bottom=bottom
+
+		self.setup()
 
 	def getAsList(self):
 		return [self.left, self.top, self.right, self.bottom]
@@ -92,6 +116,12 @@ class Pane:
 	def getVScale(self):
 		return self.vScale
 
+	def getLeftTop(self):
+		return (self.left, self.top)
+
+	def getRightBottom(self):
+		return (self.right, self.bottom)
+
 	def transformPoint(self, point):
 		[x, y]=point
 		left=self.getLeft()
@@ -116,6 +146,24 @@ class Pane:
 
 		pane.setup()
 
+	def transformRelativePointByTargetPane(self, point, targetPane):
+		(x, y)=point
+
+		newX=int((x-self.getLeft())*targetPane.getWidth()/self.getWidth())+targetPane.getLeft()
+		newY=int((y-self.getTop())*targetPane.getHeight()/self.getHeight())+targetPane.getTop()
+
+		assert newX==max(targetPane.left, min(targetPane.right, newX))
+		assert newY==max(targetPane.top, min(targetPane.bottom, newY))
+
+		return (newX, newY)
+
+	def transformRelativePaneByTargetPane(self, relativePane, targetPane):
+		(left, top)=self.transformRelativePointByTargetPane(relativePane.getLeftTop(), targetPane)
+		(right, bottom)=self.transformRelativePointByTargetPane(relativePane.getRightBottom(), targetPane)
+
+		return Pane((left, top, right, bottom))
+
+
 # 字身框（Em Box）
 Pane.EMBOX=Pane()
 
@@ -139,12 +187,24 @@ class StrokeState:
 		return self.targetPane
 
 class Stroke:
-	def __init__(self, strokeInfo, state=StrokeState()):
+	def __init__(self, strokeInfo, state=None):
 		self.strokeInfo=strokeInfo
-		self.state=state
+		if state:
+			self.state=state
+		else:
+			self.state=StrokeState(strokeInfo.getBBoxPane())
 
 	def clone(self):
 		return Stroke(self.strokeInfo, self.state.clone())
+
+	@staticmethod
+	def generateStrokeInfo(name, startPoint, parameterList, bBox):
+		clsStrokeInfo = StrokeInfoMap.get(name, None)
+		assert clsStrokeInfo!=None
+
+		parameterList = clsStrokeInfo.parseExpression(parameterList)
+		strokeInfo = clsStrokeInfo(name, startPoint, parameterList, Pane(bBox))
+		return strokeInfo
 
 	def getExpression(self):
 		def encodeStroke(stroke):
@@ -180,10 +240,16 @@ class Stroke:
 	def transform(self, pane):
 		pane.transformPane(self.state.getTargetPane())
 
+	def transformBy(self, sgTargetPane, newSgTargetPane):
+		sTargetPane=self.state.targetPane
+		newSTargetPane=sgTargetPane.transformRelativePaneByTargetPane(sTargetPane, newSgTargetPane)
+		self.state.targetPane=newSTargetPane
+
 	def getPointsOnPane(self, pane):
 		startPoint=self.strokeInfo.getStartPoint()
 		points=self.strokeInfo.computePoints(startPoint)
-		newPoints = [(isCurve, pane.transformPoint(point)) for (isCurve, point) in points]
+		bBoxPane=self.getInfoPane()
+		newPoints = [(isCurve, bBoxPane.transformRelativePointByTargetPane(point, pane)) for (isCurve, point) in points]
 		return newPoints
 
 	def getPoints(self):
@@ -191,22 +257,25 @@ class Stroke:
 		pane=strokeState.getTargetPane()
 		return self.getPointsOnPane(pane)
 
-	def getBBox(self):
-		return self.strokeInfo.getBBox()
+	def getInfoPane(self):
+		return self.strokeInfo.getBBoxPane()
+
+	def getStatePane(self):
+		return self.state.getTargetPane()
 
 class StrokeGroupInfo:
 	def __init__(self, strokeList, bBox):
 		self.strokeList=strokeList
-		self.bBox=bBox
+		self.bBoxPane=Pane(bBox)
 
 	def getStrokeList(self):
 		return self.strokeList
 
-	def getBBox(self):
-		return self.bBox
+	def getBBoxPane(self):
+		return self.bBoxPane
 
-	def setBBox(self, bBox):
-		self.bBox=bBox
+	def setBBoxPane(self, bBoxPane):
+		self.bBoxPane=bBoxPane
 
 class StrokeGroupState:
 	def __init__(self, targetPane=Pane()):
@@ -219,17 +288,29 @@ class StrokeGroupState:
 		return self.targetPane
 
 class StrokeGroup:
-	def __init__(self, strokeGroupInfo, state=StrokeGroupState()):
+	def __init__(self, strokeGroupInfo, state=None):
 		self.strokeGroupInfo=strokeGroupInfo
-		self.state=state
+		if state:
+			self.state=state
+		else:
+			self.state=StrokeGroupState(strokeGroupInfo.getBBoxPane())
 
 	def clone(self):
 		strokeList=[s.clone() for s in self.getStrokeList()]
-		strokeGroupInfo=StrokeGroupInfo(strokeList, self.strokeGroupInfo.getBBox())
+		strokeGroupInfo=StrokeGroupInfo(strokeList, self.getInfoPane().getAsList())
 		return StrokeGroup(strokeGroupInfo, self.state.clone())
 
-	def getBBox(self):
-		return self.bBox
+	def getInfoPane(self):
+		return self.strokeGroupInfo.getBBoxPane()
+
+	def getStatePane(self):
+		return self.state.getTargetPane()
+
+	def setInfoPane(self, pane):
+		self.strokeGroupInfo.setBBoxPane(pane)
+
+	def setStatePane(self, pane):
+		self.state.targetPane=pane
 
 	def getStrokeList(self):
 		return self.strokeGroupInfo.getStrokeList()
@@ -241,9 +322,16 @@ class StrokeGroup:
 		return all([stroke.isValid() for stroke in self.getStrokeList()])
 
 	# 多型
-	def transform(self, pane):
+	def transform(self, newSgTargetPane):
+		sgTargetPane=self.getStatePane()
+		sgInfoPane=self.getInfoPane()
 		for stroke in self.getStrokeList():
-			stroke.transform(pane)
+			sTargetPane=stroke.getStatePane()
+			sInfoPane=stroke.getInfoPane()
+			stroke.transformBy(sgInfoPane, newSgTargetPane)
+
+		self.setStatePane(newSgTargetPane)
+		self.setInfoPane(newSgTargetPane)
 
 	def generateStrokeGroup(self, pane):
 		strokeGroup=self.clone()
@@ -252,26 +340,22 @@ class StrokeGroup:
 
 	@staticmethod
 	def generateStrokeGroupInfo(strokeGroupPanePair):
-		def computeBBox(bBoxList):
-			left=min(list(zip(*bBoxList))[0])
-			top=min(list(zip(*bBoxList))[1])
-			right=max(list(zip(*bBoxList))[2])
-			bottom=max(list(zip(*bBoxList))[3])
-			bBox=(left, top, right, bottom)
-			return bBox
-
-		strokeGroupList=[]
-		for strokeGroup, pane in strokeGroupPanePair:
-			strokeGroup=strokeGroup.generateStrokeGroup(pane)
-			strokeGroupList.append(strokeGroup)
+		def computeBBox(paneList):
+			left=min(map(lambda pane: pane.getLeft(), paneList))
+			top=min(map(lambda pane: pane.getTop(), paneList))
+			right=max(map(lambda pane: pane.getRight(), paneList))
+			bottom=max(map(lambda pane: pane.getBottom(), paneList))
+			return Pane((left, top, right, bottom))
 
 		resultStrokeList=[]
-		for strokeGroup in strokeGroupList:
+		paneList=[]
+		for strokeGroup, pane in strokeGroupPanePair:
+			strokeGroup=strokeGroup.generateStrokeGroup(pane)
 			resultStrokeList.extend(strokeGroup.getStrokeList())
+			paneList.append(strokeGroup.getInfoPane())
 
-		bBoxList=[stroke.getBBox() for stroke in resultStrokeList]
-		bBox=computeBBox(bBoxList)
-		strokeGroupInfo=StrokeGroupInfo(resultStrokeList, bBox)
+		pane=computeBBox(paneList)
+		strokeGroupInfo=StrokeGroupInfo(resultStrokeList, pane.getAsList())
 
 		return strokeGroupInfo
 

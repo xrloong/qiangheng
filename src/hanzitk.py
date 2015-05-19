@@ -102,6 +102,12 @@ class ShowHanziWidget():
 
 	def byKnownChar(self):
 		string=self.entryInput.get()
+		table={
+			ord(" "): None,
+			ord("\t"): None,
+			ord("\n"): None,
+		}
+		string=string.translate(table)
 		def_list=re.split(',|;', string)
 		self.dh.draw(def_list)
 		self.dh.drawFrame()
