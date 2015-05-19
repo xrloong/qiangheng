@@ -44,7 +44,7 @@ class Pane:
 		self.setup()
 
 	def __str__(self):
-		return "%s"%((self.left, self.top, self.right, self.bottom), )
+		return "%s"%([self.left, self.top, self.right, self.bottom])
 
 	def clone(self):
 		return Pane(self.getAsList())

@@ -24,7 +24,11 @@ class XmlWriter(BaseDmWriter):
 			for stroke in code:
 				strokeName=stroke.getName()
 				strokeExpression=stroke.getExpression()
-				attrib={"名稱": strokeName, "描繪":strokeExpression}
+				attrib={
+					"名稱": stroke.getName(),
+					"描繪": stroke.getExpression(),
+					"字面框": str(stroke.getInfoPane()),
+					}
 				ET.SubElement(drawingNode, "筆劃", attrib)
 
 		xmlNode=ET.ElementTree(rootNode)
