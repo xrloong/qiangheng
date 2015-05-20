@@ -1,5 +1,5 @@
 
-VERSION	=	0.27
+VERSION	=	0.30
 IMLIST	=	ar bs cj dy fc zm
 DMLIST	=	dc
 PLATFORM_LIST	=	puretable scim gcin msim
