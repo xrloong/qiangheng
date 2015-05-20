@@ -52,14 +52,14 @@ class FCCodeInfo(CodeInfo):
 		return "%s%s%s%s"%(self.getTopLeft(), self.getTopRight(), self.getBottomLeft(), self.getBottomRight())
 
 	def getTopLeft(self):
-		return self._top_left
+		return self._top_left if self._top_left not in ['a', 'b', 'c'] else '0'
 
 	def getTopRight(self):
-		return self._top_right
+		return self._top_right if self._top_right not in ['a', 'b', 'c'] else '0'
 
 	def getBottomLeft(self):
-		return self._bottom_left
+		return self._bottom_left if self._bottom_left not in ['a', 'b', 'c'] else '0'
 
 	def getBottomRight(self):
-		return self._bottom_right
+		return self._bottom_right if self._bottom_right not in ['a', 'b', 'c'] else '0'
 
