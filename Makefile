@@ -11,6 +11,7 @@ IBUS_PATH	=	$(TABLES_PATH)/ibus
 GCIN_PATH	=	$(TABLES_PATH)/gcin
 OVIM_PATH	=	$(TABLES_PATH)/ovim
 MSIM_PATH	=	$(TABLES_PATH)/msim
+SVG_PATH	=	font/svg
 QHDATA_PATH			=	qhdata
 QHDATA_MAIN_PATH		=	$(QHDATA_PATH)/main
 QHDATA_MAIN_COMP_PATH		=	$(QHDATA_MAIN_PATH)/component
@@ -192,6 +193,11 @@ $(MSIM_PATH): $(XML_PATH)
 	done
 	touch $(MSIM_PATH)
 
+svg: $(SVG_PATH)
+$(SVG_PATH): $(XML_PATH)
+	mkdir -p $(SVG_PATH)
+	src/hanzitk.py -g svg -i tables/puretable/qhdc-standard.txt
+
 puretable: $(PURETABLE_PATH)
 $(PURETABLE_PATH): $(XML_PATH)
 	mkdir -p $(PURETABLE_PATH)
@@ -224,17 +230,19 @@ all-icons:
 	mkdir -p $(SCIM_ICON_PATH) $(GCIN_ICON_PATH) $(OVIM_ICON_PATH) $(MSIM_ICON_PATH) $(IBUS_ICON_PATH)
 	for im in $(IMLIST);\
 	do\
-		inkscape -D -w 48 -h 48 -e $(SCIM_ICON_PATH)/qh$$im.png $(ICON_ORIGIN_PATH)/qh$$im.svg;\
-		inkscape -D -w 30 -h 30 -e $(GCIN_ICON_PATH)/qh$$im.png $(ICON_ORIGIN_PATH)/qh$$im.svg;\
-		inkscape -D -w 48 -h 48 -e $(OVIM_ICON_PATH)/qh$$im.png $(ICON_ORIGIN_PATH)/qh$$im.svg;\
+		convert -resize 48x48 $(ICON_ORIGIN_PATH)/qh$$im.svg $(SCIM_ICON_PATH)/qh$$im.png;\
+		convert -resize 48x48 $(ICON_ORIGIN_PATH)/qh$$im.svg $(GCIN_ICON_PATH)/qh$$im.png;\
+		convert -resize 48x48 $(ICON_ORIGIN_PATH)/qh$$im.svg $(OVIM_ICON_PATH)/qh$$im.png;\
 		cp $(ICON_ORIGIN_PATH)/qh$$im.svg $(IBUS_ICON_PATH)/qh$$im.png;\
 	done
-	inkscape -D -w 64 -h 64 -e $(ICON_PLATFORM_PATH)/qiangheng.png $(ICON_ORIGIN_PATH)/qiangheng.svg;
+	convert -resize 64x64 $(ICON_ORIGIN_PATH)/qiangheng.svg $(ICON_PLATFORM_PATH)/qiangheng.png;
 
 tarballs: pre-tarballs pdf tarball-src tarball-all
 	make tarball-src VERSION=$(VERSION)
+	make prepare
 	make xml puretable
 	make imtables
+	make svg
 	make tarballs-platform VERSION=$(VERSION)
 	make tarball-all VERSION=$(VERSION)
 
@@ -254,6 +262,7 @@ tarballs-platform: all-icons
 	tar cjf $(TARBALLS_PATH)/qiangheng-gcin-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(GCIN_PATH)/*.gtab $(ICON_PATH) tex/qiangheng.pdf README.txt
 	tar cjf $(TARBALLS_PATH)/qiangheng-ovim-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(OVIM_PATH)/*.cin $(ICON_PATH) tex/qiangheng.pdf README.txt
 	tar cjf $(TARBALLS_PATH)/qiangheng-msim-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(MSIM_PATH)/*.txt $(ICON_PATH) tex/qiangheng.pdf README.txt
+	tar cjf $(TARBALLS_PATH)/qiangheng-svg-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) font/svg/* tex/qiangheng.pdf README.txt
 
 tarball-all:
 	tar cjf $(TARBALLS_PATH)/qiangheng-$(VERSION).tar.bz2 --exclude-vcs --exclude=tarballs -C .. qiangheng
