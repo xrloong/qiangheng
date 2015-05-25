@@ -24,6 +24,11 @@ class DCStrokeGroup(StrokeGroup):
 		strokeGroup=DCStrokeGroup(strokeGroupInfo)
 		return strokeGroup
 
+	@staticmethod
+	def generateStrokeGroupByParameter(strokeList, bBox):
+		strokeGroupInfo=StrokeGroupInfo(strokeList, Pane(bBox))
+		return DCStrokeGroup(strokeGroupInfo)
+
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"
 
