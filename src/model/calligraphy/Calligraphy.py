@@ -213,17 +213,12 @@ class Stroke(Drawing):
 		return stroke
 
 	@staticmethod
-	def generateStrokeInfo(name, startPoint, parameterList, bBox):
+	def generateStroke(name, startPoint, parameterList, bBox):
 		clsStrokeInfo = StrokeInfoMap.get(name, None)
 		assert clsStrokeInfo!=None
 
 		parameterList = clsStrokeInfo.parseExpression(parameterList)
 		strokeInfo = clsStrokeInfo(name, startPoint, parameterList, Pane(bBox))
-		return strokeInfo
-
-	@staticmethod
-	def generateStroke(name, startPoint, parameterList, bBox):
-		strokeInfo = Stroke.generateStrokeInfo(name, startPoint, parameterList, bBox)
 		return Stroke(strokeInfo)
 
 	def getExpression(self):
@@ -291,8 +286,9 @@ class StrokeGroup(Drawing):
 	def getCount(self):
 		return len(self.getStrokeList())
 
-	def generateStrokeGroup(self, pane):
-		strokeGroup=self.clone()
+	@staticmethod
+	def generateStrokeGroup(sg, pane):
+		strokeGroup=sg.clone()
 
 		newSgTargetPane=pane
 		sgTargetPane=strokeGroup.getStatePane()
@@ -319,7 +315,7 @@ class StrokeGroup(Drawing):
 		resultStrokeList=[]
 		paneList=[]
 		for strokeGroup, pane in strokeGroupPanePair:
-			strokeGroup=strokeGroup.generateStrokeGroup(pane)
+			strokeGroup=StrokeGroup.generateStrokeGroup(strokeGroup, pane)
 			resultStrokeList.extend(strokeGroup.getStrokeList())
 			paneList.append(strokeGroup.getInfoPane())
 
