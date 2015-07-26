@@ -1,5 +1,4 @@
-
-from im.GuiXie.GXCodeInfo import GXCodeInfo
+from model.im.GuiXie.GXCodeInfo import GXCodeInfo
 
 import unittest
 

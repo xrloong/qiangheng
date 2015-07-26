@@ -1,5 +1,4 @@
-
-from im.ZhengMa.ZMCodeInfo import ZMCodeInfo
+from model.im.ZhengMa.ZMCodeInfo import ZMCodeInfo
 
 import unittest
 

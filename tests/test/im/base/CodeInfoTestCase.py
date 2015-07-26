@@ -1,5 +1,4 @@
-
-from im.base.CodeInfo import CodeInfo
+from model.base.CodeInfo import CodeInfo
 import unittest
 
 class CodeInfoTestCase(unittest.TestCase):

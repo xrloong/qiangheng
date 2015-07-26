@@ -1,5 +1,4 @@
-
-from im.FourCorner.FCCodeInfo import FCCodeInfo
+from model.im.FourCorner.FCCodeInfo import FCCodeInfo
 
 import unittest
 

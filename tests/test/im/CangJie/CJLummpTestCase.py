@@ -1,4 +1,4 @@
-from im.CangJie.CJLump import CJLump
+from model.im.CangJie.CJLump import CJLump
 #import im.CangJie.CJLump
 
 import unittest

@@ -1,5 +1,4 @@
-
-from im.DaYi.DYCodeInfo import DYCodeInfo
+from model.im.DaYi.DYCodeInfo import DYCodeInfo
 
 import unittest
 
