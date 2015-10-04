@@ -3,10 +3,23 @@ from model.calligraphy.Calligraphy import Pane
 from model.calligraphy.Calligraphy import StrokeGroup
 from model.calligraphy.Calligraphy import StrokeGroupInfo
 
-class DCStrokeGroup(StrokeGroup):
+class DCStrokeGroup:
 	def __init__(self, strokeGroupInfo):
-		super().__init__(strokeGroupInfo)
+		self.strokeGroup=StrokeGroup(strokeGroupInfo)
+		self.strokeGroupInfo=strokeGroupInfo
 		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.EMBOX}
+
+	def getCount(self):
+		return self.strokeGroup.getCount()
+
+	def getStrokeGroup(self):
+		return self.strokeGroup
+
+	def getStrokeList(self):
+		return self.strokeGroup.getStrokeList()
+
+	def generateStrokeGroup(self, pane):
+		return StrokeGroup.generateStrokeGroup(self.strokeGroup, pane)
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
@@ -19,10 +32,16 @@ class DCStrokeGroup(StrokeGroup):
 		return self.extraPaneDB.get(paneName, None)
 
 	@staticmethod
-	def generateDefaultStrokeGroup(strokeGroupPanePair):
+	def generateDefaultStrokeGroup(dcStrokeGroupPanePair):
+		strokeGroupPanePair=[(pair[0].getStrokeGroup(), pair[1]) for pair in dcStrokeGroupPanePair]
 		strokeGroupInfo=StrokeGroup.generateStrokeGroupInfo(strokeGroupPanePair)
 		strokeGroup=DCStrokeGroup(strokeGroupInfo)
 		return strokeGroup
+
+	@staticmethod
+	def generateStrokeGroupByParameter(strokeList, bBox):
+		strokeGroupInfo=StrokeGroupInfo(strokeList, Pane(bBox))
+		return DCStrokeGroup(strokeGroupInfo)
 
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"

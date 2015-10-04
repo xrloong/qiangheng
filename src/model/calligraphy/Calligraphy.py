@@ -176,35 +176,50 @@ Pane.BBOX=Pane([
 	])
 
 
-class StrokeState:
-	def __init__(self, targetPane=Pane()):
-		self.targetPane=targetPane
+class Drawing:
+	def __init__(self, pane):
+		self.infoPane=pane
+		self.statePane=pane
 
-	def clone(self):
-		return StrokeState(self.targetPane.clone())
+	def getDrawingList(self):
+		return []
 
-	def getTargetPane(self):
-		return self.targetPane
+	def getInfoPane(self):
+		return self.infoPane
 
-class Stroke:
-	def __init__(self, strokeInfo, state=None):
+	def getStatePane(self):
+		return self.statePane
+
+	def setInfoPane(self, pane):
+		self.infoPane=pane
+
+	def setStatePane(self, pane):
+		self.statePane=pane
+
+	def transformBy(self, sgTargetPane, newSgTargetPane):
+		sTargetPane=self.getStatePane()
+		newSTargetPane=sgTargetPane.transformRelativePaneByTargetPane(sTargetPane, newSgTargetPane)
+		self.setStatePane(newSTargetPane)
+
+class Stroke(Drawing):
+	def __init__(self, strokeInfo):
+		pane=strokeInfo.getBBoxPane()
+		super().__init__(pane)
 		self.strokeInfo=strokeInfo
-		if state:
-			self.state=state
-		else:
-			self.state=StrokeState(strokeInfo.getBBoxPane())
 
 	def clone(self):
-		return Stroke(self.strokeInfo, self.state.clone())
+		stroke=Stroke(self.strokeInfo)
+		stroke.setStatePane(self.getStatePane())
+		return stroke
 
 	@staticmethod
-	def generateStrokeInfo(name, startPoint, parameterList, bBox):
+	def generateStroke(name, startPoint, parameterList, bBox):
 		clsStrokeInfo = StrokeInfoMap.get(name, None)
 		assert clsStrokeInfo!=None
 
 		parameterList = clsStrokeInfo.parseExpression(parameterList)
 		strokeInfo = clsStrokeInfo(name, startPoint, parameterList, Pane(bBox))
-		return strokeInfo
+		return Stroke(strokeInfo)
 
 	def getExpression(self):
 		def encodeStroke(stroke):
@@ -227,46 +242,21 @@ class Stroke:
 	def getName(self):
 		return self.getStrokeInfo().getName()
 
-	def getState(self):
-		return self.state
-
 	def getStrokeInfo(self):
 		return self.strokeInfo
 
-	def isValid(self):
-		return self.strokeInfo.isValid()
-
-	# 多型
-	def transform(self, pane):
-		pane.transformPane(self.state.getTargetPane())
-
-	def transformBy(self, sgTargetPane, newSgTargetPane):
-		sTargetPane=self.state.targetPane
-		newSTargetPane=sgTargetPane.transformRelativePaneByTargetPane(sTargetPane, newSgTargetPane)
-		self.state.targetPane=newSTargetPane
-
-	def getPointsOnPane(self, pane):
+	def getPoints(self):
+		pane=self.getStatePane()
 		startPoint=self.strokeInfo.getStartPoint()
 		points=self.strokeInfo.computePoints(startPoint)
 		bBoxPane=self.getInfoPane()
 		newPoints = [(isCurve, bBoxPane.transformRelativePointByTargetPane(point, pane)) for (isCurve, point) in points]
 		return newPoints
 
-	def getPoints(self):
-		strokeState=self.getState()
-		pane=strokeState.getTargetPane()
-		return self.getPointsOnPane(pane)
-
-	def getInfoPane(self):
-		return self.strokeInfo.getBBoxPane()
-
-	def getStatePane(self):
-		return self.state.getTargetPane()
-
 class StrokeGroupInfo:
-	def __init__(self, strokeList, bBox):
+	def __init__(self, strokeList, bBoxPane):
 		self.strokeList=strokeList
-		self.bBoxPane=Pane(bBox)
+		self.bBoxPane=bBoxPane
 
 	def getStrokeList(self):
 		return self.strokeList
@@ -274,43 +264,21 @@ class StrokeGroupInfo:
 	def getBBoxPane(self):
 		return self.bBoxPane
 
-	def setBBoxPane(self, bBoxPane):
-		self.bBoxPane=bBoxPane
-
-class StrokeGroupState:
-	def __init__(self, targetPane=Pane()):
-		self.targetPane=targetPane
-
-	def clone(self):
-		return StrokeState(self.targetPane.clone())
-
-	def getTargetPane(self):
-		return self.targetPane
-
-class StrokeGroup:
-	def __init__(self, strokeGroupInfo, state=None):
+class StrokeGroup(Drawing):
+	def __init__(self, strokeGroupInfo):
+		pane=strokeGroupInfo.getBBoxPane()
+		super().__init__(pane)
 		self.strokeGroupInfo=strokeGroupInfo
-		if state:
-			self.state=state
-		else:
-			self.state=StrokeGroupState(strokeGroupInfo.getBBoxPane())
 
 	def clone(self):
 		strokeList=[s.clone() for s in self.getStrokeList()]
-		strokeGroupInfo=StrokeGroupInfo(strokeList, self.getInfoPane().getAsList())
-		return StrokeGroup(strokeGroupInfo, self.state.clone())
+		strokeGroupInfo=StrokeGroupInfo(strokeList, self.getInfoPane())
+		strokeGroup=StrokeGroup(strokeGroupInfo)
+		strokeGroup.setStatePane(self.getStatePane())
+		return strokeGroup
 
-	def getInfoPane(self):
-		return self.strokeGroupInfo.getBBoxPane()
-
-	def getStatePane(self):
-		return self.state.getTargetPane()
-
-	def setInfoPane(self, pane):
-		self.strokeGroupInfo.setBBoxPane(pane)
-
-	def setStatePane(self, pane):
-		self.state.targetPane=pane
+	def getDrawingList(self):
+		return self.getStrokeList()
 
 	def getStrokeList(self):
 		return self.strokeGroupInfo.getStrokeList()
@@ -318,24 +286,21 @@ class StrokeGroup:
 	def getCount(self):
 		return len(self.getStrokeList())
 
-	def isValid(self):
-		return all([stroke.isValid() for stroke in self.getStrokeList()])
+	@staticmethod
+	def generateStrokeGroup(sg, pane):
+		strokeGroup=sg.clone()
 
-	# 多型
-	def transform(self, newSgTargetPane):
-		sgTargetPane=self.getStatePane()
-		sgInfoPane=self.getInfoPane()
-		for stroke in self.getStrokeList():
-			sTargetPane=stroke.getStatePane()
-			sInfoPane=stroke.getInfoPane()
-			stroke.transformBy(sgInfoPane, newSgTargetPane)
+		newSgTargetPane=pane
+		sgTargetPane=strokeGroup.getStatePane()
+		sgInfoPane=strokeGroup.getInfoPane()
+		for drawing in strokeGroup.getDrawingList():
+			sTargetPane=drawing.getStatePane()
+			sInfoPane=drawing.getInfoPane()
+			drawing.transformBy(sgInfoPane, newSgTargetPane)
 
-		self.setStatePane(newSgTargetPane)
-		self.setInfoPane(newSgTargetPane)
+		strokeGroup.setStatePane(newSgTargetPane)
+		strokeGroup.setInfoPane(newSgTargetPane)
 
-	def generateStrokeGroup(self, pane):
-		strokeGroup=self.clone()
-		strokeGroup.transform(pane)
 		return strokeGroup
 
 	@staticmethod
@@ -350,12 +315,12 @@ class StrokeGroup:
 		resultStrokeList=[]
 		paneList=[]
 		for strokeGroup, pane in strokeGroupPanePair:
-			strokeGroup=strokeGroup.generateStrokeGroup(pane)
+			strokeGroup=StrokeGroup.generateStrokeGroup(strokeGroup, pane)
 			resultStrokeList.extend(strokeGroup.getStrokeList())
 			paneList.append(strokeGroup.getInfoPane())
 
 		pane=computeBBox(paneList)
-		strokeGroupInfo=StrokeGroupInfo(resultStrokeList, pane.getAsList())
+		strokeGroupInfo=StrokeGroupInfo(resultStrokeList, pane)
 
 		return strokeGroupInfo
 
