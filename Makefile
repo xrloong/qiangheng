@@ -251,10 +251,9 @@ pre-tarballs:
 	mkdir -p $(TARBALLS_PATH)
 
 tarball-src:
-	mkdir -p tmp
-	git ls-files > tmp/files.list
-	echo tex/qiangheng.pdf >> tmp/files.list
-	tar cjf $(TARBALLS_PATH)/qiangheng-src-$(VERSION).tar.bz2 --exclude-vcs --no-recursion $(XFORM) -T tmp/files.list
+	git archive --format=tar -o $(TARBALLS_PATH)/qiangheng-src-$(VERSION).tar HEAD
+	tar -rf $(TARBALLS_PATH)/qiangheng-src-$(VERSION).tar tex/qiangheng.pdf
+	bzip2 -c $(TARBALLS_PATH)/qiangheng-src-$(VERSION).tar > $(TARBALLS_PATH)/qiangheng-src-$(VERSION).tar.bz2
 
 tarballs-platform: all-icons
 	tar cjf $(TARBALLS_PATH)/qiangheng-scim-$(VERSION).tar.bz2 --exclude-vcs $(XFORM) $(SCIM_PATH)/*.bin $(ICON_PATH) tex/qiangheng.pdf README.txt
