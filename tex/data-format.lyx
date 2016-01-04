@@ -1,0 +1,1517 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass scrreprt
+\begin_preamble
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK TC}
+
+\usepackage{CJKnumb}
+
+\usepackage{url}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "瑲珩"
+\pdf_author "王湘叡"
+\pdf_subject "動態拆碼及動態組字"
+\pdf_keywords "動態拆碼, 動態組字"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\branch comparison
+\selected 0
+\filename_suffix 1
+\color #faf0e6
+\end_branch
+\branch complex terms
+\selected 0
+\filename_suffix 0
+\color #00aaff
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+資料格式
+\end_layout
+
+\begin_layout Standard
+要理解瑲珩的資料格式，須要有一些基本的觀念。
+\end_layout
+
+\begin_layout Standard
+要描述一個字符，最主要需要的資訊為其所組成的“部件”以及這些部件的“結合方式”。以“曉”這個字為例，其可以分解成“日”和“堯”，而其結合方式為左右結合。
+\end_layout
+
+\begin_layout Standard
+為方便說明，使用“運算”一術語來稱謂“結合方式”。運算可以分兩種：一為內建的運算，一為“範本”。所謂的範本，即為用來描述一種模式。我們可以發現，很多字是具有類似
+的模式，如：“品”、“晶”、“犇”都是三個相同的部件組成品字形。又如：“贏”、“嬴”、“羸”都是類似結構。範本就是指由內建運算所建立的模式。
+\end_layout
+
+\begin_layout Standard
+此外，再以之前提到的“筆劃”來做說明。“曉”字可拆解成“日”和“堯”。因此，要計算“曉”的筆劃數，可以由“日”的筆劃數加上“堯”的筆劃數。然而，要計算“日”的筆
+劃數，則要一筆劃一筆劃地計數。也就是，我們可以分成兩種部件，一種是可拆解的，另一種是不可拆解的。
+\end_layout
+
+\begin_layout Standard
+對於合體字而言，其描述通常是與輸入法相獨立的。如“曉”字可拆成“日”和“堯”，這點對任何輸入法都是一樣的。
+\end_layout
+
+\begin_layout Standard
+而對於獨體字而言，其資訊則跟輸入法有關。如：對計算筆劃而言，“日”為四劃，對倉頡而言，日的拆碼為日(a)，而對鄭碼而言，則為 k 。
+\end_layout
+
+\begin_layout Standard
+在區分獨體字和合體字後。上面所說，合體字的描述通常是與輸入法相獨立的，這點是不完全對的。不同的輸入法有時也會對一些字有不同的拆解看法。如“亘”這個字，在倉頡中的
+看法是由“一”、“日”、“一”所組成，而在鄭碼中則視為“二”、“日”所組成。
+\end_layout
+
+\begin_layout Standard
+縱合上述，將拆碼過程分為三步驟：一、通用型拆碼，對大部分的輸入法都適用。將字拆成組件。二、將組件拆成字根。三、對組件編碼。
+\end_layout
+
+\begin_layout Standard
+瑲珩定義了許多資料，資料位於 qhdata/ 。瑲珩資料檔分以幾種：
+\end_layout
+
+\begin_layout Enumerate
+設定檔：位於 config/。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+說明一個輸入法或動態組字包含了哪些檔案。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+結構檔：位於 main/ 及 main/component。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+若同一個字符在不同目錄皆有定義，則以較後者。其中 main/ 及 main/component 為所有輸入法共通的結構。 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+範本檔：template/ 。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+定義範本。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+字根描述檔：{輸入法}/radix/。定義各字根。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+因各輸入法有不同的字根屬性，因此，沒有共通格式。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+屬性檔：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+位於 frequency/ 。說明一個字符的屬性，目前只有字頻。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+其它：如設定檔在 config/。
+\end_layout
+
+\begin_layout Standard
+結構檔的格式大略如下：
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+	<瑲珩 版本號="0.3" 文件類型="組字">
+\end_layout
+
+\begin_layout Plain Layout
+
+		<字符集>
+\end_layout
+
+\begin_layout Plain Layout
+
+			<!--4E00-->
+\end_layout
+
+\begin_layout Plain Layout
+
+			<字符 名稱="一" 註記="U+4E00">
+\end_layout
+
+\begin_layout Plain Layout
+
+				<組字/>
+\end_layout
+
+\begin_layout Plain Layout
+
+			</字符>
+\end_layout
+
+\begin_layout Plain Layout
+
+			<字符 名稱="相" 註記="U+76F8">
+\end_layout
+
+\begin_layout Plain Layout
+
+				<組字 運算="範好">
+\end_layout
+
+\begin_layout Plain Layout
+
+					<字根 置換="木"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+					<字根 置換="目"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+				</組字>
+\end_layout
+
+\begin_layout Plain Layout
+
+			</字符>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</字符集>
+\end_layout
+
+\begin_layout Plain Layout
+
+	</瑲珩>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+其中，使用`<字符>'來說要為哪個字符定義結構。意味著：`相'這個字是由`木'與`目'這兩個字以"範好"的方式所組成。 "範好"是由一個定義在範本中的運算，是指
+由兩個字左右組合。
+\end_layout
+
+\begin_layout Standard
+範本檔示例如下：
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+	<範本 名稱="範好">
+\end_layout
+
+\begin_layout Plain Layout
+
+		<參數列>
+\end_layout
+
+\begin_layout Plain Layout
+
+			<參數 名稱="女"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+			<參數 名稱="子"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</參數列>
+\end_layout
+
+\begin_layout Plain Layout
+
+		<組字結構>
+\end_layout
+
+\begin_layout Plain Layout
+
+			<組字 運算="鴻">
+\end_layout
+
+\begin_layout Plain Layout
+
+				<字根 置換="女"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+				<字根 置換="子"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+			</組字>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</組字結構>
+\end_layout
+
+\begin_layout Plain Layout
+
+	</範本>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+運算與範本
+\end_layout
+
+\begin_layout Standard
+本計劃所定義及內建的運算有：
+\end_layout
+
+\begin_layout Enumerate
+`龜'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+標示此部件無法被分解。如：木
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`爲'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+此部件等同另一部件。如：釒即為金。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`龍'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由多個部件結合成一個合體組件，沒有一定方向性。如：畞
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`東'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由多個部件結合成一個獨體組件。如：東。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`蚕'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由多個部件呈現“縱向”的結合。如：想、臱。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`鴻'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由多個部件呈現“橫向”的結合。如：相、湘。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`回'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由多個部件呈現“包含”的結合。如：國、困。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`起'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，呈現左下－右上的形式。如：趙、題。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`廖'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，呈現左上－右下的形式。如：病、厄。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`載'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，呈現右上－左下的形式。如：或，哉。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`斗'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，呈現右下－左上的形式。無例字。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`同'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，其中一個部件以三面包圍的方式圍住另一部件，開口向下。如：問、鳳。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`函'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，其中一個部件以三面包圍的方式圍住另一部件，開口向上。如：凶、函。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`區'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，其中一個部件以三面包圍的方式圍住另一部件，開口向右。如：匠、匿。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`左'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，其中一個部件以三面包圍的方式圍住另一部件，開口向左。無例字。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`衍'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，其中一個部件可拆成左右兩個小部件以夾住另一個部件。如：街、胤。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`衷'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由兩個部件組合，其中一個部件可拆成上下兩個小部件以夾住另一個部件。如：衷、裏。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`粦'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由三個部件組合，呈三角形排序。如：森。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`瓥'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由四個部件組合，呈田字形排序。如：歰、蠽。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`畞'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+使用三個部件。如：畞。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`㘴'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+使用三個部件。如：㘴。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`幽'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+使用三個部件。如：豳。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`㒳'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+使用三個部件。如：繭。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`夾'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+使用三個部件。如：乖、爽。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`䜌'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由三個部件以左右結合的方式組成，且左邊和右邊是相同部件，由中間先書寫。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`辦'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+由三個部件以左右結合的方式組成，且左邊和右邊是相同部件，由左邊先書寫。
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+此外，對於漢字的最常見的幾種模式，在此列表如下：
+\end_layout
+
+\begin_layout Enumerate
+`範好'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+兩個部件左右結合。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範志'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+兩個部件上下結合。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範湘'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+三個部件左右結合。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範算'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+三個部件上下結合。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範膷'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+四個部件左右結合。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範纂'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+四個部件上下結合。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範舝'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+五個部件上下結合。
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+對於漢字的最常見的幾種重複模式，在此列表如下：
+\end_layout
+
+\begin_layout Enumerate
+`範林'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+兩個相同的部件左右結合。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範圭'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+兩個相同的部件上下結合。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範㴇'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+三個相同的部件左右結合。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範鑫'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+三個相同的部件成品字排列。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範燚'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+四個相同部件成田字排列。
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+一些字有類似的複雜結構，如：
+\end_layout
+
+\begin_layout Enumerate
+`範贏'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+類似“贏”的結構，如：“嬴”、“羸”。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+`範微'：
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+類似“微”的結構，如：“微”、“徽”。
+\end_layout
+
+\end_deeper
+\begin_layout Section
+動態組字
+\end_layout
+
+\begin_layout Standard
+與其他輸入法相同的是，動態組字使用一樣的結構描述。 只有在字根的部份訂定自己的格式。
+\end_layout
+
+\begin_layout Standard
+其基本格式如下：
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+	<瑲珩 版本號="0.3" 文件類型="字根" 輸入法="動態組字">
+\end_layout
+
+\begin_layout Plain Layout
+
+		<筆劃集>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</筆劃集>
+\end_layout
+
+\begin_layout Plain Layout
+
+		<字根集>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</字根集>
+\end_layout
+
+\begin_layout Plain Layout
+
+		<字符集>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</字符集>
+\end_layout
+
+\begin_layout Plain Layout
+
+	</瑲珩>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+其中，`<筆劃集>'預計用來定義常見筆劃，但目前並未使用。 其中，`<字根集>'預計用來定義常見字根。 其中，`<字符集>'預計用來定義常見字符。
+\end_layout
+
+\begin_layout Standard
+這裡的字符指的是可以用來作用運算的部件。 這裡的字根指的是可以用來構成字符的部件。
+\end_layout
+
+\begin_layout Standard
+字根示例如下
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+	<筆劃集>
+\end_layout
+
+\begin_layout Plain Layout
+
+		<字根 名稱="$口" 註記="U+53E3">
+\end_layout
+
+\begin_layout Plain Layout
+
+			<筆劃組 名稱="$口%1">
+\end_layout
+
+\begin_layout Plain Layout
+
+				<幾何 範圍="0000FFFF"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+				<筆劃 範圍="0000FFFF" 名稱="$口#1" 資訊表示式="(豎)00002E34,00012EC9"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+				<筆劃 範圍="0000FFFF" 名稱="$口#2" 資訊表示式="(橫折)00002E34,0001CE34,0001CEC9"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+				<筆劃 範圍="0000FFFF" 名稱="$口#3" 資訊表示式="(橫)00002EC3,0001CEC3"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+			</筆劃組> 
+\end_layout
+
+\begin_layout Plain Layout
+
+		</字根>
+\end_layout
+
+\begin_layout Plain Layout
+
+	</筆劃集>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+字符示例如下：
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+	<字符集>
+\end_layout
+
+\begin_layout Plain Layout
+
+		<字符 名稱="古" 註記="U+53E4">
+\end_layout
+
+\begin_layout Plain Layout
+
+			<編碼資訊>
+\end_layout
+
+\begin_layout Plain Layout
+
+				<編碼>
+\end_layout
+
+\begin_layout Plain Layout
+
+					<筆劃組>
+\end_layout
+
+\begin_layout Plain Layout
+
+						<幾何 範圍="0000FFFF"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+						<筆劃 範圍="0000FFFF" 資訊表示式="(橫)00001048,0001DF48"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+						<筆劃 範圍="0000FFFF" 資訊表示式="(豎)00007519,0001758A"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+						<筆劃 範圍="0080FFFF" 資訊表示式="$口%1"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+					</筆劃組>
+\end_layout
+
+\begin_layout Plain Layout
+
+				</編碼>
+\end_layout
+
+\begin_layout Plain Layout
+
+			</編碼資訊>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</字符>
+\end_layout
+
+\begin_layout Plain Layout
+
+	</字符集>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+筆劃
+\end_layout
+
+\begin_layout Standard
+一個筆劃是以類似"(橫)00001048,0001DF48"的方式，其中的"(橫)"用來說明這個筆劃的類型。
+\end_layout
+
+\begin_layout Enumerate
+點。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：`主'的第一筆。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+長頓點。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：`下'的最後一筆。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：一。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫折。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫折橫。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫折鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫撇。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫曲鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫撇橫折鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫斜鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫折橫折。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+豎。
+\end_layout
+
+\begin_layout Standard
+示例：`中'的最後一筆。
+\end_layout
+
+\begin_layout Enumerate
+豎折。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+豎挑。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+豎橫折。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+豎橫折鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+豎曲鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+豎鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+臥鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：`心'的第二筆。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+斜鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：`戈'的第二筆。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+彎鉤。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：`手'的最後一筆。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+撇。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+撇頓點。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+撇橫。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+撇挑。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+撇折。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+豎撇。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+挑。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+挑折。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+捺。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+挑捺。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：`乀'。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+橫捺。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：`乁'。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+圓。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+示例：`㔔'的最後一筆。
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+點得描述則為 `AAAAXXYY' 。其中，AAAA表示運算。XX及YY為十六進位，分別表示(x,y)。 AAAA 為 0000, 0001,
+ 0002 。0000為起始，0001為畫到，0002則為曲線的輔助點。
+\end_layout
+
+\begin_layout Subsection
+空間描述
+\end_layout
+
+\begin_layout Standard
+一個字符是由許多部件構成，而彼此所佔空間的比例將影響美觀。 因此空間分配很重要。
+\end_layout
+
+\begin_layout Standard
+有些為較複雜的結構組合，如左下－右上。 如：床=广+木
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename picture/yan.png
+	scale 25
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename picture/mu.png
+	scale 25
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+而兩者組合後的結果如下：
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename picture/chuang_bad.png
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+於是，在描述字形時，同時描述一些空間描述。100
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename picture/yan_extend.png
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+紅色框的部份則是放置其他字符所能使用的範圍。
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+	<字符 名稱="广" 註記="U+5E7F">
+\end_layout
+
+\begin_layout Plain Layout
+
+		<編碼資訊>
+\end_layout
+
+\begin_layout Plain Layout
+
+			<編碼>
+\end_layout
+
+\begin_layout Plain Layout
+
+				<補充範圍 名稱="廖">
+\end_layout
+
+\begin_layout Plain Layout
+
+					<幾何 範圍="3040FFFF"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+				</補充範圍>
+\end_layout
+
+\begin_layout Plain Layout
+
+				<筆劃組>
+\end_layout
+
+\begin_layout Plain Layout
+
+					<幾何 範圍="0000FFFF"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+					<筆劃 範圍="0000FFFF" 資訊表示式="(點)00007318,00018635"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+					<筆劃 範圍="0000FFFF" 資訊表示式="(橫)00002D37,0001E037"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+					<筆劃 範圍="0000FFFF" 資訊表示式="(豎撇)00002C37,00022FD5,00010FEB"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+				</筆劃組>
+\end_layout
+
+\begin_layout Plain Layout
+
+			</編碼>
+\end_layout
+
+\begin_layout Plain Layout
+
+		</編碼資訊>
+\end_layout
+
+\begin_layout Plain Layout
+
+	</字符>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+兩者組合後的結果如下：
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename picture/chuang_good.png
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

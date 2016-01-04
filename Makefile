@@ -222,9 +222,8 @@ $(PURETABLE_PATH): $(XML_PATH)
 
 pdf: tex/qiangheng.pdf
 
-tex/qiangheng.pdf: tex/qiangheng.tex
-	cd tex; rm -f qiangheng.aux qiangheng.log
-	cd tex; xelatex qiangheng.tex; xelatex qiangheng.tex
+tex/qiangheng.pdf: tex/qiangheng.lyx
+	lyx -e pdf4 tex/qiangheng.lyx
 
 all-icons:
 	mkdir -p $(SCIM_ICON_PATH) $(GCIN_ICON_PATH) $(OVIM_ICON_PATH) $(MSIM_ICON_PATH) $(IBUS_ICON_PATH)

@@ -1,0 +1,190 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass scrreprt
+\begin_preamble
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK TC}
+
+\usepackage{CJKnumb}
+\end_preamble
+\use_default_options true
+\master qiangheng.lyx
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+倉頡輸入法
+\end_layout
+
+\begin_layout Subsection
+輸入法說明
+\end_layout
+
+\begin_layout Standard
+倉頡輸入法算是最為複雜的一個輸入法了。主要是倉頡輸入法不只考慮字根，還會考慮字的結構。
+\end_layout
+
+\begin_layout Standard
+倉頡的規則分為整體字和組合字。整體字若不足四碼則全取，否則取首、次、三、尾碼。 若為組合字，字首取首、尾兩碼，字身取首、次、尾三碼。
+\end_layout
+
+\begin_layout Standard
+若字身為組合字，當次字首為一碼時，取次字首和次字身取首、尾兩碼。 否則取次字身取首、尾兩碼和次字身取尾碼。
+\end_layout
+
+\begin_layout Standard
+倉頡的分割，是以視覺上的分割，而非邏輯上的分割，如“順”。對於熟悉中文字的人，會很直覺地分成“川”和“頁”。但倉頡則是分成“丨”及剩下的部分（即`丨丨頁'）。
+\end_layout
+
+\begin_layout Standard
+此外，還要考慮字身的方向性。可分水平、垂直，其它。如“卲”不分為“刀”和“叩”，而是分為“召”和“阝”。 因為“召”的分向為垂直方向，但“卲”的方向為水平。
+\end_layout
+
+\begin_layout Subsection
+遞迴式
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\text{\QhCjList{字}} & \text{＝} & \text{表示一個字的倉頡碼字根串列。}\\
+\text{\QhCjDir{字}} & \text{＝} & \text{表示一個字的字根組成方向。}\\
+\QhCjBody{\text{字}} & \text{＝} & \text{表示一個字當另一個字的字身時的倉頡碼。}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+如
+\begin_inset Formula $\text{\QhCjList{曉}}=[\text{\QhCharacter{日}},\QhCharacter{土},\QhCharacter{\text{土}},\QhCharacter{山}]$
+\end_inset
+
+、
+\begin_inset Formula $\QhCjDir{\text{曉}}=`-'$
+\end_inset
+
+、
+\begin_inset Formula $\QhCjBody{\text{曉}}=[\text{\QhCharacter{日}},\QhCharacter{\text{土}},\QhCharacter{\text{山}}]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\text{\QhCjMerge{字}{甲}} & \text{＝} & \begin{cases}
+\text{\QhCjList{甲}} & \text{\QhCjDir{甲}}\text{＝}\text{\QhCjDir{字}}\\
+\text{[\QhCjBody{甲}]} & \text{\QhCjDir{甲}}\neq\text{\QhCjDir{字}}
+\end{cases}\\
+\QhCjBody{\text{丙}} & \text{＝} & \text{\QhCjMerge{\text{丙}}{甲}+\QhCjMerge{\text{丙}}{\text{乙}}}\\
+\text{\QhCjDir{丙}} & \text{＝} & \text{由丙的組成方式計算出方向。}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+注意事項
+\end_layout
+
+\begin_layout Standard
+倉頡對於字根的取碼有特殊規定。 若字本身為輔助字根，則不能直接取碼。
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+如“氵”為“水”的輔助字根，“工”為“一”的輔助字助。
+\end_layout
+
+\begin_layout Plain Layout
+在“江”時，其倉頡碼為“水一”
+\end_layout
+
+\begin_layout Plain Layout
+但若“氵”當獨立字時，則要取碼“卜一”
+\end_layout
+
+\begin_layout Plain Layout
+若“工”當獨立字時，則要取碼“一中一”
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
