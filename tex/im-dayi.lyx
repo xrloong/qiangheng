@@ -364,7 +364,7 @@ DFFQ
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\text{\QhDyRule} & = & \text{\QhRuleThreeOne}
+\QhDyRule & = & \text{\QhRuleThreeOne}
 \end{eqnarray*}
 
 \end_inset
@@ -381,6 +381,30 @@ DFFQ
 \begin{eqnarray*}
 \text{\QhDy{\text{丙}}} & = & \text{\text{\QhDyRule(\QhDy{\text{甲}}\oplus\ensuremath{\QhDy{\text{乙}}})}}
 \end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+字根表
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename picture/im-dayi-radix-1.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename picture/im-dayi-radix-2.png
+	scale 50
 
 \end_inset
 

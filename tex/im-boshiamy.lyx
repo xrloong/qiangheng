@@ -95,19 +95,19 @@
 
 \begin_layout Standard
 使用
-\begin_inset Formula $\text{\QhBsSupplement字}$
+\begin_inset Formula $\text{\QhBsSupplement{字}}$
 \end_inset
 
 來表示一個字的嘸蝦米補碼。 使用
-\begin_inset Formula $\text{\QhBs\text{字}}$
+\begin_inset Formula $\text{\QhBs{\text{字}}}$
 \end_inset
 
 來表示一個字的嘸蝦米碼。
-\begin_inset Formula $\QhBs\text{垚}=YYY$
+\begin_inset Formula $\QhBs{\text{垚}}=YYY$
 \end_inset
 
 、
-\begin_inset Formula $\QhBsSupplement\text{兀}=L$
+\begin_inset Formula $\QhBsSupplement{\text{兀}}=L$
 \end_inset
 
  則
@@ -116,15 +116,15 @@
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\text{\QhBs字} & = & \text{嘸蝦米碼}\\
-\QhBsSupplement\text{字} & = & \text{\text{嘸蝦米補碼}}\\
-\QhBsTemp\text{字} & = & \text{嘸蝦米暫時碼，即沒有補碼}\\
-\QhBs\text{字} & = & \begin{cases}
-\QhBsTemp\text{字} & \QhBsSupplement\text{字}\geq3\\
-\QhBsTemp\text{字}+\QhBsSupplement\text{字} & \QhBsSupplement\text{字}\leq2
+\text{\QhBs{字}} & = & \text{嘸蝦米碼}\\
+\QhBsSupplement{\text{字}} & = & \text{\text{嘸蝦米補碼}}\\
+\QhBsTemp{\text{字}} & = & \text{嘸蝦米暫時碼，即沒有補碼}\\
+\QhBs{\text{字}} & = & \begin{cases}
+\QhBsTemp{\text{字}} & \QhBsSupplement{\text{字}}\geq3\\
+\QhBsTemp{\text{字}}+\QhBsSupplement{\text{字}} & \QhBsSupplement{\text{字}}\leq2
 \end{cases}\\
 \text{甲\oplus乙} & = & \text{取(甲+乙)的前三後一碼}\\
-\text{\QhBsRlist\text{字}} & = & \text{將字拆成嘸蝦米字根所構成的串列}
+\text{\QhBsRlist{\text{字}}} & = & \text{將字拆成嘸蝦米字根所構成的串列}
 \end{eqnarray*}
 
 \end_inset
@@ -134,7 +134,7 @@
 
 \begin_layout Standard
 若
-\begin_inset Formula $\text{\QhCharacter丙=甲}\oplus\text{乙}$
+\begin_inset Formula $\text{\QhCharacter{丙}=甲}\oplus\text{乙}$
 \end_inset
 
 ，其遞迴算式為：
@@ -143,7 +143,7 @@
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\text{\QhBsRlist丙} & = & \text{\QhBsRlist甲\oplus\QhBsRlist乙}
+\text{\QhBsRlist{丙}} & = & \text{\QhBsRlist{甲}\oplus\QhBsRlist{乙}}
 \end{eqnarray*}
 
 \end_inset
@@ -173,8 +173,22 @@
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\text{\QhBs丙} & = & \text{\QhBsRule(\QhBs\text{甲}\text{\oplus\QhBs\text{乙}})}
+\text{\QhBs{丙}} & = & \text{\QhBsRule(\QhBs{\text{甲}}\text{\oplus\QhBs{\text{乙}}})}
 \end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+字根表
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename picture/im-boshiamy-radix.png
+	scale 50
 
 \end_inset
 

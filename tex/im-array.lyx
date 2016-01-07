@@ -316,11 +316,11 @@ DFFQ
 
 \begin_layout Standard
 為方便說明起見，使用
-\begin_inset Formula $\text{\QhAr{\text{字}}}$
+\begin_inset Formula $\text{\QhAr字}$
 \end_inset
 
 來表示一個字的行列碼。如：
-\begin_inset Formula $\text{\QhAr{\text{曉}}}$
+\begin_inset Formula $\text{\QhAr\text{曉}}$
 \end_inset
 
 =“PRRS”。
@@ -329,8 +329,8 @@ DFFQ
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\QhAr{字} & = & \text{行列碼}\\
-\QhArRlist{字} & = & \text{將字拆成行列字根所構成的串列}
+\QhAr字 & = & \text{行列碼}\\
+\QhArRlist字 & = & \text{將字拆成行列字根所構成的串列}
 \end{eqnarray*}
 
 \end_inset
@@ -340,7 +340,7 @@ DFFQ
 
 \begin_layout Standard
 若
-\begin_inset Formula $\text{\QhCharacter{\text{\QhCharacter{\text{\QhCharacter{丙}}=\text{\QhCharacter{甲}}}+\QhCharacter{乙}}}}$
+\begin_inset Formula $\text{\QhCharacter\text{\QhCharacter{\text{\QhCharacter丙}=\text{\QhCharacter甲}}+\QhCharacter乙}}$
 \end_inset
 
 ，其遞迴算式分別為：
@@ -349,7 +349,7 @@ DFFQ
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\QhArRlist{丙} & = & \QhArRlist{甲}\oplus\QhArRlist{乙}
+\QhArRlist丙 & = & \QhArRlist甲\oplus\QhArRlist乙
 \end{eqnarray*}
 
 \end_inset
@@ -379,8 +379,22 @@ DFFQ
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\text{\QhAr{\text{丙}}} & = & \text{\text{\QhArRule(\QhAr{\text{甲}}\oplus\ensuremath{\QhAr{\text{乙}}})}}
+\text{\QhAr\text{丙}} & = & \text{\QhArRule(\ensuremath{\QhAr\text{甲}}\oplus\QhAr\text{乙})}
 \end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+字根表
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename picture/im-array-radix.png
+	scale 50
 
 \end_inset
 
