@@ -1,0 +1,256 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options false
+\maintain_unincluded_children false
+\language chinese-traditional
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 0
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhCharacter}[1]{\mbox{#1}}
+{#1}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhIm}[1]{\text{#1}}
+{\text{#1}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhStroke}[1]{#1_{\text{筆}}}
+{#1_{\text{筆}}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhRuleThreeOne}{\text{取碼}_{\text{前三後一}}}
+{\text{取碼}_{\text{前三後一}}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhImRule}[1]{\text{取碼}_{\QhIm{#1}}}
+{\text{取碼}_{\QhIm{#1}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhImList}[2]{\QhCharacter{#1}_{\QhIm{\text{#2,字根串列}}}}
+{\QhCharacter{#1}_{\QhIm{\text{#2,字根串列}}}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhAr}[1]{\QhCharacter{#1}_{\QhIm{行}}}
+{\QhCharacter{#1}_{\QhIm{行}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhArRule}{\QhImRule{\text{行列}}}
+{\text{取碼}_{\QhIm{行列}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhArRlist}[1]{\QhImList{\text{#1}}{\text{行列}}}
+{\QhImList{\text{#1}}{\text{行列}}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhDy}[1]{\QhCharacter{#1}_{\QhIm{易}}}
+{\QhCharacter{#1}_{\QhIm{易}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhDyRule}{\QhImRule{\text{\QhIm{大易}}}}
+{\text{取碼}_{\QhIm{大易}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhDyRlist}[1]{\QhImList{\text{#1}}{\text{大易}}}
+{\QhImList{\text{#1}}{\text{大易}}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhBs}[1]{#1_{\QhIm{嘸}}}
+{#1_{\QhIm{嘸}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhBsRule}{\QhImRule{\text{\QhIm{嘸蝦米}}}}
+{\text{取碼}_{\QhIm{嘸蝦米}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhBsRlist}[1]{\QhImList{\text{#1}}{\text{蝦米}}}
+{\QhImList{\text{#1}}{\text{蝦米}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhBsSupplement}[1]{#1_{\QhIm{嘸補}}}
+{#1_{\QhIm{嘸補}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhBsTemp}[1]{#1_{\QhIm{嘸暫}}}
+{#1_{\QhIm{嘸暫}}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhZm}[1]{#1_{\text{\QhIm{鄭}}}}
+{#1_{\QhIm{\text{鄭}}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhZmRule}{\QhImRule{\text{\QhIm{鄭碼}}}}
+{\text{取碼}_{\QhIm{鄭碼}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhZmRlist}[1]{\QhImList{\text{#1}}{\text{鄭碼}}}
+{\QhImList{\text{#1}}{\text{鄭碼}}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhCj}[1]{#1_{\QhIm{\text{倉}}}}
+{#1_{\QhIm{\text{倉}}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjRule}{\QhImRule{\text{倉頡}}}
+{\text{取碼}_{\QhIm{倉頡}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjList}[1]{\QhImList{\text{#1}}{\text{倉頡}}}
+{\QhImList{\text{#1}}{\text{倉頡}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjDir}[1]{#1_{\QhIm{倉向}}}
+{#1_{\QhIm{倉向}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjBody}[1]{#1_{\QhIm{倉身}}}
+{#1_{\QhIm{倉身}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjMerge}[2]{\oplus_{#1}(#2)}
+{\oplus_{#1}(#2)}
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

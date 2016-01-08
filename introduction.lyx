@@ -1,0 +1,202 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass scrreprt
+\begin_preamble
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK TC}
+
+\usepackage{CJKnumb}
+
+\usepackage{url}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "瑲珩"
+\pdf_author "王湘叡"
+\pdf_subject "動態拆碼及動態組字"
+\pdf_keywords "動態拆碼, 動態組字"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\branch comparison
+\selected 0
+\filename_suffix 1
+\color #faf0e6
+\end_branch
+\branch complex terms
+\selected 0
+\filename_suffix 0
+\color #00aaff
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+引言
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+漢字系統
+\series default
+是一個特別的書寫系統，它利用數千以至上萬種不同的字形來表達各種意義。這些字形可以由數百至一千多種共通字形所構成。具體的構造方法，則闡述於漢字構造的《六書》中的「
+會意」及「形聲」。因為可以藉由組合的方式產生新字，於是就產生了兩個特性：
+\series bold
+開放
+\series default
+、
+\series bold
+數量龐大
+\series default
+。「開放」意味著可以依需求造字，千餘年來不斷有新的字被造出來，這又導致了「數量龐大」的這個特性。目前累積已有約十萬字（包含日本、韓國及越南所造漢字）。而這兩個特
+性則都對漢字的資訊化產生了了一定程度的影響。
+\end_layout
+
+\begin_layout Standard
+通常一種語言要資訊化，要經過以下的步驟：
+\end_layout
+
+\begin_layout Enumerate
+搜集該語言所用到的字形。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+搜集到的字形所成的集合稱做字符集或字集。但因漢字的開放特性，不可能將所有字都搜集。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+賦予每個字形一個獨立的編號（專業的術語稱作
+\series bold
+編碼
+\series default
+）。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+因為電腦擅長處理的是數值而非二維的圖形，所以需要對每個字形編號。於是，原本對人而言的文字的處理，如儲存、搜尋、排序或比對，對電腦而言就是儲存、搜尋、排序或比對數
+值。但因為不可能搜集到所有的字，意味著漏掉的字將無法資訊化。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+產生字形檔，要為每個字形準備相對應的圖。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+電腦可以很輕易地處理數值，但人不行。因此，當電腦處理完數值後，要將結果呈現給人時，需要轉換成人類所能理解的形式。由於數量龐大，要為漢字產生一種字型往往需要耗費大
+量的人力。而如果字符集改變，如新造了或搜集到了一個字，則每種字型需要為此字形再造圖。為了能將大量的工作轉為自動化，於是有了
+\series bold
+動態組字
+\series default
+的研究出現。動態組字的目標在於，利用漢字組字的特性，能動態地將字形產生出來。即我們只要準備一些字根的字形，而電腦自動幫我們產生所有漢字的字形。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+定義輸入法，為每個字形生成輸入碼。
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+大部分語言所定義的字形數都不像漢字系統採取如此龐大的數量，因此在輸入時，通常是使用特殊的鍵盤來容納所有字形，且按壓一個鍵將產生一個字形。然而漢字系統無法採用此種
+方式，因此許多
+\series bold
+字形輸入法
+\series default
+被開發出來。亦即，利用一組「按鍵序列」來產生一個字。然而，因為數量龐大，要為一個字形產生一組輸入法，往往也要耗費大量的人力。又如新造了或搜集到了一個字，則每種字
+形都要再次為此字形拆碼。為了能將大量的工作轉為自動化，就是本計劃的目標，可以視為
+\series bold
+動態拆碼
+\series default
+。
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+而瑲珩的目標則是希望能實現
+\series bold
+動態組字
+\series default
+及
+\series bold
+動態拆碼
+\series default
+。 
+\end_layout
+
+\end_body
+\end_document

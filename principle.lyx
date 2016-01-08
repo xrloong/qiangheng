@@ -1,0 +1,337 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass scrreprt
+\begin_preamble
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK TC}
+
+\usepackage{CJKnumb}
+
+\usepackage{url}
+\end_preamble
+\use_default_options true
+\master qiangheng.lyx
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "瑲珩"
+\pdf_author "王湘叡"
+\pdf_subject "動態拆碼及動態組字"
+\pdf_keywords "動態拆碼, 動態組字"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\branch comparison
+\selected 0
+\filename_suffix 1
+\color #faf0e6
+\end_branch
+\branch complex terms
+\selected 0
+\filename_suffix 0
+\color #00aaff
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+原理
+\end_layout
+
+\begin_layout Standard
+開始之前，我們以漢字的“筆劃數”的這個屬性來做說明。
+\end_layout
+
+\begin_layout Standard
+假設我們需要知道“曉”這個字的筆劃數，最直覺得方法就是：從第一筆（日的第一筆）到最後一筆（兀的最後一筆），一筆一筆地去描繪，在描繪的同時邊計數，最後得到共十六劃
+。
+\end_layout
+
+\begin_layout Standard
+這個方法雖然直覺而且簡單，但若需要算出的不是一“個”字的筆劃數，而是一“群”字（如所有漢字）的筆劃，這個方法就顯得笨拙。首先，我們需要花費大量的人力去做這件事，
+而且過程中極易出錯。其次，每個人可能會使用不同的標準（如對同一個字選擇不同的字形或筆順）。完成之後，也要不少人力去校對。此外，如果在過程中對標準做出修訂，則又要
+重新花費大量的人力做一樣的事。之所以會如此的原因在於這方法沒有充分使用到漢字的特性。在漢字中，大部分的漢字都是由其它漢字或字根所組合出來的。於是，新的漢字具有字
+根的特性。
+\end_layout
+
+\begin_layout Standard
+如果考慮了這個特性，我們可以採用另一個方法：因為
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{“曉”}=\text{“日”}+\text{“堯”}
+\]
+
+\end_inset
+
+若已經知道“日”為四劃而“堯”為十二劃，則只要用加法就可得到“曉”為十六劃了。然而一個問題是：要怎麼才可以知道“日”、“堯”的筆劃數呢？我們一樣可以採用類似的方
+法。因為
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{“堯”}=\text{“垚”}+\text{“兀”}
+\]
+
+\end_inset
+
+也就是如果事先已經知道“垚”為九劃和“兀”為三劃，則用加法就可得到十二劃。同樣地，考慮到
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{“垚”}=\text{“土”}\times3
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+也就是，如果事先已經知道“土”為三劃，則只要用乘法就可得到“垚”為九劃。
+\end_layout
+
+\begin_layout Standard
+於是，最後的問題變成：只要知道“土”、“兀”和“日”的筆劃數，我們就可以算出“曉”的筆劃數。 而要知道“土”、“兀”和“日”的筆劃數，則只能用一筆劃一筆劃去地去
+計算。
+\end_layout
+
+\begin_layout Standard
+從另一個角度來想：只要我們用一筆劃一筆劃地去計算“土”、“兀”和“日”的筆劃數，而不用一筆劃一筆劃地去描繪“曉”，我們就可以計算出“曉''的筆劃數。
+\end_layout
+
+\begin_layout Standard
+實際上，對求出“曉”的筆劃這個問題而言，這個方法不會比一筆劃一筆劃地去計算來得快，（因為要一筆劃一筆劃地去計算“土”、“兀”和“日”的筆劃數，且還要做一些加法或
+乘法運算）。
+\end_layout
+
+\begin_layout Standard
+如果現在的情況是“要計算一堆字的筆劃數”，則這個方法可以大幅減少工作量及時間。
+\end_layout
+
+\begin_layout Standard
+漢字中，很多部件（如“土”、“日”等）在漢字是時常出現的。以上述例子來說，只要知道“土”、“兀”和“日”的筆劃數，我們不但在計算過程中得到了``垚”,“堯”,“
+曉”的筆劃數。 只要再加上一些計算， 我們同樣可以算出“昌”,“昍”,“晶”,“晿”,“圭”,“圼”,“晆”,“曉”等字的筆劃數。
+\end_layout
+
+\begin_layout Standard
+此外，這個方法也適合自動化。只要知道每個漢字的組成方式，並且有一些基礎字根的資料。我們就可以自動算出全部的值。自動化的好處還有標準統一，如果有一些標準改了，也可
+快速重新計算。
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\begin{alignedat}{2}\text{\text{\QhStroke\text{字}}} & = & \text{\text{{\text{筆劃數}}}}\\
+\QhStroke\text{丙} & = & \QhStroke\text{甲}+\QhStroke\text{乙}
+\end{alignedat}
+$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+如果我們的目標不是計算“筆劃數”，而是創造字形，這個方法一樣可以適用，這就是“動態組字”的範疇。 如果我們的目標不是計算“筆劃數”，而是輸入碼，這個方法一樣可以
+適用，這就是本計劃的範疇。
+\end_layout
+
+\begin_layout Standard
+如果我們將類似的原理套用在輸入法上：只要我們事先知道一些基本或不易分割的部件的外碼（字碼），並在結合部件時，採用一定的方式去組合外碼，就可以算出那個字的外碼。我
+們就可以省下大量的功夫，甚至是用電腦來計算。
+\end_layout
+
+\begin_layout Standard
+本計劃目前選擇了五種字形輸入法：倉頡、行列、嘸蝦米、大易、鄭碼。
+\end_layout
+
+\begin_layout Section
+用辭說明
+\end_layout
+
+\begin_layout Itemize
+首碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+字根的第一個碼。以“靣”來說，在倉頡中拆作“一田口”，首碼即為一。
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+次碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+字根的第二個碼。以“靣”來說，在倉頡中拆作“一田口”，次碼即為田。
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+三碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+字根的第三個碼。以“靣”來說，在倉頡中拆作“一田口”，三碼即為口。
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+末碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+字根的最後一個碼。以“靣”來說，在倉頡中拆作“一田口”，末碼即為口。
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+尾碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+在倉頡中，有時取碼時，並不是取字根的最後一碼，而是最後的特徵碼。為了與末碼區分，稱之為尾碼。以“靣”來說，在倉頡中拆作“一田口”，尾碼即為田。
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Branch complex terms
+status collapsed
+
+\begin_layout Itemize
+簡碼
+\end_layout
+
+\begin_layout Itemize
+快碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+將較常出現的字以較短的編碼來指定者稱之。 將較常出現的字根以較短的編碼來指定者稱之。 如，
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+標準編碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+根據輸入法規則而得到的編碼。
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+容錯編碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+輸入法為了讓使用者有更好的體驗，為了預防使用者選用不同的字集，為拆碼見解不同於標準，所以提供多種編碼。
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+多碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+一個字在同一種輸入法下可以有兩種以上的編碼。不同於容錯編碼的概念。容錯編碼基本上是不標準的碼，如字形不同。但此指的都是標準編碼。如注音，一個字可以有很多種唸法，
+於是，就有多種編碼。 只要符合規則的，即為標準編碼。 多碼與容錯編碼間有模糊地帶。
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+重碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+不同的字，卻有相同的編碼，稱為重碼。重碼的比率稱為重碼率。
+\end_layout
+
+\end_deeper
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

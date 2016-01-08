@@ -1,0 +1,248 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass scrreprt
+\begin_preamble
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK TC}
+
+\usepackage{CJKnumb}
+
+\usepackage{url}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "瑲珩"
+\pdf_author "王湘叡"
+\pdf_subject "動態拆碼及動態組字"
+\pdf_keywords "動態拆碼, 動態組字"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\branch comparison
+\selected 0
+\filename_suffix 1
+\color #faf0e6
+\end_branch
+\branch complex terms
+\selected 0
+\filename_suffix 0
+\color #00aaff
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+其它事項
+\end_layout
+
+\begin_layout Standard
+字頻資訊放於 qhdata/frequency/CJK.xml 。 這是由 SCIM 的廣東拼音字碼表所擷取出來的。
+\end_layout
+
+\begin_layout Standard
+也可以根據一個編碼加以分類。
+\end_layout
+
+\begin_layout Enumerate
+字符碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+當此部件為一字符時所用的碼。 對一些輸入法而言，又稱作“簡快碼”。 如：嘸蝦米的`一'編碼為 E 但為簡碼，倉頡的`冖‘編碼為 戈弓(IN)。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+字根碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+當此部件為一字根時所用的碼。 對一些輸入法而言，又稱作“簡字根”。 如：嘸蝦米的`一'編碼為 E 且補碼為 E，倉頡的`冖‘編碼為 月(B)。
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+也可以根據一個編碼所產生的方式來加以分類：
+\end_layout
+
+\begin_layout Enumerate
+標準碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+依據輸入法標準而生的碼，且一字一碼。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+簡快碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+為了加快輸入速度，可能會依字頻而給予較簡編碼產生的碼。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+容錯碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+使用者可能犯錯而產生的碼，如選用錯誤字形，寫錯字。 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+排列組合就有：
+\end_layout
+
+\begin_layout Enumerate
+標準字符碼與標準字根碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+依據輸入法標準，當一個部件是字符或是字根時，會有的編碼。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+簡快字符碼與簡快字根碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+一個字符，如果字頻高，輸入法給予其較短的編碼，即為簡快字符碼。一個字根，如果由其組成的字很多高頻字，輸入法給予其較短的編碼，即為簡快字根碼。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+容錯字符碼與容錯字根碼
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+使用者可能犯錯而產生的碼。
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+為了能達到簡快碼及容錯碼，編碼資訊採用以下格式：
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<字符 名稱="丈" 註記="U+4E08">
+\end_layout
+
+\begin_layout Plain Layout
+
+		<組字 運算="龜" 類型="簡快">
+\end_layout
+
+\begin_layout Plain Layout
+
+		<編碼資訊 字符碼="是" 獨體編碼="qx"/>
+\end_layout
+
+\begin_layout Plain Layout
+
+	</組字>
+\end_layout
+
+\begin_layout Plain Layout
+
+</字符>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+其中，類型可以為：“標準”、“容錯”及“簡快”，如果沒有指定的話，預設為“標準”。 而編碼資訊則可以指定“字符碼="是"”，代表是用於字符碼。或加上“字根碼="
+是"”，代表用於字根碼。 兩者都未指定，表示兩者皆是。 
+\end_layout
+
+\end_body
+\end_document

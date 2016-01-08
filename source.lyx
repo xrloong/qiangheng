@@ -1,0 +1,489 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass scrreprt
+\begin_preamble
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK TC}
+
+\usepackage{CJKnumb}
+
+\usepackage{url}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "瑲珩"
+\pdf_author "王湘叡"
+\pdf_subject "動態拆碼及動態組字"
+\pdf_keywords "動態拆碼, 動態組字"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\branch comparison
+\selected 0
+\filename_suffix 1
+\color #faf0e6
+\end_branch
+\branch complex terms
+\selected 0
+\filename_suffix 0
+\color #00aaff
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+原碼
+\end_layout
+
+\begin_layout Standard
+目錄結構如下：
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dirtree{%
+\end_layout
+
+\begin_layout Plain Layout
+
+.1 瑲珩.
+\end_layout
+
+\begin_layout Plain Layout
+
+  .2 src/.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 qiangheng.py
+\backslash
+DTcomment{主程式}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 profiler.py.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 hanzitk.py.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 graphics/.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 canvas/.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 model/.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 base/.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 calligraphy/.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 dm/.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 DynamicComposition/
+\backslash
+DTcomment{動態組字}.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 StrokeOrder/
+\backslash
+DTcomment{筆順}.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 writer/.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 im/.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 Array/
+\backslash
+DTcomment{行列}.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 Boshiamy/
+\backslash
+DTcomment{嘸蝦米}.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 CangJie/
+\backslash
+DTcomment{倉頡}.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 DaYi/
+\backslash
+DTcomment{大易}.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 FourCorner/
+\backslash
+DTcomment{四角}.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 GuiXie/
+\backslash
+DTcomment{中國字庋㩪法}.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 ZhengMa/
+\backslash
+DTcomment{鄭碼}.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 writer/.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 parser/.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 QHParser.py.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 TreeParser.py.
+\end_layout
+
+\begin_layout Plain Layout
+
+  .2 qhdata/
+\backslash
+DTcomment{組字描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 main/.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 CJK.xml.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 CJK-A.xml.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 CJK-B.xml.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 template.xml
+\backslash
+DTcomment{範本描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+      .4 component/.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 CJK-A.xml.
+\end_layout
+
+\begin_layout Plain Layout
+
+        .5 CJK-B.xml.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 ar/
+\backslash
+DTcomment{行列字根描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 bs/
+\backslash
+DTcomment{嘸蝦米字根描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 cj/
+\backslash
+DTcomment{倉頡字根描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 dy/
+\backslash
+DTcomment{大易字根描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 fc/
+\backslash
+DTcomment{四角字根描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 gx/
+\backslash
+DTcomment{中國字庋㩪法字根描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 zm/
+\backslash
+DTcomment{鄭碼字根描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 dc/
+\backslash
+DTcomment{動態組字字根描述}.
+\end_layout
+
+\begin_layout Plain Layout
+
+  .2 fontforge/.
+\end_layout
+
+\begin_layout Plain Layout
+
+  .2 xslt/
+\backslash
+DTcomment{格式轉換工具}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 xml2txt.xslt
+\backslash
+DTcomment{將組字描述轉成 YAML}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 xml2yaml-dc.xslt
+\backslash
+DTcomment{將動態組字描述轉成 YAML}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 xml2yaml-radix.xslt
+\backslash
+DTcomment{將字根描述轉成 YAML}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 xml2yaml-substitute.xslt/
+\backslash
+DTcomment{將置換規則描述轉成 YAML}.
+\end_layout
+
+\begin_layout Plain Layout
+
+    .3 xml2yaml-template.xslt/
+\backslash
+DTcomment{將範本描述轉成 YAML}.
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+要描述一個輸入法，需要定義：
+\end_layout
+
+\begin_layout Enumerate
+IMInfo
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+用於描述一個輸入法的資訊。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+CodeInfo
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+一個輸入法為一個字符編碼所應包含的資訊。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+CodeInfoEncoder
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+用於為不同結構的組字進行編碼。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+RadixParser
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+各輸入法的剖析器。
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+StructureRearranger
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+用來為自行結構重新排列。
+\end_layout
+
+\end_deeper
+\end_body
+\end_document
