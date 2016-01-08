@@ -220,10 +220,10 @@ $(PURETABLE_PATH): $(XML_PATH)
 	done
 	touch $(PURETABLE_PATH)
 
-pdf: tex/qiangheng.pdf
+pdf: doc/qiangheng.pdf
 
-tex/qiangheng.pdf: tex/qiangheng.lyx
-	lyx -e pdf4 tex/qiangheng.lyx
+doc/qiangheng.pdf: doc/lyx/qiangheng.lyx
+	lyx -E pdf4 doc/qiangheng.pdf doc/lyx/qiangheng.lyx
 
 all-icons:
 	mkdir -p $(SCIM_ICON_PATH) $(GCIN_ICON_PATH) $(OVIM_ICON_PATH) $(MSIM_ICON_PATH) $(IBUS_ICON_PATH)
