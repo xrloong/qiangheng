@@ -104,8 +104,8 @@
 
 \begin_layout Standard
 \begin_inset FormulaMacro
-\newcommand{\QhImRule}[1]{\text{取碼}_{\QhIm{#1}}}
-{\text{取碼}_{\QhIm{#1}}}
+\newcommand{\QhImRule}[2][#1]{\text{取碼}_{\QhIm{#1}}(#2)}
+{\text{取碼}_{\QhIm{#1}}(#2)}
 \end_inset
 
 
@@ -125,8 +125,8 @@
 
 
 \begin_inset FormulaMacro
-\newcommand{\QhArRule}{\QhImRule{\text{行列}}}
-{\text{取碼}_{\QhIm{行列}}}
+\newcommand{\QhArRule}[1]{\QhImRule[\text{行列}]{#1}}
+{\QhImRule[\text{行列}]{#1}}
 \end_inset
 
 
@@ -146,8 +146,8 @@
 
 
 \begin_inset FormulaMacro
-\newcommand{\QhDyRule}{\QhImRule{\text{\QhIm{大易}}}}
-{\text{取碼}_{\QhIm{大易}}}
+\newcommand{\QhDyRule}[1]{\QhImRule[\text{大易}]{#1}}
+{\QhImRule[\text{大易}]{#1}}
 \end_inset
 
 
@@ -167,8 +167,8 @@
 
 
 \begin_inset FormulaMacro
-\newcommand{\QhBsRule}{\QhImRule{\text{\QhIm{嘸蝦米}}}}
-{\text{取碼}_{\QhIm{嘸蝦米}}}
+\newcommand{\QhBsRule}[1]{\QhImRule[\text{嘸蝦米}]{#1}}
+{\QhImRule[\text{嘸蝦米}]{#1}}
 \end_inset
 
 
@@ -200,8 +200,8 @@
 
 
 \begin_inset FormulaMacro
-\newcommand{\QhZmRule}{\QhImRule{\text{\QhIm{鄭碼}}}}
-{\text{取碼}_{\QhIm{鄭碼}}}
+\newcommand{\QhZmRule}[1]{\QhImRule[\text{鄭碼}]{#1}}
+{\QhImRule[\text{鄭碼}]{#1}_{\QhIm{鄭碼}}}
 \end_inset
 
 
@@ -215,17 +215,140 @@
 
 \begin_layout Standard
 \begin_inset FormulaMacro
+\newcommand{\QhCjLump}[1]{#1_{\text{倉,團}}}
+{#1_{\text{倉,團}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjLumpList}[1]{#1_{\text{倉,團串}}}
+{#1_{\text{倉,團串}}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhCjLumpCode}[2][#1]{#2_{\text{倉,#1,團}}}
+{#2_{\text{倉,#1,團}}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjLumpHead}[1]{\QhCjLumpCode[\text{首}]{#1}}
+{\QhCjLumpCode[\text{首}]{#1}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjLumpBody}[1]{\QhCjLumpCode[\text{身}]{#1}}
+{\QhCjLumpCode[\text{身}]{#1}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhCjLumpSecond}[1]{\QhCjLumpCode[\text{次}]{#1}}
+{\QhCjLumpCode[\text{次}]{#1}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjLumpTail}[1]{\QhCjLumpCode[\text{尾}]{#1}}
+{\QhCjLumpCode[\text{尾}]{#1}}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
 \newcommand{\QhCj}[1]{#1_{\QhIm{\text{倉}}}}
 {#1_{\QhIm{\text{倉}}}}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset FormulaMacro
-\newcommand{\QhCjRule}{\QhImRule{\text{倉頡}}}
-{\text{取碼}_{\QhIm{倉頡}}}
+\newcommand{\QhCjRule}[1]{\QhImRule[\text{倉頡}]{#1}}
+{\QhImRule[\text{倉頡}]{#1}}
 \end_inset
 
 
+\begin_inset FormulaMacro
+\newcommand{\QhCjRuleSingle}[1]{\text{取碼}_{\text{倉},\text{獨}}(#1)}
+{\text{取碼}_{\text{倉},\text{獨}}(#1)}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjRuleHead}[1]{\text{取碼}_{\text{倉},\text{字首}}(#1)}
+{\text{取碼}_{\text{倉},\text{字首}}(#1)}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjRuleBody}[2][#1]{\text{取碼}_{\text{倉},\text{字身}}^{#1}(#2)}
+{\text{取碼}_{\text{倉},\text{字身}}^{#1}(#2)}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjRuleSecondHead}[1]{\text{取碼}_{\text{倉},\text{次字首}}(#1)}
+{\text{取碼}_{\text{倉},\text{次字首}}(#1)}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjRuleSecondBody}[1]{\text{取碼}_{\text{倉},\text{次字身}}(#1)}
+{\text{取碼}_{\text{倉},\text{次字身}}(#1)}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhCjRuleHeadCode}[1]{\text{取碼}_{\text{倉},\text{首碼}}(#1)}
+{\text{取碼}_{\text{倉},\text{首碼}}(#1)}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjRuleSecondCode}[1]{\text{取碼}_{\text{倉},\text{次碼}}(#1)}
+{\text{取碼}_{\text{倉},\text{次碼}}(#1)}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjRuleThirdCode}[1]{\text{取碼}_{\text{倉},\text{三碼}}(#1)}
+{\text{取碼}_{\text{倉},\text{三碼}}(#1)}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\QhCjRuleTailCode}[1]{\text{取碼}_{\text{倉},\text{尾碼}}(#1)}
+{\text{取碼}_{\text{倉},\text{尾碼}}(#1)}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\QhCjConvertToLump}[1]{\text{轉換}_{\text{倉},\text{團}}(#1)}
+{\text{轉換}_{\text{倉},\text{團}}(#1)}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset FormulaMacro
 \newcommand{\QhCjList}[1]{\QhImList{\text{#1}}{\text{倉頡}}}
 {\QhImList{\text{#1}}{\text{倉頡}}}
@@ -239,14 +362,14 @@
 
 
 \begin_inset FormulaMacro
-\newcommand{\QhCjBody}[1]{#1_{\QhIm{倉身}}}
-{#1_{\QhIm{倉身}}}
+\newcommand{\QhCjListSingle}[1]{\QhImList{\text{#1}}{\text{倉頡},\text{獨體}}}
+{\QhImList{\text{#1}}{\text{倉頡,獨體}}}
 \end_inset
 
 
 \begin_inset FormulaMacro
-\newcommand{\QhCjMerge}[2]{\oplus_{#1}(#2)}
-{\oplus_{#1}(#2)}
+\newcommand{\QhCjBody}[1]{#1_{\QhIm{倉身}}}
+{#1_{\QhIm{倉身}}}
 \end_inset
 
 

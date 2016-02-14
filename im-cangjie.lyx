@@ -109,11 +109,71 @@
 \end_layout
 
 \begin_layout Standard
+先定義一些用語：
+\end_layout
+
+\begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\text{\QhCjList{字}} & \text{＝} & \text{表示一個字的倉頡碼字根串列。}\\
 \text{\QhCjDir{字}} & \text{＝} & \text{表示一個字的字根組成方向。}\\
-\QhCjBody{\text{字}} & \text{＝} & \text{表示一個字當另一個字的字身時的倉頡碼。}
+\text{\QhCjLump{字}} & = & \text{字的倉頡團塊}\\
+\text{\QhCjLumpList{字}} & = & \text{字的倉頡團塊列表}\text{字的倉頡團塊列表}\\
+\QhCjRuleHeadCode X & = & \text{X 的首碼}\\
+\QhCjRuleSecondCode X & = & \text{X 的次碼}\\
+\QhCjRuleThirdCode X & = & \text{X 的三碼}\\
+\QhCjRuleTailCode X & = & \text{X 的尾碼}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+會有一些特性：
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\QhCjRuleHeadCode{\QhCjLump{\text{字}}} & = & \QhCjRuleHeadCode{\text{字}}\\
+\QhCjRuleSecondCode{\QhCjLump{\text{字}}} & = & \QhCjRuleSecondCode{\text{字}}\\
+\QhCjRuleThirdCode{\QhCjLump{\text{字}}} & = & \QhCjRuleThirdCode{\text{字}}\\
+\QhCjRuleTailCode{\QhCjLump{\text{字}}} & = & \QhCjRuleTailCode{\text{字}}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+取碼規則：
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\text{\QhCjRule{字}} & = & \begin{cases}
+\text{\QhCjRuleSingle{字}} & \text{如果字為獨體字}\\
+\QhCjRuleHead{\text{\QhCjLumpList{字}}[0]}+\QhCjRuleBody[3]{\QhCjLumpList{\text{字}}[1:]} & \text{如果字為合體字}
+\end{cases}\\
+\QhCjRuleHead{\text{\QhCjLump{字}}} & = & \begin{cases}
+\QhCjRuleHeadCode{\QhCjLump{\text{字}}} & \text{如果}\QhCjLump{\text{字}}\text{為一碼}\\
+\QhCjRuleHeadCode{\QhCjLump{\text{字}}}+\QhCjRuleTailCode{\QhCjLump{\text{字}}} & \text{如果}\QhCjLump{\text{字}}\text{為兩碼以上}
+\end{cases}\\
+\QhCjRuleBody{\QhCjLump{\text{字}}} & = & \begin{cases}
+\QhCjRuleHeadCode{\QhCjLump{\text{字}}}+\QhCjRuleSecondCode{\QhCjLump{\text{字}}}+\QhCjRuleTailCode{\QhCjLump{\text{字}}} & \text{如果\QhCjLump{字}為獨體字}\\
+\begin{cases}
+\QhCjRuleSecondHead{\QhCjLumpList{\text{字}}[0]}^{1}+\QhCjRuleBody[2]{\QhCjLumpList{\text{字}}[1:]} & \text{如果\QhCjLumpList{\text{字}}[0]為1碼}\\
+\QhCjRuleSecondHead{\QhCjLumpList{\text{字}}[0]}^{2}+\QhCjRuleTailCode{\QhCjLumpList{\text{字}}[1:]} & \text{如果}\QhCjLumpList{\text{字}}[0]\text{為}2\text{碼}\text{以上}
+\end{cases} & \text{如果}\QhCjLumpList{\text{字}}\text{為合體字}
+\end{cases}\\
+\QhCjRuleSecondHead{\QhCjLump{\text{字}}} & = & \QhCjRuleHead{\text{\QhCjLump{字}}}\\
+\QhCjRuleSecondBody{\QhCjLumpList{\text{字}}} & = & \begin{cases}
+\QhCjRuleBody[1]{\QhCjLumpList{\text{字}}[0]}+\QhCjRuleBody[2]{\QhCjLumpList{\text{字}}[1:]} & \text{如果\QhCjLumpList{\text{字}}[0]為1碼}\\
+\QhCjRuleBody[2]{\QhCjLumpList{\text{字}}[0]}+\QhCjRuleTailCode{\QhCjLumpList{\text{字}}[1:]} & \text{如果}\QhCjLumpList{\text{字}}[0]\text{為}2\text{碼}\text{以上}
+\end{cases}
 \end{eqnarray*}
 
 \end_inset
@@ -135,17 +195,16 @@
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\text{\QhCjMerge{字}{甲}} & \text{＝} & \begin{cases}
-\text{\QhCjList{甲}} & \text{\QhCjDir{甲}}\text{＝}\text{\QhCjDir{字}}\\
-\text{[\QhCjBody{甲}]} & \text{\QhCjDir{甲}}\neq\text{\QhCjDir{字}}
-\end{cases}\\
-\QhCjBody{\text{丙}} & \text{＝} & \text{\QhCjMerge{\text{丙}}{甲}+\QhCjMerge{\text{丙}}{\text{乙}}}\\
-\text{\QhCjDir{丙}} & \text{＝} & \text{由丙的組成方式計算出方向。}
+\QhCjConvertToLump{\QhCjLumpList{\text{字}}} & =\\
+\text{\QhCjLump{字}} & = & \begin{cases}
+\text{\QhCjLump{字}} & \text{如果字為獨體字}\\
+\sum_{i=1}^{n}\text{字\_i}\begin{cases}
+\text{\QhCjLumpList{\text{字\_i}}} & \text{\QhCjDir{甲}}\text{＝}\text{\QhCjDir{字}}\\
+\text{\QhCjConvertToLump{\text{字\_i}}} & \text{\QhCjDir{甲}}\neq\text{\QhCjDir{字}}
+\end{cases} & \text{如果字為合體字，字=\sum_{i=1}^{n}字\_i}
+\end{cases}
 \end{eqnarray*}
 
 \end_inset
