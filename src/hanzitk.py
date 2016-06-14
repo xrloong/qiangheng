@@ -2,75 +2,84 @@
 # coding=utf8
 
 from optparse import OptionParser
-from graphics.shape import *
 import re
 
+try:
+	import xie
+except ImportError:
+	print("Please install the libary Xie (https://github.com/xrloong/Xie.git) first")
+	import sys
+	sys.exit()
 
-class HanZiDrawingSystem():
-    def __init__(self, canvas):
-        self.canvas=canvas
+def computeCharacterDefList(name, def_list):
+	from xie.graphics.shape import Rectangle
+	targetRect = Rectangle(0, 0, 512, 512)
+	sourceRect = Rectangle(0, 0, 256, 256)
 
-        # 描述檔預計的長寬
-        self.dh=256
-        self.dw=256
+	from xie.graphics.stroke import Segment
+	from xie.graphics.stroke import BeelineSegment
+	from xie.graphics.stroke import QCurveSegment
+	from xie.graphics.stroke import StrokePath
+	from xie.graphics.stroke import Stroke
+	from xie.graphics.stroke import Character
 
-    def drawCharacter(self, canvas, shape, def_list):
-        [ x, y, cw, ch, ]=[ shape.x, shape.y, shape.w, shape.h, ]
+	[ tx, ty, tw, th, ]=[ targetRect.x, targetRect.y, targetRect.w, targetRect.h, ]
+	[ sx, sy, sw, sh, ]=[ sourceRect.x, sourceRect.y, sourceRect.w, sourceRect.h, ]
 
-        point_list=[]
-        is_curve=False
-        for d in def_list:
-            [tx, ty]=[int(d[4:6], 16), int(d[6:8], 16)]
-            if d[3]=='0':
-                point_list=[(x + tx*cw/self.dw, y + ty*ch/self.dh)]
-                canvas.moveTo(point_list[-1])
-            elif d[3]=='1':
-                point_list.append((x + tx*cw/self.dw, y + ty*ch/self.dh))
-                if is_curve:
-                    canvas.qCurveTo(point_list[-2], point_list[-1])
-                else:
-                    canvas.lineTo(point_list[-1])
-                is_curve=False
-            elif d[3]=='2':
-                point_list.append((x + tx*cw/self.dw, y + ty*ch/self.dh))
-                is_curve=True
+	point_list=[]
+	is_curve=False
 
-    def draw(self, def_list, canvas=None, shape=None):
-        if not def_list:
-            return
+	startPoint=None
+	lastPoint=None
+	segments=[]
 
-        if not canvas:
-            canvas=self.canvas
+	strokes=[]
+	for d in def_list:
+		[x, y]=[int(d[4:6], 16), int(d[6:8], 16)]
+		if d[3]=='0':
+			point=(tx + (x-sx)*tw/sw, ty + (y-sy)*th/sh)
 
-        if not canvas:
-            print("沒有畫布")
-            return
-
-        if not shape:
-            shape=Rectangle(0, 0, canvas.width, canvas.height)
-
-        canvas.clear()
-        self.drawCharacter(canvas, shape, def_list)
-
-    def drawFrame(self):
-        canvas=self.canvas
-        shape=Rectangle(0, 0, canvas.width, canvas.height)
-        canvas.moveTo(self.convert(shape, [0, 0]))
-        canvas.lineTo(self.convert(shape, [0, 0x100]))
-        canvas.lineTo(self.convert(shape, [0x100, 0x100]))
-        canvas.lineTo(self.convert(shape, [0x100, 0]))
-        canvas.lineTo(self.convert(shape, [0, 0]))
-
-    def convert(self, shape, point):
-        [ x, y, cw, ch, ]=[ shape.x, shape.y, shape.w, shape.h, ]
-        [tx, ty]=point
-        return (x + tx*cw/self.dw, y + ty*ch/self.dh)
+			if startPoint:
+				strokePath=StrokePath(segments)
+				stroke=Stroke(startPoint, strokePath)
+				strokes.append(stroke)
+			startPoint=point
+			lastPoint=point
+			segments=[]
+			point_list=[point]
+		elif d[3]=='1':
+			point=(tx + (x-sx)*tw/sw, ty + (y-sy)*th/sh)
+			tmpLastPoint=point
+			point=[point[0]-lastPoint[0], point[1]-lastPoint[1]]
+			point_list.append(point)
+			if is_curve:
+				segment=QCurveSegment(point_list[-2], point_list[-1])
+			else:
+				segment=BeelineSegment(point_list[-1])
+			lastPoint=tmpLastPoint
+			segments.append(segment)
+			is_curve=False
+		elif d[3]=='2':
+			point=(tx + (x-sx)*tw/sw, ty + (y-sy)*th/sh)
+			point=[point[0]-lastPoint[0], point[1]-lastPoint[1]]
+			point_list.append(point)
+			is_curve=True
+	if startPoint:
+		strokePath=StrokePath(segments)
+		stroke=Stroke(startPoint, strokePath)
+		strokes.append(stroke)
+	return Character(name, strokes)
 
 class ShowHanziWidget():
-	def __init__(self, master):
-		self.canvasH=512
-		self.canvasW=512
+	def __init__(self):
+		self.canvasWidth=512
+		self.canvasHeight=512
 
+		import tkinter
+
+		self.root=tkinter.Tk()
+
+		master=self.root
 		frame=tkinter.Frame(master)
 		frame.pack()
 
@@ -79,7 +88,6 @@ class ShowHanziWidget():
 
 		self.entryInput=tkinter.Entry(frame)
 		self.entryInput.grid(row=0, column=1)
-#		self.entryInput.insert(0, '王')
 
 		self.buttonInputOK=tkinter.Button(frame, text='確定', command=self.byKnownChar)
 		self.buttonInputOK.grid(row=0, column=2)
@@ -87,20 +95,34 @@ class ShowHanziWidget():
 		self.buttonInputOK=tkinter.Button(frame, text='清除', command=self.clearEntry)
 		self.buttonInputOK.grid(row=0, column=3)
 
-		self.canvasHanzi=tkinter.Canvas(master=frame, width=self.canvasW, height=self.canvasH)
-		self.canvasHanzi.grid(row=3, columnspan=3)
+		self.canvas = tkinter.Canvas(master=frame, width=self.canvasWidth, height=self.canvasHeight)
+		self.canvas.grid(row=1, columnspan=4)
 
-		from graphics.canvas import TkHanZiCanvas
-		canvas=TkHanZiCanvas.TkHanZiCanvas(self.canvasHanzi, self.canvasW, self.canvasH)
-		self.dh=HanZiDrawingSystem(canvas)
 
-#		self.byKnownChar()
+		from xie.graphics.canvas import TkCanvasController
+		canvasController = TkCanvasController(self.canvas, self.canvasWidth, self.canvasHeight)
+
+		from xie.graphics.drawing import DrawingSystem
+		self.dh = DrawingSystem(canvasController)
+
+		self.drawFrame()
+
+	def mainloop(self):
+		self.root.mainloop()
+
+	def drawFrame(self):
+		from xie.graphics.shape import Rectangle
+		frame=Rectangle(0, 0, self.dh.getWidth(), self.dh.getHeight())
+		frame.draw(self.dh)
 
 	def clearEntry(self):
 		length=len(self.entryInput.get())
 		self.entryInput.delete(0, length)
 
 	def byKnownChar(self):
+		self.dh.canvasController.clear()
+		self.drawFrame()
+
 		string=self.entryInput.get()
 		table={
 			ord(" "): None,
@@ -109,8 +131,11 @@ class ShowHanziWidget():
 		}
 		string=string.translate(table)
 		def_list=re.split(',|;', string)
-		self.dh.draw(def_list)
-		self.dh.drawFrame()
+
+		self.drawFrame()
+
+		character=computeCharacterDefList("", def_list)
+		character.draw(self.dh)
 
 class RadicalManager:
 	def __init__(self, fontfile):
@@ -154,9 +179,11 @@ def generateSVG(dirname):
 	width=emsize
 	height=emsize
 
-	from graphics.canvas import SvgHanZiCanvas
-	canvas=SvgHanZiCanvas.SvgHanZiCanvas(width, height)
-	drawSystem=HanZiDrawingSystem(canvas)
+	from xie.graphics.canvas import SvgCanvasController
+	canvasController = SvgCanvasController(width, height)
+
+	from xie.graphics.drawing import DrawingSystem
+	drawSystem = DrawingSystem(canvasController)
 
 	strokeWidth=5
 
@@ -168,8 +195,10 @@ def generateSVG(dirname):
 		if index%100==0:
 			print("正在描繪 %s 到 %s 個字符"%(index*1, index+100))
 
-		ct=rm.getFont(ch)
-		drawSystem.draw(ct)
+		def_list=rm.getFont(ch)
+
+		character=computeCharacterDefList("", def_list)
+		character.draw(drawSystem)
 
 		attrib={
 			"width": str(width),
@@ -177,7 +206,9 @@ def generateSVG(dirname):
 			}
 		rootNode=ET.Element("svg", attrib)
 
-		expression=canvas.getExpression()
+		expression=canvasController.getExpression()
+		canvasController.clear()
+
 		attrib={
 			"stroke": "black",
 			"stroke-width": str(strokeWidth),
@@ -197,9 +228,11 @@ def generateTTF(filename):
 	width=emsize
 	height=emsize
 
-	from graphics.canvas import TrueTypeGlyphHanZiCanvas
-	canvas=TrueTypeGlyphHanZiCanvas.TrueTypeGlyphHanZiCanvas(width, height)
-	drawSystem=HanZiDrawingSystem(canvas)
+	from xie.graphics.canvas import TrueTypeGlyphCanvasController
+	canvas=TrueTypeGlyphCanvasController(width, height)
+
+	from xie.graphics.drawing import DrawingSystem
+	drawSystem = DrawingSystem(canvas)
 
 	import fontforge
 	f=fontforge.font()
@@ -221,7 +254,10 @@ def generateTTF(filename):
 		canvas.changeGlyph(g)
 
 		ct=rm.getFont(ch)
-		drawSystem.draw(ct)
+		def_list=rm.getFont(ch)
+
+		character=computeCharacterDefList("", def_list)
+		character.draw(drawSystem)
 
 		# stroke(penType, strokeWidth, lineCap, lineJoin)
 		# stroke(circular|calligraphic|polygon, strokeWidth, square|round|butt, miter|round|bevel)
@@ -243,11 +279,8 @@ oparser.add_option("-d", "--out-fontdir", dest="outdir", help="字型輸出檔",
 (options, args) = oparser.parse_args()
 
 if options.show_font:
-	import tkinter
-
-	root=tkinter.Tk()
-	app=ShowHanziWidget(root)
-	root.mainloop()
+	app=ShowHanziWidget()
+	app.mainloop()
 elif options.font_format:
 	fontfile=options.fontfile
 	rm=RadicalManager(fontfile)
