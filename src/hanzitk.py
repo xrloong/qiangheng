@@ -11,64 +11,89 @@ except ImportError:
 	import sys
 	sys.exit()
 
-def computeCharacterDefList(name, def_list):
-	from xie.graphics.shape import Rectangle
-	targetRect = Rectangle(0, 0, 512, 512)
-	sourceRect = Rectangle(0, 0, 256, 256)
+class RadicalManager:
+	def __init__(self):
+		self.characterDB={}
+		self.strokeCount={}
 
-	from xie.graphics.stroke import Segment
-	from xie.graphics.stroke import BeelineSegment
-	from xie.graphics.stroke import QCurveSegment
-	from xie.graphics.stroke import StrokePath
-	from xie.graphics.stroke import Stroke
-	from xie.graphics.stroke import Character
-
-	[ tx, ty, tw, th, ]=[ targetRect.x, targetRect.y, targetRect.w, targetRect.h, ]
-	[ sx, sy, sw, sh, ]=[ sourceRect.x, sourceRect.y, sourceRect.w, sourceRect.h, ]
-
-	point_list=[]
-	is_curve=False
-
-	startPoint=None
-	lastPoint=None
-	segments=[]
-
-	strokes=[]
-	for d in def_list:
-		[x, y]=[int(d[4:6], 16), int(d[6:8], 16)]
-		if d[3]=='0':
-			point=(tx + (x-sx)*tw/sw, ty + (y-sy)*th/sh)
-
-			if startPoint:
-				strokePath=StrokePath(segments)
-				stroke=Stroke(startPoint, strokePath)
-				strokes.append(stroke)
-			startPoint=point
-			lastPoint=point
-			segments=[]
-			point_list=[point]
-		elif d[3]=='1':
-			point=(tx + (x-sx)*tw/sw, ty + (y-sy)*th/sh)
-			tmpLastPoint=point
-			point=[point[0]-lastPoint[0], point[1]-lastPoint[1]]
-			point_list.append(point)
-			if is_curve:
-				segment=QCurveSegment(point_list[-2], point_list[-1])
+	def loadFont(self, fontfile):
+		for line in open(fontfile).readlines():
+			line=line.strip()
+			if (not line) or line[0]=='#':
+				continue
 			else:
-				segment=BeelineSegment(point_list[-1])
-			lastPoint=tmpLastPoint
-			segments.append(segment)
-			is_curve=False
-		elif d[3]=='2':
-			point=(tx + (x-sx)*tw/sw, ty + (y-sy)*th/sh)
-			point=[point[0]-lastPoint[0], point[1]-lastPoint[1]]
-			point_list.append(point)
-			is_curve=True
-	if startPoint:
+				ll=line.split('\t')
+
+				if len(ll)>=2:
+					charName=ll[0]
+					description=ll[1]
+					character=self.computeCharacterByDescription(description)
+					character.setName(charName)
+					self.characterDB[charName]=character
+
+	def getCharacter(self, strIndex):
+		return self.characterDB.get(strIndex, "")
+
+	def getCharacters(self):
+		return self.characterDB.keys()
+
+	def computeCharacterByDescription(self, description):
+		from xie.graphics.stroke import Character
+		strokes=self.computeStrokesByDescription(description)
+		return Character(strokes)
+
+	def computeStrokesByDescription(self, description):
+		strokeDescriptionList=re.split(';', description)
+		strokes=[]
+		for strokeDescription in strokeDescriptionList:
+			stroke=self.computeStrokeByDescription(strokeDescription)
+			strokes.append(stroke)
+		return strokes
+
+	def computeStrokeByDescription(self, strokeDescription):
+		def_list=re.split(',', strokeDescription)
+
+		assert len(def_list) >= 2
+		assert def_list[0][3]=='0'
+		assert def_list[-1][3]=='1'
+
+		d=def_list[0]
+		(x, y)=[int(d[4:6], 16), int(d[6:8], 16)]
+		point=(x, y)
+		startPoint=point
+		lastPoint=point
+		segments=[]
+		point_list=[point]
+
+		from xie.graphics.stroke import Segment
+		from xie.graphics.stroke import BeelineSegment
+		from xie.graphics.stroke import QCurveSegment
+		from xie.graphics.stroke import StrokePath
+		from xie.graphics.stroke import Stroke
+
+		is_curve=False
+		for d in def_list[1:]:
+			(x, y)=[int(d[4:6], 16), int(d[6:8], 16)]
+			point=(x, y)
+			if d[3]=='1':
+				tmpLastPoint=point
+				point=[point[0]-lastPoint[0], point[1]-lastPoint[1]]
+				point_list.append(point)
+				if is_curve:
+					segment=QCurveSegment(point_list[-2], point_list[-1])
+				else:
+					segment=BeelineSegment(point_list[-1])
+				lastPoint=tmpLastPoint
+				segments.append(segment)
+				is_curve=False
+			elif d[3]=='2':
+				point=[point[0]-lastPoint[0], point[1]-lastPoint[1]]
+				point_list.append(point)
+				is_curve=True
+
 		strokePath=StrokePath(segments)
 		stroke=Stroke(startPoint, strokePath)
-		strokes.append(stroke)
-	return Character(name, strokes)
+		return stroke
 
 class ShowHanziWidget():
 	def __init__(self):
@@ -129,40 +154,18 @@ class ShowHanziWidget():
 			ord("\t"): None,
 			ord("\n"): None,
 		}
-		string=string.translate(table)
-		def_list=re.split(',|;', string)
+		description=string.translate(table)
+		rm=RadicalManager()
+		character=rm.computeCharacterByDescription(description)
+		from xie.graphics.shape import Boundary
+		descriptionBoundary = Boundary(0, 0, 256, 256)
 
 		self.drawFrame()
 
-		character=computeCharacterDefList("", def_list)
+		self.dh.save()
+		self.dh.setSourceBoundary(descriptionBoundary)
 		character.draw(self.dh)
-
-class RadicalManager:
-	def __init__(self, fontfile):
-		self.fontDB={}
-		self.strokeCount={}
-
-		for line in open(fontfile).readlines():
-			line=line.strip()
-			if (not line) or line[0]=='#':
-				continue
-			else:
-				ll=line.split('\t')
-
-				if len(ll)>=2:
-					def_char=ll[1]
-					def_list=re.split(',|;', def_char)
-
-					self.setFont(ll[0], def_list)
-
-	def setFont(self, strIndex, f):
-		self.fontDB[strIndex]=f
-
-	def getFont(self, strIndex):
-		return self.fontDB.get(strIndex, "")
-
-	def getCharacters(self):
-		return self.fontDB.keys()
+		self.dh.restore()
 
 def makeSureDirCreated(filename):
 	import os
@@ -175,7 +178,7 @@ def generateSVG(dirname):
 	if not os.path.exists(dirname):
 		os.makedirs(dirname)
 
-	emsize=100
+	emsize=500
 	width=emsize
 	height=emsize
 
@@ -195,10 +198,15 @@ def generateSVG(dirname):
 		if index%100==0:
 			print("正在描繪 %s 到 %s 個字符"%(index*1, index+100))
 
-		def_list=rm.getFont(ch)
+		character=rm.getCharacter(ch)
 
-		character=computeCharacterDefList("", def_list)
+		from xie.graphics.shape import Boundary
+		descriptionBoundary = Boundary(0, 0, 256, 256)
+
+		drawSystem.save()
+		drawSystem.setSourceBoundary(descriptionBoundary)
 		character.draw(drawSystem)
+		drawSystem.restore()
 
 		attrib={
 			"width": str(width),
@@ -208,6 +216,17 @@ def generateSVG(dirname):
 
 		expression=canvasController.getExpression()
 		canvasController.clear()
+
+		attrib={
+			"x": "0",
+			"y": "0",
+			"width": str(width),
+			"height": str(height),
+			"stroke": "none",
+			"stroke-width": str(strokeWidth),
+			"fill": "white",
+			}
+		rectNode=ET.SubElement(rootNode, "rect", attrib)
 
 		attrib={
 			"stroke": "black",
@@ -253,11 +272,15 @@ def generateTTF(filename):
 		g.right_side_bearing=100
 		canvas.changeGlyph(g)
 
-		ct=rm.getFont(ch)
-		def_list=rm.getFont(ch)
+		character=rm.getCharacter(ch)
 
-		character=computeCharacterDefList("", def_list)
+		from xie.graphics.shape import Boundary
+		descriptionBoundary = Boundary(0, 0, 256, 256)
+
+		drawSystem.save()
+		drawSystem.setSourceBoundary(descriptionBoundary)
 		character.draw(drawSystem)
+		drawSystem.restore()
 
 		# stroke(penType, strokeWidth, lineCap, lineJoin)
 		# stroke(circular|calligraphic|polygon, strokeWidth, square|round|butt, miter|round|bevel)
@@ -278,12 +301,14 @@ oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔
 oparser.add_option("-d", "--out-fontdir", dest="outdir", help="字型輸出檔", default="font/svg")
 (options, args) = oparser.parse_args()
 
+rm=RadicalManager()
+
 if options.show_font:
 	app=ShowHanziWidget()
 	app.mainloop()
 elif options.font_format:
 	fontfile=options.fontfile
-	rm=RadicalManager(fontfile)
+	rm.loadFont(fontfile)
 
 	font_format=options.font_format
 	if font_format=="svg":
