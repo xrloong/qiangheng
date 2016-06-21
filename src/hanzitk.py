@@ -138,7 +138,7 @@ class ShowHanziWidget():
 	def drawFrame(self):
 		from xie.graphics.shape import Rectangle
 		frame=Rectangle(0, 0, self.dh.getWidth(), self.dh.getHeight())
-		frame.draw(self.dh)
+		self.dh.draw(frame)
 
 	def clearEntry(self):
 		length=len(self.entryInput.get())
@@ -164,7 +164,7 @@ class ShowHanziWidget():
 
 		self.dh.save()
 		self.dh.setSourceBoundary(descriptionBoundary)
-		character.draw(self.dh)
+		self.dh.draw(character)
 		self.dh.restore()
 
 def makeSureDirCreated(filename):
@@ -205,7 +205,7 @@ def generateSVG(dirname):
 
 		drawSystem.save()
 		drawSystem.setSourceBoundary(descriptionBoundary)
-		character.draw(drawSystem)
+		drawSystem.draw(character)
 		drawSystem.restore()
 
 		attrib={
@@ -279,7 +279,7 @@ def generateTTF(filename):
 
 		drawSystem.save()
 		drawSystem.setSourceBoundary(descriptionBoundary)
-		character.draw(drawSystem)
+		drawSystem.draw(character)
 		drawSystem.restore()
 
 		# stroke(penType, strokeWidth, lineCap, lineJoin)
