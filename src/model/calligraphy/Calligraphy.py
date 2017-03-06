@@ -2,32 +2,8 @@ from . import quadratic
 from .stroke import StrokeInfo
 from .stroke import StrokeInfoMap
 from xie.graphics.shape import Pane
+from xie.graphics.shape import Drawing
 
-
-class Drawing:
-	def __init__(self, pane):
-		self.infoPane=pane
-		self.statePane=pane
-
-	def getDrawingList(self):
-		return []
-
-	def getInfoPane(self):
-		return self.infoPane
-
-	def getStatePane(self):
-		return self.statePane
-
-	def setInfoPane(self, pane):
-		self.infoPane=pane
-
-	def setStatePane(self, pane):
-		self.statePane=pane
-
-	def transformBy(self, sgTargetPane, newSgTargetPane):
-		sTargetPane=self.getStatePane()
-		newSTargetPane=sgTargetPane.transformRelativePaneByTargetPane(sTargetPane, newSgTargetPane)
-		self.setStatePane(newSTargetPane)
 
 class Stroke(Drawing):
 	def __init__(self, strokeInfo):
