@@ -1,7 +1,7 @@
 from model.base.CodeInfo import CodeInfo
-from model.calligraphy.Calligraphy import Pane
 from model.calligraphy.Calligraphy import StrokeGroup
 from model.calligraphy.Calligraphy import StrokeGroupInfo
+from xie.graphics.shape import Pane
 
 class DCStrokeGroup:
 	def __init__(self, strokeGroupInfo):

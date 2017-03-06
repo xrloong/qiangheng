@@ -1,6 +1,6 @@
 from .DCCodeInfo import DCCodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
-from model.calligraphy.Calligraphy import Pane
+from xie.graphics.shape import Pane
 
 import sys
 
