@@ -2,22 +2,6 @@ from . import quadratic
 from .stroke import StrokeInfo
 from .stroke import StrokeInfoMap
 
-class StrokeDrawing:
-	def __init__(self, points):
-		self.points = points
-
-	def computeLeft(self):
-		return StrokeInfo.computeExtreme(self.points, min, quadratic.solveMin, lambda p: p[0])
-
-	def computeRight(self):
-		return StrokeInfo.computeExtreme(self.points, max, quadratic.solveMax, lambda p: p[0])
-
-	def computeTop(self):
-		return StrokeInfo.computeExtreme(self.points, min, quadratic.solveMin, lambda p: p[1])
-
-	def computeBottom(self):
-		return StrokeInfo.computeExtreme(self.points, max, quadratic.solveMax, lambda p: p[1])
-
 class Pane:
 	EMBOX_X_MIN=0x00
 	EMBOX_Y_MIN=0x00
