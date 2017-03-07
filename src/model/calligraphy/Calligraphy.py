@@ -1,4 +1,4 @@
-from . import quadratic
+from xie.graphics import quadratic
 from xie.graphics.shape import Pane
 from xie.graphics.shape import Drawing
 from xie.graphics.stroke import StrokeInfo
