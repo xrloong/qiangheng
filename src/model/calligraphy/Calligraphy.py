@@ -1,8 +1,8 @@
 from . import quadratic
-from .stroke import StrokeInfo
-from .stroke import StrokeInfoMap
 from xie.graphics.shape import Pane
 from xie.graphics.shape import Drawing
+from xie.graphics.stroke import StrokeInfo
+from xie.graphics.stroke import StrokeInfoMap
 
 
 class Stroke(Drawing):
