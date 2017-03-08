@@ -119,5 +119,5 @@ class DCRadixParser(RadixParser):
 		top=int(descriptionRegion[2:4], 16)
 		right=int(descriptionRegion[4:6], 16)
 		bottom=int(descriptionRegion[6:8], 16)
-		return Pane([left, top, right, bottom])
+		return Pane(left, top, right, bottom)
 

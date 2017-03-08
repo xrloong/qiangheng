@@ -40,7 +40,7 @@ class DCStrokeGroup:
 
 	@staticmethod
 	def generateStrokeGroupByParameter(strokeList, bBox):
-		strokeGroupInfo=StrokeGroupInfo(strokeList, Pane(bBox))
+		strokeGroupInfo=StrokeGroupInfo(strokeList, Pane(*bBox))
 		return DCStrokeGroup(strokeGroupInfo)
 
 class DCCodeInfo(CodeInfo):

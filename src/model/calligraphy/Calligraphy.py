@@ -22,7 +22,7 @@ class Stroke(Drawing):
 		assert clsStrokeInfo!=None
 
 		parameterList = clsStrokeInfo.parseExpression(parameterList)
-		strokeInfo = clsStrokeInfo(name, startPoint, parameterList, Pane(bBox))
+		strokeInfo = clsStrokeInfo(name, startPoint, parameterList, Pane(*bBox))
 		return Stroke(strokeInfo)
 
 	def getExpression(self):
@@ -114,7 +114,7 @@ class StrokeGroup(Drawing):
 			top=min(map(lambda pane: pane.getTop(), paneList))
 			right=max(map(lambda pane: pane.getRight(), paneList))
 			bottom=max(map(lambda pane: pane.getBottom(), paneList))
-			return Pane((left, top, right, bottom))
+			return Pane(left, top, right, bottom)
 
 		resultStrokeList=[]
 		paneList=[]

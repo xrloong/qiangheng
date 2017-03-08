@@ -119,7 +119,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 				height=pointEnd-pointStart
 				targetHeight=int(height*0.90)
 				offset=int(height-targetHeight)//2
-				tmpPane=Pane([pane.getLeft(), pointStart+offset, pane.getRight(), pointEnd-offset])
+				tmpPane=Pane(pane.getLeft(), pointStart+offset, pane.getRight(), pointEnd-offset)
 				tmpPane.offsetTopAndBottom(offset)
 				paneList.append(tmpPane)
 			return paneList
@@ -155,7 +155,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 				width=pointEnd-pointStart
 				targetWidth=int(width*0.90)
 				offset=int(width-targetWidth)//2
-				tmpPane=Pane([pointStart+offset, pane.getTop(), pointEnd-offset, pane.getBottom()])
+				tmpPane=Pane(pointStart+offset, pane.getTop(), pointEnd-offset, pane.getBottom())
 				tmpPane.offsetLeftAndRight(offset)
 				paneList.append(tmpPane)
 			return paneList
