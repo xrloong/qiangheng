@@ -5,6 +5,7 @@ from model.base.RadixManager import RadixParser
 from model.calligraphy.Calligraphy import Stroke
 from model.calligraphy.Calligraphy import StrokeGroupInfo
 from xie.graphics.shape import Pane
+from xie.graphics.stroke import generateStrokeInfo
 
 class DCRadixParser(RadixParser):
 	TAG_STROKE_GROUP='筆劃組'
@@ -112,7 +113,8 @@ class DCRadixParser(RadixParser):
 		parameterList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
 		bBox = strokeNode.get(DCRadixParser.TAG_BBOX)
 
-		return Stroke.generateStroke(name, startPoint, parameterList, bBox)
+		strokeInfo = generateStrokeInfo(name, startPoint, parameterList, bBox)
+		return Stroke(strokeInfo)
 
 	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)

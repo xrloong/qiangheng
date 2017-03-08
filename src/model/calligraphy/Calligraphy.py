@@ -16,15 +16,6 @@ class Stroke(Drawing):
 		stroke.setStatePane(self.getStatePane())
 		return stroke
 
-	@staticmethod
-	def generateStroke(name, startPoint, parameterList, bBox):
-		clsStrokeInfo = StrokeInfoMap.get(name, None)
-		assert clsStrokeInfo!=None
-
-		parameterList = clsStrokeInfo.parseExpression(parameterList)
-		strokeInfo = clsStrokeInfo(name, startPoint, parameterList, Pane(*bBox))
-		return Stroke(strokeInfo)
-
 	def getExpression(self):
 		def encodeStroke(stroke):
 			points=stroke.getPoints()
