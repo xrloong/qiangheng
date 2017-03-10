@@ -2,9 +2,9 @@ from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfo import DCStrokeGroup
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from model.base.RadixManager import RadixParser
-from model.calligraphy.Calligraphy import StrokeGroupInfo
 from xie.graphics.shape import Pane
 from xie.graphics.stroke import generateStroke
+from xie.graphics.stroke import StrokeGroupInfo
 
 class DCRadixParser(RadixParser):
 	TAG_STROKE_GROUP='筆劃組'
