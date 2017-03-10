@@ -1,52 +1,6 @@
-from xie.graphics import quadratic
 from xie.graphics.shape import Pane
 from xie.graphics.shape import Drawing
-from xie.graphics.stroke import StrokeInfo
-from xie.graphics.stroke import StrokeInfoMap
 
-
-class Stroke(Drawing):
-	def __init__(self, strokeInfo):
-		pane=strokeInfo.getBBoxPane()
-		super().__init__(pane)
-		self.strokeInfo=strokeInfo
-
-	def clone(self):
-		stroke=Stroke(self.strokeInfo)
-		stroke.setStatePane(self.getStatePane())
-		return stroke
-
-	def getExpression(self):
-		def encodeStroke(stroke):
-			points=stroke.getPoints()
-			point = points[0]
-			isCurve = point[0]
-			assert isCurve is False
-			pointExpressionList = ["0000{0[0]:02X}{0[1]:02X}".format(point[1]), ]
-
-			for point in points[1:]:
-				isCurve = point[0]
-				if isCurve:
-					pointExpressionList.append("0002{0[0]:02X}{0[1]:02X}".format(point[1]))
-				else:
-					pointExpressionList.append("0001{0[0]:02X}{0[1]:02X}".format(point[1]))
-			return ",".join(pointExpressionList)
-		return encodeStroke(self)
-
-
-	def getName(self):
-		return self.getStrokeInfo().getName()
-
-	def getStrokeInfo(self):
-		return self.strokeInfo
-
-	def getPoints(self):
-		pane=self.getStatePane()
-		startPoint=self.strokeInfo.getStartPoint()
-		points=self.strokeInfo.computePoints(startPoint)
-		bBoxPane=self.getInfoPane()
-		newPoints = [(isCurve, bBoxPane.transformRelativePointByTargetPane(point, pane)) for (isCurve, point) in points]
-		return newPoints
 
 class StrokeGroupInfo:
 	def __init__(self, strokeList, bBoxPane):
