@@ -65,11 +65,10 @@ class RadicalManager:
 		segments=[]
 		point_list=[point]
 
-		from xie.graphics.stroke import Segment
-		from xie.graphics.stroke import BeelineSegment
-		from xie.graphics.stroke import QCurveSegment
-		from xie.graphics.stroke import StrokePath
+		from xie.graphics.segment import SegmentFactory
+		from xie.graphics.segment import StrokePath
 		from xie.graphics.stroke import Stroke
+		segmentFactory = SegmentFactory()
 
 		is_curve=False
 		for d in def_list[1:]:
@@ -80,9 +79,9 @@ class RadicalManager:
 				point=[point[0]-lastPoint[0], point[1]-lastPoint[1]]
 				point_list.append(point)
 				if is_curve:
-					segment=QCurveSegment(point_list[-2], point_list[-1])
+					segment=segmentFactory.generateSegment_QCurve(point_list[-2], point_list[-1])
 				else:
-					segment=BeelineSegment(point_list[-1])
+					segment=segmentFactory.generateSegment_Beeline(point_list[-1])
 				lastPoint=tmpLastPoint
 				segments.append(segment)
 				is_curve=False
