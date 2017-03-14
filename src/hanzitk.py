@@ -92,7 +92,7 @@ class RadicalManager:
 				is_curve=True
 
 		strokePath=StrokePath(segments)
-		stroke=Stroke(startPoint, strokePath)
+		stroke=Stroke(startPoint, strokePath=strokePath)
 		return stroke
 
 class ShowHanziWidget():
