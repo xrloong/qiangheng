@@ -1,4 +1,10 @@
 from .BaseDmWriter import BaseDmWriter
+from xie.graphics.canvas import BaseTextCanvasController
+from xie.graphics.drawing import DrawingSystem
+
+class TextCanvasController(BaseTextCanvasController):
+	def __init__(self):
+		super().__init__()
 
 class TxtWriter(BaseDmWriter):
 	def writeCodeMapping(self, imInfo, codeMappingInfoList):
@@ -6,6 +12,9 @@ class TxtWriter(BaseDmWriter):
 		print(table)
 
 	def genIMMapping(self, characterInfoList):
+		controller = TextCanvasController()
+		ds = DrawingSystem(controller)
+
 		table=[]
 		for characterInfo in characterInfoList:
 			codeMappingInfoList=characterInfo.getCodeMappingInfoList()
@@ -16,7 +25,9 @@ class TxtWriter(BaseDmWriter):
 				if len(charName)>1:
 					continue
 
-				expressionList=[stroke.getExpression() for stroke in code]
-				table.append((charName, ";".join(expressionList)))
+				ds.clear()
+				for stroke in code:
+					ds.draw(stroke)
+				table.append((charName, controller.getCharacterExpression()))
 		return table
 

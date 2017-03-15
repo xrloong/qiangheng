@@ -3,6 +3,27 @@
 import lxml.etree as ET
 #import lxml.objectify as ET
 from .BaseDmWriter import BaseDmWriter
+from xie.graphics.canvas import HexTextCanvasController
+from xie.graphics.drawing import DrawingSystem
+
+class XmlCanvasController(HexTextCanvasController):
+	def __init__(self, drawingNode):
+		super().__init__()
+		self.drawingNode = drawingNode
+
+	def onPreDrawStroke(self, stroke):
+		self.clearStrokeExpression()
+
+	def onPostDrawStroke(self, stroke):
+		e=self.getStrokeExpression()
+		if e:
+			self.clearStrokeExpression()
+			attrib={
+				"名稱": stroke.getName(),
+				"描繪": e,
+				"字面框": str(stroke.getInfoPane()),
+				}
+			ET.SubElement(self.drawingNode, "筆劃", attrib)
 
 class XmlWriter(BaseDmWriter):
 	def write(self, imInfo, characterInfoList):
@@ -20,16 +41,13 @@ class XmlWriter(BaseDmWriter):
 			attrib={"名稱":x.getName(), "類型":x.getVariance()}
 			drawingNode=ET.SubElement(charGroup, "字圖", attrib)
 
+			controller = XmlCanvasController(drawingNode)
+			ds = DrawingSystem(controller)
+			ds.clear()
+
 			code=x.getCode()
 			for stroke in code:
-				strokeName=stroke.getName()
-				strokeExpression=stroke.getExpression()
-				attrib={
-					"名稱": stroke.getName(),
-					"描繪": stroke.getExpression(),
-					"字面框": str(stroke.getInfoPane()),
-					}
-				ET.SubElement(drawingNode, "筆劃", attrib)
+				ds.draw(stroke)
 
 		xmlNode=ET.ElementTree(rootNode)
 		print(ET.tounicode(xmlNode, pretty_print=True))
