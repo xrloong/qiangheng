@@ -3,6 +3,7 @@
 
 from optparse import OptionParser
 import re
+from xie.graphics.utils import TextCodec
 
 try:
 	import xie
@@ -15,6 +16,7 @@ class RadicalManager:
 	def __init__(self):
 		self.characterDB={}
 		self.strokeCount={}
+		self.textCodec=TextCodec()
 
 	def loadFont(self, fontfile):
 		for line in open(fontfile).readlines():
@@ -43,7 +45,7 @@ class RadicalManager:
 		return Character(strokes)
 
 	def computeStrokesByDescription(self, description):
-		strokeDescriptionList=re.split(';', description)
+		strokeDescriptionList=self.textCodec.decodeCharacterExpression(description)
 		strokes=[]
 		for strokeDescription in strokeDescriptionList:
 			stroke=self.computeStrokeByDescription(strokeDescription)
@@ -51,15 +53,15 @@ class RadicalManager:
 		return strokes
 
 	def computeStrokeByDescription(self, strokeDescription):
-		def_list=re.split(',', strokeDescription)
+		textCodec=self.textCodec
+		def_list=textCodec.decodeStrokeExpression(strokeDescription)
 
 		assert len(def_list) >= 2
-		assert def_list[0][3]=='0'
-		assert def_list[-1][3]=='1'
+		assert textCodec.isStartPoint(def_list[0])
+		assert textCodec.isEndPoint(def_list[-1])
 
 		d=def_list[0]
-		(x, y)=[int(d[4:6], 16), int(d[6:8], 16)]
-		point=(x, y)
+		point=textCodec.decodePointExpression(d)
 		startPoint=point
 		lastPoint=point
 		segments=[]
@@ -72,9 +74,8 @@ class RadicalManager:
 
 		is_curve=False
 		for d in def_list[1:]:
-			(x, y)=[int(d[4:6], 16), int(d[6:8], 16)]
-			point=(x, y)
-			if d[3]=='1':
+			point=textCodec.decodePointExpression(d)
+			if textCodec.isEndPoint(d):
 				tmpLastPoint=point
 				point=[point[0]-lastPoint[0], point[1]-lastPoint[1]]
 				point_list.append(point)
@@ -85,7 +86,7 @@ class RadicalManager:
 				lastPoint=tmpLastPoint
 				segments.append(segment)
 				is_curve=False
-			elif d[3]=='2':
+			elif textCodec.isControlPoint(d):
 				point=[point[0]-lastPoint[0], point[1]-lastPoint[1]]
 				point_list.append(point)
 				is_curve=True
