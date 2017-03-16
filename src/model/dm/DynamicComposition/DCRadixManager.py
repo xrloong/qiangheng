@@ -112,7 +112,7 @@ class DCRadixParser(RadixParser):
 		parameterList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
 		bBox = strokeNode.get(DCRadixParser.TAG_BBOX)
 
-		return generateStroke(name, startPoint, parameterList, bBox)
+		return generateStroke(name, startPoint, parameterList)
 
 	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)

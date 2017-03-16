@@ -118,9 +118,6 @@
                 <xsl:text>, </xsl:text>
                 <xsl:text>參數: </xsl:text>
                 <xsl:value-of select="@參數"/> 
-                <xsl:text>, </xsl:text>
-                <xsl:text>字面框: </xsl:text>
-                <xsl:value-of select="@字面框"/> 
                 <xsl:text>}</xsl:text>
                 <xsl:value-of select="$newline" />
               </xsl:for-each>
