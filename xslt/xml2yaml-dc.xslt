@@ -92,14 +92,6 @@
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="$intent" />
-              <xsl:text>字面框: </xsl:text>
-              <xsl:value-of select="@字面框"/> 
-              <xsl:value-of select="$newline" />
-
-              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-              <xsl:value-of select="$intent" />
               <xsl:text>筆劃: </xsl:text>
               <xsl:value-of select="$newline" />
 

@@ -39,8 +39,8 @@ class DCStrokeGroup:
 		return strokeGroup
 
 	@staticmethod
-	def generateStrokeGroupByParameter(strokeList, bBox):
-		strokeGroupInfo=StrokeGroupInfo.generateInstanceByStrokeList(strokeList, bBox)
+	def generateStrokeGroupByParameter(strokeList):
+		strokeGroupInfo=StrokeGroupInfo.generateInstanceByStrokeList(strokeList)
 		return DCStrokeGroup(strokeGroupInfo)
 
 class DCCodeInfo(CodeInfo):

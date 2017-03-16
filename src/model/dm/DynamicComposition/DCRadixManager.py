@@ -89,10 +89,9 @@ class DCRadixParser(RadixParser):
 		strokeGroupName=strokeGroupNode.get(DCRadixParser.TAG_NAME)
 
 		t=strokeGroupNode.get(DCRadixParser.TAG_STROKE_GROUP)
-		bBox=t.get(DCRadixParser.TAG_BBOX)
 		strokeList=self.parseStrokeList(t)
 
-		strokeGroup=DCStrokeGroup.generateStrokeGroupByParameter(strokeList, bBox)
+		strokeGroup=DCStrokeGroup.generateStrokeGroupByParameter(strokeList)
 		return [strokeGroupName, strokeGroup]
 
 	def parseStrokeList(self, strokeGroupNode):
