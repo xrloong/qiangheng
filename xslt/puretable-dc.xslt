@@ -51,7 +51,7 @@
     <xsl:value-of select="$tab"/>
     <xsl:for-each select="筆劃">
       <xsl:if test="position()>1">
-        <xsl:text>;</xsl:text>
+        <xsl:text>/</xsl:text>
       </xsl:if>
       <xsl:value-of select="@描繪"/>
     </xsl:for-each>
