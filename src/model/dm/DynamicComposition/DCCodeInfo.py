@@ -4,9 +4,8 @@ from xie.graphics.stroke import StrokeGroup
 from xie.graphics.stroke import StrokeGroupInfo
 
 class DCStrokeGroup:
-	def __init__(self, strokeGroupInfo):
-		self.strokeGroup=StrokeGroup(strokeGroupInfo)
-		self.strokeGroupInfo=strokeGroupInfo
+	def __init__(self, strokeGroup):
+		self.strokeGroup=strokeGroup
 		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.EMBOX}
 
 	def getCount(self):
@@ -35,13 +34,15 @@ class DCStrokeGroup:
 	def generateDefaultStrokeGroup(dcStrokeGroupPanePair):
 		strokeGroupPanePair=[(pair[0].getStrokeGroup(), pair[1]) for pair in dcStrokeGroupPanePair]
 		strokeGroupInfo=StrokeGroup.generateStrokeGroupInfo(strokeGroupPanePair)
-		strokeGroup=DCStrokeGroup(strokeGroupInfo)
+		strokeGroup=StrokeGroup(strokeGroupInfo)
+		strokeGroup=DCStrokeGroup(strokeGroup)
 		return strokeGroup
 
 	@staticmethod
 	def generateStrokeGroupByParameter(strokeList):
 		strokeGroupInfo=StrokeGroupInfo.generateInstanceByStrokeList(strokeList)
-		return DCStrokeGroup(strokeGroupInfo)
+		strokeGroup=StrokeGroup(strokeGroupInfo)
+		return DCStrokeGroup(strokeGroup)
 
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"
