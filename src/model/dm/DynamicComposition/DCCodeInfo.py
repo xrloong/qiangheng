@@ -34,14 +34,14 @@ class DCStrokeGroup:
 	def generateDefaultStrokeGroup(dcStrokeGroupPanePair):
 		strokeGroupPanePair=[(pair[0].getStrokeGroup(), pair[1]) for pair in dcStrokeGroupPanePair]
 		strokeGroupInfo=StrokeGroup.generateStrokeGroupInfo(strokeGroupPanePair)
-		strokeGroup=StrokeGroup(strokeGroupInfo)
+		strokeGroup=StrokeGroup.generateInstanceByInfo(strokeGroupInfo)
 		strokeGroup=DCStrokeGroup(strokeGroup)
 		return strokeGroup
 
 	@staticmethod
 	def generateStrokeGroupByParameter(strokeList):
 		strokeGroupInfo=StrokeGroupInfo.generateInstanceByStrokeList(strokeList)
-		strokeGroup=StrokeGroup(strokeGroupInfo)
+		strokeGroup=StrokeGroup.generateInstanceByInfo(strokeGroupInfo)
 		return DCStrokeGroup(strokeGroup)
 
 class DCCodeInfo(CodeInfo):
