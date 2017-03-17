@@ -1,10 +1,22 @@
 from .BaseDmWriter import BaseDmWriter
 from xie.graphics.canvas import BaseTextCanvasController
 from xie.graphics.drawing import DrawingSystem
+from xie.graphics.stroke import Character
 
 class TextCanvasController(BaseTextCanvasController):
 	def __init__(self):
 		super().__init__()
+		self.table=[]
+
+	def getTable(self):
+		return self.table
+
+	def onPreDrawCharacter(self, character):
+		pass
+
+	def onPostDrawCharacter(self, character):
+		charName=character.getName()
+		self.table.append((charName, self.getCharacterExpression()))
 
 class TxtWriter(BaseDmWriter):
 	def writeCodeMapping(self, imInfo, codeMappingInfoList):
@@ -14,8 +26,6 @@ class TxtWriter(BaseDmWriter):
 	def genIMMapping(self, characterInfoList):
 		controller = TextCanvasController()
 		ds = DrawingSystem(controller)
-
-		table=[]
 		for characterInfo in characterInfoList:
 			codeMappingInfoList=characterInfo.getCodeMappingInfoList()
 			for codeMappingInfo in codeMappingInfoList:
@@ -25,12 +35,10 @@ class TxtWriter(BaseDmWriter):
 				if len(charName)>1:
 					continue
 
-				strokeGroup = code
-				strokeList = strokeGroup.getStrokeList();
+				dcStrokeGroup = code
+				strokeGroup = dcStrokeGroup.getStrokeGroup()
+				character=Character(charName, strokeGroup)
 
-				ds.clear()
-				for stroke in strokeList:
-					ds.draw(stroke)
-				table.append((charName, controller.getCharacterExpression()))
-		return table
+				ds.draw(character)
+		return controller.getTable()
 

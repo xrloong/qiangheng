@@ -5,11 +5,22 @@ import lxml.etree as ET
 from .BaseDmWriter import BaseDmWriter
 from xie.graphics.canvas import HexTextCanvasController
 from xie.graphics.drawing import DrawingSystem
+from xie.graphics.stroke import Character
 
 class XmlCanvasController(HexTextCanvasController):
-	def __init__(self, drawingNode):
+	def __init__(self, charGroupNode):
 		super().__init__()
-		self.drawingNode = drawingNode
+		self.charGroupNode = charGroupNode
+		self.drawingNode = None
+
+	def onPreDrawCharacter(self, character):
+		charName=character.getName()
+		variance=character.getTag()
+		attrib={"名稱":charName, "類型":variance}
+		self.drawingNode=ET.SubElement(self.charGroupNode, "字圖", attrib)
+
+	def onPostDrawCharacter(self, character):
+		pass
 
 	def onPreDrawStroke(self, stroke):
 		self.clearStrokeExpression()
@@ -37,21 +48,18 @@ class XmlWriter(BaseDmWriter):
 
 		# 對照表
 		charGroup=ET.SubElement(rootNode, "字圖集")
-		for x in codeMappingInfoList:
-			attrib={"名稱":x.getName(), "類型":x.getVariance()}
-			drawingNode=ET.SubElement(charGroup, "字圖", attrib)
+		controller = XmlCanvasController(charGroup)
+		ds = DrawingSystem(controller)
+		for codeMappingInfo in codeMappingInfoList:
+			code=codeMappingInfo.getCode()
+			charName=codeMappingInfo.getName()
+			variance=codeMappingInfo.getVariance()
 
-			controller = XmlCanvasController(drawingNode)
-			ds = DrawingSystem(controller)
-			ds.clear()
+			dcStrokeGroup = code
+			strokeGroup = dcStrokeGroup.getStrokeGroup()
+			character=Character(charName, strokeGroup, tag=variance)
 
-			code=x.getCode()
-
-			strokeGroup = code
-			strokeList = strokeGroup.getStrokeList();
-
-			for stroke in strokeList:
-				ds.draw(stroke)
+			ds.draw(character)
 
 		xmlNode=ET.ElementTree(rootNode)
 		print(ET.tounicode(xmlNode, pretty_print=True))

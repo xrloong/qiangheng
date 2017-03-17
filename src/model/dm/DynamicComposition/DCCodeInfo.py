@@ -14,9 +14,6 @@ class DCStrokeGroup:
 	def getStrokeGroup(self):
 		return self.strokeGroup
 
-	def getStrokeList(self):
-		return self.strokeGroup.getStrokeList()
-
 	def generateStrokeGroup(self, pane):
 		return StrokeGroup.generateInstanceByStrokeGroupPane(self.strokeGroup, pane)
 
