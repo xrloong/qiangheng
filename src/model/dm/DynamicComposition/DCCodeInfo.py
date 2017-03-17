@@ -95,8 +95,8 @@ class DCCodeInfo(CodeInfo):
 		return codeInfo
 
 	def toCode(self):
-		strokeList=self.getStrokeGroup().getStrokeList()
-		return strokeList
+		strokeGroup=self.getStrokeGroup()
+		return strokeGroup
 
 	def setExtraPane(self, strokeGroupName, paneName, extraPane):
 		strokeGroup=self.getStrokeGroup(strokeGroupName)

@@ -25,8 +25,11 @@ class TxtWriter(BaseDmWriter):
 				if len(charName)>1:
 					continue
 
+				strokeGroup = code
+				strokeList = strokeGroup.getStrokeList();
+
 				ds.clear()
-				for stroke in code:
+				for stroke in strokeList:
 					ds.draw(stroke)
 				table.append((charName, controller.getCharacterExpression()))
 		return table

@@ -46,7 +46,11 @@ class XmlWriter(BaseDmWriter):
 			ds.clear()
 
 			code=x.getCode()
-			for stroke in code:
+
+			strokeGroup = code
+			strokeList = strokeGroup.getStrokeList();
+
+			for stroke in strokeList:
 				ds.draw(stroke)
 
 		xmlNode=ET.ElementTree(rootNode)
