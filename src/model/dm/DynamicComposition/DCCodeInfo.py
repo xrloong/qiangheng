@@ -18,7 +18,7 @@ class DCStrokeGroup:
 		return self.strokeGroup.getStrokeList()
 
 	def generateStrokeGroup(self, pane):
-		return StrokeGroup.generateStrokeGroup(self.strokeGroup, pane)
+		return StrokeGroup.generateInstanceByStrokeGroupPane(self.strokeGroup, pane)
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
@@ -31,12 +31,11 @@ class DCStrokeGroup:
 		return self.extraPaneDB.get(paneName, None)
 
 	@staticmethod
-	def generateDefaultStrokeGroup(dcStrokeGroupPanePair):
-		strokeGroupPanePair=[(pair[0].getStrokeGroup(), pair[1]) for pair in dcStrokeGroupPanePair]
-		strokeGroupInfo=StrokeGroup.generateStrokeGroupInfo(strokeGroupPanePair)
-		strokeGroup=StrokeGroup.generateInstanceByInfo(strokeGroupInfo)
-		strokeGroup=DCStrokeGroup(strokeGroup)
-		return strokeGroup
+	def generateDefaultStrokeGroup(dcStrokeGroupPanePairList):
+		strokeGroupPanePair=[(dcStrokeGroup.getStrokeGroup(), pane) for dcStrokeGroup, pane in dcStrokeGroupPanePairList]
+		strokeGroup=StrokeGroup.generateInstanceByStrokeGroupPanePairList(strokeGroupPanePair)
+		dcStrokeGroup=DCStrokeGroup(strokeGroup)
+		return dcStrokeGroup
 
 	@staticmethod
 	def generateStrokeGroupByParameter(strokeList):
