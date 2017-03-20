@@ -1,7 +1,6 @@
 from model.base.CodeInfo import CodeInfo
 from xie.graphics.shape import Pane
 from xie.graphics.stroke import StrokeGroup
-from xie.graphics.stroke import StrokeGroupInfo
 
 class DCStrokeGroup:
 	def __init__(self, strokeGroup):
@@ -35,9 +34,8 @@ class DCStrokeGroup:
 		return dcStrokeGroup
 
 	@staticmethod
-	def generateStrokeGroupByParameter(strokeList):
-		strokeGroupInfo=StrokeGroupInfo.generateInstanceByStrokeList(strokeList)
-		strokeGroup=StrokeGroup.generateInstanceByInfo(strokeGroupInfo)
+	def generateStrokeGroupByStrokeList(strokeList):
+		strokeGroup = StrokeGroup.generateInstanceByStrokeList(strokeList)
 		return DCStrokeGroup(strokeGroup)
 
 class DCCodeInfo(CodeInfo):

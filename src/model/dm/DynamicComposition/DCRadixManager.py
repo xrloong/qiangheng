@@ -4,7 +4,6 @@ from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from model.base.RadixManager import RadixParser
 from xie.graphics.shape import Pane
 from xie.graphics.stroke import generateStroke
-from xie.graphics.stroke import StrokeGroupInfo
 
 class DCRadixParser(RadixParser):
 	TAG_STROKE_GROUP='筆劃組'
@@ -91,7 +90,7 @@ class DCRadixParser(RadixParser):
 		t=strokeGroupNode.get(DCRadixParser.TAG_STROKE_GROUP)
 		strokeList=self.parseStrokeList(t)
 
-		strokeGroup=DCStrokeGroup.generateStrokeGroupByParameter(strokeList)
+		strokeGroup=DCStrokeGroup.generateStrokeGroupByStrokeList(strokeList)
 		return [strokeGroupName, strokeGroup]
 
 	def parseStrokeList(self, strokeGroupNode):
