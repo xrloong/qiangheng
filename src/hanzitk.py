@@ -40,9 +40,12 @@ class RadicalManager:
 		return self.characterDB.keys()
 
 	def computeCharacterByDescription(self, description):
+		from xie.graphics.stroke import StrokeGroup
 		from xie.graphics.stroke import Character
+		charName=""
 		strokes=self.computeStrokesByDescription(description)
-		return Character(strokes)
+		strokeGroup=StrokeGroup.generateInstanceByStrokeList(strokes)
+		return Character(charName, strokeGroup)
 
 	def computeStrokesByDescription(self, description):
 		strokeDescriptionList=self.textCodec.decodeCharacterExpression(description)
@@ -70,6 +73,7 @@ class RadicalManager:
 		from xie.graphics.segment import SegmentFactory
 		from xie.graphics.segment import StrokePath
 		from xie.graphics.stroke import Stroke
+		from xie.graphics.stroke_info import StrokeInfo
 		segmentFactory = SegmentFactory()
 
 		is_curve=False
@@ -91,8 +95,10 @@ class RadicalManager:
 				point_list.append(point)
 				is_curve=True
 
+		strokeName=""
 		strokePath=StrokePath(segments)
-		stroke=Stroke(startPoint, strokePath=strokePath)
+		strokeInfo=StrokeInfo(strokeName, strokePath)
+		stroke=Stroke(startPoint, strokeInfo)
 		return stroke
 
 class ShowHanziWidget():
