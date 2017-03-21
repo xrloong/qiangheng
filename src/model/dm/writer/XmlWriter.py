@@ -32,7 +32,6 @@ class XmlCanvasController(HexTextCanvasController):
 			attrib={
 				"名稱": stroke.getName(),
 				"描繪": e,
-				"字面框": str(stroke.getInfoPane()),
 				}
 			ET.SubElement(self.drawingNode, "筆劃", attrib)
 
