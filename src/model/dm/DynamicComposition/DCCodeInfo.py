@@ -1,11 +1,10 @@
 from model.base.CodeInfo import CodeInfo
-from xie.graphics.shape import Pane
 from xie.graphics.stroke import StrokeGroup
 
 class DCStrokeGroup:
 	def __init__(self, strokeGroup):
 		self.strokeGroup=strokeGroup
-		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : Pane.EMBOX}
+		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : strokeGroup.getStatePane()}
 
 	def getCount(self):
 		return self.strokeGroup.getCount()
@@ -18,7 +17,7 @@ class DCStrokeGroup:
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
-		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=Pane.EMBOX
+		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=self.strokeGroup.getStatePane()
 
 	def setExtraPane(self, paneName, extraPane):
 		self.extraPaneDB[paneName]=extraPane
