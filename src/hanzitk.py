@@ -4,6 +4,9 @@
 from optparse import OptionParser
 import re
 from xie.graphics.utils import TextCodec
+from xie.graphics.stroke import StrokeGroup
+from xie.graphics.stroke import Character
+from xie.graphics.factory import ShapeFactory
 
 try:
 	import xie
@@ -17,6 +20,7 @@ class RadicalManager:
 		self.characterDB={}
 		self.strokeCount={}
 		self.textCodec=TextCodec()
+		self.shapeFactory=ShapeFactory()
 
 	def loadFont(self, fontfile):
 		for line in open(fontfile).readlines():
@@ -40,11 +44,9 @@ class RadicalManager:
 		return self.characterDB.keys()
 
 	def computeCharacterByDescription(self, description):
-		from xie.graphics.stroke import StrokeGroup
-		from xie.graphics.stroke import Character
 		charName=""
 		strokes=self.computeStrokesByDescription(description)
-		strokeGroup=StrokeGroup.generateInstanceByStrokeList(strokes)
+		strokeGroup=self.shapeFactory.generateStrokeGroupByStrokeList(strokes)
 		return Character(charName, strokeGroup)
 
 	def computeStrokesByDescription(self, description):

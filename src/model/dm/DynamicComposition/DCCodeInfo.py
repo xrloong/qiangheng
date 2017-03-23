@@ -1,7 +1,10 @@
 from model.base.CodeInfo import CodeInfo
 from xie.graphics.stroke import StrokeGroup
+from xie.graphics.factory import ShapeFactory
 
 class DCStrokeGroup:
+	shapeFactory = ShapeFactory()
+
 	def __init__(self, strokeGroup):
 		self.strokeGroup=strokeGroup
 		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : strokeGroup.getStatePane()}
@@ -13,7 +16,8 @@ class DCStrokeGroup:
 		return self.strokeGroup
 
 	def generateStrokeGroup(self, pane):
-		return StrokeGroup.generateInstanceByStrokeGroupPane(self.strokeGroup, pane)
+		shapeFactory=DCStrokeGroup.shapeFactory
+		return shapeFactory.generateStrokeGroupByStrokeGroupPane(self.strokeGroup, pane)
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
@@ -27,14 +31,16 @@ class DCStrokeGroup:
 
 	@staticmethod
 	def generateDefaultStrokeGroup(dcStrokeGroupPanePairList):
+		shapeFactory=DCStrokeGroup.shapeFactory
 		strokeGroupPanePair=[(dcStrokeGroup.getStrokeGroup(), pane) for dcStrokeGroup, pane in dcStrokeGroupPanePairList]
-		strokeGroup=StrokeGroup.generateInstanceByStrokeGroupPanePairList(strokeGroupPanePair)
+		strokeGroup=shapeFactory.generateStrokeGroupByStrokeGroupPanePairList(strokeGroupPanePair)
 		dcStrokeGroup=DCStrokeGroup(strokeGroup)
 		return dcStrokeGroup
 
 	@staticmethod
 	def generateStrokeGroupByStrokeList(strokeList):
-		strokeGroup = StrokeGroup.generateInstanceByStrokeList(strokeList)
+		shapeFactory=DCStrokeGroup.shapeFactory
+		strokeGroup = shapeFactory.generateStrokeGroupByStrokeList(strokeList)
 		return DCStrokeGroup(strokeGroup)
 
 class DCCodeInfo(CodeInfo):
