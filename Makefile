@@ -102,6 +102,7 @@ prepare-dc:
 	make prepare-im IM=dc
 	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_PATH)/dc/radix/CJK.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml
 	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_PATH)/dc/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK-A.yaml
+	cp $(QHDATA_PATH)/dc/radix/template.yaml $(GEN_QHDATA_PATH)/dc/radix/template.yaml
 
 prepare:
 	make prepare-main

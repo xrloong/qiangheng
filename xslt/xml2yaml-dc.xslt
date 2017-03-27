@@ -100,27 +100,96 @@
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+
                 <xsl:value-of select="$itemmark" />
-                <xsl:text>{</xsl:text>
+            <xsl:choose>
+            <xsl:when test="@方式 = '引用'">
+                <xsl:text>方式: 引用</xsl:text>
+                <xsl:value-of select="$newline" />
+
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" />
+                <xsl:text>引用名稱: </xsl:text>
+                <xsl:value-of select="@引用名稱"/> 
+                <xsl:value-of select="$newline" />
+
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" />
+                <xsl:text>順序: </xsl:text>
+                <xsl:value-of select="@順序"/> 
+                <xsl:value-of select="$newline" />
+
+                <xsl:if test="變換">
+                  <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                  <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                  <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                  <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                  <xsl:value-of select="$intent" />
+                  <xsl:text>變換: </xsl:text>
+                  <xsl:value-of select="$newline" />
+
+                  <xsl:for-each select="變換">
+                    <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                    <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                    <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                    <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                    <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                    <xsl:value-of select="$itemmark" />
+                    <xsl:text>{</xsl:text>
+                      <xsl:if test="@定位">
+                        <xsl:text>定位: </xsl:text>
+                        <xsl:value-of select="@定位"/> 
+                      </xsl:if>
+                      <xsl:if test="@平移">
+                        <xsl:text>平移: </xsl:text>
+                        <xsl:value-of select="@平移"/> 
+                      </xsl:if>
+                      <xsl:if test="@縮放">
+                        <xsl:text>縮放: </xsl:text>
+                        <xsl:text>{</xsl:text>
+                          <xsl:text>樞軸點: </xsl:text>
+                          <xsl:value-of select="@樞軸點"/> 
+                          <xsl:text>, </xsl:text>
+                          <xsl:text>比例: </xsl:text>
+                          <xsl:value-of select="@縮放"/> 
+                        <xsl:text>}</xsl:text>
+                      </xsl:if>
+                    <xsl:text>}</xsl:text>
+                    <xsl:value-of select="$newline" />
+                  </xsl:for-each>
+                </xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
                 <xsl:text>類型: </xsl:text>
                 <xsl:value-of select="@類型"/> 
-                <xsl:text>, </xsl:text>
+                <xsl:value-of select="$newline" />
+
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" />
                 <xsl:text>起始點: </xsl:text>
                 <xsl:value-of select="@起始點"/> 
-                <xsl:text>, </xsl:text>
+                <xsl:value-of select="$newline" />
+
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+                <xsl:value-of select="$intent" />
                 <xsl:text>參數: </xsl:text>
                 <xsl:value-of select="@參數"/> 
-                <xsl:text>}</xsl:text>
                 <xsl:value-of select="$newline" />
+            </xsl:otherwise>
+            </xsl:choose>
               </xsl:for-each>
-              <xsl:if test="@名稱">
-                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-                <xsl:text>名稱: </xsl:text>
-                <xsl:value-of select="@名稱"/> 
-                <xsl:value-of select="$newline" />
-              </xsl:if>
 
             <xsl:if test="補充範圍">
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
