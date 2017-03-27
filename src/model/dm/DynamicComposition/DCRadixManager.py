@@ -108,7 +108,6 @@ class DCRadixParser(RadixParser):
 		startPoint=strokeNode.get(DCRadixParser.TAG_START_POINT)
 
 		parameterList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
-		bBox = strokeNode.get(DCRadixParser.TAG_BBOX)
 
 		return generateStroke(name, startPoint, parameterList)
 
