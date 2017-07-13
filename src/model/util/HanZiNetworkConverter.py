@@ -1,6 +1,11 @@
+from injector import inject
+from injector import ProviderOf
+
 from . import TreeRegExp
 from ..hanzi import HanZiNetwork
-from model import StateManager
+from model.CodeInfoManager import CodeInfoManager
+from model.OperatorManager import OperatorManager
+from model.StructureManager import StructureManager
 
 class StructureTag:
 	def __init__(self):
@@ -83,14 +88,14 @@ class StructureWrapperTag(StructureTag):
 		self.setCodeInfoList(codeInfoList)
 
 class StructureAssemblageTag(StructureTag):
-	def __init__(self):
+	def __init__(self, codeInfoManager):
 		super().__init__()
+		self.codeInfoManager=codeInfoManager
 
 	def setInfoListList(self, operator, infoListList):
-		codeInfoManager=StateManager.getCodeInfoManager()
 		codeInfoList=[]
 		for infoList in infoListList:
-			codeInfo=codeInfoManager.encodeToCodeInfo(operator, infoList)
+			codeInfo=self.codeInfoManager.encodeToCodeInfo(operator, infoList)
 			if codeInfo!=None:
 				for childCodeInfo in infoList:
 					codeVariance=childCodeInfo.getCodeVarianceType()
@@ -141,13 +146,17 @@ class ConversionStage:
 		pass
 
 class StageAddNode(ConversionStage):
-	def __init__(self, hanziNetwork, structureManager):
+	@inject
+	def __init__(self,
+		hanziNetwork: HanZiNetwork,
+		structureManager: StructureManager, codeInfoManagerProvider: ProviderOf[CodeInfoManager]):
 		super().__init__(hanziNetwork, structureManager)
+		self.codeInfoManagerProvider = codeInfoManagerProvider
 
 	def execute(self):
 		from model.element import CharacterInfo
 
-		codeInfoManager=self.structureManager.getCodeInfoManager()
+		codeInfoManager=self.codeInfoManagerProvider.get()
 		# 加入如 "相" "[漢右]" 的節點。
 		for charName in self.getCharNameList():
 			characterInfo=CharacterInfo.CharacterInfo(charName)
@@ -167,7 +176,8 @@ class StageAddNode(ConversionStage):
 
 class StageAddStructure(ConversionStage):
 	class TreeProxy(TreeRegExp.BasicTreeProxy):
-		def __init__(self, hanziNetwork, stage):
+		def __init__(self, hanziNetwork, stage, operationManager):
+			self.operationManager = operationManager
 			self.hanziNetwork = hanziNetwork
 			self.stage = stage
 
@@ -206,13 +216,16 @@ class StageAddStructure(ConversionStage):
 			return structure
 
 		def generateNode(self, operatorName, children):
-			operator=self.stage.generateOperator(operatorName)
+			operator=self.operationManager.generateOperator(operatorName)
 			structure = self.stage.generateAssemblageStructure(operator, children)
 			return structure
 
-	def __init__(self, hanziNetwork, structureManager):
+	@inject
+	def __init__(self, hanziNetwork: HanZiNetwork,
+			structureManager: StructureManager,
+			operationManager: OperatorManager):
 		super().__init__(hanziNetwork, structureManager)
-		self.treeProxy=StageAddStructure.TreeProxy(self.hanziNetwork, self)
+		self.treeProxy=StageAddStructure.TreeProxy(self.hanziNetwork, self, operationManager)
 		self.nodeExpressionDict={}
 
 	def execute(self):
@@ -345,12 +358,9 @@ class StageAddStructure(ConversionStage):
 		structure=self.generateAssemblageStructure(operator, childStructureList)
 		return structure
 
-	def generateOperator(self, operatorName):
-		operator=StateManager.getOperationManager().generateOperator(operatorName)
-		return operator
-
 	def generateAssemblageStructure(self, operator, structureList):
-		tag=StructureAssemblageTag()
+		codeInfoManager=self.structureManager.getCodeInfoManager()
+		tag=StructureAssemblageTag(codeInfoManager)
 		structure=self.hanziNetwork.generateStructure(tag, compound=[operator, structureList])
 		return structure
 
@@ -367,7 +377,8 @@ class StageAddStructure(ConversionStage):
 		return structure
 
 class StageSetNodeTree(ConversionStage):
-	def __init__(self, hanziNetwork, structureManager):
+	@inject
+	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager):
 		super().__init__(hanziNetwork, structureManager)
 
 	def execute(self):
@@ -400,7 +411,8 @@ class StageSetNodeTree(ConversionStage):
 		tag.setCodeInfoGenerated()
 
 class StageGetCharacterInfo(ConversionStage):
-	def __init__(self, hanziNetwork, structureManager):
+	@inject
+	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager):
 		super().__init__(hanziNetwork, structureManager)
 		self.characterInfoList=[]
 
@@ -429,18 +441,23 @@ class StageGetCharacterInfo(ConversionStage):
 		return characterInfo
 
 class ComputeCharacterInfo:
-	def __init__(self):
-		pass
+	@inject
+	def __init__(self, \
+			stageAddNode: StageAddNode, \
+			stageAddStructure: StageAddStructure, \
+			stageSetNodeTree: StageSetNodeTree, \
+			stageGetCharacterInfo: StageGetCharacterInfo \
+			):
+		self.stageAddNode = stageAddNode
+		self.stageAddStructure = stageAddStructure
+		self.stageSetNodeTree = stageSetNodeTree
+		self.stageGetCharacterInfo = stageGetCharacterInfo
 
-	def compute(self, structureManager):
-		hanziNetwork=HanZiNetwork()
+	def compute(self):
+		self.stageAddNode.execute()
+		self.stageAddStructure.execute()
+		self.stageSetNodeTree.execute()
+		self.stageGetCharacterInfo.execute()
 
-		StageAddNode(hanziNetwork, structureManager).execute()
-		StageAddStructure(hanziNetwork, structureManager).execute()
-		StageSetNodeTree(hanziNetwork, structureManager).execute()
-
-		stage=StageGetCharacterInfo(hanziNetwork, structureManager)
-		stage.execute()
-
-		return stage.getCharacterInfoList()
+		return self.stageGetCharacterInfo.getCharacterInfoList()
 
