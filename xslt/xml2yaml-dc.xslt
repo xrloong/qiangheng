@@ -113,7 +113,9 @@
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" />
                 <xsl:text>引用名稱: </xsl:text>
+                <xsl:text>"</xsl:text>
                 <xsl:value-of select="@引用名稱"/> 
+                <xsl:text>"</xsl:text>
                 <xsl:value-of select="$newline" />
 
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
