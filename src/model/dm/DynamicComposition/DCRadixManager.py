@@ -4,6 +4,7 @@ from .DCCodeInfoEncoder import DCCodeInfoEncoder
 from model.base.RadixManager import RadixParser
 from xie.graphics.shape import Pane
 from xie.graphics.stroke import StrokeGroup
+from xie.graphics.stroke import StrokeGroupInfo
 from xie.graphics.factory import ShapeFactory
 
 class DCRadixParser(RadixParser):
@@ -216,11 +217,12 @@ class TemplateManager:
 		orders=strokeNode.get(TemplateManager.TAG_ORDER)
 
 		strokeGroup=self.get(templateName)
-		strokes=(strokeGroup.getStroke(index) for index in orders)
+		strokes=list((strokeGroup.getStroke(index) for index in orders))
 
 		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
 		if transformationNode != None:
-			statePane = strokeGroup.getStatePane().clone()
+			strokeGroupInfo = StrokeGroupInfo(strokes)
+			statePane = strokeGroupInfo.getInfoPane().clone()
 			for node in transformationNode:
 				if TemplateManager.TAG_POSITION in node:
 					position = node.get(TemplateManager.TAG_POSITION)
@@ -234,7 +236,7 @@ class TemplateManager:
 					ratio = scalingNode.get(TemplateManager.TAG_RATIO)
 					statePane.scale(pivot, ratio)
 
-			strokes=(stroke.generateCopyToApplyNewPane(strokeGroup.getStatePane(), statePane) for stroke in strokes)
+			strokes=list((stroke.generateCopyToApplyNewPane(strokeGroupInfo.getInfoPane(), statePane) for stroke in strokes))
 
 		return strokes
 
