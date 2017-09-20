@@ -1,3 +1,5 @@
+from injector import inject
+
 class HanZiStructure:
 	def __init__(self, tag):
 		self.referenceNode=None

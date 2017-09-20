@@ -1,12 +1,23 @@
-from . import StateManager
+from injector import inject
+
 from .CharacterDescriptionManager import CharacterDescriptionManager
 
+import model
+from Constant import MethodName, Package
+from model.OperatorManager import OperatorManager
+from model.CodeInfoManager import CodeInfoManager
+
 class StructureManager:
-	def __init__(self, inputMethod):
+	@inject
+	def __init__(self, \
+			inputMethod: MethodName, \
+			operationManager: OperatorManager, \
+			codeInfoManager: CodeInfoManager, \
+			):
 		self.mainDescMgr=CharacterDescriptionManager()
 		self.imDescMgr=CharacterDescriptionManager()
-		self.operationManager=StateManager.getOperationManager()
-		self.codeInfoManager=StateManager.getCodeInfoManager()
+		self.operationManager=operationManager
+		self.codeInfoManager=codeInfoManager
 
 		self._loadData(inputMethod)
 
@@ -47,9 +58,6 @@ class StructureManager:
 		resetRadixNameList=self.codeInfoManager.getResetRadixList()
 		self.imDescMgr.resetCompoundCharactersToBeRadix(resetRadixNameList)
 
-	def getImInfo(self):
-		return self.imInfo
-
 	def getAllCharacters(self):
 		return set(self.mainDescMgr.getAllCharacters()) | set(self.imDescMgr.getAllCharacters()) 
 
@@ -69,8 +77,8 @@ class StructureManager:
 		return self.imDescMgr.getSubstituteRuleList()
 
 	def generateOperator(self, operatorName):
-                operationManager=StateManager.getOperationManager()
+                operationManager=self.operationManager
                 return operationManager.generateOperator(operatorName)
 
 	def getCodeInfoManager(self):
-		return StateManager.getCodeInfoManager()
+		return self.codeInfoManager

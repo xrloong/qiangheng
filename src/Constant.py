@@ -1,3 +1,10 @@
+from injector import Key
+MethodName = Key('methodName')
+Package = Key('package')
+Quiet = Key('quiet')
+OutputFormat = Key('outputFormat')
+IsForIm = Key('isForIm')
+Writer = Key('writer')
 
 TAG_VERSION='版本號'
 
