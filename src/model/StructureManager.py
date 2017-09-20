@@ -46,7 +46,8 @@ class StructureManager:
 		]
 		imRadixList = [
 			imDir + 'radix/CJK.yaml',
-			imDir + 'radix/CJK-A.yaml'
+			imDir + 'radix/CJK-A.yaml',
+			imDir + 'radix/adjust.yaml'
 		]
 		imSutstitueFile = imDir + 'substitute.yaml'
 

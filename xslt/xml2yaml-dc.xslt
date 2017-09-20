@@ -18,6 +18,9 @@
  
   <xsl:template match="重設字符集">
     <xsl:text>重設字符集: </xsl:text>
+    <xsl:if test="not(字符)">
+      <xsl:text>[]</xsl:text>
+    </xsl:if>
     <xsl:value-of select="$newline" />
     <xsl:for-each select="字符|comment()">
       <xsl:value-of select="$intent" />
@@ -31,6 +34,9 @@
 
   <xsl:template match="字符集">
     <xsl:text>字符集: </xsl:text>
+    <xsl:if test="not(字符)">
+      <xsl:text>[]</xsl:text>
+    </xsl:if>
     <xsl:value-of select="$newline" />
     <xsl:for-each select="字符|comment()">
         <xsl:value-of select="$intent" />
