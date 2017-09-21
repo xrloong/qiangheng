@@ -15,6 +15,7 @@ SVG_PATH	=	font/svg
 QHDATA_PATH			=	qhdata
 QHDATA_MAIN_PATH		=	$(QHDATA_PATH)/main
 QHDATA_MAIN_COMP_PATH		=	$(QHDATA_MAIN_PATH)/component
+QHDATA_MAIN_RADIX_PATH		=	$(QHDATA_MAIN_PATH)/radix
 QHDATA_TEMPLATE_FILE		=	$(QHDATA_MAIN_PATH)/template.xml
 QHDATA_STYLE_PATH		=	$(QHDATA_MAIN_PATH)/style
 QHDATA_STYLE_FILE		=	$(QHDATA_STYLE_PATH)/standard.xml
@@ -48,6 +49,8 @@ prepare-main:
 	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_COMP_PATH)/CJK.xml > $(GEN_QHDATA_MAIN_COMP_PATH)/CJK.yaml
 	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml > $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.yaml
 	xalan -xsl xslt/xml2yaml-template.xslt -in $(QHDATA_TEMPLATE_FILE) > $(GEN_QHDATA_MAIN_PATH)/template.yaml
+	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK.xml $(GEN_QHDATA_PATH)/ _CJK.xml
+	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK-A.xml $(GEN_QHDATA_PATH)/ _CJK-A.xml
 #	java -jar /usr/share/java/xalan2.jar -xsl xslt/xml2yaml-template.xslt -in $(QHDATA_TEMPLATE_FILE) > $(GEN_QHDATA_MAIN_PATH)/template.yaml
 
 prepare-tranditional:
@@ -63,8 +66,10 @@ prepare-im:
 	xalan -xsl xslt/xml2yaml-substitute.xslt -in $(QHDATA_PATH)/$(IM)/substitute.xml > $(GEN_QHDATA_PATH)/$(IM)/substitute.yaml
 
 prepare-im-general:
-	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_PATH)/$(IM)/radix/CJK.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml
-	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_PATH)/$(IM)/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml
+	xalan -xsl xslt/formatOutput.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK.xml -out $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml -indent 4
+	xalan -xsl xslt/formatOutput.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK-A.xml -out $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml -indent 4
+	xalan -xsl xslt/xml2yaml-radix.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml
+	xalan -xsl xslt/xml2yaml-radix.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml
 	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_PATH)/$(IM)/radix/adjust.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/adjust.yaml
 
 prepare-ar:
@@ -101,8 +106,10 @@ prepare-dc:
 	mkdir -p $(GEN_QHDATA_PATH)/dc
 	make prepare-tranditional IM=dc
 	make prepare-im IM=dc
-	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_PATH)/dc/radix/CJK.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml
-	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_PATH)/dc/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK-A.yaml
+	xalan -xsl xslt/formatOutput.xslt -in $(GEN_QHDATA_PATH)/dc/radix/_CJK.xml -out $(GEN_QHDATA_PATH)/dc/radix/CJK.xml -indent 4
+	xalan -xsl xslt/formatOutput.xslt -in $(GEN_QHDATA_PATH)/dc/radix/_CJK-A.xml -out $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml -indent 4
+	xalan -xsl xslt/xml2yaml-dc.xslt -in $(GEN_QHDATA_PATH)/dc/radix/CJK.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml
+	xalan -xsl xslt/xml2yaml-dc.xslt -in $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK-A.yaml
 	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_PATH)/dc/radix/adjust.xml > $(GEN_QHDATA_PATH)/dc/radix/adjust.yaml
 	cp $(QHDATA_PATH)/dc/radix/template.yaml $(GEN_QHDATA_PATH)/dc/radix/template.yaml
 
