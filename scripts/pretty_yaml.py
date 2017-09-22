@@ -18,6 +18,7 @@ class MyDumper(yaml.Dumper):
     def increase_indent(self, flow=False, indentless=False):
         return super(MyDumper, self).increase_indent(flow, False)
 
+class quoted_str(str): pass
 def quoted_presenter(dumper, data):
     return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
 
@@ -30,7 +31,8 @@ def flowmap_rep(dumper, data):
     return dumper.represent_mapping( u'tag:yaml.org,2002:map', data.items(), flow_style=True)
 represent_dict_order = lambda self, data: self.represent_mapping('tag:yaml.org,2002:map', data.items())
 yaml.add_representer(OrderedDict, represent_dict_order)  
-yaml.add_representer(str, quoted_presenter)
+#yaml.add_representer(str, quoted_presenter)
+yaml.add_representer(quoted_str, quoted_presenter)
 yaml.add_representer(flowseq, flowseq_rep)
 yaml.add_representer(flowmap, flowmap_rep)
 
@@ -42,8 +44,12 @@ node=ordered_load(open(infile, "r"), yaml.CLoader)
 
 def adjust(n):
 	if isinstance(n, dict):
-		for x in n.values():
-			adjust(x)
+		for x in n.items():
+			key, value = x
+			if isinstance(value, str):
+				n[key]=quoted_str(value)
+			else:
+				adjust(value)
 		"""
 		if '起始點' in n:
 			n['起始點'] = flowseq(n['起始點'])
