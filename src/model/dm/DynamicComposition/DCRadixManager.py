@@ -1,3 +1,5 @@
+import abc
+
 from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfo import DCStrokeGroup
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
@@ -127,7 +129,18 @@ class DCRadixParser(RadixParser):
 		bottom=int(descriptionRegion[6:8], 16)
 		return Pane(left, top, right, bottom)
 
-class TemplateManager:
+class AbsTemplateManager(object, metaclass=abc.ABCMeta):
+	def __init__(self, shapeFactory):
+		pass
+
+	def put(self, name, template):
+		raise NotImplementedError('users must define put to use this base class')
+
+	def get(self, name):
+		raise NotImplementedError('users must define get to use this base class')
+		return None
+
+class TemplateManager(AbsTemplateManager):
 	TAG_TEMPLATE_SET = "樣式集"
 	TAG_STROKE_GROUP='筆劃組'
 	TAG_STROKE='筆劃'
