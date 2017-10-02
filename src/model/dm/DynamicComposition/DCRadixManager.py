@@ -105,7 +105,7 @@ class DCRadixParser(RadixParser):
 		for strokeNode in strokeNodeList:
 			method=strokeNode.get(TemplateManager.TAG_METHOD, TemplateManager.TAG_METHOD__DEFINITION)
 			if method==TemplateManager.TAG_METHOD__REFERENCE:
-				tempStrokes=self.templateManager.parseStrokeByReference(strokeNode)
+				tempStrokes=self.templateManager.parseStrokeByReference(strokeNode, self.templateManager)
 				strokeList.extend(tempStrokes)
 			elif method==TemplateManager.TAG_METHOD__DEFINITION:
 				stroke=DCRadixParser.fromStrokeNode(strokeNode, self.shapeFactory)
@@ -130,7 +130,7 @@ class DCRadixParser(RadixParser):
 		return Pane(left, top, right, bottom)
 
 class AbsTemplateManager(object, metaclass=abc.ABCMeta):
-	def __init__(self, shapeFactory):
+	def __init__(self):
 		pass
 
 	def put(self, name, template):
@@ -139,6 +139,35 @@ class AbsTemplateManager(object, metaclass=abc.ABCMeta):
 	def get(self, name):
 		raise NotImplementedError('users must define get to use this base class')
 		return None
+
+class AnchorTemplateManager(AbsTemplateManager):
+	def __init__(self):
+		super().__init__()
+		self.anchors={}
+
+	def put(self, name, template):
+		assert isinstance(template, StrokeGroup)
+		self.anchors[name]=template
+
+	def get(self, name):
+		return self.anchors.get(name)
+
+class CompositionTemplateManager(AbsTemplateManager):
+	def __init__(self, templateManagers):
+		super().__init__()
+		self.templateManagers=templateManagers
+
+	"""
+	def put(self, name, template):
+		assert isinstance(template, StrokeGroup)
+		self.anchors[name]=template
+	"""
+
+	def get(self, name):
+		for templateManager in self.templateManagers:
+			sg=templateManager.get(name)
+			if sg:
+				return sg
 
 class TemplateManager(AbsTemplateManager):
 	TAG_TEMPLATE_SET = "樣式集"
@@ -153,6 +182,7 @@ class TemplateManager(AbsTemplateManager):
 
 	TAG_METHOD__DEFINITION='定義'
 	TAG_METHOD__REFERENCE='引用'
+	TAG_METHOD__ANCHOR='錨點'
 
 	TAG_REFRENCE_NAME='引用名稱'
 	TAG_ORDER='順序'
@@ -166,6 +196,7 @@ class TemplateManager(AbsTemplateManager):
 	TAG_RATIO='比例'
 
 	def __init__(self, shapeFactory):
+		super().__init__()
 		self.shapeFactory=shapeFactory
 		self.templates={}
 		self.load()
@@ -204,11 +235,17 @@ class TemplateManager(AbsTemplateManager):
 
 	def parseStrokeGroup(self, strokeGroupNode):
 		strokes=[]
+		anchorTemplateManager = AnchorTemplateManager()
+		compositionTemplateManager = CompositionTemplateManager((anchorTemplateManager, self,))
 		for strokeNode in strokeGroupNode.get(TemplateManager.TAG_STROKE):
 			method=strokeNode.get(TemplateManager.TAG_METHOD, TemplateManager.TAG_METHOD__DEFINITION)
 			if method==TemplateManager.TAG_METHOD__REFERENCE:
-				tempStrokes=self.parseStrokeByReference(strokeNode)
+				tempStrokes=self.parseStrokeByReference(strokeNode, compositionTemplateManager)
 				strokes.extend(tempStrokes)
+			elif method==TemplateManager.TAG_METHOD__ANCHOR:
+				anchorName=strokeNode.get(TemplateManager.TAG_NAME)
+				strokeGroup=self.parseStrokeByAnchor(strokeNode, anchorTemplateManager)
+				anchorTemplateManager.put(anchorName, strokeGroup)
 			elif method==TemplateManager.TAG_METHOD__DEFINITION:
 				stroke=self.parseStroke(strokeNode)
 				strokes.append(stroke)
@@ -224,12 +261,12 @@ class TemplateManager(AbsTemplateManager):
 		stroke=self.shapeFactory.generateStroke(strokeType, startPoint, params)
 		return stroke
 
-	def parseStrokeByReference(self, strokeNode):
+	def parseStrokeByReference(self, strokeNode, templateManager):
 		strokeType=strokeNode.get(TemplateManager.TAG_TYPE)
 		templateName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
 		orders=strokeNode.get(TemplateManager.TAG_ORDER)
 
-		strokeGroup=self.get(templateName)
+		strokeGroup=templateManager.get(templateName)
 		strokes=list((strokeGroup.getStroke(index) for index in orders))
 
 		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
@@ -253,3 +290,30 @@ class TemplateManager(AbsTemplateManager):
 
 		return strokes
 
+	def parseStrokeByAnchor(self, strokeNode, anchromTemplateName):
+		referenceName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
+		strokeGroup=self.get(referenceName)
+
+		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
+		if transformationNode != None:
+			strokes=list(strokeGroup.getStrokeList())
+
+			strokeGroupInfo = StrokeGroupInfo(strokes)
+			statePane = strokeGroupInfo.getInfoPane().clone()
+			for node in transformationNode:
+				if TemplateManager.TAG_POSITION in node:
+					position = node.get(TemplateManager.TAG_POSITION)
+					statePane = Pane(*position)
+				elif TemplateManager.TAG_TRANSLATION in node:
+					translation = node.get(TemplateManager.TAG_TRANSLATION)
+					statePane.translateBy(translation)
+				elif TemplateManager.TAG_SCALING in node:
+					scalingNode = node.get(TemplateManager.TAG_SCALING)
+					pivot = scalingNode.get(TemplateManager.TAG_PIVOT)
+					ratio = scalingNode.get(TemplateManager.TAG_RATIO)
+					statePane.scale(pivot, ratio)
+
+			strokes=list((stroke.generateCopyToApplyNewPane(strokeGroupInfo.getInfoPane(), statePane) for stroke in strokes))
+			strokeGroup=strokeGroup.generateCopyToApplyNewPane(statePane)
+
+		return strokeGroup
