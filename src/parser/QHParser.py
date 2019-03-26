@@ -31,6 +31,6 @@ class QHParser:
 		return charDescList
 
 	def loadCharacters(self, filename):
-		node=yaml.load(open(filename), yaml.CLoader)
+		node=yaml.load(open(filename), yaml.SafeLoader)
 		return self.loadCharDescriptionByParsingYAML(node)
 

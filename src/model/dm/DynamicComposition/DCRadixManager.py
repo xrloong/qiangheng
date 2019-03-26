@@ -222,7 +222,7 @@ class TemplateManager(AbsTemplateManager):
 
 	def parseTemplateFromYAML(self, filename):
 		import yaml
-		rootNode=yaml.load(open(filename))
+		rootNode=yaml.load(open(filename), Loader=yaml.SafeLoader)
 		self.parseTemplateSet(rootNode)
 
 	def parseTemplateSet(self, rootNode):

@@ -84,7 +84,7 @@ class RadixParser:
 			self.parseRadixFromYAML(filename)
 
 	def parseRadixFromYAML(self, filename):
-		rootNode=yaml.load(open(filename))
+		rootNode=yaml.load(open(filename), Loader=yaml.SafeLoader)
 
 #		fileType=self.parseFileType(rootNode)
 #		assert fileType==Constant.TAG_FILE_TYPE_RADIX, \

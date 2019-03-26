@@ -38,7 +38,7 @@ class CharacterDescriptionManager:
 
 	def _loadSubstituteRules(self, toSubstituteFile):
 		import yaml
-		node=yaml.load(open(toSubstituteFile), yaml.CLoader)
+		node=yaml.load(open(toSubstituteFile), yaml.SafeLoader)
 		ruleSetNode=node.get(Constant.TAG_RULE_SET)
 
 		if not ruleSetNode:
