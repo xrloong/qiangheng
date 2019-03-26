@@ -44,33 +44,32 @@ all: xml
 
 prepare-main:
 	mkdir -p $(GEN_QHDATA_MAIN_PATH) $(GEN_QHDATA_MAIN_COMP_PATH)
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_PATH)/CJK.xml > $(GEN_QHDATA_MAIN_PATH)/CJK.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_PATH)/CJK-A.xml > $(GEN_QHDATA_MAIN_PATH)/CJK-A.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_COMP_PATH)/CJK.xml > $(GEN_QHDATA_MAIN_COMP_PATH)/CJK.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml > $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.yaml
-	xalan -xsl xslt/xml2yaml-template.xslt -in $(QHDATA_TEMPLATE_FILE) > $(GEN_QHDATA_MAIN_PATH)/template.yaml
+	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/CJK.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_PATH)/CJK.xml
+	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/CJK-A.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_PATH)/CJK-A.xml
+	xsltproc -o $(GEN_QHDATA_MAIN_COMP_PATH)/CJK.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_COMP_PATH)/CJK.xml
+	xsltproc -o $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml
+	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/template.yaml xslt/xml2yaml-template.xslt $(QHDATA_TEMPLATE_FILE)
 	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK.xml $(GEN_QHDATA_PATH)/ _CJK.xml
 	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK-A.xml $(GEN_QHDATA_PATH)/ _CJK-A.xml
-#	java -jar /usr/share/java/xalan2.jar -xsl xslt/xml2yaml-template.xslt -in $(QHDATA_TEMPLATE_FILE) > $(GEN_QHDATA_MAIN_PATH)/template.yaml
 
 prepare-tranditional:
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_FILE) > $(GEN_QHDATA_MAIN_PATH)/style.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_TRADITIONAL_FILE) > $(GEN_QHDATA_PATH)/$(IM)/style.yaml
+	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/style.yaml xslt/xml2yaml.xslt $(QHDATA_STYLE_FILE)
+	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/style.yaml xslt/xml2yaml.xslt $(QHDATA_STYLE_TRADITIONAL_FILE)
 
 prepare-simplified:
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_FILE) > $(GEN_QHDATA_MAIN_PATH)/style.yaml
-	xalan -xsl xslt/xml2yaml.xslt -in $(QHDATA_STYLE_SIMPLIFIED_FILE) > $(GEN_QHDATA_PATH)/$(IM)/style.yaml
+	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/style.yaml xslt/xml2yaml.xslt $(QHDATA_STYLE_FILE)
+	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/style.yaml xslt/xml2yaml.xslt $(QHDATA_STYLE_SIMPLIFIED_FILE)
 
 prepare-im:
 	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/radix/
-	xalan -xsl xslt/xml2yaml-substitute.xslt -in $(QHDATA_PATH)/$(IM)/substitute.xml > $(GEN_QHDATA_PATH)/$(IM)/substitute.yaml
+	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/substitute.yaml xslt/xml2yaml-substitute.xslt $(QHDATA_PATH)/$(IM)/substitute.xml
 
 prepare-im-general:
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK-A.xml -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml
-	xalan -xsl xslt/xml2yaml-radix.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml
-	xalan -xsl xslt/xml2yaml-radix.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml
-	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_PATH)/$(IM)/radix/adjust.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/adjust.yaml
+	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml xslt/xml2yaml-radix.xslt $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml
+	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml xslt/xml2yaml-radix.xslt $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml
+	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/radix/adjust.yaml xslt/xml2yaml-radix.xslt $(QHDATA_PATH)/$(IM)/radix/adjust.xml
 
 prepare-ar:
 	mkdir -p $(GEN_QHDATA_PATH)/ar
@@ -108,9 +107,9 @@ prepare-dc:
 	make prepare-im IM=dc
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK-A.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml
-	xalan -xsl xslt/xml2yaml-dc.xslt -in $(GEN_QHDATA_PATH)/dc/radix/CJK.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml
-	xalan -xsl xslt/xml2yaml-dc.xslt -in $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK-A.yaml
-	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_PATH)/dc/radix/adjust.xml > $(GEN_QHDATA_PATH)/dc/radix/adjust.yaml
+	xsltproc -o $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml xslt/xml2yaml-dc.xslt $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
+	xsltproc -o $(GEN_QHDATA_PATH)/dc/radix/CJK-A.yaml xslt/xml2yaml-dc.xslt $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml
+	xsltproc -o $(GEN_QHDATA_PATH)/dc/radix/adjust.yaml xslt/xml2yaml-dc.xslt $(QHDATA_PATH)/dc/radix/adjust.xml
 	cp $(QHDATA_PATH)/dc/radix/template.yaml $(GEN_QHDATA_PATH)/dc/radix/template.yaml
 
 prepare:
@@ -124,13 +123,13 @@ xml:
 	do\
 		echo $$im;\
 		time src/qiangheng.py -i $$im --format xml |\
-			XMLLINT_INDENT="    " xmllint --encode UTF-8 --format - -o $(XML_PATH)/qh$$im.xml;\
+			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$im.xml --format -;\
 	done
 	for im in $(DMLIST);\
 	do\
 		echo $$im;\
 		time src/qiangheng.py -d $$im --format xml |\
-			XMLLINT_INDENT="    " xmllint --encode UTF-8 --format - -o $(XML_PATH)/qh$$im.xml;\
+			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$im.xml --format -;\
 	done
 	touch $(XML_PATH)
 
@@ -156,7 +155,8 @@ $(SCIM_PATH): $(XML_PATH)
 	mkdir -p $(SCIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		xalan -xsl xslt/scim.xslt -in tables/xml/qh$$im.xml -param UUID \"`uuidgen`\" -param SERIAL \"`date +%Y%m%d`\" -param ICON_DIR \"/usr/share/scim/icon/\" -param ICON_FILE \"qh$$im.svg\" -out $(SCIM_PATH)/qh$$im.scim;\
+		xsltproc -param UUID \"`uuidgen`\" -param SERIAL \"`date +%Y%m%d`\" -param ICON_DIR \"/usr/share/scim/icon/\" -param ICON_FILE \"qh$$im.svg\" \
+			-o $(SCIM_PATH)/qh$$im.scim xslt/scim.xslt tables/xml/qh$$im.xml;\
 		scim-make-table $(SCIM_PATH)/qh$$im.scim -b -o $(SCIM_PATH)/qh$$im.bin;\
 	done
 	touch $(SCIM_PATH)
@@ -167,7 +167,8 @@ $(IBUS_PATH): $(XML_PATH)
 	mkdir -p tmp
 	for im in $(IMLIST);\
 	do\
-		xalan -xsl xslt/ibus.xslt -in tables/xml/qh$$im.xml -param UUID \"`uuidgen`\" -param SERIAL \"`date +%Y%m%d`\" -param ICON_FILE \"qh$$im.svg\" -out $(IBUS_PATH)/qh$$im.ibus;\
+		xsltproc -param UUID \"`uuidgen`\" -param SERIAL \"`date +%Y%m%d`\" -param ICON_DIR \"/usr/share/scim/icon/\" -param ICON_FILE \"qh$$im.svg\" \
+			-o $(IBUS_PATH)/qh$$im.ibus xslt/ibus.xslt tables/xml/qh$$im.xml;\
 		bash -c "cd tmp; ibus-table-createdb -s ../$(IBUS_PATH)/qh$$im.ibus";\
 	done
 	cp tmp/*.db $(IBUS_PATH)
@@ -178,7 +179,7 @@ $(GCIN_PATH): $(XML_PATH)
 	mkdir -p $(GCIN_PATH)
 	for im in $(IMLIST);\
 	do\
-		time xalan -xsl xslt/gcin.xslt -in $(XML_PATH)/qh$$im.xml -out $(GCIN_PATH)/qh$$im.cin;\
+		xsltproc -o $(GCIN_PATH)/qh$$im.cin xslt/gcin.xslt $(XML_PATH)/qh$$im.xml;\
 		gcin2tab $(GCIN_PATH)/qh$$im.cin;\
 	done
 	touch $(GCIN_PATH)
@@ -188,7 +189,7 @@ $(OVIM_PATH): $(XML_PATH)
 	mkdir -p $(OVIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		time xalan -xsl xslt/ovim.xslt -in $(XML_PATH)/qh$$im.xml -out $(OVIM_PATH)/qh$$im.cin;\
+		xsltproc -o $(OVIM_PATH)/qh$$im.cin xslt/ovim.xslt $(XML_PATH)/qh$$im.xml;\
 	done
 	touch $(OVIM_PATH)
 
@@ -197,7 +198,7 @@ $(MSIM_PATH): $(XML_PATH)
 	mkdir -p $(MSIM_PATH)
 	for im in $(IMLIST);\
 	do\
-		time xalan -xsl xslt/msim.xslt -in $(XML_PATH)/qh$$im.xml -out $(MSIM_PATH)/qh$$im.msim;\
+		xsltproc -o $(MSIM_PATH)/qh$$im.msim xslt/msim.xslt $(XML_PATH)/qh$$im.xml;\
 		sed 's/$$'"/`echo \\\r`/" $(MSIM_PATH)/qh$$im.msim > tmp/qh$$im.msim.dos;\
 		iconv -f utf-8 -t utf-16le tmp/qh$$im.msim.dos > $(MSIM_PATH)/qh$$im.msim.txt;\
 	done
@@ -221,11 +222,7 @@ $(PURETABLE_PATH): $(XML_PATH)
 			else\
 				xslt=puretable.xslt;\
 			fi;\
-			time xalan -xsl xslt/$$xslt\
-				-param type "'$$type'"\
-				-param onlycharacter "'true'"\
-				-in $(XML_PATH)/qh$$im.xml\
-				-out $(PURETABLE_PATH)/qh$$im-$$type.txt;\
+			xsltproc --param onlycharacter true --stringparam type $$type -o $(PURETABLE_PATH)/qh$$im-$$type.txt xslt/$$xslt $(XML_PATH)/qh$$im.xml; \
 		done;\
 	done
 	touch $(PURETABLE_PATH)
