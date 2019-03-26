@@ -66,8 +66,8 @@ prepare-im:
 	xalan -xsl xslt/xml2yaml-substitute.xslt -in $(QHDATA_PATH)/$(IM)/substitute.xml > $(GEN_QHDATA_PATH)/$(IM)/substitute.yaml
 
 prepare-im-general:
-	xalan -xsl xslt/formatOutput.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK.xml -out $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml -indent 4
-	xalan -xsl xslt/formatOutput.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK-A.xml -out $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml -indent 4
+	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml
+	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK-A.xml -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml
 	xalan -xsl xslt/xml2yaml-radix.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml
 	xalan -xsl xslt/xml2yaml-radix.xslt -in $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml
 	xalan -xsl xslt/xml2yaml-radix.xslt -in $(QHDATA_PATH)/$(IM)/radix/adjust.xml > $(GEN_QHDATA_PATH)/$(IM)/radix/adjust.yaml
@@ -106,8 +106,8 @@ prepare-dc:
 	mkdir -p $(GEN_QHDATA_PATH)/dc
 	make prepare-tranditional IM=dc
 	make prepare-im IM=dc
-	xalan -xsl xslt/formatOutput.xslt -in $(GEN_QHDATA_PATH)/dc/radix/_CJK.xml -out $(GEN_QHDATA_PATH)/dc/radix/CJK.xml -indent 4
-	xalan -xsl xslt/formatOutput.xslt -in $(GEN_QHDATA_PATH)/dc/radix/_CJK-A.xml -out $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml -indent 4
+	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
+	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK-A.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml
 	xalan -xsl xslt/xml2yaml-dc.xslt -in $(GEN_QHDATA_PATH)/dc/radix/CJK.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml
 	xalan -xsl xslt/xml2yaml-dc.xslt -in $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml > $(GEN_QHDATA_PATH)/dc/radix/CJK-A.yaml
 	xalan -xsl xslt/xml2yaml-dc.xslt -in $(QHDATA_PATH)/dc/radix/adjust.xml > $(GEN_QHDATA_PATH)/dc/radix/adjust.yaml
@@ -124,13 +124,13 @@ xml:
 	do\
 		echo $$im;\
 		time src/qiangheng.py -i $$im --format xml |\
-			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
+			XMLLINT_INDENT="    " xmllint --encode UTF-8 --format - -o $(XML_PATH)/qh$$im.xml;\
 	done
 	for im in $(DMLIST);\
 	do\
 		echo $$im;\
 		time src/qiangheng.py -d $$im --format xml |\
-			xalan -xsl xslt/formatOutput.xslt -out $(XML_PATH)/qh$$im.xml -indent 4;\
+			XMLLINT_INDENT="    " xmllint --encode UTF-8 --format - -o $(XML_PATH)/qh$$im.xml;\
 	done
 	touch $(XML_PATH)
 
