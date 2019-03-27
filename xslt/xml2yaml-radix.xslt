@@ -84,15 +84,6 @@
               <xsl:value-of select="." />
               <xsl:value-of select="$newline" />
             </xsl:for-each>
-
-            <xsl:for-each select="./@*">
-              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-              <xsl:value-of select="name()"/>
-              <xsl:text>: </xsl:text>
-              <xsl:value-of select="." />
-              <xsl:value-of select="$newline" />
-            </xsl:for-each>
           </xsl:for-each>
         </xsl:if>
     </xsl:for-each>
