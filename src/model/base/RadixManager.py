@@ -16,7 +16,6 @@ class RadixParser:
 		self.codeInfoEncoder=codeInfoEncoder
 
 		self.radixCodeInfoDB={}
-		self.resetRadixList=[]
 
 		self.radixDescriptionManager=self.createRadixDescriptionManager()
 
@@ -24,7 +23,7 @@ class RadixParser:
 		self.parse(radixFileList)
 
 		self.convert()
-		return (self.resetRadixList, self.radixDescriptionManager.getCodeInfoDB())
+		return (self.radixDescriptionManager.getResetRadixList(), self.radixDescriptionManager.getCodeInfoDB())
 
 
 	def getEncoder(self):
@@ -86,13 +85,7 @@ class RadixParser:
 	def parseRadixFromYAML(self, filename):
 		rootNode=yaml.load(open(filename), Loader=yaml.SafeLoader)
 
-		self.parseResetRadix(rootNode)
 		self.parseRadixInfo(rootNode)
-
-	def parseResetRadix(self, rootNode):
-		resetCharacterSetNode=rootNode.get("重設字符集")
-		if resetCharacterSetNode:
-			self.resetRadixList.extend(resetCharacterSetNode)
 
 	def parseRadixInfo(self, rootNode):
 		characterSetNode=rootNode.get(Constant.TAG_CHARACTER_SET)
@@ -104,10 +97,11 @@ class RadixParser:
 
 	def parseRadixDescription(self, nodeCharacter):
 		radixCodeInfoDescList=[]
+		toOverridePrev=("是" == nodeCharacter.get("覆蓋"))
 		for elementCodeInfo in nodeCharacter.get(RadixParser.TAG_CODE_INFORMATION):
 			radixCodeInfoDesc=self.convertElementToRadixInfo(elementCodeInfo)
 			radixCodeInfoDescList.append(radixCodeInfoDesc)
-		return RadixDescription(radixCodeInfoDescList)
+		return RadixDescription(radixCodeInfoDescList, toOverridePrev)
 
 	def parseFileType(self, rootNode):
 		fileType=rootNode.get(Constant.TAG_FILE_TYPE)
@@ -122,9 +116,13 @@ class RadixDescriptionManager:
 		self.descriptionDict={}
 		self.radixCodeInfoDB={}
 		self.radixDescDB={}
+		self.resetRadixList=[]
 
 	def addCodeInfoList(self, charName, radixCodeInfoList):
 		self.radixCodeInfoDB[charName]=radixCodeInfoList
+
+	def getResetRadixList(self):
+		return self.resetRadixList
 
 	def getCodeInfoList(self, charName):
 		return self.radixCodeInfoDB[charName]
@@ -133,11 +131,16 @@ class RadixDescriptionManager:
 		return self.radixCodeInfoDB
 
 	def addDescription(self, charName, description):
-		if charName in self.descriptionDict:
-			tmpRadixDesc=self.descriptionDict.get(charName)
-			tmpRadixDesc.mergeRadixDescription(description)
+		if description.isToOverridePrev():
+			tmpRadixDesc = description
+			self.resetRadixList.append(charName)
 		else:
-			tmpRadixDesc=description
+			if charName in self.descriptionDict:
+				tmpRadixDesc=self.descriptionDict.get(charName)
+				tmpRadixDesc.mergeRadixDescription(description)
+			else:
+				tmpRadixDesc=description
+
 		self.descriptionDict[charName]=tmpRadixDesc
 		self.radixDescDB[charName]=tmpRadixDesc
 
@@ -181,8 +184,12 @@ class RadixCodeInfoDescription:
 		return self.codeElementCodeInfo
 
 class RadixDescription:
-	def __init__(self, radixCodeInfoList):
+	def __init__(self, radixCodeInfoList, toOverride=True):
 		self.radixCodeInfoList=radixCodeInfoList
+		self.toOverridePrev=toOverride
+
+	def isToOverridePrev(self):
+		return self.toOverridePrev
 
 	def getRadixCodeInfoDescriptionList(self):
 		return self.radixCodeInfoList

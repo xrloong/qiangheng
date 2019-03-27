@@ -11,25 +11,8 @@
   <xsl:template match="/瑲珩">
     <root>
       <xsl:value-of select="版本號" />
-      <xsl:apply-templates select="重設字符集"/>
       <xsl:apply-templates select="字符集"/>
     </root>
-  </xsl:template>
-
-  <xsl:template match="重設字符集">
-    <xsl:text>重設字符集: </xsl:text>
-    <xsl:if test="not(字符)">
-      <xsl:text>[]</xsl:text>
-    </xsl:if>
-    <xsl:value-of select="$newline" />
-    <xsl:for-each select="字符|comment()">
-      <xsl:value-of select="$intent" />
-      <xsl:value-of select="$itemmark" />
-      <xsl:text>"</xsl:text>
-      <xsl:value-of select="@名稱" />
-      <xsl:text>"</xsl:text>
-      <xsl:value-of select="$newline" />
-    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="字符集">
@@ -63,8 +46,6 @@
           <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
           <xsl:text>編碼資訊: </xsl:text>
           <xsl:value-of select="$newline" />
-
-
           <xsl:for-each select="編碼">
             <xsl:if test="@編碼表示式">
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
@@ -85,6 +66,13 @@
               <xsl:value-of select="$newline" />
             </xsl:for-each>
           </xsl:for-each>
+
+          <xsl:if test="@覆蓋">
+            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+            <xsl:text>覆蓋: </xsl:text>
+            <xsl:value-of select="@覆蓋" />
+            <xsl:value-of select="$newline" />
+          </xsl:if>
         </xsl:if>
     </xsl:for-each>
   </xsl:template>
