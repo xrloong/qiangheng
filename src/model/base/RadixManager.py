@@ -86,14 +86,6 @@ class RadixParser:
 	def parseRadixFromYAML(self, filename):
 		rootNode=yaml.load(open(filename), Loader=yaml.SafeLoader)
 
-#		fileType=self.parseFileType(rootNode)
-#		assert fileType==Constant.TAG_FILE_TYPE_RADIX, \
-#			"文字類型錯誤，預期為＜字根＞，實際為＜%s＞。"%(fileType)
-
-#		nameInputMethod=self.parseInputMethod(rootNode)
-#		assert nameInputMethod==self.nameInputMethod, \
-#			"輸入法錯誤，預期為＜%s＞，實際為＜%s＞。"%(self.nameInputMethod, nameInputMethod)
-
 		self.parseResetRadix(rootNode)
 		self.parseRadixInfo(rootNode)
 
@@ -143,9 +135,9 @@ class RadixDescriptionManager:
 	def addDescription(self, charName, description):
 		if charName in self.descriptionDict:
 			tmpRadixDesc=self.descriptionDict.get(charName)
+			tmpRadixDesc.mergeRadixDescription(description)
 		else:
-			tmpRadixDesc=RadixDescription([])
-		tmpRadixDesc.mergeRadixDescription(description)
+			tmpRadixDesc=description
 		self.descriptionDict[charName]=tmpRadixDesc
 		self.radixDescDB[charName]=tmpRadixDesc
 
