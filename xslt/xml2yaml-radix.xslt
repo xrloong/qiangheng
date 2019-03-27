@@ -65,18 +65,18 @@
           <xsl:value-of select="$newline" />
 
 
-          <xsl:for-each select="編碼資訊">
-            <xsl:if test="編碼/@編碼表示式">
+          <xsl:for-each select="編碼">
+            <xsl:if test="@編碼表示式">
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="$intent" /> <xsl:value-of select="$itemmark" />
               <xsl:text>資訊表示式: </xsl:text>
               <xsl:text>"</xsl:text>
-              <xsl:value-of select="編碼/@編碼表示式" />
+              <xsl:value-of select="@編碼表示式" />
               <xsl:text>"</xsl:text>
               <xsl:value-of select="$newline" />
             </xsl:if>
 
-            <xsl:for-each select="編碼/@*[name()!='編碼表示式']">
+            <xsl:for-each select="@*[name()!='編碼表示式']">
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="name()"/>

@@ -64,11 +64,11 @@
           <xsl:text>編碼資訊: </xsl:text>
           <xsl:value-of select="$newline" />
 
-          <xsl:for-each select="編碼資訊">
-            <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-            <xsl:value-of select="$intent" /> <xsl:value-of select="$itemmark" />
-            <xsl:text>資訊表示式: </xsl:text>
-            <xsl:value-of select="$newline" />
+          <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
+          <xsl:value-of select="$intent" /> <xsl:value-of select="$itemmark" />
+          <xsl:text>資訊表示式: </xsl:text>
+          <xsl:value-of select="$newline" />
+
             <xsl:for-each select="筆劃組">
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
               <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
@@ -206,8 +206,6 @@
               </xsl:for-each>
             </xsl:if>
             </xsl:for-each>
-
-          </xsl:for-each>
         </xsl:if>
     </xsl:for-each>
   </xsl:template>
