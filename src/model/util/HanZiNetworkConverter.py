@@ -412,8 +412,12 @@ class StageSetNodeTree(ConversionStage):
 
 class StageGetCharacterInfo(ConversionStage):
 	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager):
+	def __init__(self, hanziNetwork: HanZiNetwork,
+			structureManager: StructureManager,
+			codeInfoManager: CodeInfoManager
+		):
 		super().__init__(hanziNetwork, structureManager)
+		self.codeInfoManager = codeInfoManager
 		self.characterInfoList=[]
 
 	def execute(self):
@@ -433,14 +437,11 @@ class StageGetCharacterInfo(ConversionStage):
 		return self.characterInfoList
 
 	def getNodeCharacterInfo(self, hanziNode):
-		from model import StateManager
-
 		structureList=hanziNode.getStructureList(True)
 		codeInfoList=sum(map(lambda s: s.getTag().getCodeInfoList(), structureList), [])
 		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
 
-		codeInfoManager=StateManager.getCodeInfoManager()
-		codeList=codeInfoManager.interpretCodeInfoList(codeInfoList)
+		codeList=self.codeInfoManager.interpretCodeInfoList(codeInfoList)
 
 		characterInfo=hanziNode.getTag()
 		characterInfo.setCodeList(codeList)
