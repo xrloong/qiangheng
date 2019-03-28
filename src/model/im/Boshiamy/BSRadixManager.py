@@ -1,8 +1,7 @@
 from .BSCodeInfo import BSCodeInfo
 from .BSCodeInfoEncoder import BSCodeInfoEncoder
-from model.base.RadixManager import RadixParser
 
-class BSRadixParser(RadixParser):
+class BSRadixParser():
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 

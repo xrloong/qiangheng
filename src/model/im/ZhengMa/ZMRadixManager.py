@@ -1,9 +1,8 @@
 from .ZMCodeInfo import ZMCodeInfo
 from .ZMCodeInfoEncoder import ZMCodeInfoEncoder
-from model.base.RadixManager import RadixParser
 
 
-class ZMRadixParser(RadixParser):
+class ZMRadixParser():
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 

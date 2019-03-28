@@ -30,7 +30,8 @@ class PackageModule(Module):
 
 	@provider
 	def provideRadixParser(self, imPackage: Package, imName: IMName, codeInfoEncoder: CodeInfoEncoder) -> RadixParser:
-		return imPackage.RadixParser(imName, codeInfoEncoder)
+		imRadixParser = imPackage.RadixParser()
+		return RadixParser(imName, codeInfoEncoder, imRadixParser)
 
 	@provider
 	def provideIMName(self, imInfo: model.base.IMInfo) -> IMName:

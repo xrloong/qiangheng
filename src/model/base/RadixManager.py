@@ -10,11 +10,10 @@ class RadixParser:
 	TAG_CODE_INFORMATION='編碼資訊'
 	TAG_CODE='編碼'
 
-	def __init__(self, nameInputMethod, codeInfoEncoder):
+	def __init__(self, nameInputMethod, codeInfoEncoder, imRadixParser):
 		self.nameInputMethod=nameInputMethod
 		self.codeInfoEncoder=codeInfoEncoder
-
-		self.imRadixParser=self
+		self.imRadixParser=imRadixParser
 
 		self.radixCodeInfoDB={}
 

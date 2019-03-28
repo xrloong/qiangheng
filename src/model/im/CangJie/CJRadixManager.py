@@ -1,12 +1,11 @@
 from .CJCodeInfo import CJCodeInfo
 from .CJCodeInfoEncoder import CJCodeInfoEncoder
-from model.base.RadixManager import RadixParser
 from .CJLump import CJLump
 
 import re
 import sys
 
-class CJRadixParser(RadixParser):
+class CJRadixParser():
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 	ATTRIB_SINGLETON_EXPRESSION='獨體表示式'
 

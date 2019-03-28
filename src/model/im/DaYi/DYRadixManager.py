@@ -1,8 +1,7 @@
 from .DYCodeInfo import DYCodeInfo
 from .DYCodeInfoEncoder import DYCodeInfoEncoder
-from model.base.RadixManager import RadixParser
 
-class DYRadixParser(RadixParser):
+class DYRadixParser():
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 

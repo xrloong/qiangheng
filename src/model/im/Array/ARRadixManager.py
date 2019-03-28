@@ -1,8 +1,7 @@
 from .ARCodeInfo import ARCodeInfo
 from .ARCodeInfoEncoder import ARCodeInfoEncoder
-from model.base.RadixManager import RadixParser
 
-class ARRadixParser(RadixParser):
+class ARRadixParser():
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 

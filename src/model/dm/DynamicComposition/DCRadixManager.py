@@ -3,13 +3,12 @@ import abc
 from .DCCodeInfo import DCCodeInfo
 from .DCCodeInfo import DCStrokeGroup
 from .DCCodeInfoEncoder import DCCodeInfoEncoder
-from model.base.RadixManager import RadixParser
 from xie.graphics.shape import Pane
 from xie.graphics.stroke import StrokeGroup
 from xie.graphics.stroke import StrokeGroupInfo
 from xie.graphics.factory import ShapeFactory
 
-class DCRadixParser(RadixParser):
+class DCRadixParser():
 	TAG_STROKE_GROUP='筆劃組'
 	TAG_STROKE='筆劃'
 	TAG_GEOMETRY='幾何'
@@ -30,8 +29,7 @@ class DCRadixParser(RadixParser):
 
 	TAG_NAME='名稱'
 
-	def __init__(self, nameInputMethod, codeInfoEncoder):
-		super().__init__(nameInputMethod, codeInfoEncoder)
+	def __init__(self):
 		self.shapeFactory=ShapeFactory()
 		self.templateManager=TemplateManager(self.shapeFactory)
 
