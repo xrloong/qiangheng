@@ -433,10 +433,17 @@ class StageGetCharacterInfo(ConversionStage):
 		return self.characterInfoList
 
 	def getNodeCharacterInfo(self, hanziNode):
+		from model import StateManager
+
 		structureList=hanziNode.getStructureList(True)
 		codeInfoList=sum(map(lambda s: s.getTag().getCodeInfoList(), structureList), [])
+		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
+
+		codeInfoManager=StateManager.getCodeInfoManager()
+		codeList=codeInfoManager.interpretCodeInfoList(codeInfoList)
+
 		characterInfo=hanziNode.getTag()
-		characterInfo.setCodeInfoList(codeInfoList)
+		characterInfo.setCodeList(codeList)
 
 		return characterInfo
 

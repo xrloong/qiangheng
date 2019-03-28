@@ -32,3 +32,12 @@ class CodeInfoManager:
 		codeInfo=self.codeInfoEncoder.setByComps(operator, codeInfoList)
 		return codeInfo
 
+	def interpretCodeInfoList(self, codeInfoList):
+		codeList=[]
+		for codeInfo in codeInfoList:
+			characterCode=self.interpretCodeInfo(codeInfo)
+			variance=codeInfo.variance
+			if characterCode:
+				codeList.append([characterCode, variance])
+
+		return codeList
