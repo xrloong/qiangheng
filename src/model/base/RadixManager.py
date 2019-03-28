@@ -1,5 +1,4 @@
 from .CodeInfo import CodeInfo
-from .CodeInfoEncoder import CodeInfoEncoder
 
 import Constant
 from model import OperatorManager
@@ -14,6 +13,8 @@ class RadixParser:
 	def __init__(self, nameInputMethod, codeInfoEncoder):
 		self.nameInputMethod=nameInputMethod
 		self.codeInfoEncoder=codeInfoEncoder
+
+		self.imRadixParser=self
 
 		self.radixCodeInfoDB={}
 
@@ -55,7 +56,7 @@ class RadixParser:
 		return radixCodeInfoList
 
 	def convertRadixDescToCodeInfoWithAttribute(self, radixDesc):
-		codeInfo=self.convertRadixDescToCodeInfo(radixDesc)
+		codeInfo=self.imRadixParser.convertRadixDescToCodeInfo(radixDesc)
 
 		codeVariance=radixDesc.getCodeVarianceType()
 		isSupportCharacterCode=radixDesc.isSupportCharacterCode()
