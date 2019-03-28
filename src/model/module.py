@@ -32,17 +32,6 @@ class PackageModule(Module):
 
 	@singleton
 	@provider
-	def provideStructureManager(self, inputMethod: MethodName, \
-			operationManager: model.OperatorManager.OperatorManager, \
-			codeInfoManager: model.CodeInfoManager.CodeInfoManager, \
-			mainCharDescManager: MainCharDescManager, \
-			imCharDescManager: ImCharDescManager \
-			) -> StructureManager:
-		return StructureManager(inputMethod, operationManager, codeInfoManager,
-				mainCharDescManager, imCharDescManager)
-
-	@singleton
-	@provider
 	def provideMainCharDescManager(self, charDescManager: CharacterDescriptionManager) -> MainCharDescManager:
 		return charDescManager
 

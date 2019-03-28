@@ -1,4 +1,5 @@
 from injector import inject
+from injector import singleton
 
 import model
 from Constant import MethodName, Package
@@ -6,6 +7,7 @@ from Constant import MainCharDescManager, ImCharDescManager
 from model.OperatorManager import OperatorManager
 from model.CodeInfoManager import CodeInfoManager
 
+@singleton
 class StructureManager:
 	@inject
 	def __init__(self, \
