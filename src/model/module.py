@@ -1,7 +1,7 @@
 from injector import Module
 from injector import provider, singleton
 
-from . import StateManager
+from model.OperatorManager import OperatorManager
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import CharacterDescriptionManager
 from model.hanzi import HanZiNetwork
@@ -18,23 +18,14 @@ class PackageModule(Module):
 		else:
 			return getDmPackage(methodName)
 
-	@singleton
-	@provider
-	def provideStateManager(self, imPackage: Package) -> StateManager:
-		StateManager.setIMPackage(imPackage)
-		return StateManager
-
 	@provider
 	def provideIMInfo(self, package: Package) -> model.base.IMInfo:
 		return package.IMInfo()
 
+	@singleton
 	@provider
-	def provideOperatorManager(self, stateManager: StateManager) -> model.OperatorManager.OperatorManager:
-		return stateManager.getOperationManager()
-
-	@provider
-	def provideCodeInfoManager(self, stateManager: StateManager) -> model.CodeInfoManager.CodeInfoManager:
-		return stateManager.getCodeInfoManager()
+	def provideOperatorManager(self, package: Package) -> OperatorManager:
+		return OperatorManager(package)
 
 	@singleton
 	@provider

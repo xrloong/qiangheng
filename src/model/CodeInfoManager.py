@@ -1,6 +1,12 @@
+from injector import inject
+from injector import singleton
 
+from Constant import Package
+
+@singleton
 class CodeInfoManager:
-	def __init__(self, imPackage):
+	@inject
+	def __init__(self, imPackage: Package):
 		imName=imPackage.IMInfo.IMName
 		codeInfoEncoder=imPackage.CodeInfoEncoder
 		self.radixParser=imPackage.RadixParser(imName, codeInfoEncoder)
