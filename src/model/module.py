@@ -18,17 +18,23 @@ class PackageModule(Module):
 		else:
 			return getDmPackage(methodName)
 
+	@singleton
+	@provider
+	def provideStateManager(self, imPackage: Package) -> StateManager:
+		StateManager.setIMPackage(imPackage)
+		return StateManager
+
 	@provider
 	def provideIMInfo(self, package: Package) -> model.base.IMInfo:
 		return package.IMInfo()
 
 	@provider
-	def provideOperatorManager(self) -> model.OperatorManager.OperatorManager:
-		return StateManager.getOperationManager()
+	def provideOperatorManager(self, stateManager: StateManager) -> model.OperatorManager.OperatorManager:
+		return stateManager.getOperationManager()
 
 	@provider
-	def provideCodeInfoManager(self) -> model.CodeInfoManager.CodeInfoManager:
-		return StateManager.getCodeInfoManager()
+	def provideCodeInfoManager(self, stateManager: StateManager) -> model.CodeInfoManager.CodeInfoManager:
+		return stateManager.getCodeInfoManager()
 
 	@singleton
 	@provider

@@ -5,7 +5,6 @@ from injector import Injector
 
 from optparse import OptionParser
 from model.MainManager import MainManager
-from model import StateManager
 from model.module import *
 
 from Constant import MethodName, IsForIm, Quiet, OutputFormat
@@ -36,8 +35,6 @@ class QiangHeng:
 
 		injector = Injector([configure, PackageModule()])
 
-		imPackage = injector.get(Package)
-		StateManager.setIMPackage(imPackage)
 		mainManager=injector.get(MainManager)
 		mainManager.write()
 
