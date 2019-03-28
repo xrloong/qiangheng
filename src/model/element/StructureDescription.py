@@ -9,13 +9,10 @@ class StructureDescription:
 			pass
 
 		def generateLeafNode(self, nodeExpression):
-			structDesc=StructureDescription.generateLeafNode(nodeExpression)
-			return structDesc
+			return StructureDescription.generateLeafNode(nodeExpression)
 
 		def generateNode(self, structInfo=['龜', []]):
-			operatorName, compList=structInfo
-			structDesc=StructureDescription.generateNode(operatorName, compList)
-			return structDesc
+			return StructureDescription.generateNode(structInfo)
 
 	def __init__(self, operator, compList):
 		self.referenceExpression=None
@@ -40,16 +37,17 @@ class StructureDescription:
 
 	@staticmethod
 	def generateLeafNode(nodeExpression):
-		structDesc=StructureDescription.generateNode('龜', [])
+		structDesc=StructureDescription.generateNode()
 		structDesc.setReferenceExpression(nodeExpression)
 		structDesc.generateName()
 		return structDesc
 
 	@staticmethod
-	def generateNode(operatorName, compList):
+	def generateNode(structInfo=['龜', []]):
 		from model import StateManager
 		operationManager = StateManager.getOperationManager()
 
+		operatorName, compList=structInfo
 		operator=operationManager.generateOperator(operatorName)
 		structDesc=StructureDescription(operator, compList)
 		structDesc.generateName()
