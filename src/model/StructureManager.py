@@ -5,7 +5,6 @@ import model
 from Constant import MethodName, Package
 from Constant import MainCharDescManager, ImCharDescManager
 from model.OperatorManager import OperatorManager
-from model.CodeInfoManager import CodeInfoManager
 
 @singleton
 class StructureManager:
@@ -13,12 +12,10 @@ class StructureManager:
 	def __init__(self, \
 			inputMethod: MethodName, \
 			operationManager: OperatorManager, \
-			codeInfoManager: CodeInfoManager, \
 			mainDescMgr: MainCharDescManager, \
 			imDescMgr: ImCharDescManager, \
 			):
 		self.operationManager=operationManager
-		self.codeInfoManager=codeInfoManager
 		self.mainDescMgr=mainDescMgr
 		self.imDescMgr=imDescMgr
 
@@ -57,10 +54,7 @@ class StructureManager:
 		self.imDescMgr.loadData(imComponentList)
 		self.imDescMgr.loadSubstituteRules(imSutstitueFile)
 
-		self.codeInfoManager.loadRadix(imRadixList)
-
-		resetRadixNameList=self.codeInfoManager.getResetRadixList()
-		self.imDescMgr.resetCompoundCharactersToBeRadix(resetRadixNameList)
+		self.imDescMgr.loadRadix(imRadixList)
 
 	def getAllCharacters(self):
 		return set(self.mainDescMgr.getAllCharacters()) | set(self.imDescMgr.getAllCharacters()) 

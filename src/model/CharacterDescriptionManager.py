@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from injector import inject
+from model.CodeInfoManager import CodeInfoManager
 from .element.CharacterDescription import CharacterDescription
 from .element.SubstituteRule import SubstituteRule
 from parser import QHParser
@@ -8,8 +9,10 @@ import Constant
 
 class CharacterDescriptionManager:
 	@inject
-	def __init__(self, qhparser: QHParser.QHParser):
+	def __init__(self, qhparser: QHParser.QHParser,
+			codeInfoManager: CodeInfoManager):
 		self.qhparser = qhparser
+		self.codeInfoManager = codeInfoManager
 		self.characterDB={}
 
 		def charDescQueryer(charName):
@@ -26,16 +29,22 @@ class CharacterDescriptionManager:
 		return self.charDescQueryer(character)
 
 	def loadData(self, toComponentList):
-		self.loadComponent(toComponentList)
+		self._loadComponent(toComponentList)
 
-	def loadComponent(self, toComponentList):
+	def loadSubstituteRules(self, toSubstituteFile):
+		self.substituteRuleList=self._loadSubstituteRules(toSubstituteFile)
+
+	def loadRadix(self, radixFileList):
+		self.codeInfoManager.loadRadix(radixFileList)
+
+		resetRadixNameList=self.codeInfoManager.getResetRadixList()
+		self.resetCompoundCharactersToBeRadix(resetRadixNameList)
+
+	def _loadComponent(self, toComponentList):
 		for filename in toComponentList:
 			charDescList=self.qhparser.loadCharacters(filename)
 			for charDesc in charDescList:
 				self.saveChar(charDesc)
-
-	def loadSubstituteRules(self, toSubstituteFile):
-		self.substituteRuleList=self._loadSubstituteRules(toSubstituteFile)
 
 	def _loadSubstituteRules(self, toSubstituteFile):
 		import yaml
