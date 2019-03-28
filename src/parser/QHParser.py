@@ -4,14 +4,14 @@ import Constant
 from model.element.CharacterDescription import CharacterDescription
 from model.element.StructureDescription import StructureDescriptionGenerator
 
+from injector import inject
 from parser import TreeParser
 import yaml
 
 class QHParser:
-	def __init__(self):
+	@inject
+	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
 		self.treeParser = TreeParser
-
-		nodeGenerator = StructureDescriptionGenerator()
 		self.treeParser.nodeGenerator = nodeGenerator
 
 	def parseStructure(self, structureExpression):

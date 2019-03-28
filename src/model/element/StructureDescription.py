@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 
+import sys
+import Constant
+import model
+
+from injector import inject
+
 class StructureDescriptionGenerator:
-	def __init__(self):
-		pass
+	@inject
+	def __init__(self, operationManager: model.OperatorManager.OperatorManager):
+		self.operationManager = operationManager
 
 	def generateLeafNode(self, nodeExpression):
 		structDesc=self.generateNode()
@@ -11,11 +18,8 @@ class StructureDescriptionGenerator:
 		return structDesc
 
 	def generateNode(self, structInfo=['龜', []]):
-		from model import StateManager
-		operationManager = StateManager.getOperationManager()
-
 		operatorName, compList=structInfo
-		operator=operationManager.generateOperator(operatorName)
+		operator=self.operationManager.generateOperator(operatorName)
 		structDesc=StructureDescription(operator, compList)
 		structDesc.generateName()
 		return structDesc
