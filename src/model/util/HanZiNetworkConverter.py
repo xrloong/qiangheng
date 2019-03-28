@@ -223,8 +223,10 @@ class StageAddStructure(ConversionStage):
 	@inject
 	def __init__(self, hanziNetwork: HanZiNetwork,
 			structureManager: StructureManager,
-			operationManager: OperatorManager):
+			operationManager: OperatorManager,
+			codeInfoManager: CodeInfoManager):
 		super().__init__(hanziNetwork, structureManager)
+		self.codeInfoManager=codeInfoManager
 		self.treeProxy=StageAddStructure.TreeProxy(self.hanziNetwork, self, operationManager)
 		self.nodeExpressionDict={}
 
@@ -359,8 +361,7 @@ class StageAddStructure(ConversionStage):
 		return structure
 
 	def generateAssemblageStructure(self, operator, structureList):
-		codeInfoManager=self.structureManager.getCodeInfoManager()
-		tag=StructureAssemblageTag(codeInfoManager)
+		tag=StructureAssemblageTag(self.codeInfoManager)
 		structure=self.hanziNetwork.generateStructure(tag, compound=[operator, structureList])
 		return structure
 

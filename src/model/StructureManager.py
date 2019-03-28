@@ -83,6 +83,3 @@ class StructureManager:
 	def generateOperator(self, operatorName):
                 operationManager=self.operationManager
                 return operationManager.generateOperator(operatorName)
-
-	def getCodeInfoManager(self):
-		return self.codeInfoManager
