@@ -1,19 +1,26 @@
 #!/usr/bin/env python3
 
-import sys
-import Constant
+class StructureDescriptionGenerator:
+	def __init__(self):
+		pass
+
+	def generateLeafNode(self, nodeExpression):
+		structDesc=self.generateNode()
+		structDesc.setReferenceExpression(nodeExpression)
+		structDesc.generateName()
+		return structDesc
+
+	def generateNode(self, structInfo=['龜', []]):
+		from model import StateManager
+		operationManager = StateManager.getOperationManager()
+
+		operatorName, compList=structInfo
+		operator=operationManager.generateOperator(operatorName)
+		structDesc=StructureDescription(operator, compList)
+		structDesc.generateName()
+		return structDesc
 
 class StructureDescription:
-	class Generator:
-		def __init__(self):
-			pass
-
-		def generateLeafNode(self, nodeExpression):
-			return StructureDescription.generateLeafNode(nodeExpression)
-
-		def generateNode(self, structInfo=['龜', []]):
-			return StructureDescription.generateNode(structInfo)
-
 	def __init__(self, operator, compList):
 		self.referenceExpression=None
 
@@ -34,24 +41,6 @@ class StructureDescription:
 		structureDescription.setReferenceExpression(self.getReferenceExpression())
 
 		return structureDescription
-
-	@staticmethod
-	def generateLeafNode(nodeExpression):
-		structDesc=StructureDescription.generateNode()
-		structDesc.setReferenceExpression(nodeExpression)
-		structDesc.generateName()
-		return structDesc
-
-	@staticmethod
-	def generateNode(structInfo=['龜', []]):
-		from model import StateManager
-		operationManager = StateManager.getOperationManager()
-
-		operatorName, compList=structInfo
-		operator=operationManager.generateOperator(operatorName)
-		structDesc=StructureDescription(operator, compList)
-		structDesc.generateName()
-		return structDesc
 
 	def getUniqueName(self):
 		return self.name

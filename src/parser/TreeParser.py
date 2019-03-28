@@ -83,8 +83,8 @@ def p_error(t):
 	print("Syntax error at '%s'" % t.value)
 
 
-from model.element.StructureDescription import StructureDescription
-nodeGenerator=StructureDescription.Generator()
+from model.element.StructureDescription import StructureDescriptionGenerator
+nodeGenerator=StructureDescriptionGenerator()
 
 def parse(expression):
 	return parser.parse(expression, lexer=lexer)
