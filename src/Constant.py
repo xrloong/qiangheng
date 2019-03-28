@@ -1,6 +1,8 @@
 from injector import Key
 MethodName = Key('methodName')
 Package = Key('package')
+IMName = Key('IMName')
+
 Quiet = Key('quiet')
 OutputFormat = Key('outputFormat')
 IsForIm = Key('isForIm')

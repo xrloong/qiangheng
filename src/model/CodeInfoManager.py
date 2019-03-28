@@ -1,16 +1,19 @@
 from injector import inject
 from injector import singleton
 
-from Constant import Package
+from Constant import Package, IMName
+
+from model.base.RadixManager import RadixParser
+from model.base.CodeInfoEncoder import CodeInfoEncoder
 
 @singleton
 class CodeInfoManager:
 	@inject
-	def __init__(self, imPackage: Package):
-		imName=imPackage.IMInfo.IMName
-		codeInfoEncoder=imPackage.CodeInfoEncoder
-		self.radixParser=imPackage.RadixParser(imName, codeInfoEncoder)
-		self.codeInfoEncoder=imPackage.CodeInfoEncoder
+	def __init__(self, radixParser: RadixParser,
+		codeInfoEncoder: CodeInfoEncoder):
+            
+		self.radixParser=radixParser
+		self.codeInfoEncoder=codeInfoEncoder
 		self.radixCodeInfoDB={}
 		self.resetRadixList=[]
 
