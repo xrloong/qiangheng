@@ -1,9 +1,8 @@
 from injector import inject
 
-from .CharacterDescriptionManager import CharacterDescriptionManager
-
 import model
 from Constant import MethodName, Package
+from Constant import MainCharDescManager, ImCharDescManager
 from model.OperatorManager import OperatorManager
 from model.CodeInfoManager import CodeInfoManager
 
@@ -13,11 +12,13 @@ class StructureManager:
 			inputMethod: MethodName, \
 			operationManager: OperatorManager, \
 			codeInfoManager: CodeInfoManager, \
+			mainDescMgr: MainCharDescManager, \
+			imDescMgr: ImCharDescManager, \
 			):
-		self.mainDescMgr=CharacterDescriptionManager()
-		self.imDescMgr=CharacterDescriptionManager()
 		self.operationManager=operationManager
 		self.codeInfoManager=codeInfoManager
+		self.mainDescMgr=mainDescMgr
+		self.imDescMgr=imDescMgr
 
 		self._loadData(inputMethod)
 

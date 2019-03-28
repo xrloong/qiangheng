@@ -3,10 +3,12 @@ from injector import provider, singleton
 
 from . import StateManager
 from model.StructureManager import StructureManager
+from model.CharacterDescriptionManager import CharacterDescriptionManager
 from model.hanzi import HanZiNetwork
 import model.base
 
 from Constant import MethodName, Package, IsForIm, Quiet, OutputFormat, Writer
+from Constant import MainCharDescManager, ImCharDescManager
 
 class PackageModule(Module):
 	@provider
@@ -32,9 +34,22 @@ class PackageModule(Module):
 	@provider
 	def provideStructureManager(self, inputMethod: MethodName, \
 			operationManager: model.OperatorManager.OperatorManager, \
-			codeInfoManager: model.CodeInfoManager.CodeInfoManager \
+			codeInfoManager: model.CodeInfoManager.CodeInfoManager, \
+			mainCharDescManager: MainCharDescManager, \
+			imCharDescManager: ImCharDescManager \
 			) -> StructureManager:
-		return StructureManager(inputMethod, operationManager, codeInfoManager)
+		return StructureManager(inputMethod, operationManager, codeInfoManager,
+				mainCharDescManager, imCharDescManager)
+
+	@singleton
+	@provider
+	def provideMainCharDescManager(self, charDescManager: CharacterDescriptionManager) -> MainCharDescManager:
+		return charDescManager
+
+	@singleton
+	@provider
+	def provideImCharDescManager(self, charDescManager: CharacterDescriptionManager) -> ImCharDescManager:
+		return charDescManager
 
 	@singleton
 	@provider

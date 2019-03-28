@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
-import sys
+from injector import inject
 from .element.CharacterDescription import CharacterDescription
 from .element.SubstituteRule import SubstituteRule
 from parser import QHParser
 import Constant
 
 class CharacterDescriptionManager:
-	def __init__(self):
+	@inject
+	def __init__(self, qhparser: QHParser.QHParser):
+		self.qhparser = qhparser
 		self.characterDB={}
 
 		def charDescQueryer(charName):
@@ -27,9 +29,8 @@ class CharacterDescriptionManager:
 		self.loadComponent(toComponentList)
 
 	def loadComponent(self, toComponentList):
-		parser=QHParser.QHParser()
 		for filename in toComponentList:
-			charDescList=parser.loadCharacters(filename)
+			charDescList=self.qhparser.loadCharacters(filename)
 			for charDesc in charDescList:
 				self.saveChar(charDesc)
 
