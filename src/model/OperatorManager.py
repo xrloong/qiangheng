@@ -1,9 +1,16 @@
+from injector import inject
+from injector import singleton
+
+from Constant import Package
+
 from .element import Operator
 
+@singleton
 class OperatorManager:
 	# 使用享元模式
 
-	def __init__(self, imPackage):
+	@inject
+	def __init__(self, imPackage: Package):
 		self.builtinOperatorDict={
 			'龜':Operator.OperatorTurtle,
 			'爲':Operator.OperatorEqual,

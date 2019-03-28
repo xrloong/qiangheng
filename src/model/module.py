@@ -1,7 +1,6 @@
 from injector import Module
 from injector import provider, singleton
 
-from model.OperatorManager import OperatorManager
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import CharacterDescriptionManager
 from model.hanzi import HanZiNetwork
@@ -21,11 +20,6 @@ class PackageModule(Module):
 	@provider
 	def provideIMInfo(self, package: Package) -> model.base.IMInfo:
 		return package.IMInfo()
-
-	@singleton
-	@provider
-	def provideOperatorManager(self, package: Package) -> OperatorManager:
-		return OperatorManager(package)
 
 	@singleton
 	@provider
