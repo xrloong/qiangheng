@@ -80,33 +80,33 @@ class PackageModule(Module):
 
 	def getTextWriter(self):
 		if self.isForIm:
-			from .im.writer import TxtWriter
+			from model.im.writer import TxtWriter
 		else:
-			from .dm.writer import TxtWriter
+			from model.dm.writer import TxtWriter
 		writer = TxtWriter.TxtWriter()
 		return writer
 
 	def getXmlWriter(self):
 		if self.isForIm:
-			from .im.writer import XmlWriter
+			from model.im.writer import XmlWriter
 		else:
-			from .dm.writer import XmlWriter
+			from model.dm.writer import XmlWriter
 		writer = XmlWriter.XmlWriter()
 		return writer
 
 	def getYamlWriter(self):
 		if self.isForIm:
-			from .im.writer import YamlWriter
+			from model.im.writer import YamlWriter
 		else:
-			from .dm.writer import YamlWriter
+			from model.dm.writer import YamlWriter
 		writer = YamlWriter.YamlWriter()
 		return writer
 
 	def getQuietWriter(self):
 		if self.isForIm:
-			from .im.writer import QuietWriter
+			from model.im.writer import QuietWriter
 		else:
-			from .dm.writer import QuietWriter
+			from model.dm.writer import QuietWriter
 		writer = QuietWriter.QuietWriter()
 		return writer
 
@@ -132,28 +132,28 @@ def getImPackage(imName):
 		imName='不知道'
 
 	if imName == '倉頡':
-		from .im import CangJie
+		from model.im import CangJie
 		imPackage=CangJie
 	elif imName == '行列':
-		from .im import Array
+		from model.im import Array
 		imPackage=Array
 	elif imName == '大易':
-		from .im import DaYi
+		from model.im import DaYi
 		imPackage=DaYi
 	elif imName == '嘸蝦米':
-		from .im import Boshiamy
+		from model.im import Boshiamy
 		imPackage=Boshiamy
 	elif imName == '鄭碼':
-		from .im import ZhengMa
+		from model.im import ZhengMa
 		imPackage=ZhengMa
 	elif imName == '四角':
-		from .im import FourCorner
+		from model.im import FourCorner
 		imPackage=FourCorner
 	elif imName == '庋㩪':
-		from .im import GuiXie
+		from model.im import GuiXie
 		imPackage=GuiXie
 	elif imName == '範例':
-		from .im import Sample
+		from model.im import Sample
 		imPackage=Sample
 	else:
 		assert False, "不知道的輸入法: %s"%imName
@@ -170,10 +170,10 @@ def getDmPackage(dmName):
 		dmName='不知道'
 
 	if dmName == '動組':
-		from .dm import DynamicComposition
+		from model.dm import DynamicComposition
 		dmPackage=DynamicComposition
 	elif dmName == '筆順':
-		from .dm import StrokeOrder
+		from model.dm import StrokeOrder
 		dmPackage=StrokeOrder
 	else:
 		assert False, "不知道的繪字法: %s"%dmName

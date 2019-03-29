@@ -5,8 +5,8 @@ from injector import Injector
 
 from optparse import OptionParser
 from model.MainManager import MainManager
-from model.module import *
 
+from injection.module import PackageModule
 from Constant import MethodName, IsForIm, Quiet, OutputFormat
 
 class QiangHeng:
