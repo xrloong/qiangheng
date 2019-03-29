@@ -2,12 +2,16 @@
 # -*- coding: utf-8 -*-
 
 from injector import Injector
+from injector import inject
 
 from optparse import OptionParser
-from model.MainManager import MainManager
 
 from injection.module import PackageModule
 from Constant import MethodName, IsForIm, Quiet, OutputFormat
+from Constant import Writer
+
+from model.base.IMInfo import IMInfo
+from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 
 class QiangHeng:
 	def __init__(self, options):
@@ -38,6 +42,21 @@ class QiangHeng:
 		mainManager=injector.get(MainManager)
 		mainManager.compute()
 		mainManager.write()
+
+class MainManager:
+	@inject
+	def __init__(self, imInfo: IMInfo,
+			computeCharacterInfo: ComputeCharacterInfo,
+			writer: Writer):
+		self.imInfo = imInfo
+		self.computeCharacterInfo = computeCharacterInfo
+		self.writer = writer
+
+	def compute(self):
+		self.characterInfoList = self.computeCharacterInfo.compute()
+
+	def write(self):
+		self.writer.write(self.imInfo, self.characterInfoList)
 
 def main():
 	oparser = OptionParser()
