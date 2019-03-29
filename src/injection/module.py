@@ -8,7 +8,9 @@ from model.CharacterDescriptionManager import CharacterDescriptionManager, ImCha
 from model.hanzi import HanZiNetwork
 import model.base
 
-from Constant import Package, IMName
+from Constant import Package, IMName, MethodName
+from Constant import MainComponentList, MainTemplateFile
+from Constant import IMComponentList, IMSubstituteFile, IMRadixList
 
 class PackageModule(Module):
 	@provider
@@ -32,4 +34,52 @@ class PackageModule(Module):
 	@provider
 	def provideHanZiNetwork(self) -> HanZiNetwork:
 		return HanZiNetwork()
+
+	@provider
+	def provideMainComponentList(self) -> MainComponentList:
+		mainDir = self.getMainDir()
+		mainComponentList = [
+			mainDir + 'CJK.yaml',
+			mainDir + 'CJK-A.yaml',
+			mainDir + 'component/CJK.yaml',
+			mainDir + 'component/CJK-A.yaml',
+			mainDir + 'style.yaml',
+		]
+		return mainComponentList
+
+	@provider
+	def provideMainTemplateFile(self) -> MainTemplateFile:
+		mainDir = self.getMainDir()
+		mainTemplateFile = mainDir + 'template.yaml'
+		return mainTemplateFile
+
+	@provider
+	def provideIMComponentList(self, methodName: MethodName) -> IMComponentList:
+		methodDir = self.getMethodDir(methodName)
+		methodComponentList = [
+			methodDir + 'style.yaml',
+		]
+		return methodComponentList
+
+	@provider
+	def provideIMSubstituteFile(self, methodName: MethodName) -> IMSubstituteFile:
+		methodDir = self.getMethodDir(methodName)
+		meethodSubstituteFile = methodDir + 'substitute.yaml'
+		return meethodSubstituteFile
+
+	@provider
+	def provideIMRadixList(self, methodName: MethodName) -> IMRadixList:
+		methodDir = self.getMethodDir(methodName)
+		methodRadixList = [
+			methodDir + 'radix/CJK.yaml',
+			methodDir + 'radix/CJK-A.yaml',
+			methodDir + 'radix/adjust.yaml'
+		]
+		return methodRadixList
+
+	def getMainDir(self):
+		return "gen/qhdata/main/"
+
+	def getMethodDir(self, methodName):
+		return "gen/qhdata/{method}/".format(method=methodName)
 

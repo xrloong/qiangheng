@@ -3,6 +3,13 @@ MethodName = Key('methodName')
 Package = Key('package')
 IMName = Key('IMName')
 
+MainComponentList = Key('MainComponentList')
+MainTemplateFile = Key('MainTemplateFile')
+
+IMComponentList = Key('IMComponentList')
+IMSubstituteFile = Key('IMSubstituteFile')
+IMRadixList = Key('IMRadixList')
+
 Quiet = Key('quiet')
 OutputFormat = Key('outputFormat')
 IsForIm = Key('isForIm')

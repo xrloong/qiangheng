@@ -27,35 +27,13 @@ class StructureManager:
 		self._loadImData(inputMethod)
 
 	def _loadMainData(self):
-		mainDir = "gen/qhdata/main/"
-		mainComponentList = [
-			mainDir + 'CJK.yaml',
-			mainDir + 'CJK-A.yaml',
-			mainDir + 'component/CJK.yaml',
-			mainDir + 'component/CJK-A.yaml',
-			mainDir + 'style.yaml',
-		]
-		mainTemplateFile = mainDir + 'template.yaml'
-
-		self.mainDescMgr.loadData(mainComponentList)
-		self.mainDescMgr.loadSubstituteRules(mainTemplateFile)
+		self.mainDescMgr.loadData()
+		self.mainDescMgr.loadSubstituteRules()
 
 	def _loadImData(self, inputMethod):
-		imDir = "gen/qhdata/%s/"%inputMethod
-		imComponentList = [
-			imDir + 'style.yaml'
-		]
-		imRadixList = [
-			imDir + 'radix/CJK.yaml',
-			imDir + 'radix/CJK-A.yaml',
-			imDir + 'radix/adjust.yaml'
-		]
-		imSutstitueFile = imDir + 'substitute.yaml'
-
-		self.imDescMgr.loadData(imComponentList)
-		self.imDescMgr.loadSubstituteRules(imSutstitueFile)
-
-		self.imDescMgr.loadRadix(imRadixList)
+		self.imDescMgr.loadData()
+		self.imDescMgr.loadSubstituteRules()
+		self.imDescMgr.loadRadix()
 
 	def getAllCharacters(self):
 		return set(self.mainDescMgr.getAllCharacters()) | set(self.imDescMgr.getAllCharacters()) 

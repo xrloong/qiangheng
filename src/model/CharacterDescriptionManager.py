@@ -8,11 +8,21 @@ from .element.SubstituteRule import SubstituteRule
 from parser import QHParser
 import Constant
 
+from Constant import MainComponentList, MainTemplateFile
+from Constant import IMComponentList, IMSubstituteFile, IMRadixList
+
 @singleton
 class CharacterDescriptionManager:
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
-			codeInfoManager: CodeInfoManager):
+			codeInfoManager: CodeInfoManager,
+			componentFiles: MainComponentList,
+			templateFile: MainTemplateFile):
+		self.doInitialization(qhparser, codeInfoManager)
+		self.componentFiles=componentFiles
+		self.substituteFile=templateFile
+
+	def doInitialization(self, qhparser, codeInfoManager):
 		self.qhparser = qhparser
 		self.codeInfoManager = codeInfoManager
 		self.characterDB={}
@@ -24,17 +34,18 @@ class CharacterDescriptionManager:
 		self.charDescQueryer=charDescQueryer
 		self.substituteRuleList=[]
 
+
 	def getAllCharacters(self):
 		return self.characterDB.keys()
 
 	def queryCharacterDescription(self, character):
 		return self.charDescQueryer(character)
 
-	def loadData(self, toComponentList):
-		self._loadComponent(toComponentList)
+	def loadData(self):
+		self._loadComponent(self.componentFiles)
 
-	def loadSubstituteRules(self, toSubstituteFile):
-		self.substituteRuleList=self._loadSubstituteRules(toSubstituteFile)
+	def loadSubstituteRules(self):
+		self.substituteRuleList=self._loadSubstituteRules(self.substituteFile)
 
 	def _loadComponent(self, toComponentList):
 		for filename in toComponentList:
@@ -82,11 +93,18 @@ class CharacterDescriptionManager:
 class ImCharacterDescriptionManager(CharacterDescriptionManager):
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
-			codeInfoManager: CodeInfoManager):
-		super().__init__(qhparser=qhparser, codeInfoManager=codeInfoManager)
+			codeInfoManager: CodeInfoManager,
+			componentFiles: IMComponentList,
+			substituteFile: IMSubstituteFile,
+			radixFiles: IMRadixList
+			):
+		self.doInitialization(qhparser, codeInfoManager)
+		self.componentFiles=componentFiles
+		self.substituteFile=substituteFile
+		self.radixFiles=radixFiles
 
-	def loadRadix(self, radixFileList):
-		self.codeInfoManager.loadRadix(radixFileList)
+	def loadRadix(self):
+		self.codeInfoManager.loadRadix(self.radixFiles)
 
 		resetRadixNameList=self.codeInfoManager.getResetRadixList()
 		self.resetCompoundCharactersToBeRadix(resetRadixNameList)
