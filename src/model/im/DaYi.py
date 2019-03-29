@@ -1,7 +1,174 @@
-from .DYCodeInfo import DYCodeInfo
+from model.base.IMInfo import IMInfo
+from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
-import sys
+class DaYiInfo(IMInfo):
+	"大易輸入法"
+
+	IMName="大易"
+	def __init__(self):
+		self.keyMaps=[
+			[',', '力',],
+			['.', '點',],
+			['/', '竹',],
+			['0', '金',],
+			['1', '言',],
+			['2', '牛',],
+			['3', '目',],
+			['4', '四',],
+			['5', '王',],
+			['6', '門',],
+			['7', '田',],
+			['8', '米',],
+			['9', '足',],
+			[';', '虫',],
+			['a', '人',],
+			['b', '馬',],
+			['c', '七',],
+			['d', '日',],
+			['e', '一',],
+			['f', '土',],
+			['g', '手',],
+			['h', '鳥',],
+			['i', '木',],
+			['j', '月',],
+			['k', '立',],
+			['l', '女',],
+			['m', '雨',],
+			['n', '魚',],
+			['o', '口',],
+			['p', '耳',],
+			['q', '石',],
+			['r', '工',],
+			['s', '革',],
+			['t', '糸',],
+			['u', '艸',],
+			['v', '禾',],
+			['w', '山',],
+			['x', '水',],
+			['y', '火',],
+			['z', '心',],
+			]
+		self.nameDict={
+				'cn':'大易',
+				'tw':'大易',
+				'hk':'大易',
+				'en':'DaYi',
+				}
+		self.iconfile="qhdy.svg"
+		self.maxkeylength=4
+
+class DYCodeInfo(CodeInfo):
+	RADIX_A='a'
+	RADIX_B='b'
+	RADIX_C='c'
+	RADIX_D='d'
+	RADIX_E='e'
+	RADIX_F='f'
+	RADIX_G='g'
+	RADIX_H='h'
+	RADIX_I='i'
+	RADIX_J='j'
+	RADIX_K='k'
+	RADIX_L='l'
+	RADIX_M='m'
+	RADIX_N='n'
+	RADIX_O='o'
+	RADIX_P='p'
+	RADIX_Q='q'
+	RADIX_R='r'
+	RADIX_S='s'
+	RADIX_T='t'
+	RADIX_U='u'
+	RADIX_V='v'
+	RADIX_W='w'
+	RADIX_X='x'
+	RADIX_Y='y'
+	RADIX_Z='z'
+	RADIX_0='0'
+	RADIX_1='1'
+	RADIX_2='2'
+	RADIX_3='3'
+	RADIX_4='4'
+	RADIX_5='5'
+	RADIX_6='6'
+	RADIX_7='7'
+	RADIX_8='8'
+	RADIX_9='9'
+	RADIX_DOT='.'
+	RADIX_COMMA=':'
+	RADIX_SEMICOLON=';'
+	RADIX_SLASH='/'
+
+	radixToCodeDict={
+		RADIX_A:'a',
+		RADIX_B:'b',
+		RADIX_C:'c',
+		RADIX_D:'d',
+		RADIX_E:'e',
+		RADIX_F:'f',
+		RADIX_G:'g',
+		RADIX_H:'h',
+		RADIX_I:'i',
+		RADIX_J:'j',
+		RADIX_K:'k',
+		RADIX_L:'l',
+		RADIX_M:'m',
+		RADIX_N:'n',
+		RADIX_O:'o',
+		RADIX_P:'p',
+		RADIX_Q:'q',
+		RADIX_R:'r',
+		RADIX_S:'s',
+		RADIX_T:'t',
+		RADIX_U:'u',
+		RADIX_V:'v',
+		RADIX_W:'w',
+		RADIX_X:'x',
+		RADIX_Y:'y',
+		RADIX_Z:'z',
+		RADIX_0:'0',
+		RADIX_1:'1',
+		RADIX_2:'2',
+		RADIX_3:'3',
+		RADIX_4:'4',
+		RADIX_5:'5',
+		RADIX_6:'6',
+		RADIX_7:'7',
+		RADIX_8:'8',
+		RADIX_9:'9',
+		RADIX_DOT:'.',
+		RADIX_COMMA:',',
+		RADIX_SEMICOLON:';',
+		RADIX_SLASH:'/',
+	}
+
+	def __init__(self, codeList):
+		super().__init__()
+
+		self._codeList=codeList
+
+	@staticmethod
+	def generateDefaultCodeInfo(codeList):
+		codeInfo=DYCodeInfo(codeList)
+		return codeInfo
+
+	def toCode(self):
+		mainRadixList=self.getMainCodeList()
+		mainCodeList=list(map(lambda x: DYCodeInfo.radixToCodeDict[x], mainRadixList))
+		code="".join(mainCodeList)
+		return (code[:3]+code[-1:] if len(code)>4 else code)
+
+	def isInstallmentEncoded(self):
+		return len(self._codeList)>1
+
+	def getMainCodeList(self):
+		if self._codeList != None:
+			return sum(self._codeList, [])
+		return None
+
+	def getInstallmentCode(self, index):
+		return self._codeList[index]
 
 class DYCodeInfoEncoder(CodeInfoEncoder):
 	@classmethod
@@ -153,4 +320,34 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		cat=sum(dyCodeList, [])
 		dyCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
 		return dyCode
+
+class DYRadixParser():
+	INSTALLMENT_SEPERATOR='|'
+	RADIX_SEPERATOR=','
+
+	ATTRIB_CODE_EXPRESSION='資訊表示式'
+
+	# 多型
+	def convertRadixDescToCodeInfo(self, radixDesc):
+		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
+		return codeInfo
+
+	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
+		elementCodeInfo=radixInfo.getCodeElement()
+
+		infoDict=elementCodeInfo
+
+		strCodeList=infoDict.get(DYRadixParser.ATTRIB_CODE_EXPRESSION)
+
+		codeList=None
+		if strCodeList!=None:
+			codeList=strCodeList.split(DYRadixParser.INSTALLMENT_SEPERATOR)
+			codeList=list(map(lambda x: x.split(DYRadixParser.RADIX_SEPERATOR), codeList))
+
+		codeInfo=DYCodeInfo(codeList)
+		return codeInfo
+
+IMInfo = DaYiInfo
+CodeInfoEncoder = DYCodeInfoEncoder
+RadixParser = DYRadixParser
 
