@@ -8,9 +8,6 @@ OutputFormat = Key('outputFormat')
 IsForIm = Key('isForIm')
 Writer = Key('writer')
 
-MainCharDescManager = Key('MainCharDescManager')
-ImCharDescManager = Key('ImCharDescManager')
-
 TAG_VERSION='版本號'
 
 TAG_FILE_TYPE='文件類型'

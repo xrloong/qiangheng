@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
 from injector import inject
+from injector import singleton
 from model.CodeInfoManager import CodeInfoManager
 from .element.CharacterDescription import CharacterDescription
 from .element.SubstituteRule import SubstituteRule
 from parser import QHParser
 import Constant
 
+@singleton
 class CharacterDescriptionManager:
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
@@ -33,12 +35,6 @@ class CharacterDescriptionManager:
 
 	def loadSubstituteRules(self, toSubstituteFile):
 		self.substituteRuleList=self._loadSubstituteRules(toSubstituteFile)
-
-	def loadRadix(self, radixFileList):
-		self.codeInfoManager.loadRadix(radixFileList)
-
-		resetRadixNameList=self.codeInfoManager.getResetRadixList()
-		self.resetCompoundCharactersToBeRadix(resetRadixNameList)
 
 	def _loadComponent(self, toComponentList):
 		for filename in toComponentList:
@@ -81,6 +77,19 @@ class CharacterDescriptionManager:
 
 	def queryStructureList(self, charDesc):
 		return charDesc.getStructureList()
+
+@singleton
+class ImCharacterDescriptionManager(CharacterDescriptionManager):
+	@inject
+	def __init__(self, qhparser: QHParser.QHParser,
+			codeInfoManager: CodeInfoManager):
+		super().__init__(qhparser=qhparser, codeInfoManager=codeInfoManager)
+
+	def loadRadix(self, radixFileList):
+		self.codeInfoManager.loadRadix(radixFileList)
+
+		resetRadixNameList=self.codeInfoManager.getResetRadixList()
+		self.resetCompoundCharactersToBeRadix(resetRadixNameList)
 
 	def resetCompoundCharactersToBeRadix(self, resetRadixNameList):
 		for resetRadixName in resetRadixNameList:

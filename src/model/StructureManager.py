@@ -1,10 +1,11 @@
 from injector import inject
 from injector import singleton
 
-import model
 from Constant import MethodName, Package
-from Constant import MainCharDescManager, ImCharDescManager
 from model.OperatorManager import OperatorManager
+
+from .CharacterDescriptionManager import CharacterDescriptionManager
+from .CharacterDescriptionManager import ImCharacterDescriptionManager
 
 @singleton
 class StructureManager:
@@ -12,8 +13,8 @@ class StructureManager:
 	def __init__(self, \
 			inputMethod: MethodName, \
 			operationManager: OperatorManager, \
-			mainDescMgr: MainCharDescManager, \
-			imDescMgr: ImCharDescManager, \
+			mainDescMgr: CharacterDescriptionManager, \
+			imDescMgr: ImCharacterDescriptionManager, \
 			):
 		self.operationManager=operationManager
 		self.mainDescMgr=mainDescMgr
