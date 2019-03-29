@@ -2,25 +2,26 @@
 
 from injector import inject
 from injector import singleton
+from model.base.PropertyConfig import PropertyConfig
 from model.CodeInfoManager import CodeInfoManager
 from .element.CharacterDescription import CharacterDescription
 from .element.SubstituteRule import SubstituteRule
 from parser import QHParser
 import Constant
 
-from Constant import MainComponentList, MainTemplateFile
-from Constant import IMComponentList, IMSubstituteFile, IMRadixList
-
 @singleton
 class CharacterDescriptionManager:
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
 			codeInfoManager: CodeInfoManager,
-			componentFiles: MainComponentList,
-			templateFile: MainTemplateFile):
+			propertyConfig: PropertyConfig,
+                        ):
 		self.doInitialization(qhparser, codeInfoManager)
-		self.componentFiles=componentFiles
-		self.substituteFile=templateFile
+		self.setupPropertyConfig(propertyConfig)
+
+	def setupPropertyConfig(self, propertyConfig):
+		self.componentFiles = propertyConfig.getCommonComponentFileList()
+		self.substituteFile = propertyConfig.getCommonTemplateFile()
 
 	def doInitialization(self, qhparser, codeInfoManager):
 		self.qhparser = qhparser
@@ -91,17 +92,10 @@ class CharacterDescriptionManager:
 
 @singleton
 class ImCharacterDescriptionManager(CharacterDescriptionManager):
-	@inject
-	def __init__(self, qhparser: QHParser.QHParser,
-			codeInfoManager: CodeInfoManager,
-			componentFiles: IMComponentList,
-			substituteFile: IMSubstituteFile,
-			radixFiles: IMRadixList
-			):
-		self.doInitialization(qhparser, codeInfoManager)
-		self.componentFiles=componentFiles
-		self.substituteFile=substituteFile
-		self.radixFiles=radixFiles
+	def setupPropertyConfig(self, propertyConfig):
+		self.componentFiles = propertyConfig.getSpecificComponentFileList()
+		self.substituteFile = propertyConfig.getSpecificSubstituteFile()
+		self.radixFiles = propertyConfig.getSpecificRadixFileList()
 
 	def loadRadix(self):
 		self.codeInfoManager.loadRadix(self.radixFiles)
