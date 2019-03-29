@@ -12,6 +12,7 @@ from Constant import Quiet, OutputFormat
 from Constant import Writer
 
 from model.base.IMInfo import IMInfo
+from model.base.PropertyConfig import PropertyConfig
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 
 class QiangHeng:
@@ -36,6 +37,7 @@ class QiangHeng:
 		writer = self.computeWriter(isForIm, quiet, output_format)
 
 		def configure(binder):
+			binder.bind(PropertyConfig, to=self.getPropertyConfig(methodName))
 			binder.bind(MethodName, to=methodName)
 			binder.bind(Package, to=package)
 			binder.bind(Writer, to=writer)
@@ -178,6 +180,58 @@ class QiangHeng:
 			from writer.dm import QuietWriter
 		writer = QuietWriter()
 		return writer
+
+	def getPropertyConfig(self, propertyMethodName):
+		return PropertyConfig(
+			self.getMainComponentList(),
+			self.getMainTemplateFile(),
+			self.getIMComponentList(propertyMethodName),
+			self.getIMSubstituteFile(propertyMethodName),
+			self.getIMRadixList(propertyMethodName),
+			)
+        
+	def getMainComponentList(self):
+		mainDir = self.getMainDir()
+		mainComponentList = [
+			mainDir + 'CJK.yaml',
+			mainDir + 'CJK-A.yaml',
+			mainDir + 'component/CJK.yaml',
+			mainDir + 'component/CJK-A.yaml',
+			mainDir + 'style.yaml',
+		]
+		return mainComponentList
+
+	def getMainTemplateFile(self):
+		mainDir = self.getMainDir()
+		mainTemplateFile = mainDir + 'template.yaml'
+		return mainTemplateFile
+
+	def getIMComponentList(self, methodName: MethodName):
+		methodDir = self.getMethodDir(methodName)
+		methodComponentList = [
+			methodDir + 'style.yaml',
+		]
+		return methodComponentList
+
+	def getIMSubstituteFile(self, methodName: MethodName):
+		methodDir = self.getMethodDir(methodName)
+		meethodSubstituteFile = methodDir + 'substitute.yaml'
+		return meethodSubstituteFile
+
+	def getIMRadixList(self, methodName: MethodName):
+		methodDir = self.getMethodDir(methodName)
+		methodRadixList = [
+			methodDir + 'radix/CJK.yaml',
+			methodDir + 'radix/CJK-A.yaml',
+			methodDir + 'radix/adjust.yaml'
+		]
+		return methodRadixList
+
+	def getMainDir(self):
+		return "gen/qhdata/main/"
+
+	def getMethodDir(self, methodName):
+		return "gen/qhdata/{method}/".format(method=methodName)
 
 class MainManager:
 	@inject

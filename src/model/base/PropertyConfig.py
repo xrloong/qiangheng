@@ -1,10 +1,7 @@
-from injector import inject
-
 from Constant import MainComponentList, MainTemplateFile
 from Constant import IMComponentList, IMSubstituteFile, IMRadixList
 
 class PropertyConfig:
-	@inject
 	def __init__(self, commonComponentFileList: MainComponentList,
 		commonTemplateFile: MainTemplateFile,
 		specificComponentFileList: IMComponentList,
