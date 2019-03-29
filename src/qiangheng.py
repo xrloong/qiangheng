@@ -36,6 +36,7 @@ class QiangHeng:
 		injector = Injector([configure, PackageModule()])
 
 		mainManager=injector.get(MainManager)
+		mainManager.compute()
 		mainManager.write()
 
 def main():
