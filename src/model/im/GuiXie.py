@@ -1,5 +1,44 @@
-from .GXCodeInfo import GXCodeInfo
+from model.base.IMInfo import IMInfo
+from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
+
+class GuiXieInfo(IMInfo):
+	"中國字庋㩪"
+
+	IMName="庋㩪"
+	def __init__(self):
+		self.keyMaps=[
+			['0', '0',],
+			['1', '1',],
+			['2', '2',],
+			['3', '3',],
+			['4', '4',],
+			['5', '5',],
+			['6', '6',],
+			['7', '7',],
+			['8', '8',],
+			['9', '9',],
+			]
+		self.nameDict={
+				'cn':'庋㩪',
+				'tw':'庋㩪',
+				'hk':'庋㩪',
+				'en':'GuiXie',
+				}
+		self.iconfile="qhgx.svg"
+		self.maxkeylength=6
+
+class GXCodeInfo(CodeInfo):
+	def __init__(self, characterCode):
+		super().__init__()
+
+	@staticmethod
+	def generateDefaultCodeInfo(characterCode):
+		codeInfo=GXCodeInfo(characterCode)
+		return codeInfo
+
+	def toCode(self):
+		return ""
 
 class GXCodeInfoEncoder(CodeInfoEncoder):
 	@classmethod
@@ -35,4 +74,12 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 		"""運算 "爲" """
 		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
+
+class GXRadixParser():
+	def convertRadixDescToCodeInfo(self, radixDesc):
+		return GXCodeInfo()
+
+IMInfo = GuiXieInfo
+CodeInfoEncoder = GXCodeInfoEncoder
+RadixParser = GXRadixParser
 
