@@ -80,34 +80,34 @@ class PackageModule(Module):
 
 	def getTextWriter(self):
 		if self.isForIm:
-			from model.im.writer import TxtWriter
+			from writer.im import TxtWriter
 		else:
-			from model.dm.writer import TxtWriter
-		writer = TxtWriter.TxtWriter()
+			from writer.dm import TxtWriter
+		writer = TxtWriter()
 		return writer
 
 	def getXmlWriter(self):
 		if self.isForIm:
-			from model.im.writer import XmlWriter
+			from writer.im import XmlWriter
 		else:
-			from model.dm.writer import XmlWriter
-		writer = XmlWriter.XmlWriter()
+			from writer.dm import XmlWriter
+		writer = XmlWriter()
 		return writer
 
 	def getYamlWriter(self):
 		if self.isForIm:
-			from model.im.writer import YamlWriter
+			from writer.im import YamlWriter
 		else:
-			from model.dm.writer import YamlWriter
-		writer = YamlWriter.YamlWriter()
+			from writer.dm import YamlWriter
+		writer = YamlWriter()
 		return writer
 
 	def getQuietWriter(self):
 		if self.isForIm:
-			from model.im.writer import QuietWriter
+			from writer.im import QuietWriter
 		else:
-			from model.dm.writer import QuietWriter
-		writer = QuietWriter.QuietWriter()
+			from writer.dm import QuietWriter
+		writer = QuietWriter()
 		return writer
 
 def getImPackage(imName):
