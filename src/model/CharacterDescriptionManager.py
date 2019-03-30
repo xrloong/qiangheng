@@ -13,34 +13,27 @@ import Constant
 class CharacterDescriptionManager:
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
-			codeInfoManager: CodeInfoManager,
 			propertyConfig: PropertyConfig,
                         ):
-		self.doInitialization(qhparser, codeInfoManager)
+		self.doInitialization(qhparser)
 		self.setupPropertyConfig(propertyConfig)
 
 	def setupPropertyConfig(self, propertyConfig):
 		self.componentFiles = propertyConfig.getCommonComponentFileList()
 		self.substituteFile = propertyConfig.getCommonTemplateFile()
 
-	def doInitialization(self, qhparser, codeInfoManager):
+	def doInitialization(self, qhparser):
 		self.qhparser = qhparser
-		self.codeInfoManager = codeInfoManager
 		self.characterDB={}
 
-		def charDescQueryer(charName):
-			charDesc=self.characterDB.get(charName, None)
-			return charDesc
-
-		self.charDescQueryer=charDescQueryer
 		self.substituteRuleList=[]
 
 
 	def getAllCharacters(self):
 		return self.characterDB.keys()
 
-	def queryCharacterDescription(self, character):
-		return self.charDescQueryer(character)
+	def queryCharacterDescription(self, characterName):
+		return self.characterDB.get(characterName, None)
 
 	def loadData(self):
 		self._loadComponent(self.componentFiles)
@@ -92,6 +85,16 @@ class CharacterDescriptionManager:
 
 @singleton
 class ImCharacterDescriptionManager(CharacterDescriptionManager):
+	@inject
+	def __init__(self, qhparser: QHParser.QHParser,
+			codeInfoManager: CodeInfoManager,
+			propertyConfig: PropertyConfig,
+                        ):
+		super().__init__(qhparser=qhparser, propertyConfig=propertyConfig)
+		self.doInitialization(qhparser)
+		self.codeInfoManager = codeInfoManager
+		self.setupPropertyConfig(propertyConfig)
+
 	def setupPropertyConfig(self, propertyConfig):
 		self.componentFiles = propertyConfig.getSpecificComponentFileList()
 		self.substituteFile = propertyConfig.getSpecificSubstituteFile()

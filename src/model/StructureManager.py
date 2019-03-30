@@ -1,7 +1,7 @@
 from injector import inject
 from injector import singleton
 
-from Constant import MethodName, Package
+from Constant import MethodName
 from model.OperatorManager import OperatorManager
 
 from .CharacterDescriptionManager import CharacterDescriptionManager
