@@ -2,7 +2,7 @@
 
 from injector import inject
 from injector import singleton
-from model.base.PropertyConfig import PropertyConfig
+from model.base.CodingConfig import CodingConfig
 from model.CodeInfoManager import CodeInfoManager
 from .element.CharacterDescription import CharacterDescription
 from .element.SubstituteRule import SubstituteRule
@@ -13,14 +13,14 @@ import Constant
 class CharacterDescriptionManager:
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
-			propertyConfig: PropertyConfig,
+			codingConfig: CodingConfig,
                         ):
 		self.doInitialization(qhparser)
-		self.setupPropertyConfig(propertyConfig)
+		self.setupCodingConfig(codingConfig)
 
-	def setupPropertyConfig(self, propertyConfig):
-		self.componentFiles = propertyConfig.getCommonComponentFileList()
-		self.substituteFile = propertyConfig.getCommonTemplateFile()
+	def setupCodingConfig(self, codingConfig):
+		self.componentFiles = codingConfig.getCommonComponentFileList()
+		self.substituteFile = codingConfig.getCommonTemplateFile()
 
 	def doInitialization(self, qhparser):
 		self.qhparser = qhparser
@@ -88,17 +88,17 @@ class ImCharacterDescriptionManager(CharacterDescriptionManager):
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
 			codeInfoManager: CodeInfoManager,
-			propertyConfig: PropertyConfig,
+			codingConfig: CodingConfig,
                         ):
-		super().__init__(qhparser=qhparser, propertyConfig=propertyConfig)
+		super().__init__(qhparser=qhparser, codingConfig=codingConfig)
 		self.doInitialization(qhparser)
 		self.codeInfoManager = codeInfoManager
-		self.setupPropertyConfig(propertyConfig)
+		self.setupCodingConfig(codingConfig)
 
-	def setupPropertyConfig(self, propertyConfig):
-		self.componentFiles = propertyConfig.getSpecificComponentFileList()
-		self.substituteFile = propertyConfig.getSpecificSubstituteFile()
-		self.radixFiles = propertyConfig.getSpecificRadixFileList()
+	def setupCodingConfig(self, codingConfig):
+		self.componentFiles = codingConfig.getSpecificComponentFileList()
+		self.substituteFile = codingConfig.getSpecificSubstituteFile()
+		self.radixFiles = codingConfig.getSpecificRadixFileList()
 
 	def loadRadix(self):
 		self.codeInfoManager.loadRadix(self.radixFiles)

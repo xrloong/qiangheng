@@ -12,7 +12,7 @@ from Constant import Quiet, OutputFormat
 from Constant import Writer
 
 from model.base.IMInfo import IMInfo
-from model.base.PropertyConfig import PropertyConfig
+from model.base.CodingConfig import CodingConfig
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 
 class QiangHeng:
@@ -37,7 +37,7 @@ class QiangHeng:
 		writer = self.computeWriter(isForIm, quiet, output_format)
 
 		def configure(binder):
-			binder.bind(PropertyConfig, to=self.getPropertyConfig(methodName))
+			binder.bind(CodingConfig, to=self.getCodingConfig(methodName))
 			binder.bind(MethodName, to=methodName)
 			binder.bind(Package, to=package)
 			binder.bind(Writer, to=writer)
@@ -181,13 +181,13 @@ class QiangHeng:
 		writer = QuietWriter()
 		return writer
 
-	def getPropertyConfig(self, propertyMethodName):
-		return PropertyConfig(
+	def getCodingConfig(self, codingMethodName):
+		return CodingConfig(
 			self.getMainComponentList(),
 			self.getMainTemplateFile(),
-			self.getIMComponentList(propertyMethodName),
-			self.getIMSubstituteFile(propertyMethodName),
-			self.getIMRadixList(propertyMethodName),
+			self.getIMComponentList(codingMethodName),
+			self.getIMSubstituteFile(codingMethodName),
+			self.getIMRadixList(codingMethodName),
 			)
         
 	def getMainComponentList(self):

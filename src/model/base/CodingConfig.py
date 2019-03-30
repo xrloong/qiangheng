@@ -1,7 +1,7 @@
 from Constant import MainComponentList, MainTemplateFile
 from Constant import IMComponentList, IMSubstituteFile, IMRadixList
 
-class PropertyConfig:
+class CodingConfig:
 	def __init__(self, commonComponentFileList: MainComponentList,
 		commonTemplateFile: MainTemplateFile,
 		specificComponentFileList: IMComponentList,
