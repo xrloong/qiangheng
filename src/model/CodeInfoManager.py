@@ -3,7 +3,7 @@ from injector import singleton
 
 from Constant import Package
 
-from model.BaseCoding import RadixParser
+from model.helper import RadixParser
 from model.BaseCoding import CodeInfoEncoder
 
 @singleton
