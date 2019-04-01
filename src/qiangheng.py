@@ -12,7 +12,7 @@ from Constant import Quiet, OutputFormat
 from Constant import Writer
 
 from model.base.IMInfo import IMInfo
-from model.base.CodingConfig import CodingConfig
+from model.element.CodingConfig import CodingConfig
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 
 class QiangHeng:

@@ -2,7 +2,7 @@
 
 from injector import inject
 from injector import singleton
-from model.base.CodingConfig import CodingConfig
+from model.element.CodingConfig import CodingConfig
 from model.CodeInfoManager import CodeInfoManager
 from .element.CharacterDescription import CharacterDescription
 from .element.SubstituteRule import SubstituteRule
