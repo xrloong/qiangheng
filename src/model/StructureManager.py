@@ -1,7 +1,6 @@
 from injector import inject
 from injector import singleton
 
-from Constant import MethodName
 from model.OperatorManager import OperatorManager
 
 from .CharacterDescriptionManager import CharacterDescriptionManager
@@ -11,7 +10,6 @@ from .CharacterDescriptionManager import ImCharacterDescriptionManager
 class StructureManager:
 	@inject
 	def __init__(self, \
-			inputMethod: MethodName, \
 			operationManager: OperatorManager, \
 			mainDescMgr: CharacterDescriptionManager, \
 			imDescMgr: ImCharacterDescriptionManager, \
@@ -20,17 +18,17 @@ class StructureManager:
 		self.mainDescMgr=mainDescMgr
 		self.imDescMgr=imDescMgr
 
-		self._loadData(inputMethod)
+		self._loadData()
 
-	def _loadData(self, inputMethod):
+	def _loadData(self):
 		self._loadMainData()
-		self._loadImData(inputMethod)
+		self._loadImData()
 
 	def _loadMainData(self):
 		self.mainDescMgr.loadData()
 		self.mainDescMgr.loadSubstituteRules()
 
-	def _loadImData(self, inputMethod):
+	def _loadImData(self):
 		self.imDescMgr.loadData()
 		self.imDescMgr.loadSubstituteRules()
 		self.imDescMgr.loadRadix()
