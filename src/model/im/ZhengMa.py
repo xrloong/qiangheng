@@ -1,8 +1,8 @@
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
-class ZhengMaInfo(IMInfo):
+class ZhengMaInfo(CodingInfo):
 	"鄭碼輸入法"
 
 	IMName="鄭碼"
@@ -268,7 +268,7 @@ class ZMRadixParser():
 		codeInfo=ZMCodeInfo(codeList, zm_extra, codeListSingleton)
 		return codeInfo
 
-IMInfo = ZhengMaInfo
+CodingInfo = ZhengMaInfo
 CodeInfoEncoder = ZMCodeInfoEncoder
 RadixParser = ZMRadixParser
 

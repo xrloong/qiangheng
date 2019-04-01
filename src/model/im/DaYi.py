@@ -1,8 +1,8 @@
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
-class DaYiInfo(IMInfo):
+class DaYiInfo(CodingInfo):
 	"大易輸入法"
 
 	IMName="大易"
@@ -347,7 +347,7 @@ class DYRadixParser():
 		codeInfo=DYCodeInfo(codeList)
 		return codeInfo
 
-IMInfo = DaYiInfo
+CodingInfo = DaYiInfo
 CodeInfoEncoder = DYCodeInfoEncoder
 RadixParser = DYRadixParser
 

@@ -1,8 +1,8 @@
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
-class BoshiamyInfo(IMInfo):
+class BoshiamyInfo(CodingInfo):
 	"嘸蝦米輸入法"
 
 	IMName="嘸蝦米"
@@ -304,7 +304,7 @@ class BSRadixParser():
 		codeInfo=BSCodeInfo(codeList, supplementCode, isDigital)
 		return codeInfo
 
-IMInfo = BoshiamyInfo
+CodingInfo = BoshiamyInfo
 CodeInfoEncoder = BSCodeInfoEncoder
 RadixParser = BSRadixParser
 

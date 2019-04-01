@@ -1,6 +1,6 @@
 import abc
 
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
@@ -9,7 +9,7 @@ from xie.graphics.stroke import StrokeGroup
 from xie.graphics.stroke import StrokeGroupInfo
 from xie.graphics.factory import ShapeFactory
 
-class DynamicCompositionInfo(IMInfo):
+class DynamicCompositionInfo(CodingInfo):
 	"動態組字"
 
 	IMName="動態組字"
@@ -695,7 +695,7 @@ class TemplateManager(AbsTemplateManager):
 
 		return strokeGroup
 
-IMInfo = DynamicCompositionInfo
+CodingInfo = DynamicCompositionInfo
 CodeInfoEncoder = DCCodeInfoEncoder
 RadixParser = DCRadixParser
 

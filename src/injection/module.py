@@ -2,15 +2,15 @@ from injector import Module
 from injector import provider
 
 from model.base.CodeInfoEncoder import CodeInfoEncoder
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 
 from Constant import Package
 from Constant import CodingRadixParser
 
 class PackageModule(Module):
 	@provider
-	def provideIMInfo(self, package: Package) -> IMInfo:
-		return package.IMInfo()
+	def provideCodingInfo(self, package: Package) -> CodingInfo:
+		return package.CodingInfo()
 
 	@provider
 	def provideCodeInfoEncoder(self, codingPackage: Package) -> CodeInfoEncoder:

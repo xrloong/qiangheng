@@ -1,8 +1,8 @@
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
-class ArrayInfo(IMInfo):
+class ArrayInfo(CodingInfo):
 	"行列輸入法"
 
 	IMName="行列"
@@ -358,7 +358,7 @@ class ARRadixParser():
 		codeInfo=ARCodeInfo(codeList)
 		return codeInfo
 
-IMInfo = ArrayInfo
+CodingInfo = ArrayInfo
 CodeInfoEncoder = ARCodeInfoEncoder
 RadixParser = ARRadixParser
 

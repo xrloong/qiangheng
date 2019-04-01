@@ -1,8 +1,8 @@
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
-class FourCornerInfo(IMInfo):
+class FourCornerInfo(CodingInfo):
 	"四角號碼"
 
 	IMName="四角"
@@ -653,7 +653,7 @@ class FCRadixParser():
 		codeInfo=FCCodeInfo(corners)
 		return codeInfo
 
-IMInfo = FourCornerInfo
+CodingInfo = FourCornerInfo
 CodeInfoEncoder = FCCodeInfoEncoder
 RadixParser = FCRadixParser
 

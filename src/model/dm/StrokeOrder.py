@@ -1,10 +1,10 @@
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from ..DynamicComposition.DCCodeInfo import DCCodeInfo
 from ..DynamicComposition.DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..DynamicComposition.DCRadixManager import DCRadixParser
 
-class StrokeOrderInfo(IMInfo):
+class StrokeOrderInfo(CodingInfo):
 	"筆順"
 
 	IMName="筆順"
@@ -57,7 +57,7 @@ class SORadixParser(DCRadixParser):
 	def __init__(self):
 		super().__init__()
 
-IMInfo = StrokeOrderInfo
+CodingInfo = StrokeOrderInfo
 CodeInfoEncoder = SOCodeInfoEncoder
 RadixParser = SORadixParser
 

@@ -1,5 +1,5 @@
-class IMInfo:
-	"輸入法"
+class CodingInfo:
+	"編碼方式"
 
 	IMName="空"
 	def __init__(self):

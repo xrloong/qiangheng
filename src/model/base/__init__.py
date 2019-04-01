@@ -1,4 +1,4 @@
-from .IMInfo import IMInfo as IMInfo
+from .CodingInfo import CodingInfo as CodingInfo
 from .CodeInfoEncoder import CodeInfoEncoder as CodeInfoEncoder
 from .RadixManager import RadixParser as RadixParser
 

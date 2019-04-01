@@ -1,8 +1,8 @@
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
-class GuiXieInfo(IMInfo):
+class GuiXieInfo(CodingInfo):
 	"中國字庋㩪"
 
 	IMName="庋㩪"
@@ -79,7 +79,7 @@ class GXRadixParser():
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		return GXCodeInfo()
 
-IMInfo = GuiXieInfo
+CodingInfo = GuiXieInfo
 CodeInfoEncoder = GXCodeInfoEncoder
 RadixParser = GXRadixParser
 

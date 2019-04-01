@@ -11,7 +11,7 @@ from Constant import Package, CodingMethodName, IsForIm
 from Constant import Quiet, OutputFormat
 from Constant import Writer
 
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.element.CodingConfig import CodingConfig
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 
@@ -219,7 +219,7 @@ class QiangHeng:
 
 class MainManager:
 	@inject
-	def __init__(self, codingInfo: IMInfo,
+	def __init__(self, codingInfo: CodingInfo,
 			computeCharacterInfo: ComputeCharacterInfo,
 			writer: Writer):
 		self.codingInfo = codingInfo

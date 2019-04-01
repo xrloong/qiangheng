@@ -1,10 +1,10 @@
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
 import re
 
-class CangJieInfo(IMInfo):
+class CangJieInfo(CodingInfo):
 	"倉頡輸入法"
 
 	IMName="倉頡"
@@ -572,7 +572,7 @@ class CJRadixParser():
 
 		return cjLumpList
 
-IMInfo = CangJieInfo
+CodingInfo = CangJieInfo
 CodeInfoEncoder = CJCodeInfoEncoder
 RadixParser = CJRadixParser
 

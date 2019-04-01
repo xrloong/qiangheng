@@ -1,8 +1,8 @@
-from model.base.IMInfo import IMInfo
+from model.base.CodingInfo import CodingInfo
 from model.base.CodeInfo import CodeInfo
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 
-class SampleInfo(IMInfo):
+class SampleInfo(CodingInfo):
 	"範例輸入法"
 
 	IMName="範例"
@@ -95,7 +95,7 @@ class SPRadixParser():
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		return SPCodeInfo()
 
-IMInfo = SampleInfo
+CodingInfo = SampleInfo
 CodeInfoEncoder = SPCodeInfoEncoder
 RadixParser = SPRadixParser
 
