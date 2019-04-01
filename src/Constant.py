@@ -1,5 +1,5 @@
 from injector import Key
-MethodName = Key('methodName')
+CodingMethodName = Key('codingMethodName')
 Package = Key('package')
 
 MainComponentList = Key('MainComponentList')

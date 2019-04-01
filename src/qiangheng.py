@@ -7,7 +7,7 @@ from injector import inject
 from optparse import OptionParser
 
 from injection.module import PackageModule
-from Constant import Package, MethodName, IsForIm
+from Constant import Package, CodingMethodName, IsForIm
 from Constant import Quiet, OutputFormat
 from Constant import Writer
 
@@ -27,18 +27,18 @@ class QiangHeng:
 		quiet=options.quiet
 
 		if inputMethod:
-			methodName = inputMethod
+			codingMethodName = inputMethod
 			isForIm = True
 		else:
-			methodName = drawMethod
+			codingMethodName = drawMethod
 			isForIm = False
 
-		package = self.computePackage(isForIm, methodName)
+		package = self.computeCodingPackage(codingMethodName)
 		writer = self.computeWriter(isForIm, quiet, output_format)
 
 		def configure(binder):
-			binder.bind(CodingConfig, to=self.getCodingConfig(methodName))
-			binder.bind(MethodName, to=methodName)
+			binder.bind(CodingConfig, to=self.getCodingConfig(codingMethodName))
+			binder.bind(CodingMethodName, to=codingMethodName)
 			binder.bind(Package, to=package)
 			binder.bind(Writer, to=writer)
 
@@ -48,81 +48,65 @@ class QiangHeng:
 		mainManager.compute()
 		mainManager.write()
 
-	def computePackage(self, isForIm, methodName):
-		if isForIm:
-			return self.getImPackage(methodName)
+	def computeCodingPackage(self, codingMethodName):
+		if codingMethodName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
+			codingName='倉頡'
+		elif codingMethodName in ['行', '行列', '行列輸入法', 'array', 'ar',]:
+			codingName='行列'
+		elif codingMethodName in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
+			codingName='大易'
+		elif codingMethodName in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
+			codingName='嘸蝦米'
+		elif codingMethodName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
+			codingName='鄭碼'
+		elif codingMethodName in ['四', '四角', '四角號碼', 'fourcorner', 'fc',]:
+			codingName='四角'
+		elif codingMethodName in ['庋', '庋㩪', '中國字庋㩪', 'guixie', 'gx',]:
+			codingName='庋㩪'
+		elif codingMethodName in ['例', '範例', '範例輸入法', 'sample', 'sample',]:
+			codingName='範例'
+		elif codingMethodName in ['動', '動組', '動態組字', 'dynamiccomposition', 'dc',]:
+			codingName='動組'
+		elif codingMethodName in ['筆順', 'strokeorder', 'so',]:
+			codingName='筆順'
 		else:
-			return self.getDmPackage(methodName)
+			assert False, "不知道的編碼法（輸入法、繪字法）: {method}".format(method=codingMethodName)
+			codingName='不知道'
 
-	def getImPackage(self, imName):
-		if imName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
-			imName='倉頡'
-		elif imName in ['行', '行列', '行列輸入法', 'array', 'ar',]:
-			imName='行列'
-		elif imName in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
-			imName='大易'
-		elif imName in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
-			imName='嘸蝦米'
-		elif imName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
-			imName='鄭碼'
-		elif imName in ['四', '四角', '四角號碼', 'fourcorner', 'fc',]:
-			imName='四角'
-		elif imName in ['庋', '庋㩪', '中國字庋㩪', 'guixie', 'gx',]:
-			imName='庋㩪'
-		elif imName in ['例', '範例', '範例輸入法', 'sample', 'sample',]:
-			imName='範例'
-		else:
-			assert False, "不知道的輸入法: %s"%imName
-			imName='不知道'
-
-		if imName == '倉頡':
+		if codingName == '倉頡':
 			from model.im import CangJie
-			imPackage=CangJie
-		elif imName == '行列':
+			codingPackage=CangJie
+		elif codingName == '行列':
 			from model.im import Array
-			imPackage=Array
-		elif imName == '大易':
+			codingPackage=Array
+		elif codingName == '大易':
 			from model.im import DaYi
-			imPackage=DaYi
-		elif imName == '嘸蝦米':
+			codingPackage=DaYi
+		elif codingName == '嘸蝦米':
 			from model.im import Boshiamy
-			imPackage=Boshiamy
-		elif imName == '鄭碼':
+			codingPackage=Boshiamy
+		elif codingName == '鄭碼':
 			from model.im import ZhengMa
-			imPackage=ZhengMa
-		elif imName == '四角':
+			codingPackage=ZhengMa
+		elif codingName == '四角':
 			from model.im import FourCorner
-			imPackage=FourCorner
-		elif imName == '庋㩪':
+			codingPackage=FourCorner
+		elif codingName == '庋㩪':
 			from model.im import GuiXie
-			imPackage=GuiXie
-		elif imName == '範例':
+			codingPackage=GuiXie
+		elif codingName == '範例':
 			from model.im import Sample
-			imPackage=Sample
-		else:
-			assert False, "不知道的輸入法: %s"%imName
-
-		return imPackage
-
-	def getDmPackage(self, dmName):
-		if dmName in ['動', '動組', '動態組字', 'dynamiccomposition', 'dc',]:
-			dmName='動組'
-		elif dmName in ['筆順', 'strokeorder', 'so',]:
-			dmName='筆順'
-		else:
-			assert False, "不知道的繪字法: %s"%dmName
-			dmName='不知道'
-
-		if dmName == '動組':
+			codingPackage=Sample
+		elif codingName == '動組':
 			from model.dm import DynamicComposition
-			dmPackage=DynamicComposition
-		elif dmName == '筆順':
+			codingPackage=DynamicComposition
+		elif codingName == '筆順':
 			from model.dm import StrokeOrder
-			dmPackage=StrokeOrder
+			codingPackage=StrokeOrder
 		else:
-			assert False, "不知道的繪字法: %s"%dmName
+			assert False, "不知道的編碼法（輸入法、繪字法）: {method}".format(method=codingMethodName)
 
-		return dmPackage
+		return codingPackage
 
 	def computeWriter(self, isForIm: IsForIm, quiet: Quiet, outputFormat: OutputFormat) -> Writer:
 		self.isForIm = isForIm
@@ -185,9 +169,9 @@ class QiangHeng:
 		return CodingConfig(
 			self.getMainComponentList(),
 			self.getMainTemplateFile(),
-			self.getIMComponentList(codingMethodName),
-			self.getIMSubstituteFile(codingMethodName),
-			self.getIMRadixList(codingMethodName),
+			self.getCodingComponentList(codingMethodName),
+			self.getCodingSubstituteFile(codingMethodName),
+			self.getCodingRadixList(codingMethodName),
 			)
         
 	def getMainComponentList(self):
@@ -206,20 +190,20 @@ class QiangHeng:
 		mainTemplateFile = mainDir + 'template.yaml'
 		return mainTemplateFile
 
-	def getIMComponentList(self, methodName: MethodName):
-		methodDir = self.getMethodDir(methodName)
+	def getCodingComponentList(self, codingMethodName: CodingMethodName):
+		methodDir = self.getMethodDir(codingMethodName)
 		methodComponentList = [
 			methodDir + 'style.yaml',
 		]
 		return methodComponentList
 
-	def getIMSubstituteFile(self, methodName: MethodName):
-		methodDir = self.getMethodDir(methodName)
+	def getCodingSubstituteFile(self, codingMethodName: CodingMethodName):
+		methodDir = self.getMethodDir(codingMethodName)
 		meethodSubstituteFile = methodDir + 'substitute.yaml'
 		return meethodSubstituteFile
 
-	def getIMRadixList(self, methodName: MethodName):
-		methodDir = self.getMethodDir(methodName)
+	def getCodingRadixList(self, codingMethodName: CodingMethodName):
+		methodDir = self.getMethodDir(codingMethodName)
 		methodRadixList = [
 			methodDir + 'radix/CJK.yaml',
 			methodDir + 'radix/CJK-A.yaml',
@@ -230,15 +214,15 @@ class QiangHeng:
 	def getMainDir(self):
 		return "gen/qhdata/main/"
 
-	def getMethodDir(self, methodName):
-		return "gen/qhdata/{method}/".format(method=methodName)
+	def getMethodDir(self, codingMethodName):
+		return "gen/qhdata/{method}/".format(method=codingMethodName)
 
 class MainManager:
 	@inject
-	def __init__(self, imInfo: IMInfo,
+	def __init__(self, codingInfo: IMInfo,
 			computeCharacterInfo: ComputeCharacterInfo,
 			writer: Writer):
-		self.imInfo = imInfo
+		self.codingInfo = codingInfo
 		self.computeCharacterInfo = computeCharacterInfo
 		self.writer = writer
 
@@ -246,7 +230,7 @@ class MainManager:
 		self.characterInfoList = self.computeCharacterInfo.compute()
 
 	def write(self):
-		self.writer.write(self.imInfo, self.characterInfoList)
+		self.writer.write(self.codingInfo, self.characterInfoList)
 
 def main():
 	oparser = OptionParser()
