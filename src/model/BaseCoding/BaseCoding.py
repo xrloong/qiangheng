@@ -3,7 +3,9 @@ from injector import inject
 from model.element import Operator
 from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
-class CodingInfo:
+from .interface import IfCodingInfo, IfCodeInfo, IfCodeInfoEncoder, IfCodingRadixParser
+
+class CodingInfo(IfCodingInfo):
 	"編碼方式"
 
 	IMName="空"
@@ -34,7 +36,7 @@ class CodingInfo:
 		return "".join(list(zip(*self.keyMaps))[0])
 
 
-class CodeInfo:
+class CodeInfo(IfCodeInfo):
 	def __init__(self):
 		self.codeVariance=CodeVarianceTypeFactory.generate()
 		self._isSupportCharacterCode=True
@@ -99,7 +101,7 @@ class CodeInfo:
 		return self.codeVariance.getVarianceByString()
 
 
-class CodeInfoEncoder:
+class CodeInfoEncoder(IfCodeInfoEncoder):
 	@classmethod
 	def generateDefaultCodeInfo(cls):
 		return CodeInfo.generateDefaultCodeInfo()
@@ -375,6 +377,6 @@ class CodeInfoEncoder:
 
 		return cls.encodeAsLi([firstCodeInfo, firstCodeInfo, firstCodeInfo, firstCodeInfo, ])
 
-class CodingRadixParser:
+class CodingRadixParser(IfCodingRadixParser):
 	pass
 
