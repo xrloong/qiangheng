@@ -1,7 +1,9 @@
+from injector import inject
+
 from .CodeInfo import CodeInfo
 
 import Constant
-from model import OperatorManager
+from Constant import Package
 from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
 import yaml
@@ -10,10 +12,10 @@ class RadixParser:
 	TAG_CODE_INFORMATION='編碼資訊'
 	TAG_CODE='編碼'
 
-	def __init__(self, nameInputMethod, codeInfoEncoder, imRadixParser):
-		self.nameInputMethod=nameInputMethod
-		self.codeInfoEncoder=codeInfoEncoder
-		self.imRadixParser=imRadixParser
+	@inject
+	def __init__(self, codingPackage: Package):
+		codingRadixParser = codingPackage.RadixParser()
+		self.codingRadixParser = codingRadixParser
 
 		self.radixCodeInfoDB={}
 
@@ -24,10 +26,6 @@ class RadixParser:
 
 		self.convert()
 		return (self.radixDescriptionManager.getResetRadixList(), self.radixDescriptionManager.getCodeInfoDB())
-
-
-	def getEncoder(self):
-		return self.codeInfoEncoder
 
 
 	def createRadixDescriptionManager(self):
@@ -55,7 +53,7 @@ class RadixParser:
 		return radixCodeInfoList
 
 	def convertRadixDescToCodeInfoWithAttribute(self, radixDesc):
-		codeInfo=self.imRadixParser.convertRadixDescToCodeInfo(radixDesc)
+		codeInfo=self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
 
 		codeVariance=radixDesc.getCodeVarianceType()
 		isSupportCharacterCode=radixDesc.isSupportCharacterCode()
