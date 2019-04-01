@@ -1,11 +1,10 @@
 from injector import Module
-from injector import provider, singleton
+from injector import provider
 
 from model.base.RadixManager import RadixParser
 from model.base.CodeInfoEncoder import CodeInfoEncoder
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import CharacterDescriptionManager, ImCharacterDescriptionManager
-from model.hanzi import HanZiNetwork
 import model.base
 
 from Constant import Package, IMName
@@ -27,9 +26,4 @@ class PackageModule(Module):
 	@provider
 	def provideIMName(self, imInfo: model.base.IMInfo) -> IMName:
 		return imInfo.IMName
-
-	@singleton
-	@provider
-	def provideHanZiNetwork(self) -> HanZiNetwork:
-		return HanZiNetwork()
 

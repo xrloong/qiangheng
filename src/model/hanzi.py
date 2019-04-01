@@ -1,3 +1,4 @@
+from injector import singleton
 from injector import inject
 
 class HanZiStructure:
@@ -171,7 +172,9 @@ class HanZiNode:
 	def getTag(self):
 		return self.tag
 
+@singleton
 class HanZiNetwork:
+	@inject
 	def __init__(self):
 		self.nodeDict={}
 		self.structureDict={}
