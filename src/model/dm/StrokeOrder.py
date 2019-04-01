@@ -1,5 +1,7 @@
-from model.base.CodingInfo import CodingInfo
-from model.base.CodeInfo import CodeInfo
+from model.BaseCoding import CodingInfo
+from model.BaseCoding import CodeInfo
+from model.BaseCoding import CodeInfoEncoder
+
 from ..DynamicComposition.DCCodeInfo import DCCodeInfo
 from ..DynamicComposition.DCCodeInfoEncoder import DCCodeInfoEncoder
 from ..DynamicComposition.DCRadixManager import DCRadixParser

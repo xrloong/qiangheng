@@ -1,8 +1,8 @@
 import abc
 
-from model.base.CodingInfo import CodingInfo
-from model.base.CodeInfo import CodeInfo
-from model.base.CodeInfoEncoder import CodeInfoEncoder
+from model.BaseCoding import CodingInfo
+from model.BaseCoding import CodeInfo
+from model.BaseCoding import CodeInfoEncoder
 
 from xie.graphics.shape import Pane
 from xie.graphics.stroke import StrokeGroup

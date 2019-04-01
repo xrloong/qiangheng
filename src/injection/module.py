@@ -1,8 +1,8 @@
 from injector import Module
 from injector import provider
 
-from model.base.CodeInfoEncoder import CodeInfoEncoder
-from model.base.CodingInfo import CodingInfo
+from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingInfo
 
 from Constant import Package
 from Constant import CodingRadixParser

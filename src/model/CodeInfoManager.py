@@ -3,8 +3,8 @@ from injector import singleton
 
 from Constant import Package
 
-from model.base.RadixManager import RadixParser
-from model.base.CodeInfoEncoder import CodeInfoEncoder
+from model.BaseCoding import RadixParser
+from model.BaseCoding import CodeInfoEncoder
 
 @singleton
 class CodeInfoManager:

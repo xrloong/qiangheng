@@ -11,7 +11,7 @@ from Constant import Package, CodingMethodName, IsForIm
 from Constant import Quiet, OutputFormat
 from Constant import Writer
 
-from model.base.CodingInfo import CodingInfo
+from model.BaseCoding import CodingInfo
 from model.element.CodingConfig import CodingConfig
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 

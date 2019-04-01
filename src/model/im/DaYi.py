@@ -1,6 +1,6 @@
-from model.base.CodingInfo import CodingInfo
-from model.base.CodeInfo import CodeInfo
-from model.base.CodeInfoEncoder import CodeInfoEncoder
+from model.BaseCoding import CodingInfo
+from model.BaseCoding import CodeInfo
+from model.BaseCoding import CodeInfoEncoder
 
 class DaYiInfo(CodingInfo):
 	"大易輸入法"
