@@ -1,29 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
-import Constant
-import model
-
-from injector import inject
-
-class StructureDescriptionGenerator:
-	@inject
-	def __init__(self, operationManager: model.OperatorManager.OperatorManager):
-		self.operationManager = operationManager
-
-	def generateLeafNode(self, nodeExpression):
-		structDesc=self.generateNode()
-		structDesc.setReferenceExpression(nodeExpression)
-		structDesc.generateName()
-		return structDesc
-
-	def generateNode(self, structInfo=['龜', []]):
-		operatorName, compList=structInfo
-		operator=self.operationManager.generateOperator(operatorName)
-		structDesc=StructureDescription(operator, compList)
-		structDesc.generateName()
-		return structDesc
-
 class StructureDescription:
 	def __init__(self, operator, compList):
 		self.referenceExpression=None

@@ -2,7 +2,7 @@ import sys
 import Constant
 
 from model.element.CharacterDescription import CharacterDescription
-from model.element.StructureDescription import StructureDescriptionGenerator
+from model.helper import StructureDescriptionGenerator
 
 from injector import inject
 from parser import TreeParser
