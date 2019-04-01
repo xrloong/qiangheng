@@ -105,6 +105,8 @@ class QiangHeng:
 			codingPackage=StrokeOrder
 		else:
 			assert False, "不知道的編碼法（輸入法、繪字法）: {method}".format(method=codingMethodName)
+			from model import DummyCoding
+			codingPackage=DummyCoding
 
 		return codingPackage
 
