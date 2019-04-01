@@ -3,15 +3,13 @@ from injector import provider
 
 from model.base.RadixManager import RadixParser
 from model.base.CodeInfoEncoder import CodeInfoEncoder
-from model.StructureManager import StructureManager
-from model.CharacterDescriptionManager import CharacterDescriptionManager, ImCharacterDescriptionManager
-import model.base
+from model.base.IMInfo import IMInfo
 
 from Constant import Package, IMName
 
 class PackageModule(Module):
 	@provider
-	def provideIMInfo(self, package: Package) -> model.base.IMInfo:
+	def provideIMInfo(self, package: Package) -> IMInfo:
 		return package.IMInfo()
 
 	@provider
@@ -24,6 +22,6 @@ class PackageModule(Module):
 		return RadixParser(imName, codeInfoEncoder, imRadixParser)
 
 	@provider
-	def provideIMName(self, imInfo: model.base.IMInfo) -> IMName:
+	def provideIMName(self, imInfo: IMInfo) -> IMName:
 		return imInfo.IMName
 
