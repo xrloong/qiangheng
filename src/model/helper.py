@@ -1,13 +1,13 @@
 from injector import inject
 
-from Constant import CodingRadixParser
-
 from .OperatorManager import OperatorManager
 from .manager import RadixDescriptionManager
 from model.element.StructureDescription import StructureDescription
 from model.element.CodeVarianceType import CodeVarianceTypeFactory
 from model.manager import RadixDescriptionManager
 from model.BaseCoding import CodeInfo
+from model.BaseCoding import CodingRadixParser
+
 
 import Constant
 import yaml

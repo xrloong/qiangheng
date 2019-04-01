@@ -1,6 +1,7 @@
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 class GuiXieInfo(CodingInfo):
 	"中國字庋㩪"
@@ -75,11 +76,11 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-class GXRadixParser():
+class GXRadixParser(CodingRadixParser):
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		return GXCodeInfo()
 
 CodingInfo = GuiXieInfo
 CodeInfoEncoder = GXCodeInfoEncoder
-RadixParser = GXRadixParser
+CodingRadixParser = GXRadixParser
 

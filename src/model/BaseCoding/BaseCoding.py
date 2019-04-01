@@ -375,4 +375,6 @@ class CodeInfoEncoder:
 
 		return cls.encodeAsLi([firstCodeInfo, firstCodeInfo, firstCodeInfo, firstCodeInfo, ])
 
+class CodingRadixParser:
+	pass
 

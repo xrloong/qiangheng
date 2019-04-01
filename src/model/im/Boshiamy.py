@@ -1,6 +1,7 @@
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 class BoshiamyInfo(CodingInfo):
 	"嘸蝦米輸入法"
@@ -274,7 +275,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		bs_code_list=(bslist[:3]+bslist[-1:]) if len(bslist)>4 else bslist
 		return bs_code_list
 
-class BSRadixParser():
+class BSRadixParser(CodingRadixParser):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
@@ -306,5 +307,5 @@ class BSRadixParser():
 
 CodingInfo = BoshiamyInfo
 CodeInfoEncoder = BSCodeInfoEncoder
-RadixParser = BSRadixParser
+CodingRadixParser = BSRadixParser
 

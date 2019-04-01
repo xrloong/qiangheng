@@ -3,9 +3,9 @@ from injector import provider
 
 from model.BaseCoding import CodeInfoEncoder
 from model.BaseCoding import CodingInfo
+from model.BaseCoding import CodingRadixParser
 
 from Constant import Package
-from Constant import CodingRadixParser
 
 class PackageModule(Module):
 	@provider
@@ -18,4 +18,4 @@ class PackageModule(Module):
 
 	@provider
 	def provideCodingRadixParser(self, codingPackage: Package) -> CodingRadixParser:
-		return codingPackage.RadixParser()
+		return codingPackage.CodingRadixParser()

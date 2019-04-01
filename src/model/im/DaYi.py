@@ -1,6 +1,7 @@
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 class DaYiInfo(CodingInfo):
 	"大易輸入法"
@@ -321,7 +322,7 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		dyCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
 		return dyCode
 
-class DYRadixParser():
+class DYRadixParser(CodingRadixParser):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
@@ -349,5 +350,5 @@ class DYRadixParser():
 
 CodingInfo = DaYiInfo
 CodeInfoEncoder = DYCodeInfoEncoder
-RadixParser = DYRadixParser
+CodingRadixParser = DYRadixParser
 

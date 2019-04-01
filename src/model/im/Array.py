@@ -1,6 +1,7 @@
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 class ArrayInfo(CodingInfo):
 	"行列輸入法"
@@ -332,7 +333,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		arCode=cat[:3]+cat[-1:] if len(cat)>4 else cat
 		return arCode
 
-class ARRadixParser():
+class ARRadixParser(CodingRadixParser):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
@@ -360,5 +361,5 @@ class ARRadixParser():
 
 CodingInfo = ArrayInfo
 CodeInfoEncoder = ARCodeInfoEncoder
-RadixParser = ARRadixParser
+CodingRadixParser = ARRadixParser
 

@@ -1,6 +1,7 @@
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 class FourCornerInfo(CodingInfo):
 	"四角號碼"
@@ -624,7 +625,7 @@ class FCGrid:
 	def getFourCorner(self):
 		return self.getStrokeCode()
 
-class FCRadixParser():
+class FCRadixParser(CodingRadixParser):
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 
 	# 多型
@@ -655,5 +656,5 @@ class FCRadixParser():
 
 CodingInfo = FourCornerInfo
 CodeInfoEncoder = FCCodeInfoEncoder
-RadixParser = FCRadixParser
+CodingRadixParser = FCRadixParser
 

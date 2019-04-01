@@ -1,6 +1,7 @@
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 class SampleInfo(CodingInfo):
 	"範例輸入法"
@@ -91,11 +92,11 @@ class SPCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=cls.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-class SPRadixParser():
+class SPRadixParser(CodingRadixParser):
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		return SPCodeInfo()
 
 CodingInfo = SampleInfo
 CodeInfoEncoder = SPCodeInfoEncoder
-RadixParser = SPRadixParser
+CodingRadixParser = SPRadixParser
 

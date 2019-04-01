@@ -1,6 +1,7 @@
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 class ZhengMaInfo(CodingInfo):
 	"鄭碼輸入法"
@@ -231,7 +232,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 			else:
 				return codeInfoList
 
-class ZMRadixParser():
+class ZMRadixParser(CodingRadixParser):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
@@ -270,5 +271,5 @@ class ZMRadixParser():
 
 CodingInfo = ZhengMaInfo
 CodeInfoEncoder = ZMCodeInfoEncoder
-RadixParser = ZMRadixParser
+CodingRadixParser = ZMRadixParser
 

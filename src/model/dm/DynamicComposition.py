@@ -3,6 +3,7 @@ import abc
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 from xie.graphics.shape import Pane
 from xie.graphics.stroke import StrokeGroup
@@ -387,7 +388,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			[DCCodeInfo.STROKE_GROUP_NAME_JIA, DCCodeInfo.STROKE_GROUP_NAME_JIA, DCCodeInfo.STROKE_GROUP_NAME_JIA, ],
 			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
 
-class DCRadixParser():
+class DCRadixParser(CodingRadixParser):
 	TAG_STROKE_GROUP='筆劃組'
 	TAG_STROKE='筆劃'
 	TAG_GEOMETRY='幾何'
@@ -697,5 +698,5 @@ class TemplateManager(AbsTemplateManager):
 
 CodingInfo = DynamicCompositionInfo
 CodeInfoEncoder = DCCodeInfoEncoder
-RadixParser = DCRadixParser
+CodingRadixParser = DCRadixParser
 

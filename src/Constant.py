@@ -1,7 +1,6 @@
 from injector import Key
 CodingMethodName = Key('codingMethodName')
 Package = Key('package')
-CodingRadixParser = Key('CodingPadixParser')
 
 MainComponentList = Key('MainComponentList')
 MainTemplateFile = Key('MainTemplateFile')

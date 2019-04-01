@@ -1,6 +1,7 @@
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 from ..DynamicComposition.DCCodeInfo import DCCodeInfo
 from ..DynamicComposition.DCCodeInfoEncoder import DCCodeInfoEncoder
@@ -61,5 +62,5 @@ class SORadixParser(DCRadixParser):
 
 CodingInfo = StrokeOrderInfo
 CodeInfoEncoder = SOCodeInfoEncoder
-RadixParser = SORadixParser
+CodingRadixParser = SORadixParser
 

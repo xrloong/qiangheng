@@ -1,6 +1,7 @@
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
+from model.BaseCoding import CodingRadixParser
 
 import re
 
@@ -522,7 +523,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 			ansLumpList.extend(tmpRadixList)
 		return ansLumpList
 
-class CJRadixParser():
+class CJRadixParser(CodingRadixParser):
 	ATTRIB_CODE_EXPRESSION='資訊表示式'
 	ATTRIB_SINGLETON_EXPRESSION='獨體表示式'
 
@@ -574,5 +575,5 @@ class CJRadixParser():
 
 CodingInfo = CangJieInfo
 CodeInfoEncoder = CJCodeInfoEncoder
-RadixParser = CJRadixParser
+CodingRadixParser = CJRadixParser
 
