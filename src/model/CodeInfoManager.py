@@ -1,7 +1,7 @@
 from injector import inject
 from injector import singleton
 
-from Constant import Package, IMName
+from Constant import Package
 
 from model.base.RadixManager import RadixParser
 from model.base.CodeInfoEncoder import CodeInfoEncoder

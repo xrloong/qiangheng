@@ -1,7 +1,6 @@
 from injector import Key
 MethodName = Key('methodName')
 Package = Key('package')
-IMName = Key('IMName')
 
 MainComponentList = Key('MainComponentList')
 MainTemplateFile = Key('MainTemplateFile')
