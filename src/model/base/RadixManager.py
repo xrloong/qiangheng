@@ -4,6 +4,7 @@ from .CodeInfo import CodeInfo
 
 import Constant
 from Constant import Package
+from Constant import CodingRadixParser
 from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
 import yaml
@@ -13,23 +14,16 @@ class RadixParser:
 	TAG_CODE='編碼'
 
 	@inject
-	def __init__(self, codingPackage: Package):
-		codingRadixParser = codingPackage.RadixParser()
+	def __init__(self, codingRadixParser: CodingRadixParser):
 		self.codingRadixParser = codingRadixParser
-
-		self.radixCodeInfoDB={}
-
-		self.radixDescriptionManager=self.createRadixDescriptionManager()
+		self.radixDescriptionManager = RadixDescriptionManager()
+		self.radixCodeInfoDB = {}
 
 	def loadRadix(self, radixFileList):
 		self.parse(radixFileList)
 
 		self.convert()
 		return (self.radixDescriptionManager.getResetRadixList(), self.radixDescriptionManager.getCodeInfoDB())
-
-
-	def createRadixDescriptionManager(self):
-		return RadixDescriptionManager()
 
 
 	def getRadixDescription(self, radixName):

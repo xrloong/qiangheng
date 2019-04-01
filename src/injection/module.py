@@ -5,6 +5,7 @@ from model.base.CodeInfoEncoder import CodeInfoEncoder
 from model.base.IMInfo import IMInfo
 
 from Constant import Package
+from Constant import CodingRadixParser
 
 class PackageModule(Module):
 	@provider
@@ -12,6 +13,9 @@ class PackageModule(Module):
 		return package.IMInfo()
 
 	@provider
-	def provideCodeInfoEncoder(self, imPackage: Package) -> CodeInfoEncoder:
-		return imPackage.CodeInfoEncoder
+	def provideCodeInfoEncoder(self, codingPackage: Package) -> CodeInfoEncoder:
+		return codingPackage.CodeInfoEncoder
 
+	@provider
+	def provideCodingRadixParser(self, codingPackage: Package) -> CodingRadixParser:
+		return codingPackage.RadixParser()
