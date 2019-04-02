@@ -37,7 +37,7 @@ class QiangHeng:
 		writer = self.computeWriter(isForIm, quiet, output_format)
 
 		def configure(binder):
-			binder.bind(CodingConfig, to=self.getCodingConfig(codingMethodName))
+			binder.bind(CodingConfig, to=CodingConfig(package))
 			binder.bind(CodingMethodName, to=codingMethodName)
 			binder.bind(Package, to=package)
 			binder.bind(Writer, to=writer)
@@ -166,58 +166,6 @@ class QiangHeng:
 			from writer.dm import QuietWriter
 		writer = QuietWriter()
 		return writer
-
-	def getCodingConfig(self, codingMethodName):
-		return CodingConfig(
-			self.getMainComponentList(),
-			[self.getMainTemplateFile()],
-			self.getCodingComponentList(codingMethodName),
-			[self.getCodingSubstituteFile(codingMethodName)],
-			self.getCodingRadixList(codingMethodName),
-			)
-        
-	def getMainComponentList(self):
-		mainDir = self.getMainDir()
-		mainComponentList = [
-			mainDir + 'CJK.yaml',
-			mainDir + 'CJK-A.yaml',
-			mainDir + 'component/CJK.yaml',
-			mainDir + 'component/CJK-A.yaml',
-			mainDir + 'style.yaml',
-		]
-		return mainComponentList
-
-	def getMainTemplateFile(self):
-		mainDir = self.getMainDir()
-		mainTemplateFile = mainDir + 'template.yaml'
-		return mainTemplateFile
-
-	def getCodingComponentList(self, codingMethodName: CodingMethodName):
-		methodDir = self.getMethodDir(codingMethodName)
-		methodComponentList = [
-			methodDir + 'style.yaml',
-		]
-		return methodComponentList
-
-	def getCodingSubstituteFile(self, codingMethodName: CodingMethodName):
-		methodDir = self.getMethodDir(codingMethodName)
-		meethodSubstituteFile = methodDir + 'substitute.yaml'
-		return meethodSubstituteFile
-
-	def getCodingRadixList(self, codingMethodName: CodingMethodName):
-		methodDir = self.getMethodDir(codingMethodName)
-		methodRadixList = [
-			methodDir + 'radix/CJK.yaml',
-			methodDir + 'radix/CJK-A.yaml',
-			methodDir + 'radix/adjust.yaml'
-		]
-		return methodRadixList
-
-	def getMainDir(self):
-		return "gen/qhdata/main/"
-
-	def getMethodDir(self, codingMethodName):
-		return "gen/qhdata/{method}/".format(method=codingMethodName)
 
 class MainManager:
 	@inject

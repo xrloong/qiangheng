@@ -96,6 +96,19 @@ class SPRadixParser(CodingRadixParser):
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		return SPCodeInfo()
 
+codingMethodName = "sp"
+codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
+CodingComponentFileList = [
+	codingMethodDir + 'style.yaml',
+]
+CodingSubstituteFileList = [
+	codingMethodDir + 'substitute.yaml',
+]
+CodingRadixFileList = [
+	codingMethodDir + 'radix/CJK.yaml',
+	codingMethodDir + 'radix/CJK-A.yaml',
+	codingMethodDir + 'radix/adjust.yaml'
+]
 CodingInfo = SampleInfo
 CodeInfoEncoder = SPCodeInfoEncoder
 CodingRadixParser = SPRadixParser
