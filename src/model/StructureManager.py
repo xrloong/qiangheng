@@ -1,8 +1,6 @@
 from injector import inject
 from injector import singleton
 
-from model.OperatorManager import OperatorManager
-
 from .CharacterDescriptionManager import CharacterDescriptionManager
 from .CharacterDescriptionManager import SubstituteManager
 from .CharacterDescriptionManager import RadixManager
@@ -11,13 +9,11 @@ from .CharacterDescriptionManager import RadixManager
 class StructureManager:
 	@inject
 	def __init__(self,
-			operationManager: OperatorManager,
 			mainDescMgr: CharacterDescriptionManager,
 			radixManager: RadixManager,
 			templateManager: SubstituteManager,
 			substituteManager: SubstituteManager
 			):
-		self.operationManager=operationManager
 		self.mainDescMgr=mainDescMgr
 		self.radixManager=radixManager
 		self.templateManager=templateManager
@@ -49,6 +45,3 @@ class StructureManager:
 	def getSubstituteRuleList(self):
 		return self.substituteManager.getSubstituteRuleList()
 
-	def generateOperator(self, operatorName):
-                operationManager=self.operationManager
-                return operationManager.generateOperator(operatorName)
