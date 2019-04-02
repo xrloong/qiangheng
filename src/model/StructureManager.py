@@ -4,7 +4,7 @@ from injector import singleton
 from model.OperatorManager import OperatorManager
 
 from .CharacterDescriptionManager import CharacterDescriptionManager
-from .CharacterDescriptionManager import ImCharacterDescriptionManager
+from .CharacterDescriptionManager import RadixManager
 
 @singleton
 class StructureManager:
@@ -12,11 +12,11 @@ class StructureManager:
 	def __init__(self, \
 			operationManager: OperatorManager, \
 			mainDescMgr: CharacterDescriptionManager, \
-			imDescMgr: ImCharacterDescriptionManager, \
+			radixManager: RadixManager, \
 			):
 		self.operationManager=operationManager
 		self.mainDescMgr=mainDescMgr
-		self.imDescMgr=imDescMgr
+		self.radixManager=radixManager
 
 		self._loadData()
 
@@ -29,14 +29,14 @@ class StructureManager:
 		self.mainDescMgr.loadSubstituteRules()
 
 	def _loadImData(self):
-		self.imDescMgr.loadSubstituteRules()
-		self.imDescMgr.loadRadix()
+		self.radixManager.loadSubstituteRules()
+		self.radixManager.loadRadix()
 
 	def getAllCharacters(self):
-		return set(self.mainDescMgr.getAllCharacters()) | set(self.imDescMgr.getAllCharacters()) 
+		return set(self.mainDescMgr.getAllCharacters()) | set(self.radixManager.getAllCharacters()) 
 
 	def queryCharacterDescription(self, character):
-		charDesc = self.imDescMgr.queryCharacterDescription(character)
+		charDesc = self.radixManager.queryCharacterDescription(character)
 		if not charDesc:
 			charDesc = self.mainDescMgr.queryCharacterDescription(character)
 		return charDesc
@@ -48,7 +48,7 @@ class StructureManager:
 		return self.mainDescMgr.getSubstituteRuleList()
 
 	def getSubstituteRuleList(self):
-		return self.imDescMgr.getSubstituteRuleList()
+		return self.radixManager.getSubstituteRuleList()
 
 	def generateOperator(self, operatorName):
                 operationManager=self.operationManager

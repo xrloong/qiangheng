@@ -89,7 +89,7 @@ class CharacterDescriptionManager:
 		return charDesc.getStructureList()
 
 @singleton
-class ImCharacterDescriptionManager(CharacterDescriptionManager):
+class RadixManager(CharacterDescriptionManager):
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
 			codeInfoManager: CodeInfoManager,
