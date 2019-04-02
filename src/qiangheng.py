@@ -170,9 +170,9 @@ class QiangHeng:
 	def getCodingConfig(self, codingMethodName):
 		return CodingConfig(
 			self.getMainComponentList(),
-			self.getMainTemplateFile(),
+			[self.getMainTemplateFile()],
 			self.getCodingComponentList(codingMethodName),
-			self.getCodingSubstituteFile(codingMethodName),
+			[self.getCodingSubstituteFile(codingMethodName)],
 			self.getCodingRadixList(codingMethodName),
 			)
         

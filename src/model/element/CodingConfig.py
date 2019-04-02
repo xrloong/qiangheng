@@ -3,28 +3,28 @@ from Constant import IMComponentList, IMSubstituteFile, IMRadixList
 
 class CodingConfig:
 	def __init__(self, commonComponentFileList: MainComponentList,
-		commonTemplateFile: MainTemplateFile,
+		commonTemplateFileList: MainTemplateFile,
 		specificComponentFileList: IMComponentList,
-		specificSubstituteFile: IMSubstituteFile,
+		specificSubstituteFileList: IMSubstituteFile,
 		specificRadixFileList: IMRadixList):
 
 		self.commonComponentFileList = commonComponentFileList
-		self.commonTemplateFile = commonTemplateFile
+		self.commonTemplateFileList = commonTemplateFileList
 		self.specificComponentFileList = specificComponentFileList
-		self.specificSubstituteFile = specificSubstituteFile
+		self.specificSubstituteFileList = specificSubstituteFileList
 		self.specificRadixFileList = specificRadixFileList
 
 	def getCommonComponentFileList(self):
 		return self.commonComponentFileList
 
-	def getCommonTemplateFile(self):
-		return self.commonTemplateFile
+	def getCommonTemplateFileList(self):
+		return self.commonTemplateFileList
 
 	def getSpecificComponentFileList(self):
 		return self.specificComponentFileList
 
-	def getSpecificSubstituteFile(self):
-		return self.specificSubstituteFile
+	def getSpecificSubstituteFileList(self):
+		return self.specificSubstituteFileList
 
 	def getSpecificRadixFileList(self):
 		return self.specificRadixFileList

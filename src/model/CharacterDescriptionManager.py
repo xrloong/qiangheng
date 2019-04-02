@@ -20,7 +20,7 @@ class CharacterDescriptionManager:
 
 	def setupCodingConfig(self, codingConfig):
 		self.componentFiles = codingConfig.getCommonComponentFileList()
-		self.substituteFile = codingConfig.getCommonTemplateFile()
+		self.substituteFiles = codingConfig.getCommonTemplateFileList()
 
 	def doInitialization(self, qhparser):
 		self.qhparser = qhparser
@@ -39,7 +39,11 @@ class CharacterDescriptionManager:
 		self._loadComponent(self.componentFiles)
 
 	def loadSubstituteRules(self):
-		self.substituteRuleList=self._loadSubstituteRules(self.substituteFile)
+		totalSubstituteRuleList=[]
+		for filename in self.substituteFiles:
+			substituteRuleList=self._loadSubstituteRules(filename)
+			totalSubstituteRuleList.extend(substituteRuleList)
+		self.substituteRuleList=totalSubstituteRuleList
 
 	def _loadComponent(self, toComponentList):
 		for filename in toComponentList:
@@ -97,7 +101,7 @@ class ImCharacterDescriptionManager(CharacterDescriptionManager):
 
 	def setupCodingConfig(self, codingConfig):
 		self.componentFiles = codingConfig.getSpecificComponentFileList()
-		self.substituteFile = codingConfig.getSpecificSubstituteFile()
+		self.substituteFiles = codingConfig.getSpecificSubstituteFileList()
 		self.radixFiles = codingConfig.getSpecificRadixFileList()
 
 	def loadRadix(self):
