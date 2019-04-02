@@ -15,12 +15,12 @@ class CharacterDescriptionManager:
 	def __init__(self, qhparser: QHParser.QHParser,
 			codingConfig: CodingConfig,
                         ):
-		self.doInitialization(qhparser)
-		self.setupCodingConfig(codingConfig)
-
-	def doInitialization(self, qhparser):
 		self.qhparser = qhparser
 
+		self.doInitialization()
+		self.setupCodingConfig(codingConfig)
+
+	def doInitialization(self):
 		self.characterDB={}
 		self.substituteRuleList=[]
 
@@ -96,8 +96,10 @@ class RadixManager(CharacterDescriptionManager):
 			codingConfig: CodingConfig,
                         ):
 		super().__init__(qhparser=qhparser, codingConfig=codingConfig)
-		self.doInitialization(qhparser)
+		self.qhparser = qhparser
 		self.codeInfoManager = codeInfoManager
+
+		self.doInitialization()
 		self.setupCodingConfig(codingConfig)
 
 	def setupCodingConfig(self, codingConfig):
