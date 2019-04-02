@@ -359,20 +359,3 @@ class ARRadixParser(CodingRadixParser):
 		codeInfo=ARCodeInfo(codeList)
 		return codeInfo
 
-codingMethodName = "ar"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingComponentFileList = [
-	codingMethodDir + 'style.yaml',
-]
-CodingSubstituteFileList = [
-	codingMethodDir + 'substitute.yaml',
-]
-CodingRadixFileList = [
-	codingMethodDir + 'radix/CJK.yaml',
-	codingMethodDir + 'radix/CJK-A.yaml',
-	codingMethodDir + 'radix/adjust.yaml'
-]
-CodingInfo = ArrayInfo
-CodeInfoEncoder = ARCodeInfoEncoder
-CodingRadixParser = ARRadixParser
-

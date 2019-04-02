@@ -74,34 +74,34 @@ class QiangHeng:
 			codingName='不知道'
 
 		if codingName == '範例':
-			from model.im import Sample
+			from im import Sample
 			codingPackage=Sample
 		elif codingName == '倉頡':
-			from model.im import CangJie
+			from im import CangJie
 			codingPackage=CangJie
 		elif codingName == '行列':
-			from model.im import Array
+			from im import Array
 			codingPackage=Array
 		elif codingName == '大易':
-			from model.im import DaYi
+			from im import DaYi
 			codingPackage=DaYi
 		elif codingName == '嘸蝦米':
-			from model.im import Boshiamy
+			from im import Boshiamy
 			codingPackage=Boshiamy
 		elif codingName == '鄭碼':
-			from model.im import ZhengMa
+			from im import ZhengMa
 			codingPackage=ZhengMa
 		elif codingName == '四角':
-			from model.im import FourCorner
+			from im import FourCorner
 			codingPackage=FourCorner
 		elif codingName == '庋㩪':
-			from model.im import GuiXie
+			from im import GuiXie
 			codingPackage=GuiXie
 		elif codingName == '動組':
-			from model.dm import DynamicComposition
+			from dm import DynamicComposition
 			codingPackage=DynamicComposition
 		elif codingName == '筆順':
-			from model.dm import StrokeOrder
+			from dm import StrokeOrder
 			codingPackage=StrokeOrder
 		else:
 			assert False, "不知道的編碼法（輸入法、繪字法）: {method}".format(method=codingMethodName)
