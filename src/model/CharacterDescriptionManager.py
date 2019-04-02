@@ -119,9 +119,6 @@ class RadixManager(CharacterDescriptionManager):
 		self.codeInfoManager.loadRadix(radixFiles)
 
 		resetRadixNameList=self.codeInfoManager.getResetRadixList()
-		self.resetCompoundCharactersToBeRadix(resetRadixNameList)
-
-	def resetCompoundCharactersToBeRadix(self, resetRadixNameList):
 		for resetRadixName in resetRadixNameList:
 			charDesc=CharacterDescription(resetRadixName)
 			self.characterDB[resetRadixName]=charDesc
