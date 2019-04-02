@@ -11,9 +11,19 @@ import Constant
 
 class SubstituteManager:
 	@inject
-	def __init__(self, qhparser: QHParser.QHParser):
+	def __init__(self, qhparser: QHParser.QHParser,
+			codingConfig: CodingConfig):
 		self.qhparser = qhparser
 		self.substituteRuleList=[]
+		self.codingConfig = codingConfig
+
+	def loadTemplates(self):
+		templateFiles = self.codingConfig.getCommonTemplateFileList()
+		self.loadSubstituteRules(templateFiles)
+
+	def loadSubstitutes(self):
+		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
+		self.loadSubstituteRules(substituteFiles)
 
 	def loadSubstituteRules(self, substituteFiles):
 		totalSubstituteRuleList=[]
@@ -47,10 +57,8 @@ class SubstituteManager:
 class CharacterDescriptionManager:
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
-			substituteManager: SubstituteManager,
 			codingConfig: CodingConfig):
 		self.qhparser = qhparser
-		self.substituteManager = substituteManager
 
 		self.doInitialization()
 
@@ -91,23 +99,14 @@ class CharacterDescriptionManager:
 	def queryStructureList(self, charDesc):
 		return charDesc.getStructureList()
 
-	def loadSubstituteRules(self):
-		substituteFiles = self.codingConfig.getCommonTemplateFileList()
-		self.substituteManager.loadSubstituteRules(substituteFiles)
-
-	def getSubstituteRuleList(self):
-		return self.substituteManager.getSubstituteRuleList()
-
 @singleton
 class RadixManager(CharacterDescriptionManager):
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
-			substituteManager: SubstituteManager,
 			codeInfoManager: CodeInfoManager,
 			codingConfig: CodingConfig):
 		super().__init__(qhparser=qhparser, codingConfig=codingConfig)
 		self.qhparser = qhparser
-		self.substituteManager = substituteManager
 		self.codeInfoManager = codeInfoManager
 
 		self.doInitialization()
@@ -122,10 +121,6 @@ class RadixManager(CharacterDescriptionManager):
 		for resetRadixName in resetRadixNameList:
 			charDesc=CharacterDescription(resetRadixName)
 			self.characterDB[resetRadixName]=charDesc
-
-	def loadSubstituteRules(self):
-		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
-		self.substituteManager.loadSubstituteRules(substituteFiles)
 
 if __name__=='__main__':
 	pass

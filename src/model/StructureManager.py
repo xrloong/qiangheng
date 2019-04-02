@@ -4,33 +4,32 @@ from injector import singleton
 from model.OperatorManager import OperatorManager
 
 from .CharacterDescriptionManager import CharacterDescriptionManager
+from .CharacterDescriptionManager import SubstituteManager
 from .CharacterDescriptionManager import RadixManager
 
 @singleton
 class StructureManager:
 	@inject
-	def __init__(self, \
-			operationManager: OperatorManager, \
-			mainDescMgr: CharacterDescriptionManager, \
-			radixManager: RadixManager, \
+	def __init__(self,
+			operationManager: OperatorManager,
+			mainDescMgr: CharacterDescriptionManager,
+			radixManager: RadixManager,
+			templateManager: SubstituteManager,
+			substituteManager: SubstituteManager
 			):
 		self.operationManager=operationManager
 		self.mainDescMgr=mainDescMgr
 		self.radixManager=radixManager
+		self.templateManager=templateManager
+		self.substituteManager=substituteManager
 
 		self._loadData()
 
 	def _loadData(self):
-		self._loadMainData()
-		self._loadImData()
-
-	def _loadMainData(self):
 		self.mainDescMgr.loadData()
-		self.mainDescMgr.loadSubstituteRules()
-
-	def _loadImData(self):
-		self.radixManager.loadSubstituteRules()
 		self.radixManager.loadRadix()
+		self.templateManager.loadTemplates()
+		self.substituteManager.loadSubstitutes()
 
 	def getAllCharacters(self):
 		return set(self.mainDescMgr.getAllCharacters()) | set(self.radixManager.getAllCharacters()) 
@@ -45,10 +44,10 @@ class StructureManager:
 		return charDesc.getCompList()
 
 	def getTemplateRuleList(self):
-		return self.mainDescMgr.getSubstituteRuleList()
+		return self.templateManager.getSubstituteRuleList()
 
 	def getSubstituteRuleList(self):
-		return self.radixManager.getSubstituteRuleList()
+		return self.substituteManager.getSubstituteRuleList()
 
 	def generateOperator(self, operatorName):
                 operationManager=self.operationManager
