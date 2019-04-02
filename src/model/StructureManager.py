@@ -29,7 +29,6 @@ class StructureManager:
 		self.mainDescMgr.loadSubstituteRules()
 
 	def _loadImData(self):
-		self.imDescMgr.loadData()
 		self.imDescMgr.loadSubstituteRules()
 		self.imDescMgr.loadRadix()
 

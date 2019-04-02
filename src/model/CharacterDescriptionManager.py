@@ -18,15 +18,16 @@ class CharacterDescriptionManager:
 		self.doInitialization(qhparser)
 		self.setupCodingConfig(codingConfig)
 
-	def setupCodingConfig(self, codingConfig):
-		self.componentFiles = codingConfig.getCommonComponentFileList()
-		self.substituteFiles = codingConfig.getCommonTemplateFileList()
-
 	def doInitialization(self, qhparser):
 		self.qhparser = qhparser
-		self.characterDB={}
 
+		self.characterDB={}
 		self.substituteRuleList=[]
+
+	def setupCodingConfig(self, codingConfig):
+		self.codingConfig = codingConfig
+		self.componentFiles = codingConfig.getCommonComponentFileList() + codingConfig.getSpecificComponentFileList()
+		self.substituteFiles = codingConfig.getCommonTemplateFileList()
 
 
 	def getAllCharacters(self):
@@ -100,7 +101,7 @@ class ImCharacterDescriptionManager(CharacterDescriptionManager):
 		self.setupCodingConfig(codingConfig)
 
 	def setupCodingConfig(self, codingConfig):
-		self.componentFiles = codingConfig.getSpecificComponentFileList()
+		self.codingConfig = codingConfig
 		self.substituteFiles = codingConfig.getSpecificSubstituteFileList()
 		self.radixFiles = codingConfig.getSpecificRadixFileList()
 
