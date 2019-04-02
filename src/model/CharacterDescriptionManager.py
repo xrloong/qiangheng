@@ -9,52 +9,22 @@ from .element.SubstituteRule import SubstituteRule
 from parser import QHParser
 import Constant
 
-@singleton
-class CharacterDescriptionManager:
+class SubstituteManager:
 	@inject
-	def __init__(self, qhparser: QHParser.QHParser,
-			codingConfig: CodingConfig,
-                        ):
+	def __init__(self, qhparser: QHParser.QHParser):
 		self.qhparser = qhparser
-
-		self.doInitialization()
-		self.setupCodingConfig(codingConfig)
-
-	def doInitialization(self):
-		self.characterDB={}
 		self.substituteRuleList=[]
 
-	def setupCodingConfig(self, codingConfig):
-		self.codingConfig = codingConfig
-		self.componentFiles = codingConfig.getCommonComponentFileList() + codingConfig.getSpecificComponentFileList()
-		self.substituteFiles = codingConfig.getCommonTemplateFileList()
-
-
-	def getAllCharacters(self):
-		return self.characterDB.keys()
-
-	def queryCharacterDescription(self, characterName):
-		return self.characterDB.get(characterName, None)
-
-	def loadData(self):
-		self._loadComponent(self.componentFiles)
-
-	def loadSubstituteRules(self):
+	def loadSubstituteRules(self, substituteFiles):
 		totalSubstituteRuleList=[]
-		for filename in self.substituteFiles:
+		for filename in substituteFiles:
 			substituteRuleList=self._loadSubstituteRules(filename)
 			totalSubstituteRuleList.extend(substituteRuleList)
 		self.substituteRuleList=totalSubstituteRuleList
 
-	def _loadComponent(self, toComponentList):
-		for filename in toComponentList:
-			charDescList=self.qhparser.loadCharacters(filename)
-			for charDesc in charDescList:
-				self.saveChar(charDesc)
-
-	def _loadSubstituteRules(self, toSubstituteFile):
+	def _loadSubstituteRules(self, substituteFile):
 		import yaml
-		node=yaml.load(open(toSubstituteFile), yaml.SafeLoader)
+		node=yaml.load(open(substituteFile), yaml.SafeLoader)
 		ruleSetNode=node.get(Constant.TAG_RULE_SET)
 
 		if not ruleSetNode:
@@ -73,6 +43,42 @@ class CharacterDescriptionManager:
 	def getSubstituteRuleList(self):
 		return self.substituteRuleList
 
+@singleton
+class CharacterDescriptionManager:
+	@inject
+	def __init__(self, qhparser: QHParser.QHParser,
+			substituteManager: SubstituteManager,
+			codingConfig: CodingConfig):
+		self.qhparser = qhparser
+		self.substituteManager = substituteManager
+
+		self.doInitialization()
+		self.setupCodingConfig(codingConfig)
+
+	def doInitialization(self):
+		self.characterDB={}
+
+	def setupCodingConfig(self, codingConfig):
+		self.codingConfig = codingConfig
+		self.componentFiles = codingConfig.getCommonComponentFileList() + codingConfig.getSpecificComponentFileList()
+		self.substituteFiles = codingConfig.getCommonTemplateFileList()
+
+
+	def getAllCharacters(self):
+		return self.characterDB.keys()
+
+	def queryCharacterDescription(self, characterName):
+		return self.characterDB.get(characterName, None)
+
+	def loadData(self):
+		self._loadComponent(self.componentFiles)
+
+	def _loadComponent(self, toComponentList):
+		for filename in toComponentList:
+			charDescList=self.qhparser.loadCharacters(filename)
+			for charDesc in charDescList:
+				self.saveChar(charDesc)
+
 	def saveChar(self, charDesc):
 		charName=charDesc.getName()
 
@@ -88,15 +94,22 @@ class CharacterDescriptionManager:
 	def queryStructureList(self, charDesc):
 		return charDesc.getStructureList()
 
+	def loadSubstituteRules(self):
+		self.substituteManager.loadSubstituteRules(self.substituteFiles)
+
+	def getSubstituteRuleList(self):
+		return self.substituteManager.getSubstituteRuleList()
+
 @singleton
 class RadixManager(CharacterDescriptionManager):
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
+			substituteManager: SubstituteManager,
 			codeInfoManager: CodeInfoManager,
-			codingConfig: CodingConfig,
-                        ):
+			codingConfig: CodingConfig):
 		super().__init__(qhparser=qhparser, codingConfig=codingConfig)
 		self.qhparser = qhparser
+		self.substituteManager = substituteManager
 		self.codeInfoManager = codeInfoManager
 
 		self.doInitialization()
