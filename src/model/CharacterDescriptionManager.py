@@ -11,9 +11,7 @@ import Constant
 
 class SubstituteManager:
 	@inject
-	def __init__(self, qhparser: QHParser.QHParser,
-			codingConfig: CodingConfig):
-		self.qhparser = qhparser
+	def __init__(self, codingConfig: CodingConfig):
 		self.substituteRuleList=[]
 		self.codingConfig = codingConfig
 
