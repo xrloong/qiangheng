@@ -3,9 +3,9 @@ from model.BaseCoding import CodeInfo
 from model.BaseCoding import CodeInfoEncoder
 from model.BaseCoding import CodingRadixParser
 
-from ..DynamicComposition.DCCodeInfo import DCCodeInfo
-from ..DynamicComposition.DCCodeInfoEncoder import DCCodeInfoEncoder
-from ..DynamicComposition.DCRadixManager import DCRadixParser
+from .DynamicComposition import DCCodeInfo
+from .DynamicComposition import DCCodeInfoEncoder
+from .DynamicComposition import DCRadixParser
 
 class StrokeOrderInfo(CodingInfo):
 	"筆順"
