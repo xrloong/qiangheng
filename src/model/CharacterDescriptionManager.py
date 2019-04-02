@@ -53,15 +53,11 @@ class CharacterDescriptionManager:
 		self.substituteManager = substituteManager
 
 		self.doInitialization()
-		self.setupCodingConfig(codingConfig)
+
+		self.codingConfig = codingConfig
 
 	def doInitialization(self):
 		self.characterDB={}
-
-	def setupCodingConfig(self, codingConfig):
-		self.codingConfig = codingConfig
-		self.componentFiles = codingConfig.getCommonComponentFileList() + codingConfig.getSpecificComponentFileList()
-		self.substituteFiles = codingConfig.getCommonTemplateFileList()
 
 
 	def getAllCharacters(self):
@@ -71,7 +67,8 @@ class CharacterDescriptionManager:
 		return self.characterDB.get(characterName, None)
 
 	def loadData(self):
-		self._loadComponent(self.componentFiles)
+		componentFiles = self.codingConfig.getCommonComponentFileList() + self.codingConfig.getSpecificComponentFileList()
+		self._loadComponent(componentFiles)
 
 	def _loadComponent(self, toComponentList):
 		for filename in toComponentList:
@@ -95,7 +92,8 @@ class CharacterDescriptionManager:
 		return charDesc.getStructureList()
 
 	def loadSubstituteRules(self):
-		self.substituteManager.loadSubstituteRules(self.substituteFiles)
+		substituteFiles = self.codingConfig.getCommonTemplateFileList()
+		self.substituteManager.loadSubstituteRules(substituteFiles)
 
 	def getSubstituteRuleList(self):
 		return self.substituteManager.getSubstituteRuleList()
@@ -113,15 +111,12 @@ class RadixManager(CharacterDescriptionManager):
 		self.codeInfoManager = codeInfoManager
 
 		self.doInitialization()
-		self.setupCodingConfig(codingConfig)
 
-	def setupCodingConfig(self, codingConfig):
 		self.codingConfig = codingConfig
-		self.substituteFiles = codingConfig.getSpecificSubstituteFileList()
-		self.radixFiles = codingConfig.getSpecificRadixFileList()
 
 	def loadRadix(self):
-		self.codeInfoManager.loadRadix(self.radixFiles)
+		radixFiles = self.codingConfig.getSpecificRadixFileList()
+		self.codeInfoManager.loadRadix(radixFiles)
 
 		resetRadixNameList=self.codeInfoManager.getResetRadixList()
 		self.resetCompoundCharactersToBeRadix(resetRadixNameList)
@@ -130,6 +125,10 @@ class RadixManager(CharacterDescriptionManager):
 		for resetRadixName in resetRadixNameList:
 			charDesc=CharacterDescription(resetRadixName)
 			self.characterDB[resetRadixName]=charDesc
+
+	def loadSubstituteRules(self):
+		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
+		self.substituteManager.loadSubstituteRules(substituteFiles)
 
 if __name__=='__main__':
 	pass
