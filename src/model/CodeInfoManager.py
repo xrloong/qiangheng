@@ -9,14 +9,10 @@ from model.BaseCoding import CodeInfoEncoder
 @singleton
 class CodeInfoManager:
 	@inject
-	def __init__(self, radixParser: QHRadixParser,
-		codeInfoEncoder: CodeInfoEncoder):
-            
+	def __init__(self, radixParser: QHRadixParser):
 		self.radixParser=radixParser
-		self.codeInfoEncoder=codeInfoEncoder
 		self.radixCodeInfoDB={}
 		self.resetRadixList=[]
-
 
 	def loadRadix(self, radixFileList):
 		[self.resetRadixList, self.radixCodeInfoDB]=self.radixParser.loadRadix(radixFileList)
@@ -34,19 +30,3 @@ class CodeInfoManager:
 		return self.resetRadixList
 
 
-	def interpretCodeInfo(self, codeInfo):
-		return codeInfo.toCode()
-
-	def encodeToCodeInfo(self, operator, codeInfoList):
-		codeInfo=self.codeInfoEncoder.setByComps(operator, codeInfoList)
-		return codeInfo
-
-	def interpretCodeInfoList(self, codeInfoList):
-		codeList=[]
-		for codeInfo in codeInfoList:
-			characterCode=self.interpretCodeInfo(codeInfo)
-			variance=codeInfo.variance
-			if characterCode:
-				codeList.append([characterCode, variance])
-
-		return codeList

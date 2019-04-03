@@ -2,6 +2,7 @@ from injector import inject
 
 from . import TreeRegExp
 from ..hanzi import HanZiNetwork
+from model.interpreter import CodeInfoInterpreter
 from model.CodeInfoManager import CodeInfoManager
 from model.OperatorManager import OperatorManager
 from model.StructureManager import StructureManager
@@ -87,14 +88,14 @@ class StructureWrapperTag(StructureTag):
 		self.setCodeInfoList(codeInfoList)
 
 class StructureAssemblageTag(StructureTag):
-	def __init__(self, codeInfoManager):
+	def __init__(self, codeInfoInterpreter):
 		super().__init__()
-		self.codeInfoManager=codeInfoManager
+		self.codeInfoInterpreter = codeInfoInterpreter
 
 	def setInfoListList(self, operator, infoListList):
 		codeInfoList=[]
 		for infoList in infoListList:
-			codeInfo=self.codeInfoManager.encodeToCodeInfo(operator, infoList)
+			codeInfo = self.codeInfoInterpreter.encodeToCodeInfo(operator, infoList)
 			if codeInfo!=None:
 				for childCodeInfo in infoList:
 					codeVariance=childCodeInfo.getCodeVarianceType()
@@ -222,9 +223,9 @@ class StageAddStructure(ConversionStage):
 	def __init__(self, hanziNetwork: HanZiNetwork,
 			structureManager: StructureManager,
 			operationManager: OperatorManager,
-			codeInfoManager: CodeInfoManager):
+			codeInfoInterpreter: CodeInfoInterpreter):
 		super().__init__(hanziNetwork, structureManager)
-		self.codeInfoManager=codeInfoManager
+		self.codeInfoInterpreter = codeInfoInterpreter
 		self.treeProxy=StageAddStructure.TreeProxy(self.hanziNetwork, self, operationManager)
 		self.nodeExpressionDict={}
 
@@ -359,7 +360,7 @@ class StageAddStructure(ConversionStage):
 		return structure
 
 	def generateAssemblageStructure(self, operator, structureList):
-		tag=StructureAssemblageTag(self.codeInfoManager)
+		tag=StructureAssemblageTag(self.codeInfoInterpreter)
 		structure=self.hanziNetwork.generateStructure(tag, compound=[operator, structureList])
 		return structure
 
@@ -413,10 +414,10 @@ class StageGetCharacterInfo(ConversionStage):
 	@inject
 	def __init__(self, hanziNetwork: HanZiNetwork,
 			structureManager: StructureManager,
-			codeInfoManager: CodeInfoManager
+			codeInfoInterpreter: CodeInfoInterpreter
 		):
 		super().__init__(hanziNetwork, structureManager)
-		self.codeInfoManager = codeInfoManager
+		self.codeInfoInterpreter = codeInfoInterpreter
 		self.characterInfoList=[]
 
 	def execute(self):
@@ -440,7 +441,7 @@ class StageGetCharacterInfo(ConversionStage):
 		codeInfoList=sum(map(lambda s: s.getTag().getCodeInfoList(), structureList), [])
 		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
 
-		codeList=self.codeInfoManager.interpretCodeInfoList(codeInfoList)
+		codeList=self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
 
 		characterInfo=hanziNode.getTag()
 		characterInfo.setCodeList(codeList)
