@@ -75,6 +75,12 @@ class RadixManager:
 	def queryRadix(self, characterName):
 		return self.radixDB.get(characterName, None)
 
+	def hasRadix(self, radixName):
+		return self.codeInfoManager.hasRadix(radixName)
+
+	def getRadixCodeInfoList(self, radixName):
+		return self.codeInfoManager.getRadixCodeInfoList(radixName)
+
 if __name__=='__main__':
 	pass
 

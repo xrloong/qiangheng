@@ -3,9 +3,9 @@ from injector import inject
 from . import TreeRegExp
 from ..hanzi import HanZiNetwork
 from model.interpreter import CodeInfoInterpreter
-from model.CodeInfoManager import CodeInfoManager
 from model.OperatorManager import OperatorManager
 from model.StructureManager import StructureManager
+from model.CharacterDescriptionManager import RadixManager
 
 class StructureTag:
 	def __init__(self):
@@ -149,9 +149,9 @@ class StageAddNode(ConversionStage):
 	@inject
 	def __init__(self,
 		hanziNetwork: HanZiNetwork,
-		structureManager: StructureManager, codeInfoManager: CodeInfoManager):
+		structureManager: StructureManager, radixManager: RadixManager):
 		super().__init__(hanziNetwork, structureManager)
-		self.codeInfoManager = codeInfoManager
+		self.radixManager = radixManager
 
 	def execute(self):
 		from model.element import CharacterInfo
@@ -161,8 +161,8 @@ class StageAddNode(ConversionStage):
 			characterInfo=CharacterInfo.CharacterInfo(charName)
 			self.hanziNetwork.addNode(charName, characterInfo)
 
-			if self.codeInfoManager.hasRadix(charName):
-				radixInfoList=self.codeInfoManager.getRadixCodeInfoList(charName)
+			if self.radixManager.hasRadix(charName):
+				radixInfoList=self.radixManager.getRadixCodeInfoList(charName)
 				for radixCodeInfo in radixInfoList:
 					structure=self.generateUnitLink(radixCodeInfo)
 					self.hanziNetwork.addUnitStructureIntoNode(structure, charName)
