@@ -250,9 +250,9 @@ class StageAddStructure(ConversionStage):
 
 			structure=self.recursivelyConvertDescriptionToStructure(structDesc)
 
-			templateRuleList=self.structureManager.getTemplateRuleList()
+			templateRuleList=self.structureManager.getTemplateRules()
 			self.recursivelyRearrangeStructureByTemplate(structure, templateRuleList)
-			substituteRuleList=self.structureManager.getSubstituteRuleList()
+			substituteRuleList=self.structureManager.getSubstituteRules()
 			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
 
 			self.recursivelyAddStructure(structure)

@@ -1,12 +1,36 @@
 import sys
 import Constant
+import yaml
 
+from model.element.SubstituteRule import SubstituteRule
 from model.element.CharacterDescription import CharacterDescription
 from model.helper import StructureDescriptionGenerator
 
 from injector import inject
+
 from parser import TreeParser
-import yaml
+
+class QHSubstituteRuleParser:
+	@inject
+	def __init__(self):
+		pass
+
+	def loadSubstituteRules(self, filename):
+		node=yaml.load(open(filename), yaml.SafeLoader)
+		ruleSetNode=node.get(Constant.TAG_RULE_SET)
+
+		if not ruleSetNode:
+			return []
+
+		substituteRules=[]
+		for node in ruleSetNode:
+			matchPattern=node.get(Constant.TAG_MATCH)
+			replacePattern=node.get(Constant.TAG_SUBSTITUTE)
+
+			substitueRule=SubstituteRule(matchPattern, replacePattern)
+			substituteRules.append(substitueRule)
+
+		return substituteRules
 
 class QHParser:
 	@inject

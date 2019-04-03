@@ -48,9 +48,9 @@ class StructureManager:
 	def queryChildren(self, charDesc):
 		return charDesc.getCompList()
 
-	def getTemplateRuleList(self):
-		return self.templateManager.getSubstituteRuleList()
+	def getTemplateRules(self):
+		return self.templateManager.getSubstituteRules()
 
-	def getSubstituteRuleList(self):
-		return self.substituteManager.getSubstituteRuleList()
+	def getSubstituteRules(self):
+		return self.substituteManager.getSubstituteRules()
 

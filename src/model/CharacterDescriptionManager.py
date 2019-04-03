@@ -4,47 +4,29 @@ from injector import inject
 from injector import singleton
 from model.CodeInfoManager import CodeInfoManager
 from .element.CharacterDescription import CharacterDescription
-from .element.SubstituteRule import SubstituteRule
-from parser import QHParser
-import Constant
+from parser.QHParser import QHParser
+from parser.QHParser import QHSubstituteRuleParser
 
 class SubstituteManager:
 	@inject
-	def __init__(self):
-		self.substituteRuleList=[]
+	def __init__(self, parser: QHSubstituteRuleParser):
+		self.parser = parser
+		self.substituteRules = []
 
 	def loadSubstituteRules(self, substituteFiles):
-		totalSubstituteRuleList=[]
+		totalSubstituteRules=[]
 		for filename in substituteFiles:
-			substituteRuleList=self._loadSubstituteRules(filename)
-			totalSubstituteRuleList.extend(substituteRuleList)
-		self.substituteRuleList=totalSubstituteRuleList
+			substituteRules=self.parser.loadSubstituteRules(filename)
+			totalSubstituteRules.extend(substituteRules)
+		self.substituteRules=totalSubstituteRules
 
-	def _loadSubstituteRules(self, substituteFile):
-		import yaml
-		node=yaml.load(open(substituteFile), yaml.SafeLoader)
-		ruleSetNode=node.get(Constant.TAG_RULE_SET)
-
-		if not ruleSetNode:
-			return []
-
-		substitueRuleList=[]
-		for node in ruleSetNode:
-			matchPattern=node.get(Constant.TAG_MATCH)
-			replacePattern=node.get(Constant.TAG_SUBSTITUTE)
-
-			substitueRule=SubstituteRule(matchPattern, replacePattern)
-			substitueRuleList.append(substitueRule)
-
-		return substitueRuleList
-
-	def getSubstituteRuleList(self):
-		return self.substituteRuleList
+	def getSubstituteRules(self):
+		return self.substituteRules
 
 @singleton
 class CompositionManager:
 	@inject
-	def __init__(self, qhparser: QHParser.QHParser):
+	def __init__(self, qhparser: QHParser):
 		self.qhparser = qhparser
 
 		self.characterDB={}
