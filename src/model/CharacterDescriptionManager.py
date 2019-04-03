@@ -42,7 +42,7 @@ class SubstituteManager:
 		return self.substituteRuleList
 
 @singleton
-class CharacterDescriptionManager:
+class CompositionManager:
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser):
 		self.qhparser = qhparser

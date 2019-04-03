@@ -3,7 +3,7 @@ from injector import singleton
 
 from model.element.CodingConfig import CodingConfig
 
-from .CharacterDescriptionManager import CharacterDescriptionManager
+from .CharacterDescriptionManager import CompositionManager
 from .CharacterDescriptionManager import SubstituteManager
 from .CharacterDescriptionManager import RadixManager
 
@@ -12,13 +12,13 @@ class StructureManager:
 	@inject
 	def __init__(self,
 			codingConfig: CodingConfig,
-			mainDescMgr: CharacterDescriptionManager,
+			compositionManager: CompositionManager,
 			radixManager: RadixManager,
 			templateManager: SubstituteManager,
 			substituteManager: SubstituteManager
 			):
 		self.codingConfig=codingConfig
-		self.mainDescMgr=mainDescMgr
+		self.compositionManager=compositionManager
 		self.radixManager=radixManager
 		self.templateManager=templateManager
 		self.substituteManager=substituteManager
@@ -31,18 +31,18 @@ class StructureManager:
 		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
 		radixFiles = self.codingConfig.getSpecificRadixFileList()
 
-		self.mainDescMgr.loadComponents(componentFiles)
+		self.compositionManager.loadComponents(componentFiles)
 		self.radixManager.loadRadix(radixFiles)
 		self.templateManager.loadSubstituteRules(templateFiles)
 		self.substituteManager.loadSubstituteRules(substituteFiles)
 
 	def getAllCharacters(self):
-		return set(self.mainDescMgr.getAllCharacters()) | set(self.radixManager.getAllCharacters()) 
+		return set(self.compositionManager.getAllCharacters()) | set(self.radixManager.getAllCharacters()) 
 
 	def queryCharacterDescription(self, character):
 		charDesc = self.radixManager.queryCharacterDescription(character)
 		if not charDesc:
-			charDesc = self.mainDescMgr.queryCharacterDescription(character)
+			charDesc = self.compositionManager.queryCharacterDescription(character)
 		return charDesc
 
 	def queryChildren(self, charDesc):
