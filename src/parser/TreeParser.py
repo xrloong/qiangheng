@@ -9,12 +9,7 @@ tokens = (
 	'PARENTHESIS_RIGHT',
 	'BRACE_LEFT',
 	'BRACE_RIGHT',
-#	'STAR',
-#	'QUESTION',
-#	'PLUS',
-#	'DOT',
 	'EQUAL',
-#	'COMMA',
 	)
 
 t_NAME			= r'[一-龥㐀-䶵\[\]][一-龥㐀-䶵\[\]]*(\.[0-9])?'
@@ -22,12 +17,7 @@ t_PARENTHESIS_LEFT	= r'\('
 t_PARENTHESIS_RIGHT	= r'\)'
 t_BRACE_LEFT		= r'\{'
 t_BRACE_RIGHT		= r'\}'
-#t_STAR			= r'\*'
-#t_QUESTION		= r'\?'
-#t_PLUS			= r'\+'
-#t_DOT			= r'\.'
 t_EQUAL			= r'='
-#t_COMMA			= r','
 
 t_ignore = " \t"
 
@@ -72,7 +62,6 @@ def p_node_list(t):
 def p_attrib(t):
 	'attrib : NAME EQUAL NAME'
 	t[0]={t[1]: t[3]}
-#	print(t[1], t[3])
 
 def p_prop(t):
 	'prop : BRACE_LEFT attrib BRACE_RIGHT'
