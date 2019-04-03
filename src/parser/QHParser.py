@@ -10,6 +10,15 @@ from injector import inject
 
 from parser import TreeParser
 
+class QHTreeParser:
+	@inject
+	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
+		self.treeParser = TreeParser
+		self.treeParser.nodeGenerator = nodeGenerator
+
+	def parse(self, expression):
+		return self.treeParser.parse(expression)
+
 class QHSubstituteRuleParser:
 	@inject
 	def __init__(self):
@@ -34,9 +43,8 @@ class QHSubstituteRuleParser:
 
 class QHParser:
 	@inject
-	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
+	def __init__(self, treeParser: QHTreeParser):
 		self.treeParser = TreeParser
-		self.treeParser.nodeGenerator = nodeGenerator
 
 	def parseStructure(self, structureExpression):
 		return self.treeParser.parse(structureExpression)
