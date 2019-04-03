@@ -2,7 +2,6 @@
 
 from injector import inject
 from injector import singleton
-from model.element.CodingConfig import CodingConfig
 from model.CodeInfoManager import CodeInfoManager
 from .element.CharacterDescription import CharacterDescription
 from .element.SubstituteRule import SubstituteRule
@@ -11,17 +10,8 @@ import Constant
 
 class SubstituteManager:
 	@inject
-	def __init__(self, codingConfig: CodingConfig):
+	def __init__(self):
 		self.substituteRuleList=[]
-		self.codingConfig = codingConfig
-
-	def loadTemplates(self):
-		templateFiles = self.codingConfig.getCommonTemplateFileList()
-		self.loadSubstituteRules(templateFiles)
-
-	def loadSubstitutes(self):
-		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
-		self.loadSubstituteRules(substituteFiles)
 
 	def loadSubstituteRules(self, substituteFiles):
 		totalSubstituteRuleList=[]
@@ -54,13 +44,10 @@ class SubstituteManager:
 @singleton
 class CharacterDescriptionManager:
 	@inject
-	def __init__(self, qhparser: QHParser.QHParser,
-			codingConfig: CodingConfig):
+	def __init__(self, qhparser: QHParser.QHParser):
 		self.qhparser = qhparser
 
 		self.doInitialization()
-
-		self.codingConfig = codingConfig
 
 	def doInitialization(self):
 		self.characterDB={}
@@ -72,8 +59,7 @@ class CharacterDescriptionManager:
 	def queryCharacterDescription(self, characterName):
 		return self.characterDB.get(characterName, None)
 
-	def loadData(self):
-		componentFiles = self.codingConfig.getCommonComponentFileList() + self.codingConfig.getSpecificComponentFileList()
+	def loadComponents(self, componentFiles):
 		self._loadComponent(componentFiles)
 
 	def _loadComponent(self, toComponentList):
@@ -101,18 +87,14 @@ class CharacterDescriptionManager:
 class RadixManager(CharacterDescriptionManager):
 	@inject
 	def __init__(self, qhparser: QHParser.QHParser,
-			codeInfoManager: CodeInfoManager,
-			codingConfig: CodingConfig):
-		super().__init__(qhparser=qhparser, codingConfig=codingConfig)
+			codeInfoManager: CodeInfoManager):
+		super().__init__(qhparser=qhparser)
 		self.qhparser = qhparser
 		self.codeInfoManager = codeInfoManager
 
 		self.doInitialization()
 
-		self.codingConfig = codingConfig
-
-	def loadRadix(self):
-		radixFiles = self.codingConfig.getSpecificRadixFileList()
+	def loadRadix(self, radixFiles):
 		self.codeInfoManager.loadRadix(radixFiles)
 
 		resetRadixNameList=self.codeInfoManager.getResetRadixList()
