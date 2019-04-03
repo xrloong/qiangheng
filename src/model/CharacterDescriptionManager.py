@@ -53,19 +53,16 @@ class CompositionManager:
 	def getAllCharacters(self):
 		return self.characterDB.keys()
 
-	def queryCharacterDescription(self, characterName):
+	def queryCharacter(self, characterName):
 		return self.characterDB.get(characterName, None)
 
 	def loadComponents(self, componentFiles):
-		self._loadComponent(componentFiles)
-
-	def _loadComponent(self, toComponentList):
-		for filename in toComponentList:
+		for filename in componentFiles:
 			charDescList=self.qhparser.loadCharacters(filename)
 			for charDesc in charDescList:
-				self.saveChar(charDesc)
+				self._saveChar(charDesc)
 
-	def saveChar(self, charDesc):
+	def _saveChar(self, charDesc):
 		charName=charDesc.getName()
 
 		if charName in self.characterDB:

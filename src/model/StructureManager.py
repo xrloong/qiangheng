@@ -42,7 +42,7 @@ class StructureManager:
 	def queryCharacterDescription(self, character):
 		charDesc = self.radixManager.queryRadix(character)
 		if not charDesc:
-			charDesc = self.compositionManager.queryCharacterDescription(character)
+			charDesc = self.compositionManager.queryCharacter(character)
 		return charDesc
 
 	def queryChildren(self, charDesc):
