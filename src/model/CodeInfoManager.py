@@ -3,13 +3,13 @@ from injector import singleton
 
 from Constant import Package
 
-from model.helper import RadixParser
+from parser.QHParser import QHRadixParser
 from model.BaseCoding import CodeInfoEncoder
 
 @singleton
 class CodeInfoManager:
 	@inject
-	def __init__(self, radixParser: RadixParser,
+	def __init__(self, radixParser: QHRadixParser,
 		codeInfoEncoder: CodeInfoEncoder):
             
 		self.radixParser=radixParser
