@@ -62,12 +62,16 @@ class RadixCodeInfoDescription:
 		return self.codeElementCodeInfo
 
 class RadixDescription:
-	def __init__(self, radixCodeInfoList, toOverride=True):
+	def __init__(self, radixName, radixCodeInfoList, toOverride=True):
+		self.radixName=radixName
 		self.radixCodeInfoList=radixCodeInfoList
 		self.toOverridePrev=toOverride
 
 	def isToOverridePrev(self):
 		return self.toOverridePrev
+
+	def getRadixName(self):
+		return self.radixName
 
 	def getRadixCodeInfoDescriptionList(self):
 		return self.radixCodeInfoList

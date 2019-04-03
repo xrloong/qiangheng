@@ -3,6 +3,7 @@
 from injector import inject
 from injector import singleton
 from .element.CharacterDescription import CharacterDescription
+from .manager import RadixDescriptionManager
 from parser.QHParser import QHParser
 from parser.QHParser import QHSubstituteRuleParser
 from parser.QHParser import QHRadixParser
@@ -56,15 +57,32 @@ class CompositionManager:
 @singleton
 class RadixManager:
 	@inject
-	def __init__(self, radixParser: QHRadixParser):
-		self.radixParser=radixParser
-		self.radixCodeInfoDB={}
-		self.radixDB={}
+	def __init__(self, radixParser: QHRadixParser, radixDescriptionManager: RadixDescriptionManager):
+		self.radixParser = radixParser
+		self.radixDescriptionManager = radixDescriptionManager
+		self.radixCodeInfoDB = {}
+		self.radixDB = {}
 
 	def loadRadix(self, radixFiles):
-		[resetRadixNameList, self.radixCodeInfoDB] = self.radixParser.loadRadix(radixFiles)
+		radixDescriptionList = self.radixParser.loadRadix(radixFiles)
+		for radixDescription in radixDescriptionList:
+			radixName = radixDescription.getRadixName()
+			self.radixDescriptionManager.addDescription(radixName, radixDescription)
+
+		self.convert()
+
+		resetRadixNameList = self.radixDescriptionManager.getResetRadixList()
+		self.radixCodeInfoDB = self.radixDescriptionManager.getCodeInfoDB()
 		for radixName in resetRadixNameList:
 			self.radixDB[radixName]=CharacterDescription(radixName)
+
+	def convert(self):
+		radixDescList=self.radixDescriptionManager.getDescriptionList()
+
+		for [charName, radixDesc] in radixDescList:
+			radixCodeInfoList=self.radixParser.convertRadixDescToCodeInfoList(radixDesc)
+			self.radixDescriptionManager.addCodeInfoList(charName, radixCodeInfoList)
+
 
 	def getAllRadixes(self):
 		return self.radixDB.keys()

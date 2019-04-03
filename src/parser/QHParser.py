@@ -8,7 +8,6 @@ from model.element.CharacterDescription import CharacterDescription
 from model.helper import StructureDescriptionGenerator
 from model.helper import RadixDescription
 from model.helper import RadixCodeInfoDescription
-from model.manager import RadixDescriptionManager
 
 from injector import inject
 
@@ -79,28 +78,12 @@ class QHRadixParser:
 	TAG_CODE='編碼'
 
 	@inject
-	def __init__(self, codingRadixParser: CodingRadixParser, radixDescriptionManager: RadixDescriptionManager):
+	def __init__(self, codingRadixParser: CodingRadixParser):
 		self.codingRadixParser = codingRadixParser
-		self.radixDescriptionManager = radixDescriptionManager
-		self.radixCodeInfoDB = {}
 
 	def loadRadix(self, radixFileList):
-		self.parse(radixFileList)
-
-		self.convert()
-		return (self.radixDescriptionManager.getResetRadixList(), self.radixDescriptionManager.getCodeInfoDB())
-
-
-	def getRadixDescription(self, radixName):
-		return self.radixDescriptionManager.getDescription(radixName)
-
-
-	def convert(self):
-		radixDescList=self.radixDescriptionManager.getDescriptionList()
-
-		for [charName, radixDesc] in radixDescList:
-			radixCodeInfoList=self.convertRadixDescToCodeInfoList(radixDesc)
-			self.radixDescriptionManager.addCodeInfoList(charName, radixCodeInfoList)
+		radixDescriptionList = self.parse(radixFileList)
+		return radixDescriptionList
 
 	def convertRadixDescToCodeInfoList(self, radixDesc):
 		radixCodeInfoList=[]
@@ -136,29 +119,35 @@ class QHRadixParser:
 		return codeInfo
 
 	def parse(self, toRadixList):
+		totalRadixDescriptionList = []
 		for filename in toRadixList:
-			self.parseRadixFromYAML(filename)
+			radixDescriptionList = self.parseRadixFromYAML(filename)
+			totalRadixDescriptionList.extend(radixDescriptionList)
+
+		return totalRadixDescriptionList
 
 	def parseRadixFromYAML(self, filename):
 		rootNode=yaml.load(open(filename), Loader=yaml.SafeLoader)
 
-		self.parseRadixInfo(rootNode)
+		return self.parseRadixInfo(rootNode)
 
 	def parseRadixInfo(self, rootNode):
+		radixDescriptionList = []
 		characterSetNode=rootNode.get(Constant.TAG_CHARACTER_SET)
 		for characterNode in characterSetNode:
 			charName=characterNode.get(Constant.TAG_NAME)
 			radixDescription=self.parseRadixDescription(characterNode)
-
-			self.radixDescriptionManager.addDescription(charName, radixDescription)
+			radixDescriptionList.append(radixDescription)
+		return radixDescriptionList
 
 	def parseRadixDescription(self, nodeCharacter):
 		radixCodeInfoDescList=[]
 		toOverridePrev=("是" == nodeCharacter.get("覆蓋"))
+		radixName=nodeCharacter.get(Constant.TAG_NAME)
 		for elementCodeInfo in nodeCharacter.get(QHRadixParser.TAG_CODE_INFORMATION):
 			radixCodeInfoDesc=self.convertElementToRadixInfo(elementCodeInfo)
 			radixCodeInfoDescList.append(radixCodeInfoDesc)
-		return RadixDescription(radixCodeInfoDescList, toOverridePrev)
+		return RadixDescription(radixName, radixCodeInfoDescList, toOverridePrev)
 
 	def parseFileType(self, rootNode):
 		fileType=rootNode.get(Constant.TAG_FILE_TYPE)
