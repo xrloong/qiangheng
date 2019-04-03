@@ -1,5 +1,4 @@
 from injector import inject
-from injector import ProviderOf
 
 from . import TreeRegExp
 from ..hanzi import HanZiNetwork
@@ -149,21 +148,20 @@ class StageAddNode(ConversionStage):
 	@inject
 	def __init__(self,
 		hanziNetwork: HanZiNetwork,
-		structureManager: StructureManager, codeInfoManagerProvider: ProviderOf[CodeInfoManager]):
+		structureManager: StructureManager, codeInfoManager: CodeInfoManager):
 		super().__init__(hanziNetwork, structureManager)
-		self.codeInfoManagerProvider = codeInfoManagerProvider
+		self.codeInfoManager = codeInfoManager
 
 	def execute(self):
 		from model.element import CharacterInfo
 
-		codeInfoManager=self.codeInfoManagerProvider.get()
 		# 加入如 "相" "[漢右]" 的節點。
 		for charName in self.getCharNameList():
 			characterInfo=CharacterInfo.CharacterInfo(charName)
 			self.hanziNetwork.addNode(charName, characterInfo)
 
-			if codeInfoManager.hasRadix(charName):
-				radixInfoList=codeInfoManager.getRadixCodeInfoList(charName)
+			if self.codeInfoManager.hasRadix(charName):
+				radixInfoList=self.codeInfoManager.getRadixCodeInfoList(charName)
 				for radixCodeInfo in radixInfoList:
 					structure=self.generateUnitLink(radixCodeInfo)
 					self.hanziNetwork.addUnitStructureIntoNode(structure, charName)
