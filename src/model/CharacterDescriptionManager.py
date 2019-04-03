@@ -47,9 +47,6 @@ class CharacterDescriptionManager:
 	def __init__(self, qhparser: QHParser.QHParser):
 		self.qhparser = qhparser
 
-		self.doInitialization()
-
-	def doInitialization(self):
 		self.characterDB={}
 
 
@@ -84,15 +81,12 @@ class CharacterDescriptionManager:
 		return charDesc.getStructureList()
 
 @singleton
-class RadixManager(CharacterDescriptionManager):
+class RadixManager:
 	@inject
-	def __init__(self, qhparser: QHParser.QHParser,
-			codeInfoManager: CodeInfoManager):
-		super().__init__(qhparser=qhparser)
-		self.qhparser = qhparser
+	def __init__(self, codeInfoManager: CodeInfoManager):
 		self.codeInfoManager = codeInfoManager
 
-		self.doInitialization()
+		self.characterDB={}
 
 	def loadRadix(self, radixFiles):
 		self.codeInfoManager.loadRadix(radixFiles)
@@ -101,6 +95,12 @@ class RadixManager(CharacterDescriptionManager):
 		for resetRadixName in resetRadixNameList:
 			charDesc=CharacterDescription(resetRadixName)
 			self.characterDB[resetRadixName]=charDesc
+
+	def getAllCharacters(self):
+		return self.characterDB.keys()
+
+	def queryCharacterDescription(self, characterName):
+		return self.characterDB.get(characterName, None)
 
 if __name__=='__main__':
 	pass
