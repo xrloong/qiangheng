@@ -80,21 +80,21 @@ class RadixManager:
 	def __init__(self, codeInfoManager: CodeInfoManager):
 		self.codeInfoManager = codeInfoManager
 
-		self.characterDB={}
+		self.radixDB={}
 
 	def loadRadix(self, radixFiles):
 		self.codeInfoManager.loadRadix(radixFiles)
 
 		resetRadixNameList=self.codeInfoManager.getResetRadixList()
 		for resetRadixName in resetRadixNameList:
-			charDesc=CharacterDescription(resetRadixName)
-			self.characterDB[resetRadixName]=charDesc
+			radixDesc=CharacterDescription(resetRadixName)
+			self.radixDB[resetRadixName]=radixDesc
 
-	def getAllCharacters(self):
-		return self.characterDB.keys()
+	def getAllRadixes(self):
+		return self.radixDB.keys()
 
-	def queryCharacterDescription(self, characterName):
-		return self.characterDB.get(characterName, None)
+	def queryRadix(self, characterName):
+		return self.radixDB.get(characterName, None)
 
 if __name__=='__main__':
 	pass

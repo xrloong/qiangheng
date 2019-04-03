@@ -37,10 +37,10 @@ class StructureManager:
 		self.substituteManager.loadSubstituteRules(substituteFiles)
 
 	def getAllCharacters(self):
-		return set(self.compositionManager.getAllCharacters()) | set(self.radixManager.getAllCharacters()) 
+		return set(self.compositionManager.getAllCharacters()) | set(self.radixManager.getAllRadixes()) 
 
 	def queryCharacterDescription(self, character):
-		charDesc = self.radixManager.queryCharacterDescription(character)
+		charDesc = self.radixManager.queryRadix(character)
 		if not charDesc:
 			charDesc = self.compositionManager.queryCharacterDescription(character)
 		return charDesc
