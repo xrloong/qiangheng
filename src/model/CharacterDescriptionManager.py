@@ -74,12 +74,6 @@ class CompositionManager:
 		else:
 			self.characterDB[charName]=charDesc
 
-	def queryChildren(self, charDesc):
-		return charDesc.getCompList()
-
-	def queryStructureList(self, charDesc):
-		return charDesc.getStructureList()
-
 @singleton
 class RadixManager:
 	@inject
