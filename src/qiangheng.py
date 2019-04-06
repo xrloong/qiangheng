@@ -6,7 +6,7 @@ from injector import inject
 
 from optparse import OptionParser
 
-from injection.module import PackageModule
+from injection.module import PackageModule, ManagerModule
 from Constant import Package, CodingMethodName, IsForIm
 from Constant import Quiet, OutputFormat
 from Constant import Writer
@@ -14,6 +14,7 @@ from Constant import Writer
 from model.BaseCoding import CodingInfo
 from model.element.CodingConfig import CodingConfig
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
+from model.StructureManager import StructureManager
 
 class QiangHeng:
 	def __init__(self, options):
@@ -43,7 +44,9 @@ class QiangHeng:
 			binder.bind(Writer, to=writer)
 
 		injector = Injector([configure, PackageModule()])
+		structureManager = injector.get(StructureManager)
 
+		injector = Injector([configure, PackageModule(), ManagerModule(structureManager)])
 		mainManager=injector.get(MainManager)
 		mainManager.compute()
 		mainManager.write()

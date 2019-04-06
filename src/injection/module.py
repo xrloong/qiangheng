@@ -5,6 +5,11 @@ from model.BaseCoding import CodeInfoEncoder
 from model.BaseCoding import CodingInfo
 from model.BaseCoding import CodingRadixParser
 
+from model.hanzi import HanZiNetwork
+
+from model.StructureManager import StructureManager
+from model.CharacterDescriptionManager import RadixManager
+
 from Constant import Package
 
 class PackageModule(Module):
@@ -19,3 +24,21 @@ class PackageModule(Module):
 	@provider
 	def provideCodingRadixParser(self, codingPackage: Package) -> CodingRadixParser:
 		return codingPackage.CodingRadixParser()
+
+class ManagerModule(Module):
+	def __init__(self, structureManager):
+		self.structureManager = structureManager
+		self.hanziNetwork = HanZiNetwork()
+
+	@provider
+	def provideStructureManager(self) -> StructureManager:
+		return self.structureManager
+
+	@provider
+	def provideHanZiNetwork(self) -> HanZiNetwork:
+		return self.hanziNetwork
+
+	@provider
+	def provideRadixManager(self, structureManager: StructureManager) -> RadixManager:
+		return structureManager.radixManager
+

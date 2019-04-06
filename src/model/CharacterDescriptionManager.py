@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from injector import inject
-from injector import singleton
 from .element.CharacterDescription import CharacterDescription
 from .manager import RadixDescriptionManager
 from parser.QHParser import QHParser
@@ -24,7 +23,6 @@ class SubstituteManager:
 	def getSubstituteRules(self):
 		return self.substituteRules
 
-@singleton
 class CompositionManager:
 	@inject
 	def __init__(self, qhparser: QHParser):
@@ -54,7 +52,6 @@ class CompositionManager:
 		else:
 			self.characterDB[charName]=charDesc
 
-@singleton
 class RadixManager:
 	@inject
 	def __init__(self, radixParser: QHRadixParser, radixDescriptionManager: RadixDescriptionManager):

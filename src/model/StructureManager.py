@@ -36,6 +36,12 @@ class StructureManager:
 		self.templateManager.loadSubstituteRules(templateFiles)
 		self.substituteManager.loadSubstituteRules(substituteFiles)
 
+	def getCompositionManager(self):
+		return self.compositionManager
+
+	def getRadixManager(self):
+		return self.radixManager
+
 	def getAllCharacters(self):
 		return set(self.compositionManager.getAllCharacters()) | set(self.radixManager.getAllRadixes()) 
 
