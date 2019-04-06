@@ -179,17 +179,6 @@ class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
 		return structure
 
 
-class ConversionStage:
-	def __init__(self, hanziNetwork, structureManager):
-		self.hanziNetwork=hanziNetwork
-		self.structureManager=structureManager
-
-	def getCharNameList(self):
-		return self.structureManager.getAllCharacters()
-
-	def execute(self):
-		pass
-
 class TaskAddNode:
 	# 加入如 "相" "[漢右]" 的節點。
 	@inject
@@ -439,79 +428,36 @@ class TaskGetCharacterInfo:
 
 		return characterInfo
 
-class StageAddNode(ConversionStage):
+class ComputeCharacterInfo:
 	@inject
 	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager,
-		taskAddNode: TaskAddNode):
-		super().__init__(hanziNetwork, structureManager)
-		self.taskAddNode = taskAddNode
-
-	def execute(self):
-		for character in self.getCharNameList():
-			self.taskAddNode.handleCharacter(character)
-
-class StageAddStructure(ConversionStage):
-	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork,
-			structureManager: StructureManager,
+			taskAddNode: TaskAddNode,
 			taskAddStructure: TaskAddStructure,
-			codeInfoInterpreter: CodeInfoInterpreter):
-		super().__init__(hanziNetwork, structureManager)
+			taskSetNodeTree: TaskSetNodeTree,
+			taskGetCharacterInfo: TaskGetCharacterInfo,
+			):
+		self.hanziNetwork = hanziNetwork
+		self.structureManager = structureManager
+
+		self.taskAddNode = taskAddNode
 		self.taskAddStructure = taskAddStructure
-
-	def execute(self):
-		for character in self.getCharNameList():
-			self.taskAddStructure.handleCharacter(character)
-
-class StageSetNodeTree(ConversionStage):
-	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager,
-		taskSetNodeTree: TaskSetNodeTree):
-		super().__init__(hanziNetwork, structureManager)
 		self.taskSetNodeTree = taskSetNodeTree
+		self.taskGetCharacterInfo = taskGetCharacterInfo
 
-	def execute(self):
-		for character in self.getCharNameList():
+	def compute(self):
+		characters = self.structureManager.getAllCharacters()
+		for character in characters:
+			self.taskAddNode.handleCharacter(character)
+		for character in characters:
+			self.taskAddStructure.handleCharacter(character)
+		for character in characters:
 			self.taskSetNodeTree.handleCharacter(character)
 
-class StageGetCharacterInfo(ConversionStage):
-	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager,
-			taskGetCharacterInfo: TaskGetCharacterInfo):
-		super().__init__(hanziNetwork, structureManager)
-		self.taskGetCharacterInfo = taskGetCharacterInfo
-		self.characterInfoList=[]
-
-	def execute(self):
 		characterInfoList=[]
-		for character in sorted(self.getCharNameList()):
+		for character in sorted(characters):
 			characterInfo = self.taskGetCharacterInfo.handleCharacter(character)
 
 			if characterInfo:
 				characterInfoList.append(characterInfo)
-		self.characterInfoList=characterInfoList
-
-	def getCharacterInfoList(self):
-		return self.characterInfoList
-
-class ComputeCharacterInfo:
-	@inject
-	def __init__(self, \
-			stageAddNode: StageAddNode, \
-			stageAddStructure: StageAddStructure, \
-			stageSetNodeTree: StageSetNodeTree, \
-			stageGetCharacterInfo: StageGetCharacterInfo \
-			):
-		self.stageAddNode = stageAddNode
-		self.stageAddStructure = stageAddStructure
-		self.stageSetNodeTree = stageSetNodeTree
-		self.stageGetCharacterInfo = stageGetCharacterInfo
-
-	def compute(self):
-		self.stageAddNode.execute()
-		self.stageAddStructure.execute()
-		self.stageSetNodeTree.execute()
-		self.stageGetCharacterInfo.execute()
-
-		return self.stageGetCharacterInfo.getCharacterInfoList()
+		return characterInfoList
 
