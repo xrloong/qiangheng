@@ -1,9 +1,7 @@
 from injector import inject
-from injector import singleton
 
 from .element import Operator
 
-@singleton
 class OperatorManager:
 	# 使用享元模式
 
@@ -44,26 +42,13 @@ class OperatorManager:
 		self.templateOperatorDict={
 		}
 
-		self.templatePatternList=[]
-		self.substitutePatternList=[]
-
-	def generateOperatorTurtle(self):
-		return self.generateOperator()
-
 	def generateOperator(self, operatorName):
 		if operatorName in self.builtinOperatorDict:
 			operator=self.builtinOperatorDict.get(operatorName)
 		else:
-			self.addTemplateOperatorIfNotExist(operatorName)
-			operator=self.findTemplateOperator(operatorName)
+			if operatorName not in self.templateOperatorDict:
+				operator=Operator.Operator(operatorName)
+				self.templateOperatorDict[operatorName]=operator
+			operator=self.templateOperatorDict.get(operatorName)
 		return operator
-
-	def addTemplateOperatorIfNotExist(self, templateName):
-		if templateName not in self.templateOperatorDict:
-			operator=Operator.Operator(templateName)
-			self.templateOperatorDict[templateName]=operator
-
-	def findTemplateOperator(self, templateName):
-		templateOperator=self.templateOperatorDict.get(templateName)
-		return templateOperator
 
