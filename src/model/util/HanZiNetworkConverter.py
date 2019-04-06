@@ -133,6 +133,51 @@ class StructureAssemblageTag(StructureTag):
 		return infoListList
 
 
+class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
+	def __init__(self, hanziNetwork, stage, operationManager):
+		self.operationManager = operationManager
+		self.hanziNetwork = hanziNetwork
+		self.stage = stage
+
+	def getChildren(self, tree):
+		expanedStructure=tree.getExpandedStructure()
+		return expanedStructure.getStructureList()
+
+	def matchSingleQuickly(self, tre, tree):
+		treOperatorName=tre.prop.get("運算")
+		treeOperator=tree.getOperator()
+		return treeOperator and (treOperatorName==None or treOperatorName==treeOperator.getName())
+
+	def matchSingle(self, tre, tree):
+		prop=tre.prop
+		isMatch = True
+		tag=tree.getTag()
+		if "名稱" in prop:
+			expressionName=prop.get("名稱")
+			expanedStructure=tree.getExpandedStructure()
+			isMatch = expressionName == tree.getReferenceExpression()
+
+		if "運算" in prop:
+			operatorName=prop.get("運算")
+			expanedStructure=tree.getExpandedStructure()
+			isMatch = operatorName == expanedStructure.getOperatorName()
+
+		return isMatch
+
+	def generateLeafNode(self, nodeName):
+		structure = self.stage.generateWrapperStructure(nodeName)
+		return structure
+
+	def generateLeafNodeByReference(self, referencedNode, index):
+		nodeName=referencedNode.getTag().getReferenceName()
+		structure = self.stage.generateWrapperStructure(nodeName, index)
+		return structure
+
+	def generateNode(self, operatorName, children):
+		operator=self.operationManager.generateOperator(operatorName)
+		structure = self.stage.generateAssemblageStructure(operator, children)
+		return structure
+
 
 class ConversionStage:
 	def __init__(self, hanziNetwork, structureManager):
@@ -174,51 +219,6 @@ class StageAddNode(ConversionStage):
 
 
 class StageAddStructure(ConversionStage):
-	class TreeProxy(TreeRegExp.BasicTreeProxy):
-		def __init__(self, hanziNetwork, stage, operationManager):
-			self.operationManager = operationManager
-			self.hanziNetwork = hanziNetwork
-			self.stage = stage
-
-		def getChildren(self, tree):
-			expanedStructure=tree.getExpandedStructure()
-			return expanedStructure.getStructureList()
-
-		def matchSingleQuickly(self, tre, tree):
-			treOperatorName=tre.prop.get("運算")
-			treeOperator=tree.getOperator()
-			return treeOperator and (treOperatorName==None or treOperatorName==treeOperator.getName())
-
-		def matchSingle(self, tre, tree):
-			prop=tre.prop
-			isMatch = True
-			tag=tree.getTag()
-			if "名稱" in prop:
-				expressionName=prop.get("名稱")
-				expanedStructure=tree.getExpandedStructure()
-				isMatch = expressionName == tree.getReferenceExpression()
-
-			if "運算" in prop:
-				operatorName=prop.get("運算")
-				expanedStructure=tree.getExpandedStructure()
-				isMatch = operatorName == expanedStructure.getOperatorName()
-
-			return isMatch
-
-		def generateLeafNode(self, nodeName):
-			structure = self.stage.generateWrapperStructure(nodeName)
-			return structure
-
-		def generateLeafNodeByReference(self, referencedNode, index):
-			nodeName=referencedNode.getTag().getReferenceName()
-			structure = self.stage.generateWrapperStructure(nodeName, index)
-			return structure
-
-		def generateNode(self, operatorName, children):
-			operator=self.operationManager.generateOperator(operatorName)
-			structure = self.stage.generateAssemblageStructure(operator, children)
-			return structure
-
 	@inject
 	def __init__(self, hanziNetwork: HanZiNetwork,
 			structureManager: StructureManager,
@@ -226,7 +226,7 @@ class StageAddStructure(ConversionStage):
 			codeInfoInterpreter: CodeInfoInterpreter):
 		super().__init__(hanziNetwork, structureManager)
 		self.codeInfoInterpreter = codeInfoInterpreter
-		self.treeProxy=StageAddStructure.TreeProxy(self.hanziNetwork, self, operationManager)
+		self.treeProxy=TreeProxyOfStageAddStructure(self.hanziNetwork, self, operationManager)
 		self.nodeExpressionDict={}
 
 	def execute(self):
