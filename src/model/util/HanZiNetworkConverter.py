@@ -3,7 +3,7 @@ from injector import inject
 from . import TreeRegExp
 from ..hanzi import HanZiNetwork
 from model.interpreter import CodeInfoInterpreter
-from model.OperatorManager import OperatorManager
+from model.manager import OperatorManager
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 
