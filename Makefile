@@ -2,6 +2,7 @@
 VERSION	=	0.30
 IMLIST	=	ar bs cj dy fc zm
 DMLIST	=	dc
+CMLIST	=	$(IMLIST) $(DMLIST)
 PLATFORM_LIST	=	puretable scim gcin msim
 TABLES_PATH	=	tables
 PURETABLE_PATH	=	$(TABLES_PATH)/puretable
@@ -119,31 +120,25 @@ prepare:
 $(XML_PATH):
 xml:
 	mkdir -p $(XML_PATH)
-	for im in $(IMLIST);\
+	for cm in $(CMLIST);\
 	do\
-		echo $$im;\
-		time src/qiangheng.py -i $$im --format xml |\
-			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$im.xml --format -;\
-	done
-	for im in $(DMLIST);\
-	do\
-		echo $$im;\
-		time src/qiangheng.py -d $$im --format xml |\
-			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$im.xml --format -;\
+		echo $$cm;\
+		time src/qiangheng.py -c $$cm --format xml |\
+			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$cm.xml --format -;\
 	done
 	touch $(XML_PATH)
 
 profile:
 	mkdir -p $(PROFILE_PATH)
-	for im in $(IMLIST) $(DMLIST);\
+	for cm in $(CMLIST);\
 	do\
-		echo $$im;\
-		src/profiler.py -q -i $$im > $(PROFILE_PATH)/$$im.txt;\
+		echo $$cm;\
+		src/profiler.py -q -c $$cm > $(PROFILE_PATH)/$$cm.txt;\
 	done
 	touch $(XML_PATH)
 
 dc:
-	make xml puretable DMLIST=dc
+	make xml puretable CMLIST=dc
 
 test:
 	PYTHONPATH=src python3 -m unittest discover -s tests/ -p "*.py"
@@ -214,7 +209,7 @@ $(PURETABLE_PATH): $(XML_PATH)
 	mkdir -p $(PURETABLE_PATH)
 	for type in $(RELEASE_TYPE_LIST);\
 	do\
-		for im in $(IMLIST) $(DMLIST);\
+		for im in $(CMLIST);\
 		do\
 			if [ $$im = dc ]; \
 			then\

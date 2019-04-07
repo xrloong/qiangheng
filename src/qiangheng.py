@@ -7,39 +7,32 @@ from injector import inject
 from optparse import OptionParser
 
 from injection.module import PackageModule, ManagerModule
-from Constant import Package, CodingMethodName, IsForIm
+from Constant import Package, CodingMethod
 from Constant import Quiet, OutputFormat
 from Constant import Writer
 
 from model.BaseCoding import CodingInfo
+from model.BaseCoding import CodingType
 from model.element.CodingConfig import CodingConfig
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 from model.StructureManager import StructureManager
 
 class QiangHeng:
 	def __init__(self, options):
-		inputMethod=options.input_method
-		drawMethod=options.draw_method
+		codingMethod=options.coding_method
 
-		assert inputMethod or drawMethod, "需要使用 -i 來指定輸入法或使用 -d 來使用描繪法"
-		assert (not inputMethod or not drawMethod), "不能同時使用 -i 來指定輸入法和用 -d 來使用描繪法"
+		assert codingMethod, "需要使用 -c 來指定編碼法（輸入法或描繪法）"
 
 		output_format=options.output_format
 		quiet=options.quiet
 
-		if inputMethod:
-			codingMethodName = inputMethod
-			isForIm = True
-		else:
-			codingMethodName = drawMethod
-			isForIm = False
 
-		package = self.computeCodingPackage(codingMethodName)
-		writer = self.computeWriter(isForIm, quiet, output_format)
+		package = self.computeCodingPackage(codingMethod)
+		writer = self.computeWriter(package.codingType, quiet, output_format)
 
 		def configure(binder):
 			binder.bind(CodingConfig, to=CodingConfig(package))
-			binder.bind(CodingMethodName, to=codingMethodName)
+			binder.bind(CodingMethod, to=codingMethod)
 			binder.bind(Package, to=package)
 			binder.bind(Writer, to=writer)
 
@@ -108,8 +101,8 @@ class QiangHeng:
 
 		return codingPackage
 
-	def computeWriter(self, isForIm: IsForIm, quiet: Quiet, outputFormat: OutputFormat) -> Writer:
-		self.isForIm = isForIm
+	def computeWriter(self, codingType, quiet: Quiet, outputFormat: OutputFormat) -> Writer:
+		self.isForIm = (CodingType.Input == codingType)
 		return self.getWriter(quiet, outputFormat)
 
 	def getWriter(self, quiet=False, output_format="text"):
@@ -182,8 +175,7 @@ class MainManager:
 
 def main():
 	oparser = OptionParser()
-	oparser.add_option("-i", "--im", "--input-method", dest="input_method", help="輸入法")
-	oparser.add_option("-d", "--dm", "--draw-method", dest="draw_method", help="描繪法")
+	oparser.add_option("-c", "--cm", "--coding-method", dest="coding_method", help="編碼法")
 	oparser.add_option("--format", type="choice", choices=["xml", "yaml", "text", "quiet"], dest="output_format", help="輸出格式，可能的選項有：xml、yaml、text、quiet", default="text")
 	oparser.add_option("-q", "--quiet", action="store_true", dest="quiet", default=False)
 	(options, args) = oparser.parse_args()

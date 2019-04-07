@@ -1,7 +1,10 @@
+from model.BaseCoding import CodingType
+
 from .DaYi import DaYiInfo as CodingInfo
 from .DaYi import DYCodeInfoEncoder as CodeInfoEncoder
 from .DaYi import DYRadixParser as CodingRadixParser
 
+codingType = CodingType.Input
 codingMethodName = "dy"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
 CodingComponentFileList = [

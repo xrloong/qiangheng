@@ -1,7 +1,10 @@
+from model.BaseCoding import CodingType
+
 from .FourCorner import FourCornerInfo as CodingInfo
 from .FourCorner import FCCodeInfoEncoder as CodeInfoEncoder
 from .FourCorner import FCRadixParser as CodingRadixParser
 
+codingType = CodingType.Input
 codingMethodName = "fc"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
 CodingComponentFileList = [

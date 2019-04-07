@@ -1,7 +1,10 @@
+from model.BaseCoding import CodingType
+
 from .Boshiamy import BoshiamyInfo as CodingInfo
 from .Boshiamy import BSCodeInfoEncoder as CodeInfoEncoder
 from .Boshiamy import BSRadixParser as CodingRadixParser
 
+codingType = CodingType.Input
 codingMethodName = "bs"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
 CodingComponentFileList = [

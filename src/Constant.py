@@ -1,5 +1,5 @@
 from injector import Key
-CodingMethodName = Key('codingMethodName')
+CodingMethod = Key('codingMethod')
 Package = Key('package')
 
 MainComponentList = Key('MainComponentList')
@@ -11,7 +11,6 @@ IMRadixList = Key('IMRadixList')
 
 Quiet = Key('quiet')
 OutputFormat = Key('outputFormat')
-IsForIm = Key('isForIm')
 Writer = Key('writer')
 
 TAG_VERSION='版本號'

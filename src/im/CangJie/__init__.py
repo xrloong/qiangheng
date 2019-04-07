@@ -1,7 +1,10 @@
+from model.BaseCoding import CodingType
+
 from .CangJie import CangJieInfo as CodingInfo
 from .CangJie import CJCodeInfoEncoder as CodeInfoEncoder
 from .CangJie import CJRadixParser as CodingRadixParser
 
+codingType = CodingType.Input
 codingMethodName = "cj"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
 CodingComponentFileList = [
