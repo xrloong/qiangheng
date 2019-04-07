@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:param name="type" select="'all'" />
-  <xsl:param name="onlycharacter" select="'true'" />
 
   <xsl:output method="text" encoding="UTF-8" indent="yes"/>
 
@@ -30,16 +29,7 @@
   </xsl:template>
 
   <xsl:template match="對應">
-    <xsl:choose>
-      <xsl:when test="($onlycharacter = 'false')">
-        <xsl:call-template name="輸出對應-判斷類型"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:if test="string-length(@字符) = 1">
-          <xsl:call-template name="輸出對應-判斷類型"/>
-        </xsl:if>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:call-template name="輸出對應-判斷類型"/>
   </xsl:template>
 
   <xsl:template name="輸出對應-判斷類型">

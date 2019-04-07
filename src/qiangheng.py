@@ -168,7 +168,11 @@ class MainManager:
 		self.writer = writer
 
 	def compute(self):
-		characterInfoList = self.computeCharacterInfo.compute()
+		import itertools
+		rangeCJK = range(0x4e00, 0x9fa5+1)
+		rangeCJKextA = range(0x3400, 0x4db5+1)
+		characters = [chr(c) for c in itertools.chain(rangeCJK, rangeCJKextA)]
+		characterInfoList = self.computeCharacterInfo.compute(characters)
 		self.characterInfoList = sorted(characterInfoList, key=lambda c: c.character)
 
 	def write(self):

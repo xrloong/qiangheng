@@ -217,7 +217,7 @@ $(PURETABLE_PATH): $(XML_PATH)
 			else\
 				xslt=puretable.xslt;\
 			fi;\
-			xsltproc --param onlycharacter true --stringparam type $$type -o $(PURETABLE_PATH)/qh$$im-$$type.txt xslt/$$xslt $(XML_PATH)/qh$$im.xml; \
+			xsltproc --stringparam type $$type -o $(PURETABLE_PATH)/qh$$im-$$type.txt xslt/$$xslt $(XML_PATH)/qh$$im.xml; \
 		done;\
 	done
 	touch $(PURETABLE_PATH)
