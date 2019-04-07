@@ -454,7 +454,7 @@ class ComputeCharacterInfo:
 			self.taskSetNodeTree.handleCharacter(character)
 
 		characterInfoList=[]
-		for character in sorted(characters):
+		for character in characters:
 			characterInfo = self.taskGetCharacterInfo.handleCharacter(character)
 
 			if characterInfo:

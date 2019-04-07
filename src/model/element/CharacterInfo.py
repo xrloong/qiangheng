@@ -4,6 +4,10 @@ class CharacterInfo:
 	def __init__(self, charName):
 		self.name=charName
 
+	@property
+	def character(self):
+		return self.name
+
 	def setCodeList(self, codeList):
 		self.codePropList=codeList
 

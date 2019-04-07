@@ -168,7 +168,8 @@ class MainManager:
 		self.writer = writer
 
 	def compute(self):
-		self.characterInfoList = self.computeCharacterInfo.compute()
+		characterInfoList = self.computeCharacterInfo.compute()
+		self.characterInfoList = sorted(characterInfoList, key=lambda c: c.character)
 
 	def write(self):
 		self.writer.write(self.codingInfo, self.characterInfoList)
