@@ -52,9 +52,7 @@ class QiangHeng:
 		mainManager.write()
 
 	def computeCodingPackage(self, codingMethodName):
-		if codingMethodName in ['例', '範例', '範例輸入法', 'sample', 'sp',]:
-			codingName='範例'
-		elif codingMethodName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
+		if codingMethodName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
 			codingName='倉頡'
 		elif codingMethodName in ['行', '行列', '行列輸入法', 'array', 'ar',]:
 			codingName='行列'
@@ -76,10 +74,7 @@ class QiangHeng:
 			assert False, "不知道的編碼法（輸入法、繪字法）: {method}".format(method=codingMethodName)
 			codingName='不知道'
 
-		if codingName == '範例':
-			from im import Sample
-			codingPackage=Sample
-		elif codingName == '倉頡':
+		if codingName == '倉頡':
 			from im import CangJie
 			codingPackage=CangJie
 		elif codingName == '行列':
