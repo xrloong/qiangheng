@@ -3,6 +3,17 @@ VERSION	=	0.30
 IMLIST	=	ar bs cj dy fc zm
 DMLIST	=	dc
 CMLIST	=	$(IMLIST) $(DMLIST)
+
+define setup_codings
+package_ar=im.Array \
+package_bs=im.Boshiamy \
+package_cj=im.CangJie \
+package_dy=im.DaYi \
+package_fc=im.FourCorner \
+package_zm=im.ZhengMa \
+package_dc=dm.DynamicComposition
+endef
+
 PLATFORM_LIST	=	puretable scim gcin msim
 TABLES_PATH	=	tables
 PURETABLE_PATH	=	$(TABLES_PATH)/puretable
@@ -122,8 +133,10 @@ xml:
 	mkdir -p $(XML_PATH)
 	for cm in $(CMLIST);\
 	do\
-		echo $$cm;\
-		time src/qiangheng.py -c $$cm --format xml |\
+		$(call setup_codings);\
+		package=`eval echo '$$package_'$$cm`; \
+		echo $$cm $$package;\
+		time src/qiangheng.py -p $$package --format xml |\
 			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$cm.xml --format -;\
 	done
 	touch $(XML_PATH)

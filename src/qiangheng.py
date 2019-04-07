@@ -7,7 +7,7 @@ from injector import inject
 from optparse import OptionParser
 
 from injection.module import PackageModule, ManagerModule
-from Constant import Package, CodingMethod
+from Constant import Package
 from Constant import Quiet, OutputFormat
 from Constant import Writer
 
@@ -17,22 +17,23 @@ from model.element.CodingConfig import CodingConfig
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 from model.StructureManager import StructureManager
 
+import sys
 class QiangHeng:
 	def __init__(self, options):
-		codingMethod=options.coding_method
+		packageName=options.package
 
-		assert codingMethod, "需要使用 -c 來指定編碼法（輸入法或描繪法）"
+		assert packageName, "需要使用 -p 來指定要載入的編碼法（輸入法或描繪法）模組名稱"
+
+		package = __import__(packageName, fromlist=["im", "dm"])
 
 		output_format=options.output_format
 		quiet=options.quiet
 
 
-		package = self.computeCodingPackage(codingMethod)
 		writer = self.computeWriter(package.codingType, quiet, output_format)
 
 		def configure(binder):
 			binder.bind(CodingConfig, to=CodingConfig(package))
-			binder.bind(CodingMethod, to=codingMethod)
 			binder.bind(Package, to=package)
 			binder.bind(Writer, to=writer)
 
@@ -44,62 +45,6 @@ class QiangHeng:
 		mainManager.compute()
 		mainManager.write()
 
-	def computeCodingPackage(self, codingMethodName):
-		if codingMethodName in ['倉', '倉頡', '倉頡輸入法', 'cangjie', 'cj',]:
-			codingName='倉頡'
-		elif codingMethodName in ['行', '行列', '行列輸入法', 'array', 'ar',]:
-			codingName='行列'
-		elif codingMethodName in ['易', '大易', '大易輸入法', 'dayi', 'dy',]:
-			codingName='大易'
-		elif codingMethodName in ['嘸', '嘸蝦米', '嘸蝦米輸入法', 'boshiamy', 'bs',]:
-			codingName='嘸蝦米'
-		elif codingMethodName in ['鄭', '鄭碼', '鄭碼輸入法', 'zhengma', 'zm',]:
-			codingName='鄭碼'
-		elif codingMethodName in ['四', '四角', '四角號碼', 'fourcorner', 'fc',]:
-			codingName='四角'
-		elif codingMethodName in ['庋', '庋㩪', '中國字庋㩪', 'guixie', 'gx',]:
-			codingName='庋㩪'
-		elif codingMethodName in ['動', '動組', '動態組字', 'dynamiccomposition', 'dc',]:
-			codingName='動組'
-		elif codingMethodName in ['筆順', 'strokeorder', 'so',]:
-			codingName='筆順'
-		else:
-			assert False, "不知道的編碼法（輸入法、繪字法）: {method}".format(method=codingMethodName)
-			codingName='不知道'
-
-		if codingName == '倉頡':
-			from im import CangJie
-			codingPackage=CangJie
-		elif codingName == '行列':
-			from im import Array
-			codingPackage=Array
-		elif codingName == '大易':
-			from im import DaYi
-			codingPackage=DaYi
-		elif codingName == '嘸蝦米':
-			from im import Boshiamy
-			codingPackage=Boshiamy
-		elif codingName == '鄭碼':
-			from im import ZhengMa
-			codingPackage=ZhengMa
-		elif codingName == '四角':
-			from im import FourCorner
-			codingPackage=FourCorner
-		elif codingName == '庋㩪':
-			from im import GuiXie
-			codingPackage=GuiXie
-		elif codingName == '動組':
-			from dm import DynamicComposition
-			codingPackage=DynamicComposition
-		elif codingName == '筆順':
-			from dm import StrokeOrder
-			codingPackage=StrokeOrder
-		else:
-			assert False, "不知道的編碼法（輸入法、繪字法）: {method}".format(method=codingMethodName)
-			from model import DummyCoding
-			codingPackage=DummyCoding
-
-		return codingPackage
 
 	def computeWriter(self, codingType, quiet: Quiet, outputFormat: OutputFormat) -> Writer:
 		self.isForIm = (CodingType.Input == codingType)
@@ -180,7 +125,7 @@ class MainManager:
 
 def main():
 	oparser = OptionParser()
-	oparser.add_option("-c", "--cm", "--coding-method", dest="coding_method", help="編碼法")
+	oparser.add_option("-p", dest="package", help="package")
 	oparser.add_option("--format", type="choice", choices=["xml", "yaml", "text", "quiet"], dest="output_format", help="輸出格式，可能的選項有：xml、yaml、text、quiet", default="text")
 	oparser.add_option("-q", "--quiet", action="store_true", dest="quiet", default=False)
 	(options, args) = oparser.parse_args()
