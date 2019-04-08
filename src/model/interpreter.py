@@ -1,6 +1,6 @@
 from injector import inject
 
-from model.BaseCoding import CodeInfoEncoder
+from coding.Base import CodeInfoEncoder
 
 class CodeInfoInterpreter:
 	@inject

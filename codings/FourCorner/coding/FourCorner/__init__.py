@@ -1,4 +1,4 @@
-from model.BaseCoding import CodingType
+from coding.Base import CodingType
 
 from .FourCorner import FourCornerInfo as CodingInfo
 from .FourCorner import FCCodeInfoEncoder as CodeInfoEncoder

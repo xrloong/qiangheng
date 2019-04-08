@@ -1,4 +1,4 @@
-from model.BaseCoding import CodingType
+from coding.Base import CodingType
 
 from .ZhengMa import ZhengMaInfo as CodingInfo
 from .ZhengMa import ZMCodeInfoEncoder as CodeInfoEncoder

@@ -1,8 +1,9 @@
 from injector import inject
 
+from coding.Base import CodeInfo
+
 from .element.StructureDescription import StructureDescription
 from .element.CodeVarianceType import CodeVarianceTypeFactory
-from .BaseCoding import CodeInfo
 from .manager import OperatorManager
 
 

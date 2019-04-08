@@ -1,9 +1,9 @@
 from injector import Module
 from injector import provider
 
-from model.BaseCoding import CodeInfoEncoder
-from model.BaseCoding import CodingInfo
-from model.BaseCoding import CodingRadixParser
+from coding.Base import CodeInfoEncoder
+from coding.Base import CodingInfo
+from coding.Base import CodingRadixParser
 
 from model.hanzi import HanZiNetwork
 

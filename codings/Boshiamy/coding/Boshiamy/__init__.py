@@ -1,4 +1,4 @@
-from model.BaseCoding import CodingType
+from coding.Base import CodingType
 
 from .Boshiamy import BoshiamyInfo as CodingInfo
 from .Boshiamy import BSCodeInfoEncoder as CodeInfoEncoder

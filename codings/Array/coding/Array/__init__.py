@@ -1,4 +1,4 @@
-from model.BaseCoding import CodingType
+from coding.Base import CodingType
 
 from .Array import ArrayInfo as CodingInfo
 from .Array import ARCodeInfoEncoder as CodeInfoEncoder

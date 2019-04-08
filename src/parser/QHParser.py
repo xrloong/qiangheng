@@ -2,7 +2,8 @@ import sys
 import Constant
 import yaml
 
-from model.BaseCoding import CodingRadixParser
+from coding.Base import CodingRadixParser
+
 from model.element.SubstituteRule import SubstituteRule
 from model.element.CharacterDescription import CharacterDescription
 from model.helper import StructureDescriptionGenerator

@@ -1,4 +1,4 @@
-from model.BaseCoding import CodingType
+from coding.Base import CodingType
 
 from .DaYi import DaYiInfo as CodingInfo
 from .DaYi import DYCodeInfoEncoder as CodeInfoEncoder

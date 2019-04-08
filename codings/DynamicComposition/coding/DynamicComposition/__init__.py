@@ -1,4 +1,4 @@
-from model.BaseCoding import CodingType
+from coding.Base import CodingType
 
 from .DynamicComposition import DynamicCompositionInfo as CodingInfo
 from .DynamicComposition import DCCodeInfoEncoder as CodeInfoEncoder

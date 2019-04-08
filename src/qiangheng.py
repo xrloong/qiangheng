@@ -11,8 +11,8 @@ from Constant import Package
 from Constant import Quiet, OutputFormat
 from Constant import Writer
 
-from model.BaseCoding import CodingInfo
-from model.BaseCoding import CodingType
+from coding.Base import CodingInfo
+from coding.Base import CodingType
 from model.element.CodingConfig import CodingConfig
 from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 from model.StructureManager import StructureManager

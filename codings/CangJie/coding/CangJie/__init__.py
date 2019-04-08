@@ -1,4 +1,4 @@
-from model.BaseCoding import CodingType
+from coding.Base import CodingType
 
 from .CangJie import CangJieInfo as CodingInfo
 from .CangJie import CJCodeInfoEncoder as CodeInfoEncoder

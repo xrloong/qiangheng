@@ -1,7 +1,7 @@
-from model.BaseCoding import CodingInfo
-from model.BaseCoding import CodeInfo
-from model.BaseCoding import CodeInfoEncoder
-from model.BaseCoding import CodingRadixParser
+from coding.BaseCoding import CodingInfo
+from coding.BaseCoding import CodeInfo
+from coding.BaseCoding import CodeInfoEncoder
+from coding.BaseCoding import CodingRadixParser
 
 class GuiXieInfo(CodingInfo):
 	"中國字庋㩪"

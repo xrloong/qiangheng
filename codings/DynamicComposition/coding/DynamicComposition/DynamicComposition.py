@@ -1,9 +1,9 @@
 import abc
 
-from model.BaseCoding import CodingInfo
-from model.BaseCoding import CodeInfo
-from model.BaseCoding import CodeInfoEncoder
-from model.BaseCoding import CodingRadixParser
+from coding.Base import CodingInfo
+from coding.Base import CodeInfo
+from coding.Base import CodeInfoEncoder
+from coding.Base import CodingRadixParser
 
 from xie.graphics.shape import Pane
 from xie.graphics.stroke import StrokeGroup
