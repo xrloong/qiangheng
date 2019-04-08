@@ -1,12 +1,16 @@
-from .DummyCoding import DummyInfo
-from .DummyCoding import DummyCodeInfo
-from .DummyCoding import DummyCodeInfoEncoder
-from .DummyCoding import DummyRadixParser
+from model.BaseCoding import CodingType
 
-CodingInfo =  DummyInfo
-CodeInfo = DummyCodeInfo
-CodeInfoEncoder = DummyCodeInfoEncoder
-RadixParser = DummyRadixParser
+from .DummyCoding import DummyInfo as CodingInfo
+from .DummyCoding import DummyCodeInfoEncoder as CodeInfoEncoder
+from .DummyCoding import DummyRadixParser as CodingRadixParser
+
+codingType = CodingType.Input
+CodingComponentFileList = [
+]
+CodingSubstituteFileList = [
+]
+CodingRadixFileList = [
+]
 
 if __name__=='__main__':
 	pass
