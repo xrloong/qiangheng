@@ -445,17 +445,16 @@ class ComputeCharacterInfo:
 		self.taskGetCharacterInfo = taskGetCharacterInfo
 
 	def compute(self, characterSet = None):
-		characterSet = characterSet if characterSet != None else self.structureManager.getAllCharacters()
 		characters = self.structureManager.getAllCharacters()
 		for character in characters:
 			self.taskAddNode.handleCharacter(character)
-		for character in characters:
-			self.taskAddStructure.handleCharacter(character)
-		for character in characters:
-			self.taskSetNodeTree.handleCharacter(character)
 
+		characterSet = characterSet if characterSet != None else characters
 		characterInfoList=[]
 		for character in characterSet:
+			self.taskAddStructure.handleCharacter(character)
+			self.taskSetNodeTree.handleCharacter(character)
+
 			characterInfo = self.taskGetCharacterInfo.handleCharacter(character)
 
 			if characterInfo:
