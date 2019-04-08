@@ -24,7 +24,7 @@ class QiangHeng:
 
 		assert packageName, "需要使用 -p 來指定要載入的編碼法（輸入法或描繪法）模組名稱"
 
-		package = __import__(packageName, fromlist=["im", "dm"])
+		package = __import__(packageName, fromlist=["coding"])
 
 		output_format=options.output_format
 		quiet=options.quiet

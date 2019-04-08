@@ -5,13 +5,13 @@ DMLIST	=	dc
 CMLIST	=	$(IMLIST) $(DMLIST)
 
 define setup_codings
-package_ar=im.Array \
-package_bs=im.Boshiamy \
-package_cj=im.CangJie \
-package_dy=im.DaYi \
-package_fc=im.FourCorner \
-package_zm=im.ZhengMa \
-package_dc=dm.DynamicComposition
+package_ar="coding.Array codings/Array" \
+package_bs="coding.Boshiamy codings/Boshiamy" \
+package_cj="coding.CangJie codings/CangJie" \
+package_dy="coding.DaYi codings/DaYi" \
+package_fc="coding.FourCorner codings/FourCorner" \
+package_zm="coding.ZhengMa codings/ZhengMa" \
+package_dc="coding.DynamicComposition codings/DynamicComposition"
 endef
 
 PLATFORM_LIST	=	puretable scim gcin msim
@@ -134,9 +134,11 @@ xml:
 	for cm in $(CMLIST);\
 	do\
 		$(call setup_codings);\
-		package=`eval echo '$$package_'$$cm`; \
-		echo $$cm $$package;\
-		time src/qiangheng.py -p $$package --format xml |\
+		packageConfig=`eval echo '$$package_'$$cm`; \
+		package=`echo $$packageConfig | cut -d" " -f1`;\
+		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
+		echo $$cm $$package $$packageDir;\
+		PYTHONPATH="src:$$packageDir" time src/qiangheng.py -p $$package --format xml |\
 			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$cm.xml --format -;\
 	done
 	touch $(XML_PATH)
@@ -146,7 +148,7 @@ profile:
 	for cm in $(CMLIST);\
 	do\
 		echo $$cm;\
-		src/profiler.py -q -c $$cm > $(PROFILE_PATH)/$$cm.txt;\
+		PYTHONPATH="src:$$packageDir" src/profiler.py -q -c $$cm > $(PROFILE_PATH)/$$cm.txt;\
 	done
 	touch $(XML_PATH)
 
