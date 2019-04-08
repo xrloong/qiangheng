@@ -54,32 +54,31 @@ class CompositionManager:
 
 class RadixManager:
 	@inject
-	def __init__(self, radixParser: QHRadixParser, radixDescriptionManager: RadixDescriptionManager):
+	def __init__(self, radixParser: QHRadixParser):
 		self.radixParser = radixParser
-		self.radixDescriptionManager = radixDescriptionManager
 		self.radixCodeInfoDB = {}
 		self.radixDB = {}
 
 	def loadRadix(self, radixFiles):
+		radixDescriptionManager = RadixDescriptionManager()
+
 		radixDescriptionList = self.radixParser.loadRadix(radixFiles)
 		for radixDescription in radixDescriptionList:
 			radixName = radixDescription.getRadixName()
-			self.radixDescriptionManager.addDescription(radixName, radixDescription)
+			radixDescriptionManager.addDescription(radixName, radixDescription)
 
-		self.convert()
-
-		resetRadixNameList = self.radixDescriptionManager.getResetRadixList()
-		self.radixCodeInfoDB = self.radixDescriptionManager.getCodeInfoDB()
-		for radixName in resetRadixNameList:
-			self.radixDB[radixName]=CharacterDescription(radixName)
-
-	def convert(self):
-		radixDescList=self.radixDescriptionManager.getDescriptionList()
+		radixDescList=radixDescriptionManager.getDescriptionList()
 
 		for [charName, radixDesc] in radixDescList:
 			radixCodeInfoList=self.radixParser.convertRadixDescToCodeInfoList(radixDesc)
-			self.radixDescriptionManager.addCodeInfoList(charName, radixCodeInfoList)
+			radixDescriptionManager.addCodeInfoList(charName, radixCodeInfoList)
 
+
+		self.radixCodeInfoDB = radixDescriptionManager.getCodeInfoDB()
+
+		resetRadixNameList = radixDescriptionManager.getResetRadixList()
+		for radixName in resetRadixNameList:
+			self.radixDB[radixName]=CharacterDescription(radixName)
 
 	def getAllRadixes(self):
 		return self.radixDB.keys()

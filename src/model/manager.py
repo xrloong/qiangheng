@@ -53,11 +53,9 @@ class OperatorManager:
 		return operator
 
 class RadixDescriptionManager:
-	@inject
 	def __init__(self):
 		self.descriptionDict={}
 		self.radixCodeInfoDB={}
-		self.radixDescDB={}
 		self.resetRadixList=[]
 
 	def addCodeInfoList(self, charName, radixCodeInfoList):
@@ -65,9 +63,6 @@ class RadixDescriptionManager:
 
 	def getResetRadixList(self):
 		return self.resetRadixList
-
-	def getCodeInfoList(self, charName):
-		return self.radixCodeInfoDB[charName]
 
 	def getCodeInfoDB(self):
 		return self.radixCodeInfoDB
@@ -84,11 +79,7 @@ class RadixDescriptionManager:
 				tmpRadixDesc=description
 
 		self.descriptionDict[charName]=tmpRadixDesc
-		self.radixDescDB[charName]=tmpRadixDesc
 
 	def getDescriptionList(self):
 		return list(self.descriptionDict.items())
-
-	def getDescription(self, radixName):
-		return self.radixDescDB[radixName]
 
