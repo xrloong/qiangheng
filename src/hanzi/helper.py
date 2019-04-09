@@ -1,6 +1,7 @@
 from injector import inject
 
 from .network import HanZiNetwork
+from .network import HanZiStructure
 from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
 from model.interpreter import CodeInfoInterpreter
 
@@ -73,12 +74,12 @@ class StructureFactory:
 
 	def generateUnitStructure(self, radixCodeInfo):
 		tag = self._generateUnitTag(radixCodeInfo)
-		structure=self.hanziNetwork.generateStructure(tag)
+		structure=self._generateStructure(tag)
 		return structure
 
 	def generateAssemblageStructure(self, operator, structureList):
 		tag = self._generateAssemblageTag()
-		structure = self.hanziNetwork.generateStructure(tag, compound=[operator, structureList])
+		structure = self._generateStructure(tag, compound=[operator, structureList])
 		return structure
 
 	def generateWrapperStructure(self, name, index=0):
@@ -86,7 +87,7 @@ class StructureFactory:
 			return self.wrapperExpressionDict[(name, index)]
 
 		tag = self._generateWrapperTag(name, index)
-		structure = self.hanziNetwork.generateStructure(tag, reference=[name, index])
+		structure = self._generateStructure(tag, reference=[name, index])
 
 		self.wrapperExpressionDict[(name, index)]=structure
 		return structure
@@ -99,4 +100,18 @@ class StructureFactory:
 
 	def _generateAssemblageTag(self):
 		return StructureAssemblageTag(self.codeInfoInterpreter)
+
+	def _generateStructure(self, tag, reference=[], compound=[]):
+		structure=HanZiStructure(tag)
+
+		if reference:
+			referenceName, index = reference
+			referenceNode=self.hanziNetwork.findNode(referenceName)
+			structure.setAsWrapper(referenceNode, index)
+
+		if compound:
+			operator, structureList = compound
+			structure.setAsCompound(operator, structureList)
+
+		return structure
 

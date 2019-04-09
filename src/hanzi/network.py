@@ -202,17 +202,3 @@ class HanZiNetwork:
 		dstNode=self.findNode(nodeName)
 		dstNode.addUnitStructure(structure)
 
-	def generateStructure(self, tag, reference=[], compound=[]):
-		structure=HanZiStructure(tag)
-
-		if reference:
-			referenceName, index = reference
-			referenceNode=self.findNode(referenceName)
-			structure.setAsWrapper(referenceNode, index)
-
-		if compound:
-			operator, structureList = compound
-			structure.setAsCompound(operator, structureList)
-
-		return structure
-
