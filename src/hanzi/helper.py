@@ -1,5 +1,7 @@
 from injector import inject
 
+from . import HanZiNetwork
+from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
 from model.interpreter import CodeInfoInterpreter
 
 class HanZiInterpreter:
@@ -60,4 +62,35 @@ class HanZiProcessor:
 			return
 
 		structure.generateCodeInfos()
+
+class StructureFactory:
+	@inject
+	def __init__(self, hanziNetwork: HanZiNetwork,
+		codeInfoInterpreter: CodeInfoInterpreter):
+		self.hanziNetwork = hanziNetwork
+		self.codeInfoInterpreter = codeInfoInterpreter
+
+	def generateUnitStructure(self, radixCodeInfo):
+		tag = self._generateUnitTag(radixCodeInfo)
+		structure=self.hanziNetwork.generateStructure(tag)
+		return structure
+
+	def generateAssemblageStructure(self, operator, structureList):
+		tag = self._generateAssemblageTag()
+		structure = self.hanziNetwork.generateStructure(tag, compound=[operator, structureList])
+		return structure
+
+	def generateWrapperStructure(self, name, index=0):
+		tag = self._generateWrapperTag(name, index)
+		structure = self.hanziNetwork.generateStructure(tag, reference=[name, index])
+		return structure
+
+	def _generateUnitTag(self, radixCodeInfo):
+		return StructureUnitTag(radixCodeInfo)
+
+	def _generateWrapperTag(self, name, index):
+		return StructureWrapperTag(name, index)
+
+	def _generateAssemblageTag(self):
+		return StructureAssemblageTag(self.codeInfoInterpreter)
 

@@ -1,10 +1,9 @@
 from injector import inject
 
 from . import HanZiNetwork
-from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
 from .helper import HanZiProcessor
+from .helper import StructureFactory
 
-from model.interpreter import CodeInfoInterpreter
 from model.manager import OperatorManager
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
@@ -58,9 +57,12 @@ class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
 class TaskAddNode:
 	# 加入如 "相" "[漢右]" 的節點。
 	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork, radixManager: RadixManager):
+	def __init__(self, hanziNetwork: HanZiNetwork,
+			radixManager: RadixManager,
+			structureFactory: StructureFactory):
 		self.hanziNetwork = hanziNetwork
 		self.radixManager = radixManager
+		self.structureFactory = structureFactory
 
 	def handleCharacter(self, character):
 		from model.element import CharacterInfo
@@ -75,18 +77,16 @@ class TaskAddNode:
 				self.hanziNetwork.addUnitStructureIntoNode(structure, character)
 
 	def generateUnitLink(self, radixCodeInfo):
-		tag=StructureUnitTag(radixCodeInfo)
-		structure=self.hanziNetwork.generateStructure(tag)
-		return structure
+		return self.structureFactory.generateUnitStructure(radixCodeInfo)
 
 class TaskAddStructure:
 	@inject
 	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager,
 			operationManager: OperatorManager,
-			codeInfoInterpreter: CodeInfoInterpreter):
+			structureFactory: StructureFactory):
 		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
-		self.codeInfoInterpreter = codeInfoInterpreter
+		self.structureFactory = structureFactory
 		self.treeProxy=TreeProxyOfStageAddStructure(self, operationManager)
 		self.nodeExpressionDict={}
 
@@ -220,16 +220,13 @@ class TaskAddStructure:
 		return structure
 
 	def generateAssemblageStructure(self, operator, structureList):
-		tag=StructureAssemblageTag(self.codeInfoInterpreter)
-		structure=self.hanziNetwork.generateStructure(tag, compound=[operator, structureList])
-		return structure
+		return self.structureFactory.generateAssemblageStructure(operator, structureList)
 
 	def generateWrapperStructure(self, name, index=0):
 		if (name, index) in self.nodeExpressionDict:
 			return self.nodeExpressionDict[(name, index)]
 
-		tag=StructureWrapperTag(name, index)
-		structure=self.hanziNetwork.generateStructure(tag, reference=[name, index])
+		structure = self.structureFactory.generateWrapperStructure(name, index)
 
 		self.nodeExpressionDict[(name, index)]=structure
 		return structure
