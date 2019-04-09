@@ -5,7 +5,7 @@ from coding.Base import CodeInfoEncoder
 from coding.Base import CodingInfo
 from coding.Base import CodingRadixParser
 
-from hanzi import HanZiNetwork
+from hanzi.network import HanZiNetwork
 
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager

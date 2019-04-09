@@ -1,6 +1,6 @@
 from injector import inject
 
-from . import HanZiNetwork
+from .network import HanZiNetwork
 from .helper import HanZiProcessor
 from .helper import StructureFactory
 

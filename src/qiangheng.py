@@ -16,7 +16,7 @@ from coding.Base import CodingType
 from model.element.CodingConfig import CodingConfig
 from model.StructureManager import StructureManager
 
-from hanzi import HanZiNetwork
+from hanzi.network import HanZiNetwork
 from hanzi.converter import ComputeCharacterInfo
 from hanzi.helper import HanZiInterpreter
 

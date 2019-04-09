@@ -1,6 +1,6 @@
 from injector import inject
 
-from . import HanZiNetwork
+from .network import HanZiNetwork
 from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
 from model.interpreter import CodeInfoInterpreter
 
