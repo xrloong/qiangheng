@@ -2,6 +2,7 @@ from injector import inject
 
 from . import HanZiNetwork
 from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
+from .helper import HanZiInterpreter
 
 from model.interpreter import CodeInfoInterpreter
 from model.manager import OperatorManager
@@ -272,29 +273,16 @@ class TaskSetNodeTree:
 class TaskGetCharacterInfo:
 	@inject
 	def __init__(self, hanziNetwork: HanZiNetwork,
-			codeInfoInterpreter: CodeInfoInterpreter):
+			hanziInterpreter: HanZiInterpreter):
 		self.hanziNetwork = hanziNetwork
-		self.codeInfoInterpreter = codeInfoInterpreter
+		self.hanziInterpreter = hanziInterpreter
 
 	def handleCharacter(self, character):
 		characterInfo=None
 
 		charNode=self.hanziNetwork.findNode(character)
 		if charNode:
-			characterInfo=self.getNodeCharacterInfo(charNode)
-
-		if characterInfo:
-			return characterInfo
-
-	def getNodeCharacterInfo(self, hanziNode):
-		structureList=hanziNode.getStructureList(True)
-		codeInfoList=sum(map(lambda s: s.getTag().getCodeInfoList(), structureList), [])
-		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
-
-		codeList=self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
-
-		characterInfo=hanziNode.getTag()
-		characterInfo.setCodeList(codeList)
+			characterInfo=self.hanziInterpreter.interpretCharacterInfo(charNode)
 
 		return characterInfo
 
