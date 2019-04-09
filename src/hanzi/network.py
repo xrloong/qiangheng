@@ -202,3 +202,11 @@ class HanZiNetwork:
 		dstNode=self.findNode(nodeName)
 		dstNode.addUnitStructure(structure)
 
+class HanZiNetworkNodeFinder:
+	@inject
+	def __init__(self, hanziNetwork: HanZiNetwork):
+		self.hanziNetwork = hanziNetwork
+
+	def findNode(self, nodeName):
+		return self.hanziNetwork.findNode(nodeName)
+
