@@ -51,17 +51,28 @@ class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
 		return self.structureFactory.generateAssemblageStructure(operator, children)
 
 
-class TaskAddNode:
-	# 加入如 "相" "[漢右]" 的節點。
+class TaskConstructNetwork:
 	@inject
 	def __init__(self, hanziNetwork: HanZiNetwork,
+			structureManager: StructureManager,
 			radixManager: RadixManager,
-			structureFactory: StructureFactory):
+			operationManager: OperatorManager,
+			structureFactory: StructureFactory
+			):
 		self.hanziNetwork = hanziNetwork
+		self.structureManager = structureManager
 		self.radixManager = radixManager
 		self.structureFactory = structureFactory
+		self.treeProxy=TreeProxyOfStageAddStructure(structureFactory, operationManager)
 
-	def handleCharacter(self, character):
+	def construct(self, characters):
+		for character in characters:
+			self.handleAddNode(character)
+
+		for character in characters:
+			self.handleAddStructure(character)
+
+	def handleAddNode(self, character):
 		if not self.hanziNetwork.isWithNode(character):
 			node = self.structureFactory.generateNode(character)
 			self.hanziNetwork.addNode(node)
@@ -73,17 +84,8 @@ class TaskAddNode:
 				self.hanziNetwork.addUnitStructureIntoNode(structure, character)
 
 
-class TaskAddStructure:
-	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager,
-			operationManager: OperatorManager,
-			structureFactory: StructureFactory):
-		self.hanziNetwork = hanziNetwork
-		self.structureManager = structureManager
-		self.structureFactory = structureFactory
-		self.treeProxy=TreeProxyOfStageAddStructure(structureFactory, operationManager)
 
-	def handleCharacter(self, character):
+	def handleAddStructure(self, character):
 		self.expandNode(character)
 
 	def queryDescription(self, characterName):
@@ -213,30 +215,27 @@ class TaskAddStructure:
 
 class ComputeCharacterInfo:
 	@inject
-	def __init__(self, structureManager: StructureManager,
-			taskAddNode: TaskAddNode,
-			taskAddStructure: TaskAddStructure,
+	def __init__(self,
+			taskConstructNetwork: TaskConstructNetwork,
+
+			structureManager: StructureManager,
 
 			hanziNetwork: HanZiNetwork,
 			hanziProcessor: HanZiProcessor
 			):
-		self.structureManager = structureManager
+		self.taskConstructNetwork = taskConstructNetwork
 
-		self.taskAddNode = taskAddNode
-		self.taskAddStructure = taskAddStructure
+		self.structureManager = structureManager
 
 		self.hanziNetwork = hanziNetwork
 		self.hanziProcessor = hanziProcessor
 
 	def compute(self, characterSet = None):
 		characters = self.structureManager.getAllCharacters()
-		for character in characters:
-			self.taskAddNode.handleCharacter(character)
+		self.taskConstructNetwork.construct(characters)
 
 		characterSet = characterSet if characterSet != None else characters
 		for character in characterSet:
-			self.taskAddStructure.handleCharacter(character)
-
 			node = self.hanziNetwork.findNode(character)
 			self.hanziProcessor.computeCodeInfosOfNodeTree(node)
 
