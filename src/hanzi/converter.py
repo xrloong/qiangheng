@@ -237,28 +237,22 @@ class TaskAddStructure:
 		self.nodeExpressionDict[(name, index)]=structure
 		return structure
 
-class TaskSetNodeTree:
-	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork, hanziProcessor: HanZiProcessor):
-		self.hanziNetwork = hanziNetwork
-		self.hanziProcessor = hanziProcessor
-
-	def handleCharacter(self, character):
-		node=self.hanziNetwork.findNode(character)
-		self.hanziProcessor.computeCodeInfosOfNodeTree(node)
-
 class ComputeCharacterInfo:
 	@inject
 	def __init__(self, structureManager: StructureManager,
 			taskAddNode: TaskAddNode,
 			taskAddStructure: TaskAddStructure,
-			taskSetNodeTree: TaskSetNodeTree,
+
+			hanziNetwork: HanZiNetwork,
+			hanziProcessor: HanZiProcessor
 			):
 		self.structureManager = structureManager
 
 		self.taskAddNode = taskAddNode
 		self.taskAddStructure = taskAddStructure
-		self.taskSetNodeTree = taskSetNodeTree
+
+		self.hanziNetwork = hanziNetwork
+		self.hanziProcessor = hanziProcessor
 
 	def compute(self, characterSet = None):
 		characters = self.structureManager.getAllCharacters()
@@ -268,5 +262,7 @@ class ComputeCharacterInfo:
 		characterSet = characterSet if characterSet != None else characters
 		for character in characterSet:
 			self.taskAddStructure.handleCharacter(character)
-			self.taskSetNodeTree.handleCharacter(character)
+
+			node = self.hanziNetwork.findNode(character)
+			self.hanziProcessor.computeCodeInfosOfNodeTree(node)
 
