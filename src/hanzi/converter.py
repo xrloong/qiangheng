@@ -2,6 +2,7 @@ from injector import inject
 
 from . import HanZiNetwork
 from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
+from .helper import HanZiProcessor
 
 from model.interpreter import CodeInfoInterpreter
 from model.manager import OperatorManager
@@ -238,36 +239,13 @@ class TaskAddStructure:
 
 class TaskSetNodeTree:
 	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork):
+	def __init__(self, hanziNetwork: HanZiNetwork, hanziProcessor: HanZiProcessor):
 		self.hanziNetwork = hanziNetwork
+		self.hanziProcessor = hanziProcessor
 
 	def handleCharacter(self, character):
 		node=self.hanziNetwork.findNode(character)
-		self.setNodeTree(node)
-
-	def setNodeTree(self, node):
-		"""設定某一個字符所包含的部件的碼"""
-
-		structureList=node.getUnitStructureList()
-		for structure in structureList:
-			structure.generateCodeInfos()
-
-		structure=node.getStructure()
-		self.recursivelyGenerateCodeInfoByStructureTree(structure)
-
-	def recursivelyGenerateCodeInfoByStructureTree(self, structure):
-		if not structure:
-			return
-
-		tag=structure.getTag()
-		if tag.isCodeInfoGenerated():
-			return
-
-		for cihldStructure in structure.getStructureList():
-			self.recursivelyGenerateCodeInfoByStructureTree(cihldStructure)
-		structure.generateCodeInfos()
-
-		tag.setCodeInfoGenerated()
+		self.hanziProcessor.computeCodeInfosOfNodeTree(node)
 
 class ComputeCharacterInfo:
 	@inject
