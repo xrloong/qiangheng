@@ -1,9 +1,10 @@
 from injector import inject
 
 from .network import HanZiNetworkNodeFinder
-from .network import HanZiStructure
+from .network import HanZiStructure, HanZiNode
 from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
 from model.interpreter import CodeInfoInterpreter
+from model.element import CharacterInfo
 
 class HanZiInterpreter:
 	@inject
@@ -72,9 +73,18 @@ class StructureFactory:
 		self.codeInfoInterpreter = codeInfoInterpreter
 		self.wrapperExpressionDict = {}
 
+	def generateNode(self, character):
+		tag = self._generateNodeTag(character)
+		node = HanZiNode(character, tag)
+		return node
+
+	def _generateNodeTag(self, character):
+		tag = CharacterInfo.CharacterInfo(character)
+		return tag
+
 	def generateUnitStructure(self, radixCodeInfo):
 		tag = self._generateUnitTag(radixCodeInfo)
-		structure=self._generateStructure(tag)
+		structure = self._generateStructure(tag)
 		return structure
 
 	def generateAssemblageStructure(self, operator, structureList):

@@ -178,16 +178,18 @@ class HanZiNetwork:
 		self.nodeDict={}
 		self.structureDict={}
 
-	def addNode(self, name, tag):
-		if name not in self.nodeDict:
-			node=HanZiNode(name, tag)
-			self.nodeDict[name]=node
+	def addNode(self, node):
+		name = node.getName()
+		self.nodeDict[name]=node
 
-	def findNode(self, nodeName):
-		return self.nodeDict.get(nodeName)
+	def isWithNode(self, name):
+		return name in self.nodeDict
 
-	def isNodeExpanded(self, nodeName):
-		node=self.nodeDict.get(nodeName)
+	def findNode(self, name):
+		return self.nodeDict.get(name)
+
+	def isNodeExpanded(self, name):
+		node=self.findNode(name)
 		structure=node.getStructure()
 		return bool(structure)
 

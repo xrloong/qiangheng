@@ -62,10 +62,9 @@ class TaskAddNode:
 		self.structureFactory = structureFactory
 
 	def handleCharacter(self, character):
-		from model.element import CharacterInfo
-
-		characterInfo=CharacterInfo.CharacterInfo(character)
-		self.hanziNetwork.addNode(character, characterInfo)
+		if not self.hanziNetwork.isWithNode(character):
+			node = self.structureFactory.generateNode(character)
+			self.hanziNetwork.addNode(node)
 
 		if self.radixManager.hasRadix(character):
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
