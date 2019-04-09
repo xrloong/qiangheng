@@ -362,9 +362,8 @@ class TaskAddStructure:
 
 class TaskSetNodeTree:
 	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager):
+	def __init__(self, hanziNetwork: HanZiNetwork):
 		self.hanziNetwork = hanziNetwork
-		self.structureManager = structureManager
 
 	def handleCharacter(self, character):
 		node=self.hanziNetwork.findNode(character)
@@ -396,12 +395,10 @@ class TaskSetNodeTree:
 
 class TaskGetCharacterInfo:
 	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager,
+	def __init__(self, hanziNetwork: HanZiNetwork,
 			codeInfoInterpreter: CodeInfoInterpreter):
 		self.hanziNetwork = hanziNetwork
-		self.structureManager = structureManager
 		self.codeInfoInterpreter = codeInfoInterpreter
-		self.characterInfoList=[]
 
 	def handleCharacter(self, character):
 		characterInfo=None
@@ -412,9 +409,6 @@ class TaskGetCharacterInfo:
 
 		if characterInfo:
 			return characterInfo
-
-	def getCharacterInfoList(self):
-		return self.characterInfoList
 
 	def getNodeCharacterInfo(self, hanziNode):
 		structureList=hanziNode.getStructureList(True)
