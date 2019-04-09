@@ -2,7 +2,6 @@ from injector import inject
 
 from . import HanZiNetwork
 from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
-from .helper import HanZiInterpreter
 
 from model.interpreter import CodeInfoInterpreter
 from model.manager import OperatorManager
@@ -270,37 +269,18 @@ class TaskSetNodeTree:
 
 		tag.setCodeInfoGenerated()
 
-class TaskGetCharacterInfo:
-	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork,
-			hanziInterpreter: HanZiInterpreter):
-		self.hanziNetwork = hanziNetwork
-		self.hanziInterpreter = hanziInterpreter
-
-	def handleCharacter(self, character):
-		characterInfo=None
-
-		charNode=self.hanziNetwork.findNode(character)
-		if charNode:
-			characterInfo=self.hanziInterpreter.interpretCharacterInfo(charNode)
-
-		return characterInfo
-
 class ComputeCharacterInfo:
 	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork, structureManager: StructureManager,
+	def __init__(self, structureManager: StructureManager,
 			taskAddNode: TaskAddNode,
 			taskAddStructure: TaskAddStructure,
 			taskSetNodeTree: TaskSetNodeTree,
-			taskGetCharacterInfo: TaskGetCharacterInfo,
 			):
-		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 
 		self.taskAddNode = taskAddNode
 		self.taskAddStructure = taskAddStructure
 		self.taskSetNodeTree = taskSetNodeTree
-		self.taskGetCharacterInfo = taskGetCharacterInfo
 
 	def compute(self, characterSet = None):
 		characters = self.structureManager.getAllCharacters()
@@ -308,14 +288,7 @@ class ComputeCharacterInfo:
 			self.taskAddNode.handleCharacter(character)
 
 		characterSet = characterSet if characterSet != None else characters
-		characterInfoList=[]
 		for character in characterSet:
 			self.taskAddStructure.handleCharacter(character)
 			self.taskSetNodeTree.handleCharacter(character)
-
-			characterInfo = self.taskGetCharacterInfo.handleCharacter(character)
-
-			if characterInfo:
-				characterInfoList.append(characterInfo)
-		return characterInfoList
 

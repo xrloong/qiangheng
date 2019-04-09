@@ -16,9 +16,10 @@ from coding.Base import CodingType
 from model.element.CodingConfig import CodingConfig
 from model.StructureManager import StructureManager
 
+from hanzi import HanZiNetwork
 from hanzi.converter import ComputeCharacterInfo
+from hanzi.helper import HanZiInterpreter
 
-import sys
 class QiangHeng:
 	def __init__(self, options):
 		packageName=options.package
@@ -107,22 +108,34 @@ class QiangHeng:
 class MainManager:
 	@inject
 	def __init__(self, codingInfo: CodingInfo,
+			hanziNetwork: HanZiNetwork,
 			computeCharacterInfo: ComputeCharacterInfo,
+			hanziInterpreter: HanZiInterpreter,
 			writer: Writer):
 		self.codingInfo = codingInfo
+		self.hanziNetwork = hanziNetwork
 		self.computeCharacterInfo = computeCharacterInfo
+		self.hanziInterpreter = hanziInterpreter
 		self.writer = writer
 
-	def compute(self):
 		import itertools
 		rangeCJK = range(0x4e00, 0x9fa5+1)
 		rangeCJKextA = range(0x3400, 0x4db5+1)
-		characters = [chr(c) for c in itertools.chain(rangeCJK, rangeCJKextA)]
-		characterInfoList = self.computeCharacterInfo.compute(characters)
-		self.characterInfoList = sorted(characterInfoList, key=lambda c: c.character)
+		self.characters = [chr(c) for c in itertools.chain(rangeCJK, rangeCJKextA)]
+
+	def compute(self):
+		self.computeCharacterInfo.compute(self.characters)
 
 	def write(self):
-		self.writer.write(self.codingInfo, self.characterInfoList)
+		characterInfoList = []
+		for character in self.characters:
+			charNode = self.hanziNetwork.findNode(character)
+			if charNode:
+				characterInfo = self.hanziInterpreter.interpretCharacterInfo(charNode)
+				characterInfoList.append(characterInfo)
+		characterInfoList = sorted(characterInfoList, key=lambda c: c.character)
+
+		self.writer.write(self.codingInfo, characterInfoList)
 
 def main():
 	oparser = OptionParser()
