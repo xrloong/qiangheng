@@ -11,9 +11,8 @@ from model.CharacterDescriptionManager import RadixManager
 from model.util import TreeRegExp
 
 class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
-	def __init__(self, hanziNetwork, stage, operationManager):
+	def __init__(self, stage, operationManager):
 		self.operationManager = operationManager
-		self.hanziNetwork = hanziNetwork
 		self.stage = stage
 
 	def getChildren(self, tree):
@@ -88,7 +87,7 @@ class TaskAddStructure:
 		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 		self.codeInfoInterpreter = codeInfoInterpreter
-		self.treeProxy=TreeProxyOfStageAddStructure(hanziNetwork, self, operationManager)
+		self.treeProxy=TreeProxyOfStageAddStructure(self, operationManager)
 		self.nodeExpressionDict={}
 
 	def handleCharacter(self, character):
