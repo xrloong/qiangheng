@@ -156,6 +156,9 @@ class BasicTreeProxy:
 	def generateNode(self, operatorName, children):
 		return None
 
+	def generateLeafNodeByReference(self, referencedNode, index):
+		return None
+
 def p_node(t):
 	"""node : PARENTHESIS_LEFT prop PARENTHESIS_RIGHT
 		| PARENTHESIS_LEFT prop re_list PARENTHESIS_RIGHT"""
