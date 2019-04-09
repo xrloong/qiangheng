@@ -228,8 +228,6 @@ class TaskAddStructure:
 		if (name, index) in self.nodeExpressionDict:
 			return self.nodeExpressionDict[(name, index)]
 
-		rootNode=self.hanziNetwork.findNode(name)
-
 		tag=StructureWrapperTag(name, index)
 		structure=self.hanziNetwork.generateStructure(tag, reference=[name, index])
 
