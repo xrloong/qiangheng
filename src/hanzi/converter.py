@@ -10,9 +10,9 @@ from model.CharacterDescriptionManager import RadixManager
 from model.util import TreeRegExp
 
 class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
-	def __init__(self, stage, operationManager):
+	def __init__(self, structureFactory, operationManager):
 		self.operationManager = operationManager
-		self.stage = stage
+		self.structureFactory = structureFactory
 
 	def getChildren(self, tree):
 		expanedStructure=tree.getExpandedStructure()
@@ -40,18 +40,15 @@ class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
 		return isMatch
 
 	def generateLeafNode(self, nodeName):
-		structure = self.stage.generateWrapperStructure(nodeName)
-		return structure
+		return self.structureFactory.generateWrapperStructure(nodeName)
 
 	def generateLeafNodeByReference(self, referencedNode, index):
 		nodeName=referencedNode.getTag().getReferenceName()
-		structure = self.stage.generateWrapperStructure(nodeName, index)
-		return structure
+		return self.structureFactory.generateWrapperStructure(nodeName, index)
 
 	def generateNode(self, operatorName, children):
 		operator=self.operationManager.generateOperator(operatorName)
-		structure = self.stage.generateAssemblageStructure(operator, children)
-		return structure
+		return self.structureFactory.generateAssemblageStructure(operator, children)
 
 
 class TaskAddNode:
@@ -73,11 +70,9 @@ class TaskAddNode:
 		if self.radixManager.hasRadix(character):
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
-				structure=self.generateUnitLink(radixCodeInfo)
+				structure = self.structureFactory.generateUnitStructure(radixCodeInfo)
 				self.hanziNetwork.addUnitStructureIntoNode(structure, character)
 
-	def generateUnitLink(self, radixCodeInfo):
-		return self.structureFactory.generateUnitStructure(radixCodeInfo)
 
 class TaskAddStructure:
 	@inject
@@ -87,7 +82,7 @@ class TaskAddStructure:
 		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 		self.structureFactory = structureFactory
-		self.treeProxy=TreeProxyOfStageAddStructure(self, operationManager)
+		self.treeProxy=TreeProxyOfStageAddStructure(structureFactory, operationManager)
 
 	def handleCharacter(self, character):
 		self.expandNode(character)
@@ -204,8 +199,7 @@ class TaskAddStructure:
 		else:
 			subIndex=0
 
-		structure=self.generateWrapperStructure(name, subIndex)
-		return structure
+		return self.structureFactory.generateWrapperStructure(name, subIndex)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
@@ -215,14 +209,8 @@ class TaskAddStructure:
 			childStructureList.append(childStructure)
 
 		operator=structDesc.getOperator()
-		structure=self.generateAssemblageStructure(operator, childStructureList)
-		return structure
 
-	def generateAssemblageStructure(self, operator, structureList):
-		return self.structureFactory.generateAssemblageStructure(operator, structureList)
-
-	def generateWrapperStructure(self, name, index=0):
-		return self.structureFactory.generateWrapperStructure(name, index)
+		return self.structureFactory.generateAssemblageStructure(operator, childStructureList)
 
 class ComputeCharacterInfo:
 	@inject
