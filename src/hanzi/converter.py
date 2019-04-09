@@ -88,7 +88,6 @@ class TaskAddStructure:
 		self.structureManager = structureManager
 		self.structureFactory = structureFactory
 		self.treeProxy=TreeProxyOfStageAddStructure(self, operationManager)
-		self.nodeExpressionDict={}
 
 	def handleCharacter(self, character):
 		self.expandNode(character)
@@ -223,13 +222,7 @@ class TaskAddStructure:
 		return self.structureFactory.generateAssemblageStructure(operator, structureList)
 
 	def generateWrapperStructure(self, name, index=0):
-		if (name, index) in self.nodeExpressionDict:
-			return self.nodeExpressionDict[(name, index)]
-
-		structure = self.structureFactory.generateWrapperStructure(name, index)
-
-		self.nodeExpressionDict[(name, index)]=structure
-		return structure
+		return self.structureFactory.generateWrapperStructure(name, index)
 
 class ComputeCharacterInfo:
 	@inject

@@ -69,6 +69,7 @@ class StructureFactory:
 		codeInfoInterpreter: CodeInfoInterpreter):
 		self.hanziNetwork = hanziNetwork
 		self.codeInfoInterpreter = codeInfoInterpreter
+		self.wrapperExpressionDict = {}
 
 	def generateUnitStructure(self, radixCodeInfo):
 		tag = self._generateUnitTag(radixCodeInfo)
@@ -81,8 +82,13 @@ class StructureFactory:
 		return structure
 
 	def generateWrapperStructure(self, name, index=0):
+		if (name, index) in self.wrapperExpressionDict:
+			return self.wrapperExpressionDict[(name, index)]
+
 		tag = self._generateWrapperTag(name, index)
 		structure = self.hanziNetwork.generateStructure(tag, reference=[name, index])
+
+		self.wrapperExpressionDict[(name, index)]=structure
 		return structure
 
 	def _generateUnitTag(self, radixCodeInfo):
