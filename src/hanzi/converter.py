@@ -1,11 +1,12 @@
 from injector import inject
 
-from . import TreeRegExp
-from ..hanzi import HanZiNetwork
+from . import HanZiNetwork
+
 from model.interpreter import CodeInfoInterpreter
 from model.manager import OperatorManager
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
+from model.util import TreeRegExp
 
 class StructureTag:
 	def __init__(self):

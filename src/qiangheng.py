@@ -14,8 +14,9 @@ from Constant import Writer
 from coding.Base import CodingInfo
 from coding.Base import CodingType
 from model.element.CodingConfig import CodingConfig
-from model.util.HanZiNetworkConverter import ComputeCharacterInfo
 from model.StructureManager import StructureManager
+
+from hanzi.converter import ComputeCharacterInfo
 
 import sys
 class QiangHeng:
