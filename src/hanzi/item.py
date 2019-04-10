@@ -35,10 +35,6 @@ class StructureTag:
 	def getRadixCodeInfoList(self):
 		return filter(lambda x: x.isSupportRadixCode(), self.codeInfoList)
 
-	def printAllCodeInfo(self):
-		for codeInfo in self.getCodeInfoList():
-			pass
-
 	def generateCodeInfos(self, operator, tagList):
 		pass
 
