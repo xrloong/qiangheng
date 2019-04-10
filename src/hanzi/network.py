@@ -66,19 +66,25 @@ class HanZiStructure:
 			nameList=[str(structure) for structure in structureList]
 			return "(%s %s)"%(self.getOperator(), " ".join(nameList))
 
+	def isUnit(self):
+		return (not self.isWrapper()) and (not self.isCompound())
+
 	def isWrapper(self):
 		return bool(self.referenceNode)
+
+	def isCompound(self):
+		return bool(self.operator)
 
 	def getUniqueName(self):
 		strucutreExpression=""
 		referenceExpression=""
 
-		if self.operator:
+		if self.isCompound():
 			structureList=self.getStructureList()
 			nameList=[structure.getUniqueName() for structure in structureList]
 			strucutreExpression="%s %s"%(self.getOperator(), " ".join(nameList))
 
-		if self.referenceNode:
+		if self.isWrapper():
 			tag=self.getTag()
 			referenceExpression=tag.getReferenceExpression()
 
