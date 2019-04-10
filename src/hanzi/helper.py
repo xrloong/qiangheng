@@ -84,12 +84,12 @@ class StructureFactory:
 
 	def generateUnitStructure(self, radixCodeInfo):
 		tag = self._generateUnitTag(radixCodeInfo)
-		structure = self._generateStructure(tag)
+		structure = self._generateUnitStructure(tag)
 		return structure
 
 	def generateAssemblageStructure(self, operator, structureList):
 		tag = self._generateAssemblageTag()
-		structure = self._generateStructure(tag, compound=[operator, structureList])
+		structure = self._generateCompoundStructure(tag, operator, structureList)
 		return structure
 
 	def generateWrapperStructure(self, name, index=0):
@@ -97,7 +97,7 @@ class StructureFactory:
 			return self.wrapperExpressionDict[(name, index)]
 
 		tag = self._generateWrapperTag(name, index)
-		structure = self._generateStructure(tag, reference=[name, index])
+		structure = self._generateWrapperStructure(tag, name, index)
 
 		self.wrapperExpressionDict[(name, index)]=structure
 		return structure
@@ -111,17 +111,19 @@ class StructureFactory:
 	def _generateAssemblageTag(self):
 		return StructureAssemblageTag(self.codeInfoInterpreter)
 
-	def _generateStructure(self, tag, reference=[], compound=[]):
-		structure=HanZiStructure(tag)
+	def _generateUnitStructure(self, tag):
+		structure = HanZiStructure(tag)
+		return structure
 
-		if reference:
-			referenceName, index = reference
-			referenceNode=self.nodeFinder.findNode(referenceName)
-			structure.setAsWrapper(referenceNode, index)
+	def _generateWrapperStructure(self, tag, referenceName, index):
+		referenceNode = self.nodeFinder.findNode(referenceName)
 
-		if compound:
-			operator, structureList = compound
-			structure.setAsCompound(operator, structureList)
+		structure = HanZiStructure(tag)
+		structure.setAsWrapper(referenceNode, index)
+		return structure
 
+	def _generateCompoundStructure(self, tag, operator, structureList):
+		structure = HanZiStructure(tag)
+		structure.setAsCompound(operator, structureList)
 		return structure
 
