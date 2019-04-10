@@ -78,20 +78,24 @@ class TaskConstructNetwork:
 			self.hanziNetwork.addNode(node)
 
 	def handleAddStructure(self, character):
-		self.expandNode(character)
+		self.expandNodeByName(character)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
 
-	def expandNode(self, nodeName):
-		character = nodeName
+	def expandNodeByName(self, nodeName):
 		node = self.hanziNetwork.findNode(nodeName)
+		self.expandNode(node)
+
+	def expandNode(self, node):
+		character = node.getName()
 		if self.radixManager.hasRadix(character) and len(node.getUnitStructureList())==0:
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = self.structureFactory.generateUnitStructure(radixCodeInfo)
 				self.hanziNetwork.addUnitStructureIntoNode(structure, character)
 
+		nodeName = character
 		if self.hanziNetwork.isNodeExpanded(nodeName):
 			return
 
@@ -123,7 +127,7 @@ class TaskConstructNetwork:
 	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList):
 		referenceNode=structure.getReferenceNode()
 		if referenceNode:
-			self.expandNode(referenceNode.getName())
+			self.expandNode(referenceNode)
 
 		tag=structure.getTag()
 		if tag.isTemplateApplied():
@@ -138,7 +142,7 @@ class TaskConstructNetwork:
 	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList):
 		referenceNode=structure.getReferenceNode()
 		if referenceNode:
-			self.expandNode(referenceNode.getName())
+			self.expandNode(referenceNode)
 
 		tag=structure.getTag()
 		if tag.isSubstituteApplied():
@@ -152,18 +156,15 @@ class TaskConstructNetwork:
 
 	def rearrangeStructure(self, structure, substituteRuleList):
 		def expandLeaf(structure):
-			nodeName=structure.getReferenceName()
-
-			if nodeName:
-				self.expandNode(nodeName)
+			referenceNode=structure.getReferenceNode()
+			if referenceNode:
+				self.expandNode(referenceNode)
 
 			children=structure.getStructureList()
 			for child in children:
 				expandLeaf(child)
 
 		def rearrangeStructureOneTurn(structure, filteredSubstituteRuleList):
-#			expandLeaf(structure)
-
 			changed=False
 			for rule in filteredSubstituteRuleList:
 				tre = rule.getTRE()

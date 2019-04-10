@@ -114,12 +114,6 @@ class HanZiStructure:
 		else:
 			return self.getOperator().getName()
 
-	def getReferenceName(self):
-		if self.isWrapper():
-			return self.getReferenceNode().getName()
-		else:
-			return
-
 	def getExpandedStructure(self):
 		if self.isWrapper():
 			expandedStructure=self.getReferenceNode().getStructure()
