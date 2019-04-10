@@ -54,7 +54,7 @@ class HanZiProcessor:
 
 		for cihldStructure in structure.getStructureList():
 			self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
-		structure.generateCodeInfos()
+		self.generateCodeInfosOfStructure(structure)
 
 		tag.setCodeInfoGenerated()
 
@@ -63,6 +63,9 @@ class HanZiProcessor:
 		if tag.isCodeInfoGenerated():
 			return
 
+		self.generateCodeInfosOfStructure(structure)
+
+	def generateCodeInfosOfStructure(self, structure):
 		structure.generateCodeInfos()
 
 class StructureFactory:
