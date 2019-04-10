@@ -32,6 +32,9 @@ class StructureTag:
 	def getCodeInfoList(self):
 		return self.codeInfoList
 
+	def getRadixCodeInfoList(self):
+		return filter(lambda x: x.isSupportRadixCode(), self.codeInfoList)
+
 	def printAllCodeInfo(self):
 		for codeInfo in self.getCodeInfoList():
 			pass
@@ -116,8 +119,7 @@ class StructureAssemblageTag(StructureTag):
 		infoListList=[]
 
 		for tag in tagList:
-			tmpCodeInfoList=tag.getCodeInfoList()
-			codeInfoList=filter(lambda x: x.isSupportRadixCode(), tmpCodeInfoList)
+			codeInfoList=tag.getRadixCodeInfoList()
 			infoListList=combineList(infoListList, codeInfoList)
 
 		return infoListList
