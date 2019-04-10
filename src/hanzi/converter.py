@@ -77,15 +77,13 @@ class TaskConstructNetwork:
 			node = self.structureFactory.generateNode(character)
 			self.hanziNetwork.addNode(node)
 
+	def handleAddStructure(self, character):
 		if self.radixManager.hasRadix(character):
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = self.structureFactory.generateUnitStructure(radixCodeInfo)
 				self.hanziNetwork.addUnitStructureIntoNode(structure, character)
 
-
-
-	def handleAddStructure(self, character):
 		self.expandNode(character)
 
 	def queryDescription(self, characterName):
