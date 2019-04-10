@@ -56,6 +56,7 @@ class HanZiStructure:
 		self.structureList=[]
 
 		self.tag=tag
+		self.flagIsCodeInfoGenerated=False
 
 	def __str__(self):
 		if self.isWrapper():
@@ -74,6 +75,12 @@ class HanZiStructure:
 
 	def isCompound(self):
 		return bool(self.operator)
+
+	def isCodeInfoGenerated(self):
+		return self.flagIsCodeInfoGenerated
+
+	def setCodeInfoGenerated(self):
+		self.flagIsCodeInfoGenerated=True
 
 	def getUniqueName(self):
 		strucutreExpression=""

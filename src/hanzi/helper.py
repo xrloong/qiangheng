@@ -43,8 +43,7 @@ class HanZiProcessor:
 		if not structure:
 			return
 
-		tag=structure.getTag()
-		if tag.isCodeInfoGenerated():
+		if structure.isCodeInfoGenerated():
 			return
 
 		if structure.isUnit():
@@ -57,7 +56,7 @@ class HanZiProcessor:
 
 		self._generateCodeInfosOfStructure(structure)
 
-		tag.setCodeInfoGenerated()
+		structure.setCodeInfoGenerated()
 
 	def _generateCodeInfosOfStructure(self, structure):
 		structure.generateCodeInfos()

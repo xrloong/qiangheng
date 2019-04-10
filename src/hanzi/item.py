@@ -4,21 +4,14 @@ class StructureTag:
 	def __init__(self):
 		self.codeInfoList=[]
 
-		self.flagIsCodeInfoGenerated=False
 		self.flagIsTemplateApplied=False
 		self.flagIsSubstituteApplied=False
-
-	def isCodeInfoGenerated(self):
-		return self.flagIsCodeInfoGenerated
 
 	def isTemplateApplied(self):
 		return self.flagIsTemplateApplied
 
 	def isSubstituteApplied(self):
 		return self.flagIsSubstituteApplied
-
-	def setCodeInfoGenerated(self):
-		self.flagIsCodeInfoGenerated=True
 
 	def setTemplateApplied(self):
 		self.flagIsTemplateApplied=True
