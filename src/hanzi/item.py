@@ -41,13 +41,13 @@ class StructureTag:
 class StructureUnitTag(StructureTag):
 	def __init__(self, radixCodeInfo):
 		super().__init__()
-		self.codeInfoList=[radixCodeInfo]
+		self.radixCodeInfo = radixCodeInfo
 
 	def __str__(self):
-		return str(self.codeInfoList)
+		return str(self.radixCodeInfo)
 
-	def getCodeInfoList(self):
-		return self.codeInfoList
+	def generateCodeInfos(self, operator, tagList):
+		self.setCodeInfoList([self.radixCodeInfo])
 
 class StructureWrapperTag(StructureTag):
 	def __init__(self, name, index):

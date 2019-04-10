@@ -52,6 +52,9 @@ class HanZiProcessor:
 		if tag.isCodeInfoGenerated():
 			return
 
+		if structure.isWrapper():
+			self._computeCodeInfosOfUnitStructuresOfNode(structure.getReferenceNode())
+
 		for cihldStructure in structure.getStructureList():
 			self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
 		self.generateCodeInfosOfStructure(structure)
