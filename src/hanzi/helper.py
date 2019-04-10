@@ -33,16 +33,11 @@ class HanZiProcessor:
 
 	def computeCodeInfosOfNodeTree(self, node):
 		"""設定某一個字符所包含的部件的碼"""
+		self._recursivelyComputeCodeInfosOfNodeTree(node)
 
-		self._computeCodeInfosOfUnitStructuresOfNode(node)
-
-		structure=node.getStructure()
-		self._recursivelyComputeCodeInfosOfStructureTree(structure)
-
-	def _computeCodeInfosOfUnitStructuresOfNode(self, node):
-		structureList=node.getUnitStructureList()
-		for structure in structureList:
-			self._computeCodeInfosOfStructure(structure)
+	def _recursivelyComputeCodeInfosOfNodeTree(self, node):
+		for structure in node.getStructureList(True):
+			self._recursivelyComputeCodeInfosOfStructureTree(structure)
 
 	def _recursivelyComputeCodeInfosOfStructureTree(self, structure):
 		if not structure:
@@ -52,23 +47,19 @@ class HanZiProcessor:
 		if tag.isCodeInfoGenerated():
 			return
 
-		if structure.isWrapper():
-			self._computeCodeInfosOfUnitStructuresOfNode(structure.getReferenceNode())
+		if structure.isUnit():
+			pass
+		elif structure.isWrapper():
+			self._recursivelyComputeCodeInfosOfNodeTree(structure.getReferenceNode())
+		elif structure.isCompound():
+			for cihldStructure in structure.getStructureList():
+				self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
 
-		for cihldStructure in structure.getStructureList():
-			self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
-		self.generateCodeInfosOfStructure(structure)
+		self._generateCodeInfosOfStructure(structure)
 
 		tag.setCodeInfoGenerated()
 
-	def _computeCodeInfosOfStructure(self, structure):
-		tag=structure.getTag()
-		if tag.isCodeInfoGenerated():
-			return
-
-		self.generateCodeInfosOfStructure(structure)
-
-	def generateCodeInfosOfStructure(self, structure):
+	def _generateCodeInfosOfStructure(self, structure):
 		structure.generateCodeInfos()
 
 class StructureFactory:
