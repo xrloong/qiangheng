@@ -85,7 +85,8 @@ class StructureAssemblageTag(StructureTag):
 		super().__init__()
 		self.codeInfoInterpreter = codeInfoInterpreter
 
-	def setInfoListList(self, operator, infoListList):
+	def generateCodeInfos(self, operator, tagList):
+		infoListList=StructureAssemblageTag.getAllCodeInfoListFragTagList(tagList)
 		codeInfoList=[]
 		for infoList in infoListList:
 			codeInfo = self.codeInfoInterpreter.encodeToCodeInfo(operator, infoList)
@@ -96,10 +97,6 @@ class StructureAssemblageTag(StructureTag):
 
 				codeInfoList.append(codeInfo)
 		self.setCodeInfoList(codeInfoList)
-
-	def generateCodeInfos(self, operator, tagList):
-		infoListList=StructureAssemblageTag.getAllCodeInfoListFragTagList(tagList)
-		self.setInfoListList(operator, infoListList)
 
 	@staticmethod
 	def getAllCodeInfoListFragTagList(tagList):
