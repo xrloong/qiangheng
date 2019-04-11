@@ -1,5 +1,3 @@
-from injector import inject
-
 class HanZiNode:
 	def __init__(self, name, tag):
 		self.name=name
@@ -180,7 +178,6 @@ class HanZiStructure:
 
 
 class HanZiNetwork:
-	@inject
 	def __init__(self):
 		self.nodeDict={}
 
