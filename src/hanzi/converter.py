@@ -47,7 +47,7 @@ class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
 		return self.structureFactory.getCompoundStructureByOperatorName(operatorName, children)
 
 
-class TaskConstructNetwork:
+class ComputeCharacterInfo:
 	@inject
 	def __init__(self, hanziNetwork: HanZiNetwork,
 			structureManager: StructureManager,
@@ -62,7 +62,7 @@ class TaskConstructNetwork:
 		self.structureFactory = structureFactory
 		self.treeProxy=TreeProxyOfStageAddStructure(structureFactory)
 
-	def construct(self, characters):
+	def compute(self, characters):
 		for character in characters:
 			self.constructCharacter(character)
 
@@ -208,14 +208,4 @@ class TaskConstructNetwork:
 
 	def computeNode(self, node):
 		self.hanziProcessor.computeCodeInfosOfNodeTree(node)
-
-class ComputeCharacterInfo:
-	@inject
-	def __init__(self,
-			taskConstructNetwork: TaskConstructNetwork,
-			):
-		self.taskConstructNetwork = taskConstructNetwork
-
-	def compute(self, characters):
-		self.taskConstructNetwork.construct(characters)
 
