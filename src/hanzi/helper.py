@@ -105,6 +105,7 @@ class StructureFactory:
 		return self._generateCompoundStructure(operator, structureList)
 
 	def getWrapperStructureByNodeName(self, nodeName, index=0):
+		self.touchNode(nodeName)
 		return self.getWrapperStructure(nodeName, index)
 
 	def getWrapperStructureByNode(self, node, index=0):

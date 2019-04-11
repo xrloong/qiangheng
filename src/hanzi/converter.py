@@ -188,6 +188,8 @@ class TaskConstructNetwork:
 		name=structDesc.getReferenceName()
 		nodeExpression=structDesc.getReferenceExpression()
 
+		self.handleAddNode(name)
+
 		l=nodeExpression.split(".")
 		if len(l)>1:
 			subIndex=int(l[1])
@@ -226,9 +228,10 @@ class ComputeCharacterInfo:
 
 	def compute(self, characterSet = None):
 		characters = self.structureManager.getAllCharacters()
-		self.taskConstructNetwork.construct(characters)
-
 		characterSet = characterSet if characterSet != None else characters
+
+		self.taskConstructNetwork.construct(characterSet)
+
 		for character in characterSet:
 			node = self.hanziNetwork.findNode(character)
 			self.hanziProcessor.computeCodeInfosOfNodeTree(node)
