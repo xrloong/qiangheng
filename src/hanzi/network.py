@@ -1,3 +1,5 @@
+from .item import StructureCompoundTag
+
 class HanZiNode:
 	def __init__(self, name, tag):
 		self.name=name
@@ -145,19 +147,26 @@ class HanZiStructure:
 	def getTag(self):
 		return self.tag
 
-	def getChildTagList(self):
-		if self.isUnit():
-			return []
-		elif self.isWrapper():
-			return self.referenceNode.getStructureTagList(self.index)
-		else:
-			return [structure.getTag() for structure in self.structureList]
-
 	def generateCodeInfos(self, codeInfoInterpreter):
 		tag = self.getTag()
-		tagList = self.getChildTagList()
 		operator = self.getOperator()
-		tag.generateCodeInfos(codeInfoInterpreter, operator, tagList)
+
+		codeInfoList=[]
+		if self.isUnit():
+			codeInfoList = [tag.radixCodeInfo]
+		elif self.isWrapper():
+			tagList = self.referenceNode.getStructureTagList(self.index)
+			for childTag in tagList:
+				codeInfoList.extend(childTag.getCodeInfoList())
+		else:
+			tagList = [structure.getTag() for structure in self.structureList]
+			infoListList = StructureCompoundTag.getAllCodeInfoListFragTagList(tagList)
+			for infoList in infoListList:
+				codeInfo = codeInfoInterpreter.encodeToCodeInfo(operator, infoList)
+				if codeInfo!=None:
+					codeInfoList.append(codeInfo)
+
+		tag.setCodeInfoList(codeInfoList)
 
 
 class HanZiNetwork:
