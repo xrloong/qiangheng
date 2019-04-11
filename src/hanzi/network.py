@@ -199,11 +199,3 @@ class HanZiNetwork:
 		structure=node.getStructure()
 		return bool(structure)
 
-	def addStructureIntoNode(self, structure, nodeName):
-		dstNode=self.findNode(nodeName)
-		dstNode.setStructure(structure)
-
-	def addUnitStructureIntoNode(self, structure, nodeName):
-		dstNode=self.findNode(nodeName)
-		dstNode.addUnitStructure(structure)
-
