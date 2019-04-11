@@ -217,13 +217,13 @@ class ComputeCharacterInfo:
 		self.hanziNetwork = hanziNetwork
 		self.hanziProcessor = hanziProcessor
 
-	def compute(self, characterSet = None):
-		characters = self.structureManager.getAllCharacters()
-		characterSet = characterSet if characterSet != None else characters
+	def compute(self, characters = None):
+		if characters:
+			characters = self.structureManager.getAllCharacters()
 
-		self.taskConstructNetwork.construct(characterSet)
+		self.taskConstructNetwork.construct(characters)
 
-		for character in characterSet:
+		for character in characters:
 			node = self.hanziNetwork.findNode(character)
 			self.hanziProcessor.computeCodeInfosOfNodeTree(node)
 
