@@ -1,6 +1,6 @@
 from injector import inject
 
-from .network import HanZiNetworkNodeFinder
+from .network import HanZiNetwork
 from .network import HanZiStructure, HanZiNode
 from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
 from model.interpreter import CodeInfoInterpreter
@@ -64,13 +64,20 @@ class HanZiProcessor:
 
 class StructureFactory:
 	@inject
-	def __init__(self, nodeFinder: HanZiNetworkNodeFinder,
+	def __init__(self,
+		hanziNetwork: HanZiNetwork,
 		operatorManager: OperatorManager,
 		codeInfoInterpreter: CodeInfoInterpreter):
-		self.nodeFinder = nodeFinder
+		self.hanziNetwork = hanziNetwork
 		self.operatorManager = operatorManager
 		self.codeInfoInterpreter = codeInfoInterpreter
 		self.wrapperExpressionDict = {}
+
+	def touchNode(self, character):
+		if not self.hanziNetwork.isWithNode(character):
+			node = self.generateNode(character)
+			self.hanziNetwork.addNode(node)
+		return self.hanziNetwork.findNode(character)
 
 	def generateNode(self, character):
 		tag = self._generateNodeTag(character)
@@ -125,7 +132,7 @@ class StructureFactory:
 	def _generateWrapperStructure(self, referenceName, index):
 		tag = StructureWrapperTag(referenceName, index)
 
-		referenceNode = self.nodeFinder.findNode(referenceName)
+		referenceNode = self.hanziNetwork.findNode(referenceName)
 
 		structure = HanZiStructure(tag)
 		structure.setAsWrapper(referenceNode, index)

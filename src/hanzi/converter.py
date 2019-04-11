@@ -68,9 +68,7 @@ class TaskConstructNetwork:
 			self.handleAddStructure(character)
 
 	def handleAddNode(self, character):
-		if not self.hanziNetwork.isWithNode(character):
-			node = self.structureFactory.generateNode(character)
-			self.hanziNetwork.addNode(node)
+		self.structureFactory.touchNode(character)
 
 	def handleAddStructure(self, character):
 		self.expandNodeByName(character)
