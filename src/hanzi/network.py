@@ -145,15 +145,19 @@ class HanZiStructure:
 	def getTag(self):
 		return self.tag
 
-	def generateCodeInfos(self, codeInfoInterpreter):
-		def getTagList():
-			if self.isWrapper():
-				return self.referenceNode.getStructureTagList(self.index)
-			else:
-				structureList=self.structureList
-				return [structure.getTag() for structure in structureList]
+	def getChildTagList(self):
+		if self.isUnit():
+			return []
+		elif self.isWrapper():
+			return self.referenceNode.getStructureTagList(self.index)
+		else:
+			return [structure.getTag() for structure in self.structureList]
 
-		self.getTag().generateCodeInfos(codeInfoInterpreter, self.getOperator(), getTagList())
+	def generateCodeInfos(self, codeInfoInterpreter):
+		tag = self.getTag()
+		tagList = self.getChildTagList()
+		operator = self.getOperator()
+		tag.generateCodeInfos(codeInfoInterpreter, operator, tagList)
 
 
 class HanZiNetwork:
