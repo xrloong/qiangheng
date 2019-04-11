@@ -62,22 +62,49 @@ class HanZiCodeInfosComputer:
 	def _generateCodeInfosOfStructure(self, structure):
 		structure.generateCodeInfos()
 
+class HanZiNetworkManager:
+	@inject
+	def __init__(self, hanziNetwork: HanZiNetwork):
+		self.hanziNetwork = hanziNetwork
+
+	def findNode(self, name):
+		return self.hanziNetwork.findNode(name)
+
+	def isWithNode(self, name):
+		return self.hanziNetwork.isWithNode(name)
+
+	def isNodeExpanded(self, name):
+		return self.hanziNetwork.isNodeExpanded(name)
+
+	def addNode(self, node):
+		return self.hanziNetwork.addNode(node)
+
+	def addStructure(self, structure):
+		structureName=structure.getUniqueName()
+		return self.hanziNetwork.addStructure(structureName, structure)
+
+	def addStructureIntoNode(self, structure, nodeName):
+		self.hanziNetwork.addStructureIntoNode(structure, nodeName)
+
+	def addUnitStructureIntoNode(self, structure, nodeName):
+		self.hanziNetwork.addUnitStructureIntoNode(structure, nodeName)
+
 class StructureFactory:
 	@inject
 	def __init__(self,
-		hanziNetwork: HanZiNetwork,
+		networkManager: HanZiNetworkManager,
 		operatorManager: OperatorManager,
 		codeInfoInterpreter: CodeInfoInterpreter):
-		self.hanziNetwork = hanziNetwork
+		self.networkManager = networkManager
 		self.operatorManager = operatorManager
 		self.codeInfoInterpreter = codeInfoInterpreter
 		self.wrapperExpressionDict = {}
 
 	def touchNode(self, character):
-		if not self.hanziNetwork.isWithNode(character):
+		if not self.networkManager.isWithNode(character):
 			node = self.generateNode(character)
-			self.hanziNetwork.addNode(node)
-		return self.hanziNetwork.findNode(character)
+			self.networkManager.addNode(node)
+		return self.networkManager.findNode(character)
 
 	def generateNode(self, character):
 		tag = self._generateNodeTag(character)
@@ -133,7 +160,7 @@ class StructureFactory:
 	def _generateWrapperStructure(self, referenceName, index):
 		tag = StructureWrapperTag(referenceName, index)
 
-		referenceNode = self.hanziNetwork.findNode(referenceName)
+		referenceNode = self.networkManager.findNode(referenceName)
 
 		structure = HanZiStructure(tag)
 		structure.setAsWrapper(referenceNode, index)

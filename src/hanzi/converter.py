@@ -1,6 +1,6 @@
 from injector import inject
 
-from .network import HanZiNetwork
+from .helper import HanZiNetworkManager
 from .helper import HanZiCodeInfosComputer
 from .helper import StructureFactory
 
@@ -57,16 +57,19 @@ class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
 
 class ComputeCharacterInfo:
 	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork,
+	def __init__(self,
 			structureManager: StructureManager,
 			radixManager: RadixManager,
 			treInterpreter: HanZiTreeRegExpInterpreter,
+
+			networkManager: HanZiNetworkManager,
 			codeInfosComputer: HanZiCodeInfosComputer,
 			structureFactory: StructureFactory
 			):
-		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 		self.radixManager = radixManager
+
+		self.networkManager = networkManager
 		self.codeInfosComputer = codeInfosComputer
 		self.structureFactory = structureFactory
 
@@ -93,10 +96,10 @@ class ComputeCharacterInfo:
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = self.structureFactory.getUnitStructure(radixCodeInfo)
-				self.hanziNetwork.addUnitStructureIntoNode(structure, character)
+				self.networkManager.addUnitStructureIntoNode(structure, character)
 
 		nodeName = character
-		if self.hanziNetwork.isNodeExpanded(nodeName):
+		if self.networkManager.isNodeExpanded(nodeName):
 			return
 
 		charDesc=self.queryDescription(nodeName)
@@ -114,7 +117,7 @@ class ComputeCharacterInfo:
 			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
 
 			self.recursivelyAddStructure(structure)
-			self.hanziNetwork.addStructureIntoNode(structure, nodeName)
+			self.networkManager.addStructureIntoNode(structure, nodeName)
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():
@@ -189,8 +192,7 @@ class ComputeCharacterInfo:
 		for childStructure in structure.getStructureList():
 			self.recursivelyAddStructure(childStructure)
 
-		structureName=structure.getUniqueName()
-		self.hanziNetwork.addStructure(structureName, structure)
+		self.networkManager.addStructure(structure)
 
 	def generateReferenceLink(self, structDesc):
 		name=structDesc.getReferenceName()
