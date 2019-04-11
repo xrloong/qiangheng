@@ -6,9 +6,10 @@ from .helper import StructureFactory
 
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
-from model.util import TreeRegExp
+from model.tree.regexp import TreeRegExpInterpreter
+from model.tree.regexp import TreeRegExp, BasicTreeProxy
 
-class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
+class TreeProxyOfStageAddStructure(BasicTreeProxy):
 	def __init__(self, structureFactory):
 		self.structureFactory = structureFactory
 
@@ -60,7 +61,6 @@ class ComputeCharacterInfo:
 		self.radixManager = radixManager
 		self.hanziProcessor = hanziProcessor
 		self.structureFactory = structureFactory
-		self.treeProxy=TreeProxyOfStageAddStructure(structureFactory)
 
 	def compute(self, characters):
 		for character in characters:
@@ -145,6 +145,8 @@ class ComputeCharacterInfo:
 		tag.setSubstituteApplied()
 
 	def rearrangeStructure(self, structure, substituteRuleList):
+		treeProxy = TreeProxyOfStageAddStructure(self.structureFactory)
+		treInterpreter = TreeRegExpInterpreter(treeProxy)
 		def expandLeaf(structure):
 			referenceNode=structure.getReferenceNode()
 			if referenceNode:
@@ -160,7 +162,7 @@ class ComputeCharacterInfo:
 				tre = rule.getTRE()
 				result = rule.getReplacement()
 
-				tmpStructure=TreeRegExp.matchAndReplace(tre, structure, result, self.treeProxy)
+				tmpStructure = treInterpreter.matchAndReplace(tre, structure, result)
 				if tmpStructure!=None:
 					structure.setNewStructure(tmpStructure)
 					structure=tmpStructure
@@ -170,7 +172,7 @@ class ComputeCharacterInfo:
 
 		changed=True
 		while changed:
-			availableRuleFilter = lambda rule: TreeRegExp.matchQuickly(rule.getTRE(), structure, self.treeProxy)
+			availableRuleFilter = lambda rule: treInterpreter.matchQuickly(rule.getTRE(), structure)
 			filteredSubstituteRuleList = filter(availableRuleFilter, substituteRuleList)
 			changed=rearrangeStructureOneTurn(structure, filteredSubstituteRuleList)
 
