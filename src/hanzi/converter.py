@@ -52,11 +52,13 @@ class TaskConstructNetwork:
 	def __init__(self, hanziNetwork: HanZiNetwork,
 			structureManager: StructureManager,
 			radixManager: RadixManager,
+			hanziProcessor: HanZiProcessor,
 			structureFactory: StructureFactory
 			):
 		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 		self.radixManager = radixManager
+		self.hanziProcessor = hanziProcessor
 		self.structureFactory = structureFactory
 		self.treeProxy=TreeProxyOfStageAddStructure(structureFactory)
 
@@ -67,6 +69,7 @@ class TaskConstructNetwork:
 	def constructCharacter(self, character):
 		node = self.structureFactory.touchNode(character)
 		self.expandNode(node)
+		self.computeNode(node)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
@@ -200,30 +203,21 @@ class TaskConstructNetwork:
 
 		return self.structureFactory.getCompoundStructure(operator, childStructureList)
 
+	def computeNode(self, node):
+		self.hanziProcessor.computeCodeInfosOfNodeTree(node)
+
 class ComputeCharacterInfo:
 	@inject
 	def __init__(self,
-			taskConstructNetwork: TaskConstructNetwork,
-
 			structureManager: StructureManager,
-
-			hanziNetwork: HanZiNetwork,
-			hanziProcessor: HanZiProcessor
+			taskConstructNetwork: TaskConstructNetwork,
 			):
-		self.taskConstructNetwork = taskConstructNetwork
-
 		self.structureManager = structureManager
-
-		self.hanziNetwork = hanziNetwork
-		self.hanziProcessor = hanziProcessor
+		self.taskConstructNetwork = taskConstructNetwork
 
 	def compute(self, characters = None):
 		if characters:
 			characters = self.structureManager.getAllCharacters()
 
 		self.taskConstructNetwork.construct(characters)
-
-		for character in characters:
-			node = self.hanziNetwork.findNode(character)
-			self.hanziProcessor.computeCodeInfosOfNodeTree(node)
 
