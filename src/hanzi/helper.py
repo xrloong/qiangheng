@@ -97,7 +97,14 @@ class StructureFactory:
 	def generateCompoundStructure(self, operator, structureList):
 		return self._generateCompoundStructure(operator, structureList)
 
-	def getWrapperStructure(self, name, index=0):
+	def getWrapperStructureByNodeName(self, nodeName, index=0):
+		return self.getWrapperStructure(nodeName, index)
+
+	def getWrapperStructureByNode(self, node, index=0):
+		nodeName = node.getTag().getReferenceName()
+		return self.getWrapperStructure(nodeName, index)
+
+	def getWrapperStructure(self, name, index):
 		wrapperExpression = (name, index)
 		if (name, index) in self.wrapperExpressionDict:
 			return self.wrapperExpressionDict[wrapperExpression]

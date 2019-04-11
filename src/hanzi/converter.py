@@ -38,11 +38,10 @@ class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
 		return isMatch
 
 	def generateLeafNode(self, nodeName):
-		return self.structureFactory.getWrapperStructure(nodeName)
+		return self.structureFactory.getWrapperStructureByNodeName(nodeName)
 
 	def generateLeafNodeByReference(self, referencedNode, index):
-		nodeName=referencedNode.getTag().getReferenceName()
-		return self.structureFactory.getWrapperStructure(nodeName, index)
+		return self.structureFactory.getWrapperStructureByNode(referencedNode, index)
 
 	def generateNode(self, operatorName, children):
 		return self.structureFactory.getCompoundStructureByOperatorName(operatorName, children)
@@ -197,7 +196,7 @@ class TaskConstructNetwork:
 		else:
 			subIndex=0
 
-		return self.structureFactory.getWrapperStructure(name, subIndex)
+		return self.structureFactory.getWrapperStructureByNodeName(name, subIndex)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
