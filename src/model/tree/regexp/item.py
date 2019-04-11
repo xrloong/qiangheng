@@ -123,3 +123,13 @@ class BasicTreeProxy:
 		return None
 
 
+class TreeNodeGenerator:
+	def generateLeafNode(self, nodeName):
+		return None
+
+	def generateNode(self, operatorName, children):
+		return None
+
+	def generateLeafNodeByReference(self, referencedNode, index):
+		return None
+

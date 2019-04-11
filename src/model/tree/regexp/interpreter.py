@@ -1,8 +1,9 @@
 from .item import MatchResult
 
 class TreeRegExpInterpreter:
-	def __init__(self, proxy):
+	def __init__(self, proxy, treeNodeGenerator):
 		self.proxy = proxy
+		self.treeNodeGenerator = treeNodeGenerator
 
 	def matchAndReplace(self, tre, node, result):
 		def generateTokens(expression):
@@ -36,7 +37,7 @@ class TreeRegExpInterpreter:
 			if not tokens[0]=="(":
 				return ([], None)
 
-			proxy = self.proxy
+			treeNodeGenerator = self.treeNodeGenerator
 			operatorName = tokens[1]
 			compList=[]
 			rest=tokens[2:]
@@ -60,13 +61,13 @@ class TreeRegExpInterpreter:
 						index=int(refExpList[0])
 						subIndex=int(refExpList[1])
 						referenceNode=allComps[index].getMatched()[0]
-						node=proxy.generateLeafNodeByReference(referenceNode, subIndex)
+						node=treeNodeGenerator.generateLeafNodeByReference(referenceNode, subIndex)
 						compList.append(node)
 					rest=rest[1:]
 				else:
-					compList.append(proxy.generateLeafNode(rest[0]))
+					compList.append(treeNodeGenerator.generateLeafNode(rest[0]))
 					rest=rest[1:]
-			structDesc=proxy.generateNode(operatorName, compList)
+			structDesc = treeNodeGenerator.generateNode(operatorName, compList)
 			return (rest, structDesc)
 
 		matchResult = self.match(tre, node)

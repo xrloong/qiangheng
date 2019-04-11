@@ -7,12 +7,10 @@ from .helper import StructureFactory
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 from model.tree.regexp import TreeRegExpInterpreter
-from model.tree.regexp import TreeRegExp, BasicTreeProxy
+from model.tree.regexp import BasicTreeProxy
+from model.tree.regexp import TreeNodeGenerator
 
-class TreeProxyOfStageAddStructure(BasicTreeProxy):
-	def __init__(self, structureFactory):
-		self.structureFactory = structureFactory
-
+class HanZiTreeProxy(BasicTreeProxy):
 	def getChildren(self, tree):
 		expanedStructure=tree.getExpandedStructure()
 		return expanedStructure.getStructureList()
@@ -38,6 +36,11 @@ class TreeProxyOfStageAddStructure(BasicTreeProxy):
 
 		return isMatch
 
+class HanZiTreeNodeGenerator(TreeNodeGenerator):
+	@inject
+	def __init__(self, structureFactory: StructureFactory):
+		self.structureFactory = structureFactory
+
 	def generateLeafNode(self, nodeName):
 		return self.structureFactory.getWrapperStructureByNodeName(nodeName)
 
@@ -47,12 +50,17 @@ class TreeProxyOfStageAddStructure(BasicTreeProxy):
 	def generateNode(self, operatorName, children):
 		return self.structureFactory.getCompoundStructureByOperatorName(operatorName, children)
 
+class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
+	@inject
+	def __init__(self, treeNodeGenerator: HanZiTreeNodeGenerator):
+		super().__init__(HanZiTreeProxy(), treeNodeGenerator)
 
 class ComputeCharacterInfo:
 	@inject
 	def __init__(self, hanziNetwork: HanZiNetwork,
 			structureManager: StructureManager,
 			radixManager: RadixManager,
+			treInterpreter: HanZiTreeRegExpInterpreter,
 			hanziProcessor: HanZiProcessor,
 			structureFactory: StructureFactory
 			):
@@ -61,6 +69,8 @@ class ComputeCharacterInfo:
 		self.radixManager = radixManager
 		self.hanziProcessor = hanziProcessor
 		self.structureFactory = structureFactory
+
+		self.treInterpreter = treInterpreter
 
 	def compute(self, characters):
 		for character in characters:
@@ -145,8 +155,7 @@ class ComputeCharacterInfo:
 		tag.setSubstituteApplied()
 
 	def rearrangeStructure(self, structure, substituteRuleList):
-		treeProxy = TreeProxyOfStageAddStructure(self.structureFactory)
-		treInterpreter = TreeRegExpInterpreter(treeProxy)
+		treInterpreter = self.treInterpreter
 		def expandLeaf(structure):
 			referenceNode=structure.getReferenceNode()
 			if referenceNode:
