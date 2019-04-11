@@ -59,8 +59,6 @@ docs/_build/
 
 # PyBuilder
 target/
-/src/model/util/parser.out
-/src/model/util/parsetab.py
-/src/parser/parser.out
-/src/parser/parsetab.py
+parser.out
+parsetab.py
 
