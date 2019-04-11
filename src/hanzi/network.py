@@ -138,7 +138,7 @@ class HanZiStructure:
 	def getTag(self):
 		return self.tag
 
-	def generateCodeInfos(self):
+	def generateCodeInfos(self, codeInfoInterpreter):
 		def getAllWrapperStructureList():
 			expression=self.getTag().getReferenceExpression()
 			tempList=expression.split(".")
@@ -159,7 +159,7 @@ class HanZiStructure:
 
 			return [structure.getTag() for structure in structureList]
 
-		self.getTag().generateCodeInfos(self.getOperator(), getTagList())
+		self.getTag().generateCodeInfos(codeInfoInterpreter, self.getOperator(), getTagList())
 
 
 class HanZiNetwork:

@@ -29,8 +29,8 @@ class HanZiInterpreter:
 
 class HanZiCodeInfosComputer:
 	@inject
-	def __init__(self):
-		pass
+	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
+		self.codeInfoInterpreter = codeInfoInterpreter
 
 	def computeForNode(self, node):
 		"""設定某一個字符所包含的部件的碼"""
@@ -60,7 +60,7 @@ class HanZiCodeInfosComputer:
 		structure.setCodeInfoGenerated()
 
 	def _generateCodeInfosOfStructure(self, structure):
-		structure.generateCodeInfos()
+		structure.generateCodeInfos(self.codeInfoInterpreter)
 
 class HanZiNetworkManager:
 	@inject
@@ -95,7 +95,6 @@ class HanZiNetworkItemFactory:
 		codeInfoInterpreter: CodeInfoInterpreter):
 		self.networkManager = networkManager
 		self.operatorManager = operatorManager
-		self.codeInfoInterpreter = codeInfoInterpreter
 		self.wrapperExpressionDict = {}
 
 	def touchNode(self, character):
@@ -165,7 +164,7 @@ class HanZiNetworkItemFactory:
 		return structure
 
 	def _generateCompoundStructure(self, operator, structureList):
-		tag = StructureCompoundTag(self.codeInfoInterpreter)
+		tag = StructureCompoundTag()
 
 		structure = HanZiStructure(tag)
 		structure.setAsCompound(operator, structureList)

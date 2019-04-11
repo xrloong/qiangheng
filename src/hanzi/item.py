@@ -28,7 +28,7 @@ class StructureTag:
 	def getRadixCodeInfoList(self):
 		return filter(lambda x: x.isSupportRadixCode(), self.codeInfoList)
 
-	def generateCodeInfos(self, operator, tagList):
+	def generateCodeInfos(self, codeInfoInterpreter, operator, tagList):
 		pass
 
 class StructureUnitTag(StructureTag):
@@ -39,7 +39,7 @@ class StructureUnitTag(StructureTag):
 	def __str__(self):
 		return str(self.radixCodeInfo)
 
-	def generateCodeInfos(self, operator, tagList):
+	def generateCodeInfos(self, codeInfoInterpreter, operator, tagList):
 		self.setCodeInfoList([self.radixCodeInfo])
 
 class StructureWrapperTag(StructureTag):
@@ -66,22 +66,21 @@ class StructureWrapperTag(StructureTag):
 	def getReferenceExpression(self):
 		return self.referenceExpression
 
-	def generateCodeInfos(self, operator, tagList):
+	def generateCodeInfos(self, codeInfoInterpreter, operator, tagList):
 		codeInfoList=[]
 		for tag in tagList:
 			codeInfoList.extend(tag.getCodeInfoList())
 		self.setCodeInfoList(codeInfoList)
 
 class StructureCompoundTag(StructureTag):
-	def __init__(self, codeInfoInterpreter):
+	def __init__(self):
 		super().__init__()
-		self.codeInfoInterpreter = codeInfoInterpreter
 
-	def generateCodeInfos(self, operator, tagList):
+	def generateCodeInfos(self, codeInfoInterpreter, operator, tagList):
 		infoListList=StructureCompoundTag.getAllCodeInfoListFragTagList(tagList)
 		codeInfoList=[]
 		for infoList in infoListList:
-			codeInfo = self.codeInfoInterpreter.encodeToCodeInfo(operator, infoList)
+			codeInfo = codeInfoInterpreter.encodeToCodeInfo(operator, infoList)
 			if codeInfo!=None:
 				for childCodeInfo in infoList:
 					codeVariance=childCodeInfo.getCodeVarianceType()
