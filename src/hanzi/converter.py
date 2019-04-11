@@ -63,8 +63,6 @@ class TaskConstructNetwork:
 	def construct(self, characters):
 		for character in characters:
 			self.handleAddNode(character)
-
-		for character in characters:
 			self.handleAddStructure(character)
 
 	def handleAddNode(self, character):
