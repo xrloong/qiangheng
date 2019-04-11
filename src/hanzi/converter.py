@@ -212,15 +212,10 @@ class TaskConstructNetwork:
 class ComputeCharacterInfo:
 	@inject
 	def __init__(self,
-			structureManager: StructureManager,
 			taskConstructNetwork: TaskConstructNetwork,
 			):
-		self.structureManager = structureManager
 		self.taskConstructNetwork = taskConstructNetwork
 
-	def compute(self, characters = None):
-		if characters:
-			characters = self.structureManager.getAllCharacters()
-
+	def compute(self, characters):
 		self.taskConstructNetwork.construct(characters)
 

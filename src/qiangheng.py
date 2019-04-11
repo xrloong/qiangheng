@@ -109,19 +109,27 @@ class MainManager:
 	@inject
 	def __init__(self, codingInfo: CodingInfo,
 			hanziNetwork: HanZiNetwork,
+			structureManager: StructureManager,
 			computeCharacterInfo: ComputeCharacterInfo,
 			hanziInterpreter: HanZiInterpreter,
 			writer: Writer):
 		self.codingInfo = codingInfo
 		self.hanziNetwork = hanziNetwork
+		self.structureManager = structureManager
 		self.computeCharacterInfo = computeCharacterInfo
 		self.hanziInterpreter = hanziInterpreter
 		self.writer = writer
 
+		self.characters = self.generateTargetCharacters()
+
+	def generateTargetCharacters(self):
+#		characters = self.structureManager.getAllCharacters()
+
 		import itertools
 		rangeCJK = range(0x4e00, 0x9fa5+1)
 		rangeCJKextA = range(0x3400, 0x4db5+1)
-		self.characters = [chr(c) for c in itertools.chain(rangeCJK, rangeCJKextA)]
+		characters = [chr(c) for c in itertools.chain(rangeCJK, rangeCJKextA)]
+		return characters
 
 	def compute(self):
 		self.computeCharacterInfo.compute(self.characters)
