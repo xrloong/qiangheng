@@ -5,6 +5,7 @@ from .network import HanZiStructure, HanZiNode
 from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
 from model.interpreter import CodeInfoInterpreter
 from model.element import CharacterInfo
+from model.manager import OperatorManager
 
 class HanZiInterpreter:
 	@inject
@@ -64,8 +65,10 @@ class HanZiProcessor:
 class StructureFactory:
 	@inject
 	def __init__(self, nodeFinder: HanZiNetworkNodeFinder,
+		operatorManager: OperatorManager,
 		codeInfoInterpreter: CodeInfoInterpreter):
 		self.nodeFinder = nodeFinder
+		self.operatorManager = operatorManager
 		self.codeInfoInterpreter = codeInfoInterpreter
 		self.wrapperExpressionDict = {}
 
@@ -85,6 +88,10 @@ class StructureFactory:
 		return self._generateUnitStructure(radixCodeInfo)
 
 	def getCompoundStructure(self, operator, structureList):
+		return self.generateCompoundStructure(operator, structureList)
+
+	def getCompoundStructureByOperatorName(self, operatorName, structureList):
+		operator = self.operatorManager.generateOperator(operatorName)
 		return self.generateCompoundStructure(operator, structureList)
 
 	def generateCompoundStructure(self, operator, structureList):

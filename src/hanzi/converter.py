@@ -4,14 +4,12 @@ from .network import HanZiNetwork
 from .helper import HanZiProcessor
 from .helper import StructureFactory
 
-from model.manager import OperatorManager
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 from model.util import TreeRegExp
 
 class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
-	def __init__(self, structureFactory, operationManager):
-		self.operationManager = operationManager
+	def __init__(self, structureFactory):
 		self.structureFactory = structureFactory
 
 	def getChildren(self, tree):
@@ -47,8 +45,7 @@ class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
 		return self.structureFactory.getWrapperStructure(nodeName, index)
 
 	def generateNode(self, operatorName, children):
-		operator=self.operationManager.generateOperator(operatorName)
-		return self.structureFactory.getCompoundStructure(operator, children)
+		return self.structureFactory.getCompoundStructureByOperatorName(operatorName, children)
 
 
 class TaskConstructNetwork:
@@ -56,14 +53,13 @@ class TaskConstructNetwork:
 	def __init__(self, hanziNetwork: HanZiNetwork,
 			structureManager: StructureManager,
 			radixManager: RadixManager,
-			operationManager: OperatorManager,
 			structureFactory: StructureFactory
 			):
 		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 		self.radixManager = radixManager
 		self.structureFactory = structureFactory
-		self.treeProxy=TreeProxyOfStageAddStructure(structureFactory, operationManager)
+		self.treeProxy=TreeProxyOfStageAddStructure(structureFactory)
 
 	def construct(self, characters):
 		for character in characters:
