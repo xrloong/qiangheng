@@ -89,7 +89,7 @@ class HanZiNetworkManager:
 	def addUnitStructureIntoNode(self, structure, nodeName):
 		self.hanziNetwork.addUnitStructureIntoNode(structure, nodeName)
 
-class StructureFactory:
+class HanZiNetworkItemFactory:
 	@inject
 	def __init__(self,
 		networkManager: HanZiNetworkManager,

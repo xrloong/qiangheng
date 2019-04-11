@@ -2,7 +2,7 @@ from injector import inject
 
 from .helper import HanZiNetworkManager
 from .helper import HanZiCodeInfosComputer
-from .helper import StructureFactory
+from .helper import HanZiNetworkItemFactory
 
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
@@ -38,17 +38,17 @@ class HanZiTreeProxy(BasicTreeProxy):
 
 class HanZiTreeNodeGenerator(TreeNodeGenerator):
 	@inject
-	def __init__(self, structureFactory: StructureFactory):
-		self.structureFactory = structureFactory
+	def __init__(self, itemFactory: HanZiNetworkItemFactory):
+		self.itemFactory = itemFactory
 
 	def generateLeafNode(self, nodeName):
-		return self.structureFactory.getWrapperStructureByNodeName(nodeName)
+		return self.itemFactory.getWrapperStructureByNodeName(nodeName)
 
 	def generateLeafNodeByReference(self, referencedNode, index):
-		return self.structureFactory.getWrapperStructureByNode(referencedNode, index)
+		return self.itemFactory.getWrapperStructureByNode(referencedNode, index)
 
 	def generateNode(self, operatorName, children):
-		return self.structureFactory.getCompoundStructureByOperatorName(operatorName, children)
+		return self.itemFactory.getCompoundStructureByOperatorName(operatorName, children)
 
 class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
 	@inject
@@ -64,14 +64,14 @@ class ComputeCharacterInfo:
 
 			networkManager: HanZiNetworkManager,
 			codeInfosComputer: HanZiCodeInfosComputer,
-			structureFactory: StructureFactory
+			itemFactory: HanZiNetworkItemFactory
 			):
 		self.structureManager = structureManager
 		self.radixManager = radixManager
 
 		self.networkManager = networkManager
 		self.codeInfosComputer = codeInfosComputer
-		self.structureFactory = structureFactory
+		self.itemFactory = itemFactory
 
 		self.treInterpreter = treInterpreter
 
@@ -88,14 +88,14 @@ class ComputeCharacterInfo:
 		return self.structureManager.queryCharacterDescription(characterName)
 
 	def touchCharacter(self, character):
-		return self.structureFactory.touchNode(character)
+		return self.itemFactory.touchNode(character)
 
 	def expandNode(self, node):
 		character = node.getName()
 		if self.radixManager.hasRadix(character) and len(node.getUnitStructureList())==0:
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
-				structure = self.structureFactory.getUnitStructure(radixCodeInfo)
+				structure = self.itemFactory.getUnitStructure(radixCodeInfo)
 				self.networkManager.addUnitStructureIntoNode(structure, character)
 
 		nodeName = character
@@ -206,7 +206,7 @@ class ComputeCharacterInfo:
 		else:
 			subIndex=0
 
-		return self.structureFactory.getWrapperStructureByNodeName(name, subIndex)
+		return self.itemFactory.getWrapperStructureByNodeName(name, subIndex)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
@@ -217,7 +217,7 @@ class ComputeCharacterInfo:
 
 		operator=structDesc.getOperator()
 
-		return self.structureFactory.getCompoundStructure(operator, childStructureList)
+		return self.itemFactory.getCompoundStructure(operator, childStructureList)
 
 	def computeNode(self, node):
 		self.codeInfosComputer.computeForNode(node)
