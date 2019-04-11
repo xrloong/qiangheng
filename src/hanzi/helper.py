@@ -27,12 +27,12 @@ class HanZiInterpreter:
 
 		return characterInfo
 
-class HanZiProcessor:
+class HanZiCodeInfosComputer:
 	@inject
 	def __init__(self):
 		pass
 
-	def computeCodeInfosOfNodeTree(self, node):
+	def computeForNode(self, node):
 		"""設定某一個字符所包含的部件的碼"""
 		self._recursivelyComputeCodeInfosOfNodeTree(node)
 

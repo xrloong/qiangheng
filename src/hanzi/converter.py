@@ -1,7 +1,7 @@
 from injector import inject
 
 from .network import HanZiNetwork
-from .helper import HanZiProcessor
+from .helper import HanZiCodeInfosComputer
 from .helper import StructureFactory
 
 from model.StructureManager import StructureManager
@@ -61,13 +61,13 @@ class ComputeCharacterInfo:
 			structureManager: StructureManager,
 			radixManager: RadixManager,
 			treInterpreter: HanZiTreeRegExpInterpreter,
-			hanziProcessor: HanZiProcessor,
+			codeInfosComputer: HanZiCodeInfosComputer,
 			structureFactory: StructureFactory
 			):
 		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 		self.radixManager = radixManager
-		self.hanziProcessor = hanziProcessor
+		self.codeInfosComputer = codeInfosComputer
 		self.structureFactory = structureFactory
 
 		self.treInterpreter = treInterpreter
@@ -218,5 +218,5 @@ class ComputeCharacterInfo:
 		return self.structureFactory.getCompoundStructure(operator, childStructureList)
 
 	def computeNode(self, node):
-		self.hanziProcessor.computeCodeInfosOfNodeTree(node)
+		self.codeInfosComputer.computeForNode(node)
 
