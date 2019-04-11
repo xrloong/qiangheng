@@ -116,7 +116,6 @@ class ComputeCharacterInfo:
 			substituteRuleList=self.structureManager.getSubstituteRules()
 			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
 
-			self.recursivelyAddStructure(structure)
 			self.networkManager.addStructureIntoNode(structure, nodeName)
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
@@ -187,12 +186,6 @@ class ComputeCharacterInfo:
 			availableRuleFilter = lambda rule: treInterpreter.matchQuickly(rule.getTRE(), structure)
 			filteredSubstituteRuleList = filter(availableRuleFilter, substituteRuleList)
 			changed=rearrangeStructureOneTurn(structure, filteredSubstituteRuleList)
-
-	def recursivelyAddStructure(self, structure):
-		for childStructure in structure.getStructureList():
-			self.recursivelyAddStructure(childStructure)
-
-		self.networkManager.addStructure(structure)
 
 	def generateReferenceLink(self, structDesc):
 		name=structDesc.getReferenceName()

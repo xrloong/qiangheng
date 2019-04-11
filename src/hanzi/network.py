@@ -183,7 +183,6 @@ class HanZiNetwork:
 	@inject
 	def __init__(self):
 		self.nodeDict={}
-		self.structureDict={}
 
 	def addNode(self, node):
 		name = node.getName()
@@ -199,9 +198,6 @@ class HanZiNetwork:
 		node=self.findNode(name)
 		structure=node.getStructure()
 		return bool(structure)
-
-	def addStructure(self, structureName, structure):
-		self.structureDict[structureName]=structure
 
 	def addStructureIntoNode(self, structure, nodeName):
 		dstNode=self.findNode(nodeName)

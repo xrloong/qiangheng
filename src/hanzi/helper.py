@@ -79,10 +79,6 @@ class HanZiNetworkManager:
 	def addNode(self, node):
 		return self.hanziNetwork.addNode(node)
 
-	def addStructure(self, structure):
-		structureName=structure.getUniqueName()
-		return self.hanziNetwork.addStructure(structureName, structure)
-
 	def addStructureIntoNode(self, structure, nodeName):
 		self.hanziNetwork.addStructureIntoNode(structure, nodeName)
 
