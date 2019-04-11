@@ -78,20 +78,30 @@ class StructureFactory:
 		tag = CharacterInfo.CharacterInfo(character)
 		return tag
 
+	def getUnitStructure(self, radixCodeInfo):
+		return self.generateUnitStructure(radixCodeInfo)
+
 	def generateUnitStructure(self, radixCodeInfo):
 		return self._generateUnitStructure(radixCodeInfo)
 
-	def generateAssemblageStructure(self, operator, structureList):
+	def getCompoundStructure(self, operator, structureList):
+		return self.generateCompoundStructure(operator, structureList)
+
+	def generateCompoundStructure(self, operator, structureList):
 		return self._generateCompoundStructure(operator, structureList)
 
-	def generateWrapperStructure(self, name, index=0):
+	def getWrapperStructure(self, name, index=0):
+		wrapperExpression = (name, index)
 		if (name, index) in self.wrapperExpressionDict:
-			return self.wrapperExpressionDict[(name, index)]
+			return self.wrapperExpressionDict[wrapperExpression]
 
-		structure = self._generateWrapperStructure(name, index)
+		structure = self.generateWrapperStructure(name, index)
 
-		self.wrapperExpressionDict[(name, index)]=structure
+		self.wrapperExpressionDict[wrapperExpression]=structure
 		return structure
+
+	def generateWrapperStructure(self, name, index):
+		return self._generateWrapperStructure(name, index)
 
 	def _generateUnitStructure(self, radixCodeInfo):
 		tag = StructureUnitTag(radixCodeInfo)

@@ -40,15 +40,15 @@ class TreeProxyOfStageAddStructure(TreeRegExp.BasicTreeProxy):
 		return isMatch
 
 	def generateLeafNode(self, nodeName):
-		return self.structureFactory.generateWrapperStructure(nodeName)
+		return self.structureFactory.getWrapperStructure(nodeName)
 
 	def generateLeafNodeByReference(self, referencedNode, index):
 		nodeName=referencedNode.getTag().getReferenceName()
-		return self.structureFactory.generateWrapperStructure(nodeName, index)
+		return self.structureFactory.getWrapperStructure(nodeName, index)
 
 	def generateNode(self, operatorName, children):
 		operator=self.operationManager.generateOperator(operatorName)
-		return self.structureFactory.generateAssemblageStructure(operator, children)
+		return self.structureFactory.getCompoundStructure(operator, children)
 
 
 class TaskConstructNetwork:
@@ -92,7 +92,7 @@ class TaskConstructNetwork:
 		if self.radixManager.hasRadix(character) and len(node.getUnitStructureList())==0:
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
-				structure = self.structureFactory.generateUnitStructure(radixCodeInfo)
+				structure = self.structureFactory.getUnitStructure(radixCodeInfo)
 				self.hanziNetwork.addUnitStructureIntoNode(structure, character)
 
 		nodeName = character
@@ -201,7 +201,7 @@ class TaskConstructNetwork:
 		else:
 			subIndex=0
 
-		return self.structureFactory.generateWrapperStructure(name, subIndex)
+		return self.structureFactory.getWrapperStructure(name, subIndex)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
@@ -212,7 +212,7 @@ class TaskConstructNetwork:
 
 		operator=structDesc.getOperator()
 
-		return self.structureFactory.generateAssemblageStructure(operator, childStructureList)
+		return self.structureFactory.getCompoundStructure(operator, childStructureList)
 
 class ComputeCharacterInfo:
 	@inject
