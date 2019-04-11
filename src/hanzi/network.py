@@ -45,6 +45,13 @@ class HanZiNode:
 	def getTag(self):
 		return self.tag
 
+	def getStructureTagList(self, subIndex = 0):
+		if(subIndex > 0):
+			structure=self.getSubStructure(subIndex - 1)
+			structureList=[structure]
+		else:
+			structureList=self.getStructureList(True)
+		return [structure.getTag() for structure in structureList]
 
 class HanZiStructure:
 	def __init__(self, tag):
@@ -139,25 +146,12 @@ class HanZiStructure:
 		return self.tag
 
 	def generateCodeInfos(self, codeInfoInterpreter):
-		def getAllWrapperStructureList():
-			expression=self.getTag().getReferenceExpression()
-			tempList=expression.split(".")
-			if(len(tempList)>1):
-				referenceName=tempList[0]
-				index=int(tempList[1])-1
-				structure=self.referenceNode.getSubStructure(index)
-				structureList=[structure]
-			else:
-				structureList=self.referenceNode.getStructureList(True)
-			return structureList
-
 		def getTagList():
 			if self.isWrapper():
-				structureList=getAllWrapperStructureList()
+				return self.referenceNode.getStructureTagList(self.index)
 			else:
 				structureList=self.structureList
-
-			return [structure.getTag() for structure in structureList]
+				return [structure.getTag() for structure in structureList]
 
 		self.getTag().generateCodeInfos(codeInfoInterpreter, self.getOperator(), getTagList())
 

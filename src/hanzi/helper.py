@@ -17,7 +17,8 @@ class HanZiInterpreter:
 
 	def _getNodeCharacterInfo(self, hanziNode):
 		structureList=hanziNode.getStructureList(True)
-		codeInfoList=sum(map(lambda s: s.getTag().getCodeInfoList(), structureList), [])
+		tagList=hanziNode.getStructureTagList()
+		codeInfoList=sum(map(lambda tag: tag.getCodeInfoList(), tagList), [])
 		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
 
 		codeList=self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
