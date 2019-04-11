@@ -57,13 +57,13 @@ class HanZiStructure:
 		self.flagIsCodeInfoGenerated=False
 
 	def __str__(self):
-		if self.isWrapper():
-			tag=self.getTag()
-			return str(self.tag)
-		else:
+		if self.isCompound():
 			structureList=self.getStructureList()
 			nameList=[str(structure) for structure in structureList]
 			return "(%s %s)"%(self.getOperator(), " ".join(nameList))
+		else:
+			tag=self.getTag()
+			return str(self.tag)
 
 	def isUnit(self):
 		return (not self.isWrapper()) and (not self.isCompound())
@@ -79,21 +79,6 @@ class HanZiStructure:
 
 	def setCodeInfoGenerated(self):
 		self.flagIsCodeInfoGenerated=True
-
-	def getUniqueName(self):
-		strucutreExpression=""
-		referenceExpression=""
-
-		if self.isCompound():
-			structureList=self.getStructureList()
-			nameList=[structure.getUniqueName() for structure in structureList]
-			strucutreExpression="%s %s"%(self.getOperator(), " ".join(nameList))
-
-		if self.isWrapper():
-			tag=self.getTag()
-			referenceExpression=tag.getReferenceExpression()
-
-		return "(%s|%s)"%(referenceExpression, strucutreExpression)
 
 	def getReferenceNode(self):
 		return self.referenceNode
