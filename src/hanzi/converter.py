@@ -67,12 +67,15 @@ class TaskConstructNetwork:
 			self.constructCharacter(character)
 
 	def constructCharacter(self, character):
-		node = self.structureFactory.touchNode(character)
+		node = self.touchCharacter(character)
 		self.expandNode(node)
 		self.computeNode(node)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
+
+	def touchCharacter(self, character):
+		return self.structureFactory.touchNode(character)
 
 	def expandNode(self, node):
 		character = node.getName()
