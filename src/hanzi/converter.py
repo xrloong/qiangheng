@@ -62,21 +62,14 @@ class TaskConstructNetwork:
 
 	def construct(self, characters):
 		for character in characters:
-			self.handleAddNode(character)
-			self.handleAddStructure(character)
+			self.constructCharacter(character)
 
-	def handleAddNode(self, character):
-		self.structureFactory.touchNode(character)
-
-	def handleAddStructure(self, character):
-		self.expandNodeByName(character)
+	def constructCharacter(self, character):
+		node = self.structureFactory.touchNode(character)
+		self.expandNode(node)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
-
-	def expandNodeByName(self, nodeName):
-		node = self.hanziNetwork.findNode(nodeName)
-		self.expandNode(node)
 
 	def expandNode(self, node):
 		character = node.getName()
@@ -186,7 +179,7 @@ class TaskConstructNetwork:
 		name=structDesc.getReferenceName()
 		nodeExpression=structDesc.getReferenceExpression()
 
-		self.handleAddNode(name)
+		self.constructCharacter(name)
 
 		l=nodeExpression.split(".")
 		if len(l)>1:
