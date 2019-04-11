@@ -72,13 +72,13 @@ class StructureWrapperTag(StructureTag):
 			codeInfoList.extend(tag.getCodeInfoList())
 		self.setCodeInfoList(codeInfoList)
 
-class StructureAssemblageTag(StructureTag):
+class StructureCompoundTag(StructureTag):
 	def __init__(self, codeInfoInterpreter):
 		super().__init__()
 		self.codeInfoInterpreter = codeInfoInterpreter
 
 	def generateCodeInfos(self, operator, tagList):
-		infoListList=StructureAssemblageTag.getAllCodeInfoListFragTagList(tagList)
+		infoListList=StructureCompoundTag.getAllCodeInfoListFragTagList(tagList)
 		codeInfoList=[]
 		for infoList in infoListList:
 			codeInfo = self.codeInfoInterpreter.encodeToCodeInfo(operator, infoList)

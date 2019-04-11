@@ -2,7 +2,7 @@ from injector import inject
 
 from .network import HanZiNetwork
 from .network import HanZiStructure, HanZiNode
-from .item import StructureUnitTag, StructureWrapperTag, StructureAssemblageTag
+from .item import StructureUnitTag, StructureWrapperTag, StructureCompoundTag
 from model.interpreter import CodeInfoInterpreter
 from model.element import CharacterInfo
 from model.manager import OperatorManager
@@ -140,7 +140,7 @@ class StructureFactory:
 		return structure
 
 	def _generateCompoundStructure(self, operator, structureList):
-		tag = StructureAssemblageTag(self.codeInfoInterpreter)
+		tag = StructureCompoundTag(self.codeInfoInterpreter)
 
 		structure = HanZiStructure(tag)
 		structure.setAsCompound(operator, structureList)
