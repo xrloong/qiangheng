@@ -12,6 +12,10 @@ class CodeInfoInterpreter:
 
 	def encodeToCodeInfo(self, operator, codeInfoList):
 		codeInfo=self.codeInfoEncoder.setByComps(operator, codeInfoList)
+		if codeInfo!=None:
+			for childCodeInfo in codeInfoList:
+				codeVariance=childCodeInfo.getCodeVarianceType()
+				codeInfo.multiplyCodeVarianceType(codeVariance)
 		return codeInfo
 
 	def interpretCodeInfoList(self, codeInfoList):

@@ -82,10 +82,6 @@ class StructureCompoundTag(StructureTag):
 		for infoList in infoListList:
 			codeInfo = codeInfoInterpreter.encodeToCodeInfo(operator, infoList)
 			if codeInfo!=None:
-				for childCodeInfo in infoList:
-					codeVariance=childCodeInfo.getCodeVarianceType()
-					codeInfo.multiplyCodeVarianceType(codeVariance)
-
 				codeInfoList.append(codeInfo)
 		self.setCodeInfoList(codeInfoList)
 
