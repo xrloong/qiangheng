@@ -29,8 +29,7 @@ QHDATA_MAIN_PATH		=	$(QHDATA_PATH)/main
 QHDATA_MAIN_COMP_PATH		=	$(QHDATA_MAIN_PATH)/component
 QHDATA_MAIN_RADIX_PATH		=	$(QHDATA_MAIN_PATH)/radix
 QHDATA_TEMPLATE_FILE		=	$(QHDATA_MAIN_PATH)/template.xml
-QHDATA_STYLE_PATH		=	$(QHDATA_MAIN_PATH)/style
-QHDATA_STYLE_FILE		=	$(QHDATA_STYLE_PATH)/standard.xml
+QHDATA_STYLE_FILE		=	$(QHDATA_MAIN_PATH)/style.xml
 GEN_PATH			=	gen
 GEN_QHDATA_PATH			=	$(GEN_PATH)/$(QHDATA_PATH)
 GEN_QHDATA_MAIN_PATH		=	$(GEN_QHDATA_PATH)/main
@@ -58,12 +57,10 @@ prepare-main:
 	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/CJK-A.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_PATH)/CJK-A.xml
 	xsltproc -o $(GEN_QHDATA_MAIN_COMP_PATH)/CJK.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_COMP_PATH)/CJK.xml
 	xsltproc -o $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml
+	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/style.yaml xslt/xml2yaml.xslt $(QHDATA_STYLE_FILE)
 	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/template.yaml xslt/xml2yaml-template.xslt $(QHDATA_TEMPLATE_FILE)
 	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK.xml $(GEN_QHDATA_PATH)/ _CJK.xml
 	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK-A.xml $(GEN_QHDATA_PATH)/ _CJK-A.xml
-
-prepare-style:
-	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/style.yaml xslt/xml2yaml.xslt $(QHDATA_STYLE_FILE)
 
 prepare-im:
 	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/radix/
@@ -78,37 +75,30 @@ prepare-im-general:
 
 prepare-ar:
 	mkdir -p $(GEN_QHDATA_PATH)/ar
-	make prepare-style IM=ar
 	make prepare-im prepare-im-general IM=ar
 
 prepare-bs:
 	mkdir -p $(GEN_QHDATA_PATH)/bs
-	make prepare-style IM=bs
 	make prepare-im prepare-im-general IM=bs
 
 prepare-cj:
 	mkdir -p $(GEN_QHDATA_PATH)/cj
-	make prepare-style IM=cj
 	make prepare-im prepare-im-general IM=cj
 
 prepare-dy:
 	mkdir -p $(GEN_QHDATA_PATH)/dy
-	make prepare-style IM=dy
 	make prepare-im prepare-im-general IM=dy
 
 prepare-fc:
 	mkdir -p $(GEN_QHDATA_PATH)/fc
-	make prepare-style IM=fc
 	make prepare-im prepare-im-general IM=fc
 
 prepare-zm:
 	mkdir -p $(GEN_QHDATA_PATH)/zm
-	make prepare-style IM=zm
 	make prepare-im prepare-im-general IM=zm
 
 prepare-dc:
 	mkdir -p $(GEN_QHDATA_PATH)/dc
-	make prepare-style IM=dc
 	make prepare-im IM=dc
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK-A.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml
