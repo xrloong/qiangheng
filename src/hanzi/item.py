@@ -51,12 +51,6 @@ class StructureWrapperTag(StructureTag):
 	def __str__(self):
 		return self.getReferenceExpression()
 
-	def getIndex(self):
-		return self.index
-
-	def getReferenceName(self):
-		return self.referenceName
-
 	def getReferenceExpression(self):
 		return self.referenceExpression
 

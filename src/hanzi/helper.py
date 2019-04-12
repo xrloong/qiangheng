@@ -51,7 +51,7 @@ class HanZiCodeInfosComputer:
 		if structure.isUnit():
 			pass
 		elif structure.isWrapper():
-			self._recursivelyComputeCodeInfosOfNodeTree(structure.getReferenceNode())
+			self._recursivelyComputeCodeInfosOfNodeTree(structure.getReferencedNode())
 		elif structure.isCompound():
 			for cihldStructure in structure.getStructureList():
 				self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)

@@ -89,18 +89,18 @@ class HanZiStructure:
 	def setCodeInfoGenerated(self):
 		self.flagIsCodeInfoGenerated=True
 
-	def getReferenceNode(self):
+	def getReferencedNode(self):
 		return self.referenceNode
 
 	def getReferencedNodeName(self):
-		return self.getReferenceNode().getName()
+		return self.getReferencedNode().getName()
 
 	def getOperator(self):
 		return self.operator
 
 	def getOperatorName(self):
 		if self.isWrapper():
-			referenceNode=self.getReferenceNode()
+			referenceNode=self.getReferencedNode()
 			structure=referenceNode.getStructure()
 			if structure:
 				return structure.getOperator().getName()
@@ -111,7 +111,7 @@ class HanZiStructure:
 
 	def getExpandedStructure(self):
 		if self.isWrapper():
-			expandedStructure=self.getReferenceNode().getStructure()
+			expandedStructure=self.getReferencedNode().getStructure()
 			if expandedStructure:
 				return expandedStructure
 			else:

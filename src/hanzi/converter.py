@@ -128,7 +128,7 @@ class ComputeCharacterInfo:
 		return structure
 
 	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList):
-		referenceNode=structure.getReferenceNode()
+		referenceNode = structure.getReferencedNode()
 		if referenceNode:
 			self.expandNode(referenceNode)
 
@@ -143,7 +143,7 @@ class ComputeCharacterInfo:
 		tag.setTemplateApplied()
 
 	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList):
-		referenceNode=structure.getReferenceNode()
+		referenceNode = structure.getReferencedNode()
 		if referenceNode:
 			self.expandNode(referenceNode)
 
@@ -160,7 +160,7 @@ class ComputeCharacterInfo:
 	def rearrangeStructure(self, structure, substituteRuleList):
 		treInterpreter = self.treInterpreter
 		def expandLeaf(structure):
-			referenceNode=structure.getReferenceNode()
+			referenceNode = structure.getReferencedNode()
 			if referenceNode:
 				self.expandNode(referenceNode)
 
