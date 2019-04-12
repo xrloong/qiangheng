@@ -18,4 +18,5 @@ CodingRadixFileList = [
 	codingMethodDir + 'radix/CJK-A.yaml',
 	codingMethodDir + 'radix/adjust.yaml'
 ]
+CodingTemplateFile = codingMethodDir + 'radix/template.yaml'
 

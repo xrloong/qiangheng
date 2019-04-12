@@ -595,7 +595,8 @@ class TemplateManager(AbsTemplateManager):
 		return strokeGroup.getStrokeList()[start, end+1]
 
 	def load(self):
-		template_file="gen/qhdata/dc/radix/template.yaml"
+		from . import CodingTemplateFile
+		template_file = CodingTemplateFile
 		self.parseTemplateFromYAML(template_file)
 
 	def parseTemplateFromYAML(self, filename):
