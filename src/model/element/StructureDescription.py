@@ -29,16 +29,8 @@ class StructureDescription:
 	def changeFontVariance(self, fontVariance):
 		self.fontVariance = fontVariance
 
-	def isBelongToFontVariance(self, targetFontVariance):
-		if targetFontVariance == FontVariance.All:
-			return True
-		elif targetFontVariance == FontVariance.Traditional:
-			return self.fontVariance in [FontVariance.All, FontVariance.Traditional]
-		elif targetFontVariance == FontVariance.Simplified:
-			return self.fontVariance in [FontVariance.All, FontVariance.Simplified]
-		else:
-			return False
-		self.fontVariance = fontVariance
+	def getFontVariance(self):
+		return self.fontVariance
 
 	def getUniqueName(self):
 		return self.name
