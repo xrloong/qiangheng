@@ -41,11 +41,9 @@
 
           <xsl:if test="組字">
             <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-            <xsl:text>結構: </xsl:text>
-            <xsl:text>"</xsl:text>
-            <xsl:call-template name="generate-結構-top-字根"/>
-            <xsl:text>"</xsl:text>
+            <xsl:text>結構集:</xsl:text>
             <xsl:value-of select="$newline" />
+            <xsl:call-template name="generate-結構-top-字根"/>
           </xsl:if>
         </xsl:if>
     </xsl:for-each>
@@ -58,7 +56,26 @@
 
   <xsl:template name="generate-結構-top-字根">
     <xsl:for-each select="組字">
-      <xsl:call-template name="generate-結構-組字"/>
+      <xsl:value-of select="$intent" />
+      <xsl:value-of select="$intent" />
+      <xsl:value-of select="$itemmark" />
+
+      <xsl:text>{</xsl:text>
+      <xsl:text>結構: </xsl:text>
+      <xsl:text>"</xsl:text>
+        <xsl:call-template name="generate-結構-組字"/>
+      <xsl:text>"</xsl:text>
+
+      <xsl:if test="@字體">
+        <xsl:text>, </xsl:text>
+        <xsl:text>字體: </xsl:text>
+        <xsl:text>"</xsl:text>
+          <xsl:value-of select="@字體" />
+        <xsl:text>"</xsl:text>
+      </xsl:if>
+
+      <xsl:text>}</xsl:text>
+      <xsl:value-of select="$newline" />
     </xsl:for-each>
   </xsl:template>
 

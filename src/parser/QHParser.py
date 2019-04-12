@@ -61,14 +61,24 @@ class QHParser:
 
 			charDesc=CharacterDescription(charName)
 
-			if Constant.TAG_STRUCTURE in node:
-				structureExpression=node.get(Constant.TAG_STRUCTURE)
-				comp=self.parseStructure(structureExpression)
-				structureList=[comp, ]
-				charDesc.setStructureList(structureList)
+			structureList = self.loadStructureSet(node)
+			charDesc.setStructureList(structureList)
 
 			charDescList.append(charDesc)
 		return charDescList
+
+	def loadStructureSet(self, charNode):
+		structureList=[]
+		if Constant.TAG_STRUCTURE_SET in charNode:
+			nodeStructureList=charNode.get(Constant.TAG_STRUCTURE_SET)
+
+			for structureDict in nodeStructureList:
+				structureExpression = structureDict[Constant.TAG_STRUCTURE]
+
+				structureDesc = self.parseStructure(structureExpression)
+				structureList.append(structureDesc)
+
+		return structureList
 
 	def loadCharacters(self, filename):
 		node=yaml.load(open(filename), yaml.SafeLoader)
