@@ -147,12 +147,13 @@ class HanZiNetworkItemFactory:
 		return self._generateWrapperStructure(name, index)
 
 	def _generateUnitStructure(self, radixCodeInfo):
-		tag = StructureUnitTag(radixCodeInfo)
+		tag = StructureUnitTag()
 		structure = HanZiStructure(tag)
+		structure.setAsUnit(radixCodeInfo)
 		return structure
 
 	def _generateWrapperStructure(self, referenceName, index):
-		tag = StructureWrapperTag(referenceName, index)
+		tag = StructureWrapperTag()
 
 		referenceNode = self.networkManager.findNode(referenceName)
 

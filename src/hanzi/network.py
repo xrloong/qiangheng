@@ -1,5 +1,3 @@
-from .item import StructureCompoundTag
-
 class HanZiNode:
 	def __init__(self, name, tag):
 		self.name=name
@@ -57,6 +55,8 @@ class HanZiNode:
 
 class HanZiStructure:
 	def __init__(self, tag):
+		self.radixCodeInfo = None
+
 		self.referenceNode=None
 		self.index=0
 		self.referenceExpression=""
@@ -77,7 +77,7 @@ class HanZiStructure:
 			return str(self.tag)
 
 	def isUnit(self):
-		return (not self.isWrapper()) and (not self.isCompound())
+		return bool(self.radixCodeInfo)
 
 	def isWrapper(self):
 		return bool(self.referenceNode)
@@ -137,6 +137,9 @@ class HanZiStructure:
 				return []
 		return self.structureList
 
+	def setAsUnit(self, radixCodeInfo):
+		self.radixCodeInfo = radixCodeInfo
+
 	def setAsCompound(self, operator, structureList):
 		self.operator=operator
 		self.structureList=structureList
@@ -164,20 +167,45 @@ class HanZiStructure:
 
 		codeInfoList=[]
 		if self.isUnit():
-			codeInfoList = [tag.radixCodeInfo]
+			codeInfoList = [self.radixCodeInfo]
 		elif self.isWrapper():
 			tagList = self.referenceNode.getStructureTagList(self.index)
 			for childTag in tagList:
 				codeInfoList.extend(childTag.getCodeInfoList())
 		else:
 			tagList = [structure.getTag() for structure in self.structureList]
-			infoListList = StructureCompoundTag.getAllCodeInfoListFragTagList(tagList)
+			infoListList = HanZiStructure.getAllCodeInfoListFromTagList(tagList)
 			for infoList in infoListList:
 				codeInfo = codeInfoInterpreter.encodeToCodeInfo(operator, infoList)
 				if codeInfo!=None:
 					codeInfoList.append(codeInfo)
 
 		tag.setCodeInfoList(codeInfoList)
+
+
+	@staticmethod
+	def getAllCodeInfoListFromTagList(tagList):
+		def combineList(infoListList, infoListOfNode):
+			if len(infoListList)==0:
+				ansListList=[]
+				for codeInfo in infoListOfNode:
+					ansListList.append([codeInfo])
+			else:
+				ansListList=[]
+				for infoList in infoListList:
+					for codeInfo in infoListOfNode:
+						ansListList.append(infoList+[codeInfo])
+
+			return ansListList
+
+		infoListList=[]
+
+		for tag in tagList:
+			codeInfoList=tag.getRadixCodeInfoList()
+			infoListList=combineList(infoListList, codeInfoList)
+
+		return infoListList
+
 
 
 class HanZiNetwork:
