@@ -1,6 +1,9 @@
+from coding.Base import CodingType
 from .GuiXie import GuiXieInfo as CodingInfo
 from .GuiXie import GXCodeInfoEncoder as CodeInfoEncoder
 from .GuiXie import GXRadixParser as CodingRadixParser
+
+codingType = CodingType.Input
 
 codingMethodName = "gx"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)

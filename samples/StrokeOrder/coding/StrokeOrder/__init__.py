@@ -1,6 +1,9 @@
+from coding.Base import CodingType
 from .StrokeOrder import StrokeOrderInfo as CodingInfo
 from .StrokeOrder import SOCodeInfoEncoder as CodeInfoEncoder
 from .StrokeOrder import SORadixParser as CodingRadixParser
+
+codingType = CodingType.Input
 
 codingMethodName = "dy"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
