@@ -19,6 +19,3 @@ CodingRadixFileList = [
 	codingMethodDir + 'radix/adjust.yaml'
 ]
 
-if __name__=='__main__':
-	pass
-

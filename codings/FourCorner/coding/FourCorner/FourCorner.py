@@ -654,20 +654,3 @@ class FCRadixParser(CodingRadixParser):
 		codeInfo=FCCodeInfo(corners)
 		return codeInfo
 
-codingMethodName = "fc"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingComponentFileList = [
-	codingMethodDir + 'style.yaml',
-]
-CodingSubstituteFileList = [
-	codingMethodDir + 'substitute.yaml',
-]
-CodingRadixFileList = [
-	codingMethodDir + 'radix/CJK.yaml',
-	codingMethodDir + 'radix/CJK-A.yaml',
-	codingMethodDir + 'radix/adjust.yaml'
-]
-CodingInfo = FourCornerInfo
-CodeInfoEncoder = FCCodeInfoEncoder
-CodingRadixParser = FCRadixParser
-
