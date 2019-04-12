@@ -5,7 +5,6 @@ class CodingConfig:
 	def __init__(self, package):
 		self.commonComponentFileList = self.getMainComponentList()
 		self.commonTemplateFileList = self.getMainTemplateFile()
-		self.specificComponentFileList = package.CodingComponentFileList
 		self.specificSubstituteFileList = package.CodingSubstituteFileList
 		self.specificRadixFileList = package.CodingRadixFileList
 
@@ -14,9 +13,6 @@ class CodingConfig:
 
 	def getCommonTemplateFileList(self):
 		return self.commonTemplateFileList
-
-	def getSpecificComponentFileList(self):
-		return self.specificComponentFileList
 
 	def getSpecificSubstituteFileList(self):
 		return self.specificSubstituteFileList

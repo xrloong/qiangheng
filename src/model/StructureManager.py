@@ -26,7 +26,7 @@ class StructureManager:
 		self._loadData()
 
 	def _loadData(self):
-		componentFiles = self.codingConfig.getCommonComponentFileList() + self.codingConfig.getSpecificComponentFileList()
+		componentFiles = self.codingConfig.getCommonComponentFileList()
 		templateFiles = self.codingConfig.getCommonTemplateFileList()
 		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
 		radixFiles = self.codingConfig.getSpecificRadixFileList()

@@ -6,7 +6,6 @@ from .Dummy import DummyCodeInfoEncoder as CodeInfoEncoder
 from .Dummy import DummyRadixParser as CodingRadixParser
 
 codingType = CodingType.Input
-fontVariance = FontVariance.All
 
 CodingComponentFileList = [
 ]

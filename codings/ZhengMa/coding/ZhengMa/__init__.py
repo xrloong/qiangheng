@@ -10,8 +10,6 @@ fontVariance = FontVariance.Simplified
 
 codingMethodName = "zm"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingComponentFileList = [
-]
 CodingSubstituteFileList = [
 	codingMethodDir + 'substitute.yaml',
 ]
