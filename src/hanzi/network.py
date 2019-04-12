@@ -59,6 +59,8 @@ class HanZiStructure:
 	def __init__(self, tag):
 		self.referenceNode=None
 		self.index=0
+		self.referenceExpression=""
+
 		self.operator=None
 		self.structureList=[]
 
@@ -121,8 +123,7 @@ class HanZiStructure:
 
 	def getReferenceExpression(self):
 		if self.isWrapper():
-			tag=self.getTag()
-			return tag.getReferenceExpression()
+			return self.referenceExpression
 		else:
 			return
 
@@ -141,8 +142,15 @@ class HanZiStructure:
 		self.structureList=structureList
 
 	def setAsWrapper(self, referenceNode, index):
-		self.referenceNode=referenceNode
-		self.index=index
+		referenceName = referenceNode.getName()
+		if index==0:
+			referenceExpression = "{}".format(referenceName)
+		else:
+			referenceExpression = "{}.{}".format(referenceName,index)
+
+		self.referenceNode = referenceNode
+		self.index = index
+		self.referenceExpression = referenceExpression
 
 	def setNewStructure(self, newTargetStructure):
 		self.setAsCompound(newTargetStructure.operator, newTargetStructure.structureList)
