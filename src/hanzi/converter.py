@@ -101,7 +101,7 @@ class ComputeCharacterInfo:
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = self.itemFactory.getUnitStructure(radixCodeInfo)
-				self.networkManager.addStructureIntoNode(structure, character)
+				self.networkManager.addStructureIntoNode(structure, node)
 
 		nodeName = character
 		if self.networkManager.isNodeExpanded(nodeName):
@@ -121,7 +121,8 @@ class ComputeCharacterInfo:
 			substituteRuleList=self.structureManager.getSubstituteRules()
 			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
 
-			self.networkManager.addStructureIntoNode(structure, character)
+			self.networkManager.addStructureIntoNode(structure, node)
+			self.networkManager.setMainStructureOfNode(structure, node)
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():

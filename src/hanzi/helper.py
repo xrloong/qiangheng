@@ -79,11 +79,11 @@ class HanZiNetworkManager:
 	def addNode(self, node):
 		return self.hanziNetwork.addNode(node)
 
-	def addStructureIntoNode(self, structure, nodeName):
-		node = self.findNode(nodeName)
+	def addStructureIntoNode(self, structure, node):
 		node.addStructure(structure)
-		if not structure.isUnit():
-			node.setMainStructure(structure)
+
+	def setMainStructureOfNode(self, structure, node):
+		node.setMainStructure(structure)
 
 class HanZiNetworkItemFactory:
 	@inject
