@@ -1,10 +1,13 @@
 from coding.Base import CodingType
+from coding.Base import FontVariance
 
 from .DynamicComposition import DynamicCompositionInfo as CodingInfo
 from .DynamicComposition import DCCodeInfoEncoder as CodeInfoEncoder
 from .DynamicComposition import DCRadixParser as CodingRadixParser
 
 codingType = CodingType.Drawing
+fontVariance = FontVariance.Traditional
+
 codingMethodName = "dc"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
 CodingComponentFileList = [

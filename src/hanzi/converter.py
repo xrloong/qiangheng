@@ -4,6 +4,8 @@ from .helper import HanZiNetworkManager
 from .helper import HanZiCodeInfosComputer
 from .helper import HanZiNetworkItemFactory
 
+from model.element.enum import FontVariance
+
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 from model.tree.regexp import TreeRegExpInterpreter
@@ -59,6 +61,8 @@ class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
 class ComputeCharacterInfo:
 	@inject
 	def __init__(self,
+			fontVariance: FontVariance,
+
 			structureManager: StructureManager,
 			radixManager: RadixManager,
 			treInterpreter: HanZiTreeRegExpInterpreter,

@@ -1,10 +1,13 @@
 from coding.Base import CodingType
+from coding.Base import FontVariance
 
 from .CangJie import CangJieInfo as CodingInfo
 from .CangJie import CJCodeInfoEncoder as CodeInfoEncoder
 from .CangJie import CJRadixParser as CodingRadixParser
 
 codingType = CodingType.Input
+fontVariance = FontVariance.Traditional
+
 codingMethodName = "cj"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
 CodingComponentFileList = [

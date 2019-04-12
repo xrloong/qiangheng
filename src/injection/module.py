@@ -5,6 +5,9 @@ from coding.Base import CodeInfoEncoder
 from coding.Base import CodingInfo
 from coding.Base import CodingRadixParser
 
+from model.element.enum import CodingType
+from model.element.enum import FontVariance
+
 from hanzi.network import HanZiNetwork
 
 from model.StructureManager import StructureManager
@@ -24,6 +27,14 @@ class PackageModule(Module):
 	@provider
 	def provideCodingRadixParser(self, codingPackage: Package) -> CodingRadixParser:
 		return codingPackage.CodingRadixParser()
+
+	@provider
+	def provideCodingType(self, codingPackage: Package) -> CodingType:
+		return codingPackage.codingType
+
+	@provider
+	def provideFontVariance(self, codingPackage: Package) -> FontVariance:
+		return codingPackage.fontVariance
 
 class ManagerModule(Module):
 	def __init__(self, structureManager):
