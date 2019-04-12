@@ -110,18 +110,18 @@ class ComputeCharacterInfo:
 
 	def expandNode(self, node):
 		character = node.getName()
+		if self.networkManager.isNodeExpanded(character):
+			return
+
 		if self.radixManager.hasRadix(character) and len(node.getUnitStructureList())==0:
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = self.itemFactory.getUnitStructure(radixCodeInfo)
 				self.networkManager.addStructureIntoNode(structure, node)
 
+		charDesc=self.queryDescription(character)
+
 		nodeName = character
-		if self.networkManager.isNodeExpanded(nodeName):
-			return
-
-		charDesc=self.queryDescription(nodeName)
-
 		structDescList=charDesc.getStructureList()
 		for structDesc in structDescList:
 			if structDesc.isEmpty():
