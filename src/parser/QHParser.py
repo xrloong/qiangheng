@@ -56,8 +56,10 @@ class QHParser:
 		return self.treeParser.parse(structureExpression)
 
 	def loadCharDescriptionByParsingYAML(self, rootNode):
-		charDescList=[]
-		charGroupNode=rootNode.get(Constant.TAG_CHARACTER_SET)
+		charGroupNode = rootNode.get(Constant.TAG_CHARACTER_SET)
+		charGroupNode = charGroupNode if charGroupNode is not None else []
+
+		charDescList = []
 		for node in charGroupNode:
 			charName=node.get(Constant.TAG_NAME)
 
