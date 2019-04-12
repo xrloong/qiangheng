@@ -57,8 +57,6 @@ class HanZiCodeInfosComputer:
 
 		self._generateCodeInfosOfStructure(structure)
 
-		structure.setCodeInfoGenerated()
-
 	def _generateCodeInfosOfStructure(self, structure):
 		structure.generateCodeInfos(self.codeInfoInterpreter)
 

@@ -76,7 +76,6 @@ class HanZiStructure:
 		self.structureList=[]
 
 		self.tag = StructureTag()
-		self.flagIsCodeInfoGenerated=False
 
 	def __str__(self):
 		if self.isCompound():
@@ -97,10 +96,7 @@ class HanZiStructure:
 		return bool(self.operator)
 
 	def isCodeInfoGenerated(self):
-		return self.flagIsCodeInfoGenerated
-
-	def setCodeInfoGenerated(self):
-		self.flagIsCodeInfoGenerated=True
+		return self.getTag().isCodeInfoGenerated()
 
 	def getReferencedNode(self):
 		return self.referenceNode
