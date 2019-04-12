@@ -28,15 +28,3 @@ class StructureTag:
 	def getRadixCodeInfoList(self):
 		return filter(lambda x: x.isSupportRadixCode(), self.codeInfoList)
 
-class StructureUnitTag(StructureTag):
-	def __init__(self):
-		super().__init__()
-
-class StructureWrapperTag(StructureTag):
-	def __init__(self):
-		super().__init__()
-
-class StructureCompoundTag(StructureTag):
-	def __init__(self):
-		super().__init__()
-

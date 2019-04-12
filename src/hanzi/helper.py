@@ -2,7 +2,6 @@ from injector import inject
 
 from .network import HanZiNetwork
 from .network import HanZiStructure, HanZiNode
-from .item import StructureUnitTag, StructureWrapperTag, StructureCompoundTag
 from model.interpreter import CodeInfoInterpreter
 from model.element import CharacterInfo
 from model.manager import OperatorManager
@@ -138,33 +137,27 @@ class HanZiNetworkItemFactory:
 		if (name, index) in self.wrapperExpressionDict:
 			return self.wrapperExpressionDict[wrapperExpression]
 
-		structure = self.generateWrapperStructure(name, index)
+		referenceNode = self.networkManager.findNode(name)
+		structure = self.generateWrapperStructure(referenceNode, index)
 
 		self.wrapperExpressionDict[wrapperExpression]=structure
 		return structure
 
-	def generateWrapperStructure(self, name, index):
-		return self._generateWrapperStructure(name, index)
+	def generateWrapperStructure(self, referenceNode, index):
+		return self._generateWrapperStructure(referenceNode, index)
 
 	def _generateUnitStructure(self, radixCodeInfo):
-		tag = StructureUnitTag()
-		structure = HanZiStructure(tag)
+		structure = HanZiStructure()
 		structure.setAsUnit(radixCodeInfo)
 		return structure
 
-	def _generateWrapperStructure(self, referenceName, index):
-		tag = StructureWrapperTag()
-
-		referenceNode = self.networkManager.findNode(referenceName)
-
-		structure = HanZiStructure(tag)
+	def _generateWrapperStructure(self, referenceNode, index):
+		structure = HanZiStructure()
 		structure.setAsWrapper(referenceNode, index)
 		return structure
 
 	def _generateCompoundStructure(self, operator, structureList):
-		tag = StructureCompoundTag()
-
-		structure = HanZiStructure(tag)
+		structure = HanZiStructure()
 		structure.setAsCompound(operator, structureList)
 		return structure
 

@@ -1,3 +1,5 @@
+from .item import StructureTag
+
 class HanZiNode:
 	def __init__(self, name, tag):
 		self.name=name
@@ -54,7 +56,7 @@ class HanZiNode:
 		return [structure.getTag() for structure in structureList]
 
 class HanZiStructure:
-	def __init__(self, tag):
+	def __init__(self):
 		self.radixCodeInfo = None
 
 		self.referenceNode=None
@@ -64,7 +66,7 @@ class HanZiStructure:
 		self.operator=None
 		self.structureList=[]
 
-		self.tag=tag
+		self.tag = StructureTag()
 		self.flagIsCodeInfoGenerated=False
 
 	def __str__(self):
