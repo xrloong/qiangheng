@@ -44,8 +44,9 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
 	def generateLeafNode(self, nodeName):
 		return self.itemFactory.getWrapperStructureByNodeName(nodeName)
 
-	def generateLeafNodeByReference(self, referencedNode, index):
-		return self.itemFactory.getWrapperStructureByNode(referencedNode, index)
+	def generateLeafNodeByReference(self, referencedTreeNode, index):
+		structure=referencedTreeNode
+		return self.itemFactory.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
 
 	def generateNode(self, operatorName, children):
 		return self.itemFactory.getCompoundStructureByOperatorName(operatorName, children)

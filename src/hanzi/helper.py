@@ -133,10 +133,6 @@ class HanZiNetworkItemFactory:
 		self.touchNode(nodeName)
 		return self.getWrapperStructure(nodeName, index)
 
-	def getWrapperStructureByNode(self, node, index=0):
-		nodeName = node.getTag().getReferenceName()
-		return self.getWrapperStructure(nodeName, index)
-
 	def getWrapperStructure(self, name, index):
 		wrapperExpression = (name, index)
 		if (name, index) in self.wrapperExpressionDict:

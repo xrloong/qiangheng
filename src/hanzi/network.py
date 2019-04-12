@@ -92,6 +92,9 @@ class HanZiStructure:
 	def getReferenceNode(self):
 		return self.referenceNode
 
+	def getReferencedNodeName(self):
+		return self.getReferenceNode().getName()
+
 	def getOperator(self):
 		return self.operator
 
