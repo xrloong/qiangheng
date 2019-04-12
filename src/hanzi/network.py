@@ -2,10 +2,13 @@ from .item import StructureTag
 
 class HanZiNode:
 	def __init__(self, name, tag):
-		self.name=name
-		self.structure=None
-		self.unitStructureList=[]
-		self.tag=tag
+		self.name = name
+
+		self.unitStructureList = []
+		self.normalStructureList = []
+		self.mainStructure = None
+
+		self.tag = tag
 
 	def __str__(self):
 		return self.name
@@ -13,31 +16,37 @@ class HanZiNode:
 	def getName(self):
 		return self.name
 
-	def setStructure(self, structure):
-		self.structure=structure
+	def getMainStructure(self):
+		return self.mainStructure
 
-	def getStructure(self):
-		return self.structure
+	def setMainStructure(self, structure):
+		self.mainStructure=structure
+
+	def addStructure(self, structure):
+		if structure.isUnit():
+			self.unitStructureList.append(structure)
+		else:
+			self.normalStructureList.append(structure)
 
 	def getStructureList(self, isWithUnit=False):
 		structureList=[]
 
-		if self.structure:
-			structureList=[self.structure]
+		if self.mainStructure:
+			structureList=[self.mainStructure]
 
 		if isWithUnit:
 			structureList.extend(self.unitStructureList)
 
 		return structureList
 
-	def addUnitStructure(self, structure):
-		self.unitStructureList.append(structure)
-
 	def getUnitStructureList(self):
 		return self.unitStructureList
 
+	def getNormalStructureList(self):
+		return self.normalStructureList
+
 	def getSubStructure(self, index):
-		structure=self.getStructure()
+		structure = self.mainStructure
 		if not structure:
 			return None
 
@@ -105,7 +114,7 @@ class HanZiStructure:
 	def getOperatorName(self):
 		if self.isWrapper():
 			referenceNode=self.getReferencedNode()
-			structure=referenceNode.getStructure()
+			structure=referenceNode.getMainStructure()
 			if structure:
 				return structure.getOperator().getName()
 			else:
@@ -115,7 +124,7 @@ class HanZiStructure:
 
 	def getExpandedStructure(self):
 		if self.isWrapper():
-			expandedStructure=self.getReferencedNode().getStructure()
+			expandedStructure=self.getReferencedNode().getMainStructure()
 			if expandedStructure:
 				return expandedStructure
 			else:
@@ -132,7 +141,7 @@ class HanZiStructure:
 
 	def getStructureList(self):
 		if self.isWrapper():
-			structure=self.referenceNode.getStructure()
+			structure=self.referenceNode.getMainStructure()
 			if structure:
 				return [structure]
 			else:
@@ -225,7 +234,7 @@ class HanZiNetwork:
 		return self.nodeDict.get(name)
 
 	def isNodeExpanded(self, name):
-		node=self.findNode(name)
-		structure=node.getStructure()
-		return bool(structure)
+		node = self.findNode(name)
+		mainStructure = node.getMainStructure()
+		return bool(mainStructure)
 
