@@ -71,6 +71,8 @@ class ComputeCharacterInfo:
 			codeInfosComputer: HanZiCodeInfosComputer,
 			itemFactory: HanZiNetworkItemFactory
 			):
+		self.fontVariance = fontVariance
+
 		self.structureManager = structureManager
 		self.radixManager = radixManager
 
@@ -114,6 +116,8 @@ class ComputeCharacterInfo:
 			if structDesc.isEmpty():
 				continue
 
+			isMainStructure = structDesc.isBelongToFontVariance(self.fontVariance)
+
 			structure=self.recursivelyConvertDescriptionToStructure(structDesc)
 
 			templateRuleList=self.structureManager.getTemplateRules()
@@ -122,7 +126,8 @@ class ComputeCharacterInfo:
 			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
 
 			self.networkManager.addStructureIntoNode(structure, node)
-			self.networkManager.setMainStructureOfNode(structure, node)
+			if isMainStructure:
+				self.networkManager.setMainStructureOfNode(structure, node)
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():

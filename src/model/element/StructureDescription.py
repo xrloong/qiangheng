@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
+from .enum import FontVariance
+
 class StructureDescription:
 	def __init__(self, operator, compList):
+		self.fontVariance = FontVariance.All
+
 		self.referenceExpression=None
 
 		self.flagIsRoot=False
@@ -21,6 +25,20 @@ class StructureDescription:
 		structureDescription.setReferenceExpression(self.getReferenceExpression())
 
 		return structureDescription
+
+	def changeFontVariance(self, fontVariance):
+		self.fontVariance = fontVariance
+
+	def isBelongToFontVariance(self, targetFontVariance):
+		if targetFontVariance == FontVariance.All:
+			return True
+		elif targetFontVariance == FontVariance.Traditional:
+			return self.fontVariance in [FontVariance.All, FontVariance.Traditional]
+		elif targetFontVariance == FontVariance.Simplified:
+			return self.fontVariance in [FontVariance.All, FontVariance.Simplified]
+		else:
+			return False
+		self.fontVariance = fontVariance
 
 	def getUniqueName(self):
 		return self.name

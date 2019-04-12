@@ -4,6 +4,8 @@ import yaml
 
 from coding.Base import CodingRadixParser
 
+from model.element.enum import FontVariance
+
 from model.element.SubstituteRule import SubstituteRule
 from model.element.CharacterDescription import CharacterDescription
 from model.helper import StructureDescriptionGenerator
@@ -75,7 +77,14 @@ class QHParser:
 			for structureDict in nodeStructureList:
 				structureExpression = structureDict[Constant.TAG_STRUCTURE]
 
+				fontVariance = FontVariance.All
+				if Constant.TAG_FONT_VARIANCE in structureDict:
+					fontVarianceDescription = structureDict[Constant.TAG_FONT_VARIANCE]
+					fontVariance = self.convertDescriptionToFontVariance(fontVarianceDescription)
+
 				structureDesc = self.parseStructure(structureExpression)
+				structureDesc.changeFontVariance(fontVariance)
+
 				structureList.append(structureDesc)
 
 		return structureList
@@ -83,6 +92,16 @@ class QHParser:
 	def loadCharacters(self, filename):
 		node=yaml.load(open(filename), yaml.SafeLoader)
 		return self.loadCharDescriptionByParsingYAML(node)
+
+	def convertDescriptionToFontVariance(self, description):
+		if not description:
+			return FontVariance.All
+		elif description in Constant.LIST__FONT_VARIANCE__TRADITIONAL:
+			return FontVariance.Traditional
+		elif description in Constant.LIST__FONT_VARIANCE__SIMPLIFIED:
+			return FontVariance.Simplified
+		else:
+			return FontVariance.All
 
 class QHRadixParser:
 	TAG_CODE_INFORMATION='編碼資訊'
