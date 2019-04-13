@@ -1,4 +1,5 @@
 from .item import StructureTag
+from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
 
 class HanZiNode:
 	def __init__(self, name, tag):
@@ -65,16 +66,8 @@ class HanZiNode:
 		return [structure.getTag() for structure in structureList]
 
 class HanZiStructure:
-	def __init__(self):
-		self.radixCodeInfo = None
-
-		self.referenceNode=None
-		self.index=0
-		self.referenceExpression=""
-
-		self.operator=None
-		self.structureList=[]
-
+	def __init__(self, structureInfo):
+		self.structureInfo = structureInfo
 		self.tag = StructureTag()
 
 	def __str__(self):
@@ -87,25 +80,25 @@ class HanZiStructure:
 			return str(self.tag)
 
 	def isUnit(self):
-		return bool(self.radixCodeInfo)
+		return isinstance(self.structureInfo, UnitStructureInfo)
 
 	def isWrapper(self):
-		return bool(self.referenceNode)
+		return isinstance(self.structureInfo, WrapperStructureInfo)
 
 	def isCompound(self):
-		return bool(self.operator)
+		return isinstance(self.structureInfo, CompoundStructureInfo)
 
 	def isCodeInfoGenerated(self):
 		return self.getTag().isCodeInfoGenerated()
 
 	def getReferencedNode(self):
-		return self.referenceNode
+		return self.structureInfo.getReferencedNode()
 
 	def getReferencedNodeName(self):
 		return self.getReferencedNode().getName()
 
 	def getOperator(self):
-		return self.operator
+		return self.structureInfo.getOperator()
 
 	def getOperatorName(self):
 		if self.isWrapper():
@@ -117,6 +110,7 @@ class HanZiStructure:
 				return ""
 		else:
 			return self.getOperator().getName()
+
 
 	def getExpandedStructure(self):
 		if self.isWrapper():
@@ -130,36 +124,20 @@ class HanZiStructure:
 
 	def getReferenceExpression(self):
 		if self.isWrapper():
-			return self.referenceExpression
+			return self.structureInfo.referenceExpression
 		else:
 			return
 
 
 	def getStructureList(self):
 		if self.isCompound():
-			return self.structureList
+			return self.structureInfo.getStructureList()
 		return []
 
-	def setAsUnit(self, radixCodeInfo):
-		self.radixCodeInfo = radixCodeInfo
-
-	def setAsCompound(self, operator, structureList):
-		self.operator=operator
-		self.structureList=structureList
-
-	def setAsWrapper(self, referenceNode, index):
-		referenceName = referenceNode.getName()
-		if index==0:
-			referenceExpression = "{}".format(referenceName)
-		else:
-			referenceExpression = "{}.{}".format(referenceName,index)
-
-		self.referenceNode = referenceNode
-		self.index = index
-		self.referenceExpression = referenceExpression
-
 	def setNewStructure(self, newTargetStructure):
-		self.setAsCompound(newTargetStructure.operator, newTargetStructure.structureList)
+		operator = newTargetStructure.structureInfo.operator
+		structureList = newTargetStructure.structureInfo.structureList
+		self.structureInfo.changeToStructure(operator, structureList)
 
 	def getTag(self):
 		return self.tag
@@ -167,16 +145,19 @@ class HanZiStructure:
 	def generateCodeInfos(self, codeInfoInterpreter):
 		tag = self.getTag()
 		operator = self.getOperator()
+		structureInfo = self.structureInfo
 
 		codeInfoList=[]
 		if self.isUnit():
-			codeInfoList = [self.radixCodeInfo]
+			codeInfoList = [structureInfo.radixCodeInfo]
 		elif self.isWrapper():
-			tagList = self.referenceNode.getStructureTagList(self.index)
+			referencedNode = structureInfo.getReferencedNode()
+			index = structureInfo.index
+			tagList = referencedNode.getStructureTagList(index)
 			for childTag in tagList:
 				codeInfoList.extend(childTag.getCodeInfoList())
 		else:
-			tagList = [structure.getTag() for structure in self.structureList]
+			tagList = [s.getTag() for s in self.getStructureList()]
 			infoListList = HanZiStructure.getAllCodeInfoListFromTagList(tagList)
 			for infoList in infoListList:
 				codeInfo = codeInfoInterpreter.encodeToCodeInfo(operator, infoList)

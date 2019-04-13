@@ -2,6 +2,8 @@ from injector import inject
 
 from .network import HanZiNetwork
 from .network import HanZiStructure, HanZiNode
+from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
+
 from model.interpreter import CodeInfoInterpreter
 from model.element import CharacterInfo
 from model.manager import OperatorManager
@@ -143,17 +145,14 @@ class HanZiNetworkItemFactory:
 		return self._generateWrapperStructure(referenceNode, index)
 
 	def _generateUnitStructure(self, radixCodeInfo):
-		structure = HanZiStructure()
-		structure.setAsUnit(radixCodeInfo)
-		return structure
+		structureInfo = UnitStructureInfo(radixCodeInfo)
+		return HanZiStructure(structureInfo)
 
 	def _generateWrapperStructure(self, referenceNode, index):
-		structure = HanZiStructure()
-		structure.setAsWrapper(referenceNode, index)
-		return structure
+		structureInfo = WrapperStructureInfo(referenceNode, index)
+		return HanZiStructure(structureInfo)
 
 	def _generateCompoundStructure(self, operator, structureList):
-		structure = HanZiStructure()
-		structure.setAsCompound(operator, structureList)
-		return structure
+		structureInfo = CompoundStructureInfo(operator, structureList)
+		return HanZiStructure(structureInfo)
 
