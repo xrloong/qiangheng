@@ -136,13 +136,9 @@ class HanZiStructure:
 
 
 	def getStructureList(self):
-		if self.isWrapper():
-			structure=self.referenceNode.getMainStructure()
-			if structure:
-				return [structure]
-			else:
-				return []
-		return self.structureList
+		if self.isCompound():
+			return self.structureList
+		return []
 
 	def setAsUnit(self, radixCodeInfo):
 		self.radixCodeInfo = radixCodeInfo
