@@ -60,7 +60,53 @@ class HanZiCodeInfosComputer:
 		self._generateCodeInfosOfStructure(structure)
 
 	def _generateCodeInfosOfStructure(self, structure):
-		structure.generateCodeInfos(self.codeInfoInterpreter)
+		operator = structure.getOperator()
+		structureInfo = structure.getStructureInfo()
+
+		codeInfoList = []
+		if structure.isUnit():
+			codeInfoList = [structureInfo.radixCodeInfo]
+		elif structure.isWrapper():
+			referencedNode = structureInfo.getReferencedNode()
+			index = structureInfo.index
+			tagList = referencedNode.getStructureTagList(index)
+			for childTag in tagList:
+				codeInfoList.extend(childTag.getCodeInfoList())
+		else:
+			tagList = [s.getTag() for s in structure.getStructureList()]
+			infoListList = HanZiCodeInfosComputer.getAllCodeInfoListFromTagList(tagList)
+			for infoList in infoListList:
+				codeInfo = self.codeInfoInterpreter.encodeToCodeInfo(operator, infoList)
+				if codeInfo != None:
+					codeInfoList.append(codeInfo)
+
+		tag = structure.getTag()
+		tag.setCodeInfoList(codeInfoList)
+
+
+	@staticmethod
+	def getAllCodeInfoListFromTagList(tagList):
+		def combineList(infoListList, infoListOfNode):
+			if len(infoListList)==0:
+				ansListList=[]
+				for codeInfo in infoListOfNode:
+					ansListList.append([codeInfo])
+			else:
+				ansListList=[]
+				for infoList in infoListList:
+					for codeInfo in infoListOfNode:
+						ansListList.append(infoList+[codeInfo])
+
+			return ansListList
+
+		infoListList=[]
+
+		for tag in tagList:
+			codeInfoList=tag.getRadixCodeInfoList()
+			infoListList=combineList(infoListList, codeInfoList)
+
+		return infoListList
+
 
 class HanZiNetworkManager:
 	@inject

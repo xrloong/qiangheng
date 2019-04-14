@@ -142,53 +142,8 @@ class HanZiStructure:
 	def getTag(self):
 		return self.tag
 
-	def generateCodeInfos(self, codeInfoInterpreter):
-		tag = self.getTag()
-		operator = self.getOperator()
-		structureInfo = self.structureInfo
-
-		codeInfoList=[]
-		if self.isUnit():
-			codeInfoList = [structureInfo.radixCodeInfo]
-		elif self.isWrapper():
-			referencedNode = structureInfo.getReferencedNode()
-			index = structureInfo.index
-			tagList = referencedNode.getStructureTagList(index)
-			for childTag in tagList:
-				codeInfoList.extend(childTag.getCodeInfoList())
-		else:
-			tagList = [s.getTag() for s in self.getStructureList()]
-			infoListList = HanZiStructure.getAllCodeInfoListFromTagList(tagList)
-			for infoList in infoListList:
-				codeInfo = codeInfoInterpreter.encodeToCodeInfo(operator, infoList)
-				if codeInfo!=None:
-					codeInfoList.append(codeInfo)
-
-		tag.setCodeInfoList(codeInfoList)
-
-
-	@staticmethod
-	def getAllCodeInfoListFromTagList(tagList):
-		def combineList(infoListList, infoListOfNode):
-			if len(infoListList)==0:
-				ansListList=[]
-				for codeInfo in infoListOfNode:
-					ansListList.append([codeInfo])
-			else:
-				ansListList=[]
-				for infoList in infoListList:
-					for codeInfo in infoListOfNode:
-						ansListList.append(infoList+[codeInfo])
-
-			return ansListList
-
-		infoListList=[]
-
-		for tag in tagList:
-			codeInfoList=tag.getRadixCodeInfoList()
-			infoListList=combineList(infoListList, codeInfoList)
-
-		return infoListList
+	def getStructureInfo(self):
+		return self.structureInfo
 
 
 
