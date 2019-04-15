@@ -7,7 +7,6 @@ class HanZiNode:
 		self.tag = tag
 
 		nodeStructureInfo = NodeStructureInfo(name)
-		self.nodeStructureInfo = nodeStructureInfo
 		self.nodeStructure = HanZiStructure(nodeStructureInfo)
 
 	def __str__(self):
@@ -19,32 +18,8 @@ class HanZiNode:
 	def getNodeStructure(self):
 		return self.nodeStructure
 
-	def getMainStructure(self):
-		return self.nodeStructureInfo.getMainStructure()
-
-	def setMainStructure(self, structure):
-		self.nodeStructureInfo.setMainStructure(structure)
-
-	def addStructure(self, structure):
-		self.nodeStructureInfo.addStructure(structure)
-
-	def getStructureList(self, isWithUnit=False):
-		return self.nodeStructureInfo.getStructureList(isWithUnit)
-
-	def getUnitStructureList(self):
-		return self.nodeStructureInfo.getUnitStructureList()
-
-	def getNormalStructureList(self):
-		return self.nodeStructureInfo.getNormalStructureList()
-
-	def getSubStructure(self, index):
-		return self.nodeStructureInfo.getSubStructure(index)
-
 	def getTag(self):
 		return self.tag
-
-	def getStructureTagList(self, subIndex = 0):
-		return self.nodeStructureInfo.getStructureTagList(subIndex)
 
 class HanZiStructure:
 	def __init__(self, structureInfo):
