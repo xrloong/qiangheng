@@ -147,6 +147,8 @@ class HanZiNetwork:
 
 	def isNodeExpanded(self, name):
 		node = self.findNode(name)
-		mainStructure = node.getMainStructure()
+		nodeStructure = node.getNodeStructure()
+		nodeStructureInfo = nodeStructure.getStructureInfo()
+		mainStructure = nodeStructureInfo.getMainStructure()
 		return bool(mainStructure)
 

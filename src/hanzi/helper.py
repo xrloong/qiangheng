@@ -17,8 +17,11 @@ class HanZiInterpreter:
 		return self._getNodeCharacterInfo(characterNode)
 
 	def _getNodeCharacterInfo(self, hanziNode):
-		structureList=hanziNode.getStructureList(True)
-		tagList=hanziNode.getStructureTagList()
+		nodeStructure = hanziNode.getNodeStructure()
+		nodeStructureInfo = nodeStructure.getStructureInfo()
+
+		structureList = nodeStructureInfo.getStructureList(True)
+		tagList = nodeStructureInfo.getStructureTagList()
 		codeInfoList=sum(map(lambda tag: tag.getCodeInfoList(), tagList), [])
 		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
 
@@ -53,7 +56,9 @@ class HanZiCodeInfosComputer:
 		if structure.isUnit():
 			pass
 		elif structure.isWrapper():
-			nodeStructure = structure.getReferencedNode().getNodeStructure()
+			wrapperStructureInfo = structure.getStructureInfo()
+			referencedNode = wrapperStructureInfo.getReferencedNode()
+			nodeStructure = referencedNode.getNodeStructure()
 			self._recursivelyComputeCodeInfosOfNodeTree(nodeStructure)
 		elif structure.isCompound():
 			for cihldStructure in structure.getStructureList():
@@ -69,9 +74,13 @@ class HanZiCodeInfosComputer:
 		if structure.isUnit():
 			codeInfoList = [structureInfo.radixCodeInfo]
 		elif structure.isWrapper():
-			referencedNode = structureInfo.getReferencedNode()
+			wrapperStructureInfo = structure.getStructureInfo()
+			referencedNode = wrapperStructureInfo.getReferencedNode()
+			nodeStructure = referencedNode.getNodeStructure()
+			nodeStructureInfo = nodeStructure.getStructureInfo()
+
 			index = structureInfo.index
-			tagList = referencedNode.getStructureTagList(index)
+			tagList = nodeStructureInfo.getStructureTagList(index)
 			for childTag in tagList:
 				codeInfoList.extend(childTag.getCodeInfoList())
 		else:
