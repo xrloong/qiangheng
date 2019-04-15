@@ -34,12 +34,13 @@ class HanZiCodeInfosComputer:
 	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
 		self.codeInfoInterpreter = codeInfoInterpreter
 
-	def computeForNode(self, node):
+	def computeForNodeStructure(self, nodeStructure):
 		"""設定某一個字符所包含的部件的碼"""
-		self._recursivelyComputeCodeInfosOfNodeTree(node)
+		self._recursivelyComputeCodeInfosOfNodeTree(nodeStructure)
 
-	def _recursivelyComputeCodeInfosOfNodeTree(self, node):
-		for structure in node.getStructureList(True):
+	def _recursivelyComputeCodeInfosOfNodeTree(self, nodeStructure):
+		nodeStructureInfo = nodeStructure.getStructureInfo()
+		for structure in nodeStructureInfo.getStructureList(True):
 			self._recursivelyComputeCodeInfosOfStructureTree(structure)
 
 	def _recursivelyComputeCodeInfosOfStructureTree(self, structure):
@@ -52,7 +53,8 @@ class HanZiCodeInfosComputer:
 		if structure.isUnit():
 			pass
 		elif structure.isWrapper():
-			self._recursivelyComputeCodeInfosOfNodeTree(structure.getReferencedNode())
+			nodeStructure = structure.getReferencedNode().getNodeStructure()
+			self._recursivelyComputeCodeInfosOfNodeTree(nodeStructure)
 		elif structure.isCompound():
 			for cihldStructure in structure.getStructureList():
 				self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
@@ -125,11 +127,11 @@ class HanZiNetworkManager:
 	def addNode(self, node):
 		return self.hanziNetwork.addNode(node)
 
-	def addStructureIntoNode(self, structure, node):
-		node.addStructure(structure)
+	def addStructureIntoNode(self, structure, nodeStructure):
+		nodeStructure.getStructureInfo().addStructure(structure)
 
-	def setMainStructureOfNode(self, structure, node):
-		node.setMainStructure(structure)
+	def setMainStructureOfNode(self, structure, nodeStructure):
+		nodeStructure.getStructureInfo().setMainStructure(structure)
 
 class HanZiNetworkItemFactory:
 	@inject

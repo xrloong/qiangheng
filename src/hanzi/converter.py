@@ -99,8 +99,9 @@ class ComputeCharacterInfo:
 
 	def constructCharacter(self, character):
 		node = self.touchCharacter(character)
-		self.expandNode(node)
-		self.computeNode(node)
+		nodeStructure = node.getNodeStructure()
+		self.expandNodeStructure(nodeStructure)
+		self.computeNode(nodeStructure)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
@@ -108,16 +109,18 @@ class ComputeCharacterInfo:
 	def touchCharacter(self, character):
 		return self.itemFactory.touchNode(character)
 
-	def expandNode(self, node):
-		character = node.getName()
+	def expandNodeStructure(self, nodeStructure):
+		nodeStructureInfo = nodeStructure.getStructureInfo()
+
+		character = nodeStructureInfo.getName()
 		if self.networkManager.isNodeExpanded(character):
 			return
 
-		if self.radixManager.hasRadix(character) and len(node.getUnitStructureList())==0:
+		if self.radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList())==0:
 			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = self.itemFactory.getUnitStructure(radixCodeInfo)
-				self.networkManager.addStructureIntoNode(structure, node)
+				self.networkManager.addStructureIntoNode(structure, nodeStructure)
 
 		charDesc=self.queryDescription(character)
 
@@ -137,9 +140,9 @@ class ComputeCharacterInfo:
 			substituteRuleList=self.structureManager.getSubstituteRules()
 			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
 
-			self.networkManager.addStructureIntoNode(structure, node)
+			self.networkManager.addStructureIntoNode(structure, nodeStructure)
 			if isMainStructure:
-				self.networkManager.setMainStructureOfNode(structure, node)
+				self.networkManager.setMainStructureOfNode(structure, nodeStructure)
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():
@@ -152,7 +155,7 @@ class ComputeCharacterInfo:
 	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList):
 		referenceNode = structure.getReferencedNode()
 		if referenceNode:
-			self.expandNode(referenceNode)
+			self.expandNodeStructure(referenceNode.getNodeStructure())
 
 		tag=structure.getTag()
 		if tag.isTemplateApplied():
@@ -167,7 +170,7 @@ class ComputeCharacterInfo:
 	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList):
 		referenceNode = structure.getReferencedNode()
 		if referenceNode:
-			self.expandNode(referenceNode)
+			self.expandNodeStructure(referenceNode.getNodeStructure())
 
 		tag=structure.getTag()
 		if tag.isSubstituteApplied():
@@ -184,7 +187,7 @@ class ComputeCharacterInfo:
 		def expandLeaf(structure):
 			referenceNode = structure.getReferencedNode()
 			if referenceNode:
-				self.expandNode(referenceNode)
+				self.expandNodeStructure(referenceNode.getNodeStructure())
 
 			children=structure.getStructureList()
 			for child in children:
@@ -235,6 +238,6 @@ class ComputeCharacterInfo:
 
 		return self.itemFactory.getCompoundStructure(operator, childStructureList)
 
-	def computeNode(self, node):
-		self.codeInfosComputer.computeForNode(node)
+	def computeNode(self, nodeStructure):
+		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
 
