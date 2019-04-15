@@ -96,25 +96,18 @@ class HanZiCodeInfosComputer:
 	@staticmethod
 	def getAllCodeInfoListFromTagList(tagList):
 		def combineList(infoListList, infoListOfNode):
-			if len(infoListList)==0:
-				ansListList=[]
-				for codeInfo in infoListOfNode:
-					ansListList.append([codeInfo])
-			else:
-				ansListList=[]
-				for infoList in infoListList:
-					for codeInfo in infoListOfNode:
-						ansListList.append(infoList+[codeInfo])
-
+			prevInfoListList = infoListList if len(infoListList) > 0 else ([], )
+			ansListList = [infoList + [codeInfo]
+						for infoList in prevInfoListList
+						for codeInfo in infoListOfNode]
 			return ansListList
 
-		infoListList=[]
-
+		combineInfoListList=[]
 		for tag in tagList:
-			codeInfoList=tag.getRadixCodeInfoList()
-			infoListList=combineList(infoListList, codeInfoList)
+			codeInfoList = tag.getRadixCodeInfoList()
+			combineInfoListList = combineList(combineInfoListList, codeInfoList)
 
-		return infoListList
+		return combineInfoListList
 
 
 class HanZiNetworkManager:
