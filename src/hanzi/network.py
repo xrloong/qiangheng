@@ -1,15 +1,14 @@
 from .item import StructureTag
-from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
+from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo, NodeStructureInfo
 
 class HanZiNode:
 	def __init__(self, name, tag):
 		self.name = name
-
-		self.unitStructureList = []
-		self.normalStructureList = []
-		self.mainStructure = None
-
 		self.tag = tag
+
+		nodeStructureInfo = NodeStructureInfo(name)
+		self.nodeStructureInfo = nodeStructureInfo
+		self.nodeStructure = HanZiStructure(nodeStructureInfo)
 
 	def __str__(self):
 		return self.name
@@ -17,53 +16,35 @@ class HanZiNode:
 	def getName(self):
 		return self.name
 
+	def getNodeStructure(self):
+		return self.nodeStructure
+
 	def getMainStructure(self):
-		return self.mainStructure
+		return self.nodeStructureInfo.getMainStructure()
 
 	def setMainStructure(self, structure):
-		self.mainStructure=structure
+		self.nodeStructureInfo.setMainStructure(structure)
 
 	def addStructure(self, structure):
-		if structure.isUnit():
-			self.unitStructureList.append(structure)
-		else:
-			self.normalStructureList.append(structure)
+		self.nodeStructureInfo.addStructure(structure)
 
 	def getStructureList(self, isWithUnit=False):
-		structureList=[]
-
-		if self.mainStructure:
-			structureList=[self.mainStructure]
-
-		if isWithUnit:
-			structureList.extend(self.unitStructureList)
-
-		return structureList
+		return self.nodeStructureInfo.getStructureList(isWithUnit)
 
 	def getUnitStructureList(self):
-		return self.unitStructureList
+		return self.nodeStructureInfo.getUnitStructureList()
 
 	def getNormalStructureList(self):
-		return self.normalStructureList
+		return self.nodeStructureInfo.getNormalStructureList()
 
 	def getSubStructure(self, index):
-		structure = self.mainStructure
-		if not structure:
-			return None
-
-		structureList=structure.getStructureList()
-		return structureList[index]
+		return self.nodeStructureInfo.getSubStructure(index)
 
 	def getTag(self):
 		return self.tag
 
 	def getStructureTagList(self, subIndex = 0):
-		if(subIndex > 0):
-			structure=self.getSubStructure(subIndex - 1)
-			structureList=[structure]
-		else:
-			structureList=self.getStructureList(True)
-		return [structure.getTag() for structure in structureList]
+		return self.nodeStructureInfo.getStructureTagList(subIndex)
 
 class HanZiStructure:
 	def __init__(self, structureInfo):
@@ -87,6 +68,9 @@ class HanZiStructure:
 
 	def isCompound(self):
 		return isinstance(self.structureInfo, CompoundStructureInfo)
+
+	def isNode(self):
+		return isinstance(self.structureInfo, NodeStructureInfo)
 
 	def isCodeInfoGenerated(self):
 		return self.getTag().isCodeInfoGenerated()
