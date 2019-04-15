@@ -42,7 +42,7 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
 	def getOperator(self):
 		return None
 
-	def getReferencedNode(self):
+	def getReferencedNodeStructure(self):
 		return None
 
 	def getStructureList(self):
@@ -59,8 +59,7 @@ class UnitStructureInfo(StructureInfo):
 		pass
 
 class WrapperStructureInfo(StructureInfo):
-	def __init__(self, referenceNode, index):
-		nodeStructure = referenceNode.getNodeStructure()
+	def __init__(self, nodeStructure, index):
 		nodeStructureInfo = nodeStructure.getStructureInfo()
 		referenceName = nodeStructureInfo.getName()
 		if index==0:
@@ -68,12 +67,12 @@ class WrapperStructureInfo(StructureInfo):
 		else:
 			referenceExpression = "{}.{}".format(referenceName,index)
 
-		self.referenceNode = referenceNode
+		self.nodeStructure = nodeStructure
 		self.index = index
 		self.referenceExpression = referenceExpression
 
-	def getReferencedNode(self):
-		return self.referenceNode
+	def getReferencedNodeStructure(self):
+		return self.nodeStructure
 
 
 class CompoundStructureInfo(StructureInfo):

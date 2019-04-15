@@ -153,9 +153,9 @@ class ComputeCharacterInfo:
 		return structure
 
 	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList):
-		referenceNode = structure.getReferencedNode()
-		if referenceNode:
-			self.expandNodeStructure(referenceNode.getNodeStructure())
+		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
+		if nodeStructure:
+			self.expandNodeStructure(nodeStructure)
 
 		tag=structure.getTag()
 		if tag.isTemplateApplied():
@@ -168,9 +168,9 @@ class ComputeCharacterInfo:
 		tag.setTemplateApplied()
 
 	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList):
-		referenceNode = structure.getReferencedNode()
-		if referenceNode:
-			self.expandNodeStructure(referenceNode.getNodeStructure())
+		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
+		if nodeStructure:
+			self.expandNodeStructure(nodeStructure)
 
 		tag=structure.getTag()
 		if tag.isSubstituteApplied():

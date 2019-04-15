@@ -57,8 +57,7 @@ class HanZiCodeInfosComputer:
 			pass
 		elif structure.isWrapper():
 			wrapperStructureInfo = structure.getStructureInfo()
-			referencedNode = wrapperStructureInfo.getReferencedNode()
-			nodeStructure = referencedNode.getNodeStructure()
+			nodeStructure = wrapperStructureInfo.getReferencedNodeStructure()
 			self._recursivelyComputeCodeInfosOfNodeTree(nodeStructure)
 		elif structure.isCompound():
 			for cihldStructure in structure.getStructureList():
@@ -75,8 +74,7 @@ class HanZiCodeInfosComputer:
 			codeInfoList = [structureInfo.radixCodeInfo]
 		elif structure.isWrapper():
 			wrapperStructureInfo = structure.getStructureInfo()
-			referencedNode = wrapperStructureInfo.getReferencedNode()
-			nodeStructure = referencedNode.getNodeStructure()
+			nodeStructure = wrapperStructureInfo.getReferencedNodeStructure()
 			nodeStructureInfo = nodeStructure.getStructureInfo()
 
 			index = structureInfo.index
@@ -206,7 +204,8 @@ class HanZiNetworkItemFactory:
 		return HanZiStructure(structureInfo)
 
 	def _generateWrapperStructure(self, referenceNode, index):
-		structureInfo = WrapperStructureInfo(referenceNode, index)
+		nodeStrcuture = referenceNode.getNodeStructure()
+		structureInfo = WrapperStructureInfo(nodeStrcuture, index)
 		return HanZiStructure(structureInfo)
 
 	def _generateCompoundStructure(self, operator, structureList):
