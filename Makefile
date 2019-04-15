@@ -130,8 +130,12 @@ profile:
 	mkdir -p $(PROFILE_PATH)
 	for cm in $(CMLIST);\
 	do\
-		echo $$cm;\
-		PYTHONPATH="src:$$packageDir" src/profiler.py -q -c $$cm > $(PROFILE_PATH)/$$cm.txt;\
+		$(call setup_codings);\
+		packageConfig=`eval echo '$$package_'$$cm`; \
+		package=`echo $$packageConfig | cut -d" " -f1`;\
+		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
+		echo $$cm $$package $$packageDir;\
+		PYTHONPATH="src:$$packageDir" src/profiler.py -q -p $$package > $(PROFILE_PATH)/$$cm.txt;\
 	done
 	touch $(XML_PATH)
 
