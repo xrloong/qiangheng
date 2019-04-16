@@ -81,25 +81,27 @@ class HanZiCodeInfosComputer:
 			tagList = nodeStructureInfo.getStructureTagList(index)
 
 			codeInfosList = [childTag.getCodeInfoList() for childTag in tagList]
+			codeInfosList = sum(codeInfosList, [])
+			codeInfosList = [[codeInfos] for codeInfos in codeInfosList]
 		elif structure.isCompound():
 			tagList = [s.getTag() for s in structure.getStructureList()]
 			codeInfosList = [tag.getRadixCodeInfoList() for tag in tagList]
+			codeInfosList = HanZiCodeInfosComputer.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
 		else:
-			codeInfosList = [[], ]
+			codeInfosList = []
 
 		allCodeInfos = self._computeAllCodeInfos(operator, codeInfosList)
 		tag = structure.getTag()
 		tag.setCodeInfoList(allCodeInfos)
 
 	def _computeAllCodeInfos(self, operator, codeInfosList):
-		codeInfosList = HanZiCodeInfosComputer.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
 		if operator:
 			codeInfoInterpreter = self.codeInfoInterpreter
-			computedCodeInfoList = (codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
+			computedCodeInfoList = list(codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
 							for codeInfos in codeInfosList)
-			allCodeInfos = list(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
 		else:
-			allCodeInfos = sum(codeInfosList, [])
+			computedCodeInfoList = list(codeInfos[0] for codeInfos in codeInfosList)
+		allCodeInfos = list(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
 		return allCodeInfos
 
 	@staticmethod
