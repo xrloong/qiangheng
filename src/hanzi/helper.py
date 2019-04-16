@@ -76,14 +76,16 @@ class HanZiCodeInfosComputer:
 		tag.setCodeInfoList(allCodeInfos)
 
 	def _computeAllCodeInfos(self, operator, codeInfosCollection):
-		if operator:
-			codeInfoInterpreter = self.codeInfoInterpreter
-			computedCodeInfoList = list(codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
-							for codeInfos in codeInfosCollection)
-		else:
-			computedCodeInfoList = list(codeInfos[0] for codeInfos in codeInfosCollection)
+		computedCodeInfoList = list(self._computeCodeInfo(operator, codeInfos) for codeInfos in codeInfosCollection)
 		allCodeInfos = list(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
 		return allCodeInfos
+
+	def _computeCodeInfo(self, operator, codeInfos):
+		if operator:
+			codeInfo = self.codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
+		else:
+			codeInfo = codeInfos[0]
+		return codeInfo
 
 
 class HanZiNetworkManager:
