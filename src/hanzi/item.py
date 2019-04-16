@@ -48,6 +48,9 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
 	def getStructureList(self):
 		return []
 
+	def getCodeInfosTuple(self):
+		return []
+
 class UnitStructureInfo(StructureInfo):
 	def __init__(self, radixCodeInfo):
 		self.radixCodeInfo = radixCodeInfo
@@ -56,7 +59,8 @@ class UnitStructureInfo(StructureInfo):
 		self.index=0
 		self.referenceExpression=""
 
-		pass
+	def getCodeInfosTuple(self):
+		return [[self.radixCodeInfo, ], ]
 
 class WrapperStructureInfo(StructureInfo):
 	def __init__(self, nodeStructure, index):
@@ -71,6 +75,16 @@ class WrapperStructureInfo(StructureInfo):
 		self.index = index
 		self.referenceExpression = referenceExpression
 
+	def getCodeInfosTuple(self):
+		nodeStructure = self.getReferencedNodeStructure()
+		nodeStructureInfo = nodeStructure.getStructureInfo()
+
+		index = self.index
+		tagList = nodeStructureInfo.getStructureTagList(index)
+		codeInfosList = [childTag.getCodeInfoList() for childTag in tagList]
+		codeInfosList = sum(codeInfosList, [])
+		return [[codeInfos] for codeInfos in codeInfosList]
+
 	def getReferencedNodeStructure(self):
 		return self.nodeStructure
 
@@ -79,6 +93,11 @@ class CompoundStructureInfo(StructureInfo):
 	def __init__(self, operator, structureList):
 		self.operator = operator
 		self.structureList = structureList
+
+	def getCodeInfosTuple(self):
+		tagList = [s.getTag() for s in self.getStructureList()]
+		codeInfosList = [tag.getRadixCodeInfoList() for tag in tagList]
+		return CompoundStructureInfo.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
 
 	def changeToStructure(self, operator, structureList):
 		self.operator = operator
@@ -90,6 +109,21 @@ class CompoundStructureInfo(StructureInfo):
 	def getStructureList(self):
 		return self.structureList
 
+	@staticmethod
+	def getAllCodeInfoListFromCodeInfoCollection(codeInfoListCollection):
+		def combineList(infoListList, infoListOfNode):
+			prevInfoListList = infoListList if len(infoListList) > 0 else ([], )
+			ansListList = [infoList + [codeInfo]
+						for infoList in prevInfoListList
+						for codeInfo in infoListOfNode]
+			return ansListList
+
+		combineInfoListList=[]
+		for codeInfoList in codeInfoListCollection:
+			combineInfoListList = combineList(combineInfoListList, codeInfoList)
+
+		return combineInfoListList
+
 class NodeStructureInfo(StructureInfo):
 	def __init__(self, name):
 		self.name = name
@@ -97,6 +131,9 @@ class NodeStructureInfo(StructureInfo):
 		self.unitStructureList = []
 		self.normalStructureList = []
 		self.mainStructure = None
+
+	def getCodeInfosTuple(self):
+		return []
 
 	def __str__(self):
 		return self.name

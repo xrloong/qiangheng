@@ -69,55 +69,21 @@ class HanZiCodeInfosComputer:
 		operator = structure.getOperator()
 		structureInfo = structure.getStructureInfo()
 
-		codeInfoList = []
-		if structure.isUnit():
-			codeInfosList = [[structureInfo.radixCodeInfo, ], ]
-		elif structure.isWrapper():
-			wrapperStructureInfo = structure.getStructureInfo()
-			nodeStructure = wrapperStructureInfo.getReferencedNodeStructure()
-			nodeStructureInfo = nodeStructure.getStructureInfo()
+		codeInfosCollection = structureInfo.getCodeInfosTuple()
 
-			index = structureInfo.index
-			tagList = nodeStructureInfo.getStructureTagList(index)
-
-			codeInfosList = [childTag.getCodeInfoList() for childTag in tagList]
-			codeInfosList = sum(codeInfosList, [])
-			codeInfosList = [[codeInfos] for codeInfos in codeInfosList]
-		elif structure.isCompound():
-			tagList = [s.getTag() for s in structure.getStructureList()]
-			codeInfosList = [tag.getRadixCodeInfoList() for tag in tagList]
-			codeInfosList = HanZiCodeInfosComputer.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
-		else:
-			codeInfosList = []
-
-		allCodeInfos = self._computeAllCodeInfos(operator, codeInfosList)
+		allCodeInfos = self._computeAllCodeInfos(operator, codeInfosCollection)
 		tag = structure.getTag()
 		tag.setCodeInfoList(allCodeInfos)
 
-	def _computeAllCodeInfos(self, operator, codeInfosList):
+	def _computeAllCodeInfos(self, operator, codeInfosCollection):
 		if operator:
 			codeInfoInterpreter = self.codeInfoInterpreter
 			computedCodeInfoList = list(codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
-							for codeInfos in codeInfosList)
+							for codeInfos in codeInfosCollection)
 		else:
-			computedCodeInfoList = list(codeInfos[0] for codeInfos in codeInfosList)
+			computedCodeInfoList = list(codeInfos[0] for codeInfos in codeInfosCollection)
 		allCodeInfos = list(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
 		return allCodeInfos
-
-	@staticmethod
-	def getAllCodeInfoListFromCodeInfoCollection(codeInfoListCollection):
-		def combineList(infoListList, infoListOfNode):
-			prevInfoListList = infoListList if len(infoListList) > 0 else ([], )
-			ansListList = [infoList + [codeInfo]
-						for infoList in prevInfoListList
-						for codeInfo in infoListOfNode]
-			return ansListList
-
-		combineInfoListList=[]
-		for codeInfoList in codeInfoListCollection:
-			combineInfoListList = combineList(combineInfoListList, codeInfoList)
-
-		return combineInfoListList
 
 
 class HanZiNetworkManager:
