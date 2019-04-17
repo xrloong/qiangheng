@@ -26,14 +26,13 @@ class HanZiStructure:
 		self.structureInfo = structureInfo
 		self.tag = StructureTag()
 
-	def __str__(self):
-		if self.isCompound():
-			structureList=self.getStructureList()
-			nameList=[str(structure) for structure in structureList]
-			return "(%s %s)"%(self.getOperator(), " ".join(nameList))
-		else:
-			tag=self.getTag()
-			return str(self.tag)
+
+	def getTag(self):
+		return self.tag
+
+	def getStructureInfo(self):
+		return self.structureInfo
+
 
 	def isUnit(self):
 		return isinstance(self.structureInfo, UnitStructureInfo)
@@ -96,13 +95,6 @@ class HanZiStructure:
 		operator = newTargetStructure.structureInfo.operator
 		structureList = newTargetStructure.structureInfo.structureList
 		self.structureInfo.changeToStructure(operator, structureList)
-
-	def getTag(self):
-		return self.tag
-
-	def getStructureInfo(self):
-		return self.structureInfo
-
 
 
 class HanZiNetwork:
