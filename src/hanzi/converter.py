@@ -13,26 +13,28 @@ from model.tree.regexp import BasicTreeProxy
 from model.tree.regexp import TreeNodeGenerator
 
 class HanZiTreeProxy(BasicTreeProxy):
-	def getChildren(self, tree):
-		expanedStructure=tree.getExpandedStructure()
+	def getChildren(self, currentStructure):
+		expanedStructure = currentStructure.getExpandedStructure()
 		return expanedStructure.getStructureList()
 
-	def matchSingleQuickly(self, tre, tree):
-		treOperatorName=tre.prop.get("運算")
-		treeOperator=tree.getOperator()
-		return treeOperator and (treOperatorName==None or treOperatorName==treeOperator.getName())
+	def matchSingleQuickly(self, tre, currentStructure):
+		expanedStructure = currentStructure.getExpandedStructure()
 
-	def matchSingle(self, tre, tree):
+		treOperatorName = tre.prop.get("運算")
+		expandedOperator = expanedStructure.getOperator()
+		return expandedOperator and (treOperatorName == None or treOperatorName == expandedOperator.getName())
+
+	def matchSingle(self, tre, currentStructure):
+		expanedStructure = currentStructure.getExpandedStructure()
+
 		prop=tre.prop
 		isMatch = True
 		if "名稱" in prop:
-			expressionName=prop.get("名稱")
-			expanedStructure=tree.getExpandedStructure()
-			isMatch = expressionName == tree.getReferenceExpression()
+			expressionName = prop.get("名稱")
+			isMatch = expressionName == currentStructure.getReferenceExpression()
 
 		if "運算" in prop:
-			operatorName=prop.get("運算")
-			expanedStructure=tree.getExpandedStructure()
+			operatorName = prop.get("運算")
 			isMatch = operatorName == expanedStructure.getOperatorName()
 
 		return isMatch
