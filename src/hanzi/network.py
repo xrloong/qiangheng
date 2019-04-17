@@ -50,16 +50,16 @@ class HanZiStructure:
 		return self.getTag().isCodeInfoGenerated()
 
 	def getReferencedNodeName(self):
-		nodeStructure = self.structureInfo.getReferencedNodeStructure()
-		return nodeStructure.getStructureInfo().getName()
+		nodeStructureInfo = self.structureInfo.getReferencedNodeStructureInfo()
+		return nodeStructureInfo.getName()
 
 	def getOperator(self):
 		return self.structureInfo.getOperator()
 
 	def getOperatorName(self):
 		if self.isWrapper():
-			nodeStructure = self.structureInfo.getReferencedNodeStructure()
-			structure = nodeStructure.getStructureInfo().getMainStructure()
+			nodeStructureInfo = self.structureInfo.getReferencedNodeStructureInfo()
+			structure = nodeStructureInfo.getMainStructure()
 			if structure:
 				return structure.getOperator().getName()
 			else:
@@ -70,8 +70,8 @@ class HanZiStructure:
 
 	def getExpandedStructure(self):
 		if self.isWrapper():
-			nodeStructure = self.structureInfo.getReferencedNodeStructure()
-			expandedStructure = nodeStructure.getStructureInfo().getMainStructure()
+			nodeStructureInfo = self.structureInfo.getReferencedNodeStructureInfo()
+			expandedStructure = nodeStructureInfo.getMainStructure()
 			if expandedStructure:
 				return expandedStructure
 			else:
