@@ -49,6 +49,15 @@ class HanZiStructure:
 	def isCodeInfoGenerated(self):
 		return self.getTag().isCodeInfoGenerated()
 
+	def isMatchStructure(self, operatorName = None, referenceExpression = None):
+		isMatch = True
+		if referenceExpression:
+			isMatch &= referenceExpression == self.getReferenceExpression()
+
+		if operatorName:
+			isMatch &= operatorName == self.getExpandedOperatorName()
+		return isMatch
+
 	def getOperatorName(self):
 		return self.structureInfo.getOperatorName()
 

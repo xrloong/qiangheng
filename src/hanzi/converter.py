@@ -17,22 +17,14 @@ class HanZiTreeProxy(BasicTreeProxy):
 		return currentStructure.getExpandedStructureList()
 
 	def matchSingleQuickly(self, tre, currentStructure):
-		treOperatorName = tre.prop.get("運算")
-		expandedOperatorName = currentStructure.getExpandedOperatorName()
-		return expandedOperatorName and (treOperatorName == None or treOperatorName == expandedOperatorName)
+		opName = tre.prop.get("運算")
+		return currentStructure.isMatchStructure(operatorName = opName)
 
 	def matchSingle(self, tre, currentStructure):
 		prop = tre.prop
-		isMatch = True
-		if "名稱" in prop:
-			expressionName = prop.get("名稱")
-			isMatch = expressionName == currentStructure.getReferenceExpression()
-
-		if "運算" in prop:
-			operatorName = prop.get("運算")
-			isMatch = operatorName == currentStructure.getExpandedOperatorName()
-
-		return isMatch
+		opName = prop.get("運算")
+		refExp = prop.get("名稱")
+		return currentStructure.isMatchStructure(operatorName = opName, referenceExpression = refExp)
 
 class HanZiTreeNodeGenerator(TreeNodeGenerator):
 	@inject
