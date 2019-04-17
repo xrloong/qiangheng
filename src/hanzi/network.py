@@ -52,14 +52,12 @@ class HanZiStructure:
 	def isMatchStructure(self, operatorName = None, referenceExpression = None):
 		isMatch = True
 		if referenceExpression:
-			isMatch &= referenceExpression == self.getReferenceExpression()
+			isMatch &= referenceExpression == self.structureInfo.getReferenceExpression()
 
 		if operatorName:
-			isMatch &= operatorName == self.getExpandedOperatorName()
-		return isMatch
+			isMatch &= operatorName == self.structureInfo.getExpandedOperatorName()
 
-	def getOperatorName(self):
-		return self.structureInfo.getOperatorName()
+		return isMatch
 
 	def getStructureList(self):
 		return self.structureInfo.getStructureList()
@@ -67,12 +65,6 @@ class HanZiStructure:
 	def getReferencedNodeName(self):
 		nodeStructureInfo = self.structureInfo.getReferencedNodeStructureInfo()
 		return nodeStructureInfo.getName()
-
-	def getReferenceExpression(self):
-		if self.isWrapper():
-			return self.structureInfo.referenceExpression
-		else:
-			return
 
 	def getExpandedStructure(self):
 		if self.isWrapper():
@@ -84,9 +76,6 @@ class HanZiStructure:
 				return self
 		else:
 			return self
-
-	def getExpandedOperatorName(self):
-		return self.structureInfo.getExpandedOperatorName()
 
 	def getExpandedStructureList(self):
 		expanedStructure = self.getExpandedStructure()

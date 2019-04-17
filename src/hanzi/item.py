@@ -59,6 +59,9 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
 		else:
 			return ""
 
+	def getReferenceExpression(self):
+		return None
+
 	def getReferencedNodeStructure(self):
 		return None
 
@@ -77,7 +80,6 @@ class UnitStructureInfo(StructureInfo):
 
 		self.referenceNode=None
 		self.index=0
-		self.referenceExpression=""
 
 	def getCodeInfosTuple(self):
 		return [[self.radixCodeInfo, ], ]
@@ -116,6 +118,9 @@ class WrapperStructureInfo(StructureInfo):
 		codeInfosList = [childTag.getCodeInfoList() for childTag in tagList]
 		codeInfosList = sum(codeInfosList, [])
 		return [[codeInfos] for codeInfos in codeInfosList]
+
+	def getReferenceExpression(self):
+		return self.referenceExpression
 
 	def getReferencedNodeStructure(self):
 		return self.nodeStructure
