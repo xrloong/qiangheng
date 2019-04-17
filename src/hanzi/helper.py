@@ -39,10 +39,9 @@ class HanZiCodeInfosComputer:
 
 	def computeForNodeStructure(self, nodeStructure):
 		"""設定某一個字符所包含的部件的碼"""
-		self._recursivelyComputeCodeInfosOfNodeTree(nodeStructure)
+		self._recursivelyComputeCodeInfosOfNodeTree(nodeStructure.getStructureInfo())
 
-	def _recursivelyComputeCodeInfosOfNodeTree(self, nodeStructure):
-		nodeStructureInfo = nodeStructure.getStructureInfo()
+	def _recursivelyComputeCodeInfosOfNodeTree(self, nodeStructureInfo):
 		for structure in nodeStructureInfo.getStructureList(True):
 			self._recursivelyComputeCodeInfosOfStructureTree(structure)
 
@@ -57,8 +56,8 @@ class HanZiCodeInfosComputer:
 			pass
 		elif structure.isWrapper():
 			wrapperStructureInfo = structure.getStructureInfo()
-			nodeStructure = wrapperStructureInfo.getReferencedNodeStructure()
-			self._recursivelyComputeCodeInfosOfNodeTree(nodeStructure)
+			nodeStructureInfo = wrapperStructureInfo.getReferencedNodeStructureInfo()
+			self._recursivelyComputeCodeInfosOfNodeTree(nodeStructureInfo)
 		elif structure.isCompound():
 			for cihldStructure in structure.getStructureList():
 				self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
