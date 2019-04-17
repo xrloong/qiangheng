@@ -150,8 +150,10 @@ class NodeStructureInfo(StructureInfo):
 		self.mainStructure = None
 
 	def getOperator(self):
-		if self.mainStructure:
-			return self.mainStructure.getOperator()
+		mainStructure = self.getMainStructure()
+		if mainStructure:
+			structureInfo = mainStructure.getStructureInfo()
+			return structureInfo.getOperator()
 		else:
 			return None
 

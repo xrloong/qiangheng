@@ -21,8 +21,8 @@ class HanZiTreeProxy(BasicTreeProxy):
 		expanedStructure = currentStructure.getExpandedStructure()
 
 		treOperatorName = tre.prop.get("運算")
-		expandedOperator = expanedStructure.getOperator()
-		return expandedOperator and (treOperatorName == None or treOperatorName == expandedOperator.getName())
+		expandedOperatorName = expanedStructure.getOperatorName()
+		return expandedOperatorName and (treOperatorName == None or treOperatorName == expandedOperatorName)
 
 	def matchSingle(self, tre, currentStructure):
 		expanedStructure = currentStructure.getExpandedStructure()

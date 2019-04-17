@@ -66,8 +66,8 @@ class HanZiCodeInfosComputer:
 		self._generateCodeInfosOfStructure(structure)
 
 	def _generateCodeInfosOfStructure(self, structure):
-		operator = structure.getOperator()
 		structureInfo = structure.getStructureInfo()
+		operator = structureInfo.getOperator()
 
 		codeInfosCollection = structureInfo.getCodeInfosTuple()
 
