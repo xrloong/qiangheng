@@ -76,6 +76,13 @@ class HanZiStructure:
 		else:
 			return self
 
+	def getExpandedOperatorName(self):
+		return self.structureInfo.getExpandedOperatorName()
+
+	def getExpandedStructureList(self):
+		expanedStructure = self.getExpandedStructure()
+		return expanedStructure.getStructureList()
+
 	def setNewStructure(self, newTargetStructure):
 		operator = newTargetStructure.structureInfo.operator
 		structureList = newTargetStructure.structureInfo.structureList

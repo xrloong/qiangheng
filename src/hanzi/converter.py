@@ -14,20 +14,15 @@ from model.tree.regexp import TreeNodeGenerator
 
 class HanZiTreeProxy(BasicTreeProxy):
 	def getChildren(self, currentStructure):
-		expanedStructure = currentStructure.getExpandedStructure()
-		return expanedStructure.getStructureList()
+		return currentStructure.getExpandedStructureList()
 
 	def matchSingleQuickly(self, tre, currentStructure):
-		expanedStructure = currentStructure.getExpandedStructure()
-
 		treOperatorName = tre.prop.get("運算")
-		expandedOperatorName = expanedStructure.getOperatorName()
+		expandedOperatorName = currentStructure.getExpandedOperatorName()
 		return expandedOperatorName and (treOperatorName == None or treOperatorName == expandedOperatorName)
 
 	def matchSingle(self, tre, currentStructure):
-		expanedStructure = currentStructure.getExpandedStructure()
-
-		prop=tre.prop
+		prop = tre.prop
 		isMatch = True
 		if "名稱" in prop:
 			expressionName = prop.get("名稱")
@@ -35,7 +30,7 @@ class HanZiTreeProxy(BasicTreeProxy):
 
 		if "運算" in prop:
 			operatorName = prop.get("運算")
-			isMatch = operatorName == expanedStructure.getOperatorName()
+			isMatch = operatorName == currentStructure.getExpandedOperatorName()
 
 		return isMatch
 
