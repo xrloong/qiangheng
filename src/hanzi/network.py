@@ -57,16 +57,7 @@ class HanZiStructure:
 		return self.structureInfo.getOperator()
 
 	def getOperatorName(self):
-		if self.isWrapper():
-			nodeStructureInfo = self.structureInfo.getReferencedNodeStructureInfo()
-			structure = nodeStructureInfo.getMainStructure()
-			if structure:
-				return structure.getOperator().getName()
-			else:
-				return ""
-		else:
-			return self.getOperator().getName()
-
+		return self.structureInfo.getOperatorName()
 
 	def getExpandedStructure(self):
 		if self.isWrapper():
@@ -87,9 +78,7 @@ class HanZiStructure:
 
 
 	def getStructureList(self):
-		if self.isCompound():
-			return self.structureInfo.getStructureList()
-		return []
+		return self.structureInfo.getStructureList()
 
 	def setNewStructure(self, newTargetStructure):
 		operator = newTargetStructure.structureInfo.operator
