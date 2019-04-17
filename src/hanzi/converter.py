@@ -25,7 +25,6 @@ class HanZiTreeProxy(BasicTreeProxy):
 	def matchSingle(self, tre, tree):
 		prop=tre.prop
 		isMatch = True
-		tag=tree.getTag()
 		if "名稱" in prop:
 			expressionName=prop.get("名稱")
 			expanedStructure=tree.getExpandedStructure()
