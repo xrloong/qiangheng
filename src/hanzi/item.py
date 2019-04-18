@@ -4,7 +4,7 @@ from injector import inject
 
 class StructureTag:
 	def __init__(self):
-		self.codeInfoList=[]
+		self.codeInfoList = ()
 
 		self.flagIsTemplateApplied = False
 		self.flagIsSubstituteApplied = False
@@ -72,7 +72,7 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
 		return []
 
 	def getCodeInfosTuple(self):
-		return []
+		return ()
 
 class UnitStructureInfo(StructureInfo):
 	def __init__(self, radixCodeInfo):
@@ -82,7 +82,7 @@ class UnitStructureInfo(StructureInfo):
 		self.index=0
 
 	def getCodeInfosTuple(self):
-		return [[self.radixCodeInfo, ], ]
+		return ((self.radixCodeInfo, ), )
 
 class WrapperStructureInfo(StructureInfo):
 	def __init__(self, nodeStructure, index):
@@ -115,9 +115,9 @@ class WrapperStructureInfo(StructureInfo):
 		index = self.index
 
 		tagList = nodeStructureInfo.getStructureTagList(index)
-		codeInfosList = [childTag.getCodeInfoList() for childTag in tagList]
-		codeInfosList = sum(codeInfosList, [])
-		return [[codeInfos] for codeInfos in codeInfosList]
+		codeInfosList = (childTag.getCodeInfoList() for childTag in tagList)
+		codeInfosList = sum(codeInfosList, ())
+		return tuple((codeInfos, ) for codeInfos in codeInfosList)
 
 	def getReferenceExpression(self):
 		return self.referenceExpression
@@ -181,7 +181,7 @@ class NodeStructureInfo(StructureInfo):
 			return None
 
 	def getCodeInfosTuple(self):
-		return []
+		return ()
 
 	def __str__(self):
 		return self.name

@@ -22,7 +22,7 @@ class HanZiInterpreter:
 
 		structureList = nodeStructureInfo.getStructureList(True)
 		tagList = nodeStructureInfo.getStructureTagList()
-		codeInfoList=sum(map(lambda tag: tag.getCodeInfoList(), tagList), [])
+		codeInfoList=sum(map(lambda tag: tag.getCodeInfoList(), tagList), ())
 		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
 
 		codeList=self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
@@ -75,8 +75,8 @@ class HanZiCodeInfosComputer:
 		tag.setCodeInfoList(allCodeInfos)
 
 	def _computeAllCodeInfos(self, operator, codeInfosCollection):
-		computedCodeInfoList = list(self._computeCodeInfo(operator, codeInfos) for codeInfos in codeInfosCollection)
-		allCodeInfos = list(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
+		computedCodeInfoList = (self._computeCodeInfo(operator, codeInfos) for codeInfos in codeInfosCollection)
+		allCodeInfos = tuple(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
 		return allCodeInfos
 
 	def _computeCodeInfo(self, operator, codeInfos):
