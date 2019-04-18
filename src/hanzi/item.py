@@ -62,6 +62,9 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
 	def getExpandedStructureList(self):
 		return self.getStructureList()
 
+	def getChildStructures(self):
+		return ()
+
 	def getReferenceExpression(self):
 		return None
 
@@ -83,6 +86,9 @@ class UnitStructureInfo(StructureInfo):
 
 		self.referenceNode=None
 		self.index=0
+
+	def getChildStructures(self):
+		return ()
 
 	def getCodeInfosTuple(self):
 		return ((self.radixCodeInfo, ), )
@@ -121,6 +127,10 @@ class WrapperStructureInfo(StructureInfo):
 		else:
 			return self.getStructureList()
 
+	def getChildStructures(self):
+		nodeStructure = self.getReferencedNodeStructure()
+		return (nodeStructure, )
+
 	def getCodeInfosTuple(self):
 		nodeStructureInfo = self.nodeStructureInfo
 		index = self.index
@@ -144,6 +154,9 @@ class CompoundStructureInfo(StructureInfo):
 	def __init__(self, operator, structureList):
 		self.operator = operator
 		self.structureList = structureList
+
+	def getChildStructures(self):
+		return self.getStructureList()
 
 	def getCodeInfosTuple(self):
 		tagList = [s.getTag() for s in self.getStructureList()]
@@ -190,6 +203,9 @@ class NodeStructureInfo(StructureInfo):
 			return structureInfo.getOperator()
 		else:
 			return None
+
+	def getChildStructures(self):
+		return self.getStructureList(True)
 
 	def getCodeInfosTuple(self):
 		return ()

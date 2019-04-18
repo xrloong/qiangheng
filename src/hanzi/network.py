@@ -69,6 +69,9 @@ class HanZiStructure:
 	def getExpandedStructureList(self):
 		return self.structureInfo.getExpandedStructureList()
 
+	def getChildStructures(self):
+		return self.structureInfo.getChildStructures()
+
 	def changeToStructure(self, newTargetStructure):
 		self.structureInfo.changeToStructure(newTargetStructure.structureInfo)
 

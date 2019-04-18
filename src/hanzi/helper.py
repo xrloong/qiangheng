@@ -48,20 +48,8 @@ class HanZiCodeInfosComputer:
 		if structure.isCodeInfoGenerated():
 			return
 
-		if structure.isUnit():
-			pass
-		elif structure.isWrapper():
-			wrapperStructureInfo = structure.getStructureInfo()
-			nodeStructure = wrapperStructureInfo.getReferencedNodeStructure()
-			for cihldStructure in (nodeStructure, ):
-				self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
-		elif structure.isCompound():
-			for cihldStructure in structure.getStructureList():
-				self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
-		elif structure.isNode():
-			for cihldStructure in structure.getStructureInfo().getStructureList(True):
-				self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
-
+		for cihldStructure in structure.getChildStructures():
+			self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
 		self._generateCodeInfosOfStructure(structure)
 
 	def _generateCodeInfosOfStructure(self, structure):
