@@ -59,6 +59,9 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
 		else:
 			return ""
 
+	def getExpandedStructureList(self):
+		return self.getStructureList()
+
 	def getReferenceExpression(self):
 		return None
 
@@ -109,6 +112,14 @@ class WrapperStructureInfo(StructureInfo):
 			return expandedStructure.getStructureInfo().getOperator()
 		else:
 			return self.getOperator()
+
+	def getExpandedStructureList(self):
+		nodeStructureInfo = self.getReferencedNodeStructureInfo()
+		expandedStructure = nodeStructureInfo.getMainStructure()
+		if expandedStructure:
+			return expandedStructure.getStructureList()
+		else:
+			return self.getStructureList()
 
 	def getCodeInfosTuple(self):
 		nodeStructureInfo = self.nodeStructureInfo
