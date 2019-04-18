@@ -189,7 +189,7 @@ class ComputeCharacterInfo:
 
 				tmpStructure = treInterpreter.matchAndReplace(tre, structure, result)
 				if tmpStructure!=None:
-					structure.setNewStructure(tmpStructure)
+					structure.changeToStructure(tmpStructure)
 					structure=tmpStructure
 					changed=True
 					break

@@ -150,9 +150,9 @@ class CompoundStructureInfo(StructureInfo):
 		codeInfosList = [tag.getRadixCodeInfoList() for tag in tagList]
 		return CompoundStructureInfo.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
 
-	def changeToStructure(self, operator, structureList):
-		self.operator = operator
-		self.structureList = structureList
+	def changeToStructure(self, structureInfo):
+		self.operator = structureInfo.getOperator()
+		self.structureList = structureInfo.getStructureList() 
 
 	def getOperator(self):
 		return self.operator

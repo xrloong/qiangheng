@@ -69,10 +69,8 @@ class HanZiStructure:
 	def getExpandedStructureList(self):
 		return self.structureInfo.getExpandedStructureList()
 
-	def setNewStructure(self, newTargetStructure):
-		operator = newTargetStructure.structureInfo.operator
-		structureList = newTargetStructure.structureInfo.structureList
-		self.structureInfo.changeToStructure(operator, structureList)
+	def changeToStructure(self, newTargetStructure):
+		self.structureInfo.changeToStructure(newTargetStructure.structureInfo)
 
 
 class HanZiNetwork:
