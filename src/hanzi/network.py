@@ -33,6 +33,8 @@ class HanZiStructure:
 	def getStructureInfo(self):
 		return self.structureInfo
 
+	def getComputedCodeInfos(self):
+		return self.structureInfo.getComputedCodeInfos()
 
 	def isUnit(self):
 		return isinstance(self.structureInfo, UnitStructureInfo)
@@ -47,7 +49,7 @@ class HanZiStructure:
 		return isinstance(self.structureInfo, NodeStructureInfo)
 
 	def isCodeInfoGenerated(self):
-		return self.getTag().isCodeInfoGenerated()
+		return self.structureInfo.isCodeInfoGenerated()
 
 	def isMatchStructure(self, operatorName = None, referenceExpression = None):
 		isMatch = True

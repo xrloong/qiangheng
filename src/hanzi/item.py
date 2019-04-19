@@ -4,11 +4,8 @@ from injector import inject
 
 class StructureTag:
 	def __init__(self):
-		self.codeInfoList = ()
-
 		self.flagIsTemplateApplied = False
 		self.flagIsSubstituteApplied = False
-		self.flagIsCodeInfoGenerated = False
 
 	def isTemplateApplied(self):
 		return self.flagIsTemplateApplied
@@ -16,28 +13,28 @@ class StructureTag:
 	def isSubstituteApplied(self):
 		return self.flagIsSubstituteApplied
 
-	def isCodeInfoGenerated(self):
-		return self.flagIsCodeInfoGenerated
-
 	def setTemplateApplied(self):
 		self.flagIsTemplateApplied=True
 
 	def setSubstituteApplied(self):
 		self.flagIsSubstituteApplied=True
 
-	def setCodeInfoList(self, codeInfoList):
-		self.codeInfoList = codeInfoList
-		self.flagIsCodeInfoGenerated = True
-
-	def getCodeInfoList(self):
-		return self.codeInfoList
-
-	def getRadixCodeInfoList(self):
-		return filter(lambda x: x.isSupportRadixCode(), self.codeInfoList)
-
 class StructureInfo(object, metaclass=abc.ABCMeta):
 	def __init__(self):
-		pass
+		self.codeInfos = None
+
+	def setComputedCodeInfos(self, codeInfos):
+		self.codeInfos = codeInfos
+
+	def getComputedCodeInfos(self):
+		return self.codeInfos
+
+	def isCodeInfoGenerated(self):
+		return self.codeInfos != None
+
+	def getRadixCodeInfoList(self):
+		return filter(lambda x: x.isSupportRadixCode(), self.codeInfos)
+
 
 	def getOperator(self):
 		return None
@@ -82,6 +79,8 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
 
 class UnitStructureInfo(StructureInfo):
 	def __init__(self, radixCodeInfo):
+		super().__init__()
+
 		self.radixCodeInfo = radixCodeInfo
 
 		self.referenceNode=None
@@ -95,6 +94,8 @@ class UnitStructureInfo(StructureInfo):
 
 class WrapperStructureInfo(StructureInfo):
 	def __init__(self, nodeStructure, index):
+		super().__init__()
+
 		nodeStructureInfo = nodeStructure.getStructureInfo()
 		referenceName = nodeStructureInfo.getName()
 		if index==0:
@@ -135,9 +136,8 @@ class WrapperStructureInfo(StructureInfo):
 		nodeStructureInfo = self.nodeStructureInfo
 		index = self.index
 
-		tagList = nodeStructureInfo.getStructureTagList(index)
-		codeInfosList = (childTag.getCodeInfoList() for childTag in tagList)
-		codeInfosList = sum(codeInfosList, ())
+		structureList = nodeStructureInfo.getSubStructureList(index)
+		codeInfosList = sum((s.getComputedCodeInfos() for s in structureList), ())
 		return tuple((codeInfos, ) for codeInfos in codeInfosList)
 
 	def getReferenceExpression(self):
@@ -152,6 +152,8 @@ class WrapperStructureInfo(StructureInfo):
 
 class CompoundStructureInfo(StructureInfo):
 	def __init__(self, operator, structureList):
+		super().__init__()
+
 		self.operator = operator
 		self.structureList = structureList
 
@@ -159,8 +161,7 @@ class CompoundStructureInfo(StructureInfo):
 		return self.getStructureList()
 
 	def getCodeInfosTuple(self):
-		tagList = [s.getTag() for s in self.getStructureList()]
-		codeInfosList = [tag.getRadixCodeInfoList() for tag in tagList]
+		codeInfosList = [s.getStructureInfo().getRadixCodeInfoList() for s in self.getStructureList()]
 		return CompoundStructureInfo.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
 
 	def changeToStructure(self, structureInfo):
@@ -190,6 +191,8 @@ class CompoundStructureInfo(StructureInfo):
 
 class NodeStructureInfo(StructureInfo):
 	def __init__(self, name):
+		super().__init__()
+
 		self.name = name
 
 		self.unitStructureList = []
@@ -253,12 +256,11 @@ class NodeStructureInfo(StructureInfo):
 		structureList=structure.getStructureList()
 		return structureList[index]
 
-
-	def getStructureTagList(self, subIndex = 0):
+	def getSubStructureList(self, subIndex = 0):
 		if(subIndex > 0):
 			structure=self.getSubStructure(subIndex - 1)
 			structureList=[structure]
 		else:
 			structureList=self.getStructureList(True)
-		return [structure.getTag() for structure in structureList]
+		return structureList
 
