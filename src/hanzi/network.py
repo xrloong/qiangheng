@@ -25,6 +25,7 @@ class HanZiStructure:
 	def __init__(self, structureInfo):
 		self.structureInfo = structureInfo
 		self.tag = StructureTag()
+		self.oldStructureInfoList = []
 
 
 	def getTag(self):
@@ -75,7 +76,8 @@ class HanZiStructure:
 		return self.structureInfo.getChildStructures()
 
 	def changeToStructure(self, newTargetStructure):
-		self.structureInfo.changeToStructure(newTargetStructure.structureInfo)
+		self.oldStructureInfoList.append(newTargetStructure.structureInfo)
+		self.structureInfo = newTargetStructure.structureInfo
 
 
 class HanZiNetwork:

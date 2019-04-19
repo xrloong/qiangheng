@@ -164,10 +164,6 @@ class CompoundStructureInfo(StructureInfo):
 		codeInfosList = [s.getStructureInfo().getRadixCodeInfoList() for s in self.getStructureList()]
 		return CompoundStructureInfo.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
 
-	def changeToStructure(self, structureInfo):
-		self.operator = structureInfo.getOperator()
-		self.structureList = structureInfo.getStructureList() 
-
 	def getOperator(self):
 		return self.operator
 
