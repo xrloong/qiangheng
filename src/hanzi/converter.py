@@ -72,7 +72,7 @@ class RearrangeCallback(object, metaclass=abc.ABCMeta):
 	def setApplied(self, structure):
 		pass
 
-class TemplateRearrangeCallback(RearrangeCallback):
+class BaseRearrangeCallback(RearrangeCallback):
 	def __init__(self, computeCharacterInfo):
 		self.computeCharacterInfo = computeCharacterInfo
 
@@ -80,6 +80,10 @@ class TemplateRearrangeCallback(RearrangeCallback):
 		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
 		if nodeStructure:
 			self.computeCharacterInfo.expandNodeStructure(nodeStructure)
+
+class TemplateRearrangeCallback(BaseRearrangeCallback):
+	def __init__(self, computeCharacterInfo):
+		super().__init__(computeCharacterInfo)
 
 	def checkApplied(self, structure):
 		return structure.getTag().isTemplateApplied()
@@ -87,14 +91,9 @@ class TemplateRearrangeCallback(RearrangeCallback):
 	def setApplied(self, structure):
 		structure.getTag().setTemplateApplied()
 
-class SubsituteRearrangeCallback(RearrangeCallback):
+class SubsituteRearrangeCallback(BaseRearrangeCallback):
 	def __init__(self, computeCharacterInfo):
-		self.computeCharacterInfo = computeCharacterInfo
-
-	def prepare(self, structure):
-		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
-		if nodeStructure:
-			self.computeCharacterInfo.expandNodeStructure(nodeStructure)
+		super().__init__(computeCharacterInfo)
 
 	def checkApplied(self, structure):
 		return structure.getTag().isSubstituteApplied()
@@ -170,11 +169,11 @@ class ComputeCharacterInfo:
 
 			rearrangeCallback = TemplateRearrangeCallback(self)
 			templateRuleList=self.structureManager.getTemplateRules()
-			self.recursivelyRearrangeStructureByTemplate(structure, templateRuleList, rearrangeCallback)
+			self.recursivelyRearrangeStructure(structure, templateRuleList, rearrangeCallback)
 
 			rearrangeCallback = SubsituteRearrangeCallback(self)
 			substituteRuleList=self.structureManager.getSubstituteRules()
-			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList, rearrangeCallback)
+			self.recursivelyRearrangeStructure(structure, substituteRuleList, rearrangeCallback)
 
 			self.networkManager.addStructureIntoNode(structure, nodeStructure)
 			if isMainStructure:
@@ -188,7 +187,7 @@ class ComputeCharacterInfo:
 
 		return structure
 
-	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList, rearrangeCallback):
+	def recursivelyRearrangeStructure(self, structure, substituteRuleList, rearrangeCallback):
 		rearrangeCallback.prepare(structure)
 
 		if rearrangeCallback.checkApplied(structure):
@@ -196,19 +195,7 @@ class ComputeCharacterInfo:
 
 		self.rearrangeStructure(structure, substituteRuleList, rearrangeCallback)
 		for childStructure in structure.getStructureList():
-			self.recursivelyRearrangeStructureByTemplate(childStructure, substituteRuleList, rearrangeCallback)
-
-		rearrangeCallback.setApplied(structure)
-
-	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList, rearrangeCallback):
-		rearrangeCallback.prepare(structure)
-
-		if rearrangeCallback.checkApplied(structure):
-			return
-
-		self.rearrangeStructure(structure, substituteRuleList, rearrangeCallback)
-		for childStructure in structure.getStructureList():
-			self.recursivelyRearrangeStructureBySubstitute(childStructure, substituteRuleList, rearrangeCallback)
+			self.recursivelyRearrangeStructure(childStructure, substituteRuleList, rearrangeCallback)
 
 		rearrangeCallback.setApplied(structure)
 
