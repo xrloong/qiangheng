@@ -72,18 +72,33 @@ class RearrangeCallback(object, metaclass=abc.ABCMeta):
 	def setApplied(self, structure):
 		pass
 
+	@abc.abstractmethod
+	def matchAndReplace(self, tre, structure, result):
+		pass
+
+	@abc.abstractmethod
+	def matchQuickly(self, tre, structure):
+		pass
+
 class BaseRearrangeCallback(RearrangeCallback):
-	def __init__(self, computeCharacterInfo):
+	def __init__(self, computeCharacterInfo, treInterpreter):
 		self.computeCharacterInfo = computeCharacterInfo
+		self.treInterpreter = treInterpreter
 
 	def prepare(self, structure):
 		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
 		if nodeStructure:
 			self.computeCharacterInfo.expandNodeStructure(nodeStructure)
 
+	def matchAndReplace(self, tre, structure, result):
+		return self.treInterpreter.matchAndReplace(tre, structure, result)
+
+	def matchQuickly(self, tre, structure):
+		return self.treInterpreter.matchQuickly(tre, structure)
+
 class TemplateRearrangeCallback(BaseRearrangeCallback):
-	def __init__(self, computeCharacterInfo):
-		super().__init__(computeCharacterInfo)
+	def __init__(self, computeCharacterInfo, treInterpreter):
+		super().__init__(computeCharacterInfo, treInterpreter)
 
 	def checkApplied(self, structure):
 		return structure.getTag().isTemplateApplied()
@@ -92,8 +107,8 @@ class TemplateRearrangeCallback(BaseRearrangeCallback):
 		structure.getTag().setTemplateApplied()
 
 class SubsituteRearrangeCallback(BaseRearrangeCallback):
-	def __init__(self, computeCharacterInfo):
-		super().__init__(computeCharacterInfo)
+	def __init__(self, computeCharacterInfo, treInterpreter):
+		super().__init__(computeCharacterInfo, treInterpreter)
 
 	def checkApplied(self, structure):
 		return structure.getTag().isSubstituteApplied()
@@ -167,11 +182,11 @@ class ComputeCharacterInfo:
 
 			structure=self.recursivelyConvertDescriptionToStructure(structDesc)
 
-			rearrangeCallback = TemplateRearrangeCallback(self)
+			rearrangeCallback = TemplateRearrangeCallback(self, self.treInterpreter)
 			templateRuleList=self.structureManager.getTemplateRules()
 			self.recursivelyRearrangeStructure(structure, templateRuleList, rearrangeCallback)
 
-			rearrangeCallback = SubsituteRearrangeCallback(self)
+			rearrangeCallback = SubsituteRearrangeCallback(self, self.treInterpreter)
 			substituteRuleList=self.structureManager.getSubstituteRules()
 			self.recursivelyRearrangeStructure(structure, substituteRuleList, rearrangeCallback)
 
@@ -200,7 +215,6 @@ class ComputeCharacterInfo:
 		rearrangeCallback.setApplied(structure)
 
 	def rearrangeStructure(self, structure, substituteRuleList, rearrangeCallback):
-		treInterpreter = self.treInterpreter
 		def expandLeaf(structure):
 			rearrangeCallback.prepare(structure)
 
@@ -214,7 +228,7 @@ class ComputeCharacterInfo:
 				tre = rule.getTRE()
 				result = rule.getReplacement()
 
-				tmpStructure = treInterpreter.matchAndReplace(tre, structure, result)
+				tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
 				if tmpStructure!=None:
 					structure.changeToStructure(tmpStructure)
 					structure=tmpStructure
@@ -224,7 +238,7 @@ class ComputeCharacterInfo:
 
 		changed=True
 		while changed:
-			availableRuleFilter = lambda rule: treInterpreter.matchQuickly(rule.getTRE(), structure)
+			availableRuleFilter = lambda rule: rearrangeCallback.matchQuickly(rule.getTRE(), structure)
 			filteredSubstituteRuleList = filter(availableRuleFilter, substituteRuleList)
 			changed=rearrangeStructureOneTurn(structure, filteredSubstituteRuleList)
 
