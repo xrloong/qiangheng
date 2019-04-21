@@ -1,3 +1,5 @@
+import abc
+
 from injector import inject
 
 from .helper import HanZiNetworkManager
@@ -56,6 +58,49 @@ def isBelongToFontVariance(characterFontVariance, targetFontVariance):
 		return characterFontVariance in [FontVariance.All, FontVariance.Simplified]
 	else:
 		return False
+
+class RearrangeCallback(object, metaclass=abc.ABCMeta):
+	@abc.abstractmethod
+	def prepare(self, structure):
+		pass
+
+	@abc.abstractmethod
+	def checkApplied(self, structure):
+		pass
+
+	@abc.abstractmethod
+	def setApplied(self, structure):
+		pass
+
+class TemplateRearrangeCallback(RearrangeCallback):
+	def __init__(self, computeCharacterInfo):
+		self.computeCharacterInfo = computeCharacterInfo
+
+	def prepare(self, structure):
+		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
+		if nodeStructure:
+			self.computeCharacterInfo.expandNodeStructure(nodeStructure)
+
+	def checkApplied(self, structure):
+		return structure.getTag().isTemplateApplied()
+
+	def setApplied(self, structure):
+		structure.getTag().setTemplateApplied()
+
+class SubsituteRearrangeCallback(RearrangeCallback):
+	def __init__(self, computeCharacterInfo):
+		self.computeCharacterInfo = computeCharacterInfo
+
+	def prepare(self, structure):
+		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
+		if nodeStructure:
+			self.computeCharacterInfo.expandNodeStructure(nodeStructure)
+
+	def checkApplied(self, structure):
+		return structure.getTag().isSubstituteApplied()
+
+	def setApplied(self, structure):
+		structure.getTag().setSubstituteApplied()
 
 class ComputeCharacterInfo:
 	@inject
@@ -123,10 +168,13 @@ class ComputeCharacterInfo:
 
 			structure=self.recursivelyConvertDescriptionToStructure(structDesc)
 
+			rearrangeCallback = TemplateRearrangeCallback(self)
 			templateRuleList=self.structureManager.getTemplateRules()
-			self.recursivelyRearrangeStructureByTemplate(structure, templateRuleList)
+			self.recursivelyRearrangeStructureByTemplate(structure, templateRuleList, rearrangeCallback)
+
+			rearrangeCallback = SubsituteRearrangeCallback(self)
 			substituteRuleList=self.structureManager.getSubstituteRules()
-			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList)
+			self.recursivelyRearrangeStructureBySubstitute(structure, substituteRuleList, rearrangeCallback)
 
 			self.networkManager.addStructureIntoNode(structure, nodeStructure)
 			if isMainStructure:
@@ -140,42 +188,34 @@ class ComputeCharacterInfo:
 
 		return structure
 
-	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList):
-		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
-		if nodeStructure:
-			self.expandNodeStructure(nodeStructure)
+	def recursivelyRearrangeStructureByTemplate(self, structure, substituteRuleList, rearrangeCallback):
+		rearrangeCallback.prepare(structure)
 
-		tag=structure.getTag()
-		if tag.isTemplateApplied():
+		if rearrangeCallback.checkApplied(structure):
 			return
 
-		self.rearrangeStructure(structure, substituteRuleList)
+		self.rearrangeStructure(structure, substituteRuleList, rearrangeCallback)
 		for childStructure in structure.getStructureList():
-			self.recursivelyRearrangeStructureByTemplate(childStructure, substituteRuleList)
+			self.recursivelyRearrangeStructureByTemplate(childStructure, substituteRuleList, rearrangeCallback)
 
-		tag.setTemplateApplied()
+		rearrangeCallback.setApplied(structure)
 
-	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList):
-		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
-		if nodeStructure:
-			self.expandNodeStructure(nodeStructure)
+	def recursivelyRearrangeStructureBySubstitute(self, structure, substituteRuleList, rearrangeCallback):
+		rearrangeCallback.prepare(structure)
 
-		tag=structure.getTag()
-		if tag.isSubstituteApplied():
+		if rearrangeCallback.checkApplied(structure):
 			return
 
-		self.rearrangeStructure(structure, substituteRuleList)
+		self.rearrangeStructure(structure, substituteRuleList, rearrangeCallback)
 		for childStructure in structure.getStructureList():
-			self.recursivelyRearrangeStructureBySubstitute(childStructure, substituteRuleList)
+			self.recursivelyRearrangeStructureBySubstitute(childStructure, substituteRuleList, rearrangeCallback)
 
-		tag.setSubstituteApplied()
+		rearrangeCallback.setApplied(structure)
 
-	def rearrangeStructure(self, structure, substituteRuleList):
+	def rearrangeStructure(self, structure, substituteRuleList, rearrangeCallback):
 		treInterpreter = self.treInterpreter
 		def expandLeaf(structure):
-			referenceNode = structure.getReferencedNode()
-			if referenceNode:
-				self.expandNodeStructure(referenceNode.getNodeStructure())
+			rearrangeCallback.prepare(structure)
 
 			children=structure.getStructureList()
 			for child in children:
