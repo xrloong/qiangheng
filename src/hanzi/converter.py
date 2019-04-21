@@ -1,5 +1,3 @@
-import abc
-
 from injector import inject
 
 from .helper import HanZiNetworkManager
@@ -10,6 +8,7 @@ from model.element.enum import FontVariance
 
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
+from model.CharacterDescriptionManager import RearrangeCallback
 from model.tree.regexp import TreeRegExpInterpreter
 from model.tree.regexp import BasicTreeProxy
 from model.tree.regexp import TreeNodeGenerator
@@ -58,27 +57,6 @@ def isBelongToFontVariance(characterFontVariance, targetFontVariance):
 		return characterFontVariance in [FontVariance.All, FontVariance.Simplified]
 	else:
 		return False
-
-class RearrangeCallback(object, metaclass=abc.ABCMeta):
-	@abc.abstractmethod
-	def prepare(self, structure):
-		pass
-
-	@abc.abstractmethod
-	def checkApplied(self, structure):
-		pass
-
-	@abc.abstractmethod
-	def setApplied(self, structure):
-		pass
-
-	@abc.abstractmethod
-	def matchAndReplace(self, tre, structure, result):
-		pass
-
-	@abc.abstractmethod
-	def matchQuickly(self, tre, structure):
-		pass
 
 class BaseRearrangeCallback(RearrangeCallback):
 	def __init__(self, computeCharacterInfo, treInterpreter):
@@ -183,12 +161,12 @@ class ComputeCharacterInfo:
 			structure=self.recursivelyConvertDescriptionToStructure(structDesc)
 
 			rearrangeCallback = TemplateRearrangeCallback(self, self.treInterpreter)
-			templateRuleList=self.structureManager.getTemplateRules()
-			self.recursivelyRearrangeStructure(structure, templateRuleList, rearrangeCallback)
+			templateManager = self.structureManager.getTemplateManager()
+			templateManager.recursivelyRearrangeStructure(structure, rearrangeCallback)
 
 			rearrangeCallback = SubsituteRearrangeCallback(self, self.treInterpreter)
-			substituteRuleList=self.structureManager.getSubstituteRules()
-			self.recursivelyRearrangeStructure(structure, substituteRuleList, rearrangeCallback)
+			substituteManager = self.structureManager.getSubstituteManager()
+			substituteManager.recursivelyRearrangeStructure(structure, rearrangeCallback)
 
 			self.networkManager.addStructureIntoNode(structure, nodeStructure)
 			if isMainStructure:
@@ -201,46 +179,6 @@ class ComputeCharacterInfo:
 			structure=self.generateLink(structDesc)
 
 		return structure
-
-	def recursivelyRearrangeStructure(self, structure, substituteRuleList, rearrangeCallback):
-		rearrangeCallback.prepare(structure)
-
-		if rearrangeCallback.checkApplied(structure):
-			return
-
-		self.rearrangeStructure(structure, substituteRuleList, rearrangeCallback)
-		for childStructure in structure.getStructureList():
-			self.recursivelyRearrangeStructure(childStructure, substituteRuleList, rearrangeCallback)
-
-		rearrangeCallback.setApplied(structure)
-
-	def rearrangeStructure(self, structure, substituteRuleList, rearrangeCallback):
-		def expandLeaf(structure):
-			rearrangeCallback.prepare(structure)
-
-			children=structure.getStructureList()
-			for child in children:
-				expandLeaf(child)
-
-		def rearrangeStructureOneTurn(structure, filteredSubstituteRuleList):
-			changed=False
-			for rule in filteredSubstituteRuleList:
-				tre = rule.getTRE()
-				result = rule.getReplacement()
-
-				tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
-				if tmpStructure!=None:
-					structure.changeToStructure(tmpStructure)
-					structure=tmpStructure
-					changed=True
-					break
-			return changed
-
-		changed=True
-		while changed:
-			availableRuleFilter = lambda rule: rearrangeCallback.matchQuickly(rule.getTRE(), structure)
-			filteredSubstituteRuleList = filter(availableRuleFilter, substituteRuleList)
-			changed=rearrangeStructureOneTurn(structure, filteredSubstituteRuleList)
 
 	def generateReferenceLink(self, structDesc):
 		name=structDesc.getReferenceName()

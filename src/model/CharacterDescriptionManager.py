@@ -1,11 +1,34 @@
 #!/usr/bin/env python3
 
+import abc
+
 from injector import inject
 from .element.CharacterDescription import CharacterDescription
 from .manager import RadixDescriptionManager
 from parser.QHParser import QHParser
 from parser.QHParser import QHSubstituteRuleParser
 from parser.QHParser import QHRadixParser
+
+class RearrangeCallback(object, metaclass=abc.ABCMeta):
+	@abc.abstractmethod
+	def prepare(self, structure):
+		pass
+
+	@abc.abstractmethod
+	def checkApplied(self, structure):
+		pass
+
+	@abc.abstractmethod
+	def setApplied(self, structure):
+		pass
+
+	@abc.abstractmethod
+	def matchAndReplace(self, tre, structure, result):
+		pass
+
+	@abc.abstractmethod
+	def matchQuickly(self, tre, structure):
+		pass
 
 class SubstituteManager:
 	@inject
@@ -14,14 +37,55 @@ class SubstituteManager:
 		self.substituteRules = []
 
 	def loadSubstituteRules(self, substituteFiles):
-		totalSubstituteRules=[]
+		totalSubstituteRules = []
 		for filename in substituteFiles:
-			substituteRules=self.parser.loadSubstituteRules(filename)
+			substituteRules = self.parser.loadSubstituteRules(filename)
 			totalSubstituteRules.extend(substituteRules)
-		self.substituteRules=totalSubstituteRules
+		self.substituteRules = totalSubstituteRules
 
 	def getSubstituteRules(self):
 		return self.substituteRules
+
+	def recursivelyRearrangeStructure(self, structure, rearrangeCallback):
+		rearrangeCallback.prepare(structure)
+
+		if rearrangeCallback.checkApplied(structure):
+			return
+
+		self.rearrangeStructure(structure, rearrangeCallback)
+		for childStructure in structure.getStructureList():
+			self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
+
+		rearrangeCallback.setApplied(structure)
+
+	def rearrangeStructure(self, structure, rearrangeCallback):
+		def expandLeaf(structure):
+			rearrangeCallback.prepare(structure)
+
+			children = structure.getStructureList()
+			for child in children:
+				expandLeaf(child)
+
+		def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
+			changed = False
+			for rule in filteredSubstituteRules:
+				tre = rule.getTRE()
+				result = rule.getReplacement()
+
+				tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
+				if tmpStructure != None:
+					structure.changeToStructure(tmpStructure)
+					structure = tmpStructure
+					changed = True
+					break
+			return changed
+
+		substituteRules = self.substituteRules
+		changed = True
+		while changed:
+			availableRuleFilter = lambda rule: rearrangeCallback.matchQuickly(rule.getTRE(), structure)
+			filteredSubstituteRules = filter(availableRuleFilter, substituteRules)
+			changed = rearrangeStructureOneTurn(structure, filteredSubstituteRules)
 
 class CompositionManager:
 	@inject
