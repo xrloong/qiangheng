@@ -41,13 +41,31 @@ $ pip3 install lxml PyYAML injector ply
 $ make clean
 ```
 
-要計算之前，要準備適當的資料
+要計算編碼時，要有每個字符的結構資訊，以及字根的編碼資訊，其相關資料放在 qhdata/ 。 
+因為歷史因素，原先是使用 XML 格式，而後來改用 YAML 格式。要計算之前，要準備適當的資料
 ```console
 $ make prepare
 ```
-執行過後，會在 gen/ 下產生適當資料。
+執行過後，會在 gen/ 下產生相關資料。
 
-計算，先計算出 xml，再轉成 puretable
+要計算編碼資訊，可以使用：
+```console
+$ PYTHONPATH=src:codings/Array time src/qiangheng.py -p coding.Array --format xml
+```
+其中，PYTHONPATH 用來指定原始碼放置位置，src/ 是主要核心程式碼放置，
+而 codings/Array 則是行列輸入法的位置。而 coding.Array 則是行列輸入法的模組名稱。
+可以選擇的格式有：xml, yaml, text, quiet 。
+
+目前支援的編碼法（輸入法或描繪法）的相關對照表：
+
+|        |  行列  | 嘸蝦米 |  倉頡  |  大易  |  鄭碼  | 四角號碼 | 動態組字 |
+| :----: | :----: | :----: | :----: | :----: | :----: | :------: | :------: |
+|     代碼     |   ar   |   bs   |   cj   |   dy   |   zm   |    fc    |    dc    |
+|  原始碼位置  |   codings/Array   |   codings/Boshiamy   |   codings/CangJie   |   codings/DaYi   |   codings/ZhengMa   |    codings/FourCorner    |    codings/DynamicComposition    |
+|   模組名稱   |   coding.Array   |   coding.Boshiamy   |   coding.CangJie   |   coding.DaYi   |   coding.ZhengMa   |    coding.FourCorner    |    coding.DynamicComposition    |
+
+
+也可以透過已寫好的 Makefile 來計算。先計算出 xml，再轉成 puretable
 ```console
 $ make xml puretable
 ```
