@@ -158,6 +158,11 @@ $ src/hanzitk.py -s -i tables/puretable/qhdc-standard.txt
   $ /hanzitk.py -g svg -i tables/puretable/qhdc-standard.txt
   ```
 
+檔案架構
+========
+參考 [FILES.md](https://github.com/xrloong/qiangheng/blob/master/FILES.md)
+
+
 程式架構說明
 ============
 請參考 doc/qiangheng.dia （使用 Dia）。
