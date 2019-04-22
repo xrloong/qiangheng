@@ -26,15 +26,12 @@ class RearrangeCallback(object, metaclass=abc.ABCMeta):
 	def matchAndReplace(self, tre, structure, result):
 		pass
 
-	@abc.abstractmethod
-	def matchQuickly(self, tre, structure):
-		pass
-
 class SubstituteManager:
 	@inject
 	def __init__(self, parser: QHSubstituteRuleParser):
 		self.parser = parser
 		self.substituteRules = []
+		self.opToRuleDict = {}
 
 	def loadSubstituteRules(self, substituteFiles):
 		totalSubstituteRules = []
@@ -42,6 +39,15 @@ class SubstituteManager:
 			substituteRules = self.parser.loadSubstituteRules(filename)
 			totalSubstituteRules.extend(substituteRules)
 		self.substituteRules = totalSubstituteRules
+
+		for rule in totalSubstituteRules:
+			tre = rule.getTRE()
+			opName = tre.prop["運算"]
+
+			rules = self.opToRuleDict.get(opName, ())
+			rules = rules + (rule, )
+
+			self.opToRuleDict[opName] = rules
 
 	def getSubstituteRules(self):
 		return self.substituteRules
@@ -83,9 +89,9 @@ class SubstituteManager:
 		substituteRules = self.substituteRules
 		changed = True
 		while changed:
-			availableRuleFilter = lambda rule: rearrangeCallback.matchQuickly(rule.getTRE(), structure)
-			filteredSubstituteRules = filter(availableRuleFilter, substituteRules)
-			changed = rearrangeStructureOneTurn(structure, filteredSubstituteRules)
+			opName = structure.getExpandedOperatorName()
+			rules = self.opToRuleDict.get(opName, ())
+			changed = rearrangeStructureOneTurn(structure, rules)
 
 class CompositionManager:
 	@inject

@@ -79,9 +79,6 @@ class TreeRegExpInterpreter:
 	def match(self, tre, node):
 		return self.matchTree(tre, node)
 
-	def matchQuickly(self, tre, node):
-		return self.proxy.matchSingleQuickly(tre, node)
-
 	def matchTree(self, tre, node):
 		result = MatchResult()
 		result1 = self.matchNode(tre, node)

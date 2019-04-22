@@ -17,10 +17,6 @@ class HanZiTreeProxy(BasicTreeProxy):
 	def getChildren(self, currentStructure):
 		return currentStructure.getExpandedStructureList()
 
-	def matchSingleQuickly(self, tre, currentStructure):
-		opName = tre.prop.get("運算")
-		return currentStructure.isMatchStructure(operatorName = opName)
-
 	def matchSingle(self, tre, currentStructure):
 		prop = tre.prop
 		opName = prop.get("運算")
@@ -70,9 +66,6 @@ class BaseRearrangeCallback(RearrangeCallback):
 
 	def matchAndReplace(self, tre, structure, result):
 		return self.treInterpreter.matchAndReplace(tre, structure, result)
-
-	def matchQuickly(self, tre, structure):
-		return self.treInterpreter.matchQuickly(tre, structure)
 
 class TemplateRearrangeCallback(BaseRearrangeCallback):
 	def __init__(self, computeCharacterInfo, treInterpreter):

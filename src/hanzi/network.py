@@ -69,6 +69,9 @@ class HanZiStructure:
 		nodeStructureInfo = self.structureInfo.getReferencedNodeStructureInfo()
 		return nodeStructureInfo.getName()
 
+	def getExpandedOperatorName(self):
+		return self.structureInfo.getExpandedOperatorName()
+
 	def getExpandedStructureList(self):
 		return self.structureInfo.getExpandedStructureList()
 
