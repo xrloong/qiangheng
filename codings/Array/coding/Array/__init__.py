@@ -1,7 +1,8 @@
 from coding.Base import CodingType
 from coding.Base import FontVariance
 
-from .Array import ArrayInfo as CodingInfo
+from coding.util import readCodingInfo
+
 from .Array import ARCodeInfoEncoder as CodeInfoEncoder
 from .Array import ARRadixParser as CodingRadixParser
 
@@ -10,6 +11,7 @@ fontVariance = FontVariance.Traditional
 
 codingMethodName = "ar"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
+CodingInfoFile = codingMethodDir + 'info.yaml'
 CodingSubstituteFileList = [
 	codingMethodDir + 'substitute.yaml',
 ]
@@ -18,4 +20,6 @@ CodingRadixFileList = [
 	codingMethodDir + 'radix/CJK-A.yaml',
 	codingMethodDir + 'radix/adjust.yaml'
 ]
+
+CodingInfo=lambda :readCodingInfo(CodingInfoFile)
 
