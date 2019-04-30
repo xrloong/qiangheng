@@ -75,33 +75,47 @@ class XmlWriter(BaseImWriter):
 # YAML writer
 import yaml
 
+class CustomDumper(yaml.Dumper):
+	#Super neat hack to preserve the mapping key order. See https://stackoverflow.com/a/52621703/1497385
+	def represent_dict_preserve_order(self, data):
+		return self.represent_dict(data.items())
+
+CustomDumper.add_representer(dict, CustomDumper.represent_dict_preserve_order)
+
 class YamlWriter(BaseImWriter):
 	def writeCodeMapping(self, imInfo, codeMappingInfoList):
-		rootNode="輸入法"
-		nameNode={"輸入法名稱": {
+		nodeNames = {
 				"EN":imInfo.getName('en'),
 				"TW":imInfo.getName('tw'),
 				"CN":imInfo.getName('cn'),
 				"HK":imInfo.getName('hk'),
-				"SG":imInfo.getName('sg'),
-				}}
+#				"SG":imInfo.getName('sg'),
+				}
+
+		# 屬性
+		properties = {
+				"最大按鍵數": "%s"%imInfo.getMaxKeyLength()
+			}
 
                 # 按鍵與顯示的對照表
-		l=[]
-		keyMaps=imInfo.getKeyMaps()
+		nodeKeyMaps = []
+		keyMaps = imInfo.getKeyMaps()
 		for key, disp in keyMaps:
-			attrib={"按鍵對應": {"按鍵":key, "顯示":disp} }
-			l.append(attrib)
-		keyMappingSet={"按鍵對應集":l}
+			attrib = {"按鍵對應": {"按鍵":key, "顯示":disp} }
+			nodeKeyMaps.append(attrib)
 
-		l=[]
+		nodeCodeMaps = []
 		for x in codeMappingInfoList:
-			attrib={"按鍵序列":x.getCode(), "字符":x.getName(), "類型":x.getVariance()}
-			l.append(attrib)
-		codeMappingSet={"對應集":l}
+			attrib = {"按鍵序列":x.getCode(), "字符":x.getName(), "類型":x.getVariance()}
+			nodeCodeMaps.append(attrib)
 
-		l=[nameNode, keyMappingSet, codeMappingSet]
-		print(yaml.dump(l, allow_unicode=True))
+		r = {
+			"輸入法名稱": nodeNames,
+			"屬性": properties,
+			"按鍵對應集": nodeKeyMaps,
+			"對應集": nodeCodeMaps
+		}
+		print(yaml.dump(r, allow_unicode=True, Dumper = CustomDumper))
 
 if __name__=='__main__':
 	pass
