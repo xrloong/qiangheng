@@ -52,28 +52,17 @@ class QiangHeng:
 		return self.getWriter(quiet)
 
 	def getWriter(self, quiet=False):
-		isToOutput = not quiet
-		if isToOutput:
-			writer = self.getYamlWriter()
+		if not quiet:
+			if self.isForIm:
+				from writer import ImYamlWriter
+				writer = ImYamlWriter()
+			else:
+				from writer import DmYamlWriter
+				writer = DmYamlWriter()
 		else:
 			# 不輸出結果
-			writer = self.getQuietWriter()
-		return writer
-
-	def getYamlWriter(self):
-		if self.isForIm:
-			from writer.im import YamlWriter
-		else:
-			from writer.dm import YamlWriter
-		writer = YamlWriter()
-		return writer
-
-	def getQuietWriter(self):
-		if self.isForIm:
-			from writer.im import QuietWriter
-		else:
-			from writer.dm import QuietWriter
-		writer = QuietWriter()
+			from writer import QuietWriter
+			writer = QuietWriter()
 		return writer
 
 class MainManager:
