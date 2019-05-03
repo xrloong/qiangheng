@@ -137,52 +137,63 @@ class XmlWriter(BaseDmWriter):
 # YAML writer
 import yaml
 
+class CustomDumper(yaml.Dumper):
+	#Super neat hack to preserve the mapping key order. See https://stackoverflow.com/a/52621703/1497385
+	def represent_dict_preserve_order(self, data):
+		return self.represent_dict(data.items())
+
+CustomDumper.add_representer(dict, CustomDumper.represent_dict_preserve_order)
+
 class YamlCanvasController(BaseTextCanvasController):
 	def __init__(self):
 		super().__init__()
-		self.table=[]
+		self.strokes = []
 
-	def getTable(self):
-		return self.table
+	def getStrokes(self):
+		return self.strokes
 
 	def onPreDrawCharacter(self, character):
-		pass
+		self.strokes=[]
 
-	def onPostDrawCharacter(self, character):
-		charName=character.getName()
-		self.table.append((charName, self.getCharacterExpression()))
+	def onPreDrawStroke(self, stroke):
+		self.clearStrokeExpression()
+
+	def onPostDrawStroke(self, stroke):
+		e=self.getStrokeExpression()
+		if e:
+			attrib={
+				"名稱": stroke.getName(),
+				"描繪": e,
+				}
+			self.strokes.append(attrib)
 
 class YamlWriter(BaseDmWriter):
 	def writeCodeMapping(self, imInfo, codeMappingInfoList):
 		rootNode="描繪法"
 
-		l=[]
-		for x in codeMappingInfoList:
-			attrib={"名稱":x[0], "描繪序列":x[1]}
-			l.append(attrib)
-		codeMappingSet={"描繪集":l}
-
-		l=[codeMappingSet]
-		print(yaml.dump(l, allow_unicode=True))
-
-	def genIMMapping(self, characterInfoList):
 		controller = YamlCanvasController()
 		ds = DrawingSystem(controller)
-		for characterInfo in characterInfoList:
-			codeMappingInfoList=characterInfo.getCodeMappingInfoList()
-			for codeMappingInfo in codeMappingInfoList:
-				code=codeMappingInfo.getCode()
-				charName=codeMappingInfo.getName()
+		l=[]
+		for codeMappingInfo in codeMappingInfoList:
+			charName = codeMappingInfo.getName()
+			dcStrokeGroup = codeMappingInfo.getCode()
+			variance = codeMappingInfo.getVariance()
 
-				if len(charName)>1:
-					continue
+			controller = YamlCanvasController()
+			ds = DrawingSystem(controller)
 
-				dcStrokeGroup = code
-				strokeGroup = dcStrokeGroup.getStrokeGroup()
-				character=Character(charName, strokeGroup)
+			strokeGroup = dcStrokeGroup.getStrokeGroup()
+			character = Character(charName, strokeGroup)
 
-				ds.draw(character)
-		return controller.getTable()
+			ds.draw(character)
+
+			code = controller.getStrokes()
+
+			attrib = {"名稱": charName, "類型":variance, "字圖":code}
+			l.append(attrib)
+		codeMappingSet={"描繪法":l}
+
+		print(yaml.dump(codeMappingSet, allow_unicode=True, Dumper = CustomDumper))
 
 if __name__=='__main__':
 	pass
