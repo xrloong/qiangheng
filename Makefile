@@ -132,7 +132,7 @@ yaml:
 		package=`echo $$packageConfig | cut -d" " -f1`;\
 		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
 		echo $$cm $$package $$packageDir;\
-		PYTHONPATH="src:$$packageDir" time src/qiangheng.py -p $$package --format yaml > $(YAML_PATH)/qh$$cm.yaml; \
+		PYTHONPATH="src:$$packageDir" time src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
 	done
 	touch $(YAML_PATH)
 

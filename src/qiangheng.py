@@ -28,11 +28,10 @@ class QiangHeng:
 
 		package = __import__(packageName, fromlist=["coding"])
 
-		output_format=options.output_format
 		quiet=options.quiet
 
 
-		writer = self.computeWriter(package.codingType, quiet, output_format)
+		writer = self.computeWriter(package.codingType, quiet)
 
 		def configure(binder):
 			binder.bind(CodingConfig, to=CodingConfig(package))
@@ -48,45 +47,17 @@ class QiangHeng:
 		mainManager.write()
 
 
-	def computeWriter(self, codingType, quiet: Quiet, outputFormat: OutputFormat) -> Writer:
+	def computeWriter(self, codingType, quiet: Quiet) -> Writer:
 		self.isForIm = (CodingType.Input == codingType)
-		return self.getWriter(quiet, outputFormat)
+		return self.getWriter(quiet)
 
-	def getWriter(self, quiet=False, output_format="text"):
-		isFormatXML=(output_format=='xml')
-		isFormatYAML=(output_format=='yaml')
-		isFormatTXT=(output_format=='text')
-		isFormatQuiet=(output_format=='quiet')
-
-		isToOutput=not quiet and not isFormatQuiet
+	def getWriter(self, quiet=False):
+		isToOutput = not quiet
 		if isToOutput:
-			if isFormatXML:
-				writer = self.getXmlWriter()
-			elif isFormatYAML:
-				writer = self.getYamlWriter()
-			elif isFormatTXT:
-				writer = self.getTextWriter()
-			else:
-				writer = self.getTextWriter()
+			writer = self.getYamlWriter()
 		else:
 			# 不輸出結果
 			writer = self.getQuietWriter()
-		return writer
-
-	def getTextWriter(self):
-		if self.isForIm:
-			from writer.im import TxtWriter
-		else:
-			from writer.dm import TxtWriter
-		writer = TxtWriter()
-		return writer
-
-	def getXmlWriter(self):
-		if self.isForIm:
-			from writer.im import XmlWriter
-		else:
-			from writer.dm import XmlWriter
-		writer = XmlWriter()
 		return writer
 
 	def getYamlWriter(self):
@@ -148,7 +119,6 @@ class MainManager:
 def main():
 	oparser = OptionParser()
 	oparser.add_option("-p", dest="package", help="package")
-	oparser.add_option("--format", type="choice", choices=["xml", "yaml", "text", "quiet"], dest="output_format", help="輸出格式，可能的選項有：xml、yaml、text、quiet", default="text")
 	oparser.add_option("-q", "--quiet", action="store_true", dest="quiet", default=False)
 	(options, args) = oparser.parse_args()
 
