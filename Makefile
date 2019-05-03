@@ -18,6 +18,7 @@ PLATFORM_LIST	=	puretable scim gcin msim
 TABLES_PATH	=	tables
 PURETABLE_PATH	=	$(TABLES_PATH)/puretable
 XML_PATH	=	$(TABLES_PATH)/xml
+YAML_PATH	=	$(TABLES_PATH)/yaml
 SCIM_PATH	=	$(TABLES_PATH)/scim
 IBUS_PATH	=	$(TABLES_PATH)/ibus
 GCIN_PATH	=	$(TABLES_PATH)/gcin
@@ -113,8 +114,17 @@ prepare:
 	make prepare-ar prepare-bs prepare-cj prepare-dy prepare-fc prepare-zm prepare-dc
 
 $(XML_PATH):
-xml:
+xml: yaml
 	mkdir -p $(XML_PATH)
+	for cm in $(CMLIST);\
+	do\
+		python3 scripts/convert_cm_to_xml.py tables/yaml/qh$$cm.yaml |\
+			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$cm.xml --format -;\
+	done
+	touch $(XML_PATH)
+
+yaml:
+	mkdir -p $(YAML_PATH)
 	for cm in $(CMLIST);\
 	do\
 		$(call setup_codings);\
@@ -122,10 +132,9 @@ xml:
 		package=`echo $$packageConfig | cut -d" " -f1`;\
 		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
 		echo $$cm $$package $$packageDir;\
-		PYTHONPATH="src:$$packageDir" time src/qiangheng.py -p $$package --format xml |\
-			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$cm.xml --format -;\
+		PYTHONPATH="src:$$packageDir" time src/qiangheng.py -p $$package --format yaml > $(YAML_PATH)/qh$$cm.yaml; \
 	done
-	touch $(XML_PATH)
+	touch $(YAML_PATH)
 
 profile:
 	mkdir -p $(PROFILE_PATH)
