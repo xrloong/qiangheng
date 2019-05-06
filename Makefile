@@ -118,7 +118,7 @@ xml: yaml
 	mkdir -p $(XML_PATH)
 	for cm in $(CMLIST);\
 	do\
-		python3 scripts/convert_cm_to_xml.py tables/yaml/qh$$cm.yaml |\
+		python3 scripts/convert_cm_to_xml.py tables/yaml/qh$$cm.yaml gen/qhdata/$$cm/info.yaml |\
 			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$cm.xml --format -;\
 	done
 	touch $(XML_PATH)

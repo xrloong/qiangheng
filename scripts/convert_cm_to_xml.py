@@ -5,8 +5,10 @@ import lxml.etree as ET
 import sys
 
 infile = sys.argv[1]
+infofile = sys.argv[2]
 
 root = yaml.load(open(infile), yaml.cyaml.CSafeLoader)
+info = yaml.load(open(infofile), yaml.cyaml.CSafeLoader)
 
 #print(root["輸入法名稱"])
 #print(root["按鍵對應集"])
@@ -20,36 +22,32 @@ else:
 	rootName = "編碼法"
 
 rootNode=ET.Element(rootName)
-if "輸入法名稱" in root:
-	imNames = root["輸入法名稱"]
+if "編碼法資訊" in info and "描繪法資訊" not in info:
+	codingInfos = info["編碼法資訊"]
+	imNames = codingInfos["顯示名稱"]
 
 	# 名稱
 	nameNode=ET.SubElement(rootNode, "輸入法名稱",
 		attrib={
-			"EN":imNames.get('EN'),
-			"TW":imNames.get('TW'),
-			"CN":imNames.get('CN'),
-			"HK":imNames.get('HK'),
+			"EN":imNames.get('en'),
+			"TW":imNames.get('tw'),
+			"CN":imNames.get('cn'),
+			"HK":imNames.get('hk'),
 			})
 
-if "屬性" in root:
-	properties = root["屬性"]
-
-	maxKeyLength = properties.get("最大按鍵數")
+	maxKeyLength = codingInfos.get("最大長度")
 	# 屬性
 	propertyNode=ET.SubElement(rootNode, "屬性",
 		attrib={
 			"最大按鍵數": "{}".format(maxKeyLength)
 			})
 
-if "按鍵對應集" in root:
-	keyMaps = root["按鍵對應集"]
+	keyMaps = codingInfos["按鍵對應"]
 
 	keyMapsNode=ET.SubElement(rootNode, "按鍵對應集")
 	for keyMap in keyMaps:
-		nodeKeyMap = keyMap["按鍵對應"]
-		key = nodeKeyMap["按鍵"]
-		disp = nodeKeyMap["顯示"]
+		key = keyMap[0]
+		disp = keyMap[1]
 
 		attrib={"按鍵":key, "顯示":disp}
 		ET.SubElement(keyMapsNode, "按鍵對應", attrib)
