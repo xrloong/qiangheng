@@ -2,7 +2,6 @@ from injector import Module
 from injector import provider
 
 from coding.Base import CodeInfoEncoder
-from coding.Base import CodingInfo
 from coding.Base import CodingRadixParser
 
 from model.element.enum import CodingType
@@ -16,10 +15,6 @@ from model.CharacterDescriptionManager import RadixManager
 from Constant import Package
 
 class PackageModule(Module):
-	@provider
-	def provideCodingInfo(self, package: Package) -> CodingInfo:
-		return package.CodingInfo()
-
 	@provider
 	def provideCodeInfoEncoder(self, codingPackage: Package) -> CodeInfoEncoder:
 		return codingPackage.CodeInfoEncoder

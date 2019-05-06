@@ -10,11 +10,7 @@ infofile = sys.argv[2]
 root = yaml.load(open(infile), yaml.cyaml.CSafeLoader)
 info = yaml.load(open(infofile), yaml.cyaml.CSafeLoader)
 
-#print(root["輸入法名稱"])
-#print(root["按鍵對應集"])
-#print(root["對應集"])
-
-if "輸入法名稱" in root:
+if "對應集" in root:
 	rootName = "輸入法"
 elif "描繪法" in root:
 	rootName = "描繪法"

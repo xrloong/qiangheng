@@ -11,7 +11,6 @@ from Constant import Package
 from Constant import Quiet, OutputFormat
 from Constant import Writer
 
-from coding.Base import CodingInfo
 from coding.Base import CodingType
 from model.element.CodingConfig import CodingConfig
 from model.StructureManager import StructureManager
@@ -67,13 +66,12 @@ class QiangHeng:
 
 class MainManager:
 	@inject
-	def __init__(self, codingInfo: CodingInfo,
+	def __init__(self,
 			hanziNetwork: HanZiNetwork,
 			structureManager: StructureManager,
 			computeCharacterInfo: ComputeCharacterInfo,
 			hanziInterpreter: HanZiInterpreter,
 			writer: Writer):
-		self.codingInfo = codingInfo
 		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 		self.computeCharacterInfo = computeCharacterInfo
@@ -103,7 +101,7 @@ class MainManager:
 				characterInfoList.append(characterInfo)
 		characterInfoList = sorted(characterInfoList, key=lambda c: c.character)
 
-		self.writer.write(self.codingInfo, characterInfoList)
+		self.writer.write(characterInfoList)
 
 def main():
 	oparser = OptionParser()

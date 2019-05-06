@@ -2,11 +2,11 @@ import yaml
 
 # base writer
 class BaseWriter:
-	def write(self, imInfo, characterInfoList):
+	def write(self, characterInfoList):
 		codeMappingInfoList=self.genIMMapping(characterInfoList)
-		self.writeCodeMapping(imInfo, codeMappingInfoList)
+		self.writeCodeMapping(codeMappingInfoList)
 
-	def writeCodeMapping(self, imInfo, codeMappingInfoList):
+	def writeCodeMapping(self, codeMappingInfoList):
 		pass
 
 	def genIMMapping(self, characterInfoList):
@@ -18,7 +18,7 @@ class BaseWriter:
 
 # quiet writer
 class QuietWriter(BaseWriter):
-	def writeCodeMapping(self, imInfo, codeMappingInfoList):
+	def writeCodeMapping(self, codeMappingInfoList):
 		pass
 
 
@@ -31,9 +31,9 @@ CustomDumper.add_representer(dict, CustomDumper.represent_dict_preserve_order)
 
 # YAML writer for input methods
 class ImYamlWriter(BaseWriter):
-	def write(self, imInfo, characterInfoList):
+	def write(self, characterInfoList):
 		codeMappingInfoList=self.genIMMapping(characterInfoList)
-		self.writeCodeMapping(imInfo, codeMappingInfoList)
+		self.writeCodeMapping(codeMappingInfoList)
 
 	def genIMMapping(self, characterInfoList):
 		table=[]
@@ -41,36 +41,13 @@ class ImYamlWriter(BaseWriter):
 			table.extend(characterInfo.getCodeMappingInfoList())
 		return table
 
-	def writeCodeMapping(self, imInfo, codeMappingInfoList):
-		nodeNames = {
-				"EN":imInfo.getName('en'),
-				"TW":imInfo.getName('tw'),
-				"CN":imInfo.getName('cn'),
-				"HK":imInfo.getName('hk'),
-#				"SG":imInfo.getName('sg'),
-				}
-
-		# 屬性
-		properties = {
-				"最大按鍵數": "%s"%imInfo.getMaxKeyLength()
-			}
-
-                # 按鍵與顯示的對照表
-		nodeKeyMaps = []
-		keyMaps = imInfo.getKeyMaps()
-		for key, disp in keyMaps:
-			attrib = {"按鍵對應": {"按鍵":key, "顯示":disp} }
-			nodeKeyMaps.append(attrib)
-
+	def writeCodeMapping(self, codeMappingInfoList):
 		nodeCodeMaps = []
 		for x in codeMappingInfoList:
 			attrib = {"字符":x.getName(), "類型":x.getVariance(), "按鍵序列":x.getCode()}
 			nodeCodeMaps.append(attrib)
 
 		r = {
-			"輸入法名稱": nodeNames,
-			"屬性": properties,
-			"按鍵對應集": nodeKeyMaps,
 			"對應集": nodeCodeMaps
 		}
 		print(yaml.dump(r, allow_unicode=True, Dumper = CustomDumper))
@@ -114,9 +91,9 @@ class YamlCanvasController(AbsTextCanvasController):
 
 # YAML writer for drawing methods
 class DmYamlWriter(BaseWriter):
-	def write(self, imInfo, characterInfoList):
+	def write(self, characterInfoList):
 		codeMappingInfoList=self.genIMMapping(characterInfoList)
-		self.writeCodeMapping(imInfo, codeMappingInfoList)
+		self.writeCodeMapping(codeMappingInfoList)
 
 	def genIMMapping(self, characterInfoList):
 		table=[]
@@ -124,7 +101,7 @@ class DmYamlWriter(BaseWriter):
 			table.extend(characterInfo.getCodeMappingInfoList())
 		return table
 
-	def writeCodeMapping(self, imInfo, codeMappingInfoList):
+	def writeCodeMapping(self, codeMappingInfoList):
 		from xie.graphics.drawing import DrawingSystem
 		from xie.graphics.stroke import Character
 

@@ -1,8 +1,5 @@
 import abc
 
-class IfCodingInfo(object, metaclass=abc.ABCMeta):
-	pass
-
 class IfCodeInfo(object, metaclass=abc.ABCMeta):
 	pass
 

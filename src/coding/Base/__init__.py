@@ -1,4 +1,3 @@
-from .Base import CodingInfo
 from .Base import CodeInfo
 from .Base import CodeInfoEncoder
 from .Base import CodingRadixParser

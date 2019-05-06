@@ -1,7 +1,6 @@
 from coding.Base import CodingType
 from coding.Base import FontVariance
 
-from .Dummy import DummyInfo as CodingInfo
 from .Dummy import DummyCodeInfoEncoder as CodeInfoEncoder
 from .Dummy import DummyRadixParser as CodingRadixParser
 
