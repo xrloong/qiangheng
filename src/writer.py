@@ -1,10 +1,5 @@
 import yaml
 
-from xie.graphics.drawing import DrawingSystem
-from xie.graphics.stroke import Character
-from xie.graphics.canvas import BaseTextCanvasController
-
-
 # base writer
 class BaseWriter:
 	def write(self, imInfo, characterInfoList):
@@ -34,7 +29,7 @@ class CustomDumper(yaml.cyaml.CDumper):
 
 CustomDumper.add_representer(dict, CustomDumper.represent_dict_preserve_order)
 
-# im yaml writer
+# YAML writer for input methods
 class ImYamlWriter(BaseWriter):
 	def write(self, imInfo, characterInfoList):
 		codeMappingInfoList=self.genIMMapping(characterInfoList)
@@ -81,7 +76,18 @@ class ImYamlWriter(BaseWriter):
 		print(yaml.dump(r, allow_unicode=True, Dumper = CustomDumper))
 
 
-class YamlCanvasController(BaseTextCanvasController):
+try:
+	import xie
+
+	from xie.graphics.canvas import BaseTextCanvasController
+
+	class AbsTextCanvasController(BaseTextCanvasController):
+		pass
+except ImportError:
+	class AbsTextCanvasController:
+		pass
+
+class YamlCanvasController(AbsTextCanvasController):
 	def __init__(self):
 		super().__init__()
 		self.strokes = []
@@ -104,7 +110,9 @@ class YamlCanvasController(BaseTextCanvasController):
 				}
 			self.strokes.append(attrib)
 
-# dm yaml writer
+
+
+# YAML writer for drawing methods
 class DmYamlWriter(BaseWriter):
 	def write(self, imInfo, characterInfoList):
 		codeMappingInfoList=self.genIMMapping(characterInfoList)
@@ -117,6 +125,9 @@ class DmYamlWriter(BaseWriter):
 		return table
 
 	def writeCodeMapping(self, imInfo, codeMappingInfoList):
+		from xie.graphics.drawing import DrawingSystem
+		from xie.graphics.stroke import Character
+
 		rootNode="描繪法"
 
 		controller = YamlCanvasController()
