@@ -27,7 +27,7 @@ class QuietWriter(BaseWriter):
 		pass
 
 
-class CustomDumper(yaml.Dumper):
+class CustomDumper(yaml.cyaml.CDumper):
 	#Super neat hack to preserve the mapping key order. See https://stackoverflow.com/a/52621703/1497385
 	def represent_dict_preserve_order(self, data):
 		return self.represent_dict(data.items())

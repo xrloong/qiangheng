@@ -31,7 +31,7 @@ class QHSubstituteRuleParser:
 		pass
 
 	def loadSubstituteRules(self, filename):
-		node=yaml.load(open(filename), yaml.SafeLoader)
+		node=yaml.load(open(filename), yaml.cyaml.CSafeLoader)
 		ruleSetNode=node.get(Constant.TAG_RULE_SET)
 
 		if not ruleSetNode:
@@ -92,7 +92,7 @@ class QHParser:
 		return structureList
 
 	def loadCharacters(self, filename):
-		node=yaml.load(open(filename), yaml.SafeLoader)
+		node=yaml.load(open(filename), yaml.cyaml.CSafeLoader)
 		return self.loadCharDescriptionByParsingYAML(node)
 
 	def convertDescriptionToFontVariance(self, description):
@@ -159,7 +159,7 @@ class QHRadixParser:
 		return totalRadixDescriptionList
 
 	def parseRadixFromYAML(self, filename):
-		rootNode=yaml.load(open(filename), Loader=yaml.SafeLoader)
+		rootNode=yaml.load(open(filename), Loader=yaml.cyaml.CSafeLoader)
 
 		return self.parseRadixInfo(rootNode)
 

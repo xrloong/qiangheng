@@ -6,7 +6,7 @@ import sys
 
 infile = sys.argv[1]
 
-root = yaml.load(open(infile), yaml.SafeLoader)
+root = yaml.load(open(infile), yaml.cyaml.CSafeLoader)
 
 #print(root["輸入法名稱"])
 #print(root["按鍵對應集"])

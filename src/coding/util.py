@@ -6,7 +6,7 @@ def readCodingInfo(infoFile):
 class YamlFileCodingInfo:
     def __init__(self, infoFile):
         self.infoFile = infoFile
-        self.root = yaml.load(open(infoFile), yaml.SafeLoader)
+        self.root = yaml.load(open(infoFile), yaml.cyaml.CSafeLoader)
         self.codingInfo = self.root['編碼法資訊']
 
     def getName(self, region):
