@@ -64,7 +64,7 @@ class ImYamlWriter(BaseWriter):
 
 		nodeCodeMaps = []
 		for x in codeMappingInfoList:
-			attrib = {"按鍵序列":x.getCode(), "字符":x.getName(), "類型":x.getVariance()}
+			attrib = {"字符":x.getName(), "類型":x.getVariance(), "按鍵序列":x.getCode()}
 			nodeCodeMaps.append(attrib)
 
 		r = {
@@ -148,7 +148,7 @@ class DmYamlWriter(BaseWriter):
 
 			code = controller.getStrokes()
 
-			attrib = {"名稱": charName, "類型":variance, "字圖":code}
+			attrib = {"字符": charName, "類型":variance, "字圖":code}
 			l.append(attrib)
 		codeMappingSet={"描繪法":l}
 

@@ -70,10 +70,9 @@ if "描繪法" in root:
 
 	characterShapesNode=ET.SubElement(rootNode, "字圖集")
 	for mapping in mappings:
-#		keySequence = mapping['按鍵序列']
-		character = mapping['名稱']
+		character = mapping['字符']
 		variance = mapping['類型']
-		attrib={"名稱": character, "類型": variance}
+		attrib={"字符": character, "類型": variance}
 		charNode = ET.SubElement(characterShapesNode, "字圖", attrib)
 
 		strokes = mapping['字圖']

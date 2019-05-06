@@ -35,8 +35,8 @@ if "描繪法" in root:
 		toEnumerate = (codeType and variance=='標準') or codeType=='all'
 		if not toEnumerate: continue
 
-		character = mapping['名稱']
-		attrib={"名稱": character, "類型": variance}
+		character = mapping['字符']
+		attrib={"字符": character, "類型": variance}
 
 		strokes = mapping['字圖']
 		expressions = (stroke["描繪"] for stroke in strokes)
