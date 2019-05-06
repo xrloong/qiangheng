@@ -123,6 +123,7 @@ xml: yaml
 	done
 	touch $(XML_PATH)
 
+$(YAML_PATH): yaml
 yaml:
 	mkdir -p $(YAML_PATH)
 	for cm in $(CMLIST);\
@@ -217,19 +218,13 @@ $(SVG_PATH): $(XML_PATH)
 	src/hanzitk.py -g svg -i tables/puretable/qhdc-standard.txt
 
 puretable: $(PURETABLE_PATH)
-$(PURETABLE_PATH): $(XML_PATH)
+$(PURETABLE_PATH): $(YAML_PATH)
 	mkdir -p $(PURETABLE_PATH)
 	for type in $(RELEASE_TYPE_LIST);\
 	do\
 		for im in $(CMLIST);\
 		do\
-			if [ $$im = dc ]; \
-			then\
-				xslt=puretable-dc.xslt;\
-			else\
-				xslt=puretable.xslt;\
-			fi;\
-			xsltproc --stringparam type $$type -o $(PURETABLE_PATH)/qh$$im-$$type.txt xslt/$$xslt $(XML_PATH)/qh$$im.xml; \
+			scripts/extract_mapping.py -t $$type $(YAML_PATH)/qh$$im.yaml > $(PURETABLE_PATH)/qh$$im-$$type.txt; \
 		done;\
 	done
 	touch $(PURETABLE_PATH)
