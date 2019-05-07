@@ -113,8 +113,7 @@ prepare:
 	make prepare-main
 	make prepare-ar prepare-bs prepare-cj prepare-dy prepare-fc prepare-zm prepare-dc
 
-$(XML_PATH):
-xml: yaml
+xml: $(YAML_PATH)
 	mkdir -p $(XML_PATH)
 	for cm in $(CMLIST);\
 	do\
@@ -123,8 +122,8 @@ xml: yaml
 	done
 	touch $(XML_PATH)
 
-$(YAML_PATH): yaml
-yaml:
+yaml: $(YAML_PATH)
+$(YAML_PATH):
 	mkdir -p $(YAML_PATH)
 	for cm in $(CMLIST);\
 	do\
@@ -217,8 +216,7 @@ $(SVG_PATH): $(XML_PATH)
 	mkdir -p $(SVG_PATH)
 	src/hanzitk.py -g svg -i tables/puretable/qhdc-standard.txt
 
-puretable: $(PURETABLE_PATH)
-$(PURETABLE_PATH): $(YAML_PATH)
+puretable: $(YAML_PATH)
 	mkdir -p $(PURETABLE_PATH)
 	for type in $(RELEASE_TYPE_LIST);\
 	do\
