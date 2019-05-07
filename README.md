@@ -26,10 +26,10 @@ $ apt-get install xsltproc libxml2-utils
 ```
 在 Mac 上，本身就已有這兩個工具，不用特別安裝。
 
-使用到一些第三方的 Python 函式庫，如 lxml、PyYAML、injector、ply。
+使用到一些第三方的 Python 函式庫，如 lxml、ruamel.yaml、injector、ply。
 
 ```console
-$ pip3 install lxml PyYAML injector ply
+$ pip3 install lxml ruamel.yaml injector ply
 ```
 
 如果要使用動態組字，則要另外安裝 Xie （https://github.com/xrloong/Xie）。可下載最新版本，並使用 pip3 來安裝。

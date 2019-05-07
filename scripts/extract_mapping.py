@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import yaml
+import ruamel.yaml as yaml
 import sys
 from optparse import OptionParser
 

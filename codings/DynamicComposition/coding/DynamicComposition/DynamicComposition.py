@@ -573,7 +573,7 @@ class TemplateManager(AbsTemplateManager):
 		self.parseTemplateFromYAML(template_file)
 
 	def parseTemplateFromYAML(self, filename):
-		import yaml
+		import ruamel.yaml as yaml
 		rootNode=yaml.load(open(filename), Loader=yaml.SafeLoader)
 		self.parseTemplateSet(rootNode)
 

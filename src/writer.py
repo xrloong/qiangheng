@@ -1,4 +1,4 @@
-import yaml
+import ruamel.yaml as yaml
 
 # base writer
 class BaseWriter:

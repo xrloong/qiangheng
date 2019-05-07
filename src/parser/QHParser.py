@@ -1,6 +1,6 @@
 import sys
 import Constant
-import yaml
+import ruamel.yaml as yaml
 
 from coding.Base import CodingRadixParser
 
