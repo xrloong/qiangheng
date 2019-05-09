@@ -113,17 +113,22 @@ prepare:
 	make prepare-main
 	make prepare-ar prepare-bs prepare-cj prepare-dy prepare-fc prepare-zm prepare-dc
 
-xml: $(YAML_PATH)
+$(XML_PATH):
 	mkdir -p $(XML_PATH)
+
+$(YAML_PATH):
+	mkdir -p $(YAML_PATH)
+
+$(PURETABLE_PATH):
+	mkdir -p $(PURETABLE_PATH)
+
+xml:
 	for cm in $(CMLIST);\
 	do\
-		python3 scripts/convert_cm_to_xml.py tables/yaml/qh$$cm.yaml gen/qhdata/$$cm/info.yaml |\
-			XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$cm.xml --format -;\
+		make $(XML_PATH)/qh$$cm.xml; \
 	done
-	touch $(XML_PATH)
 
-yaml: $(YAML_PATH)
-$(YAML_PATH):
+yaml:
 	mkdir -p $(YAML_PATH)
 	for cm in $(CMLIST);\
 	do\
@@ -134,7 +139,40 @@ $(YAML_PATH):
 		echo $$cm $$package $$packageDir;\
 		PYTHONPATH="src:$$packageDir" time src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
 	done
-	touch $(YAML_PATH)
+
+puretable:
+	for cm in $(CMLIST);\
+	do\
+		make $(PURETABLE_PATH)/qh$$cm.txt; \
+	done
+
+.PRECIOUS: $(YAML_PATH)/qh%.yaml
+
+$(YAML_PATH)/qh%.yaml: $(YAML_PATH)
+	mkdir -p $(YAML_PATH)
+	filename=$$(basename $@); \
+	cm=$${filename:2:2}; \
+	$(call setup_codings);\
+	packageConfig=`eval echo '$$package_'$$cm`; \
+	package=`echo $$packageConfig | cut -d" " -f1`;\
+	packageDir=`echo $$packageConfig | cut -d" " -f2`;\
+	echo $$cm $$package $$packageDir;\
+	PYTHONPATH="src:$$packageDir" time src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
+
+$(XML_PATH)/qh%.xml: $(XML_PATH) $(YAML_PATH)/qh%.yaml
+	filename=$$(basename $@); \
+	cm=$${filename:2:2}; \
+	echo $$cm; \
+	python3 scripts/convert_cm_to_xml.py tables/yaml/qh$$cm.yaml gen/qhdata/$$cm/info.yaml |\
+		XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$cm.xml --format -; \
+
+$(PURETABLE_PATH)/qh%.txt: $(PURETABLE_PATH) $(YAML_PATH)/qh%.yaml
+	filename=$$(basename $@); \
+	cm=$${filename:2:2}; \
+	for type in $(RELEASE_TYPE_LIST);\
+	do\
+		scripts/extract_mapping.py -t $$type $(YAML_PATH)/qh$$cm.yaml > $(PURETABLE_PATH)/qh$$cm-$$type.txt; \
+	done
 
 profile:
 	mkdir -p $(PROFILE_PATH)
@@ -147,7 +185,6 @@ profile:
 		echo $$cm $$package $$packageDir;\
 		PYTHONPATH="src:$$packageDir" src/profiler.py -q -p $$package > $(PROFILE_PATH)/$$cm.txt;\
 	done
-	touch $(XML_PATH)
 
 dc:
 	make xml puretable CMLIST=dc
@@ -215,17 +252,6 @@ svg: $(SVG_PATH)
 $(SVG_PATH): $(XML_PATH)
 	mkdir -p $(SVG_PATH)
 	src/hanzitk.py -g svg -i tables/puretable/qhdc-standard.txt
-
-puretable: $(YAML_PATH)
-	mkdir -p $(PURETABLE_PATH)
-	for type in $(RELEASE_TYPE_LIST);\
-	do\
-		for im in $(CMLIST);\
-		do\
-			scripts/extract_mapping.py -t $$type $(YAML_PATH)/qh$$im.yaml > $(PURETABLE_PATH)/qh$$im-$$type.txt; \
-		done;\
-	done
-	touch $(PURETABLE_PATH)
 
 pdf: doc/qiangheng.pdf
 
