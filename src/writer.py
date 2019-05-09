@@ -48,7 +48,8 @@ class ImYamlWriter(BaseWriter):
 			nodeCodeMaps.append(attrib)
 
 		r = {
-			"對應集": nodeCodeMaps
+			"編碼類型": "輸入法",
+			"編碼集": nodeCodeMaps
 		}
 		print(yaml.dump(r, allow_unicode=True, Dumper = CustomDumper))
 
@@ -127,7 +128,10 @@ class DmYamlWriter(BaseWriter):
 
 			attrib = {"字符": charName, "類型":variance, "字圖":code}
 			l.append(attrib)
-		codeMappingSet={"描繪法":l}
+		codeMappingSet = {
+			"編碼類型": "描繪法",
+			"編碼集":l
+		}
 
 		print(yaml.dump(codeMappingSet, allow_unicode=True, Dumper = CustomDumper))
 
