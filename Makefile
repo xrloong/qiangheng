@@ -1,8 +1,9 @@
-
 VERSION	=	0.30
 IMLIST	=	ar bs cj dy fc zm
 DMLIST	=	dc
 CMLIST	=	$(IMLIST) $(DMLIST)
+
+SHELL	=	/bin/bash
 
 define setup_codings
 package_ar="coding.Array codings/Array" \
