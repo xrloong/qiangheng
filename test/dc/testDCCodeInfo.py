@@ -1,4 +1,4 @@
-from model.dm.DynamicComposition.DCCodeInfo import DCCodeInfo
+from coding.DynamicComposition.DynamicComposition import DCCodeInfo
 
 import unittest
 

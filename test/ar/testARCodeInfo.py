@@ -1,4 +1,4 @@
-from model.im.Array.ARCodeInfo import ARCodeInfo
+from coding.Array.Array import ARCodeInfo
 
 import unittest
 

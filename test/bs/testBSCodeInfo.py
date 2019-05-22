@@ -1,4 +1,4 @@
-from model.im.Boshiamy.BSCodeInfo import BSCodeInfo
+from coding.Boshiamy.Boshiamy import BSCodeInfo
 
 import unittest
 

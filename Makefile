@@ -190,8 +190,35 @@ profile:
 dc:
 	make xml puretable CMLIST=dc
 
-test:
-	PYTHONPATH=src python3 -m unittest discover -s tests/ -p "*.py"
+FORCE:
+
+test: FORCE
+	#PYTHONPATH=src python3 -m unittest discover -s test/
+	for cm in $(CMLIST);\
+	do\
+		make test-$$cm; \
+	done
+
+test-ar: FORCE
+	PYTHONPATH="src:codings/Array" python3 -m unittest discover -s test/ar/
+
+test-bs: FORCE
+	PYTHONPATH="src:codings/Boshiamy" python3 -m unittest discover -s test/bs/
+
+test-cj: FORCE
+	PYTHONPATH="src:codings/CangJie" python3 -m unittest discover -s test/cj/
+
+test-dy: FORCE
+	PYTHONPATH="src:codings/DaYi" python3 -m unittest discover -s test/dy/
+
+test-zm: FORCE
+	PYTHONPATH="src:codings/ZhengMa" python3 -m unittest discover -s test/zm/
+
+test-fc: FORCE
+	PYTHONPATH="src:codings/FourCorner" python3 -m unittest discover -s test/fc/
+
+test-dc: FORCE
+	PYTHONPATH="src:codings/DynamicComposition" python3 -m unittest discover -s test/dc/
 
 imtables: scim ibus gcin ovim msim puretable
 

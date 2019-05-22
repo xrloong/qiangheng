@@ -1,4 +1,4 @@
-from model.base.CodeInfo import CodeInfo
+from coding.Base.Base import CodeInfo
 import unittest
 
 class CodeInfoTestCase(unittest.TestCase):

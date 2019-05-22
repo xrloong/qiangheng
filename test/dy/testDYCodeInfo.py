@@ -1,8 +1,8 @@
-from model.im.ZhengMa.ZMCodeInfo import ZMCodeInfo
+from coding.DaYi.DaYi import DYCodeInfo
 
 import unittest
 
-class ZMCodeInfoTestCase(unittest.TestCase):
+class DYCodeInfoTestCase(unittest.TestCase):
 	def setUp(self):
 		pass
 
