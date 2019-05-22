@@ -41,17 +41,27 @@ class ImYamlWriter(BaseWriter):
 			table.extend(characterInfo.getCodeMappingInfoList())
 		return table
 
-	def writeCodeMapping(self, codeMappingInfoList):
-		nodeCodeMaps = []
-		for x in codeMappingInfoList:
-			attrib = {"字符":x.getName(), "類型":x.getVariance(), "按鍵序列":x.getCode()}
-			nodeCodeMaps.append(attrib)
+	def interpreteCodeMappingInfo(self, codeMappingInfo):
+		return {"字符": codeMappingInfo.getName(),
+			"類型": codeMappingInfo.getVariance(),
+			"按鍵序列": codeMappingInfo.getCode()}
 
-		r = {
-			"編碼類型": "輸入法",
+	def getCodingTypeName(self):
+		return "輸入法"
+
+	def writeCodeMapping(self, codeMappingInfoList):
+		codingTypeName = self.getCodingTypeName()
+
+		nodeCodeMaps = []
+		for codeMappingInfo in codeMappingInfoList:
+			info = self.interpreteCodeMappingInfo(codeMappingInfo)
+			nodeCodeMaps.append(info)
+
+		codeMappingSet = {
+			"編碼類型": codingTypeName,
 			"編碼集": nodeCodeMaps
 		}
-		print(yaml.dump(r, allow_unicode=True, Dumper = CustomDumper))
+		print(yaml.dump(codeMappingSet, allow_unicode=True, Dumper = CustomDumper))
 
 
 try:
@@ -102,35 +112,43 @@ class DmYamlWriter(BaseWriter):
 			table.extend(characterInfo.getCodeMappingInfoList())
 		return table
 
-	def writeCodeMapping(self, codeMappingInfoList):
+	def interpreteCodeMappingInfo(self, codeMappingInfo):
 		from xie.graphics.drawing import DrawingSystem
 		from xie.graphics.stroke import Character
 
-		rootNode="描繪法"
+		controller = YamlCanvasController()
+		ds = DrawingSystem(controller)
+
+		charName = codeMappingInfo.getName()
+		dcStrokeGroup = codeMappingInfo.getCode()
+		variance = codeMappingInfo.getVariance()
 
 		controller = YamlCanvasController()
 		ds = DrawingSystem(controller)
-		l=[]
+
+		strokeGroup = dcStrokeGroup.getStrokeGroup()
+		character = Character(charName, strokeGroup)
+
+		ds.draw(character)
+
+		code = controller.getStrokes()
+
+		return {"字符": charName, "類型":variance, "字圖":code}
+
+	def getCodingTypeName(self):
+		return "描繪法"
+
+	def writeCodeMapping(self, codeMappingInfoList):
+		codingTypeName = self.getCodingTypeName()
+
+		nodeCodeMaps = []
 		for codeMappingInfo in codeMappingInfoList:
-			charName = codeMappingInfo.getName()
-			dcStrokeGroup = codeMappingInfo.getCode()
-			variance = codeMappingInfo.getVariance()
+			info = self.interpreteCodeMappingInfo(codeMappingInfo)
+			nodeCodeMaps.append(info)
 
-			controller = YamlCanvasController()
-			ds = DrawingSystem(controller)
-
-			strokeGroup = dcStrokeGroup.getStrokeGroup()
-			character = Character(charName, strokeGroup)
-
-			ds.draw(character)
-
-			code = controller.getStrokes()
-
-			attrib = {"字符": charName, "類型":variance, "字圖":code}
-			l.append(attrib)
 		codeMappingSet = {
-			"編碼類型": "描繪法",
-			"編碼集":l
+			"編碼類型": codingTypeName,
+			"編碼集": nodeCodeMaps
 		}
 
 		print(yaml.dump(codeMappingSet, allow_unicode=True, Dumper = CustomDumper))
