@@ -21,34 +21,8 @@ class QuietWriter(BaseWriter):
 	def writeCodeMapping(self, codeMappingInfoList):
 		pass
 
-
-class CustomDumper(yaml.cyaml.CDumper):
-	#Super neat hack to preserve the mapping key order. See https://stackoverflow.com/a/52621703/1497385
-	def represent_dict_preserve_order(self, data):
-		return self.represent_dict(data.items())
-
-CustomDumper.add_representer(dict, CustomDumper.represent_dict_preserve_order)
-
-# YAML writer for input methods
-class ImYamlWriter(BaseWriter):
-	def write(self, characterInfoList):
-		codeMappingInfoList=self.genIMMapping(characterInfoList)
-		self.writeCodeMapping(codeMappingInfoList)
-
-	def genIMMapping(self, characterInfoList):
-		table=[]
-		for characterInfo in characterInfoList:
-			table.extend(characterInfo.getCodeMappingInfoList())
-		return table
-
-	def interpreteCodeMappingInfo(self, codeMappingInfo):
-		return {"字符": codeMappingInfo.getName(),
-			"類型": codeMappingInfo.getVariance(),
-			"按鍵序列": codeMappingInfo.getCode()}
-
-	def getCodingTypeName(self):
-		return "輸入法"
-
+# quiet writer
+class BaseCmYamlWriter(BaseWriter):
 	def writeCodeMapping(self, codeMappingInfoList):
 		codingTypeName = self.getCodingTypeName()
 
@@ -61,7 +35,26 @@ class ImYamlWriter(BaseWriter):
 			"編碼類型": codingTypeName,
 			"編碼集": nodeCodeMaps
 		}
+
 		print(yaml.dump(codeMappingSet, allow_unicode=True, Dumper = CustomDumper))
+
+
+class CustomDumper(yaml.cyaml.CDumper):
+	#Super neat hack to preserve the mapping key order. See https://stackoverflow.com/a/52621703/1497385
+	def represent_dict_preserve_order(self, data):
+		return self.represent_dict(data.items())
+
+CustomDumper.add_representer(dict, CustomDumper.represent_dict_preserve_order)
+
+# YAML writer for input methods
+class ImYamlWriter(BaseCmYamlWriter):
+	def interpreteCodeMappingInfo(self, codeMappingInfo):
+		return {"字符": codeMappingInfo.getName(),
+			"類型": codeMappingInfo.getVariance(),
+			"按鍵序列": codeMappingInfo.getCode()}
+
+	def getCodingTypeName(self):
+		return "輸入法"
 
 
 try:
@@ -101,17 +94,7 @@ class YamlCanvasController(AbsTextCanvasController):
 
 
 # YAML writer for drawing methods
-class DmYamlWriter(BaseWriter):
-	def write(self, characterInfoList):
-		codeMappingInfoList=self.genIMMapping(characterInfoList)
-		self.writeCodeMapping(codeMappingInfoList)
-
-	def genIMMapping(self, characterInfoList):
-		table=[]
-		for characterInfo in characterInfoList:
-			table.extend(characterInfo.getCodeMappingInfoList())
-		return table
-
+class DmYamlWriter(BaseCmYamlWriter):
 	def interpreteCodeMappingInfo(self, codeMappingInfo):
 		from xie.graphics.drawing import DrawingSystem
 		from xie.graphics.stroke import Character
@@ -137,19 +120,4 @@ class DmYamlWriter(BaseWriter):
 
 	def getCodingTypeName(self):
 		return "描繪法"
-
-	def writeCodeMapping(self, codeMappingInfoList):
-		codingTypeName = self.getCodingTypeName()
-
-		nodeCodeMaps = []
-		for codeMappingInfo in codeMappingInfoList:
-			info = self.interpreteCodeMappingInfo(codeMappingInfo)
-			nodeCodeMaps.append(info)
-
-		codeMappingSet = {
-			"編碼類型": codingTypeName,
-			"編碼集": nodeCodeMaps
-		}
-
-		print(yaml.dump(codeMappingSet, allow_unicode=True, Dumper = CustomDumper))
 
