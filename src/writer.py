@@ -1,5 +1,7 @@
 import ruamel.yaml as yaml
 
+from coding.Base import CodingType
+
 # base writer
 class BaseWriter:
 	def write(self, characterInfoList):
@@ -23,6 +25,9 @@ class QuietWriter(BaseWriter):
 
 # quiet writer
 class BaseCmYamlWriter(BaseWriter):
+	def __init__(self, codingType):
+		self.codingType = codingType
+
 	def writeCodeMapping(self, codeMappingInfoList):
 		codingTypeName = self.getCodingTypeName()
 
@@ -38,6 +43,12 @@ class BaseCmYamlWriter(BaseWriter):
 
 		print(yaml.dump(codeMappingSet, allow_unicode=True, Dumper = CustomDumper))
 
+	def getCodingTypeName(self):
+		if CodingType.Input == self.codingType:
+			return "輸入法"
+		else:
+			return "描繪法"
+
 
 class CustomDumper(yaml.cyaml.CDumper):
 	#Super neat hack to preserve the mapping key order. See https://stackoverflow.com/a/52621703/1497385
@@ -48,13 +59,13 @@ CustomDumper.add_representer(dict, CustomDumper.represent_dict_preserve_order)
 
 # YAML writer for input methods
 class ImYamlWriter(BaseCmYamlWriter):
+	def __init__(self, codingType):
+		super().__init__(codingType)
+
 	def interpreteCodeMappingInfo(self, codeMappingInfo):
 		return {"字符": codeMappingInfo.getName(),
 			"類型": codeMappingInfo.getVariance(),
 			"按鍵序列": codeMappingInfo.getCode()}
-
-	def getCodingTypeName(self):
-		return "輸入法"
 
 
 try:
@@ -95,6 +106,9 @@ class YamlCanvasController(AbsTextCanvasController):
 
 # YAML writer for drawing methods
 class DmYamlWriter(BaseCmYamlWriter):
+	def __init__(self, codingType):
+		super().__init__(codingType)
+
 	def interpreteCodeMappingInfo(self, codeMappingInfo):
 		from xie.graphics.drawing import DrawingSystem
 		from xie.graphics.stroke import Character
@@ -117,7 +131,4 @@ class DmYamlWriter(BaseCmYamlWriter):
 		code = controller.getStrokes()
 
 		return {"字符": charName, "類型":variance, "字圖":code}
-
-	def getCodingTypeName(self):
-		return "描繪法"
 

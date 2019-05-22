@@ -29,8 +29,8 @@ class QiangHeng:
 
 		quiet=options.quiet
 
-
-		writer = self.computeWriter(package.codingType, quiet)
+		codingType = package.codingType
+		writer = self.computeWriter(codingType, quiet)
 
 		def configure(binder):
 			binder.bind(CodingConfig, to=CodingConfig(package))
@@ -46,18 +46,14 @@ class QiangHeng:
 		mainManager.write()
 
 
-	def computeWriter(self, codingType, quiet: Quiet) -> Writer:
-		self.isForIm = (CodingType.Input == codingType)
-		return self.getWriter(quiet)
-
-	def getWriter(self, quiet=False):
+	def computeWriter(self, codingType: CodingType, quiet: Quiet) -> Writer:
 		if not quiet:
-			if self.isForIm:
+			if CodingType.Input == codingType:
 				from writer import ImYamlWriter
-				writer = ImYamlWriter()
+				writer = ImYamlWriter(codingType)
 			else:
 				from writer import DmYamlWriter
-				writer = DmYamlWriter()
+				writer = DmYamlWriter(codingType)
 		else:
 			# 不輸出結果
 			from writer import QuietWriter
