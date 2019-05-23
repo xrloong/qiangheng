@@ -5,6 +5,18 @@ from coding.Base import CodeInfoEncoder
 from coding.Base import CodingRadixParser
 from coding.Base import CodeMappingInfoInterpreter
 
+try:
+	import xie
+except ImportError as e:
+	import sys
+	message = """
+	動態組字使用 Xie 來描繪字形。
+	可到 https://github.com/xrloong/Xie 下載最新版本，並以 pip 安裝，或使可使用以下指令：
+	$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.0.9/Xie-0.0.9-py3-none-any.whl
+"""
+	print(message, file=sys.stderr)
+	sys.exit(1)
+
 from xie.graphics.shape import Pane
 from xie.graphics.canvas import BaseTextCanvasController
 from xie.graphics.drawing import DrawingSystem

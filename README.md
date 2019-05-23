@@ -32,7 +32,9 @@ $ apt-get install xsltproc libxml2-utils
 $ pip3 install lxml ruamel.yaml injector ply
 ```
 
-如果要使用動態組字，則要另外安裝 Xie （https://github.com/xrloong/Xie）。可下載最新版本，並使用 pip3 來安裝。
+如果要使用動態組字，則要另外安裝 Xie 。
+可到 https://github.com/xrloong/Xie 下載最新版本，並以 pip 安裝，或使可使用以下指令：
+$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.0.9/Xie-0.0.9-py3-none-any.whl
 
 計算
 ====
