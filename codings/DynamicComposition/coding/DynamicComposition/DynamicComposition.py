@@ -3,11 +3,16 @@ import abc
 from coding.Base import CodeInfo
 from coding.Base import CodeInfoEncoder
 from coding.Base import CodingRadixParser
+from coding.Base import CodeMappingInfoInterpreter
 
 from xie.graphics.shape import Pane
+from xie.graphics.canvas import BaseTextCanvasController
+from xie.graphics.drawing import DrawingSystem
+from xie.graphics.stroke import Character
 from xie.graphics.stroke import StrokeGroup
 from xie.graphics.stroke import StrokeGroupInfo
 from xie.graphics.factory import ShapeFactory
+
 
 class DCStrokeGroup:
 	shapeFactory = ShapeFactory()
@@ -669,4 +674,50 @@ class TemplateManager(AbsTemplateManager):
 			strokeGroup=strokeGroup.generateCopyToApplyNewPane(statePane)
 
 		return strokeGroup
+
+class YamlCanvasController(BaseTextCanvasController):
+	def __init__(self):
+		super().__init__()
+		self.strokes = []
+
+	def getStrokes(self):
+		return self.strokes
+
+	def onPreDrawCharacter(self, character):
+		self.strokes=[]
+
+	def onPreDrawStroke(self, stroke):
+		self.clearStrokeExpression()
+
+	def onPostDrawStroke(self, stroke):
+		e=self.getStrokeExpression()
+		if e:
+			attrib={
+				"名稱": stroke.getName(),
+				"描繪": e,
+				}
+			self.strokes.append(attrib)
+
+
+# YAML writer for drawing methods
+class DmCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
+	def __init__(self, codingType):
+		super().__init__(codingType)
+
+	def interpreteCodeMappingInfo(self, codeMappingInfo):
+		charName = codeMappingInfo.getName()
+		dcStrokeGroup = codeMappingInfo.getCode()
+		variance = codeMappingInfo.getVariance()
+
+		strokeGroup = dcStrokeGroup.getStrokeGroup()
+		character = Character(charName, strokeGroup)
+
+		controller = YamlCanvasController()
+		ds = DrawingSystem(controller)
+
+		ds.draw(character)
+
+		code = controller.getStrokes()
+
+		return {"字符": charName, "類型":variance, "字圖":code}
 

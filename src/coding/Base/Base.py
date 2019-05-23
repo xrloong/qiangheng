@@ -3,6 +3,8 @@ from injector import inject
 from model.element import Operator
 from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
+from model.element.enum import CodingType
+
 from .interface import IfCodeInfo, IfCodeInfoEncoder, IfCodingRadixParser
 
 class CodeInfo(IfCodeInfo):
@@ -348,4 +350,20 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 
 class CodingRadixParser(IfCodingRadixParser):
 	pass
+
+class CodeMappingInfoInterpreter:
+	def __init__(self, codingType):
+		self.codingType = codingType
+
+	def getCodingTypeName(self):
+		if CodingType.Input == self.codingType:
+			return "輸入法"
+		else:
+			return "描繪法"
+
+	# YAML writer for input methods
+	def interpreteCodeMappingInfo(self, codeMappingInfo):
+		return {"字符": codeMappingInfo.getName(),
+			"類型": codeMappingInfo.getVariance(),
+			"按鍵序列": codeMappingInfo.getCode()}
 

@@ -3,9 +3,11 @@ from coding.Base import FontVariance
 
 from .DynamicComposition import DCCodeInfoEncoder as CodeInfoEncoder
 from .DynamicComposition import DCRadixParser as CodingRadixParser
+from .DynamicComposition import DmCodeMappingInfoInterpreter
 
 codingType = CodingType.Drawing
 fontVariance = FontVariance.Traditional
+codeMappingInfoInterpreter = DmCodeMappingInfoInterpreter(codingType)
 
 codingMethodName = "dc"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
