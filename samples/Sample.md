@@ -49,3 +49,11 @@
    ```console
    $ PYTHONPATH="src:samples/GuiXie" python3 -m unittest discover samples/GuiXie/test/
    ```
+
+2. 實作 GXCodeInfo
+
+   中國字庋㩪的規則頗為複雜，所以要先細分
+   1. GXLump
+
+      用於描述一個部件的四個角的筆劃編碼及所包含方格的數量。
+
