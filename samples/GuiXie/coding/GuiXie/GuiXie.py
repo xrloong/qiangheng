@@ -7,6 +7,7 @@ from .constant import GXStroke
 from .constant import GXCorner
 from .item import GXLump
 from .util import computeGenreCode, computeStrokeCode, computeRectCountCode
+from .util import constructCorners
 
 def computeStrokes(genre: GXGenre, lumps):
 	if genre == GXGenre.Zhong:
@@ -108,6 +109,37 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 		return isAllWithCode
 
 class GXRadixParser(CodingRadixParser):
+	ATTRIB_GENRE = '體'
+	ATTRIB_COMPONENT = '組件'
+	ATTRIB_COMPONENT_CODING = '四角編碼'
+	ATTRIB_COMPONENT_RECT_COUNT = '方格數'
+
+	genreNameToGenre = {
+		"中": GXGenre.Zhong,
+		"國": GXGenre.Guo,
+		"字": GXGenre.Zi,
+		"庋": GXGenre.Gui,
+		"㩪": GXGenre.Xie,
+	}
+
+	def convertCompoentDictToLump(self, componentDicts):
+		gxLumps = []
+		for componentDict in componentDicts:
+			codingDesc = componentDict[GXRadixParser.ATTRIB_COMPONENT_CODING]
+			rectCount = componentDict.get(GXRadixParser.ATTRIB_COMPONENT_RECT_COUNT, 0)
+			corners = constructCorners(codingDesc)
+			gxLump = GXLump(corners, rectCount)
+			gxLumps.append(gxLump)
+		return tuple(gxLumps)
+
 	def convertRadixDescToCodeInfo(self, radixDesc):
-		return GXCodeInfo.generateDefaultCodeInfo()
+		codeElement = radixDesc.getCodeElement()
+		if GXRadixParser.ATTRIB_GENRE in codeElement:
+			genreDesc = codeElement[GXRadixParser.ATTRIB_GENRE]
+			genre = GXRadixParser.genreNameToGenre[genreDesc]
+			components = codeElement[GXRadixParser.ATTRIB_COMPONENT]
+			gxLumps = self.convertCompoentDictToLump(components)
+			return GXCodeInfo(genre, gxLumps)
+		else:
+			return GXCodeInfo.generateDefaultCodeInfo()
 
