@@ -1,5 +1,6 @@
 from .constant import GXGenre
 from .constant import GXStroke
+from .constant import GXCorner
 
 genreToCodeDict = {
 	GXGenre.Zhong: "1",
@@ -24,17 +25,32 @@ charToStrokeDict = {
 	"X": GXStroke.StrokeNone,
 }
 
+charToCornerDict = {
+	"a": GXCorner.TopLeft,
+	"A": GXCorner.TopLeft,
+	"b": GXCorner.TopRight,
+	"B": GXCorner.TopRight,
+	"c": GXCorner.BottomLeft,
+	"C": GXCorner.BottomLeft,
+	"d": GXCorner.BottomRight,
+	"D": GXCorner.BottomRight,
+}
+
 def constructCorners(cornerDescs):
 	global charToStrokeDict
+	global charToCornerDict
 
-	strokes = []
+	corners = []
 	for c in cornerDescs:
 		if c in charToStrokeDict:
 			stroke = charToStrokeDict[c]
-			strokes.append(stroke)
+			corners.append(stroke)
+		elif c in charToCornerDict:
+			corner = charToCornerDict[c]
+			corners.append(corner)
 		else:
-			strokes.append(GXStroke.StrokeNone)
-	return tuple(strokes)
+			corners.append(None)
+	return tuple(corners)
 
 def computeGenreCode(genre: GXGenre):
 	global genreToCodeDict

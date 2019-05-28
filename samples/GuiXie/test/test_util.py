@@ -2,6 +2,7 @@ import unittest
 
 from coding.GuiXie.constant import GXGenre
 from coding.GuiXie.constant import GXStroke
+from coding.GuiXie.constant import GXCorner
 
 from coding.GuiXie import util
 
@@ -39,6 +40,12 @@ class GXUtilTestCase(unittest.TestCase):
 
 		corners = util.constructCorners("2037")
 		self.assertEqual(corners, (GXStroke.Stroke2, GXStroke.Stroke0, GXStroke.Stroke3, GXStroke.Stroke7))
+
+		corners = util.constructCorners("2a3c")
+		self.assertEqual(corners, (GXStroke.Stroke2, GXCorner.TopLeft, GXStroke.Stroke3, GXCorner.BottomLeft))
+
+		corners = util.constructCorners("59b4")
+		self.assertEqual(corners, (GXStroke.Stroke5, GXStroke.Stroke9, GXCorner.TopRight, GXStroke.Stroke4))
 
 	def test_computeRectCountCode(self):
 		self.assertEqual(util.computeRectCountCode(0), "0")
