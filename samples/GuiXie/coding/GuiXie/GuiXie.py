@@ -98,6 +98,8 @@ class GXCodeInfo(CodeInfo):
 	def toCode(self):
 		if not self.isValid():
 			return ""
+		if self._genre != GXGenre.Zhong and len(self._lumps)<=1:
+			return ""
 		return self.computeCode()
 
 class GXCodeInfoEncoder(CodeInfoEncoder):
@@ -107,6 +109,16 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda codeInfo: codeInfo.isValid(), codeInfoList))
 		return isAllWithCode
+
+	def encodeAsSilkworm(self, codeInfoList):
+		"""運算 "蚕" """
+		gxLumps = sum((codeInfo.lumps for codeInfo in codeInfoList), ())
+		return GXCodeInfo(GXGenre.Zi, gxLumps)
+
+	def encodeAsGoose(self, codeInfoList):
+		"""運算 "鴻" """
+		gxLumps = sum((codeInfo.lumps for codeInfo in codeInfoList), ())
+		return GXCodeInfo(GXGenre.Xie, gxLumps)
 
 class GXRadixParser(CodingRadixParser):
 	ATTRIB_GENRE = '體'
