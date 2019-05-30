@@ -1,4 +1,5 @@
 from .constant import FCStroke
+from .constant import FCCorner
 
 charToStrokeDict = {
 	"0": FCStroke.Stroke0,
@@ -11,6 +12,17 @@ charToStrokeDict = {
 	"7": FCStroke.Stroke7,
 	"8": FCStroke.Stroke8,
 	"9": FCStroke.Stroke9,
+}
+
+charToCornerDict = {
+	"a": FCCorner.TopLeft,
+	"A": FCCorner.TopLeft,
+	"b": FCCorner.TopRight,
+	"B": FCCorner.TopRight,
+	"c": FCCorner.BottomLeft,
+	"C": FCCorner.BottomLeft,
+	"d": FCCorner.BottomRight,
+	"D": FCCorner.BottomRight,
 }
 
 def convertCharToCornerUnit(characterCode):

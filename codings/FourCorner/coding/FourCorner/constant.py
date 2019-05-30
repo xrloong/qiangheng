@@ -13,3 +13,10 @@ class FCStroke(Enum):
 	Stroke9 = '9'
 	StrokeNone = None
 
+class FCCorner(Enum):
+	TopLeft = 'a'
+	TopRight = 'b'
+	BottomLeft = 'c'
+	BottomRight = 'd'
+	CornerNone = None
+
