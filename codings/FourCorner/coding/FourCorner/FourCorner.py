@@ -7,7 +7,6 @@ from .constant import FCCorner
 
 from .util import convertCharToCornerUnit
 from .util import computeCornerUnitCode
-from .util import charToCornerDict
 
 class FCCodeInfo(CodeInfo):
 	def __init__(self, corners):
@@ -44,16 +43,16 @@ class FCCodeInfo(CodeInfo):
 		return computeCornerUnitCode(self.getBottomRight())
 
 	def getTopLeft(self):
-		return self._top_left if self._top_left not in charToCornerDict else FCStroke.StrokeNone
+		return self._top_left
 
 	def getTopRight(self):
-		return self._top_right if self._top_right not in charToCornerDict else FCStroke.StrokeNone
+		return self._top_right
 
 	def getBottomLeft(self):
-		return self._bottom_left if self._bottom_left not in charToCornerDict else FCStroke.StrokeNone
+		return self._bottom_left
 
 	def getBottomRight(self):
-		return self._bottom_right if self._bottom_right not in charToCornerDict else FCStroke.StrokeNone
+		return self._bottom_right
 
 
 class FCCodeInfoEncoder(CodeInfoEncoder):

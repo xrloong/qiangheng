@@ -1,6 +1,7 @@
 import unittest
 
 from coding.FourCorner.constant import FCStroke
+from coding.FourCorner.constant import FCCorner
 
 from coding.FourCorner import util
 
@@ -36,4 +37,9 @@ class FCUtilTestCase(unittest.TestCase):
 		self.assertEqual(util.computeCornerUnitCode(FCStroke.Stroke7), "7")
 		self.assertEqual(util.computeCornerUnitCode(FCStroke.Stroke8), "8")
 		self.assertEqual(util.computeCornerUnitCode(FCStroke.Stroke9), "9")
+
+		self.assertEqual(util.computeCornerUnitCode(FCCorner.TopLeft), "0")
+		self.assertEqual(util.computeCornerUnitCode(FCCorner.TopRight), "0")
+		self.assertEqual(util.computeCornerUnitCode(FCCorner.BottomLeft), "0")
+		self.assertEqual(util.computeCornerUnitCode(FCCorner.BottomRight), "0")
 

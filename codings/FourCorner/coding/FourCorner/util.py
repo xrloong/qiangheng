@@ -28,6 +28,8 @@ charToCornerDict = {
 def convertCharToCornerUnit(characterCode):
 	if characterCode in charToStrokeDict:
 		return charToStrokeDict.get(characterCode, FCStroke.StrokeNone)
+	elif characterCode in charToCornerDict:
+		return charToCornerDict.get(characterCode, FCCorner.CornerNone)
 	return characterCode
 
 def computeCornerUnitCode(stroke: FCStroke):
@@ -35,5 +37,7 @@ def computeCornerUnitCode(stroke: FCStroke):
 		if stroke == FCStroke.StrokeNone:
 			return "0"
 		return stroke.value
+	elif isinstance(stroke, FCCorner):
+		return "0"
 	return stroke
 
