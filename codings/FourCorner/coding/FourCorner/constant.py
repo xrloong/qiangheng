@@ -11,7 +11,7 @@ class FCStroke(Enum):
 	Stroke7 = '7'
 	Stroke8 = '8'
 	Stroke9 = '9'
-	StrokeNone = None
+	StrokeNone = 'x'
 
 class FCCorner(Enum):
 	TopLeft = 'a'

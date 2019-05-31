@@ -12,6 +12,8 @@ charToStrokeDict = {
 	"7": FCStroke.Stroke7,
 	"8": FCStroke.Stroke8,
 	"9": FCStroke.Stroke9,
+	"x": FCStroke.StrokeNone,
+	"X": FCStroke.StrokeNone,
 }
 
 charToCornerDict = {
