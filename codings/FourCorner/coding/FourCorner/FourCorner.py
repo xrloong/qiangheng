@@ -5,22 +5,20 @@ from coding.Base import CodingRadixParser
 from .constant import FCStroke
 from .constant import FCCorner
 
+from .item import FCLump
+
 from .util import convertCharToCornerUnit
 from .util import computeCornerUnitCode
 
 class FCCodeInfo(CodeInfo):
-	def __init__(self, corners):
+	def __init__(self, lump):
 		super().__init__()
 
-		_top_left, _top_right, _bottom_left, _bottom_right = corners
-		self._top_left = _top_left
-		self._top_right = _top_right
-		self._bottom_left = _bottom_left
-		self._bottom_right = _bottom_right
+		self.lump = lump
 
 	@staticmethod
-	def generateDefaultCodeInfo(corners):
-		codeInfo=FCCodeInfo(corners)
+	def generateDefaultCodeInfo(lump):
+		codeInfo=FCCodeInfo(lump)
 		return codeInfo
 
 	def toCode(self):
@@ -43,22 +41,23 @@ class FCCodeInfo(CodeInfo):
 		return computeCornerUnitCode(self.getBottomRight())
 
 	def getTopLeft(self):
-		return self._top_left
+		return self.lump.topLeft
 
 	def getTopRight(self):
-		return self._top_right
+		return self.lump.topRight
 
 	def getBottomLeft(self):
-		return self._bottom_left
+		return self.lump.bottomLeft
 
 	def getBottomRight(self):
-		return self._bottom_right
+		return self.lump.bottomRight
 
 
 class FCCodeInfoEncoder(CodeInfoEncoder):
 	@classmethod
 	def generateDefaultCodeInfo(cls, corners):
-		return FCCodeInfo.generateDefaultCodeInfo(corners)
+		lump = FCLump(corners)
+		return FCCodeInfo.generateDefaultCodeInfo(lump)
 
 	@classmethod
 	def isAvailableOperation(cls, codeInfoList):
@@ -613,6 +612,7 @@ class FCRadixParser(CodingRadixParser):
 			bottom_right = convertCharToCornerUnit(characterCode[3])
 
 		corners = [top_left, top_right, bottom_left, bottom_right]
-		codeInfo = FCCodeInfo(corners)
+		fcLump = FCLump(corners)
+		codeInfo = FCCodeInfo(fcLump)
 		return codeInfo
 
