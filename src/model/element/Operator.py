@@ -50,19 +50,15 @@ OperatorHan=_generateBuiltinOperator('函')
 OperatorQu=_generateBuiltinOperator('區')
 OperatorLeft=_generateBuiltinOperator('左')
 
-OperatorYan=_generateBuiltinOperator('衍')
-OperatorZhong=_generateBuiltinOperator('衷')
-
 OperatorMu=_generateBuiltinOperator('畞')
 OperatorZuo=_generateBuiltinOperator('㘴')
 OperatorYou=_generateBuiltinOperator('幽')
 OperatorLiang=_generateBuiltinOperator('㒳')
 OperatorJia=_generateBuiltinOperator('夾')
 
-OperatorLin=_generateBuiltinOperator('粦')
-OperatorLi=_generateBuiltinOperator('瓥')
 OperatorLuan=_generateBuiltinOperator('䜌')
 OperatorBan=_generateBuiltinOperator('辦')
-
+OperatorLin=_generateBuiltinOperator('粦')
+OperatorLi=_generateBuiltinOperator('瓥')
 OperatorYi=_generateBuiltinOperator('燚')
 

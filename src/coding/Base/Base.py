@@ -65,7 +65,6 @@ class CodeInfo(IfCodeInfo):
 
 	def multiplyCodeVarianceType(self, codeVariance):
 		self.codeVariance=self.codeVariance*codeVariance
-#		self.codeVariance.multi(codeVariance)
 
 	@property
 	def variance(self):
@@ -132,7 +131,6 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 				codeInfo=self.encodeAsLuan(codeInfoList)
 			elif Operator.OperatorBan.equals(operator):
 				codeInfo=self.encodeAsBan(codeInfoList)
-
 			elif Operator.OperatorLin.equals(operator):
 				codeInfo=self.encodeAsLin(codeInfoList)
 			elif Operator.OperatorLi.equals(operator):
