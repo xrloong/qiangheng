@@ -115,134 +115,118 @@ class DYCodeInfo(CodeInfo):
 		return self._codeList[index]
 
 class DYCodeInfoEncoder(CodeInfoEncoder):
-	@classmethod
-	def generateDefaultCodeInfo(cls, codeList):
+	def generateDefaultCodeInfo(self, codeList):
 		return DYCodeInfo.generateDefaultCodeInfo(codeList)
 
-	@classmethod
-	def isAvailableOperation(cls, codeInfoList):
+	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getMainCodeList(), codeInfoList))
 		return isAllWithCode
 
 
-	@classmethod
-	def encodeAsTurtle(cls, codeInfoList):
+	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		codeInfo=cls.encodeAsLoong(codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsLoong(cls, codeInfoList):
+	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
 		dyCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeByCodeList(dyCodeList)
-		codeInfo=cls.generateDefaultCodeInfo([dyCode])
+		codeInfo=self.generateDefaultCodeInfo([dyCode])
 		return codeInfo
 
-	@classmethod
-	def encodeAsSparrow(cls, codeInfoList):
+	def encodeAsSparrow(self, codeInfoList):
 		"""運算 "雀" """
-		codeInfo=cls.encodeAsLoong(codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsEqual(cls, codeInfoList):
+	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=cls.encodeAsLoong(codeInfoList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
-	@classmethod
-	def encodeAsLoop(cls, codeInfoList):
+	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """
-		newCodeInfoList=cls.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=cls.encodeAsLoong(newCodeInfoList)
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsTong(cls, codeInfoList):
+	def encodeAsTong(self, codeInfoList):
 		"""運算 "同" """
-		newCodeInfoList=cls.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=cls.encodeAsLoong(newCodeInfoList)
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsHan(cls, codeInfoList):
+	def encodeAsHan(self, codeInfoList):
 		"""運算 "函" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
-		newCodeInfoList=cls.getMergedCodeInfoListAsForGe(newCodeInfoList)
-		codeInfo=cls.encodeAsLoong(newCodeInfoList)
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(newCodeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
-	@classmethod
-	def encodeAsZhe(cls, codeInfoList):
+	def encodeAsZhe(self, codeInfoList):
 		"""運算 "這" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
-		codeInfo=cls.encodeAsLoong([secondCodeInfo, firstCodeInfo])
+		codeInfo=self.encodeAsLoong([secondCodeInfo, firstCodeInfo])
 		return codeInfo
 
-	@classmethod
-	def encodeAsZai(cls, codeInfoList):
+	def encodeAsZai(self, codeInfoList):
 		"""運算 "載" """
-		newCodeInfoList=cls.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=cls.encodeAsLoong(newCodeInfoList)
+		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
+		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
-	@classmethod
-	def encodeAsLuan(cls, codeInfoList):
+	def encodeAsLuan(self, codeInfoList):
 		"""運算 "䜌" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
-		codeInfo=cls.encodeAsLoong([firstCodeInfo, secondCodeInfo, secondCodeInfo])
+		codeInfo=self.encodeAsLoong([firstCodeInfo, secondCodeInfo, secondCodeInfo])
 		return codeInfo
 
-	@classmethod
-	def getCodeInfoExceptLast(cls, codeInfo):
+	def getCodeInfoExceptLast(self, codeInfo):
 		mainCodeList=codeInfo.getMainCodeList()
 
 		if len(mainCodeList)>1:
-			tmpCodeInfo=cls.generateDefaultCodeInfo([mainCodeList[:-1]])
+			tmpCodeInfo=self.generateDefaultCodeInfo([mainCodeList[:-1]])
 		else:
 			tmpCodeInfo=None
 
 		return tmpCodeInfo
 
-	@classmethod
-	def getCodeInfoExceptFirst(cls, codeInfo):
+	def getCodeInfoExceptFirst(self, codeInfo):
 		mainCodeList=codeInfo.getMainCodeList()
 
 		if len(mainCodeList)>1:
-			tmpCodeInfo=cls.generateDefaultCodeInfo([mainCodeList[1:]])
+			tmpCodeInfo=self.generateDefaultCodeInfo([mainCodeList[1:]])
 		else:
 			tmpCodeInfo=None
 
 		return tmpCodeInfo
 
-	@classmethod
-	def convertMergedCode(cls, firstCodeInfo, secondCodeInfo, firstRadix, secondRadix, targetRadix):
+	def convertMergedCode(self, firstCodeInfo, secondCodeInfo, firstRadix, secondRadix, targetRadix):
 		firstMainCodeList=firstCodeInfo.getMainCodeList()
 		secondMainCodeList=secondCodeInfo.getMainCodeList()
 
 		if firstMainCodeList[-1]==firstRadix and secondMainCodeList[0]==secondRadix:
-			newFirstCodeInfo=cls.getCodeInfoExceptLast(firstCodeInfo)
-			targetCodeInfo=cls.generateDefaultCodeInfo([[targetRadix]])
-			newSecondCodeInfo=cls.getCodeInfoExceptFirst(secondCodeInfo)
+			newFirstCodeInfo=self.getCodeInfoExceptLast(firstCodeInfo)
+			targetCodeInfo=self.generateDefaultCodeInfo([[targetRadix]])
+			newSecondCodeInfo=self.getCodeInfoExceptFirst(secondCodeInfo)
 		else:
 			newFirstCodeInfo=firstCodeInfo
 			targetCodeInfo=None
 			newSecondCodeInfo=secondCodeInfo
 		return [newFirstCodeInfo, targetCodeInfo, newSecondCodeInfo]
 
-	@classmethod
-	def getMergedCodeInfoListAsForGe(cls, codeInfoList):
+	def getMergedCodeInfoListAsForGe(self, codeInfoList):
 		# 如 咸、戎
 		if len(codeInfoList)<=1:
 			print("錯誤：", file=sys.stderr)
@@ -253,8 +237,8 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 				frontMainCode=firstCodeInfo.getInstallmentCode(0)
 				rearMainCode=firstCodeInfo.getInstallmentCode(1)
 
-				frontCodeInfo=cls.generateDefaultCodeInfo([frontMainCode])
-				rearCodeInfo=cls.generateDefaultCodeInfo([rearMainCode])
+				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
+				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
 				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
 			else:
 				return codeInfoList

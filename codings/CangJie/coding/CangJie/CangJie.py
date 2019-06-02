@@ -321,116 +321,102 @@ class GridCJCodeInfo(CJCodeInfo):
 		return self.codeInfoV
 
 class CJCodeInfoEncoder(CodeInfoEncoder):
-	@classmethod
-	def generateDefaultCodeInfo(cls, direction, cjLumpList):
+	def generateDefaultCodeInfo(self, direction, cjLumpList):
 		return CJCodeInfo.generateDefaultCodeInfo(direction, cjLumpList)
 
-	@classmethod
-	def isAvailableOperation(cls, codeInfoList):
+	def isAvailableOperation(self, codeInfoList):
 		return True
 
 
-	@classmethod
-	def encodeAsTurtle(cls, codeInfoList):
+	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
 		direction='*'
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsLoong(cls, codeInfoList):
+	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 		direction='*'
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsSparrow(cls, codeInfoList):
+	def encodeAsSparrow(self, codeInfoList):
 		"""運算 "雀" """
 		direction='$'
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsEqual(cls, codeInfoList):
+	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
 		direction='*'
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 
-	@classmethod
-	def encodeAsSilkworm(cls, codeInfoList):
+	def encodeAsSilkworm(self, codeInfoList):
 		direction='|'
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsGoose(cls, codeInfoList):
+	def encodeAsGoose(self, codeInfoList):
 		direction='-'
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsLoop(cls, codeInfoList):
+	def encodeAsLoop(self, codeInfoList):
 		direction='@'
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 
-	@classmethod
-	def encodeAsMu(cls, codeInfoList):
+	def encodeAsMu(self, codeInfoList):
 		direction='$'
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsZuo(cls, codeInfoList):
+	def encodeAsZuo(self, codeInfoList):
 		direction='$'
-		codeInfoList=CJCodeInfoEncoder.convertCodeInfoListOfZuoOrder(codeInfoList)
+		codeInfoList=self.convertCodeInfoListOfZuoOrder(codeInfoList)
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
-	@classmethod
-	def encodeAsJia(cls, codeInfoList):
+	def encodeAsJia(self, codeInfoList):
 		direction='$'
 		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=cls.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 
-	@classmethod
-	def encodeAsLin(cls, codeInfoList):
+	def encodeAsLin(self, codeInfoList):
 		"""運算 "粦" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 		thirdCodeInfo=codeInfoList[2]
 
-		topCodeInfo=CJCodeInfoEncoder.encodeAsLoong([firstCodeInfo])
-		bottomCodeInfo=cls.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
+		topCodeInfo=self.encodeAsLoong([firstCodeInfo])
+		bottomCodeInfo=self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
 
-		codeInfo=cls.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
+		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
 
-	@classmethod
-	def encodeAsYi(cls, codeInfoList):
+	def encodeAsYi(self, codeInfoList):
 		"""運算 "燚" """
 		firstCodeInfo=codeInfoList[0]
 
-		tmpCodeInfoH=cls.encodeAsGoose([firstCodeInfo, firstCodeInfo])
-		codeInfoV=cls.encodeAsSilkworm([tmpCodeInfoH, tmpCodeInfoH])
+		tmpCodeInfoH=self.encodeAsGoose([firstCodeInfo, firstCodeInfo])
+		codeInfoV=self.encodeAsSilkworm([tmpCodeInfoH, tmpCodeInfoH])
 
-		tmpCodeInfoV=cls.encodeAsSilkworm([firstCodeInfo, firstCodeInfo])
-		codeInfoH=cls.encodeAsGoose([tmpCodeInfoV, tmpCodeInfoV])
+		tmpCodeInfoV=self.encodeAsSilkworm([firstCodeInfo, firstCodeInfo])
+		codeInfoH=self.encodeAsGoose([tmpCodeInfoV, tmpCodeInfoV])
 
 		codeInfo=GridCJCodeInfo(codeInfoV, codeInfoH)
 

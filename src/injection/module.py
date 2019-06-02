@@ -17,7 +17,7 @@ from Constant import Package
 class PackageModule(Module):
 	@provider
 	def provideCodeInfoEncoder(self, codingPackage: Package) -> CodeInfoEncoder:
-		return codingPackage.CodeInfoEncoder
+		return codingPackage.CodeInfoEncoder()
 
 	@provider
 	def provideCodingRadixParser(self, codingPackage: Package) -> CodingRadixParser:
