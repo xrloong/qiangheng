@@ -66,7 +66,7 @@
               <xsl:text>筆劃: </xsl:text>
               <xsl:value-of select="$newline" />
 
-              <xsl:for-each select="筆劃">
+	      <xsl:for-each select="筆劃/_">
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
@@ -171,7 +171,7 @@
               <xsl:text>補充範圍: </xsl:text>
               <xsl:value-of select="$newline" />
 
-              <xsl:for-each select="補充範圍">
+	      <xsl:for-each select="補充範圍/_">
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
                 <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
