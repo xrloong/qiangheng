@@ -467,7 +467,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		return ansLumpList
 
 class CJRadixParser(CodingRadixParser):
-	ATTRIB_CODE_EXPRESSION='資訊表示式'
+	ATTRIB_CODE_EXPRESSION='編碼表示式'
 	ATTRIB_SINGLETON_EXPRESSION='獨體表示式'
 
 	# 多型

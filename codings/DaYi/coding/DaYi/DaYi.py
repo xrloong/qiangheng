@@ -253,7 +253,7 @@ class DYRadixParser(CodingRadixParser):
 	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
-	ATTRIB_CODE_EXPRESSION='資訊表示式'
+	ATTRIB_CODE_EXPRESSION='編碼表示式'
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
