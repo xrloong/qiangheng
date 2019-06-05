@@ -561,6 +561,7 @@ class FCGrid:
 
 class FCRadixParser(CodingRadixParser):
 	ATTRIB_CODE_EXPRESSION='編碼表示式'
+	ATTRIB_ARCHITECTURE='結構'
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
@@ -570,10 +571,10 @@ class FCRadixParser(CodingRadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo = radixInfo.getCodeElement()
 
-		cornerCode = elementCodeInfo.get(FCRadixParser.ATTRIB_CODE_EXPRESSION)
-		corners = convertCornerCodeToCornerUnits(cornerCode)
+		cornerCodeList = elementCodeInfo.get(FCRadixParser.ATTRIB_ARCHITECTURE)
+		corners = tuple(convertCornerCodeToCornerUnits(cornerCode) for cornerCode in cornerCodeList)
 
-		fcLump = FCLump(corners)
+		fcLump = FCLump(corners[0])
 		codeInfo = FCCodeInfo(fcLump)
 		return codeInfo
 
