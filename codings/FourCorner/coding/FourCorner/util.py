@@ -43,3 +43,14 @@ def computeCornerUnitCode(stroke: FCStroke):
 		return "0"
 	return stroke
 
+def convertCornerCodeToCornerUnits(code):
+	if len(code)==4:
+		top_left = convertCharToCornerUnit(code[0])
+		top_right = convertCharToCornerUnit(code[1])
+		bottom_left = convertCharToCornerUnit(code[2])
+		bottom_right = convertCharToCornerUnit(code[3])
+		corners = [top_left, top_right, bottom_left, bottom_right]
+	else:
+		corners = [FCStroke.StrokeNone, FCStroke.StrokeNone, FCStroke.StrokeNone, FCStroke.StrokeNone]
+	return corners
+

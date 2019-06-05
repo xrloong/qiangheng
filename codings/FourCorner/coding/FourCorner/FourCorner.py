@@ -7,7 +7,7 @@ from .constant import FCCorner
 
 from .item import FCLump
 
-from .util import convertCharToCornerUnit
+from .util import convertCornerCodeToCornerUnits
 from .util import computeCornerUnitCode
 
 class FCCodeInfo(CodeInfo):
@@ -568,23 +568,11 @@ class FCRadixParser(CodingRadixParser):
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
-		elementCodeInfo=radixInfo.getCodeElement()
+		elementCodeInfo = radixInfo.getCodeElement()
 
-		infoDict=elementCodeInfo
+		cornerCode = elementCodeInfo.get(FCRadixParser.ATTRIB_CODE_EXPRESSION)
+		corners = convertCornerCodeToCornerUnits(cornerCode)
 
-		top_left=''
-		top_right=''
-		bottom_left=''
-		bottom_right=''
-
-		characterCode=infoDict.get(FCRadixParser.ATTRIB_CODE_EXPRESSION)
-		if len(characterCode)==4:
-			top_left = convertCharToCornerUnit(characterCode[0])
-			top_right = convertCharToCornerUnit(characterCode[1])
-			bottom_left = convertCharToCornerUnit(characterCode[2])
-			bottom_right = convertCharToCornerUnit(characterCode[3])
-
-		corners = [top_left, top_right, bottom_left, bottom_right]
 		fcLump = FCLump(corners)
 		codeInfo = FCCodeInfo(fcLump)
 		return codeInfo

@@ -24,6 +24,12 @@ class FCUtilTestCase(unittest.TestCase):
 		self.assertEqual(util.convertCharToCornerUnit("8"), FCStroke.Stroke8)
 		self.assertEqual(util.convertCharToCornerUnit("9"), FCStroke.Stroke9)
 
+	def test_convertCornerCodeToCornerUnits(self):
+		self.assertEqual(util.convertCornerCodeToCornerUnits("1234"),
+			[FCStroke.Stroke1, FCStroke.Stroke2, FCStroke.Stroke3, FCStroke.Stroke4, ])
+		self.assertEqual(util.convertCornerCodeToCornerUnits("3abc"),
+			[FCStroke.Stroke3, FCCorner.TopLeft, FCCorner.TopRight, FCCorner.BottomLeft, ])
+
 	def test_computeCornerUnitCode(self):
 		self.assertEqual(util.computeCornerUnitCode(FCStroke.StrokeNone), "0")
 
