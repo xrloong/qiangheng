@@ -11,10 +11,11 @@ from .util import convertCornerCodeToCornerUnits
 from .util import computeCornerUnitCode
 
 class FCCodeInfo(CodeInfo):
-	def __init__(self, lump):
+	def __init__(self, lump, innerLump = None):
 		super().__init__()
 
 		self.lump = lump
+		self.innerLump = innerLump
 
 	@staticmethod
 	def generateDefaultCodeInfo(lump):
@@ -22,6 +23,11 @@ class FCCodeInfo(CodeInfo):
 		return codeInfo
 
 	def toCode(self):
+		if self.innerLump:
+			return "%s%s%s%s"%(computeCornerUnitCode(self.topLeft),
+					computeCornerUnitCode(self.topRight),
+					computeCornerUnitCode(self.innerLump.bottomLeft),
+					computeCornerUnitCode(self.innerLump.bottomRight))
 		return "%s%s%s%s"%(computeCornerUnitCode(self.topLeft),
 				computeCornerUnitCode(self.topRight),
 				computeCornerUnitCode(self.bottomLeft),
@@ -67,8 +73,15 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsSparrow(self, codeInfoList):
 		"""運算 "雀" """
-		print("不合法的運算：雀", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		firstCodeInfo=codeInfoList[0]
+		lastCodeInfo=codeInfoList[-1]
+		grid=FCGrid()
+		grid.setAsOut_In(firstCodeInfo, lastCodeInfo)
+		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
+		corners=[top_left, top_right, bottom_left, bottom_right]
+		codeInfo=self.generateDefaultCodeInfo(corners)
+		fcLump = FCLump(corners)
+		codeInfo=FCCodeInfo(fcLump, lastCodeInfo.lump)
 		return codeInfo
 
 	def encodeAsEqual(self, codeInfoList):
@@ -574,7 +587,9 @@ class FCRadixParser(CodingRadixParser):
 		cornerCodeList = elementCodeInfo.get(FCRadixParser.ATTRIB_ARCHITECTURE)
 		corners = tuple(convertCornerCodeToCornerUnits(cornerCode) for cornerCode in cornerCodeList)
 
-		fcLump = FCLump(corners[0])
-		codeInfo = FCCodeInfo(fcLump)
+		if len(corners) >= 2:
+			codeInfo = FCCodeInfo(FCLump(corners[0]), FCLump(corners[1]))
+		elif len(corners) == 1:
+			codeInfo = FCCodeInfo(FCLump(corners[0]))
 		return codeInfo
 
