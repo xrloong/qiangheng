@@ -12,46 +12,51 @@ class FCCodeInfo(CodeInfo):
 	def __init__(self, lump, innerLump = None):
 		super().__init__()
 
-		self.lump = lump
-		self.innerLump = innerLump
+		cornerCorner = (lump.topLeft, lump.topRight, lump.bottomLeft, lump.bottomRight)
+		self._cornerLump = FCLump(cornerCorner)
 
-	@staticmethod
-	def generateDefaultCodeInfo(lump):
-		codeInfo=FCCodeInfo(lump)
-		return codeInfo
+		coderCorner = ()
+		if innerLump:
+			codeCorner = (lump.topLeft, lump.topRight, innerLump.bottomLeft, innerLump.bottomRight)
+		else:
+			codeCorner = (lump.topLeft, lump.topRight, lump.bottomLeft, lump.bottomRight)
+		self._codeLump = FCLump(codeCorner)
 
 	def toCode(self):
-		if self.innerLump:
-			return "%s%s%s%s"%(computeCornerUnitCode(self.topLeft),
-					computeCornerUnitCode(self.topRight),
-					computeCornerUnitCode(self.innerLump.bottomLeft),
-					computeCornerUnitCode(self.innerLump.bottomRight))
-		return "%s%s%s%s"%(computeCornerUnitCode(self.topLeft),
-				computeCornerUnitCode(self.topRight),
-				computeCornerUnitCode(self.bottomLeft),
-				computeCornerUnitCode(self.bottomRight))
+		return "%s%s%s%s"%(computeCornerUnitCode(self.codeLump.topLeft),
+				computeCornerUnitCode(self.codeLump.topRight),
+				computeCornerUnitCode(self.codeLump.bottomLeft),
+				computeCornerUnitCode(self.codeLump.bottomRight))
+
+	@property
+	def cornerLump(self):
+		return self._cornerLump
+
+	@property
+	def codeLump(self):
+		return self._codeLump
 
 	@property
 	def topLeft(self):
-		return self.lump.topLeft
+		return self.cornerLump.topLeft
 
 	@property
 	def topRight(self):
-		return self.lump.topRight
+		return self.cornerLump.topRight
 
 	@property
 	def bottomLeft(self):
-		return self.lump.bottomLeft
+		return self.cornerLump.bottomLeft
 
 	@property
 	def bottomRight(self):
-		return self.lump.bottomRight
+		return self.cornerLump.bottomRight
 
 
 class FCCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, corners):
 		lump = FCLump(corners)
-		return FCCodeInfo.generateDefaultCodeInfo(lump)
+		return FCCodeInfo(lump)
 
 	def isAvailableOperation(self, codeInfoList):
 		return True
@@ -79,7 +84,7 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		corners=[top_left, top_right, bottom_left, bottom_right]
 		codeInfo=self.generateDefaultCodeInfo(corners)
 		fcLump = FCLump(corners)
-		codeInfo=FCCodeInfo(fcLump, lastCodeInfo.lump)
+		codeInfo=FCCodeInfo(fcLump, lastCodeInfo.cornerLump)
 		return codeInfo
 
 	def encodeAsEqual(self, codeInfoList):
