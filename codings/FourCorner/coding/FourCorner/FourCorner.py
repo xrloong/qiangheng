@@ -2,6 +2,8 @@ from coding.Base import CodeInfo
 from coding.Base import CodeInfoEncoder
 from coding.Base import CodingRadixParser
 
+from .constant import FCCorner
+
 from .item import FCLump
 from .item import FCGrid
 
@@ -15,9 +17,11 @@ class FCCodeInfo(CodeInfo):
 
 		codeCorner = ()
 		if innerLump:
-			codeCorner = (lump.topLeft, lump.topRight, innerLump.bottomLeft, innerLump.bottomRight)
+			codes1 = lump.computeCodesOfTop()
+			codes2 = innerLump.computeCodesOfBottom()
+			codeCorner = codes1 + codes2
 		else:
-			codeCorner = (lump.topLeft, lump.topRight, lump.bottomLeft, lump.bottomRight)
+			codeCorner = lump.computeCodesOfAll()
 		self._codeLump = FCLump(codeCorner)
 
 	def toCode(self):

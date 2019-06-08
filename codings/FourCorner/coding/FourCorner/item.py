@@ -17,6 +17,97 @@ class FCLump:
 			self._bottom_left = _bottom_left
 			self._bottom_right = _bottom_right
 
+	def computeCodesOfTopLeft(self):
+		return self.computeCodes((FCCorner.TopLeft, ))
+
+	def computeCodesOfTopRight(self):
+		return self.computeCodes((FCCorner.TopRight, ))
+
+	def computeCodesOfBottomLeft(self):
+		return self.computeCodes((FCCorner.BottomLeft, ))
+
+	def computeCodesOfBottomRight(self):
+		return self.computeCodes((FCCorner.BottomRight, ))
+
+	def computeCodesOfTop(self):
+		return self.computeCodes((FCCorner.TopLeft, FCCorner.TopRight))
+
+	def computeCodesOfBottom(self):
+		return self.computeCodes((FCCorner.BottomLeft, FCCorner.BottomRight))
+
+	def computeCodesOfLeft(self):
+		return self.computeCodes((FCCorner.TopLeft, FCCorner.BottomLeft))
+
+	def computeCodesOfRight(self):
+		return self.computeCodes((FCCorner.TopRight, FCCorner.BottomRight))
+
+	def computeCodesOfExceptTopLeft(self):
+		return self.computeCodes((FCCorner.TopRight, FCCorner.BottomLeft, FCCorner.BottomRight))
+
+	def computeCodesOfExceptTopRight(self):
+		return self.computeCodes((FCCorner.TopLeft, FCCorner.BottomLeft, FCCorner.BottomRight))
+
+	def computeCodesOfExceptBottomLeft(self):
+		return self.computeCodes((FCCorner.TopLeft, FCCorner.TopRight, FCCorner.BottomRight))
+
+	def computeCodesOfExceptBottomRight(self):
+		return self.computeCodes((FCCorner.TopLeft, FCCorner.TopRight, FCCorner.BottomLeft))
+
+	def computeCodesOfAll(self):
+		return self.computeCodes((FCCorner.TopLeft, FCCorner.TopRight, FCCorner.BottomLeft, FCCorner.BottomRight))
+
+	def computeCodes(self, positions):
+		cornerToIndex = {
+			FCCorner.TopLeft: 0,
+			FCCorner.TopRight: 1,
+			FCCorner.BottomLeft: 2,
+			FCCorner.BottomRight: 3,
+			}
+
+		cornerToBrick = {}
+		bricks = []
+		for pos in positions:
+			index = cornerToIndex[pos]
+			stroke = self.getStroke(pos)
+
+			brick = FCBrick(pos)
+			if isinstance(stroke, FCStroke):
+				brick.setAsStroke(stroke)
+				cornerToBrick[pos] = brick
+			elif isinstance(stroke, FCCorner):
+				corner = stroke
+				if corner in cornerToBrick:
+					wrapperBrick = cornerToBrick[corner]
+					brick.setAsReference(wrapperBrick)
+				else:
+					stroke = self.getStroke(corner)
+					brick.setAsStroke(stroke)
+				cornerToBrick[corner] = brick
+
+			bricks.append(brick)
+
+		codes = []
+		for brick in bricks:
+			stroke = brick.getStrokeOrCorner()
+			codes.append(stroke)
+			brick.setUsedByPosition()
+
+		return tuple(codes)
+
+	def getStroke(self, pos):
+		stroke = FCStroke.StrokeNone
+		if pos == FCCorner.TopLeft:
+			stroke = self.topLeft
+		elif pos == FCCorner.TopRight:
+			stroke = self.topRight
+		elif pos == FCCorner.BottomLeft:
+			stroke = self.bottomLeft
+		elif pos == FCCorner.BottomRight:
+			stroke = self.bottomRight
+		else:
+			stroke = FCStroke.StrokeNone
+		return stroke
+
 	@property
 	def corners(self):
 		return (self.topLeft, self.topRight, self.bottomLeft, self.bottomRight)
@@ -41,9 +132,10 @@ class FCBrick:
 	TYPE_INVALIDATE=0
 	TYPE_STROKE=1
 	TYPE_REFERENCE=2
-	def __init__(self):
+	def __init__(self, position = FCCorner.CornerNone):
 		self.setAsInvalidate()
-		self._usedByCorner=FCCorner.CornerNone
+		self._position = position
+		self._usedByCorner = FCCorner.CornerNone
 
 	def __str__(self):
 		if self.isStroke():
@@ -54,6 +146,17 @@ class FCBrick:
 			return "%s"%FCStroke.StrokeNone
 		else:
 			return "%s"%FCStroke.StrokeNone
+
+	@property
+	def position(self):
+		if self.isStroke():
+			return self._position
+		elif self.isReference():
+			return self.wrapperBrick.position
+		elif self.isInvalidate():
+			return self._position
+		else:
+			return self._position
 
 	def setAsInvalidate(self):
 		self._type=FCBrick.TYPE_INVALIDATE
@@ -74,6 +177,9 @@ class FCBrick:
 
 	def isReference(self):
 		return self._type==FCBrick.TYPE_REFERENCE
+
+	def setUsedByPosition(self):
+		self.setUsedByCorner(self._position)
 
 	def setUsedByCorner(self, corner):
 		if self.isReference():
@@ -101,6 +207,16 @@ class FCBrick:
 			return self.stroke
 		elif self.isReference():
 			return self.wrapperBrick.getStroke()
+		elif self.isInvalidate():
+			return FCStroke.StrokeNone
+		else:
+			return FCStroke.StrokeNone
+
+	def getStrokeOrCorner(self):
+		if self.isStroke():
+			return self.stroke
+		elif self.isReference():
+			return self.position
 		elif self.isInvalidate():
 			return FCStroke.StrokeNone
 		else:
