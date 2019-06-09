@@ -5,7 +5,6 @@ from coding.Base import CodingRadixParser
 from .constant import FCCorner
 
 from .item import FCLump
-from .item import FCGrid
 
 from .util import convertCornerCodeToCornerUnits
 from .util import computeCornerUnitCode
