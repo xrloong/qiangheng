@@ -78,16 +78,15 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsSparrow(self, codeInfoList):
 		"""運算 "雀" """
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-		grid=FCGrid()
-		grid.setAsOut_In(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		fcLump = FCLump(corners)
-		codeInfo=FCCodeInfo(fcLump, lastCodeInfo.cornerLump)
-		return codeInfo
+		firstCodeInfo = codeInfoList[0]
+		lastCodeInfo = codeInfoList[-1]
+
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = lastCodeInfo.cornerLump
+
+		fcLump1 = FCLump(lump1)
+		fcLump2 = FCLump(lump1.computeCodesOfTop() + lump2.computeCodesOfBottom())
+		return FCCodeInfo(fcLump1, fcLump2)
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
