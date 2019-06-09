@@ -107,15 +107,17 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		return FCCodeInfo(FCLump(lump))
 
 	def encodeAsSilkworm(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
+		firstCodeInfo = codeInfoList[0]
+		lastCodeInfo = codeInfoList[-1]
 
-		grid=FCGrid()
-		grid.setAsTop_Bottom(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = lastCodeInfo.cornerLump
+
+
+		corner1 = lump1.computeCodesOfTop()
+		corner2 = lump2.computeCodesOfBottom()
+		corners = [corner1[0], corner1[1], corner2[0], corner2[1]]
+		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsGoose(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
