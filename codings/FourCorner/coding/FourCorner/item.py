@@ -2,12 +2,24 @@ from .constant import FCStroke
 from .constant import FCCorner
 
 class FCLump:
-	def __init__(self, corners):
-		_top_left, _top_right, _bottom_left, _bottom_right = corners
-		self._top_left = _top_left
-		self._top_right = _top_right
-		self._bottom_left = _bottom_left
-		self._bottom_right = _bottom_right
+	def __init__(self, obj):
+		if isinstance(obj, FCLump):
+			lump = obj
+			self._top_left = lump.topLeft
+			self._top_right = lump.topRight
+			self._bottom_left = lump.bottomLeft
+			self._bottom_right = lump.bottomRight
+		elif isinstance(obj, (list, tuple)):
+			corners = obj
+			_top_left, _top_right, _bottom_left, _bottom_right = corners
+			self._top_left = _top_left
+			self._top_right = _top_right
+			self._bottom_left = _bottom_left
+			self._bottom_right = _bottom_right
+
+	@property
+	def corners(self):
+		return (self.topLeft, self.topRight, self.bottomLeft, self.bottomRight)
 
 	@property
 	def topLeft(self):

@@ -11,11 +11,9 @@ from .util import computeCornerUnitCode
 class FCCodeInfo(CodeInfo):
 	def __init__(self, lump, innerLump = None):
 		super().__init__()
+		self._cornerLump = FCLump(lump)
 
-		cornerCorner = (lump.topLeft, lump.topRight, lump.bottomLeft, lump.bottomRight)
-		self._cornerLump = FCLump(cornerCorner)
-
-		coderCorner = ()
+		codeCorner = ()
 		if innerLump:
 			codeCorner = (lump.topLeft, lump.topRight, innerLump.bottomLeft, innerLump.bottomRight)
 		else:
