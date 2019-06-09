@@ -132,48 +132,52 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsQi(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
+		firstCodeInfo = codeInfoList[0]
+		lastCodeInfo = codeInfoList[-1]
 
-		grid=FCGrid()
-		grid.setAsBottomLeft_TopRight(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = lastCodeInfo.cornerLump
+
+		corner1 = lump1.computeCodesOfExceptTopRight()
+		corner2 = lump2.computeCodesOfTopRight()
+		corners = [corner1[0], corner2[0], corner1[1], corner1[2]]
+		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsLiao(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
+		firstCodeInfo = codeInfoList[0]
+		lastCodeInfo = codeInfoList[-1]
 
-		grid=FCGrid()
-		grid.setAsTopLeft_BottomRight(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = lastCodeInfo.cornerLump
+
+		corner1 = lump1.computeCodesOfExceptBottomRight()
+		corner2 = lump2.computeCodesOfBottomRight()
+		corners = [corner1[0], corner1[1], corner1[2], corner2[0]]
+		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsZai(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
+		firstCodeInfo = codeInfoList[0]
+		lastCodeInfo = codeInfoList[-1]
 
-		grid=FCGrid()
-		grid.setAsTopRight_BottomLeft(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = lastCodeInfo.cornerLump
+
+		corner1 = lump1.computeCodesOfExceptBottomLeft()
+		corner2 = lump2.computeCodesOfBottomLeft()
+		corners = [corner1[0], corner1[1], corner2[0], corner1[2]]
+		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsDou(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
+		firstCodeInfo = codeInfoList[0]
+		lastCodeInfo = codeInfoList[-1]
 
-		grid=FCGrid()
-		grid.setAsBottomRight_TopLeft(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = lastCodeInfo.cornerLump
+
+		corner1 = lump1.computeCodesOfExceptTopLeft()
+		corner2 = lump2.computeCodesOfTopLeft()
+		corners = [corner2[0], corner1[0], corner1[1], corner1[2]]
+		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsMu(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
