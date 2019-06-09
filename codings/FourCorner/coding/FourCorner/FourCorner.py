@@ -180,64 +180,70 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsMu(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		thirdCodeInfo = codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsTop_BottomLeft_BottomRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = secondCodeInfo.cornerLump
+		lump3 = thirdCodeInfo.cornerLump
+
+		corner1 = lump1.computeCodesOfTop()
+		corner2 = lump2.computeCodesOfBottomLeft()
+		corner3 = lump2.computeCodesOfBottomRight()
+		corners = [corner1[0], corner1[1], corner2[0], corner3[0]]
+		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsZuo(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		thirdCodeInfo = codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsBottom_TopLeft_TopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = secondCodeInfo.cornerLump
+		lump3 = thirdCodeInfo.cornerLump
+
+		corner1 = lump1.computeCodesOfBottom()
+		corner2 = lump2.computeCodesOfTopLeft()
+		corner3 = lump3.computeCodesOfTopRight()
+		corners = [corner2[0], corner3[0], corner1[0], corner1[1]]
+		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsYou(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		thirdCodeInfo = codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsBottom_InTopLeft_InTopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = secondCodeInfo.cornerLump
+		lump3 = thirdCodeInfo.cornerLump
+
+		corners = lump1.computeCodesOfAll()
+		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsLiang(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		thirdCodeInfo = codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsTop_InBottomLeft_InBottomRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = secondCodeInfo.cornerLump
+		lump3 = thirdCodeInfo.cornerLump
+
+		corners = lump1.computeCodesOfAll()
+		return FCCodeInfo(FCLump(corners))
 
 	def encodeAsJia(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		thirdCodeInfo = codeInfoList[2]
 
-		grid=FCGrid()
-		grid.setAsBottom_InTopLeft_InTopRight(firstCodeInfo, secondCodeInfo, thirdCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = secondCodeInfo.cornerLump
+		lump3 = thirdCodeInfo.cornerLump
+
+		corners = lump1.computeCodesOfAll()
+		return FCCodeInfo(FCLump(corners))
 
 class FCRadixParser(CodingRadixParser):
 	ATTRIB_CODE_EXPRESSION='編碼表示式'
