@@ -100,14 +100,11 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 
 
 	def encodeAsLoop(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		lastCodeInfo=codeInfoList[-1]
-		grid=FCGrid()
-		grid.setAsOut_In(firstCodeInfo, lastCodeInfo)
-		[top_left, top_right, bottom_left, bottom_right]=grid.getFourCorner()
-		corners=[top_left, top_right, bottom_left, bottom_right]
-		codeInfo=self.generateDefaultCodeInfo(corners)
-		return codeInfo
+		firstCodeInfo = codeInfoList[0]
+		lastCodeInfo = codeInfoList[-1]
+
+		lump = firstCodeInfo.cornerLump
+		return FCCodeInfo(FCLump(lump))
 
 	def encodeAsSilkworm(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
