@@ -33,6 +33,13 @@ class GXUtilTestCase(unittest.TestCase):
 		self.assertEqual(util.computeStrokeCode(GXStroke.Stroke8), "8")
 		self.assertEqual(util.computeStrokeCode(GXStroke.Stroke9), "9")
 
+	def test_constructCorners(self):
+		corners = util.constructCorners("1859")
+		self.assertEqual(corners, (GXStroke.Stroke1, GXStroke.Stroke8, GXStroke.Stroke5, GXStroke.Stroke9))
+
+		corners = util.constructCorners("2037")
+		self.assertEqual(corners, (GXStroke.Stroke2, GXStroke.Stroke0, GXStroke.Stroke3, GXStroke.Stroke7))
+
 	def test_computeRectCountCode(self):
 		self.assertEqual(util.computeRectCountCode(0), "0")
 		self.assertEqual(util.computeRectCountCode(3), "3")
