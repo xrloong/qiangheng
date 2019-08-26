@@ -37,12 +37,12 @@
   <xsl:template name="輸出設定">
     <xsl:call-template name="設定">
       <xsl:with-param name="選項">ename</xsl:with-param>
-      <xsl:with-param name="值"><xsl:value-of select="輸入法/輸入法名稱/@EN"/></xsl:with-param>
+      <xsl:with-param name="值"><xsl:value-of select="編碼法/輸入法名稱/@EN"/></xsl:with-param>
     </xsl:call-template>
 
     <xsl:call-template name="設定">
       <xsl:with-param name="選項">cname</xsl:with-param>
-      <xsl:with-param name="值"><xsl:value-of select="輸入法/輸入法名稱/@TW"/></xsl:with-param>
+      <xsl:with-param name="值"><xsl:value-of select="編碼法/輸入法名稱/@TW"/></xsl:with-param>
     </xsl:call-template>
 
     <xsl:call-template name="設定">
@@ -60,7 +60,7 @@
 
   <xsl:template name="輸出按鍵對應">
     <xsl:text>%keyname begin</xsl:text><xsl:value-of select="$newline"/>
-    <xsl:apply-templates select="輸入法/按鍵對應集/按鍵對應">
+    <xsl:apply-templates select="編碼法/按鍵對應集/按鍵對應">
       <xsl:sort select="@按鍵"/>
     </xsl:apply-templates>
     <xsl:text>%keyname end</xsl:text><xsl:value-of select="$newline"/>
@@ -68,7 +68,7 @@
 
   <xsl:template name="輸出編碼對應">
     <xsl:text>%chardef begin</xsl:text><xsl:value-of select="$newline"/>
-    <xsl:apply-templates select="輸入法/對應集/對應">
+    <xsl:apply-templates select="編碼法/編碼集/對應">
       <xsl:sort select="@按鍵序列"/>
     </xsl:apply-templates>
     <xsl:text>%chardef end</xsl:text><xsl:value-of select="$newline"/>

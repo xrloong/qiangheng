@@ -59,22 +59,22 @@
 
     <xsl:call-template name="設定">
       <xsl:with-param name="選項">NAME</xsl:with-param>
-      <xsl:with-param name="值"><xsl:value-of select="輸入法/輸入法名稱/@EN"/></xsl:with-param>
+      <xsl:with-param name="值"><xsl:value-of select="編碼法/輸入法名稱/@EN"/></xsl:with-param>
     </xsl:call-template>
 
     <xsl:call-template name="設定">
       <xsl:with-param name="選項">NAME.zh_CN</xsl:with-param>
-      <xsl:with-param name="值"><xsl:value-of select="輸入法/輸入法名稱/@CN"/></xsl:with-param>
+      <xsl:with-param name="值"><xsl:value-of select="編碼法/輸入法名稱/@CN"/></xsl:with-param>
     </xsl:call-template>
 
     <xsl:call-template name="設定">
       <xsl:with-param name="選項">NAME.zh_TW</xsl:with-param>
-      <xsl:with-param name="值"><xsl:value-of select="輸入法/輸入法名稱/@TW"/></xsl:with-param>
+      <xsl:with-param name="值"><xsl:value-of select="編碼法/輸入法名稱/@TW"/></xsl:with-param>
     </xsl:call-template>
 
     <xsl:call-template name="設定">
       <xsl:with-param name="選項">NAME.zh_HK</xsl:with-param>
-      <xsl:with-param name="值"><xsl:value-of select="輸入法/輸入法名稱/@HK"/></xsl:with-param>
+      <xsl:with-param name="值"><xsl:value-of select="編碼法/輸入法名稱/@HK"/></xsl:with-param>
     </xsl:call-template>
 
     <xsl:call-template name="設定">
@@ -139,13 +139,13 @@
 
     <xsl:call-template name="設定">
       <xsl:with-param name="選項">MAX_KEY_LENGTH</xsl:with-param>
-      <xsl:with-param name="值"><xsl:value-of select="輸入法/屬性/@最大按鍵數"/></xsl:with-param>
+      <xsl:with-param name="值"><xsl:value-of select="編碼法/屬性/@最大按鍵數"/></xsl:with-param>
     </xsl:call-template>
 
     <xsl:call-template name="設定">
       <xsl:with-param name="選項">VALID_INPUT_CHARS</xsl:with-param>
       <xsl:with-param name="值">
-        <xsl:for-each select="輸入法/按鍵對應集/按鍵對應">
+        <xsl:for-each select="編碼法/按鍵對應集/按鍵對應">
           <xsl:value-of select="@按鍵"/>
         </xsl:for-each>
       </xsl:with-param>
@@ -194,7 +194,7 @@
 
   <xsl:template name="輸出按鍵對應">
     <xsl:text>BEGIN_CHAR_PROMPTS_DEFINITION</xsl:text><xsl:value-of select="$newline"/>
-    <xsl:apply-templates select="輸入法/按鍵對應集/按鍵對應">
+    <xsl:apply-templates select="編碼法/按鍵對應集/按鍵對應">
       <xsl:sort select="@按鍵"/>
     </xsl:apply-templates>
     <xsl:text>END_CHAR_PROMPTS_DEFINITION</xsl:text><xsl:value-of select="$newline"/>
@@ -202,7 +202,7 @@
 
   <xsl:template name="輸出編碼對應">
     <xsl:text>BEGIN_TABLE</xsl:text><xsl:value-of select="$newline"/>
-    <xsl:apply-templates select="輸入法/對應集/對應">
+    <xsl:apply-templates select="編碼法/編碼集/對應">
       <xsl:sort select="@按鍵序列"/>
     </xsl:apply-templates>
     <xsl:text>END_TABLE</xsl:text><xsl:value-of select="$newline"/>

@@ -8,10 +8,10 @@
 </xsl:text></xsl:variable>
 
   <xsl:template match="/">
-    <xsl:for-each select="輸入法/按鍵對應集/按鍵對應">
+    <xsl:for-each select="編碼法/按鍵對應集/按鍵對應">
       <xsl:apply-templates select="."/>
     </xsl:for-each>
-    <xsl:for-each select="輸入法/對應集/對應">
+    <xsl:for-each select="編碼法/編碼集/對應">
       <xsl:sort select="@按鍵序列"/>
       <xsl:apply-templates select="."/>
     </xsl:for-each>
