@@ -1,4 +1,4 @@
-VERSION	=	0.30
+VERSION	=	0.40
 IMLIST	=	ar bs cj dy fc zm
 DMLIST	=	dc
 CMLIST	=	$(IMLIST) $(DMLIST)
