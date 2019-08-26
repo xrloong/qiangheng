@@ -33,8 +33,7 @@ class RadicalManager:
 				if len(ll)>=2:
 					charName=ll[0]
 					description=ll[1]
-					character=self.computeCharacterByDescription(description)
-					character.setName(charName)
+					character=self.computeCharacterByDescription(charName, description)
 					self.characterDB[charName]=character
 
 	def getCharacter(self, strIndex):
@@ -43,8 +42,7 @@ class RadicalManager:
 	def getCharacters(self):
 		return self.characterDB.keys()
 
-	def computeCharacterByDescription(self, description):
-		charName=""
+	def computeCharacterByDescription(self, charName, description):
 		strokes=self.computeStrokesByDescription(description)
 		strokeGroup=self.shapeFactory.generateStrokeGroupByStrokeList(strokes)
 		return Character(charName, strokeGroup)
@@ -164,7 +162,7 @@ class ShowHanziWidget():
 		}
 		description=string.translate(table)
 		rm=RadicalManager()
-		character=rm.computeCharacterByDescription(description)
+		character=rm.computeCharacterByDescription("", description)
 		from xie.graphics.shape import Boundary
 		descriptionBoundary = Boundary(0, 0, 256, 256)
 
