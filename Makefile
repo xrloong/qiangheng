@@ -6,6 +6,7 @@ CMLIST	=	$(IMLIST) $(DMLIST)
 SHELL	=	/bin/bash
 PIP	=	pip3
 UNAME	:=	$(shell uname)
+INSTALL_DIR	:=	$(shell pwd)
 
 define setup_codings
 package_ar="coding.Array codings/Array" \
@@ -72,6 +73,7 @@ setup-FreeBSD-environment:
 
 setup-Darwin-environment:
 	brew install python3
+	brew install fontforge	# To provide python extension of fontforge
 
 setup-python-environment:
 	$(PIP) install lxml ruamel.yaml injector ply
@@ -352,10 +354,11 @@ tarball-all:
 
 python-fontforge: fontforge/Makefile
 	cd fontforge; make
+	cd fontforge; make install
 	cd src/; ln -s ../fontforge/pyhook/.libs/fontforge.so .
 
 fontforge/Makefile: fontforge/configure
-	cd fontforge; PYTHON=python3 ./configure --enable-pyextention --disable-programes
+	cd fontforge; PYTHON=python3 ./configure --prefix=$(INSTALL_DIR) --enable-pyextention --disable-programes --without-giflib --without-libjpeg --without-libpng --without-libtiff --without-cairo --without-libspiro --without-libzmq --without-libreadline --without-libuninameslist
 
 fontforge/configure: fontforge/bootstrape
 	cd fontforge/; ./bootstrap
