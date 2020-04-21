@@ -9,32 +9,48 @@
 
 環境
 ====
-目前專案是以 Python3 寫成，因此需要安裝。
+目前專案是以 Python3 寫成，並且搭配許多套件、工具及函式庫，因此需要安裝。包含：
++ Python 3
++ Python 函式庫
+  + lxml
+  + ruamel.yaml
+  + injector
+  + ply
+  + Xie
+    用於動態組字。可到 https://github.com/xrloong/Xie 下載最新版本（https://github.com/xrloong/Xie/releases/download/v0.0.9/Xie-0.0.9-py3-none-any.whl）
++ 工具
+  + xsltproc
+  + xmllint
+
+可以透過 make 來安裝（目前支援 Ubuntu、MacOS、FreeBSD）
+```console
+$ make setup-environment
+```
+
+也可手動安裝：
 在 Ubutnu 上，
 ```console
 $ apt-get install python3
+$ apt-get install xsltproc libxml2-utils
+$ pip3 install lxml ruamel.yaml injector ply
+$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.0.9/Xie-0.0.9-py3-none-any.whl
 ```
-在 Mac 上，
+
+在 Mac 上，因本身就已有 xsltproc、xmllint，不用特別安裝。
 ```console
 $ brew install python3
-```
-
-使用到一些第三方的工具，如 xsltproc、xmllint。
-在 Ubutnu 上，
-```console
-$ apt-get install xsltproc libxml2-utils
-```
-在 Mac 上，本身就已有這兩個工具，不用特別安裝。
-
-使用到一些第三方的 Python 函式庫，如 lxml、ruamel.yaml、injector、ply。
-
-```console
 $ pip3 install lxml ruamel.yaml injector ply
+$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.0.9/Xie-0.0.9-py3-none-any.whl
 ```
 
-如果要使用動態組字，則要另外安裝 Xie 。
-可到 https://github.com/xrloong/Xie 下載最新版本，並以 pip 安裝，或使可使用以下指令：
+在 FreeBSD 上，
+```console
+$ pkg install python37 py37-pip
+$ pkg install py37-lxml
+$ pkg install libxml2-utils
+$ pip3 install lxml ruamel.yaml injector ply
 $ pip3 install https://github.com/xrloong/Xie/releases/download/v0.0.9/Xie-0.0.9-py3-none-any.whl
+```
 
 計算
 ====
@@ -139,16 +155,31 @@ $ src/hanzitk.py -s -i tables/puretable/qhdc-standard.txt
 本程式使用 FontForge 來產生字型。目前有兩種方式：一種是產生 TrueType 字型檔，一種是為每個字符生成 SVG 圖檔。
 
 * 産生 TrueType 字型檔：
-  目前因用於 Python3 的 extention 尚未有預先編譯好的版本，所以要自行編譯。
-  請使用下列命令：
+  使用到 FontForge 的 Python3 擴充。
+
+  在 Ubuntu 20.04 上，可以安裝 python3-fontforge：
   ```console
-  $ python-fontforge
+  $ apt-get install python3-fontforge
+  ```
+
+  在 MacOS 上，安裝 fontforge 後，會同時安裝其 Python3 擴充：
+  ```console
+  $ brew insatll fontforge
+  ```
+
+  在 FreeBSD 上，安裝 fontforge 後，也會同時安裝其 Python3 擴充：
+  ```console
+  $ pkg insatll fontforge
+  ```
+
+  在其它不支援的環境，可以使用下列命令：
+  ```console
+  $ make python-fontforge
   ```
   其大致會做以下幾件事：
   1. 下載 FontForge 源碼（https://github.com/fontforge/fontforge.git）
-  2. 以 Python3 來組態與編譯
+  2. 以 Python3 來組態與編譯（需要額外安裝 libtool、libglib2.0-dev、libfreetype6-dev、libxml2-dev）
   3. 產生連結檔 src/fontforge.so ，會連結到 fontforge/pyhook/.libs/fontforge.so
-  此外，在執行前，應確認系統有安裝 Python3 的開發資源，如在 Ubuntu 上應安裝 python3-dev 套件。
 
   產生字型檔指令如下，預設輸出檔為 font/qhdc.ttf ：
   ```console

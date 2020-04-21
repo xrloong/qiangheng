@@ -4,6 +4,8 @@ DMLIST	=	dc
 CMLIST	=	$(IMLIST) $(DMLIST)
 
 SHELL	=	/bin/bash
+PIP	=	pip3
+UNAME	:=	$(shell uname)
 
 define setup_codings
 package_ar="coding.Array codings/Array" \
@@ -52,6 +54,28 @@ RELEASE_TYPE_LIST	=	standard all
 .PHONY: xml tarballs all-icons
 
 all: xml
+
+setup-environment: setup-$(UNAME)-environment setup-python-environment
+
+setup-Linux-environment:
+	sudo make setup-$(shell lsb_release -si)-environment
+
+setup-Ubuntu-environment:
+	apt-get install python3 python3-pip
+	apt-get install xsltproc libxml2-utils
+	apt-get install fontforge
+
+setup-FreeBSD-environment:
+	pkg install python37 py37-pip
+	pkg install py37-lxml
+	pkg install fontforge
+
+setup-Darwin-environment:
+	brew install python3
+
+setup-python-environment:
+	$(PIP) install lxml ruamel.yaml injector ply
+	$(PIP) install https://github.com/xrloong/Xie/releases/download/v0.0.9/Xie-0.0.9-py3-none-any.whl
 
 prepare-main:
 	mkdir -p $(GEN_QHDATA_MAIN_PATH) $(GEN_QHDATA_MAIN_COMP_PATH)
