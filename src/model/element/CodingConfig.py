@@ -1,6 +1,3 @@
-from Constant import MainComponentList, MainTemplateFile
-from Constant import IMComponentList, IMSubstituteFile, IMRadixList
-
 class CodingConfig:
 	def __init__(self, package):
 		self.commonComponentFileList = self.getMainComponentList()

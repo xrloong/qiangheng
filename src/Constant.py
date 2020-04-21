@@ -1,16 +1,12 @@
-from injector import Key
-Package = Key('package')
+import typing
 
-MainComponentList = Key('MainComponentList')
-MainTemplateFile = Key('MainTemplateFile')
+from writer import BaseWriter
 
-IMComponentList = Key('IMComponentList')
-IMSubstituteFile = Key('IMSubstituteFile')
-IMRadixList = Key('IMRadixList')
+Package = typing.NewType('package', type(typing))
 
-Quiet = Key('quiet')
-OutputFormat = Key('outputFormat')
-Writer = Key('writer')
+Quiet = typing.NewType('quiet', bool)
+OutputFormat = typing.NewType('outputFormat', str)
+Writer = typing.NewType('writer', BaseWriter)
 
 TAG_VERSION='版本號'
 
