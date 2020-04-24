@@ -3,10 +3,6 @@
 
 from optparse import OptionParser
 import re
-from xie.graphics.utils import TextCodec
-from xie.graphics.stroke import StrokeGroup
-from xie.graphics.stroke import Character
-from xie.graphics.factory import ShapeFactory
 
 try:
 	import xie
@@ -14,6 +10,18 @@ except ImportError:
 	print("Please install the libary Xie (https://github.com/xrloong/Xie.git) first")
 	import sys
 	sys.exit()
+try:
+	import wx
+except ImportError:
+	print("Please install the libary wxPython")
+	import sys
+	sys.exit()
+
+from xie.graphics.utils import TextCodec
+from xie.graphics.stroke import StrokeGroup
+from xie.graphics.stroke import Character
+from xie.graphics.factory import ShapeFactory
+from xie.graphics.canvas import CanvasController
 
 class RadicalManager:
 	def __init__(self):
@@ -101,45 +109,99 @@ class RadicalManager:
 		stroke=Stroke(startPoint, strokeInfo)
 		return stroke
 
+class WxCanvasController(CanvasController):
+	def __init__(self, canvas, width, height):
+		super().__init__(width, height)
+
+		self.canvas = canvas
+		self.clear()
+		self.point_list = []
+		self.lastp = None
+
+		self.pathOptions = {"LineWidth": 20, "LineColor": "Black"}
+
+	def clear(self):
+		self.canvas.ClearAll()
+		self.canvas.ZoomToBB()
+
+	def moveTo(self, p):
+		self.setLastPoint(p)
+
+	def lineTo(self, p):
+		points = (self.lastp, p)
+		self.canvas.AddLine(points, **self.pathOptions)
+		self.canvas.ZoomToBB()
+
+		self.setLastPoint(p)
+
+	def qCurveTo(self, cp, p):
+		points = (self.lastp, cp, p)
+		self.canvas.AddSpline(points, **self.pathOptions)
+		self.canvas.ZoomToBB()
+
+		self.setLastPoint(p)
+
+	def setLastPoint(self, p):
+		self.lastp=p
+
+
 class ShowHanziWidget():
 	def __init__(self):
 		self.canvasWidth=512
 		self.canvasHeight=512
 
-		import tkinter
+		self.root = wx.App(False)
 
-		self.root=tkinter.Tk()
+		sizer = wx.GridBagSizer(2, 1)
 
-		master=self.root
-		frame=tkinter.Frame(master)
-		frame.pack()
+		frame = wx.Frame(None, title='秀漢字程式', size=(520, 620))
+		frame.SetBackgroundColour("gray")
+		frame.SetAutoLayout(True)
+		frame.SetSizer(sizer)
 
-		self.labelInput=tkinter.Label(frame, text='字符')
-		self.labelInput.grid(row=0, column=0)
+		charSBox = wx.StaticBox(frame, label='字符')
+		charSBoxSizer = wx.StaticBoxSizer(charSBox, wx.HORIZONTAL)
 
-		self.entryInput=tkinter.Entry(frame)
-		self.entryInput.grid(row=0, column=1)
+		entryInput = wx.TextCtrl(frame)
+		entryInput.SetEditable(True)
+		charSBoxSizer.Add(entryInput, proportion=1, flag=wx.EXPAND|wx.ALL|wx.ALIGN_RIGHT)
 
-		self.buttonInputOK=tkinter.Button(frame, text='確定', command=self.byKnownChar)
-		self.buttonInputOK.grid(row=0, column=2)
+		buttonInputOK = wx.Button(frame, label='確定')
+		buttonInputOK.Bind(wx.EVT_BUTTON, self.onOkClicked) 
+		charSBoxSizer.Add(buttonInputOK, flag=wx.ALL|wx.ALIGN_RIGHT)
 
-		self.buttonInputOK=tkinter.Button(frame, text='清除', command=self.clearEntry)
-		self.buttonInputOK.grid(row=0, column=3)
+		buttonInputClear = wx.Button(frame, label='清除')
+		buttonInputClear.Bind(wx.EVT_BUTTON, self.onClearClicked) 
+		charSBoxSizer.Add(buttonInputClear, flag=wx.ALL|wx.ALIGN_RIGHT)
 
-		self.canvas = tkinter.Canvas(master=frame, width=self.canvasWidth, height=self.canvasHeight)
-		self.canvas.grid(row=1, columnspan=4)
+		sizer.Add(charSBoxSizer, pos=(0, 0), border=5, flag=wx.EXPAND|wx.ALL)
 
+		self.entryInput = entryInput
 
-		from xie.graphics.canvas import TkCanvasController
-		canvasController = TkCanvasController(self.canvas, self.canvasWidth, self.canvasHeight)
+		from wx.lib.floatcanvas import FloatCanvas
+		self.canvas = FloatCanvas.FloatCanvas(frame,
+				ProjectionFun = lambda x: (1, -1),
+				size = (self.canvasWidth, self.canvasHeight))
+		canvasLayoutFlag = wx.EXPAND | wx.ALL | wx.ALIGN_CENTER
+		sizer.Add(self.canvas, pos=(1, 0), flag=canvasLayoutFlag)
+		sizer.AddGrowableRow(1)
 
+		frame.Show()
+
+		canvasController = WxCanvasController(self.canvas, self.canvasWidth, self.canvasHeight)
 		from xie.graphics.drawing import DrawingSystem
 		self.dh = DrawingSystem(canvasController)
 
 		self.drawFrame()
 
 	def mainloop(self):
-		self.root.mainloop()
+		self.root.MainLoop()
+
+	def onClearClicked(self, event):
+		self.clearEntry()
+
+	def onOkClicked(self, event):
+		self.byKnownChar()
 
 	def drawFrame(self):
 		from xie.graphics.shape import Rectangle
@@ -147,21 +209,19 @@ class ShowHanziWidget():
 		self.dh.draw(frame)
 
 	def clearEntry(self):
-		length=len(self.entryInput.get())
-		self.entryInput.delete(0, length)
+		self.entryInput.Clear()
 
 	def byKnownChar(self):
 		self.dh.canvasController.clear()
 		self.drawFrame()
 
-		string=self.entryInput.get()
+		string=self.entryInput.GetValue()
 		table={
 			ord(" "): None,
 			ord("\t"): None,
 			ord("\n"): None,
 		}
 		description=string.translate(table)
-		rm=RadicalManager()
 		character=rm.computeCharacterByDescription("", description)
 		from xie.graphics.shape import Boundary
 		descriptionBoundary = Boundary(0, 0, 256, 256)

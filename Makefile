@@ -305,7 +305,7 @@ $(MSIM_PATH): $(XML_PATH)
 svg: $(SVG_PATH)
 $(SVG_PATH): $(XML_PATH)
 	mkdir -p $(SVG_PATH)
-	src/hanzitk.py -g svg
+	src/hanziwx.py -g svg
 
 pdf: doc/qiangheng.pdf
 
