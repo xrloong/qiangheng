@@ -157,7 +157,7 @@ $ src/hanzitk.py -s -i tables/puretable/qhdc-standard.txt
 
 * 産生 SVG 圖檔：
   ```console
-  $ /hanzitk.py -g svg -i tables/puretable/qhdc-standard.txt
+  $ src/hanzitk.py -g svg -i tables/puretable/qhdc-standard.txt
   ```
 
 檔案架構
