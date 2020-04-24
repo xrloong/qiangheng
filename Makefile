@@ -364,8 +364,7 @@ fontforge/configure: fontforge/bootstrape
 	cd fontforge/; ./bootstrap
 
 fontforge/bootstrape:
-	git submodule init
-	git submodule update
+	git clone -b 20190801 https://github.com/fontforge/fontforge.git
 
 clean:
 	rm -rf $(ICON_PLATFORM_PATH)

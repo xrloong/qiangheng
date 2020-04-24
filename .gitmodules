@@ -1,4 +1,0 @@
-[submodule "fontforge"]
-	path = fontforge
-	url = https://github.com/fontforge/fontforge.git
-	ignore = dirty
