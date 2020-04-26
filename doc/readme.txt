@@ -53,7 +53,7 @@ Options:
 
 == 秀字程式說明 ==
 	秀字程式指令如下：
-		src/hanzitk.py -s -i tables/puretable/qhdc-standard.txt
+		src/hanzitk.py -s
 
 == 產生字型說明 ==
 	本程式使用 FontForge 來產生字型。目前有兩種方式：一種是產生 TrueType 字型檔，一種是為每個字符生成 SVG 圖檔。
@@ -69,11 +69,11 @@ Options:
 	此外，在執行前，應確認系統有安裝 Python3 的開發資源，如在 Ubuntu 上應安裝 python3-dev 套件。
 
 	產生字型檔指令如下，預設輸出檔為 font/qhdc.ttf ：
-		src/hanzitk.py -g ttf -i tables/puretable/qhdc-standard.txt
+		src/hanzitk.py -g ttf
 
 
 	二、産生 SVG 圖檔：
-		src/hanzitk.py -g svg -i tables/puretable/qhdc-standard.txt
+		src/hanzitk.py -g svg
 
 == 程式架構說明 ==
 請參考 doc/qiangheng.dia （使用 Dia）。

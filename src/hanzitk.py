@@ -302,7 +302,7 @@ def generateTTF(filename):
 oparser = OptionParser()
 oparser.add_option("-s", action="store_true", dest="show_font", help="秀出字形", default=False)
 oparser.add_option("-g", dest="font_format", help="產生字型檔", default="svg")
-oparser.add_option("-i", "--in-fontfile", dest="fontfile", help="字型來源檔")
+oparser.add_option("-i", "--in-fontfile", dest="fontfile", help="字型來源檔", default="tables/puretable/qhdc-standard.txt")
 oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔", default="font/qhdc.ttf")
 oparser.add_option("-d", "--out-fontdir", dest="outdir", help="字型輸出檔", default="font/svg")
 (options, args) = oparser.parse_args()
