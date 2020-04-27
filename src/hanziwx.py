@@ -23,7 +23,7 @@ from xie.graphics.stroke import Character
 from xie.graphics.factory import ShapeFactory
 from xie.graphics.canvas import CanvasController
 
-class RadicalManager:
+class GlyphManager:
 	def __init__(self):
 		self.characterDB={}
 		self.strokeCount={}
@@ -222,7 +222,7 @@ class ShowHanziWidget():
 			ord("\n"): None,
 		}
 		description=string.translate(table)
-		character=rm.computeCharacterByDescription("", description)
+		character=glyphManager.computeCharacterByDescription("", description)
 		from xie.graphics.shape import Boundary
 		descriptionBoundary = Boundary(0, 0, 256, 256)
 
@@ -258,13 +258,13 @@ def generateSVG(dirname):
 
 	import lxml.etree as ET
 
-	characters=sorted(rm.getCharacters())
+	characters=sorted(glyphManager.getCharacters())
 	print("總共有 %s 個字符"%len(characters))
 	for index, ch in enumerate(characters):
 		if index%100==0:
 			print("正在描繪 %s 到 %s 個字符"%(index*1, index+100))
 
-		character=rm.getCharacter(ch)
+		character=glyphManager.getCharacter(ch)
 
 		from xie.graphics.shape import Boundary
 		descriptionBoundary = Boundary(0, 0, 256, 256)
@@ -326,7 +326,7 @@ def generateTTF(filename):
 #	f.strokewidth=50
 	f.em=emsize
 
-	characters=sorted(rm.getCharacters())
+	characters=sorted(glyphManager.getCharacters())
 	print("總共有 %s 個字符"%len(characters))
 	for index, ch in enumerate(characters):
 		if index%100==0:
@@ -338,7 +338,7 @@ def generateTTF(filename):
 		g.right_side_bearing=100
 		canvas.changeGlyph(g)
 
-		character=rm.getCharacter(ch)
+		character=glyphManager.getCharacter(ch)
 
 		from xie.graphics.shape import Boundary
 		descriptionBoundary = Boundary(0, 0, 256, 256)
@@ -367,14 +367,14 @@ oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔
 oparser.add_option("-d", "--out-fontdir", dest="outdir", help="字型輸出檔", default="font/svg")
 (options, args) = oparser.parse_args()
 
-rm=RadicalManager()
+glyphManager = GlyphManager()
 
 if options.show_font:
 	app=ShowHanziWidget()
 	app.mainloop()
 elif options.font_format:
 	fontfile=options.fontfile
-	rm.loadFont(fontfile)
+	glyphManager.loadFont(fontfile)
 
 	font_format=options.font_format
 	if font_format=="svg":
