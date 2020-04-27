@@ -24,14 +24,15 @@ from xie.graphics.factory import ShapeFactory
 from xie.graphics.canvas import CanvasController
 
 class GlyphManager:
-	def __init__(self):
+	def __init__(self, fontFile):
 		self.characterDB={}
 		self.strokeCount={}
 		self.textCodec=TextCodec()
 		self.shapeFactory=ShapeFactory()
+		self.fontFile=fontFile
 
-	def loadFont(self, fontfile):
-		for line in open(fontfile).readlines():
+	def loadFont(self):
+		for line in open(self.fontFile).readlines():
 			line=line.strip()
 			if (not line) or line[0]=='#':
 				continue
@@ -44,6 +45,15 @@ class GlyphManager:
 					character=self.computeCharacterByDescription(charName, description)
 					character.description=description
 					self.characterDB[charName]=character
+
+	def asyncLoadFont(self, completion):
+		def job():
+			self.loadFont()
+			completion()
+
+		import threading
+		t = threading.Thread(target = job)
+		t.start()
 
 	def getCharacter(self, strIndex):
 		return self.characterDB.get(strIndex, "")
@@ -181,6 +191,9 @@ class ShowHanziWidget():
 
 		sizer.Add(charSBoxSizer, pos=(0, 0), border=5, flag=wx.EXPAND|wx.ALL)
 
+		tcInputChar.Disable()
+		btnInputCharOK.Disable()
+		btnInputCharClear.Disable()
 
 
 		glyphSBox = wx.StaticBox(frame, label='字形描述')
@@ -224,8 +237,11 @@ class ShowHanziWidget():
 
 		self.drawFrame()
 
-		fontfile=options.fontfile
-		glyphManager.loadFont(fontfile)
+		def onLoadComplete():
+			tcInputChar.Enable()
+			btnInputCharOK.Enable()
+			btnInputCharClear.Enable()
+		glyphManager.asyncLoadFont(onLoadComplete)
 
 	def mainloop(self):
 		self.root.MainLoop()
@@ -421,7 +437,7 @@ oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔
 oparser.add_option("-d", "--out-fontdir", dest="outdir", help="字型輸出檔", default="font/svg")
 (options, args) = oparser.parse_args()
 
-glyphManager = GlyphManager()
+glyphManager = GlyphManager(options.fontfile)
 
 if options.show_font:
 	fontfile=options.fontfile
@@ -429,8 +445,7 @@ if options.show_font:
 	app=ShowHanziWidget()
 	app.mainloop()
 elif options.font_format:
-	fontfile=options.fontfile
-	glyphManager.loadFont(fontfile)
+	glyphManager.loadFont()
 
 	font_format=options.font_format
 	if font_format=="svg":
