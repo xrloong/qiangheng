@@ -305,7 +305,7 @@ $(MSIM_PATH): $(XML_PATH)
 svg: $(SVG_PATH)
 $(SVG_PATH): $(XML_PATH)
 	mkdir -p $(SVG_PATH)
-	src/hanziwx.py -g svg
+	tools/hanziwx.py -g svg
 
 pdf: doc/qiangheng.pdf
 
@@ -355,7 +355,7 @@ tarball-all:
 python-fontforge: fontforge/Makefile
 	cd fontforge; make
 	cd fontforge; make install
-	cd src/; ln -s ../fontforge/pyhook/.libs/fontforge.so .
+	cd tools/; ln -s ../fontforge/pyhook/.libs/fontforge.so .
 
 fontforge/Makefile: fontforge/configure
 	cd fontforge; PYTHON=python3 ./configure --prefix=$(INSTALL_DIR) --enable-pyextention --disable-programes --without-giflib --without-libjpeg --without-libpng --without-libtiff --without-cairo --without-libspiro --without-libzmq --without-libreadline --without-libuninameslist
