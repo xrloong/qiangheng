@@ -42,6 +42,7 @@ class GlyphManager:
 					charName=ll[0]
 					description=ll[1]
 					character=self.computeCharacterByDescription(charName, description)
+					character.description=description
 					self.characterDB[charName]=character
 
 	def getCharacter(self, strIndex):
@@ -152,9 +153,9 @@ class ShowHanziWidget():
 
 		self.root = wx.App(False)
 
-		sizer = wx.GridBagSizer(2, 1)
+		sizer = wx.GridBagSizer(3, 1)
 
-		frame = wx.Frame(None, title='秀漢字程式', size=(520, 620))
+		frame = wx.Frame(None, title='秀漢字程式', size=(520, 800))
 		frame.SetBackgroundColour("gray")
 		frame.SetAutoLayout(True)
 		frame.SetSizer(sizer)
@@ -162,29 +163,58 @@ class ShowHanziWidget():
 		charSBox = wx.StaticBox(frame, label='字符')
 		charSBoxSizer = wx.StaticBoxSizer(charSBox, wx.HORIZONTAL)
 
-		entryInput = wx.TextCtrl(frame)
-		entryInput.SetEditable(True)
-		charSBoxSizer.Add(entryInput, proportion=1, flag=wx.EXPAND|wx.ALL|wx.ALIGN_RIGHT)
+		tcInputChar = wx.TextCtrl(frame)
+		tcInputChar.SetEditable(True)
+		charSBoxSizer.Add(tcInputChar, proportion=1, flag=wx.ALIGN_TOP)
 
-		buttonInputOK = wx.Button(frame, label='確定')
-		buttonInputOK.Bind(wx.EVT_BUTTON, self.onOkClicked) 
-		charSBoxSizer.Add(buttonInputOK, flag=wx.ALL|wx.ALIGN_RIGHT)
+		charSBoxSizer.AddSpacer(10)
 
-		buttonInputClear = wx.Button(frame, label='清除')
-		buttonInputClear.Bind(wx.EVT_BUTTON, self.onClearClicked) 
-		charSBoxSizer.Add(buttonInputClear, flag=wx.ALL|wx.ALIGN_RIGHT)
+		vBoxSizer = wx.BoxSizer(wx.VERTICAL)
+		btnInputCharOK = wx.Button(frame, label='載入')
+		btnInputCharOK.Bind(wx.EVT_BUTTON, self.onInputCharOkClicked)
+		vBoxSizer.Add(btnInputCharOK)
+
+		btnInputCharClear = wx.Button(frame, label='清除')
+		btnInputCharClear.Bind(wx.EVT_BUTTON, self.onInputCharClearClicked)
+		vBoxSizer.Add(btnInputCharClear)
+		charSBoxSizer.Add(vBoxSizer)
 
 		sizer.Add(charSBoxSizer, pos=(0, 0), border=5, flag=wx.EXPAND|wx.ALL)
 
-		self.entryInput = entryInput
+
+
+		glyphSBox = wx.StaticBox(frame, label='字形描述')
+		glyphSBoxSizer = wx.StaticBoxSizer(glyphSBox, wx.HORIZONTAL)
+
+		tcInputGlyph = wx.TextCtrl(frame)
+		tcInputGlyph.SetEditable(True)
+		glyphSBoxSizer.Add(tcInputGlyph, proportion=1, flag=wx.EXPAND)
+
+		glyphSBoxSizer.Add((10, 100))
+
+		vBoxSizer = wx.BoxSizer(wx.VERTICAL)
+		btnInputGlyphOk = wx.Button(frame, label='確定')
+		btnInputGlyphOk.Bind(wx.EVT_BUTTON, self.onInputGlyphOkClicked)
+		vBoxSizer.Add(btnInputGlyphOk)
+
+		btnInputGlyphClear = wx.Button(frame, label='清除')
+		btnInputGlyphClear.Bind(wx.EVT_BUTTON, self.onInputGlyphClearClicked)
+		vBoxSizer.Add(btnInputGlyphClear)
+		glyphSBoxSizer.Add(vBoxSizer)
+
+		sizer.Add(glyphSBoxSizer, pos=(1, 0), border=5, flag=wx.EXPAND|wx.ALL)
+
+
+		self.tcInputChar = tcInputChar
+		self.tcInputGlyph = tcInputGlyph
 
 		from wx.lib.floatcanvas import FloatCanvas
 		self.canvas = FloatCanvas.FloatCanvas(frame,
 				ProjectionFun = lambda x: (1, -1),
 				size = (self.canvasWidth, self.canvasHeight))
 		canvasLayoutFlag = wx.EXPAND | wx.ALL | wx.ALIGN_CENTER
-		sizer.Add(self.canvas, pos=(1, 0), flag=canvasLayoutFlag)
-		sizer.AddGrowableRow(1)
+		sizer.Add(self.canvas, pos=(2, 0), flag=canvasLayoutFlag)
+		sizer.AddGrowableRow(2)
 
 		frame.Show()
 
@@ -194,13 +224,34 @@ class ShowHanziWidget():
 
 		self.drawFrame()
 
+		fontfile=options.fontfile
+		glyphManager.loadFont(fontfile)
+
 	def mainloop(self):
 		self.root.MainLoop()
 
-	def onClearClicked(self, event):
-		self.clearEntry()
+	def onInputCharOkClicked(self, event):
+		ch=self.tcInputChar.GetValue()
+		character=glyphManager.getCharacter(ch)
+		self.tcInputGlyph.SetValue(character.description)
 
-	def onOkClicked(self, event):
+		from xie.graphics.shape import Boundary
+		descriptionBoundary = Boundary(0, 0, 256, 256)
+
+		self.drawFrame()
+
+		self.dh.save()
+		self.dh.setSourceBoundary(descriptionBoundary)
+		self.dh.draw(character)
+		self.dh.restore()
+
+	def onInputCharClearClicked(self, event):
+		self.clearChar()
+
+	def onInputGlyphClearClicked(self, event):
+		self.clearGlyph()
+
+	def onInputGlyphOkClicked(self, event):
 		self.byKnownChar()
 
 	def drawFrame(self):
@@ -208,14 +259,17 @@ class ShowHanziWidget():
 		frame=Rectangle(0, 0, self.dh.getWidth(), self.dh.getHeight())
 		self.dh.draw(frame)
 
-	def clearEntry(self):
-		self.entryInput.Clear()
+	def clearChar(self):
+		self.tcInputChar.Clear()
+
+	def clearGlyph(self):
+		self.tcInputGlyph.Clear()
 
 	def byKnownChar(self):
 		self.dh.canvasController.clear()
 		self.drawFrame()
 
-		string=self.entryInput.GetValue()
+		string=self.tcInputGlyph.GetValue()
 		table={
 			ord(" "): None,
 			ord("\t"): None,
@@ -370,6 +424,8 @@ oparser.add_option("-d", "--out-fontdir", dest="outdir", help="字型輸出檔",
 glyphManager = GlyphManager()
 
 if options.show_font:
+	fontfile=options.fontfile
+
 	app=ShowHanziWidget()
 	app.mainloop()
 elif options.font_format:
