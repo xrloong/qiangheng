@@ -18,7 +18,6 @@ package_zm="coding.ZhengMa codings/ZhengMa" \
 package_dc="coding.DynamicComposition codings/DynamicComposition"
 endef
 
-PLATFORM_LIST	=	puretable scim gcin msim
 TABLES_PATH	=	tables
 PURETABLE_PATH	=	$(TABLES_PATH)/puretable
 XML_PATH	=	$(TABLES_PATH)/xml
@@ -214,7 +213,7 @@ profile:
 	done
 
 dc:
-	make xml puretable CMLIST=dc
+	make yaml CMLIST=dc
 
 FORCE:
 
@@ -246,7 +245,7 @@ test-fc: FORCE
 test-dc: FORCE
 	PYTHONPATH="src:codings/DynamicComposition" python3 -m unittest discover -s test/dc/
 
-imtables: scim ibus gcin ovim msim puretable
+imtables: scim ibus gcin ovim msim
 
 scim: $(SCIM_PATH)
 $(SCIM_PATH): $(XML_PATH)
@@ -323,10 +322,10 @@ all-icons:
 	done
 	convert -resize 64x64 $(ICON_ORIGIN_PATH)/qiangheng.svg $(ICON_PLATFORM_PATH)/qiangheng.png;
 
-tarballs: pre-tarballs pdf tarball-src tarball-all
+tarballs: pre-tarballs pdf tarball-src
 	make tarball-src VERSION=$(VERSION)
 	make prepare
-	make xml puretable
+	make xml yaml imtables
 	make imtables
 	make svg
 	make tarballs-platform VERSION=$(VERSION)
@@ -371,5 +370,5 @@ clean:
 	rm -rf $(GEN_PATH)
 	rm -rf tables/ tmp/ tarballs/ font/qhdc.ttf
 	rm -f `find src -name "*.pyc"`
-	rm -f *~ scim/* gcin/* msim/* puretable/* tex/*.aux tex/*.log tex/*.pdf
+	rm -f *~ scim/* gcin/* msim/* tex/*.aux tex/*.log tex/*.pdf
 

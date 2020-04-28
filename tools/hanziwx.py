@@ -23,6 +23,7 @@ from xie.graphics.stroke import Character
 from xie.graphics.factory import ShapeFactory
 from xie.graphics.canvas import CanvasController
 
+import ruamel.yaml as yaml
 class GlyphManager:
 	TAG_ENCODING_SET = "編碼集"
 	TAG_CHARACTER = "字符"
@@ -36,7 +37,6 @@ class GlyphManager:
 		self.fontFile=fontFile
 
 	def loadFont(self):
-		import ruamel.yaml as yaml
 		node=yaml.load(open(self.fontFile), yaml.cyaml.CSafeLoader)
 
 		yamlNodeEncodingSet = node.get(GlyphManager.TAG_ENCODING_SET)
@@ -59,12 +59,22 @@ class GlyphManager:
 	def getCharacters(self):
 		return self.characterDB.keys()
 
+	def computeCharacterByStringDescription(self, description):
+		yamlNode = yaml.load(description, yaml.cyaml.CSafeLoader)
+
+		character = None
+		if isinstance(yamlNode, (dict, )):
+			character = self.computeCharacterByYamlNode(yamlNode)
+		elif isinstance(yamlNode, (list, tuple)):
+			glyphDescriptions = yamlNode
+			character = self.computeCharacterByGlyphDescriptions("", glyphDescriptions)
+		return character
+
 	def computeCharacterByYamlNode(self, yamlNodeChar):
 		charName = yamlNodeChar.get(GlyphManager.TAG_CHARACTER)
 		glyph = yamlNodeChar.get(GlyphManager.TAG_GLYPH)
 		character = self.computeCharacterByGlyphDescriptions(charName, glyph)
 
-		import ruamel.yaml as yaml
 		description = yaml.dump({GlyphManager.TAG_GLYPH: glyph}, allow_unicode=True)
 		character.description = description.strip()
 
@@ -204,7 +214,7 @@ class ShowHanziWidget():
 		glyphSBox = wx.StaticBox(frame, label='字形描述')
 		glyphSBoxSizer = wx.StaticBoxSizer(glyphSBox, wx.HORIZONTAL)
 
-		tcInputGlyph = wx.TextCtrl(frame)
+		tcInputGlyph = wx.TextCtrl(frame, style=wx.TE_MULTILINE)
 		tcInputGlyph.SetEditable(True)
 		glyphSBoxSizer.Add(tcInputGlyph, proportion=1, flag=wx.EXPAND)
 
@@ -290,17 +300,9 @@ class ShowHanziWidget():
 		self.dh.canvasController.clear()
 		self.drawFrame()
 
-		string=self.tcInputGlyph.GetValue()
+		stringGlyphDescription = self.tcInputGlyph.GetValue()
 
-		import yaml
-		yamlNode = yaml.load(string, yaml.cyaml.CSafeLoader)
-
-		character = None
-		if isinstance(yamlNode, (dict, )):
-			character = glyphManager.computeCharacterByYamlNode(yamlNode)
-		elif isinstance(yamlNode, (list, tuple)):
-			glyphDescriptions = yamlNode
-			character = glyphManager.computeCharacterByGlyphDescriptions("", glyphDescriptions)
+		character = glyphManager.computeCharacterByStringDescription(stringGlyphDescription)
 		if not character:
 			return
 
