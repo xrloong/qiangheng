@@ -24,6 +24,10 @@ from xie.graphics.factory import ShapeFactory
 from xie.graphics.canvas import CanvasController
 
 class GlyphManager:
+	TAG_ENCODING_SET = "編碼集"
+	TAG_CHARACTER = "字符"
+	TAG_GLYPH = "字圖"
+
 	def __init__(self, fontFile):
 		self.characterDB={}
 		self.strokeCount={}
@@ -32,19 +36,13 @@ class GlyphManager:
 		self.fontFile=fontFile
 
 	def loadFont(self):
-		for line in open(self.fontFile).readlines():
-			line=line.strip()
-			if (not line) or line[0]=='#':
-				continue
-			else:
-				ll=line.split('\t')
+		import ruamel.yaml as yaml
+		node=yaml.load(open(self.fontFile), yaml.cyaml.CSafeLoader)
 
-				if len(ll)>=2:
-					charName=ll[0]
-					description=ll[1]
-					character=self.computeCharacterByDescription(charName, description)
-					character.description=description
-					self.characterDB[charName]=character
+		yamlNodeEncodingSet = node.get(GlyphManager.TAG_ENCODING_SET)
+		for yamlNodeChar in yamlNodeEncodingSet:
+			character = self.computeCharacterByYamlNode(yamlNodeChar)
+			self.characterDB[character.getName()] = character
 
 	def asyncLoadFont(self, completion):
 		def job():
@@ -61,18 +59,25 @@ class GlyphManager:
 	def getCharacters(self):
 		return self.characterDB.keys()
 
-	def computeCharacterByDescription(self, charName, description):
-		strokes=self.computeStrokesByDescription(description)
-		strokeGroup=self.shapeFactory.generateStrokeGroupByStrokeList(strokes)
-		return Character(charName, strokeGroup)
+	def computeCharacterByYamlNode(self, yamlNodeChar):
+		charName = yamlNodeChar.get(GlyphManager.TAG_CHARACTER)
+		glyph = yamlNodeChar.get(GlyphManager.TAG_GLYPH)
+		character = self.computeCharacterByGlyphDescriptions(charName, glyph)
 
-	def computeStrokesByDescription(self, description):
-		strokeDescriptionList=self.textCodec.decodeCharacterExpression(description)
+		import ruamel.yaml as yaml
+		description = yaml.dump({GlyphManager.TAG_GLYPH: glyph}, allow_unicode=True)
+		character.description = description.strip()
+
+		return character
+
+	def computeCharacterByGlyphDescriptions(self, charName, glyphDescriptionSet):
 		strokes=[]
-		for strokeDescription in strokeDescriptionList:
+		for glyphDescription in glyphDescriptionSet:
+			strokeDescription=glyphDescription.get('描繪')
 			stroke=self.computeStrokeByDescription(strokeDescription)
 			strokes.append(stroke)
-		return strokes
+		strokeGroup=self.shapeFactory.generateStrokeGroupByStrokeList(strokes)
+		return Character(charName, strokeGroup)
 
 	def computeStrokeByDescription(self, strokeDescription):
 		textCodec=self.textCodec
@@ -286,13 +291,19 @@ class ShowHanziWidget():
 		self.drawFrame()
 
 		string=self.tcInputGlyph.GetValue()
-		table={
-			ord(" "): None,
-			ord("\t"): None,
-			ord("\n"): None,
-		}
-		description=string.translate(table)
-		character=glyphManager.computeCharacterByDescription("", description)
+
+		import yaml
+		yamlNode = yaml.load(string, yaml.cyaml.CSafeLoader)
+
+		character = None
+		if isinstance(yamlNode, (dict, )):
+			character = glyphManager.computeCharacterByYamlNode(yamlNode)
+		elif isinstance(yamlNode, (list, tuple)):
+			glyphDescriptions = yamlNode
+			character = glyphManager.computeCharacterByGlyphDescriptions("", glyphDescriptions)
+		if not character:
+			return
+
 		from xie.graphics.shape import Boundary
 		descriptionBoundary = Boundary(0, 0, 256, 256)
 
@@ -432,7 +443,7 @@ def generateTTF(filename):
 oparser = OptionParser()
 oparser.add_option("-s", action="store_true", dest="show_font", help="秀出字形", default=False)
 oparser.add_option("-g", dest="font_format", help="產生字型檔", default="svg")
-oparser.add_option("-i", "--in-fontfile", dest="fontfile", help="字型來源檔", default="tables/puretable/qhdc-standard.txt")
+oparser.add_option("-i", "--in-fontfile", dest="fontfile", help="字型來源檔", default="tables/yaml/qhdc.yaml")
 oparser.add_option("-o", "--out-fontfile", dest="outfile", help="字型輸出檔", default="font/qhdc.ttf")
 oparser.add_option("-d", "--out-fontdir", dest="outdir", help="字型輸出檔", default="font/svg")
 (options, args) = oparser.parse_args()
