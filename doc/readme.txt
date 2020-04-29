@@ -53,7 +53,7 @@ Options:
 
 == 秀字程式說明 ==
 	秀字程式指令如下：
-		tools/hanziwx.py -s
+		tools/showglyph.py
 
 == 產生字型說明 ==
 	本程式使用 FontForge 來產生字型。目前有兩種方式：一種是產生 TrueType 字型檔，一種是為每個字符生成 SVG 圖檔。
@@ -69,11 +69,11 @@ Options:
 	此外，在執行前，應確認系統有安裝 Python3 的開發資源，如在 Ubuntu 上應安裝 python3-dev 套件。
 
 	產生字型檔指令如下，預設輸出檔為 font/qhdc.ttf ：
-		tools/hanziwx.py -g ttf
+		tools/genttf.py
 
 
 	二、産生 SVG 圖檔：
-		tools/hanziwx.py -g svg
+		tools/gensvg.py
 
 == 程式架構說明 ==
 請參考 doc/qiangheng.dia （使用 Dia）。

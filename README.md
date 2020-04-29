@@ -147,7 +147,7 @@ $ src/qiangheng.py -p cj --format=xml
 --------
 秀字程式指令如下：
 ```console
-$ tools/hanziwx.py -s
+$ tools/showglyph.py
 ```
 
 產生字型
@@ -183,12 +183,12 @@ $ tools/hanziwx.py -s
 
   產生字型檔指令如下，預設輸出檔為 font/qhdc.ttf ：
   ```console
-  $ tools/hanziwx.py -g ttf
+  $ tools/genttf.py
   ```
 
 * 産生 SVG 圖檔：
   ```console
-  $ tools/hanziwx.py -g svg
+  $ tools/gensvg.py
   ```
 
 檔案架構
