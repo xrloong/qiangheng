@@ -22,12 +22,12 @@ def generateSVG(dirname):
 	if not os.path.exists(dirname):
 		os.makedirs(dirname)
 
-	emsize=500
-	width=emsize
-	height=emsize
+	emsize = 500
+	width = emsize
+	height = emsize
+	canvasSize = (width, height)
 
-	canvasController = SvgCanvasController(width, height)
-
+	canvasController = SvgCanvasController(canvasSize)
 	drawSystem = DrawingSystem(canvasController)
 
 	strokeWidth=5

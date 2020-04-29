@@ -7,7 +7,7 @@ import sys
 
 try:
 	import xie
-	from xie.graphics.canvas import CanvasController
+	from xie.graphics.canvas import WxCanvasController
 	from xie.graphics.drawing import DrawingSystem
 	from xie.graphics.shape import Boundary
 	from xie.graphics.shape import Rectangle
@@ -24,46 +24,9 @@ except ImportError:
 
 from glyph import GlyphManager
 
-class WxCanvasController(CanvasController):
-	def __init__(self, canvas, width, height):
-		super().__init__(width, height)
-
-		self.canvas = canvas
-		self.clear()
-		self.point_list = []
-		self.lastp = None
-
-		self.pathOptions = {"LineWidth": 20, "LineColor": "Black"}
-
-	def clear(self):
-		self.canvas.ClearAll()
-		self.canvas.ZoomToBB()
-
-	def moveTo(self, p):
-		self.setLastPoint(p)
-
-	def lineTo(self, p):
-		points = (self.lastp, p)
-		self.canvas.AddLine(points, **self.pathOptions)
-		self.canvas.ZoomToBB()
-
-		self.setLastPoint(p)
-
-	def qCurveTo(self, cp, p):
-		points = (self.lastp, cp, p)
-		self.canvas.AddSpline(points, **self.pathOptions)
-		self.canvas.ZoomToBB()
-
-		self.setLastPoint(p)
-
-	def setLastPoint(self, p):
-		self.lastp=p
-
-
 class ShowHanziWidget():
 	def __init__(self):
-		self.canvasWidth=512
-		self.canvasHeight=512
+		canvasSize = (512, 512)
 
 		self.root = wx.App(False)
 
@@ -125,16 +88,12 @@ class ShowHanziWidget():
 		self.tcInputChar = tcInputChar
 		self.tcInputGlyph = tcInputGlyph
 
-		self.canvas = FloatCanvas.FloatCanvas(frame,
-				ProjectionFun = lambda x: (1, -1),
-				size = (self.canvasWidth, self.canvasHeight))
-		canvasLayoutFlag = wx.EXPAND | wx.ALL | wx.ALIGN_CENTER
-		sizer.Add(self.canvas, pos=(2, 0), flag=canvasLayoutFlag)
+		canvasController = WxCanvasController(frame, canvasSize)
+		sizer.Add(canvasController.canvas, pos=(2, 0), flag=wx.EXPAND | wx.ALL | wx.ALIGN_CENTER)
 		sizer.AddGrowableRow(2)
 
 		frame.Show()
 
-		canvasController = WxCanvasController(self.canvas, self.canvasWidth, self.canvasHeight)
 		self.dh = DrawingSystem(canvasController)
 
 		self.drawFrame()

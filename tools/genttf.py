@@ -29,13 +29,11 @@ def makeSureDirCreated(filename):
 		os.makedirs(dirname)
 
 def generateTTF(filename):
-	emsize=1024
-	width=emsize
-	height=emsize
+	emsize = 1024
+	canvasSize = (emsize, emsize)
 
-	canvas=TrueTypeGlyphCanvasController(width, height)
-
-	drawSystem = DrawingSystem(canvas)
+	canvasController = TrueTypeGlyphCanvasController(canvasSize)
+	drawSystem = DrawingSystem(canvasController)
 
 	f=fontforge.font()
 	f.is_quadratic=True
@@ -53,7 +51,7 @@ def generateTTF(filename):
 		g=f.createChar(o)
 		g.left_side_bearing=100
 		g.right_side_bearing=100
-		canvas.changeGlyph(g)
+		canvasController.changeGlyph(g)
 
 		character=glyphManager.getCharacter(ch)
 
