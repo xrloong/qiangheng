@@ -70,7 +70,8 @@ class GlyphManager:
 		glyph = yamlNodeChar.get(GlyphManager.TAG_GLYPH)
 		character = self.computeCharacterByGlyphDescriptions(charName, glyph)
 
-		description = yaml.dump({GlyphManager.TAG_GLYPH: glyph}, allow_unicode=True)
+		description = yaml.dump({GlyphManager.TAG_GLYPH: glyph},
+				allow_unicode=True, default_flow_style=False)
 		character.description = description.strip()
 
 		return character
