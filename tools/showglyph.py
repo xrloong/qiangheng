@@ -68,6 +68,7 @@ class ShowHanziWidget():
 
 		tcInputGlyph = wx.TextCtrl(frame, style=wx.TE_MULTILINE)
 		tcInputGlyph.SetEditable(True)
+		tcInputGlyph.OSXDisableAllSmartSubstitutions()
 		glyphSBoxSizer.Add(tcInputGlyph, proportion=1, flag=wx.EXPAND)
 
 		glyphSBoxSizer.Add((10, 100))
