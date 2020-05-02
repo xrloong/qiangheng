@@ -40,7 +40,10 @@ class CmYamlWriter(BaseWriter):
 			"編碼集": nodeCodeMaps
 		}
 
-		print(yaml.dump(codeMappingSet, allow_unicode=True, Dumper = CustomDumper))
+		print(yaml.dump(codeMappingSet, Dumper = CustomDumper,
+			allow_unicode=True, default_flow_style=False,
+			explicit_start=True, explicit_end=True,
+			))
 
 class CustomDumper(yaml.cyaml.CDumper):
 	#Super neat hack to preserve the mapping key order. See https://stackoverflow.com/a/52621703/1497385
