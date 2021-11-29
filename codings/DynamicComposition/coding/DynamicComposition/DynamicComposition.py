@@ -21,31 +21,31 @@ from xie.graphics.shape import Pane
 from xie.graphics.canvas import BaseTextCanvasController
 from xie.graphics.drawing import DrawingSystem
 from xie.graphics.stroke import Character
-from xie.graphics.stroke import StrokeGroup
-from xie.graphics.stroke import StrokeGroupInfo
+from xie.graphics.stroke import Component
+from xie.graphics.stroke import ComponentInfo
 from xie.graphics.factory import ShapeFactory
 
 
-class DCStrokeGroup:
+class DCComponent:
 	shapeFactory = ShapeFactory()
 
-	def __init__(self, strokeGroup):
-		self.strokeGroup=strokeGroup
-		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : strokeGroup.getStatePane()}
+	def __init__(self, component):
+		self.component=component
+		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : component.getStatePane()}
 
 	def getCount(self):
-		return self.strokeGroup.getCount()
+		return self.component.getCount()
 
-	def getStrokeGroup(self):
-		return self.strokeGroup
+	def getComponent(self):
+		return self.component
 
-	def generateStrokeGroup(self, pane):
-		shapeFactory=DCStrokeGroup.shapeFactory
-		return shapeFactory.generateStrokeGroupByStrokeGroupPane(self.strokeGroup, pane)
+	def generateComponent(self, pane):
+		shapeFactory=DCComponent.shapeFactory
+		return shapeFactory.generateComponentByComponentPane(self.component, pane)
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
-		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=self.strokeGroup.getStatePane()
+		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=self.component.getStatePane()
 
 	def setExtraPane(self, paneName, extraPane):
 		self.extraPaneDB[paneName]=extraPane
@@ -54,18 +54,18 @@ class DCStrokeGroup:
 		return self.extraPaneDB.get(paneName, None)
 
 	@staticmethod
-	def generateDefaultStrokeGroup(dcStrokeGroupPanePairList):
-		shapeFactory=DCStrokeGroup.shapeFactory
-		strokeGroupPanePair=[(dcStrokeGroup.getStrokeGroup(), pane) for dcStrokeGroup, pane in dcStrokeGroupPanePairList]
-		strokeGroup=shapeFactory.generateStrokeGroupByStrokeGroupPanePairList(strokeGroupPanePair)
-		dcStrokeGroup=DCStrokeGroup(strokeGroup)
-		return dcStrokeGroup
+	def generateDefaultComponent(dcComponentPanePairList):
+		shapeFactory=DCComponent.shapeFactory
+		componentPanePair=[(dcComponent.getComponent(), pane) for dcComponent, pane in dcComponentPanePairList]
+		component=shapeFactory.generateComponentByComponentPanePairList(componentPanePair)
+		dcComponent=DCComponent(component)
+		return dcComponent
 
 	@staticmethod
-	def generateStrokeGroupByStrokeList(strokeList):
-		shapeFactory=DCStrokeGroup.shapeFactory
-		strokeGroup = shapeFactory.generateStrokeGroupByStrokeList(strokeList)
-		return DCStrokeGroup(strokeGroup)
+	def generateComponentByStrokeList(strokeList):
+		shapeFactory=DCComponent.shapeFactory
+		component = shapeFactory.generateComponentByStrokeList(strokeList)
+		return DCComponent(component)
 
 class DCCodeInfo(CodeInfo):
 	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"
@@ -105,71 +105,71 @@ class DCCodeInfo(CodeInfo):
 	STROKE_GROUP_NAME_JIA="夾"
 	STROKE_GROUP_NAME_ZUO="㘴"
 
-	def __init__(self, strokeGroupDB):
+	def __init__(self, componentDB):
 		super().__init__()
 
-		self.strokeGroupDB=strokeGroupDB
+		self.componentDB=componentDB
 
 	@staticmethod
-	def generateDefaultCodeInfo(strokeGroupPanePair):
-		strokeGroup=DCStrokeGroup.generateDefaultStrokeGroup(strokeGroupPanePair)
-		strokeGroupDB={DCCodeInfo.STROKE_GROUP_NAME_DEFAULT : strokeGroup}
+	def generateDefaultCodeInfo(componentPanePair):
+		component=DCComponent.generateDefaultComponent(componentPanePair)
+		componentDB={DCCodeInfo.STROKE_GROUP_NAME_DEFAULT : component}
 
-		codeInfo=DCCodeInfo(strokeGroupDB)
+		codeInfo=DCCodeInfo(componentDB)
 		return codeInfo
 
 	def toCode(self):
-		strokeGroup=self.getStrokeGroup()
-		return strokeGroup
+		component=self.getComponent()
+		return component
 
-	def setExtraPane(self, strokeGroupName, paneName, extraPane):
-		strokeGroup=self.getStrokeGroup(strokeGroupName)
+	def setExtraPane(self, componentName, paneName, extraPane):
+		component=self.getComponent(componentName)
 
-		if strokeGroup==None:
-			strokeGroup=self.getStrokeGroup()
+		if component==None:
+			component=self.getComponent()
 
-		strokeGroup.setExtraPane(paneName, extraPane)
+		component.setExtraPane(paneName, extraPane)
 
-	def getExtraPane(self, strokeGroupName, paneName):
-		strokeGroup=self.getStrokeGroup(strokeGroupName)
+	def getExtraPane(self, componentName, paneName):
+		component=self.getComponent(componentName)
 
-		if strokeGroup==None:
-			strokeGroup=self.getStrokeGroup()
+		if component==None:
+			component=self.getComponent()
 
-		return strokeGroup.getExtraPane(paneName)
+		return component.getExtraPane(paneName)
 
-	def getStrokeGroup(self, strokeGroupName=STROKE_GROUP_NAME_DEFAULT):
-		strokeGroup=self.strokeGroupDB.get(strokeGroupName)
-		if strokeGroupName!=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT and strokeGroup==None:
-			strokeGroup=self.getStrokeGroup(DCCodeInfo.STROKE_GROUP_NAME_DEFAULT)
-		return strokeGroup
+	def getComponent(self, componentName=STROKE_GROUP_NAME_DEFAULT):
+		component=self.componentDB.get(componentName)
+		if componentName!=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT and component==None:
+			component=self.getComponent(DCCodeInfo.STROKE_GROUP_NAME_DEFAULT)
+		return component
 
 	def getStrokeCount(self):
-		return self.getStrokeGroup().getCount()
+		return self.getComponent().getCount()
 
 class DCCodeInfoEncoder(CodeInfoEncoder):
-	def generateDefaultCodeInfo(self, strokeGroupPanePair):
-		return DCCodeInfo.generateDefaultCodeInfo(strokeGroupPanePair)
+	def generateDefaultCodeInfo(self, componentPanePair):
+		return DCCodeInfo.generateDefaultCodeInfo(componentPanePair)
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
 		return isAllWithCode
 
-	def extendStrokeGroupNameList(self, strokeGroupNameList, codeInfoList):
-		lenNameList=len(strokeGroupNameList)
+	def extendComponentNameList(self, componentNameList, codeInfoList):
+		lenNameList=len(componentNameList)
 		lenCodeInfoList=len(codeInfoList)
 		extendingList=[]
 		if lenCodeInfoList>lenNameList:
 			diff=lenCodeInfoList-lenNameList
 			extendingList=[DCCodeInfo.STROKE_GROUP_NAME_DEFAULT for i in range(diff)]
-		return strokeGroupNameList+extendingList
+		return componentNameList+extendingList
 
 	def splitLengthToList(self, length, weightList):
 		totalWeight=sum(weightList)
 		unitLength=length*1./totalWeight
 
 		pointList=[]
-		newStrokeGroupList=[]
+		newComponentList=[]
 		base=0
 		for weight in weightList:
 			pointList.append(int(base))
@@ -177,33 +177,33 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		pointList.append(int(base))
 		return pointList
 
-	def encodeByEmbed(self, codeInfoList, strokeGroupNameList, paneNameList):
+	def encodeByEmbed(self, codeInfoList, componentNameList, paneNameList):
 		if len(codeInfoList)<2:
 			return self.encodeAsInvalidate(codeInfoList)
 
 		containerCodeInfo=codeInfoList[0]
 
-		newStrokeGroupList=[]
-		for [strokeGroupName, paneName, codeInfo] in zip(strokeGroupNameList, paneNameList, codeInfoList):
-			extraPane=containerCodeInfo.getExtraPane(strokeGroupName, paneName)
+		newComponentList=[]
+		for [componentName, paneName, codeInfo] in zip(componentNameList, paneNameList, codeInfoList):
+			extraPane=containerCodeInfo.getExtraPane(componentName, paneName)
 			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
 
-			strokeGroup=codeInfo.getStrokeGroup(strokeGroupName).generateStrokeGroup(extraPane)
-			newStrokeGroupList.append(strokeGroup)
+			component=codeInfo.getComponent(componentName).generateComponent(extraPane)
+			newComponentList.append(component)
 
 		paneList=[]
-		for [strokeGroupName, paneName] in zip(strokeGroupNameList, paneNameList):
-			extraPane=containerCodeInfo.getExtraPane(strokeGroupName, paneName)
+		for [componentName, paneName] in zip(componentNameList, paneNameList):
+			extraPane=containerCodeInfo.getExtraPane(componentName, paneName)
 			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
 			paneList.append(extraPane)
 
-		strokeGroupList=[]
-		for [strokeGroupName, codeInfo] in zip(strokeGroupNameList, codeInfoList):
-			strokeGroup=codeInfo.getStrokeGroup(strokeGroupName)
-			strokeGroupList.append(strokeGroup)
+		componentList=[]
+		for [componentName, codeInfo] in zip(componentNameList, codeInfoList):
+			component=codeInfo.getComponent(componentName)
+			componentList.append(component)
 
-		strokeGroupPanePair=zip(strokeGroupList, paneList)
-		codeInfo=self.generateDefaultCodeInfo(strokeGroupPanePair)
+		componentPanePair=zip(componentList, paneList)
+		codeInfo=self.generateDefaultCodeInfo(componentPanePair)
 		return codeInfo
 
 
@@ -259,15 +259,15 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		weightList=list(map(lambda x: x.getStrokeCount()+1, codeInfoList))
 		paneList=genPaneList(weightList)
 
-		strokeGroupNameList=self.extendStrokeGroupNameList(['蚕'], codeInfoList)
+		componentNameList=self.extendComponentNameList(['蚕'], codeInfoList)
 
-		strokeGroupList=[]
-		for [strokeGroupName, codeInfo] in zip(strokeGroupNameList, codeInfoList):
-			strokeGroup=codeInfo.getStrokeGroup(strokeGroupName)
-			strokeGroupList.append(strokeGroup)
+		componentList=[]
+		for [componentName, codeInfo] in zip(componentNameList, codeInfoList):
+			component=codeInfo.getComponent(componentName)
+			componentList.append(component)
 
-		strokeGroupPanePair=zip(strokeGroupList, paneList)
-		codeInfo=self.generateDefaultCodeInfo(strokeGroupPanePair)
+		componentPanePair=zip(componentList, paneList)
+		codeInfo=self.generateDefaultCodeInfo(componentPanePair)
 
 		lastCodeInfo=codeInfoList[-1]
 		# 題=(起 是頁), 是=(志 日[是下])
@@ -294,15 +294,15 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		weightList=list(map(lambda x: x.getStrokeCount(), codeInfoList))
 		paneList=genPaneList(weightList)
 
-		strokeGroupNameList=self.extendStrokeGroupNameList(['鴻'], codeInfoList)
+		componentNameList=self.extendComponentNameList(['鴻'], codeInfoList)
 
-		strokeGroupList=[]
-		for [strokeGroupName, codeInfo] in zip(strokeGroupNameList, codeInfoList):
-			strokeGroup=codeInfo.getStrokeGroup(strokeGroupName)
-			strokeGroupList.append(strokeGroup)
+		componentList=[]
+		for [componentName, codeInfo] in zip(componentNameList, codeInfoList):
+			component=codeInfo.getComponent(componentName)
+			componentList.append(component)
 
-		strokeGroupPanePair=zip(strokeGroupList, paneList)
-		codeInfo=self.generateDefaultCodeInfo(strokeGroupPanePair)
+		componentPanePair=zip(componentList, paneList)
+		codeInfo=self.generateDefaultCodeInfo(componentPanePair)
 		return codeInfo
 
 	def encodeAsQi(self, codeInfoList):
@@ -390,20 +390,20 @@ class DCRadixParser(CodingRadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo=radixInfo.getCodeElement()
 
-		strokeGroupDB={}
+		componentDB={}
 
-		strokeGroupNodeList=elementCodeInfo.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
-		for strokeGroupNode in strokeGroupNodeList:
-			[strokeGroupName, strokeGroup]=self.parseStrokeGroup(strokeGroupNode)
+		componentNodeList=elementCodeInfo.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
+		for componentNode in componentNodeList:
+			[componentName, component]=self.parseComponent(componentNode)
 
-			extraPaneDB=self.parseExtraScopeDB(strokeGroupNode)
-			strokeGroup.setExtraPaneDB(extraPaneDB)
+			extraPaneDB=self.parseExtraScopeDB(componentNode)
+			component.setExtraPaneDB(extraPaneDB)
 
-			if strokeGroupName==None:
-				strokeGroupName=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT
-			strokeGroupDB[strokeGroupName]=strokeGroup
+			if componentName==None:
+				componentName=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT
+			componentDB[componentName]=component
 
-		codeInfo=DCCodeInfo(strokeGroupDB)
+		codeInfo=DCCodeInfo(componentDB)
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):
@@ -437,18 +437,18 @@ class DCRadixParser(CodingRadixParser):
 		pane=self.parsePane(descriptionRegion)
 		return pane
 
-	def parseStrokeGroup(self, strokeGroupNode):
-		strokeGroupName=strokeGroupNode.get(DCRadixParser.TAG_NAME)
+	def parseComponent(self, componentNode):
+		componentName=componentNode.get(DCRadixParser.TAG_NAME)
 
-		t=strokeGroupNode.get(DCRadixParser.TAG_STROKE_GROUP)
+		t=componentNode.get(DCRadixParser.TAG_STROKE_GROUP)
 		strokeList=self.parseStrokeList(t)
 
-		strokeGroup=DCStrokeGroup.generateStrokeGroupByStrokeList(strokeList)
-		return [strokeGroupName, strokeGroup]
+		component=DCComponent.generateComponentByStrokeList(strokeList)
+		return [componentName, component]
 
-	def parseStrokeList(self, strokeGroupNode):
+	def parseStrokeList(self, componentNode):
 		strokeList=[]
-		strokeNodeList=strokeGroupNode.get(DCRadixParser.TAG_STROKE)
+		strokeNodeList=componentNode.get(DCRadixParser.TAG_STROKE)
 		for strokeNode in strokeNodeList:
 			method=strokeNode.get(TemplateManager.TAG_METHOD, TemplateManager.TAG_METHOD__DEFINITION)
 			if method==TemplateManager.TAG_METHOD__REFERENCE:
@@ -493,7 +493,7 @@ class AnchorTemplateManager(AbsTemplateManager):
 		self.anchors={}
 
 	def put(self, name, template):
-		assert isinstance(template, StrokeGroup)
+		assert isinstance(template, Component)
 		self.anchors[name]=template
 
 	def get(self, name):
@@ -506,7 +506,7 @@ class CompositionTemplateManager(AbsTemplateManager):
 
 	"""
 	def put(self, name, template):
-		assert isinstance(template, StrokeGroup)
+		assert isinstance(template, Component)
 		self.anchors[name]=template
 	"""
 
@@ -549,19 +549,19 @@ class TemplateManager(AbsTemplateManager):
 		self.load()
 
 	def put(self, name, template):
-		assert isinstance(template, StrokeGroup)
+		assert isinstance(template, Component)
 		self.templates[name]=template
 
 	def get(self, name):
 		return self.templates.get(name)
 
 	def getStroke(self, name, index):
-		strokeGroup=self.templates.get(name)
-		return strokeGroup.getStrokeList()[index]
+		component=self.templates.get(name)
+		return component.getStrokeList()[index]
 
 	def getStrokes(self, name, start, end):
-		strokeGroup=self.templates.get(name)
-		return strokeGroup.getStrokeList()[start, end+1]
+		component=self.templates.get(name)
+		return component.getStrokeList()[start, end+1]
 
 	def load(self):
 		from . import CodingTemplateFile
@@ -577,30 +577,30 @@ class TemplateManager(AbsTemplateManager):
 		templateSetNode=rootNode.get(TemplateManager.TAG_TEMPLATE_SET)
 		for templateNode in templateSetNode:
 			templateName=templateNode.get(TemplateManager.TAG_NAME)
-			strokeGroupNode=templateNode.get(TemplateManager.TAG_STROKE_GROUP)
-			strokeGroup=self.parseStrokeGroup(strokeGroupNode)
-			self.put(templateName, strokeGroup)
+			componentNode=templateNode.get(TemplateManager.TAG_STROKE_GROUP)
+			component=self.parseComponent(componentNode)
+			self.put(templateName, component)
 
-	def parseStrokeGroup(self, strokeGroupNode):
+	def parseComponent(self, componentNode):
 		strokes=[]
 		anchorTemplateManager = AnchorTemplateManager()
 		compositionTemplateManager = CompositionTemplateManager((anchorTemplateManager, self,))
-		for strokeNode in strokeGroupNode.get(TemplateManager.TAG_STROKE):
+		for strokeNode in componentNode.get(TemplateManager.TAG_STROKE):
 			method=strokeNode.get(TemplateManager.TAG_METHOD, TemplateManager.TAG_METHOD__DEFINITION)
 			if method==TemplateManager.TAG_METHOD__REFERENCE:
 				tempStrokes=self.parseStrokeByReference(strokeNode, compositionTemplateManager)
 				strokes.extend(tempStrokes)
 			elif method==TemplateManager.TAG_METHOD__ANCHOR:
 				anchorName=strokeNode.get(TemplateManager.TAG_NAME)
-				strokeGroup=self.parseStrokeByAnchor(strokeNode, anchorTemplateManager)
-				anchorTemplateManager.put(anchorName, strokeGroup)
+				component=self.parseStrokeByAnchor(strokeNode, anchorTemplateManager)
+				anchorTemplateManager.put(anchorName, component)
 			elif method==TemplateManager.TAG_METHOD__DEFINITION:
 				stroke=self.parseStroke(strokeNode)
 				strokes.append(stroke)
 			else:
 				assert False
-		strokeGroup=self.shapeFactory.generateStrokeGroupByStrokeList(strokes)
-		return strokeGroup
+		component=self.shapeFactory.generateComponentByStrokeList(strokes)
+		return component
 
 	def parseStroke(self, strokeNode):
 		strokeType=strokeNode.get(TemplateManager.TAG_TYPE)
@@ -614,13 +614,13 @@ class TemplateManager(AbsTemplateManager):
 		templateName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
 		orders=strokeNode.get(TemplateManager.TAG_ORDER)
 
-		strokeGroup=templateManager.get(templateName)
-		strokes=list((strokeGroup.getStroke(index) for index in orders))
+		component=templateManager.get(templateName)
+		strokes=list((component.getStroke(index) for index in orders))
 
 		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
 		if transformationNode != None:
-			strokeGroupInfo = StrokeGroupInfo(strokes)
-			statePane = strokeGroupInfo.getInfoPane().clone()
+			componentInfo = ComponentInfo(strokes)
+			statePane = componentInfo.getInfoPane().clone()
 			for node in transformationNode:
 				if TemplateManager.TAG_POSITION in node:
 					position = node.get(TemplateManager.TAG_POSITION)
@@ -634,20 +634,20 @@ class TemplateManager(AbsTemplateManager):
 					ratio = scalingNode.get(TemplateManager.TAG_RATIO)
 					statePane.scale(pivot, ratio)
 
-			strokes=list((stroke.generateCopyToApplyNewPane(strokeGroupInfo.getInfoPane(), statePane) for stroke in strokes))
+			strokes=list((stroke.generateCopyToApplyNewPane(componentInfo.getInfoPane(), statePane) for stroke in strokes))
 
 		return strokes
 
 	def parseStrokeByAnchor(self, strokeNode, anchromTemplateName):
 		referenceName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
-		strokeGroup=self.get(referenceName)
+		component=self.get(referenceName)
 
 		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
 		if transformationNode != None:
-			strokes=list(strokeGroup.getStrokeList())
+			strokes=list(component.getStrokeList())
 
-			strokeGroupInfo = StrokeGroupInfo(strokes)
-			statePane = strokeGroupInfo.getInfoPane().clone()
+			componentInfo = ComponentInfo(strokes)
+			statePane = componentInfo.getInfoPane().clone()
 			for node in transformationNode:
 				if TemplateManager.TAG_POSITION in node:
 					position = node.get(TemplateManager.TAG_POSITION)
@@ -661,10 +661,10 @@ class TemplateManager(AbsTemplateManager):
 					ratio = scalingNode.get(TemplateManager.TAG_RATIO)
 					statePane.scale(pivot, ratio)
 
-			strokes=list((stroke.generateCopyToApplyNewPane(strokeGroupInfo.getInfoPane(), statePane) for stroke in strokes))
-			strokeGroup=strokeGroup.generateCopyToApplyNewPane(statePane)
+			strokes=list((stroke.generateCopyToApplyNewPane(componentInfo.getInfoPane(), statePane) for stroke in strokes))
+			component=component.generateCopyToApplyNewPane(statePane)
 
-		return strokeGroup
+		return component
 
 class YamlCanvasController(BaseTextCanvasController):
 	def __init__(self):
@@ -697,11 +697,11 @@ class DmCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
 
 	def interpreteCodeMappingInfo(self, codeMappingInfo):
 		charName = codeMappingInfo.getName()
-		dcStrokeGroup = codeMappingInfo.getCode()
+		dcComponent = codeMappingInfo.getCode()
 		variance = codeMappingInfo.getVariance()
 
-		strokeGroup = dcStrokeGroup.getStrokeGroup()
-		character = Character(charName, strokeGroup)
+		component = dcComponent.getComponent()
+		character = Character(charName, component)
 
 		controller = YamlCanvasController()
 		ds = DrawingSystem(controller)

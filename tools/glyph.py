@@ -15,7 +15,7 @@ except ImportError:
 	sys.exit()
 
 from xie.graphics.utils import TextCodec
-from xie.graphics.stroke import StrokeGroup
+from xie.graphics.stroke import Component
 from xie.graphics.stroke import Character
 from xie.graphics.factory import ShapeFactory
 
@@ -82,8 +82,8 @@ class GlyphManager:
 			strokeDescription=glyphDescription.get('描繪')
 			stroke=self.computeStrokeByDescription(strokeDescription)
 			strokes.append(stroke)
-		strokeGroup=self.shapeFactory.generateStrokeGroupByStrokeList(strokes)
-		return Character(charName, strokeGroup)
+		component=self.shapeFactory.generateComponentByStrokeList(strokes)
+		return Character(charName, component)
 
 	def computeStrokeByDescription(self, strokeDescription):
 		textCodec=self.textCodec
