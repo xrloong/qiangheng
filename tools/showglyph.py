@@ -9,7 +9,6 @@ try:
 	import xie
 	from xie.graphics.canvas import WxCanvasController
 	from xie.graphics.drawing import DrawingSystem
-	from xie.graphics.shape import Boundary
 	from xie.graphics.shape import Rectangle
 except ImportError:
 	print("Please install the libary Xie (https://github.com/xrloong/Xie.git) first")
@@ -113,14 +112,9 @@ class ShowHanziWidget():
 		character=glyphManager.getCharacter(ch)
 		self.tcInputGlyph.SetValue(character.description)
 
-		descriptionBoundary = Boundary(0, 0, 256, 256)
-
 		self.drawFrame()
 
-		self.dh.save()
-		self.dh.setSourceBoundary(descriptionBoundary)
 		self.dh.draw(character)
-		self.dh.restore()
 
 	def onInputCharClearClicked(self, event):
 		self.clearChar()
@@ -151,14 +145,9 @@ class ShowHanziWidget():
 		if not character:
 			return
 
-		descriptionBoundary = Boundary(0, 0, 256, 256)
-
 		self.drawFrame()
 
-		self.dh.save()
-		self.dh.setSourceBoundary(descriptionBoundary)
 		self.dh.draw(character)
-		self.dh.restore()
 
 oparser = OptionParser()
 oparser.add_option("-i", "--in-fontfile", dest="fontfile", help="字型來源檔", default="tables/yaml/qhdc.yaml")

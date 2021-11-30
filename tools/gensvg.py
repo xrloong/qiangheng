@@ -10,7 +10,6 @@ try:
 	import xie
 	from xie.graphics.canvas import SvgCanvasController
 	from xie.graphics.drawing import DrawingSystem
-	from xie.graphics.shape import Boundary
 except ImportError:
 	print("Please install the libary Xie (https://github.com/xrloong/Xie.git) first")
 	sys.exit()
@@ -40,12 +39,7 @@ def generateSVG(dirname):
 
 		character=glyphManager.getCharacter(ch)
 
-		descriptionBoundary = Boundary(0, 0, 256, 256)
-
-		drawSystem.save()
-		drawSystem.setSourceBoundary(descriptionBoundary)
 		drawSystem.draw(character)
-		drawSystem.restore()
 
 		attrib={
 			"width": str(width),

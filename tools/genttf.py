@@ -10,7 +10,6 @@ try:
 	import xie
 	from xie.graphics.canvas import TrueTypeGlyphCanvasController
 	from xie.graphics.drawing import DrawingSystem
-	from xie.graphics.shape import Boundary
 except ImportError:
 	print("Please install the libary Xie (https://github.com/xrloong/Xie.git) first")
 	sys.exit()
@@ -55,12 +54,7 @@ def generateTTF(filename):
 
 		character=glyphManager.getCharacter(ch)
 
-		descriptionBoundary = Boundary(0, 0, 256, 256)
-
-		drawSystem.save()
-		drawSystem.setSourceBoundary(descriptionBoundary)
 		drawSystem.draw(character)
-		drawSystem.restore()
 
 		# stroke(penType, strokeWidth, lineCap, lineJoin)
 		# stroke(circular|calligraphic|polygon, strokeWidth, square|round|butt, miter|round|bevel)
