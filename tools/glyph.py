@@ -15,8 +15,8 @@ except ImportError:
 	sys.exit()
 
 from xie.graphics.utils import TextCodec
-from xie.graphics.stroke import Component
-from xie.graphics.stroke import Character
+from xie.graphics import Component
+from xie.graphics import Character
 from xie.graphics.factory import ShapeFactory
 
 class GlyphManager:
@@ -102,8 +102,8 @@ class GlyphManager:
 
 		from xie.graphics.segment import SegmentFactory
 		from xie.graphics.segment import StrokePath
-		from xie.graphics.stroke import Stroke
-		from xie.graphics.stroke_info import StrokeInfo
+		from xie.graphics import Stroke
+		from xie.graphics import StrokeInfo
 		segmentFactory = SegmentFactory()
 
 		is_curve=False

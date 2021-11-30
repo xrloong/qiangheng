@@ -17,12 +17,11 @@ except ImportError as e:
 	print(message, file=sys.stderr)
 	sys.exit(1)
 
-from xie.graphics.shape import Pane
+from xie.graphics import Pane
 from xie.graphics.canvas import BaseTextCanvasController
-from xie.graphics.drawing import DrawingSystem
-from xie.graphics.stroke import Character
-from xie.graphics.stroke import Component
-from xie.graphics.stroke import ComponentInfo
+from xie.graphics import DrawingSystem
+from xie.graphics import Component, ComponentInfo
+from xie.graphics import Character
 from xie.graphics.factory import ShapeFactory
 
 
