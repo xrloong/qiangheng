@@ -79,13 +79,14 @@ class GlyphManager:
 	def computeCharacterByGlyphDescriptions(self, charName, glyphDescriptionSet):
 		strokes=[]
 		for glyphDescription in glyphDescriptionSet:
+			strokeName=glyphDescription.get('名稱')
 			strokeDescription=glyphDescription.get('描繪')
-			stroke=self.computeStrokeByDescription(strokeDescription)
+			stroke=self.computeStrokeByDescription(strokeName, strokeDescription)
 			strokes.append(stroke)
 		component=self.shapeFactory.generateComponentByStrokeList(strokes)
 		return Character(charName, component)
 
-	def computeStrokeByDescription(self, strokeDescription):
+	def computeStrokeByDescription(self, strokeName, strokeDescription):
 		textCodec=self.textCodec
 		def_list=textCodec.decodeStrokeExpression(strokeDescription)
 
@@ -125,7 +126,6 @@ class GlyphManager:
 				point_list.append(point)
 				is_curve=True
 
-		strokeName=""
 		strokePath=StrokePath(segments)
 		strokeInfo=StrokeInfo(strokeName, strokePath)
 		stroke=Stroke(startPoint, strokeInfo)
