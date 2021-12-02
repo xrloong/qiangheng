@@ -7,9 +7,9 @@ import sys
 
 try:
 	import xie
-	from xie.graphics.canvas import WxCanvasController
-	from xie.graphics.drawing import DrawingSystem
-	from xie.graphics.shape import Rectangle
+	from xie.graphics import WxCanvasController
+	from xie.graphics import DrawingSystem
+	from xie.graphics import Rectangle
 except ImportError:
 	print("Please install the libary Xie (https://github.com/xrloong/Xie.git) first")
 	sys.exit()

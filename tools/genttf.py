@@ -8,8 +8,8 @@ import os
 
 try:
 	import xie
-	from xie.graphics.canvas import TrueTypeGlyphCanvasController
-	from xie.graphics.drawing import DrawingSystem
+	from xie.graphics import TrueTypeGlyphCanvasController
+	from xie.graphics import DrawingSystem
 except ImportError:
 	print("Please install the libary Xie (https://github.com/xrloong/Xie.git) first")
 	sys.exit()
