@@ -461,12 +461,9 @@ class DCRadixParser(CodingRadixParser):
 	@staticmethod
 	def fromStrokeNode(strokeNode, shapeFactory):
 		name=strokeNode.get(DCRadixParser.TAG_TYPE)
-
 		startPoint=strokeNode.get(DCRadixParser.TAG_START_POINT)
-
 		parameterList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
-
-		return shapeFactory.generateStroke(name, startPoint, parameterList)
+		return shapeFactory.generateParameterBasedStroke(name, parameterList, startPoint)
 
 	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)
@@ -605,7 +602,7 @@ class TemplateManager(AbsTemplateManager):
 		strokeType=strokeNode.get(TemplateManager.TAG_TYPE)
 		startPoint=strokeNode.get(TemplateManager.TAG_START_POINT)
 		params=strokeNode.get(TemplateManager.TAG_PARAMETER)
-		stroke=self.shapeFactory.generateStroke(strokeType, startPoint, params)
+		stroke=self.shapeFactory.generateParameterBasedStroke(strokeType, params, startPoint)
 		return stroke
 
 	def parseStrokeByReference(self, strokeNode, templateManager):
