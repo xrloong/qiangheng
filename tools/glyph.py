@@ -15,9 +15,10 @@ except ImportError:
 	sys.exit()
 
 from xie.graphics.utils import TextCodec
-from xie.graphics import Component
-from xie.graphics import Character
 from xie.graphics.factory import ShapeFactory
+from xie.graphics.segment import SegmentFactory
+from xie.graphics import Character
+from xie.graphics import Stroke
 
 class GlyphManager:
 	TAG_ENCODING_SET = "編碼集"
@@ -29,6 +30,7 @@ class GlyphManager:
 		self.strokeCount={}
 		self.textCodec=TextCodec()
 		self.shapeFactory=ShapeFactory()
+		self.segmentFactory=SegmentFactory()
 		self.fontFile=fontFile
 
 	def loadFont(self):
@@ -76,7 +78,7 @@ class GlyphManager:
 
 		return character
 
-	def computeCharacterByGlyphDescriptions(self, charName, glyphDescriptionSet):
+	def computeCharacterByGlyphDescriptions(self, charName, glyphDescriptionSet) -> Character:
 		strokes=[]
 		for glyphDescription in glyphDescriptionSet:
 			strokeName=glyphDescription.get('名稱')
@@ -86,7 +88,7 @@ class GlyphManager:
 		component=self.shapeFactory.generateComponentByStrokeList(strokes)
 		return Character(charName, component)
 
-	def computeStrokeByDescription(self, strokeName, strokeDescription):
+	def computeStrokeByDescription(self, strokeName, strokeDescription) -> Stroke:
 		textCodec=self.textCodec
 		def_list=textCodec.decodeStrokeExpression(strokeDescription)
 
@@ -101,11 +103,7 @@ class GlyphManager:
 		segments=[]
 		point_list=[point]
 
-		from xie.graphics.segment import SegmentFactory
-		from xie.graphics.segment import StrokePath
-		from xie.graphics import Stroke
-		from xie.graphics import StrokeInfo
-		segmentFactory = SegmentFactory()
+		segmentFactory = self.segmentFactory
 
 		is_curve=False
 		for d in def_list[1:]:
