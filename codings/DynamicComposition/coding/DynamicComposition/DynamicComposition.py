@@ -637,11 +637,10 @@ class TemplateManager(AbsTemplateManager):
 	def parseStrokeByAnchor(self, strokeNode, anchromTemplateName):
 		referenceName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
 		component=self.get(referenceName)
+		strokes=list(component.getStrokeList())
 
 		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
 		if transformationNode != None:
-			strokes=list(component.getStrokeList())
-
 			componentInfo = ComponentInfo(strokes)
 			statePane = componentInfo.getInfoPane().clone()
 			for node in transformationNode:
