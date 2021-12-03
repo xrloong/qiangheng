@@ -18,11 +18,11 @@ except ImportError as e:
 	sys.exit(1)
 
 from xie.graphics import Pane
-from xie.graphics.canvas import BaseTextCanvasController
+from xie.graphics import BaseTextCanvasController
 from xie.graphics import DrawingSystem
 from xie.graphics import Component, ComponentInfo
 from xie.graphics import Character
-from xie.graphics.factory import ShapeFactory
+from xie.graphics import ShapeFactory
 
 
 class DCComponent:
