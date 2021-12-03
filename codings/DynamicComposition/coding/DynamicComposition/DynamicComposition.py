@@ -657,7 +657,6 @@ class TemplateManager(AbsTemplateManager):
 					ratio = scalingNode.get(TemplateManager.TAG_RATIO)
 					statePane.scale(pivot, ratio)
 
-			strokes=list((stroke.generateCopyToApplyNewPane(componentInfo.getInfoPane(), statePane) for stroke in strokes))
 			component=component.generateCopyToApplyNewPane(statePane)
 
 		return component
