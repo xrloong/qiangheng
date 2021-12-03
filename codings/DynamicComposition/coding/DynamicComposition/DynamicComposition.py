@@ -526,11 +526,6 @@ class TemplateManager(AbsTemplateManager):
 	TAG_TRANSFORMATION='變換'
 
 	TAG_POSITION='定位'
-	TAG_TRANSLATION='平移'
-	TAG_SCALING='縮放'
-
-	TAG_PIVOT='樞軸點'
-	TAG_RATIO='比例'
 
 	def __init__(self, shapeFactory):
 		super().__init__()
@@ -617,14 +612,6 @@ class TemplateManager(AbsTemplateManager):
 				if TemplateManager.TAG_POSITION in node:
 					position = node.get(TemplateManager.TAG_POSITION)
 					statePane = Pane(*position)
-				elif TemplateManager.TAG_TRANSLATION in node:
-					translation = node.get(TemplateManager.TAG_TRANSLATION)
-					statePane.translateBy(translation)
-				elif TemplateManager.TAG_SCALING in node:
-					scalingNode = node.get(TemplateManager.TAG_SCALING)
-					pivot = scalingNode.get(TemplateManager.TAG_PIVOT)
-					ratio = scalingNode.get(TemplateManager.TAG_RATIO)
-					statePane.scale(pivot, ratio)
 
 			component=component.generateCopyToApplyNewPane(statePane)
 
@@ -643,14 +630,6 @@ class TemplateManager(AbsTemplateManager):
 				if TemplateManager.TAG_POSITION in node:
 					position = node.get(TemplateManager.TAG_POSITION)
 					statePane = Pane(*position)
-				elif TemplateManager.TAG_TRANSLATION in node:
-					translation = node.get(TemplateManager.TAG_TRANSLATION)
-					statePane.translateBy(translation)
-				elif TemplateManager.TAG_SCALING in node:
-					scalingNode = node.get(TemplateManager.TAG_SCALING)
-					pivot = scalingNode.get(TemplateManager.TAG_PIVOT)
-					ratio = scalingNode.get(TemplateManager.TAG_RATIO)
-					statePane.scale(pivot, ratio)
 
 			component=component.generateCopyToApplyNewPane(statePane)
 

@@ -119,20 +119,6 @@
                         <xsl:text>定位: </xsl:text>
                         <xsl:value-of select="@定位"/> 
                       </xsl:if>
-                      <xsl:if test="@平移">
-                        <xsl:text>平移: </xsl:text>
-                        <xsl:value-of select="@平移"/> 
-                      </xsl:if>
-                      <xsl:if test="@縮放">
-                        <xsl:text>縮放: </xsl:text>
-                        <xsl:text>{</xsl:text>
-                          <xsl:text>樞軸點: </xsl:text>
-                          <xsl:value-of select="@樞軸點"/> 
-                          <xsl:text>, </xsl:text>
-                          <xsl:text>比例: </xsl:text>
-                          <xsl:value-of select="@縮放"/> 
-                        <xsl:text>}</xsl:text>
-                      </xsl:if>
                     <xsl:text>}</xsl:text>
                     <xsl:value-of select="$newline" />
                   </xsl:for-each>
