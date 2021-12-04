@@ -594,6 +594,12 @@ class TemplateManager(AbsTemplateManager):
 		stroke=self.shapeFactory.generateParameterBasedStroke(strokeType, params, startPoint)
 		return stroke
 
+	def applyComponentWithTransformation(self, component, position):
+		if position != None:
+			pane = Pane(*position)
+			component = component.generateCopyToApplyNewPane(pane)
+		return component
+
 	def parseStrokeByReference(self, strokeNode, templateManager):
 		strokeType=strokeNode.get(TemplateManager.TAG_TYPE)
 		templateName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
@@ -601,31 +607,19 @@ class TemplateManager(AbsTemplateManager):
 
 		referencedComponent=templateManager.get(templateName)
 		strokes=list((referencedComponent.getStroke(index) for index in orders))
-
-		component=Component(ComponentInfo(strokes))
+		component = Component(ComponentInfo(strokes))
 
 		position = strokeNode.get(TemplateManager.TAG_POSITION)
-		if position != None:
-			componentInfo = component.componentInfo
-			statePane = componentInfo.getInfoPane()
-			if position != None:
-				statePane = Pane(*position)
-			component = component.generateCopyToApplyNewPane(statePane)
+		component = self.applyComponentWithTransformation(component, position)
 
 		return component.getStrokeList()
 
 	def parseComponentByAnchor(self, strokeNode):
 		referenceName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
 		component=self.get(referenceName)
-		strokes=list(component.getStrokeList())
 
 		position = strokeNode.get(TemplateManager.TAG_POSITION)
-		if position != None:
-			componentInfo = component.componentInfo
-			statePane = componentInfo.getInfoPane()
-			if position != None:
-				statePane = Pane(*position)
-			component = component.generateCopyToApplyNewPane(statePane)
+		component = self.applyComponentWithTransformation(component, position)
 
 		return component
 
