@@ -604,8 +604,10 @@ class TemplateManager(AbsTemplateManager):
 		templateName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
 		orders=strokeNode.get(TemplateManager.TAG_ORDER)
 
-		component=templateManager.get(templateName)
-		strokes=list((component.getStroke(index) for index in orders))
+		referencedComponent=templateManager.get(templateName)
+		strokes=list((referencedComponent.getStroke(index) for index in orders))
+
+		component=Component(ComponentInfo(strokes))
 
 		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
 		if transformationNode != None:
@@ -624,9 +626,9 @@ class TemplateManager(AbsTemplateManager):
 					ratio = scalingNode.get(TemplateManager.TAG_RATIO)
 					statePane.scale(pivot, ratio)
 
-			strokes=list((stroke.generateCopyToApplyNewPane(componentInfo.getInfoPane(), statePane) for stroke in strokes))
+			component=component.generateCopyToApplyNewPane(statePane)
 
-		return strokes
+		return component.getStrokeList()
 
 	def parseStrokeByAnchor(self, strokeNode):
 		referenceName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
