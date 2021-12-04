@@ -500,17 +500,11 @@ class CompositionTemplateManager(AbsTemplateManager):
 		super().__init__()
 		self.templateManagers=templateManagers
 
-	"""
-	def put(self, name, template):
-		assert isinstance(template, Component)
-		self.anchors[name]=template
-	"""
-
 	def get(self, name):
 		for templateManager in self.templateManagers:
-			sg=templateManager.get(name)
-			if sg:
-				return sg
+			component = templateManager.get(name)
+			if component:
+				return component
 
 class TemplateManager(AbsTemplateManager):
 	TAG_TEMPLATE_SET = "樣式集"
@@ -588,7 +582,7 @@ class TemplateManager(AbsTemplateManager):
 				strokes.extend(tempStrokes)
 			elif method==TemplateManager.TAG_METHOD__ANCHOR:
 				anchorName=strokeNode.get(TemplateManager.TAG_NAME)
-				component=self.parseStrokeByAnchor(strokeNode, anchorTemplateManager)
+				component=self.parseStrokeByAnchor(strokeNode)
 				anchorTemplateManager.put(anchorName, component)
 			elif method==TemplateManager.TAG_METHOD__DEFINITION:
 				stroke=self.parseStroke(strokeNode)
@@ -634,7 +628,7 @@ class TemplateManager(AbsTemplateManager):
 
 		return strokes
 
-	def parseStrokeByAnchor(self, strokeNode, anchromTemplateName):
+	def parseStrokeByAnchor(self, strokeNode):
 		referenceName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
 		component=self.get(referenceName)
 		strokes=list(component.getStrokeList())
