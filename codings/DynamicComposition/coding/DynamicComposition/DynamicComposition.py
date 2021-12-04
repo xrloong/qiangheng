@@ -582,7 +582,7 @@ class TemplateManager(AbsTemplateManager):
 				strokes.extend(tempStrokes)
 			elif method==TemplateManager.TAG_METHOD__ANCHOR:
 				anchorName=strokeNode.get(TemplateManager.TAG_NAME)
-				component=self.parseStrokeByAnchor(strokeNode)
+				component=self.parseComponentByAnchor(strokeNode)
 				anchorTemplateManager.put(anchorName, component)
 			elif method==TemplateManager.TAG_METHOD__DEFINITION:
 				stroke=self.parseStroke(strokeNode)
@@ -630,7 +630,7 @@ class TemplateManager(AbsTemplateManager):
 
 		return component.getStrokeList()
 
-	def parseStrokeByAnchor(self, strokeNode):
+	def parseComponentByAnchor(self, strokeNode):
 		referenceName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
 		component=self.get(referenceName)
 		strokes=list(component.getStrokeList())
