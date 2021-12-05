@@ -20,7 +20,7 @@ except ImportError as e:
 from xie.graphics import Pane
 from xie.graphics import BaseTextCanvasController
 from xie.graphics import DrawingSystem
-from xie.graphics import Component, ComponentInfo
+from xie.graphics import Component
 from xie.graphics import Character
 from xie.graphics import ShapeFactory
 
@@ -607,7 +607,7 @@ class TemplateManager(AbsTemplateManager):
 
 		referencedComponent = templateManager.get(referenceName)
 		strokes = list((referencedComponent.getStroke(index) for index in orders))
-		component = Component(ComponentInfo(strokes))
+		component = self.shapeFactory.generateComponentByStrokeList(strokes)
 
 		component = self.applyComponentWithTransformation(component, position)
 
