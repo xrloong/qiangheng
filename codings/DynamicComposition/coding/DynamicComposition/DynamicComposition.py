@@ -604,16 +604,13 @@ class TemplateManager(AbsTemplateManager):
 
 		component=Component(ComponentInfo(strokes))
 
-		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
-		if transformationNode != None:
-			componentInfo = ComponentInfo(strokes)
+		position = strokeNode.get(TemplateManager.TAG_POSITION)
+		if position != None:
+			componentInfo = component.componentInfo
 			statePane = componentInfo.getInfoPane()
-			for node in transformationNode:
-				if TemplateManager.TAG_POSITION in node:
-					position = node.get(TemplateManager.TAG_POSITION)
-					statePane = Pane(*position)
-
-			component=component.generateCopyToApplyNewPane(statePane)
+			if position != None:
+				statePane = Pane(*position)
+			component = component.generateCopyToApplyNewPane(statePane)
 
 		return component.getStrokeList()
 
@@ -622,16 +619,13 @@ class TemplateManager(AbsTemplateManager):
 		component=self.get(referenceName)
 		strokes=list(component.getStrokeList())
 
-		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
-		if transformationNode != None:
-			componentInfo = ComponentInfo(strokes)
+		position = strokeNode.get(TemplateManager.TAG_POSITION)
+		if position != None:
+			componentInfo = component.componentInfo
 			statePane = componentInfo.getInfoPane()
-			for node in transformationNode:
-				if TemplateManager.TAG_POSITION in node:
-					position = node.get(TemplateManager.TAG_POSITION)
-					statePane = Pane(*position)
-
-			component=component.generateCopyToApplyNewPane(statePane)
+			if position != None:
+				statePane = Pane(*position)
+			component = component.generateCopyToApplyNewPane(statePane)
 
 		return component
 
