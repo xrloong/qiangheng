@@ -601,24 +601,25 @@ class TemplateManager(AbsTemplateManager):
 		return component
 
 	def parseStrokeByReference(self, strokeNode, templateManager):
-		strokeType=strokeNode.get(TemplateManager.TAG_TYPE)
-		templateName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
-		orders=strokeNode.get(TemplateManager.TAG_ORDER)
+		referenceName = strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
+		orders = strokeNode.get(TemplateManager.TAG_ORDER)
+		position = strokeNode.get(TemplateManager.TAG_POSITION)
 
-		referencedComponent=templateManager.get(templateName)
-		strokes=list((referencedComponent.getStroke(index) for index in orders))
+		referencedComponent = templateManager.get(referenceName)
+		strokes = list((referencedComponent.getStroke(index) for index in orders))
 		component = Component(ComponentInfo(strokes))
 
-		position = strokeNode.get(TemplateManager.TAG_POSITION)
 		component = self.applyComponentWithTransformation(component, position)
 
 		return component.getStrokeList()
 
 	def parseComponentByAnchor(self, strokeNode):
-		referenceName=strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
-		component=self.get(referenceName)
-
+		referenceName = strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
 		position = strokeNode.get(TemplateManager.TAG_POSITION)
+
+		referencedComponent = self.get(referenceName)
+		component = referencedComponent
+
 		component = self.applyComponentWithTransformation(component, position)
 
 		return component
