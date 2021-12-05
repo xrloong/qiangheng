@@ -597,7 +597,7 @@ class TemplateManager(AbsTemplateManager):
 	def applyComponentWithTransformation(self, component, position):
 		if position != None:
 			pane = Pane(*position)
-			component = component.generateCopyToApplyNewPane(pane)
+			component = self.shapeFactory.generateComponentByComponentPane(component, pane)
 		return component
 
 	def parseStrokeByReference(self, strokeNode, templateManager):
