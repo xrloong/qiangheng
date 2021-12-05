@@ -612,7 +612,7 @@ class TemplateManager(AbsTemplateManager):
 		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
 		if transformationNode != None:
 			componentInfo = ComponentInfo(strokes)
-			statePane = componentInfo.getInfoPane().clone()
+			statePane = componentInfo.getInfoPane()
 			for node in transformationNode:
 				if TemplateManager.TAG_POSITION in node:
 					position = node.get(TemplateManager.TAG_POSITION)
@@ -638,7 +638,7 @@ class TemplateManager(AbsTemplateManager):
 		transformationNode=strokeNode.get(TemplateManager.TAG_TRANSFORMATION)
 		if transformationNode != None:
 			componentInfo = ComponentInfo(strokes)
-			statePane = componentInfo.getInfoPane().clone()
+			statePane = componentInfo.getInfoPane()
 			for node in transformationNode:
 				if TemplateManager.TAG_POSITION in node:
 					position = node.get(TemplateManager.TAG_POSITION)
