@@ -55,15 +55,15 @@ class DCComponent:
 	@staticmethod
 	def generateDefaultComponent(dcComponentPanePairList):
 		shapeFactory=DCComponent.shapeFactory
-		componentPanePair=[(dcComponent.getComponent(), pane) for dcComponent, pane in dcComponentPanePairList]
-		component=shapeFactory.generateComponentByComponentPanePairList(componentPanePair)
+		componentPanePairs=[(dcComponent.getComponent(), pane) for dcComponent, pane in dcComponentPanePairList]
+		component=shapeFactory.generateComponentByComponentPanePairs(componentPanePairs)
 		dcComponent=DCComponent(component)
 		return dcComponent
 
 	@staticmethod
-	def generateComponentByStrokeList(strokeList):
+	def generateComponentByStrokes(strokeList):
 		shapeFactory=DCComponent.shapeFactory
-		component = shapeFactory.generateComponentByStrokeList(strokeList)
+		component = shapeFactory.generateComponentByStrokes(strokeList)
 		return DCComponent(component)
 
 class DCCodeInfo(CodeInfo):
@@ -442,7 +442,7 @@ class DCRadixParser(CodingRadixParser):
 		t=componentNode.get(DCRadixParser.TAG_STROKE_GROUP)
 		strokeList=self.parseStrokeList(t)
 
-		component=DCComponent.generateComponentByStrokeList(strokeList)
+		component=DCComponent.generateComponentByStrokes(strokeList)
 		return [componentName, component]
 
 	def parseStrokeList(self, componentNode):
@@ -584,7 +584,7 @@ class TemplateManager(AbsTemplateManager):
 				strokes.append(stroke)
 			else:
 				assert False
-		component=self.shapeFactory.generateComponentByStrokeList(strokes)
+		component=self.shapeFactory.generateComponentByStrokes(strokes)
 		return component
 
 	def parseStroke(self, strokeNode):
@@ -607,7 +607,7 @@ class TemplateManager(AbsTemplateManager):
 
 		referencedComponent = templateManager.get(referenceName)
 		strokes = list((referencedComponent.getStroke(index) for index in orders))
-		component = self.shapeFactory.generateComponentByStrokeList(strokes)
+		component = self.shapeFactory.generateComponentByStrokes(strokes)
 
 		component = self.applyComponentWithTransformation(component, position)
 

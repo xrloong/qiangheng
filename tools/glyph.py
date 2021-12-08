@@ -85,7 +85,7 @@ class GlyphManager:
 			strokeDescription=glyphDescription.get('描繪')
 			stroke=self.computeStrokeByDescription(strokeName, strokeDescription)
 			strokes.append(stroke)
-		component=self.shapeFactory.generateComponentByStrokeList(strokes)
+		component=self.shapeFactory.generateComponentByStrokes(strokes)
 		return Character(charName, component)
 
 	def computeStrokeByDescription(self, strokeName, strokeDescription) -> Stroke:
