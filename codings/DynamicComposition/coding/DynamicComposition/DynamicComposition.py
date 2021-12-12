@@ -449,21 +449,13 @@ class DCRadixParser(CodingRadixParser):
 		strokeList=[]
 		strokeNodeList=componentNode.get(DCRadixParser.TAG_STROKE)
 		for strokeNode in strokeNodeList:
-			method=strokeNode.get(TemplateManager.TAG_METHOD, TemplateManager.TAG_METHOD__DEFINITION)
+			method=strokeNode.get(TemplateManager.TAG_METHOD)
 			if method==TemplateManager.TAG_METHOD__REFERENCE:
 				tempStrokes=self.templateManager.parseStrokeByReference(strokeNode, self.templateManager)
 				strokeList.extend(tempStrokes)
-			elif method==TemplateManager.TAG_METHOD__DEFINITION:
-				stroke=DCRadixParser.fromStrokeNode(strokeNode, self.shapeFactory)
-				strokeList.append(stroke)
+			else:
+				assert False
 		return strokeList
-
-	@staticmethod
-	def fromStrokeNode(strokeNode, shapeFactory):
-		name=strokeNode.get(DCRadixParser.TAG_TYPE)
-		startPoint=strokeNode.get(DCRadixParser.TAG_START_POINT)
-		parameterList = strokeNode.get(DCRadixParser.TAG_PARAMETER)
-		return shapeFactory.generateParameterBasedStroke(name, parameterList, startPoint)
 
 	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)
@@ -571,7 +563,7 @@ class TemplateManager(AbsTemplateManager):
 		anchorTemplateManager = AnchorTemplateManager()
 		compositionTemplateManager = CompositionTemplateManager((anchorTemplateManager, self,))
 		for strokeNode in componentNode.get(TemplateManager.TAG_STROKE):
-			method=strokeNode.get(TemplateManager.TAG_METHOD, TemplateManager.TAG_METHOD__DEFINITION)
+			method=strokeNode.get(TemplateManager.TAG_METHOD)
 			if method==TemplateManager.TAG_METHOD__REFERENCE:
 				tempStrokes=self.parseStrokeByReference(strokeNode, compositionTemplateManager)
 				strokes.extend(tempStrokes)
