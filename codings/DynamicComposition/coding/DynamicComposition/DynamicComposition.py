@@ -581,9 +581,13 @@ class TemplateManager(AbsTemplateManager):
 
 	def parseStroke(self, strokeNode):
 		strokeType=strokeNode.get(TemplateManager.TAG_TYPE)
-		startPoint=strokeNode.get(TemplateManager.TAG_START_POINT)
 		params=strokeNode.get(TemplateManager.TAG_PARAMETER)
-		stroke=self.shapeFactory.generateParameterBasedStroke(strokeType, params, startPoint)
+
+		startPoint=strokeNode.get(TemplateManager.TAG_START_POINT)
+		position=strokeNode.get(TemplateManager.TAG_POSITION)
+		pane=Pane(*position)
+
+		stroke=self.shapeFactory.generateParameterBasedStroke(strokeType, params, strokeBoundPane=pane)
 		return stroke
 
 	def applyComponentWithTransformation(self, component, position):
