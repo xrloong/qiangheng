@@ -17,7 +17,7 @@
   + injector
   + ply
   + Xie
-    用於動態組字。可到 https://github.com/xrloong/Xie 下載最新版本（https://github.com/xrloong/Xie/releases/download/v0.1.2/Xie-0.1.2-py2.py3-none-any.whl）
+    用於動態組字。可到 https://github.com/xrloong/Xie 下載最新版本（https://github.com/xrloong/Xie/releases/download/v0.1.3/Xie-0.1.3-py3-none-any.whl）
 + 工具
   + xsltproc
   + xmllint
@@ -33,14 +33,14 @@ $ make setup-environment
 $ apt-get install python3
 $ apt-get install xsltproc libxml2-utils
 $ pip3 install lxml ruamel.yaml injector ply
-$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.2/Xie-0.1.2-py2.py3-none-any.whl
+$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.3/Xie-0.1.3-py3-none-any.whl
 ```
 
 在 Mac 上，因本身就已有 xsltproc、xmllint，不用特別安裝。
 ```console
 $ brew install python3
 $ pip3 install lxml ruamel.yaml injector ply
-$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.2/Xie-0.1.2-py2.py3-none-any.whl
+$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.3/Xie-0.1.3-py3-none-any.whl
 ```
 
 在 FreeBSD 上，
@@ -49,7 +49,7 @@ $ pkg install python37 py37-pip
 $ pkg install py37-lxml
 $ pkg install libxml2-utils
 $ pip3 install lxml ruamel.yaml injector ply
-$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.2/Xie-0.1.2-py2.py3-none-any.whl
+$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.3/Xie-0.1.3-py3-none-any.whl
 ```
 
 計算
