@@ -124,6 +124,6 @@ class GlyphManager:
 				point_list.append(point)
 				is_curve=True
 
-		stroke=self.shapeFactory.generateSegmentBasedStroke(strokeName, segments, startPoint)
+		stroke=self.shapeFactory.generateStrokeBySegements(strokeName, segments, startPoint)
 		return stroke
 

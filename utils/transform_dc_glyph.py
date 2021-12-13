@@ -137,7 +137,7 @@ class TemplateManager(object):
 				resultStrokeNoe[TemplateManager.TAG_START_POINT] = startPoint
 				resultStrokeNoe[TemplateManager.TAG_PARAMETER] = params
 
-				stroke = self.shapeFactory.generateParameterBasedStroke(strokeType, params, startPoint)
+				stroke = self.shapeFactory.generateStrokeByParameters(strokeType, params, startPoint)
 				resultStrokeNoe[TemplateManager.TAG_POSITION] = list(stroke.getStatePane().boundary)
 			strokes.append(resultStrokeNoe)
 		return {TemplateManager.TAG_STROKE: strokes}

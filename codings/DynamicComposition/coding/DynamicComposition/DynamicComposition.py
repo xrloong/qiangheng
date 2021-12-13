@@ -587,7 +587,7 @@ class TemplateManager(AbsTemplateManager):
 		position=strokeNode.get(TemplateManager.TAG_POSITION)
 		pane=Pane(*position)
 
-		stroke=self.shapeFactory.generateParameterBasedStroke(strokeType, params, strokeBoundPane=pane)
+		stroke=self.shapeFactory.generateStrokeByParameters(strokeType, params, strokeBoundPane=pane)
 		return stroke
 
 	def applyComponentWithTransformation(self, component, position):
