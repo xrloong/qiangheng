@@ -24,6 +24,7 @@ from xie.graphics import Component
 from xie.graphics import Character
 from xie.graphics import ShapeFactory
 
+from xie.graphics import genVerticalPanes, genHorizontalPanes
 
 class DCComponent:
 	shapeFactory = ShapeFactory()
@@ -163,19 +164,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			extendingList=[DCCodeInfo.STROKE_GROUP_NAME_DEFAULT for i in range(diff)]
 		return componentNameList+extendingList
 
-	def splitLengthToList(self, length, weightList):
-		totalWeight=sum(weightList)
-		unitLength=length*1./totalWeight
-
-		pointList=[]
-		newComponentList=[]
-		base=0
-		for weight in weightList:
-			pointList.append(int(base))
-			base=base+unitLength*weight
-		pointList.append(int(base))
-		return pointList
-
 	def encodeByEmbed(self, codeInfoList, componentNameList, paneNameList):
 		if len(codeInfoList)<2:
 			return self.encodeAsInvalidate(codeInfoList)
@@ -241,22 +229,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsSilkworm(self, codeInfoList):
-		def genPaneList(weightList):
-			pane=Pane.BBOX
-			pointList=self.splitLengthToList(pane.getHeight(), weightList)
-			paneList=[]
-			offset=pane.getTop()
-			for [pointStart, pointEnd] in zip(pointList[:-1], pointList[1:]):
-				height=pointEnd-pointStart
-				targetHeight=int(height*0.90)
-				offset=int(height-targetHeight)//2
-				tmpPane=Pane(pane.getLeft(), pointStart+offset, pane.getRight(), pointEnd-offset)
-				tmpPane.offsetTopAndBottom(offset)
-				paneList.append(tmpPane)
-			return paneList
-
 		weightList=list(map(lambda x: x.getStrokeCount()+1, codeInfoList))
-		paneList=genPaneList(weightList)
+		paneList=genVerticalPanes(weightList)
 
 		componentNameList=self.extendComponentNameList(['蚕'], codeInfoList)
 
@@ -276,22 +250,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
-		def genPaneList(weightList):
-			pane=Pane.BBOX
-			pointList=self.splitLengthToList(pane.getWidth(), weightList)
-			paneList=[]
-			offset=pane.getLeft()
-			for [pointStart, pointEnd] in zip(pointList[:-1], pointList[1:]):
-				width=pointEnd-pointStart
-				targetWidth=int(width*0.90)
-				offset=int(width-targetWidth)//2
-				tmpPane=Pane(pointStart+offset, pane.getTop(), pointEnd-offset, pane.getBottom())
-				tmpPane.offsetLeftAndRight(offset)
-				paneList.append(tmpPane)
-			return paneList
-
 		weightList=list(map(lambda x: x.getStrokeCount(), codeInfoList))
-		paneList=genPaneList(weightList)
+		paneList=genHorizontalPanes(weightList)
 
 		componentNameList=self.extendComponentNameList(['鴻'], codeInfoList)
 
