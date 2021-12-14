@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# coding=utf8
+
 import abc
 
 import ruamel.yaml as yaml
@@ -9,7 +12,7 @@ from xie.graphics import BaseTextCanvasController
 from xie.graphics import DrawingSystem
 from xie.graphics import Component
 from xie.graphics import Character
-from xie.graphics import ShapeFactory
+from xie.graphics import StrokeFactory
 
 class IndentWorkAroundDumper(yaml.Dumper):
 	def increase_indent(self, flow=False, *args, **kwargs):
@@ -53,9 +56,9 @@ class TemplateManager(object):
 
 	TAG_POSITION='定位'
 
-	def __init__(self, shapeFactory):
+	def __init__(self):
 		super().__init__()
-		self.shapeFactory=shapeFactory
+		self.strokeFactory = StrokeFactory()
 		self.templates={}
 		self.load()
 
@@ -137,10 +140,9 @@ class TemplateManager(object):
 				resultStrokeNoe[TemplateManager.TAG_START_POINT] = startPoint
 				resultStrokeNoe[TemplateManager.TAG_PARAMETER] = params
 
-				stroke = self.shapeFactory.generateStrokeByParameters(strokeType, params, startPoint)
+				stroke = self.strokeFactory.generateStrokeByParameters(strokeType, params, startPoint = startPoint)
 				resultStrokeNoe[TemplateManager.TAG_POSITION] = list(stroke.getStatePane().boundary)
 			strokes.append(resultStrokeNoe)
 		return {TemplateManager.TAG_STROKE: strokes}
 
-shapeFactory = ShapeFactory()
-templateManager = TemplateManager(shapeFactory)
+templateManager = TemplateManager()
