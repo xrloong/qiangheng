@@ -18,6 +18,7 @@ from xie.graphics import TextCodec
 from xie.graphics import SegmentFactory
 from xie.graphics import StrokeFactory
 from xie.graphics import ShapeFactory
+from xie.graphics import StrokeSpec
 from xie.graphics import Character
 from xie.graphics import Stroke
 
@@ -128,6 +129,7 @@ class GlyphManager:
 				point_list.append(point)
 				is_curve=True
 
-		stroke = self.strokeFactory.generateStrokeBySegments(strokeName, segments, startPoint)
+		strokeSpec = StrokeSpec(strokeName, segments = segments)
+		stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, startPoint)
 		return stroke
 

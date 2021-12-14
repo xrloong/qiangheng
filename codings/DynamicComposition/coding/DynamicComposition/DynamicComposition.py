@@ -23,7 +23,7 @@ from xie.graphics import DrawingSystem
 from xie.graphics import Component
 from xie.graphics import Character
 from xie.graphics import ShapeFactory
-from xie.graphics import StrokeFactory
+from xie.graphics import StrokeSpec, StrokeFactory
 
 from xie.graphics import genVerticalPanes, genHorizontalPanes
 
@@ -549,7 +549,8 @@ class TemplateManager(AbsTemplateManager):
 		position=strokeNode.get(TemplateManager.TAG_POSITION)
 		pane=Pane(*position)
 
-		stroke=self.strokeFactory.generateStrokeByParameters(strokeType, params, strokeBoundPane=pane)
+		strokeSpec = StrokeSpec(strokeType, params)
+		stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, strokeBoundPane=pane)
 		return stroke
 
 	def applyComponentWithTransformation(self, component, position):

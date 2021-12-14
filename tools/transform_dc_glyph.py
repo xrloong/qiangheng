@@ -12,6 +12,7 @@ from xie.graphics import BaseTextCanvasController
 from xie.graphics import DrawingSystem
 from xie.graphics import Component
 from xie.graphics import Character
+from xie.graphics import StrokeSpec
 from xie.graphics import StrokeFactory
 
 class IndentWorkAroundDumper(yaml.Dumper):
@@ -140,7 +141,8 @@ class TemplateManager(object):
 				resultStrokeNoe[TemplateManager.TAG_START_POINT] = startPoint
 				resultStrokeNoe[TemplateManager.TAG_PARAMETER] = params
 
-				stroke = self.strokeFactory.generateStrokeByParameters(strokeType, params, startPoint = startPoint)
+				strokeSpec = StrokeSpec(strokeType, params)
+				stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, startPoint = startPoint)
 				resultStrokeNoe[TemplateManager.TAG_POSITION] = list(stroke.getStatePane().boundary)
 			strokes.append(resultStrokeNoe)
 		return {TemplateManager.TAG_STROKE: strokes}
