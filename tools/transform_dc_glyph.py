@@ -2,7 +2,6 @@
 # coding=utf8
 
 import abc
-
 import ruamel.yaml as yaml
 
 from collections import OrderedDict
@@ -35,116 +34,198 @@ yaml.add_representer(OrderedDict, lambda dumper, data: dumper.represent_mapping(
 
 CodingTemplateFile="qhdata/dc/radix/template.yaml"
 
+class GlyphElementDescription:
+	def __init__(self, method):
+		self.method = method
+
+		self.name = None
+		self.referenceName = None
+		self.order = None
+
+		self.strokeType = None
+		self.startPoint = None
+		self.params = None
+
+		self.position = None
+
+	@property
+	def isAnchor(self):
+		return self.method == GlyphTags.METHOD__ANCHOR
+
+	@property
+	def isReference(self):
+		return self.method == GlyphTags.METHOD__REFERENCE
+
+	@property
+	def isDefinition(self):
+		return self.method == GlyphTags.METHOD__DEFINITION
+
+class GlyphComponentDescription:
+	def __init__(self, name, comment = None):
+		self.name = name
+		self.comment = comment
+		self.elements = None
+
+class GlyphDataSetDescription:
+	def __init__(self, components: [GlyphComponentDescription]):
+		self.components = components
+
+class GlyphTags(object):
+	TEMPLATE_SET = "樣式集"
+	STROKE_GROUP='筆劃組'
+	STROKE='筆劃'
+	NAME='名稱'
+	COMMENT='註記'
+
+	METHOD='方式'
+	TYPE='類型'
+	START_POINT='起始點'
+	PARAMETER='參數'
+
+	METHOD__DEFINITION='定義'
+	METHOD__REFERENCE='引用'
+	METHOD__ANCHOR='錨點'
+
+	REFRENCE_NAME='引用名稱'
+	ORDER='順序'
+
+	POSITION='定位'
+
+class IfGlyphDescriptionInterpreter(object, metaclass=abc.ABCMeta):
+	@abc.abstractmethod
+	def interpretElement(self, element: GlyphElementDescription):
+		pass
+
+	@abc.abstractmethod
+	def interpretComponent(self, component: GlyphComponentDescription):
+		pass
+
+	@abc.abstractmethod
+	def interpretDataSet(self, dataSet: GlyphDataSetDescription):
+		pass
+
+class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
+	def __init__(self):
+		self.strokeFactory = StrokeFactory()
+
+	def interpretElement(self, element: GlyphElementDescription):
+		result = FlowStyleOrderedDict({GlyphTags.METHOD: element.method})
+		if element.isDefinition:
+			strokeType = element.strokeType
+			startPoint = element.startPoint
+			params = element.params
+
+			result[GlyphTags.TYPE] = strokeType
+			result[GlyphTags.START_POINT] = startPoint
+			result[GlyphTags.PARAMETER] = params
+
+			strokeSpec = StrokeSpec(strokeType, params)
+			stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, startPoint = startPoint)
+			result[GlyphTags.POSITION] = list(stroke.getStatePane().boundary)
+			return result
+
+		if element.name:
+			result[GlyphTags.NAME] = element.name
+		result[GlyphTags.REFRENCE_NAME] = QuotedString(element.referenceName)
+
+		if element.order:
+			result[GlyphTags.ORDER] = element.order
+		if element.position:
+			result[GlyphTags.POSITION] = element.position
+		return result
+
+	def interpretComponent(self, component: GlyphComponentDescription):
+		componentDicts = OrderedDict({GlyphTags.NAME: QuotedString(component.name)})
+		if component.comment:
+			componentDicts[GlyphTags.COMMENT] = component.comment
+
+		elementDicts = [self.interpretElement(element) for element in component.elements]
+		componentDicts[GlyphTags.STROKE_GROUP] = {GlyphTags.STROKE: elementDicts}
+		return componentDicts
+
+	def interpretDataSet(self, dataSet: GlyphDataSetDescription):
+		result = [self.interpretComponent(component) for component in dataSet.components]
+		resultRootNode = {GlyphTags.TEMPLATE_SET: result}
+		return resultRootNode
+
 class TemplateManager(object):
-	TAG_TEMPLATE_SET = "樣式集"
-	TAG_STROKE_GROUP='筆劃組'
-	TAG_STROKE='筆劃'
-	TAG_NAME='名稱'
-	TAG_COMMENT='註記'
-
-	TAG_METHOD='方式'
-	TAG_TYPE='類型'
-	TAG_START_POINT='起始點'
-	TAG_PARAMETER='參數'
-
-	TAG_METHOD__DEFINITION='定義'
-	TAG_METHOD__REFERENCE='引用'
-	TAG_METHOD__ANCHOR='錨點'
-
-	TAG_REFRENCE_NAME='引用名稱'
-	TAG_ORDER='順序'
-	TAG_TRANSFORMATION='變換'
-
-	TAG_POSITION='定位'
-
 	def __init__(self):
 		super().__init__()
-		self.strokeFactory = StrokeFactory()
-		self.templates={}
-		self.load()
 
-	def put(self, name, template):
-		assert isinstance(template, Component)
-		self.templates[name]=template
-
-	def get(self, name):
-		return self.templates.get(name)
-
-	def getStroke(self, name, index):
-		component=self.templates.get(name)
-		return component.getStrokeList()[index]
-
-	def getStrokes(self, name, start, end):
-		component=self.templates.get(name)
-		return component.getStrokeList()[start, end+1]
-
-	def load(self):
-		template_file = CodingTemplateFile
-		self.parseTemplateFromYAML(template_file)
-
-	def parseTemplateFromYAML(self, filename):
+	def load(self, filename):
 		rootNode = yaml.load(open(filename), Loader=yaml.SafeLoader)
-		resultRootNode = self.convertTemplateSet(rootNode)
+		dataSet = self.parseDataSet(rootNode)
+		return dataSet
+
+	def save(self, dataSet):
+		interpreter = GlyphDescriptionInterpreter()
+		resultRootNode = interpreter.interpretDataSet(dataSet)
 		print(yaml.dump(resultRootNode, Dumper=IndentWorkAroundDumper,
 			allow_unicode=True, width=200,
 			explicit_start=True, explicit_end=True,
 			), end='')
 
-	def convertTemplateSet(self, rootNode):
-		templateSetNode=rootNode.get(TemplateManager.TAG_TEMPLATE_SET)
-		resultTemplateNodes = []
-		for templateNode in templateSetNode:
-			templateName=templateNode.get(TemplateManager.TAG_NAME)
-			templateComment=templateNode.get(TemplateManager.TAG_COMMENT)
-			componentNode=templateNode.get(TemplateManager.TAG_STROKE_GROUP)
+	def parseElement(self, elementNode):
+		method = elementNode.get(GlyphTags.METHOD)
+		element = GlyphElementDescription(method)
+		elementDict = FlowStyleOrderedDict({GlyphTags.METHOD: method})
+		if element.isReference:
+			referenceName = elementNode.get(GlyphTags.REFRENCE_NAME)
+			order = elementNode.get(GlyphTags.ORDER)
+			position = elementNode.get(GlyphTags.POSITION)
 
-			resultTemplateNode = OrderedDict({TemplateManager.TAG_NAME: QuotedString(templateName)})
-			if templateComment:
-				resultTemplateNode[TemplateManager.TAG_COMMENT] = templateComment
-			resultTemplateNode[TemplateManager.TAG_STROKE_GROUP] = self.convertComponent(componentNode)
-			resultTemplateNodes.append(resultTemplateNode)
+			element.referenceName = referenceName
+			element.order = order
+			if position:
+				element.position = position
+		elif element.isAnchor:
+			name = elementNode.get(GlyphTags.NAME)
+			referenceName = elementNode.get(GlyphTags.REFRENCE_NAME)
+			position = elementNode.get(GlyphTags.POSITION)
 
-		resultRootNode = {TemplateManager.TAG_TEMPLATE_SET: resultTemplateNodes}
-		return resultRootNode
+			element.name = name
+			element.referenceName = referenceName
+			if position:
+				element.position = position
+		elif element.isDefinition:
+			strokeType = elementNode.get(GlyphTags.TYPE)
+			startPoint = elementNode.get(GlyphTags.START_POINT)
+			params = elementNode.get(GlyphTags.PARAMETER)
+			position = elementNode.get(GlyphTags.POSITION)
 
-	def convertComponent(self, componentNode):
-		resultComponentNode = {}
+			element.strokeType = strokeType
+			element.startPoint = startPoint
+			element.params = params
+			element.position = position
+		return element
 
-		strokes=[]
-		for strokeNode in componentNode.get(TemplateManager.TAG_STROKE):
-			method = strokeNode.get(TemplateManager.TAG_METHOD)
-			resultStrokeNoe = FlowStyleOrderedDict({TemplateManager.TAG_METHOD: method})
-			if method==TemplateManager.TAG_METHOD__REFERENCE:
-				referenceName = strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
-				order = strokeNode.get(TemplateManager.TAG_ORDER)
-				position = strokeNode.get(TemplateManager.TAG_POSITION)
+	def parseComponent(self, componentNode):
+		componentName = componentNode.get(GlyphTags.NAME)
+		componentComment = componentNode.get(GlyphTags.COMMENT)
+		strokeGroupNode = componentNode.get(GlyphTags.STROKE_GROUP)
 
-				resultStrokeNoe[TemplateManager.TAG_REFRENCE_NAME] = QuotedString(referenceName)
-				resultStrokeNoe[TemplateManager.TAG_ORDER] = order
-				if position:
-					resultStrokeNoe[TemplateManager.TAG_POSITION] = position
-			elif method==TemplateManager.TAG_METHOD__ANCHOR:
-				name = strokeNode.get(TemplateManager.TAG_NAME)
-				referenceName = strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
-				position = strokeNode.get(TemplateManager.TAG_POSITION)
+		component = GlyphComponentDescription(componentName, componentComment)
 
-				resultStrokeNoe[TemplateManager.TAG_NAME] = name
-				resultStrokeNoe[TemplateManager.TAG_REFRENCE_NAME] = QuotedString(referenceName)
-				if position:
-					resultStrokeNoe[TemplateManager.TAG_POSITION] = position
-			elif method==TemplateManager.TAG_METHOD__DEFINITION:
-				strokeType = strokeNode.get(TemplateManager.TAG_TYPE)
-				startPoint = strokeNode.get(TemplateManager.TAG_START_POINT)
-				params = strokeNode.get(TemplateManager.TAG_PARAMETER)
+		elements = []
+		for elementNode in strokeGroupNode.get(GlyphTags.STROKE):
+			element = self.parseElement(elementNode)
+			elements.append(element)
 
-				resultStrokeNoe[TemplateManager.TAG_TYPE] = strokeType
-				resultStrokeNoe[TemplateManager.TAG_START_POINT] = startPoint
-				resultStrokeNoe[TemplateManager.TAG_PARAMETER] = params
+		component.elements = elements
+		return component
 
-				strokeSpec = StrokeSpec(strokeType, params)
-				stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, startPoint = startPoint)
-				resultStrokeNoe[TemplateManager.TAG_POSITION] = list(stroke.getStatePane().boundary)
-			strokes.append(resultStrokeNoe)
-		return {TemplateManager.TAG_STROKE: strokes}
+	def parseDataSet(self, rootNode):
+		dataSetNode=rootNode.get(GlyphTags.TEMPLATE_SET)
+
+		components = []
+		for componentNode in dataSetNode:
+			component = self.parseComponent(componentNode)
+			components.append(component)
+
+		dataSet = GlyphDataSetDescription(components)
+		return dataSet
 
 templateManager = TemplateManager()
+dataSet = templateManager.load(CodingTemplateFile)
+templateManager.save(dataSet)
+
