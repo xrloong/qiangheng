@@ -5,6 +5,12 @@ from coding.Base import CodeInfoEncoder
 from coding.Base import CodingRadixParser
 from coding.Base import CodeMappingInfoInterpreter
 
+from parser.GlyphParser import GlyphTags
+from parser.GlyphParser import GlyphParser
+from parser.GlyphParser import IfGlyphDescriptionInterpreter
+from parser.GlyphParser import GlyphElementDescription, GlyphComponentDescription, GlyphDataSetDescription
+
+
 try:
 	import xie
 except ImportError as e:
@@ -339,8 +345,8 @@ class DCRadixParser(CodingRadixParser):
 	TAG_NAME='名稱'
 
 	def __init__(self):
-		self.shapeFactory=ShapeFactory()
-		self.templateManager=TemplateManager(self.shapeFactory)
+		self.glyphParser = GlyphParser()
+		self.templateManager = TemplateManager()
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
@@ -410,12 +416,11 @@ class DCRadixParser(CodingRadixParser):
 		strokeList=[]
 		strokeNodeList=componentNode.get(DCRadixParser.TAG_STROKE)
 		for strokeNode in strokeNodeList:
-			method=strokeNode.get(TemplateManager.TAG_METHOD)
-			if method==TemplateManager.TAG_METHOD__REFERENCE:
-				tempStrokes=self.templateManager.parseStrokeByReference(strokeNode, self.templateManager)
-				strokeList.extend(tempStrokes)
-			else:
-				assert False
+			element = self.glyphParser.parseElement(strokeNode)
+			assert element.isReference
+
+			tempStrokes = self.templateManager.interpretStrokeByReference(element)
+			strokeList.extend(tempStrokes)
 		return strokeList
 
 	def parsePane(self, descriptionRegion):
@@ -425,66 +430,103 @@ class DCRadixParser(CodingRadixParser):
 		bottom=int(descriptionRegion[6:8], 16)
 		return Pane(left, top, right, bottom)
 
-class AbsTemplateManager(object, metaclass=abc.ABCMeta):
-	def __init__(self):
-		pass
-
-	def put(self, name, template):
-		raise NotImplementedError('users must define put to use this base class')
-
-	def get(self, name):
-		raise NotImplementedError('users must define get to use this base class')
-		return None
-
-class AnchorTemplateManager(AbsTemplateManager):
+class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 	def __init__(self):
 		super().__init__()
-		self.anchors={}
-
-	def put(self, name, template):
-		assert isinstance(template, Component)
-		self.anchors[name]=template
-
-	def get(self, name):
-		return self.anchors.get(name)
-
-class CompositionTemplateManager(AbsTemplateManager):
-	def __init__(self, templateManagers):
-		super().__init__()
-		self.templateManagers=templateManagers
-
-	def get(self, name):
-		for templateManager in self.templateManagers:
-			component = templateManager.get(name)
-			if component:
-				return component
-
-class TemplateManager(AbsTemplateManager):
-	TAG_TEMPLATE_SET = "樣式集"
-	TAG_STROKE_GROUP='筆劃組'
-	TAG_STROKE='筆劃'
-	TAG_NAME='名稱'
-
-	TAG_METHOD='方式'
-	TAG_TYPE='類型'
-	TAG_START_POINT='起始點'
-	TAG_PARAMETER='參數'
-
-	TAG_METHOD__DEFINITION='定義'
-	TAG_METHOD__REFERENCE='引用'
-	TAG_METHOD__ANCHOR='錨點'
-
-	TAG_REFRENCE_NAME='引用名稱'
-	TAG_ORDER='順序'
-	TAG_TRANSFORMATION='變換'
-
-	TAG_POSITION='定位'
-
-	def __init__(self, shapeFactory):
-		super().__init__()
-		self.shapeFactory = shapeFactory
+		self.shapeFactory = ShapeFactory()
 		self.strokeFactory = StrokeFactory()
-		self.templates={}
+
+		self.anchors = {}
+		self.templates = {}
+
+	def getStroke(self, name, index):
+		component=self.templates.get(name)
+		return component.getStrokeList()[index]
+
+	def applyComponentWithTransformation(self, component, position):
+		if position != None:
+			pane = Pane(*position)
+			component = self.shapeFactory.generateComponentByComponentPane(component, pane)
+		return component
+
+	def getComponent(self, name):
+		component = self.anchors.get(name)
+		if not component:
+			component = self.templates.get(name)
+		return component
+
+	def interpretStrokeByDefinition(self, element):
+		strokeType = element.strokeType
+		params = element.params
+		startPoint = element.startPoint
+		position = element.position
+		pane = Pane(*position)
+
+		strokeSpec = StrokeSpec(strokeType, params)
+		stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, strokeBoundPane = pane)
+		return stroke
+
+	def interpretStrokeByReference(self, element: GlyphElementDescription):
+		referenceName = element.referenceName
+		order = element.order
+		position = element.position
+
+		referencedComponent = self.getComponent(referenceName)
+		strokes = self.retrieveStrokesOfComponentIntoPosition(referencedComponent, order, position)
+		return strokes
+
+	def retrieveStrokesOfComponentIntoPosition(self, referencedComponent: Component, order: [int], position):
+		strokes = list((referencedComponent.getStroke(index) for index in order))
+		component = self.shapeFactory.generateComponentByStrokes(strokes)
+
+		component = self.applyComponentWithTransformation(component, position)
+		return component.getStrokeList()
+
+	def interpretElement(self, element: GlyphElementDescription):
+		strokes = []
+
+		if element.isReference:
+			strokes = self.interpretStrokeByReference(element)
+		elif element.isAnchor:
+			anchorName = element.name
+			referenceName = element.referenceName
+			position = element.position
+
+			referencedComponent = self.getComponent(referenceName)
+			component = self.applyComponentWithTransformation(referencedComponent, position)
+
+			self.anchors[anchorName] = component
+		elif element.isDefinition:
+			stroke = self.interpretStrokeByDefinition(element)
+			strokes = [stroke]
+		else:
+			assert False
+		return strokes
+
+	def interpretComponent(self, component: GlyphComponentDescription):
+		self.anchors.clear()
+
+		strokes = []
+		for element in component.elements:
+			subStrokes = self.interpretElement(element)
+			strokes.extend(subStrokes)
+
+		component = self.shapeFactory.generateComponentByStrokes(strokes)
+		return component
+
+	def interpretDataSet(self, glyphDataSet: GlyphDataSetDescription):
+		for componentDesc in glyphDataSet.components:
+			name = componentDesc.name
+			component = self.interpretComponent(componentDesc)
+
+			self.templates[name] = component
+		return self.templates
+
+class TemplateManager:
+	def __init__(self):
+		super().__init__()
+		self.interpreter = GlyphDescriptionInterpreter()
+		self.templates = {}
 		self.load()
 
 	def put(self, name, template):
@@ -494,94 +536,24 @@ class TemplateManager(AbsTemplateManager):
 	def get(self, name):
 		return self.templates.get(name)
 
-	def getStroke(self, name, index):
-		component=self.templates.get(name)
-		return component.getStrokeList()[index]
-
-	def getStrokes(self, name, start, end):
-		component=self.templates.get(name)
-		return component.getStrokeList()[start, end+1]
-
 	def load(self):
 		from . import CodingTemplateFile
-		template_file = CodingTemplateFile
-		self.parseTemplateFromYAML(template_file)
+		filename = CodingTemplateFile
 
-	def parseTemplateFromYAML(self, filename):
-		import ruamel.yaml as yaml
-		rootNode=yaml.load(open(filename), Loader=yaml.SafeLoader)
-		self.parseTemplateSet(rootNode)
+		glyphParser = GlyphParser()
+		glyphDataSet = glyphParser.load(filename)
 
-	def parseTemplateSet(self, rootNode):
-		templateSetNode=rootNode.get(TemplateManager.TAG_TEMPLATE_SET)
-		for templateNode in templateSetNode:
-			templateName=templateNode.get(TemplateManager.TAG_NAME)
-			componentNode=templateNode.get(TemplateManager.TAG_STROKE_GROUP)
-			component=self.parseComponent(componentNode)
-			self.put(templateName, component)
+		dataSet = self.interpreter.interpretDataSet(glyphDataSet)
+		self.templates.update(dataSet)
 
-	def parseComponent(self, componentNode):
-		strokes=[]
-		anchorTemplateManager = AnchorTemplateManager()
-		compositionTemplateManager = CompositionTemplateManager((anchorTemplateManager, self,))
-		for strokeNode in componentNode.get(TemplateManager.TAG_STROKE):
-			method=strokeNode.get(TemplateManager.TAG_METHOD)
-			if method==TemplateManager.TAG_METHOD__REFERENCE:
-				tempStrokes=self.parseStrokeByReference(strokeNode, compositionTemplateManager)
-				strokes.extend(tempStrokes)
-			elif method==TemplateManager.TAG_METHOD__ANCHOR:
-				anchorName=strokeNode.get(TemplateManager.TAG_NAME)
-				component=self.parseComponentByAnchor(strokeNode)
-				anchorTemplateManager.put(anchorName, component)
-			elif method==TemplateManager.TAG_METHOD__DEFINITION:
-				stroke=self.parseStroke(strokeNode)
-				strokes.append(stroke)
-			else:
-				assert False
-		component=self.shapeFactory.generateComponentByStrokes(strokes)
-		return component
-
-	def parseStroke(self, strokeNode):
-		strokeType=strokeNode.get(TemplateManager.TAG_TYPE)
-		params=strokeNode.get(TemplateManager.TAG_PARAMETER)
-
-		startPoint=strokeNode.get(TemplateManager.TAG_START_POINT)
-		position=strokeNode.get(TemplateManager.TAG_POSITION)
-		pane=Pane(*position)
-
-		strokeSpec = StrokeSpec(strokeType, params)
-		stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, strokeBoundPane=pane)
-		return stroke
-
-	def applyComponentWithTransformation(self, component, position):
-		if position != None:
-			pane = Pane(*position)
-			component = self.shapeFactory.generateComponentByComponentPane(component, pane)
-		return component
-
-	def parseStrokeByReference(self, strokeNode, templateManager):
-		referenceName = strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
-		orders = strokeNode.get(TemplateManager.TAG_ORDER)
-		position = strokeNode.get(TemplateManager.TAG_POSITION)
-
-		referencedComponent = templateManager.get(referenceName)
-		strokes = list((referencedComponent.getStroke(index) for index in orders))
-		component = self.shapeFactory.generateComponentByStrokes(strokes)
-
-		component = self.applyComponentWithTransformation(component, position)
-
-		return component.getStrokeList()
-
-	def parseComponentByAnchor(self, strokeNode):
-		referenceName = strokeNode.get(TemplateManager.TAG_REFRENCE_NAME)
-		position = strokeNode.get(TemplateManager.TAG_POSITION)
+	def interpretStrokeByReference(self, element: GlyphElementDescription):
+		referenceName = element.referenceName
+		order = element.order
+		position = element.position
 
 		referencedComponent = self.get(referenceName)
-		component = referencedComponent
-
-		component = self.applyComponentWithTransformation(component, position)
-
-		return component
+		strokes = self.interpreter.retrieveStrokesOfComponentIntoPosition(referencedComponent, order, position)
+		return strokes
 
 class YamlCanvasController(BaseTextCanvasController):
 	def __init__(self):
