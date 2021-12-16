@@ -163,7 +163,7 @@ yaml:
 		package=`echo $$packageConfig | cut -d" " -f1`;\
 		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
 		echo $$cm $$package $$packageDir;\
-		PYTHONPATH="src:$$packageDir" time src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
+		PYTHONPATH="src:libs:$$packageDir" time src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
 	done
 
 puretable:
@@ -183,7 +183,7 @@ $(YAML_PATH)/qh%.yaml: $(YAML_PATH)
 	package=`echo $$packageConfig | cut -d" " -f1`;\
 	packageDir=`echo $$packageConfig | cut -d" " -f2`;\
 	echo $$cm $$package $$packageDir;\
-	PYTHONPATH="src:$$packageDir" time src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
+	PYTHONPATH="src:libs:$$packageDir" time src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
 
 $(XML_PATH)/qh%.xml: $(XML_PATH) $(YAML_PATH)/qh%.yaml
 	filename=$$(basename $@); \
@@ -209,7 +209,7 @@ profile:
 		package=`echo $$packageConfig | cut -d" " -f1`;\
 		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
 		echo $$cm $$package $$packageDir;\
-		PYTHONPATH="src:$$packageDir" src/profiler.py -q -p $$package > $(PROFILE_PATH)/$$cm.txt;\
+		PYTHONPATH="src:libs:$$packageDir" src/profiler.py -q -p $$package > $(PROFILE_PATH)/$$cm.txt;\
 	done
 
 dc:
@@ -225,25 +225,25 @@ test: FORCE
 	done
 
 test-ar: FORCE
-	PYTHONPATH="src:codings/Array" python3 -m unittest discover -s test/ar/
+	PYTHONPATH="src:libs:codings/Array" python3 -m unittest discover -s test/ar/
 
 test-bs: FORCE
-	PYTHONPATH="src:codings/Boshiamy" python3 -m unittest discover -s test/bs/
+	PYTHONPATH="src:libs:codings/Boshiamy" python3 -m unittest discover -s test/bs/
 
 test-cj: FORCE
-	PYTHONPATH="src:codings/CangJie" python3 -m unittest discover -s test/cj/
+	PYTHONPATH="src:libs:codings/CangJie" python3 -m unittest discover -s test/cj/
 
 test-dy: FORCE
-	PYTHONPATH="src:codings/DaYi" python3 -m unittest discover -s test/dy/
+	PYTHONPATH="src:libs:codings/DaYi" python3 -m unittest discover -s test/dy/
 
 test-zm: FORCE
-	PYTHONPATH="src:codings/ZhengMa" python3 -m unittest discover -s test/zm/
+	PYTHONPATH="src:libs:codings/ZhengMa" python3 -m unittest discover -s test/zm/
 
 test-fc: FORCE
-	PYTHONPATH="src:codings/FourCorner" python3 -m unittest discover -s test/fc/
+	PYTHONPATH="src:libs:codings/FourCorner" python3 -m unittest discover -s test/fc/
 
 test-dc: FORCE
-	PYTHONPATH="src:codings/DynamicComposition" python3 -m unittest discover -s test/dc/
+	PYTHONPATH="src:libs:codings/DynamicComposition" python3 -m unittest discover -s test/dc/
 
 imtables: scim ibus gcin ovim msim
 
