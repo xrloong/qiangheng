@@ -35,9 +35,13 @@ class GlyphComponentDescription:
 		self.comment = comment
 		self.elements = None
 
-class GlyphDataSetDescription:
+class GlyphDocumentDescription:
 	def __init__(self, components: [GlyphComponentDescription]):
 		self.components = components
+
+class GlyphDataSetDescription:
+	def __init__(self, documents: [GlyphDocumentDescription]):
+		self.documents = documents
 
 class GlyphTags(object):
 	TEMPLATE_SET = "樣式集"
@@ -65,8 +69,8 @@ class GlyphParser(object):
 		super().__init__()
 
 	def load(self, filename):
-		rootNode = yaml.load(open(filename), Loader=yaml.SafeLoader)
-		dataSet = self.parseDataSet(rootNode)
+		documents = yaml.load_all(open(filename), Loader=yaml.SafeLoader)
+		dataSet = self.parseDataSet(documents)
 		return dataSet
 
 	def parseElement(self, elementNode):
@@ -118,16 +122,23 @@ class GlyphParser(object):
 		component.elements = elements
 		return component
 
-	def parseDataSet(self, rootNode):
-		dataSetNode=rootNode.get(GlyphTags.TEMPLATE_SET)
+	def parseDocument(self, documentNode):
+		dataSetNode = documentNode.get(GlyphTags.TEMPLATE_SET)
 
 		components = []
 		for componentNode in dataSetNode:
 			component = self.parseComponent(componentNode)
 			components.append(component)
 
-		dataSet = GlyphDataSetDescription(components)
-		return dataSet
+		document = GlyphDocumentDescription(components)
+		return document
+
+		documentNode = documentNode.get(GlyphTags.TEMPLATE_SET)
+		return GlyphDocumentDescription(document)
+
+	def parseDataSet(self, documents):
+		dataSet = [self.parseDocument(document) for document in documents]
+		return GlyphDataSetDescription(dataSet)
 
 class IfGlyphDescriptionInterpreter(object, metaclass=abc.ABCMeta):
 	@abc.abstractmethod
@@ -136,6 +147,10 @@ class IfGlyphDescriptionInterpreter(object, metaclass=abc.ABCMeta):
 
 	@abc.abstractmethod
 	def interpretComponent(self, component: GlyphComponentDescription):
+		pass
+
+	@abc.abstractmethod
+	def interpretDocument(self, dataSet: GlyphDocumentDescription):
 		pass
 
 	@abc.abstractmethod

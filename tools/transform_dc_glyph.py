@@ -11,7 +11,8 @@ from xie.graphics import StrokeFactory
 from parser.GlyphParser import GlyphTags
 from parser.GlyphParser import GlyphParser
 from parser.GlyphParser import IfGlyphDescriptionInterpreter
-from parser.GlyphParser import GlyphElementDescription, GlyphComponentDescription, GlyphDataSetDescription
+from parser.GlyphParser import GlyphElementDescription, GlyphComponentDescription
+from parser.GlyphParser import GlyphDocumentDescription, GlyphDataSetDescription
 
 CodingTemplateFile="qhdata/dc/radix/template.yaml"
 
@@ -70,17 +71,21 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		componentDicts[GlyphTags.STROKE_GROUP] = {GlyphTags.STROKE: elementDicts}
 		return componentDicts
 
-	def interpretDataSet(self, dataSet: GlyphDataSetDescription):
-		result = [self.interpretComponent(component) for component in dataSet.components]
+	def interpretDocument(self, document: GlyphDocumentDescription):
+		result = [self.interpretComponent(component) for component in document.components]
 		resultRootNode = {GlyphTags.TEMPLATE_SET: result}
 		return resultRootNode
+
+	def interpretDataSet(self, dataSet: GlyphDataSetDescription):
+		documentNodes = [self.interpretDocument(document) for document in dataSet.documents]
+		return documentNodes
 
 glyphParser = GlyphParser()
 interpreter = GlyphDescriptionInterpreter()
 
 glyphDataSet = glyphParser.load(CodingTemplateFile)
-resultRootNode = interpreter.interpretDataSet(glyphDataSet)
-print(yaml.dump(resultRootNode, Dumper=IndentWorkAroundDumper,
+documentNodes = interpreter.interpretDataSet(glyphDataSet)
+print(yaml.dump_all(documentNodes, Dumper=IndentWorkAroundDumper,
     allow_unicode=True, width=200,
     explicit_start=True, explicit_end=True,
     ), end='')
