@@ -161,9 +161,12 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		return componentDicts
 
 	def interpretDataSet(self, dataSet: GlyphDataSetDescription):
+		strokes = [self.interpretComponent(component) for component in dataSet.strokes]
+		parts = [self.interpretComponent(component) for component in dataSet.parts]
+		components = [self.interpretComponent(component) for component in dataSet.components]
+
 		doc = OrderedDict({"編碼類型": "描繪法"})
-		result = [self.interpretComponent(component) for component in dataSet.components]
-		doc["編碼集"] = result
+		doc["編碼集"] = strokes + parts + components
 		return doc
 
 glyphParser = GlyphParser()

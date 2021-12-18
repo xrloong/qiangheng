@@ -75,8 +75,15 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		return componentDicts
 
 	def interpretDataSet(self, dataSet: GlyphDataSetDescription):
-		result = [self.interpretComponent(component) for component in dataSet.components]
-		resultRootNode = {GlyphTags.TEMPLATE_SET: result}
+		strokes = [self.interpretComponent(stroke) for stroke in dataSet.strokes]
+		parts = [self.interpretComponent(part) for part in dataSet.parts]
+		components = [self.interpretComponent(component) for component in dataSet.components]
+
+		resultRootNode = OrderedDict({
+			GlyphTags.STROKE_SET: strokes,
+			GlyphTags.PART_SET: parts,
+			GlyphTags.COMPONENT_SET: components,
+			})
 		return resultRootNode
 
 glyphParser = GlyphParser()

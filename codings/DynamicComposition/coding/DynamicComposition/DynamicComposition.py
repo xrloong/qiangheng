@@ -514,6 +514,18 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		return component
 
 	def interpretDataSet(self, glyphDataSet: GlyphDataSetDescription):
+		for strokeDesc in glyphDataSet.strokes:
+			name = strokeDesc.name
+			stroke = self.interpretComponent(strokeDesc)
+
+			self.templates[name] = stroke
+
+		for partDesc in glyphDataSet.parts:
+			name = partDesc.name
+			part = self.interpretComponent(partDesc)
+
+			self.templates[name] = part
+
 		for componentDesc in glyphDataSet.components:
 			name = componentDesc.name
 			component = self.interpretComponent(componentDesc)

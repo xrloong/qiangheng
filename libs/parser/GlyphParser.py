@@ -52,11 +52,17 @@ class GlyphComponentDescription:
 		self.elements = None
 
 class GlyphDataSetDescription:
-	def __init__(self, components: [GlyphComponentDescription]):
+	def __init__(self, strokes: [GlyphComponentDescription],
+			parts: [GlyphComponentDescription],
+			components: [GlyphComponentDescription]):
+		self.strokes = strokes
+		self.parts = parts
 		self.components = components
 
 class GlyphTags(object):
-	TEMPLATE_SET = "樣式集"
+	STROKE_SET = "筆劃集"
+	PART_SET = "零件集"
+	COMPONENT_SET = "部件集"
 
 	STROKE='筆劃'
 	NAME='名稱'
@@ -82,7 +88,7 @@ class GlyphParser(object):
 
 	def load(self, filename):
 		rootNode = yaml.load(open(filename), Loader=yaml.SafeLoader)
-		dataSet = self.parseDataSet(rootNode)
+		dataSet = self.parseAllDataSet(rootNode)
 		return dataSet
 
 	def parseDefinitionElement(self, elementNode):
@@ -132,15 +138,25 @@ class GlyphParser(object):
 		component.elements = elements
 		return component
 
-	def parseDataSet(self, rootNode):
-		dataSetNode=rootNode.get(GlyphTags.TEMPLATE_SET)
-
+	def parseDataSet(self, dataSetNode):
 		components = []
 		for componentNode in dataSetNode:
 			component = self.parseComponent(componentNode)
 			components.append(component)
 
-		dataSet = GlyphDataSetDescription(components)
+		return components
+
+	def parseAllDataSet(self, rootNode):
+		strokeSetNode = rootNode.get(GlyphTags.STROKE_SET)
+		strokes = self.parseDataSet(strokeSetNode)
+
+		partSetNode = rootNode.get(GlyphTags.PART_SET)
+		parts = self.parseDataSet(partSetNode)
+
+		componentSetNode = rootNode.get(GlyphTags.COMPONENT_SET)
+		components = self.parseDataSet(componentSetNode)
+
+		dataSet = GlyphDataSetDescription(strokes, parts, components)
 		return dataSet
 
 class IfGlyphDescriptionInterpreter(object, metaclass=abc.ABCMeta):
