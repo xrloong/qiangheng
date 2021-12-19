@@ -67,7 +67,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 			componentDicts[GlyphTags.COMMENT] = component.comment
 
 		elementDicts = [self.interpretElement(element) for element in component.elements]
-		componentDicts[GlyphTags.STROKE_GROUP] = {GlyphTags.STROKE: elementDicts}
+		componentDicts[GlyphTags.STROKE] = elementDicts
 		return componentDicts
 
 	def interpretDataSet(self, dataSet: GlyphDataSetDescription):

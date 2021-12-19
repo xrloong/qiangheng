@@ -406,22 +406,21 @@ class DCRadixParser(CodingRadixParser):
 	def parseComponent(self, componentNode):
 		componentName=componentNode.get(DCRadixParser.TAG_NAME)
 
-		t=componentNode.get(DCRadixParser.TAG_STROKE_GROUP)
-		strokeList=self.parseStrokeList(t)
+		strokeNode = componentNode.get(DCRadixParser.TAG_STROKE)
+		strokes = self.parseStrokes(strokeNode)
 
-		component=DCComponent.generateComponentByStrokes(strokeList)
+		component = DCComponent.generateComponentByStrokes(strokes)
 		return [componentName, component]
 
-	def parseStrokeList(self, componentNode):
-		strokeList=[]
-		strokeNodeList=componentNode.get(DCRadixParser.TAG_STROKE)
-		for strokeNode in strokeNodeList:
+	def parseStrokes(self, strokeNode):
+		strokes=[]
+		for strokeNode in strokeNode:
 			element = self.glyphParser.parseElement(strokeNode)
 			assert element.isReference
 
 			tempStrokes = self.templateManager.interpretStrokeByReference(element)
-			strokeList.extend(tempStrokes)
-		return strokeList
+			strokes.extend(tempStrokes)
+		return strokes
 
 	def parsePane(self, descriptionRegion):
 		left=int(descriptionRegion[0:2], 16)

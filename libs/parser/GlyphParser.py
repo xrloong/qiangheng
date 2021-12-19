@@ -41,7 +41,7 @@ class GlyphDataSetDescription:
 
 class GlyphTags(object):
 	TEMPLATE_SET = "樣式集"
-	STROKE_GROUP='筆劃組'
+
 	STROKE='筆劃'
 	NAME='名稱'
 	COMMENT='註記'
@@ -106,12 +106,11 @@ class GlyphParser(object):
 	def parseComponent(self, componentNode):
 		componentName = componentNode.get(GlyphTags.NAME)
 		componentComment = componentNode.get(GlyphTags.COMMENT)
-		strokeGroupNode = componentNode.get(GlyphTags.STROKE_GROUP)
 
 		component = GlyphComponentDescription(componentName, componentComment)
 
 		elements = []
-		for elementNode in strokeGroupNode.get(GlyphTags.STROKE):
+		for elementNode in componentNode.get(GlyphTags.STROKE):
 			element = self.parseElement(elementNode)
 			elements.append(element)
 
