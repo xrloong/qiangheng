@@ -50,15 +50,19 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 			stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, startPoint = startPoint)
 			result[GlyphTags.POSITION] = list(stroke.getStatePane().boundary)
 			return result
-
-		if element.name:
+		if element.isAnchor:
 			result[GlyphTags.NAME] = element.name
-		result[GlyphTags.REFRENCE_NAME] = QuotedString(element.referenceName)
-
-		if element.order:
-			result[GlyphTags.ORDER] = element.order
-		if element.position:
-			result[GlyphTags.POSITION] = element.position
+			result[GlyphTags.REFRENCE_NAME] = QuotedString(element.referenceName)
+			if element.position:
+				result[GlyphTags.POSITION] = element.position
+			return result
+		if element.isReference:
+			result[GlyphTags.REFRENCE_NAME] = QuotedString(element.referenceName)
+			if element.order:
+				result[GlyphTags.ORDER] = element.order
+			if element.position:
+				result[GlyphTags.POSITION] = element.position
+			return result
 		return result
 
 	def interpretComponent(self, component: GlyphComponentDescription):

@@ -7,16 +7,6 @@ class GlyphElementDescription:
 	def __init__(self, method):
 		self.method = method
 
-		self.name = None
-		self.referenceName = None
-		self.order = None
-
-		self.strokeType = None
-		self.startPoint = None
-		self.params = None
-
-		self.position = None
-
 	@property
 	def isAnchor(self):
 		return self.method == GlyphTags.METHOD__ANCHOR
@@ -28,6 +18,32 @@ class GlyphElementDescription:
 	@property
 	def isDefinition(self):
 		return self.method == GlyphTags.METHOD__DEFINITION
+
+class GlyphDefinitionElementDescription(GlyphElementDescription):
+	def __init__(self, strokeType, params, startPoint, position):
+		super().__init__(GlyphTags.METHOD__DEFINITION)
+
+		self.strokeType = strokeType
+		self.params = params
+
+		self.startPoint = startPoint
+		self.position = position
+
+class GlyphAnchorElementDescription(GlyphElementDescription):
+	def __init__(self, name, referenceName, position):
+		super().__init__(GlyphTags.METHOD__ANCHOR)
+
+		self.name = name
+		self.referenceName = referenceName
+		self.position = position
+
+class GlyphReferenceElementDescription(GlyphElementDescription):
+	def __init__(self, referenceName, order, position):
+		super().__init__(GlyphTags.METHOD__REFERENCE)
+
+		self.referenceName = referenceName
+		self.order = order
+		self.position = position
 
 class GlyphComponentDescription:
 	def __init__(self, name, comment = None):
@@ -69,38 +85,37 @@ class GlyphParser(object):
 		dataSet = self.parseDataSet(rootNode)
 		return dataSet
 
+	def parseDefinitionElement(self, elementNode):
+		strokeType = elementNode.get(GlyphTags.TYPE)
+		params = elementNode.get(GlyphTags.PARAMETER)
+		startPoint = elementNode.get(GlyphTags.START_POINT)
+		position = elementNode.get(GlyphTags.POSITION)
+		return GlyphDefinitionElementDescription(strokeType, params, startPoint, position)
+
+	def parseAnchorElement(self, elementNode):
+		name = elementNode.get(GlyphTags.NAME)
+		referenceName = elementNode.get(GlyphTags.REFRENCE_NAME)
+		position = elementNode.get(GlyphTags.POSITION)
+		return GlyphAnchorElementDescription(name, referenceName, position)
+
+	def parseReferenceElement(self, elementNode):
+		referenceName = elementNode.get(GlyphTags.REFRENCE_NAME)
+		order = elementNode.get(GlyphTags.ORDER)
+		position = elementNode.get(GlyphTags.POSITION)
+		return GlyphReferenceElementDescription(referenceName, order, position)
+
 	def parseElement(self, elementNode):
 		method = elementNode.get(GlyphTags.METHOD)
 		element = GlyphElementDescription(method)
 		elementDict = OrderedDict({GlyphTags.METHOD: method})
-		if element.isReference:
-			referenceName = elementNode.get(GlyphTags.REFRENCE_NAME)
-			order = elementNode.get(GlyphTags.ORDER)
-			position = elementNode.get(GlyphTags.POSITION)
 
-			element.referenceName = referenceName
-			element.order = order
-			if position:
-				element.position = position
-		elif element.isAnchor:
-			name = elementNode.get(GlyphTags.NAME)
-			referenceName = elementNode.get(GlyphTags.REFRENCE_NAME)
-			position = elementNode.get(GlyphTags.POSITION)
+		if method == GlyphTags.METHOD__DEFINITION:
+			element = self.parseDefinitionElement(elementNode)
+		elif method == GlyphTags.METHOD__ANCHOR:
+			element = self.parseAnchorElement(elementNode)
+		elif method == GlyphTags.METHOD__REFERENCE:
+			element = self.parseReferenceElement(elementNode)
 
-			element.name = name
-			element.referenceName = referenceName
-			if position:
-				element.position = position
-		elif element.isDefinition:
-			strokeType = elementNode.get(GlyphTags.TYPE)
-			startPoint = elementNode.get(GlyphTags.START_POINT)
-			params = elementNode.get(GlyphTags.PARAMETER)
-			position = elementNode.get(GlyphTags.POSITION)
-
-			element.strokeType = strokeType
-			element.startPoint = startPoint
-			element.params = params
-			element.position = position
 		return element
 
 	def parseComponent(self, componentNode):
