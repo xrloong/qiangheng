@@ -64,6 +64,9 @@ class DCComponent:
 	def getExtraPane(self, paneName):
 		return self.extraPaneDB.get(paneName, None)
 
+	def getComponentPane(self):
+		return self.component.getStatePane()
+
 	@staticmethod
 	def generateDefaultComponent(dcComponentPanePairList):
 		shapeFactory=DCComponent.shapeFactory
@@ -130,6 +133,9 @@ class DCCodeInfo(CodeInfo):
 	def getComponent(self):
 		return self.component
 
+	def getComponentPane(self):
+		return self.component.getComponentPane()
+
 	def getStrokeCount(self):
 		return self.getComponent().getCount()
 
@@ -145,24 +151,20 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
 		return isAllWithCode
 
-	def encodeByEmbed(self, codeInfoList, paneNameList):
-		if len(codeInfoList)<2:
-			return self.encodeAsInvalidate(codeInfoList)
+	def encodeByEmbed(self, codeInfos, paneNames):
+		if len(codeInfos)<2:
+			return self.encodeAsInvalidate(codeInfos)
 
-		containerCodeInfo = codeInfoList[0]
+		containerCodeInfo = codeInfos[0]
+		subComponentNames = paneNames[1:]
 
-		paneList = []
-		for paneName in paneNameList:
-			extraPane = containerCodeInfo.getExtraPane(paneName)
-			assert extraPane != None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
-			paneList.append(extraPane)
+		containerPane = containerCodeInfo.getComponentPane()
+		subPanes = [containerCodeInfo.getExtraPane(paneName) for paneName in subComponentNames]
 
-		componentList = []
-		for codeInfo in codeInfoList:
-			component = codeInfo.getComponent()
-			componentList.append(component)
+		panes = [containerPane] + subPanes
+		components = [codeInfo.getComponent() for codeInfo in codeInfos]
 
-		componentPanePair = zip(componentList, paneList)
+		componentPanePair = zip(components, panes)
 		codeInfo = self.generateDefaultCodeInfo(componentPanePair)
 		return codeInfo
 
