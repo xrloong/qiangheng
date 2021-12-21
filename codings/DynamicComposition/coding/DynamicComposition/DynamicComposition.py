@@ -133,11 +133,11 @@ class DCCodeInfo(CodeInfo):
 		component=self.getComponent()
 		return component
 
-	def setExtraPane(self, componentName, paneName, extraPane):
+	def setExtraPane(self, paneName, extraPane):
 		component = self.getComponent()
 		component.setExtraPane(paneName, extraPane)
 
-	def getExtraPane(self, componentName, paneName):
+	def getExtraPane(self, paneName):
 		component = self.getComponent()
 		return component.getExtraPane(paneName)
 
@@ -166,10 +166,10 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		containerCodeInfo = codeInfoList[0]
 
-		paneList=[]
-		for [componentName, paneName] in zip(componentNameList, paneNameList):
-			extraPane=containerCodeInfo.getExtraPane(componentName, paneName)
-			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
+		paneList = []
+		for paneName in paneNameList:
+			extraPane = containerCodeInfo.getExtraPane(paneName)
+			assert extraPane != None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
 			paneList.append(extraPane)
 
 		componentList = []
@@ -212,8 +212,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			[DCCodeInfo.STROKE_GROUP_NAME_LOOP, DCCodeInfo.STROKE_GROUP_NAME_LOOP],
 			[DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LOOP])
 		# 颱=(起 風台), 是=(回 [風外]䖝)
-		if firstCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI))
+		if firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
+			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
 	def encodeAsSilkworm(self, codeInfoList):
@@ -228,8 +228,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		lastCodeInfo=codeInfoList[-1]
 		# 題=(起 是頁), 是=(志 日[是下])
-		if lastCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI))
+		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
+			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 
 		return codeInfo
 
@@ -256,8 +256,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		lastCodeInfo=codeInfoList[-1]
 		# 屗=(起 尾寸), 尾=(志 尸毛)
-		if lastCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.STROKE_GROUP_NAME_QI, DCCodeInfo.PANE_NAME_QI))
+		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
+			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
 	def encodeAsZai(self, codeInfoList):
