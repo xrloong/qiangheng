@@ -329,9 +329,7 @@ class DCRadixParser(CodingRadixParser):
 		componentNodeList=elementCodeInfo.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
 		lastComponentNode = componentNodeList[0]
 
-		[componentName, component] = self.parseComponent(lastComponentNode)
-		extraPaneDB=self.parseExtraScopeDB(lastComponentNode)
-		component.setExtraPaneDB(extraPaneDB)
+		component = self.parseComponent(lastComponentNode)
 
 		codeInfo = DCCodeInfo(component)
 		return codeInfo
@@ -368,13 +366,13 @@ class DCRadixParser(CodingRadixParser):
 		return pane
 
 	def parseComponent(self, componentNode):
-		componentName=componentNode.get(DCRadixParser.TAG_NAME)
-
+		extraPaneDB = self.parseExtraScopeDB(componentNode)
 		strokeNode = componentNode.get(DCRadixParser.TAG_STROKE)
 		strokes = self.parseStrokes(strokeNode)
 
 		component = DCComponent.generateComponentByStrokes(strokes)
-		return [componentName, component]
+		component.setExtraPaneDB(extraPaneDB)
+		return component
 
 	def parseStrokes(self, strokeNode):
 		strokes=[]
