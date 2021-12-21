@@ -151,7 +151,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
 		return isAllWithCode
 
-	def encodeByEmbed(self, codeInfos, paneNames):
+	def encodeByEmbed(self, operator, codeInfos, paneNames):
 		if len(codeInfos)<2:
 			return self.encodeAsInvalidate(codeInfos)
 
@@ -160,8 +160,9 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		containerPane = containerCodeInfo.getComponentPane()
 		subPanes = [containerCodeInfo.getExtraPane(paneName) for paneName in subComponentNames]
+		layoutSpec = LayoutSpec(operator, containerPane = containerPane, subPanes = subPanes)
 
-		panes = [containerPane] + subPanes
+		panes = self.shapeFactory.generateLayouts(layoutSpec)
 		components = [codeInfo.getComponent() for codeInfo in codeInfos]
 
 		componentPanePair = zip(components, panes)
@@ -195,7 +196,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsLoop(self, codeInfoList):
 		firstCodeInfo=codeInfoList[0]
-		codeInfo=self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LOOP])
+		codeInfo=self.encodeByEmbed(JointOperator.Loop, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LOOP])
 		# 颱=(起 風台), 是=(回 [風外]䖝)
 		if firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
 			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
@@ -230,10 +231,10 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsQi(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_QI])
+		return self.encodeByEmbed(JointOperator.Qi, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_QI])
 
 	def encodeAsLiao(self, codeInfoList):
-		codeInfo=self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIAO])
+		codeInfo=self.encodeByEmbed(JointOperator.Liao, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIAO])
 
 		lastCodeInfo=codeInfoList[-1]
 		# 屗=(起 尾寸), 尾=(志 尸毛)
@@ -242,26 +243,26 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsZai(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZAI])
+		return self.encodeByEmbed(JointOperator.Zai, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZAI])
 
 	def encodeAsDou(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_DOU])
+		return self.encodeByEmbed(JointOperator.Dou, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_DOU])
 
 
 	def encodeAsMu(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_MU_1, DCCodeInfo.PANE_NAME_MU_2])
+		return self.encodeByEmbed(JointOperator.Mu, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_MU_1, DCCodeInfo.PANE_NAME_MU_2])
 
 	def encodeAsZuo(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
+		return self.encodeByEmbed(JointOperator.Zuo, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
 
 	def encodeAsYou(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_YOU_1, DCCodeInfo.PANE_NAME_YOU_2])
+		return self.encodeByEmbed(JointOperator.You, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_YOU_1, DCCodeInfo.PANE_NAME_YOU_2])
 
 	def encodeAsLiang(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIANG_1, DCCodeInfo.PANE_NAME_LIANG_2])
+		return self.encodeByEmbed(JointOperator.Liang, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIANG_1, DCCodeInfo.PANE_NAME_LIANG_2])
 
 	def encodeAsJia(self, codeInfoList):
-		return self.encodeByEmbed(codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
+		return self.encodeByEmbed(JointOperator.Jia, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
 
 class DCRadixParser(CodingRadixParser):
 	TAG_STROKE_GROUP='筆劃組'
