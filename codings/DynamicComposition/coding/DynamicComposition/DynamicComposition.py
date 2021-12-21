@@ -134,25 +134,15 @@ class DCCodeInfo(CodeInfo):
 		return component
 
 	def setExtraPane(self, componentName, paneName, extraPane):
-		component=self.getComponent(componentName)
-
-		if component==None:
-			component=self.getComponent()
-
+		component = self.getComponent()
 		component.setExtraPane(paneName, extraPane)
 
 	def getExtraPane(self, componentName, paneName):
-		component=self.getComponent(componentName)
-
-		if component==None:
-			component=self.getComponent()
-
+		component = self.getComponent()
 		return component.getExtraPane(paneName)
 
-	def getComponent(self, componentName=STROKE_GROUP_NAME_DEFAULT):
-		component=self.componentDB.get(componentName)
-		if componentName!=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT and component==None:
-			component=self.getComponent(DCCodeInfo.STROKE_GROUP_NAME_DEFAULT)
+	def getComponent(self):
+		component=self.componentDB.get(DCCodeInfo.STROKE_GROUP_NAME_DEFAULT)
 		return component
 
 	def getStrokeCount(self):
@@ -170,15 +160,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
 		return isAllWithCode
 
-	def extendComponentNameList(self, componentNameList, codeInfoList):
-		lenNameList=len(componentNameList)
-		lenCodeInfoList=len(codeInfoList)
-		extendingList=[]
-		if lenCodeInfoList>lenNameList:
-			diff=lenCodeInfoList-lenNameList
-			extendingList=[DCCodeInfo.STROKE_GROUP_NAME_DEFAULT for i in range(diff)]
-		return componentNameList+extendingList
-
 	def encodeByEmbed(self, codeInfoList, componentNameList, paneNameList):
 		if len(codeInfoList)<2:
 			return self.encodeAsInvalidate(codeInfoList)
@@ -191,9 +172,9 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
 			paneList.append(extraPane)
 
-		componentList=[]
-		for [componentName, codeInfo] in zip(componentNameList, codeInfoList):
-			component=codeInfo.getComponent(componentName)
+		componentList = []
+		for codeInfo in codeInfoList:
+			component = codeInfo.getComponent()
 			componentList.append(component)
 
 		componentPanePair=zip(componentList, paneList)
@@ -238,17 +219,12 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsSilkworm(self, codeInfoList):
 		weights = list(map(lambda x: x.getStrokeCount()+1, codeInfoList))
 		layoutSpec = LayoutSpec(JointOperator.Silkworm, weights = weights)
+
 		panes = self.shapeFactory.generateLayouts(layoutSpec)
+		components = [codeInfo.getComponent() for codeInfo in codeInfoList]
 
-		componentNameList=self.extendComponentNameList(['蚕'], codeInfoList)
-
-		componentList=[]
-		for [componentName, codeInfo] in zip(componentNameList, codeInfoList):
-			component=codeInfo.getComponent(componentName)
-			componentList.append(component)
-
-		componentPanePair=zip(componentList, panes)
-		codeInfo=self.generateDefaultCodeInfo(componentPanePair)
+		componentPanePair = zip(components, panes)
+		codeInfo = self.generateDefaultCodeInfo(componentPanePair)
 
 		lastCodeInfo=codeInfoList[-1]
 		# 題=(起 是頁), 是=(志 日[是下])
@@ -260,17 +236,12 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsGoose(self, codeInfoList):
 		weights = list(map(lambda x: x.getStrokeCount(), codeInfoList))
 		layoutSpec = LayoutSpec(JointOperator.Goose, weights = weights)
+
 		panes = self.shapeFactory.generateLayouts(layoutSpec)
+		components = [codeInfo.getComponent() for codeInfo in codeInfoList]
 
-		componentNameList=self.extendComponentNameList(['鴻'], codeInfoList)
-
-		componentList=[]
-		for [componentName, codeInfo] in zip(componentNameList, codeInfoList):
-			component=codeInfo.getComponent(componentName)
-			componentList.append(component)
-
-		componentPanePair=zip(componentList, panes)
-		codeInfo=self.generateDefaultCodeInfo(componentPanePair)
+		componentPanePair = zip(components, panes)
+		codeInfo = self.generateDefaultCodeInfo(componentPanePair)
 		return codeInfo
 
 	def encodeAsQi(self, codeInfoList):
