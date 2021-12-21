@@ -29,10 +29,13 @@ from xie.graphics import BaseTextCanvasController
 from xie.graphics import DrawingSystem
 from xie.graphics import Component
 from xie.graphics import Character
-from xie.graphics import ShapeFactory
-from xie.graphics import StrokeSpec, StrokeFactory
 
-from xie.graphics import genVerticalPanes, genHorizontalPanes
+from xie.graphics import JointOperator
+from xie.graphics import StrokeSpec
+from xie.graphics import LayoutSpec
+
+from xie.graphics import ShapeFactory
+from xie.graphics import StrokeFactory
 
 class DCComponent:
 	shapeFactory = ShapeFactory()
@@ -156,6 +159,10 @@ class DCCodeInfo(CodeInfo):
 		return self.getComponent().getCount()
 
 class DCCodeInfoEncoder(CodeInfoEncoder):
+	def __init__(self):
+		super().__init__()
+		self.shapeFactory = ShapeFactory()
+
 	def generateDefaultCodeInfo(self, componentPanePair):
 		return DCCodeInfo.generateDefaultCodeInfo(componentPanePair)
 
@@ -176,7 +183,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		if len(codeInfoList)<2:
 			return self.encodeAsInvalidate(codeInfoList)
 
-		containerCodeInfo=codeInfoList[0]
+		containerCodeInfo = codeInfoList[0]
 
 		newComponentList=[]
 		for [componentName, paneName, codeInfo] in zip(componentNameList, paneNameList, codeInfoList):
@@ -237,8 +244,9 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsSilkworm(self, codeInfoList):
-		weightList=list(map(lambda x: x.getStrokeCount()+1, codeInfoList))
-		paneList=genVerticalPanes(weightList)
+		weights = list(map(lambda x: x.getStrokeCount()+1, codeInfoList))
+		layoutSpec = LayoutSpec(JointOperator.Silkworm, weights = weights)
+		panes = self.shapeFactory.generateLayouts(layoutSpec)
 
 		componentNameList=self.extendComponentNameList(['蚕'], codeInfoList)
 
@@ -247,7 +255,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			component=codeInfo.getComponent(componentName)
 			componentList.append(component)
 
-		componentPanePair=zip(componentList, paneList)
+		componentPanePair=zip(componentList, panes)
 		codeInfo=self.generateDefaultCodeInfo(componentPanePair)
 
 		lastCodeInfo=codeInfoList[-1]
@@ -258,8 +266,9 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
-		weightList=list(map(lambda x: x.getStrokeCount(), codeInfoList))
-		paneList=genHorizontalPanes(weightList)
+		weights = list(map(lambda x: x.getStrokeCount(), codeInfoList))
+		layoutSpec = LayoutSpec(JointOperator.Goose, weights = weights)
+		panes = self.shapeFactory.generateLayouts(layoutSpec)
 
 		componentNameList=self.extendComponentNameList(['鴻'], codeInfoList)
 
@@ -268,7 +277,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			component=codeInfo.getComponent(componentName)
 			componentList.append(component)
 
-		componentPanePair=zip(componentList, paneList)
+		componentPanePair=zip(componentList, panes)
 		codeInfo=self.generateDefaultCodeInfo(componentPanePair)
 		return codeInfo
 
