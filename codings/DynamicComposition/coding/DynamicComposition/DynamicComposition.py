@@ -185,14 +185,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 		containerCodeInfo = codeInfoList[0]
 
-		newComponentList=[]
-		for [componentName, paneName, codeInfo] in zip(componentNameList, paneNameList, codeInfoList):
-			extraPane=containerCodeInfo.getExtraPane(componentName, paneName)
-			assert extraPane!=None, "extraPane 不應為 None 。%s: %s"%(paneName, str(containerCodeInfo))
-
-			component=codeInfo.getComponent(componentName).generateComponent(extraPane)
-			newComponentList.append(component)
-
 		paneList=[]
 		for [componentName, paneName] in zip(componentNameList, paneNameList):
 			extraPane=containerCodeInfo.getExtraPane(componentName, paneName)
