@@ -17,7 +17,9 @@ from xie.graphics import BaseTextCanvasController
 from parser.GlyphParser import GlyphTags
 from parser.GlyphParser import GlyphParser
 from parser.GlyphParser import IfGlyphDescriptionInterpreter
-from parser.GlyphParser import GlyphElementDescription, GlyphComponentDescription, GlyphDataSetDescription
+from parser.GlyphParser import GlyphElementDescription
+from parser.GlyphParser import GlyphStrokeDescription, GlyphComponentDescription
+from parser.GlyphParser import GlyphDataSetDescription
 
 CodingTemplateFile="qhdata/dc/radix/template.yaml"
 
@@ -67,9 +69,6 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 
 		self.anchors = {}
 		self.templates = {}
-
-		self.controller = YamlCanvasController()
-		self.ds = DrawingSystem(self.controller)
 
 	def getStroke(self, name, index):
 		component=self.templates.get(name)
@@ -135,6 +134,32 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 			assert False
 		return strokes
 
+	def getDrawResult(self, component: Component):
+		controller = YamlCanvasController()
+		ds = DrawingSystem(controller)
+
+		ds.clear()
+		ds.draw(component)
+
+		drawStrokes = controller.getStrokes()
+		return drawStrokes
+
+	def interpretStroke(self, stroke: GlyphStrokeDescription):
+		name = stroke.name
+
+		self.anchors.clear()
+		strokes = self.interpretElement(stroke.element)
+
+		component = self.shapeFactory.generateComponentByStrokes(strokes)
+		self.templates[name] = component
+
+		drawStrokes = self.getDrawResult(component)
+
+		strokeDicts = OrderedDict({"字符": QuotedString(name)})
+		strokeDicts["類型"] = "標準"
+		strokeDicts["字圖"] = drawStrokes
+		return strokeDicts
+
 	def interpretComponent(self, component: GlyphComponentDescription):
 		name = component.name
 
@@ -147,13 +172,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		component = self.shapeFactory.generateComponentByStrokes(strokes)
 		self.templates[name] = component
 
-		self.controller = YamlCanvasController()
-		self.ds = DrawingSystem(self.controller)
-
-		self.ds.clear()
-		self.ds.draw(component)
-
-		drawStrokes = self.controller.getStrokes()
+		drawStrokes = self.getDrawResult(component)
 
 		componentDicts = OrderedDict({"字符": QuotedString(name)})
 		componentDicts["類型"] = "標準"
@@ -161,7 +180,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		return componentDicts
 
 	def interpretDataSet(self, dataSet: GlyphDataSetDescription):
-		strokes = [self.interpretComponent(component) for component in dataSet.strokes]
+		strokes = [self.interpretStroke(stroke) for stroke in dataSet.strokes]
 		parts = [self.interpretComponent(component) for component in dataSet.parts]
 		components = [self.interpretComponent(component) for component in dataSet.components]
 

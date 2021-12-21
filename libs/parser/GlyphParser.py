@@ -45,6 +45,12 @@ class GlyphReferenceElementDescription(GlyphElementDescription):
 		self.order = order
 		self.position = position
 
+class GlyphStrokeDescription:
+	def __init__(self, name, comment = None):
+		self.name = name
+		self.comment = comment
+		self.stroke = None
+
 class GlyphComponentDescription:
 	def __init__(self, name, comment = None):
 		self.name = name
@@ -52,7 +58,7 @@ class GlyphComponentDescription:
 		self.elements = None
 
 class GlyphDataSetDescription:
-	def __init__(self, strokes: [GlyphComponentDescription],
+	def __init__(self, strokes: [GlyphStrokeDescription],
 			parts: [GlyphComponentDescription],
 			components: [GlyphComponentDescription]):
 		self.strokes = strokes
@@ -124,6 +130,18 @@ class GlyphParser(object):
 
 		return element
 
+	def parseStroke(self, strokeNode):
+		strokeName = strokeNode.get(GlyphTags.NAME)
+		strokeComment = strokeNode.get(GlyphTags.COMMENT)
+
+		stroke = GlyphStrokeDescription(strokeName, strokeComment)
+
+		elementNode = strokeNode.get(GlyphTags.STROKE)
+		element = self.parseElement(elementNode)
+
+		stroke.element = element
+		return stroke
+
 	def parseComponent(self, componentNode):
 		componentName = componentNode.get(GlyphTags.NAME)
 		componentComment = componentNode.get(GlyphTags.COMMENT)
@@ -148,7 +166,10 @@ class GlyphParser(object):
 
 	def parseAllDataSet(self, rootNode):
 		strokeSetNode = rootNode.get(GlyphTags.STROKE_SET)
-		strokes = self.parseDataSet(strokeSetNode)
+		strokes = []
+		for strokeNode in strokeSetNode:
+			stroke = self.parseStroke(strokeNode)
+			strokes.append(stroke)
 
 		partSetNode = rootNode.get(GlyphTags.PART_SET)
 		parts = self.parseDataSet(partSetNode)
@@ -162,6 +183,10 @@ class GlyphParser(object):
 class IfGlyphDescriptionInterpreter(object, metaclass=abc.ABCMeta):
 	@abc.abstractmethod
 	def interpretElement(self, element: GlyphElementDescription):
+		pass
+
+	@abc.abstractmethod
+	def interpretStroke(self, component: GlyphStrokeDescription):
 		pass
 
 	@abc.abstractmethod

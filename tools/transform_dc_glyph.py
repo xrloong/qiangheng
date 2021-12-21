@@ -11,7 +11,9 @@ from xie.graphics import StrokeFactory
 from parser.GlyphParser import GlyphTags
 from parser.GlyphParser import GlyphParser
 from parser.GlyphParser import IfGlyphDescriptionInterpreter
-from parser.GlyphParser import GlyphElementDescription, GlyphComponentDescription, GlyphDataSetDescription
+from parser.GlyphParser import GlyphElementDescription
+from parser.GlyphParser import GlyphStrokeDescription, GlyphComponentDescription
+from parser.GlyphParser import GlyphDataSetDescription
 
 CodingTemplateFile="qhdata/dc/radix/template.yaml"
 
@@ -65,6 +67,14 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 			return result
 		return result
 
+	def interpretStroke(self, stroke: GlyphStrokeDescription):
+		strokeDict = OrderedDict({GlyphTags.NAME: QuotedString(stroke.name)})
+		strokeDict[GlyphTags.COMMENT] = stroke.comment
+
+		elementDict = self.interpretElement(stroke.element)
+		strokeDict[GlyphTags.STROKE] = elementDict
+		return strokeDict
+
 	def interpretComponent(self, component: GlyphComponentDescription):
 		componentDicts = OrderedDict({GlyphTags.NAME: QuotedString(component.name)})
 		if component.comment:
@@ -75,7 +85,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		return componentDicts
 
 	def interpretDataSet(self, dataSet: GlyphDataSetDescription):
-		strokes = [self.interpretComponent(stroke) for stroke in dataSet.strokes]
+		strokes = [self.interpretStroke(stroke) for stroke in dataSet.strokes]
 		parts = [self.interpretComponent(part) for part in dataSet.parts]
 		components = [self.interpretComponent(component) for component in dataSet.components]
 

@@ -8,8 +8,9 @@ from coding.Base import CodeMappingInfoInterpreter
 from parser.GlyphParser import GlyphTags
 from parser.GlyphParser import GlyphParser
 from parser.GlyphParser import IfGlyphDescriptionInterpreter
-from parser.GlyphParser import GlyphElementDescription, GlyphComponentDescription, GlyphDataSetDescription
-
+from parser.GlyphParser import GlyphElementDescription
+from parser.GlyphParser import GlyphStrokeDescription, GlyphComponentDescription
+from parser.GlyphParser import GlyphDataSetDescription
 
 try:
 	import xie
@@ -502,6 +503,13 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 			assert False
 		return strokes
 
+	def interpretStroke(self, stroke: GlyphStrokeDescription):
+		element = stroke.element
+		strokes = self.interpretElement(element)
+
+		component = self.shapeFactory.generateComponentByStrokes(strokes)
+		return component
+
 	def interpretComponent(self, component: GlyphComponentDescription):
 		self.anchors.clear()
 
@@ -516,7 +524,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 	def interpretDataSet(self, glyphDataSet: GlyphDataSetDescription):
 		for strokeDesc in glyphDataSet.strokes:
 			name = strokeDesc.name
-			stroke = self.interpretComponent(strokeDesc)
+			stroke = self.interpretStroke(strokeDesc)
 
 			self.templates[name] = stroke
 
