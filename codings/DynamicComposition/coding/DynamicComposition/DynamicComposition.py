@@ -116,17 +116,15 @@ class DCCodeInfo(CodeInfo):
 	STROKE_GROUP_NAME_JIA="夾"
 	STROKE_GROUP_NAME_ZUO="㘴"
 
-	def __init__(self, componentDB):
+	def __init__(self, component):
 		super().__init__()
 
-		self.componentDB=componentDB
+		self.component = component
 
 	@staticmethod
 	def generateDefaultCodeInfo(componentPanePair):
-		component=DCComponent.generateDefaultComponent(componentPanePair)
-		componentDB={DCCodeInfo.STROKE_GROUP_NAME_DEFAULT : component}
-
-		codeInfo=DCCodeInfo(componentDB)
+		component = DCComponent.generateDefaultComponent(componentPanePair)
+		codeInfo = DCCodeInfo(component)
 		return codeInfo
 
 	def toCode(self):
@@ -142,8 +140,7 @@ class DCCodeInfo(CodeInfo):
 		return component.getExtraPane(paneName)
 
 	def getComponent(self):
-		component=self.componentDB.get(DCCodeInfo.STROKE_GROUP_NAME_DEFAULT)
-		return component
+		return self.component
 
 	def getStrokeCount(self):
 		return self.getComponent().getCount()
@@ -329,20 +326,14 @@ class DCRadixParser(CodingRadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo=radixInfo.getCodeElement()
 
-		componentDB={}
-
 		componentNodeList=elementCodeInfo.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
-		for componentNode in componentNodeList:
-			[componentName, component]=self.parseComponent(componentNode)
+		lastComponentNode = componentNodeList[0]
 
-			extraPaneDB=self.parseExtraScopeDB(componentNode)
-			component.setExtraPaneDB(extraPaneDB)
+		[componentName, component] = self.parseComponent(lastComponentNode)
+		extraPaneDB=self.parseExtraScopeDB(lastComponentNode)
+		component.setExtraPaneDB(extraPaneDB)
 
-			if componentName==None:
-				componentName=DCCodeInfo.STROKE_GROUP_NAME_DEFAULT
-			componentDB[componentName]=component
-
-		codeInfo=DCCodeInfo(componentDB)
+		codeInfo = DCCodeInfo(component)
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):
