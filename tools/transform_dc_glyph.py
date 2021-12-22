@@ -43,12 +43,18 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 			strokeType = element.strokeType
 			startPoint = element.startPoint
 			params = element.params
+			splinePointsList = element.splinePointsList
 
 			result[GlyphTags.TYPE] = strokeType
-			result[GlyphTags.START_POINT] = startPoint
-			result[GlyphTags.PARAMETER] = params
+			if splinePointsList:
+				result[GlyphTags.SPLINE_POINTS_LIST] = splinePointsList
+				result[GlyphTags.START_POINT] = startPoint
+				strokeSpec = StrokeSpec(strokeType, splinePointsList = splinePointsList)
+			else:
+				result[GlyphTags.START_POINT] = startPoint
+				result[GlyphTags.PARAMETER] = params
+				strokeSpec = StrokeSpec(strokeType, params)
 
-			strokeSpec = StrokeSpec(strokeType, params)
 			stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, startPoint = startPoint)
 			result[GlyphTags.POSITION] = list(stroke.getStatePane().boundary)
 			return result

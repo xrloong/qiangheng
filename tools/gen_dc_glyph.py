@@ -92,8 +92,11 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		startPoint = element.startPoint
 		position = element.position
 		pane = Pane(*position)
-
-		strokeSpec = StrokeSpec(strokeType, params)
+		splinePointsList = element.splinePointsList
+		if splinePointsList:
+			strokeSpec = StrokeSpec(strokeType, splinePointsList = splinePointsList)
+		else:
+			strokeSpec = StrokeSpec(strokeType, params)
 		stroke = self.strokeFactory.generateStrokeBySpec(strokeSpec, strokeBoundPane = pane)
 		return stroke
 

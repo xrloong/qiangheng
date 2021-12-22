@@ -20,11 +20,12 @@ class GlyphElementDescription:
 		return self.method == GlyphTags.METHOD__DEFINITION
 
 class GlyphDefinitionElementDescription(GlyphElementDescription):
-	def __init__(self, strokeType, params, startPoint, position):
+	def __init__(self, strokeType, startPoint, position, params = None, splinePointsList = None):
 		super().__init__(GlyphTags.METHOD__DEFINITION)
 
 		self.strokeType = strokeType
 		self.params = params
+		self.splinePointsList = splinePointsList
 
 		self.startPoint = startPoint
 		self.position = position
@@ -78,6 +79,7 @@ class GlyphTags(object):
 	TYPE='類型'
 	START_POINT='起始點'
 	PARAMETER='參數'
+	SPLINE_POINTS_LIST='樣條節點串列'
 
 	METHOD__DEFINITION='定義'
 	METHOD__REFERENCE='引用'
@@ -102,7 +104,9 @@ class GlyphParser(object):
 		params = elementNode.get(GlyphTags.PARAMETER)
 		startPoint = elementNode.get(GlyphTags.START_POINT)
 		position = elementNode.get(GlyphTags.POSITION)
-		return GlyphDefinitionElementDescription(strokeType, params, startPoint, position)
+		splinePointsList = elementNode.get(GlyphTags.SPLINE_POINTS_LIST)
+		return GlyphDefinitionElementDescription(strokeType, params = params, splinePointsList = splinePointsList,
+				startPoint = startPoint, position = position)
 
 	def parseAnchorElement(self, elementNode):
 		name = elementNode.get(GlyphTags.NAME)
