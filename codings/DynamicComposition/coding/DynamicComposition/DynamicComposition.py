@@ -147,7 +147,10 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		super().__init__()
 		self.shapeFactory = ShapeFactory()
 
-	def generateDefaultCodeInfo(self, components, panes):
+	def generateDefaultCodeInfo(self, codeInfos, layoutSpec: LayoutSpec):
+		panes = self.shapeFactory.generateLayouts(layoutSpec)
+		components = [codeInfo.getComponent() for codeInfo in codeInfos]
+
 		return DCCodeInfo.generateDefaultCodeInfo(components, panes)
 
 	def isAvailableOperation(self, codeInfoList):
@@ -165,10 +168,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		subPanes = [containerCodeInfo.getExtraPane(paneName) for paneName in subComponentNames]
 		layoutSpec = LayoutSpec(operator, containerPane = containerPane, subPanes = subPanes)
 
-		panes = self.shapeFactory.generateLayouts(layoutSpec)
-		components = [codeInfo.getComponent() for codeInfo in codeInfos]
-
-		codeInfo = self.generateDefaultCodeInfo(components, panes)
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 
@@ -204,30 +204,24 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
-	def encodeAsSilkworm(self, codeInfoList):
-		weights = list(map(lambda x: x.getStrokeCount()+1, codeInfoList))
+	def encodeAsSilkworm(self, codeInfos):
+		weights = list(map(lambda x: x.getStrokeCount()+1, codeInfos))
 		layoutSpec = LayoutSpec(JointOperator.Silkworm, weights = weights)
 
-		panes = self.shapeFactory.generateLayouts(layoutSpec)
-		components = [codeInfo.getComponent() for codeInfo in codeInfoList]
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 
-		codeInfo = self.generateDefaultCodeInfo(components, panes)
-
-		lastCodeInfo=codeInfoList[-1]
+		lastCodeInfo = codeInfos[-1]
 		# 題=(起 是頁), 是=(志 日[是下])
 		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
 			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 
 		return codeInfo
 
-	def encodeAsGoose(self, codeInfoList):
-		weights = list(map(lambda x: x.getStrokeCount(), codeInfoList))
+	def encodeAsGoose(self, codeInfos):
+		weights = list(map(lambda x: x.getStrokeCount(), codeInfos))
 		layoutSpec = LayoutSpec(JointOperator.Goose, weights = weights)
 
-		panes = self.shapeFactory.generateLayouts(layoutSpec)
-		components = [codeInfo.getComponent() for codeInfo in codeInfoList]
-
-		codeInfo = self.generateDefaultCodeInfo(components, panes)
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsQi(self, codeInfoList):
