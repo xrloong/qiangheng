@@ -157,16 +157,20 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
 		return isAllWithCode
 
-	def encodeByEmbed(self, operator, codeInfos, paneNames):
-		if len(codeInfos)<2:
-			return self.encodeAsInvalidate(codeInfos)
-
+	def generateEmbedLayoutSpec(self, operator, codeInfos, paneNames):
 		containerCodeInfo = codeInfos[0]
 		subComponentNames = paneNames[1:]
 
 		containerPane = containerCodeInfo.getComponentPane()
 		subPanes = [containerCodeInfo.getExtraPane(paneName) for paneName in subComponentNames]
 		layoutSpec = LayoutSpec(operator, containerPane = containerPane, subPanes = subPanes)
+		return layoutSpec
+
+	def encodeByEmbed(self, operator, codeInfos, paneNames):
+		if len(codeInfos)<2:
+			return self.encodeAsInvalidate(codeInfos)
+
+		layoutSpec = self.generateEmbedLayoutSpec(operator, codeInfos, paneNames)
 
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
