@@ -68,7 +68,10 @@ class DCComponent:
 		return self.component.getStatePane()
 
 	@staticmethod
-	def generateDefaultComponent(dcComponentPanePairList):
+	def generateDefaultComponent(components, panes):
+		assert len(components) == len(panes)
+		dcComponentPanePairList = zip(components, panes)
+
 		shapeFactory=DCComponent.shapeFactory
 		componentPanePairs=[(dcComponent.getComponent(), pane) for dcComponent, pane in dcComponentPanePairList]
 		component=shapeFactory.generateComponentByComponentPanePairs(componentPanePairs)
@@ -113,8 +116,8 @@ class DCCodeInfo(CodeInfo):
 		self.component = component
 
 	@staticmethod
-	def generateDefaultCodeInfo(componentPanePair):
-		component = DCComponent.generateDefaultComponent(componentPanePair)
+	def generateDefaultCodeInfo(components, panes):
+		component = DCComponent.generateDefaultComponent(components, panes)
 		codeInfo = DCCodeInfo(component)
 		return codeInfo
 
@@ -144,8 +147,8 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		super().__init__()
 		self.shapeFactory = ShapeFactory()
 
-	def generateDefaultCodeInfo(self, componentPanePair):
-		return DCCodeInfo.generateDefaultCodeInfo(componentPanePair)
+	def generateDefaultCodeInfo(self, components, panes):
+		return DCCodeInfo.generateDefaultCodeInfo(components, panes)
 
 	def isAvailableOperation(self, codeInfoList):
 		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
@@ -165,8 +168,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		panes = self.shapeFactory.generateLayouts(layoutSpec)
 		components = [codeInfo.getComponent() for codeInfo in codeInfos]
 
-		componentPanePair = zip(components, panes)
-		codeInfo = self.generateDefaultCodeInfo(componentPanePair)
+		codeInfo = self.generateDefaultCodeInfo(components, panes)
 		return codeInfo
 
 
@@ -209,8 +211,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		panes = self.shapeFactory.generateLayouts(layoutSpec)
 		components = [codeInfo.getComponent() for codeInfo in codeInfoList]
 
-		componentPanePair = zip(components, panes)
-		codeInfo = self.generateDefaultCodeInfo(componentPanePair)
+		codeInfo = self.generateDefaultCodeInfo(components, panes)
 
 		lastCodeInfo=codeInfoList[-1]
 		# 題=(起 是頁), 是=(志 日[是下])
@@ -226,8 +227,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		panes = self.shapeFactory.generateLayouts(layoutSpec)
 		components = [codeInfo.getComponent() for codeInfo in codeInfoList]
 
-		componentPanePair = zip(components, panes)
-		codeInfo = self.generateDefaultCodeInfo(componentPanePair)
+		codeInfo = self.generateDefaultCodeInfo(components, panes)
 		return codeInfo
 
 	def encodeAsQi(self, codeInfoList):
