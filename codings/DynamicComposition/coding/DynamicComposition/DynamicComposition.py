@@ -166,16 +166,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		layoutSpec = LayoutSpec(operator, containerPane = containerPane, subPanes = subPanes)
 		return layoutSpec
 
-	def encodeByEmbed(self, operator, codeInfos, paneNames):
-		if len(codeInfos)<2:
-			return self.encodeAsInvalidate(codeInfos)
-
-		layoutSpec = self.generateEmbedLayoutSpec(operator, codeInfos, paneNames)
-
-		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
-		return codeInfo
-
-
 	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
 		print("不合法的運算：龜", file=sys.stderr)
@@ -200,10 +190,13 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return firstCodeInfo
 
 
-	def encodeAsLoop(self, codeInfoList):
-		firstCodeInfo=codeInfoList[0]
-		codeInfo=self.encodeByEmbed(JointOperator.Loop, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LOOP])
+	def encodeAsLoop(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Loop,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LOOP])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
+
 		# 颱=(起 風台), 是=(回 [風外]䖝)
+		firstCodeInfo = codeInfos[0]
 		if firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
 			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
@@ -228,39 +221,65 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
-	def encodeAsQi(self, codeInfoList):
-		return self.encodeByEmbed(JointOperator.Qi, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_QI])
+	def encodeAsQi(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Qi,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_QI])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
+		return codeInfo
 
-	def encodeAsLiao(self, codeInfoList):
-		codeInfo=self.encodeByEmbed(JointOperator.Liao, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIAO])
+	def encodeAsLiao(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Liao,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIAO])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 
-		lastCodeInfo=codeInfoList[-1]
+		lastCodeInfo = codeInfos[-1]
 		# 屗=(起 尾寸), 尾=(志 尸毛)
 		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
 			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
-	def encodeAsZai(self, codeInfoList):
-		return self.encodeByEmbed(JointOperator.Zai, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZAI])
+	def encodeAsZai(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Zai,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZAI])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
+		return codeInfo
 
-	def encodeAsDou(self, codeInfoList):
-		return self.encodeByEmbed(JointOperator.Dou, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_DOU])
+	def encodeAsDou(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Dou,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_DOU])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
+		return codeInfo
 
 
-	def encodeAsMu(self, codeInfoList):
-		return self.encodeByEmbed(JointOperator.Mu, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_MU_1, DCCodeInfo.PANE_NAME_MU_2])
+	def encodeAsMu(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Mu,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_MU_1, DCCodeInfo.PANE_NAME_MU_2])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
+		return codeInfo
 
-	def encodeAsZuo(self, codeInfoList):
-		return self.encodeByEmbed(JointOperator.Zuo, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
+	def encodeAsZuo(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Zuo,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
+		return codeInfo
 
-	def encodeAsYou(self, codeInfoList):
-		return self.encodeByEmbed(JointOperator.You, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_YOU_1, DCCodeInfo.PANE_NAME_YOU_2])
+	def encodeAsYou(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.You,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_YOU_1, DCCodeInfo.PANE_NAME_YOU_2])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
+		return codeInfo
 
-	def encodeAsLiang(self, codeInfoList):
-		return self.encodeByEmbed(JointOperator.Liang, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIANG_1, DCCodeInfo.PANE_NAME_LIANG_2])
+	def encodeAsLiang(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Liang,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIANG_1, DCCodeInfo.PANE_NAME_LIANG_2])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
+		return codeInfo
 
-	def encodeAsJia(self, codeInfoList):
-		return self.encodeByEmbed(JointOperator.Jia, codeInfoList, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
+	def encodeAsJia(self, codeInfos):
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Jia,
+				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
+		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
+		return codeInfo
 
 class DCRadixParser(CodingRadixParser):
 	TAG_STROKE_GROUP='筆劃組'
