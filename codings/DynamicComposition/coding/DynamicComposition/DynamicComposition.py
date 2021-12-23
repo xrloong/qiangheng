@@ -192,7 +192,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsSilkworm(self, codeInfos):
-		weights = list(map(lambda x: x.getStrokeCount()+1, codeInfos))
+		weights = list(map(lambda x: x.getStrokeCount(), codeInfos))
 		layoutSpec = LayoutSpec(JointOperator.Silkworm, weights = weights)
 
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
