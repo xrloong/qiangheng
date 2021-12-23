@@ -9,7 +9,7 @@ from xie.graphics import Pane
 from xie.graphics import Component
 from xie.graphics import StrokeSpec
 from xie.graphics import StrokeFactory
-from xie.graphics import ShapeFactory
+from xie.graphics import ComponentFactory
 
 from xie.graphics import DrawingSystem
 from xie.graphics import BaseTextCanvasController
@@ -65,7 +65,7 @@ class YamlCanvasController(BaseTextCanvasController):
 class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 	def __init__(self):
 		self.strokeFactory = StrokeFactory()
-		self.shapeFactory = ShapeFactory()
+		self.componentFactory = ComponentFactory()
 
 		self.anchors = {}
 		self.templates = {}
@@ -77,7 +77,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 	def applyComponentWithTransformation(self, component, position):
 		if position != None:
 			pane = Pane(*position)
-			component = self.shapeFactory.generateComponentByComponentPane(component, pane)
+			component = self.componentFactory.generateComponentByComponentPane(component, pane)
 		return component
 
 	def getComponent(self, name):
@@ -111,7 +111,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 
 	def retrieveStrokesOfComponentIntoPosition(self, referencedComponent: Component, order: [int], position):
 		strokes = list((referencedComponent.getStroke(index) for index in order))
-		component = self.shapeFactory.generateComponentByStrokes(strokes)
+		component = self.componentFactory.generateComponentByStrokes(strokes)
 
 		component = self.applyComponentWithTransformation(component, position)
 		return component.getStrokeList()
@@ -153,7 +153,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		self.anchors.clear()
 		strokes = self.interpretElement(stroke.element)
 
-		component = self.shapeFactory.generateComponentByStrokes(strokes)
+		component = self.componentFactory.generateComponentByStrokes(strokes)
 		self.templates[name] = component
 
 		drawStrokes = self.getDrawResult(component)
@@ -172,7 +172,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 			subStrokes = self.interpretElement(element)
 			strokes.extend(subStrokes)
 
-		component = self.shapeFactory.generateComponentByStrokes(strokes)
+		component = self.componentFactory.generateComponentByStrokes(strokes)
 		self.templates[name] = component
 
 		drawStrokes = self.getDrawResult(component)

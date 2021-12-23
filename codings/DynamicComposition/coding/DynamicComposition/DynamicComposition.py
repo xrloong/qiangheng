@@ -36,9 +36,10 @@ from xie.graphics import LayoutSpec
 
 from xie.graphics import ShapeFactory
 from xie.graphics import StrokeFactory
+from xie.graphics import ComponentFactory
 
 class DCComponent:
-	shapeFactory = ShapeFactory()
+	componentFactory = ComponentFactory()
 
 	def __init__(self, component):
 		self.component=component
@@ -51,8 +52,8 @@ class DCComponent:
 		return self.component
 
 	def generateComponent(self, pane):
-		shapeFactory=DCComponent.shapeFactory
-		return shapeFactory.generateComponentByComponentPane(self.component, pane)
+		componentFactory = DCComponent.componentFactory
+		return componentFactory.generateComponentByComponentPane(self.component, pane)
 
 	def setExtraPaneDB(self, extranPaneDB):
 		self.extraPaneDB=extranPaneDB
@@ -72,16 +73,16 @@ class DCComponent:
 		assert len(components) == len(panes)
 		dcComponentPanePairList = zip(components, panes)
 
-		shapeFactory=DCComponent.shapeFactory
-		componentPanePairs=[(dcComponent.getComponent(), pane) for dcComponent, pane in dcComponentPanePairList]
-		component=shapeFactory.generateComponentByComponentPanePairs(componentPanePairs)
-		dcComponent=DCComponent(component)
+		componentFactory = DCComponent.componentFactory
+		componentPanePairs = [(dcComponent.getComponent(), pane) for dcComponent, pane in dcComponentPanePairList]
+		component = componentFactory.generateComponentByComponentPanePairs(componentPanePairs)
+		dcComponent = DCComponent(component)
 		return dcComponent
 
 	@staticmethod
 	def generateComponentByStrokes(strokeList):
-		shapeFactory=DCComponent.shapeFactory
-		component = shapeFactory.generateComponentByStrokes(strokeList)
+		componentFactory = DCComponent.componentFactory
+		component = componentFactory.generateComponentByStrokes(strokeList)
 		return DCComponent(component)
 
 class DCCodeInfo(CodeInfo):
@@ -382,7 +383,7 @@ class DCRadixParser(CodingRadixParser):
 class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 	def __init__(self):
 		super().__init__()
-		self.shapeFactory = ShapeFactory()
+		self.componentFactory = ComponentFactory()
 		self.strokeFactory = StrokeFactory()
 
 		self.anchors = {}
@@ -395,7 +396,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 	def applyComponentWithTransformation(self, component, position):
 		if position != None:
 			pane = Pane(*position)
-			component = self.shapeFactory.generateComponentByComponentPane(component, pane)
+			component = self.componentFactory.generateComponentByComponentPane(component, pane)
 		return component
 
 	def getComponent(self, name):
@@ -430,7 +431,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 
 	def retrieveStrokesOfComponentIntoPosition(self, referencedComponent: Component, order: [int], position):
 		strokes = list((referencedComponent.getStroke(index) for index in order))
-		component = self.shapeFactory.generateComponentByStrokes(strokes)
+		component = self.componentFactory.generateComponentByStrokes(strokes)
 
 		component = self.applyComponentWithTransformation(component, position)
 		return component.getStrokeList()
@@ -460,7 +461,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		element = stroke.element
 		strokes = self.interpretElement(element)
 
-		component = self.shapeFactory.generateComponentByStrokes(strokes)
+		component = self.componentFactory.generateComponentByStrokes(strokes)
 		return component
 
 	def interpretComponent(self, component: GlyphComponentDescription):
@@ -471,7 +472,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 			subStrokes = self.interpretElement(element)
 			strokes.extend(subStrokes)
 
-		component = self.shapeFactory.generateComponentByStrokes(strokes)
+		component = self.componentFactory.generateComponentByStrokes(strokes)
 		return component
 
 	def interpretDataSet(self, glyphDataSet: GlyphDataSetDescription):
