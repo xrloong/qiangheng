@@ -30,13 +30,14 @@ from xie.graphics import DrawingSystem
 from xie.graphics import Component
 from xie.graphics import Character
 
-from xie.graphics import JointOperator
 from xie.graphics import StrokeSpec
-from xie.graphics import LayoutSpec
 
-from xie.graphics import ShapeFactory
 from xie.graphics import StrokeFactory
 from xie.graphics import ComponentFactory
+
+from .layout import JointOperator
+from .layout import LayoutFactory
+from .layout import LayoutSpec
 
 class DCComponent:
 	componentFactory = ComponentFactory()
@@ -144,10 +145,10 @@ class DCCodeInfo(CodeInfo):
 class DCCodeInfoEncoder(CodeInfoEncoder):
 	def __init__(self):
 		super().__init__()
-		self.shapeFactory = ShapeFactory()
+		self.layoutFactory = LayoutFactory()
 
 	def generateDefaultCodeInfo(self, codeInfos, layoutSpec: LayoutSpec):
-		panes = self.shapeFactory.generateLayouts(layoutSpec)
+		panes = self.layoutFactory.generateLayouts(layoutSpec)
 		components = [codeInfo.getComponent() for codeInfo in codeInfos]
 
 		return DCCodeInfo.generateDefaultCodeInfo(components, panes)
