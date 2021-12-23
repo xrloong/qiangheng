@@ -86,16 +86,62 @@ class LayoutFactory:
 		pass
 
 	def generateLayouts(self, spec: LayoutSpec) -> [Pane]:
+		def compute(fromValue: int, toValue: int, frac: float) -> int:
+			return round(fromValue*(1-frac) + toValue*frac)
 		containerPane = spec.containerPane if spec.containerPane else LayoutFactory.DefaultBox
 
 		operator = spec.operator
+		# Silkworm = '蚕'
+		# Goose = '鴻'
 		if operator == JointOperator.Goose:
 			return genHorizontalPanes(spec.weights, containerPane)
 		if operator == JointOperator.Silkworm:
 			return genVerticalPanes(spec.weights, containerPane)
 
-		if spec.subPanes:
-			subPanes = spec.subPanes
+		(centerX, centerY) = containerPane.center
+		(left, top, right, bottom) = containerPane.boundary
+		if operator == JointOperator.Qi:
+			subPanes = [Pane(centerX, top, right, centerY)]
+		elif operator == JointOperator.Liao:
+			subPanes = [Pane(centerX, centerY, right, bottom)]
+		elif operator == JointOperator.Zai:
+			subPanes = [Pane(left, centerY, centerX, bottom)]
+		elif operator == JointOperator.Dou:
+			subPanes = [Pane(left, top, centerX, centerY)]
+		elif operator == JointOperator.Loop:
+			subPanes = [
+						Pane(compute(left, right, 0.33), compute(top, bottom, 0.33),
+							compute(left, right, 0.66), compute(top, bottom, 0.66)),
+						]
+		elif operator == JointOperator.Mu:
+			subPanes = [
+						Pane(left, centerY, centerX, bottom),
+						Pane(centerX, centerY, right, bottom),
+						]
+		elif operator == JointOperator.Zuo:
+			subPanes = [
+						Pane(left, top, centerX, centerY),
+						Pane(centerX, top, right, centerY),
+						]
+		elif operator == JointOperator.You:
+			tmpBottom = compute(top, bottom, 0.8)
+			subPanes = [
+						Pane(compute(left, right, 0.1), top, compute(left, right, 0.4), tmpBottom),
+						Pane(compute(left, right, 0.6), top, compute(left, right, 0.9), tmpBottom),
+						]
+		elif operator == JointOperator.Liang:
+			tmpTop = compute(top, bottom, 0.2)
+			subPanes = [
+						Pane(compute(left, right, 0.1), tmpTop, compute(left, right, 0.4), bottom),
+						Pane(compute(left, right, 0.6), tmpTop, compute(left, right, 0.9), bottom),
+						]
+		elif operator == JointOperator.Jia:
+			tmpTop = compute(top, bottom, 0.2)
+			tmpBottom = compute(top, bottom, 0.8)
+			subPanes = [
+						Pane(left, tmpTop, compute(left, right, 0.4), tmpBottom),
+						Pane(compute(left, right, 0.6), tmpTop, right, tmpBottom),
+						]
 		else:
 			subPanes = []
 
