@@ -76,7 +76,7 @@ setup-Darwin-environment:
 
 setup-python-environment:
 	$(PIP) install lxml ruamel.yaml injector ply
-	$(PIP) install https://github.com/xrloong/Xie/releases/download/v0.1.3/Xie-0.1.3-py3-none-any.whl
+	$(PIP) install https://github.com/xrloong/Xie/releases/download/v0.1.4/Xie-0.1.4-py3-none-any.whl
 
 prepare-main:
 	mkdir -p $(GEN_QHDATA_MAIN_PATH) $(GEN_QHDATA_MAIN_COMP_PATH)

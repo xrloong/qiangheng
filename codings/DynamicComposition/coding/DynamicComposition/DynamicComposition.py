@@ -19,7 +19,7 @@ except ImportError as e:
 	message = """
 	動態組字使用 Xie 來描繪字形。
 	可到 https://github.com/xrloong/Xie 下載最新版本，並以 pip 安裝，或使可使用以下指令：
-	$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.3/Xie-0.1.3-py3-none-any.whl
+	$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.4/Xie-0.1.4-py3-none-any.whl
 """
 	print(message, file=sys.stderr)
 	sys.exit(1)
