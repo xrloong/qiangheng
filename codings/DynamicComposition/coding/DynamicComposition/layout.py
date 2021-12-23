@@ -20,12 +20,11 @@ class JointOperator(Enum):
 
 class LayoutSpec:
 	def __init__(self, operator, weights = [int],
-			containerPane = None, subPanes = []):
+			containerPane = None):
 		self.operator = operator
 		self.weights = weights
 
 		self.containerPane = containerPane
-		self.subPanes = subPanes
 
 def _splitLengthToList(length, weightList):
 	totalWeight=sum(weightList)
