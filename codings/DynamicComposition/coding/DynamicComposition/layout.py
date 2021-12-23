@@ -19,12 +19,9 @@ class JointOperator(Enum):
 	Jia = '夾'
 
 class LayoutSpec:
-	def __init__(self, operator, weights = [int],
-			containerPane = None):
+	def __init__(self, operator, weights = [int]):
 		self.operator = operator
 		self.weights = weights
-
-		self.containerPane = containerPane
 
 def _splitLengthToList(length, weightList):
 	totalWeight=sum(weightList)
@@ -87,7 +84,7 @@ class LayoutFactory:
 	def generateLayouts(self, spec: LayoutSpec) -> [Pane]:
 		def compute(fromValue: int, toValue: int, frac: float) -> int:
 			return round(fromValue*(1-frac) + toValue*frac)
-		containerPane = spec.containerPane if spec.containerPane else LayoutFactory.DefaultBox
+		containerPane = LayoutFactory.DefaultBox
 
 		operator = spec.operator
 		# Silkworm = '蚕'

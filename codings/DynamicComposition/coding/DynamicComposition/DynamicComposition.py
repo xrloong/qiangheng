@@ -158,10 +158,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return isAllWithCode
 
 	def generateEmbedLayoutSpec(self, operator, codeInfos):
-		containerCodeInfo = codeInfos[0]
-
-		containerPane = containerCodeInfo.getComponentPane()
-		layoutSpec = LayoutSpec(operator, containerPane = containerPane)
+		layoutSpec = LayoutSpec(operator)
 		return layoutSpec
 
 	def encodeAsTurtle(self, codeInfoList):
