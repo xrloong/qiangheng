@@ -157,7 +157,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
 		return isAllWithCode
 
-	def generateEmbedLayoutSpec(self, operator, codeInfos, paneNames):
+	def generateEmbedLayoutSpec(self, operator, codeInfos):
 		containerCodeInfo = codeInfos[0]
 
 		containerPane = containerCodeInfo.getComponentPane()
@@ -189,8 +189,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 
 	def encodeAsLoop(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Loop,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LOOP])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Loop, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 
 		# 颱=(起 風台), 是=(回 [風外]䖝)
@@ -220,14 +219,12 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsQi(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Qi,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_QI])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Qi, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsLiao(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Liao,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIAO])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Liao, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 
 		lastCodeInfo = codeInfos[-1]
@@ -237,45 +234,38 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsZai(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Zai,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZAI])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Zai, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsDou(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Dou,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_DOU])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Dou, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 
 	def encodeAsMu(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Mu,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_MU_1, DCCodeInfo.PANE_NAME_MU_2])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Mu, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsZuo(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Zuo,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_ZUO_1, DCCodeInfo.PANE_NAME_ZUO_2])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Zuo, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsYou(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.You,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_YOU_1, DCCodeInfo.PANE_NAME_YOU_2])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.You, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsLiang(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Liang,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_LIANG_1, DCCodeInfo.PANE_NAME_LIANG_2])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Liang, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsJia(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Jia,
-				codeInfos, [DCCodeInfo.PANE_NAME_DEFAULT, DCCodeInfo.PANE_NAME_JIA_1, DCCodeInfo.PANE_NAME_JIA_2])
+		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Jia, codeInfos)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
