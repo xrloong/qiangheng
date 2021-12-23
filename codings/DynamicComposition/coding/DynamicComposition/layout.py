@@ -38,30 +38,22 @@ def _splitLengthToList(length, weightList):
 
 def genVerticalPanes(weights, containerPane):
 	pane = containerPane
-	points=_splitLengthToList(pane.height, weights)
-	paneList=[]
-	offset=pane.top
+	points = _splitLengthToList(pane.height, weights)
+	paneList = []
+	offset = pane.top
 	for [pointStart, pointEnd] in zip(points[:-1], points[1:]):
-		height=pointEnd-pointStart
-		targetHeight=int(height*0.90)
-		offset=int(height-targetHeight)//2
-		tmpPane=Pane(pane.left, pointStart+offset, pane.right, pointEnd-offset)
-		tmpPane._offsetTopAndBottom(offset)
-		paneList.append(tmpPane)
+		newPane = Pane(pane.left, pointStart + offset, pane.right, pointEnd + offset)
+		paneList.append(newPane)
 	return paneList
 
 def genHorizontalPanes(weights, containerPane):
 	pane = containerPane
-	points=_splitLengthToList(pane.width, weights)
-	paneList=[]
-	offset=pane.left
+	points = _splitLengthToList(pane.width, weights)
+	paneList = []
+	offset = pane.left
 	for [pointStart, pointEnd] in zip(points[:-1], points[1:]):
-		width=pointEnd-pointStart
-		targetWidth=int(width*0.90)
-		offset=int(width-targetWidth)//2
-		tmpPane=Pane(pointStart+offset, pane.top, pointEnd-offset, pane.bottom)
-		tmpPane._offsetLeftAndRight(offset)
-		paneList.append(tmpPane)
+		newPane = Pane(pointStart + offset, pane.top, pointEnd + offset, pane.bottom)
+		paneList.append(newPane)
 	return paneList
 
 class LayoutFactory:

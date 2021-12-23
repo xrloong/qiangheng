@@ -16,15 +16,15 @@ class PaneUtilsTestCase(unittest.TestCase):
 
 	def test_genVerticalPanes(self):
 		self.assertEqual(genVerticalPanes([1, 2, 3], LayoutFactory.DefaultBox),
-				[Pane(8, 4, 247, 39), Pane(8, 47, 247, 119), Pane(8, 131, 247, 239)])
+				[Pane(8, 8, 247, 47), Pane(8, 47, 247, 127), Pane(8, 127, 247, 247)])
 		self.assertEqual(genVerticalPanes([3, 2], LayoutFactory.DefaultBox),
-				[Pane(8, 14, 247, 143), Pane(8, 153, 247, 238)])
+				[Pane(8, 8, 247, 151), Pane(8, 151, 247, 246)])
 
 	def test_genHorizontalPanes(self):
 		self.assertEqual(genHorizontalPanes([1, 2, 3], LayoutFactory.DefaultBox),
-				[Pane(4, 8, 39, 247), Pane(47, 8, 119, 247), Pane(131, 8, 239, 247)])
+				[Pane(8, 8, 47, 247), Pane(47, 8, 127, 247), Pane(127, 8, 247, 247)])
 		self.assertEqual(genHorizontalPanes([3, 2], LayoutFactory.DefaultBox),
-				[Pane(14, 8, 143, 247), Pane(153, 8, 238, 247)])
+				[Pane(8, 8, 151, 247), Pane(151, 8, 246, 247)])
 
 class LayoutGenerationTestCase(unittest.TestCase):
 	def setUp(self):
@@ -36,18 +36,18 @@ class LayoutGenerationTestCase(unittest.TestCase):
 	def test_layout_Silkworm(self):
 		layoutSpec = LayoutSpec(JointOperator.Silkworm, weights = [1, 2, 3])
 		panes = self.shapeFactory.generateLayouts(layoutSpec)
-		self.assertEqual(panes, [Pane(8, 4, 247, 39), Pane(8, 47, 247, 119), Pane(8, 131, 247, 239)])
+		self.assertEqual(panes, [Pane(8, 8, 247, 47), Pane(8, 47, 247, 127), Pane(8, 127, 247, 247)])
 
 		layoutSpec = LayoutSpec(JointOperator.Silkworm, weights = [3, 2])
 		panes = self.shapeFactory.generateLayouts(layoutSpec)
-		self.assertEqual(panes, [Pane(8, 14, 247, 143), Pane(8, 153, 247, 238)])
+		self.assertEqual(panes, [Pane(8, 8, 247, 151), Pane(8, 151, 247, 246)])
 
 	def test_layout_Goose(self):
 		layoutSpec = LayoutSpec(JointOperator.Goose, weights = [1, 2, 3])
 		panes = self.shapeFactory.generateLayouts(layoutSpec)
-		self.assertEqual(panes, [Pane(4, 8, 39, 247), Pane(47, 8, 119, 247), Pane(131, 8, 239, 247)])
+		self.assertEqual(panes, [Pane(8, 8, 47, 247), Pane(47, 8, 127, 247), Pane(127, 8, 247, 247)])
 
 		layoutSpec = LayoutSpec(JointOperator.Goose, weights = [3, 2])
 		panes = self.shapeFactory.generateLayouts(layoutSpec)
-		self.assertEqual(panes, [Pane(14, 8, 143, 247), Pane(153, 8, 238, 247)])
+		self.assertEqual(panes, [Pane(8, 8, 151, 247), Pane(151, 8, 246, 247)])
 
