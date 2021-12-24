@@ -88,31 +88,6 @@
             </xsl:when>
             </xsl:choose>
               </xsl:for-each>
-
-            <xsl:if test="補充範圍">
-              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-              <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-              <xsl:value-of select="$intent" />
-              <xsl:text>補充範圍: </xsl:text>
-              <xsl:value-of select="$newline" />
-
-	      <xsl:for-each select="補充範圍/_">
-                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-                <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
-                <xsl:value-of select="$itemmark" />
-                <xsl:text>{</xsl:text>
-                <xsl:text>名稱: </xsl:text>
-                <xsl:text>"</xsl:text>
-                <xsl:value-of select="@名稱"/> 
-                <xsl:text>"</xsl:text>
-                <xsl:text>, </xsl:text>
-                <xsl:text>範圍: </xsl:text>
-                <xsl:value-of select="@範圍"/> 
-                <xsl:text>}</xsl:text>
-                <xsl:value-of select="$newline" />
-              </xsl:for-each>
-            </xsl:if>
             </xsl:for-each>
 
           <xsl:if test="@覆蓋">
