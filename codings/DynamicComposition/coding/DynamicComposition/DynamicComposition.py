@@ -109,8 +109,6 @@ class DCCodeInfo(CodeInfo):
 	PANE_NAME_ZUO_1="㘴:1"
 	PANE_NAME_ZUO_2="㘴:2"
 
-	STROKE_GROUP_NAME_DEFAULT="瑲珩預設筆劃組名稱"
-
 	def __init__(self, component):
 		super().__init__()
 
