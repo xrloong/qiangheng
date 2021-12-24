@@ -157,10 +157,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
 		return isAllWithCode
 
-	def generateEmbedLayoutSpec(self, operator, codeInfos):
-		layoutSpec = LayoutSpec(operator)
-		return layoutSpec
-
 	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
 		print("不合法的運算：龜", file=sys.stderr)
@@ -186,7 +182,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 
 	def encodeAsLoop(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Loop, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.Loop)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 
 		# 颱=(起 風台), 是=(回 [風外]䖝)
@@ -216,12 +212,12 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsQi(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Qi, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.Qi)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsLiao(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Liao, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.Liao)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 
 		lastCodeInfo = codeInfos[-1]
@@ -231,38 +227,38 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 	def encodeAsZai(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Zai, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.Zai)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsDou(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Dou, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.Dou)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 
 	def encodeAsMu(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Mu, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.Mu)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsZuo(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Zuo, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.Zuo)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsYou(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.You, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.You)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsLiang(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Liang, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.Liang)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
 	def encodeAsJia(self, codeInfos):
-		layoutSpec = self.generateEmbedLayoutSpec(JointOperator.Jia, codeInfos)
+		layoutSpec = LayoutSpec(JointOperator.Jia)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
