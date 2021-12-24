@@ -44,7 +44,6 @@ class DCComponent:
 
 	def __init__(self, component):
 		self.component=component
-		self.extraPaneDB={DCCodeInfo.PANE_NAME_DEFAULT : component.getStatePane()}
 
 	def getCount(self):
 		return self.component.getCount()
@@ -55,16 +54,6 @@ class DCComponent:
 	def generateComponent(self, pane):
 		componentFactory = DCComponent.componentFactory
 		return componentFactory.generateComponentByComponentPane(self.component, pane)
-
-	def setExtraPaneDB(self, extranPaneDB):
-		self.extraPaneDB=extranPaneDB
-		self.extraPaneDB[DCCodeInfo.PANE_NAME_DEFAULT]=self.component.getStatePane()
-
-	def setExtraPane(self, paneName, extraPane):
-		self.extraPaneDB[paneName]=extraPane
-
-	def getExtraPane(self, paneName):
-		return self.extraPaneDB.get(paneName, None)
 
 	def getComponentPane(self):
 		return self.component.getStatePane()
@@ -87,29 +76,6 @@ class DCComponent:
 		return DCComponent(component)
 
 class DCCodeInfo(CodeInfo):
-	PANE_NAME_DEFAULT="瑲珩預設範圍名稱"
-
-	PANE_NAME_LOOP="回"
-	PANE_NAME_QI="起"
-	PANE_NAME_LIAO="廖"
-	PANE_NAME_DAO="斗"
-	PANE_NAME_ZAI="載"
-
-	PANE_NAME_MU_1="畞:1"
-	PANE_NAME_MU_2="畞:2"
-
-	PANE_NAME_YOU_1="幽:1"
-	PANE_NAME_YOU_2="幽:2"
-
-	PANE_NAME_LIANG_1="㒳:1"
-	PANE_NAME_LIANG_2="㒳:2"
-
-	PANE_NAME_JIA_1="夾:1"
-	PANE_NAME_JIA_2="夾:2"
-
-	PANE_NAME_ZUO_1="㘴:1"
-	PANE_NAME_ZUO_2="㘴:2"
-
 	def __init__(self, component):
 		super().__init__()
 
@@ -124,14 +90,6 @@ class DCCodeInfo(CodeInfo):
 	def toCode(self):
 		component=self.getComponent()
 		return component
-
-	def setExtraPane(self, paneName, extraPane):
-		component = self.getComponent()
-		component.setExtraPane(paneName, extraPane)
-
-	def getExtraPane(self, paneName):
-		component = self.getComponent()
-		return component.getExtraPane(paneName)
 
 	def getComponent(self):
 		return self.component
@@ -184,30 +142,17 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsLoop(self, codeInfos):
 		layoutSpec = LayoutSpec(JointOperator.Loop)
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
-
-		# 颱=(起 風台), 是=(回 [風外]䖝)
-		firstCodeInfo = codeInfos[0]
-		if firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, firstCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
 	def encodeAsSilkworm(self, codeInfos):
 		weights = list(map(lambda x: x.getStrokeCount(), codeInfos))
 		layoutSpec = LayoutSpec(JointOperator.Silkworm, weights = weights)
-
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
-
-		lastCodeInfo = codeInfos[-1]
-		# 題=(起 是頁), 是=(志 日[是下])
-		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
-
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfos):
 		weights = list(map(lambda x: x.getStrokeCount(), codeInfos))
 		layoutSpec = LayoutSpec(JointOperator.Goose, weights = weights)
-
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 		return codeInfo
 
@@ -221,9 +166,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 
 		lastCodeInfo = codeInfos[-1]
-		# 屗=(起 尾寸), 尾=(志 尸毛)
-		if lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI):
-			codeInfo.setExtraPane(DCCodeInfo.PANE_NAME_QI, lastCodeInfo.getExtraPane(DCCodeInfo.PANE_NAME_QI))
 		return codeInfo
 
 	def encodeAsZai(self, codeInfos):
@@ -269,7 +211,6 @@ class DCRadixParser(CodingRadixParser):
 	TAG_SCOPE='範圍'
 	TAG_STROKE='筆劃'
 	TAG_NAME='名稱'
-	TAG_EXTRA_SCOPE='補充範圍'
 	TAG_TYPE='類型'
 	TAG_START_POINT='起始點'
 	TAG_PARAMETER='參數'
@@ -311,36 +252,16 @@ class DCRadixParser(CodingRadixParser):
 
 			self.radixDescriptionManager.addDescription(charName, radixDescription)
 
-	def parseExtraScopeDB(self, elementCodeInfo):
-		extraPaneDB={}
-
-		extraScopeNodeList=elementCodeInfo.get(DCRadixParser.TAG_EXTRA_SCOPE)
-		if extraScopeNodeList != None:
-			for extraScopeNode in extraScopeNodeList:
-				paneName=extraScopeNode.get(DCRadixParser.TAG_NAME)
-				pane=self.parseExtraScope(extraScopeNode)
-
-				extraPaneDB[paneName]=pane
-
-		return extraPaneDB
-
-	def parseExtraScope(self, extraScopeNode):
-		descriptionRegion=extraScopeNode.get(DCRadixParser.TAG_SCOPE)
-		pane=self.parsePane(descriptionRegion)
-		return pane
-
 	def parseGeometry(self, geometryNode):
 		descriptionRegion=geometryNode.get(DCRadixParser.TAG_SCOPE)
 		pane=self.parsePane(descriptionRegion)
 		return pane
 
 	def parseComponent(self, componentNode):
-		extraPaneDB = self.parseExtraScopeDB(componentNode)
 		strokeNode = componentNode.get(DCRadixParser.TAG_STROKE)
 		strokes = self.parseStrokes(strokeNode)
 
 		component = DCComponent.generateComponentByStrokes(strokes)
-		component.setExtraPaneDB(extraPaneDB)
 		return component
 
 	def parseStrokes(self, strokeNode):
