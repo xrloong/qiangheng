@@ -24,16 +24,16 @@ class LayoutSpec:
 		self.weights = weights
 
 def _splitLengthToList(length, weightList):
-	totalWeight=sum(weightList)
-	unitLength=length*1./totalWeight
+	totalWeight = sum(weightList)
+	unitLength = length / totalWeight
 
-	pointList=[]
-	newComponentList=[]
-	base=0
+	pointList = []
+	newComponentList = []
+	base = 0
 	for weight in weightList:
-		pointList.append(int(base))
-		base=base+unitLength*weight
-	pointList.append(int(base))
+		pointList.append(base)
+		base = base + unitLength * weight
+	pointList.append(base)
 	return pointList
 
 def genVerticalPanes(weights, containerPane):
@@ -75,7 +75,7 @@ class LayoutFactory:
 
 	def generateLayouts(self, spec: LayoutSpec) -> [Pane]:
 		def compute(fromValue: int, toValue: int, frac: float) -> int:
-			return round(fromValue*(1-frac) + toValue*frac)
+			return fromValue*(1-frac) + toValue*frac
 		containerPane = LayoutFactory.DefaultBox
 
 		operator = spec.operator
