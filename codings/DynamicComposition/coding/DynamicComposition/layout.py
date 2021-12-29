@@ -2,6 +2,12 @@ from enum import Enum
 
 from xie.graphics.shape import Pane
 
+from xrsolver import Problem
+from xrsolver import CompoundConstraint
+from xrsolver import Objective
+from xrsolver import Optimization
+from xrsolver.solver.cassowary import Solver
+
 class JointOperator(Enum):
 	Silkworm = '蚕'
 	Goose = '鴻'
@@ -23,38 +29,341 @@ class LayoutSpec:
 		self.operator = operator
 		self.weights = weights
 
-def _splitLengthToList(length, weightList):
-	totalWeight = sum(weightList)
-	unitLength = length / totalWeight
+class Box(CompoundConstraint):
+	def __init__(self, name):
+		super().__init__(name)
 
-	pointList = []
-	newComponentList = []
-	base = 0
-	for weight in weightList:
-		pointList.append(base)
-		base = base + unitLength * weight
-	pointList.append(base)
-	return pointList
+		self.left = self.generateVariable("left")
+		self.top = self.generateVariable("top")
+		self.right = self.generateVariable("right")
+		self.bottom = self.generateVariable("bottom")
 
-def genVerticalPanes(weights, containerPane):
-	pane = containerPane
-	points = _splitLengthToList(pane.height, weights)
-	paneList = []
-	offset = pane.top
-	for [pointStart, pointEnd] in zip(points[:-1], points[1:]):
-		newPane = (pane.left, pointStart + offset, pane.right, pointEnd + offset)
-		paneList.append(newPane)
-	return paneList
+	@property
+	def width(self):
+		return self.right - self.left
 
-def genHorizontalPanes(weights, containerPane):
-	pane = containerPane
-	points = _splitLengthToList(pane.width, weights)
-	paneList = []
-	offset = pane.left
-	for [pointStart, pointEnd] in zip(points[:-1], points[1:]):
-		newPane = (pointStart + offset, pane.top, pointEnd + offset, pane.bottom)
-		paneList.append(newPane)
-	return paneList
+	@property
+	def height(self):
+		return self.bottom - self.top
+
+	@property
+	def boundary(self):
+		return [
+				self.left.getValue(),
+				self.top.getValue(),
+				self.right.getValue(),
+				self.bottom.getValue(),
+				]
+
+	def getVariables(self):
+		return [
+				self.left,
+				self.top,
+				self.right,
+				self.bottom,
+				]
+
+	def getConstraints(self):
+		return [
+				self.width >= 0,
+				self.height >= 0,
+				]
+
+	def getObjectives(self):
+		return [ Objective(self.width + self.height) ]
+
+class GuideBox(Box):
+	def __init__(self, name, hNum = 0, vNum = 0, hWeights = None, vWeights = None):
+		super().__init__(name)
+
+		self.hLines = [self.generateVariable("hL%s"%i) for i in range(hNum)]
+		self.vLines = [self.generateVariable("vL%s"%i) for i in range(vNum)]
+		self.hUnit = self.generateVariable("hUnit")
+		self.vUnit = self.generateVariable("vUnit")
+
+		self.hGuidelines = [self.left] + self.hLines + [self.right]
+		self.vGuidelines = [self.top] + self.vLines + [self.bottom]
+
+		self.hWeights = [1 for i in range(hNum + 1)]
+		self.vWeights = [1 for i in range(vNum + 1)]
+
+		self.setupWeights(hWeights = hWeights, vWeights = vWeights)
+
+	def getHGuideline(self, index):
+		return self.hGuidelines[index]
+
+	def getVGuideline(self, index):
+		return self.vGuidelines[index]
+
+	def setupWeights(self, hWeights = None, vWeights = None):
+		if hWeights != None:
+			self.hWeights = hWeights
+		if vWeights != None:
+			self.vWeights = vWeights
+
+	def getVariables(self):
+		return super().getVariables() + self.hLines + self.vLines + [self.hUnit, self.vUnit]
+
+	def getConstraints(self):
+		constraints = []
+
+		constraints.append(self.hUnit >= 0)
+		constraints.append(self.vUnit >= 0)
+
+		lines = self.hGuidelines
+		for s, e, w in zip(lines[:-1], lines[1:], self.hWeights):
+			constraints.append((e - s) == w * self.hUnit)
+		lines = self.vGuidelines
+		for s, e, w in zip(lines[:-1], lines[1:], self.vWeights):
+			constraints.append((e - s) == w * self.vUnit)
+
+		return super().getConstraints() + constraints
+
+	def getObjectives(self):
+		return super().getObjectives()
+
+class LayoutProblem(Problem):
+	def __init__(self, spec: LayoutSpec):
+		super().__init__()
+
+		self.layoutSpec = spec
+
+		self.guideBox = None
+		self.boxes = []
+
+		self.setup()
+
+	def bindContainer(self, containerPaine):
+		self.appendConstraint(self.guideBox.left == containerPaine.left)
+		self.appendConstraint(self.guideBox.top == containerPaine.top)
+		self.appendConstraint(self.guideBox.right == containerPaine.right)
+		self.appendConstraint(self.guideBox.bottom == containerPaine.bottom)
+
+	def setup(self):
+		if self.layoutSpec.operator == JointOperator.Goose:
+			numBoxes = len(self.layoutSpec.weights)
+			self.setupCommonBox(numBoxes, hNum = numBoxes - 1, hWeights = self.layoutSpec.weights)
+
+			self.setupForGoose()
+		elif self.layoutSpec.operator == JointOperator.Silkworm:
+			numBoxes = len(self.layoutSpec.weights)
+			self.setupCommonBox(numBoxes, vNum = numBoxes - 1, vWeights = self.layoutSpec.weights)
+
+			self.setupForSilkworm()
+		elif self.layoutSpec.operator == JointOperator.Loop:
+			self.setupCommonBox(2, hNum = 2, vNum = 2)
+
+			self.setupForLoop()
+		elif self.layoutSpec.operator == JointOperator.Qi:
+			self.setupCommonBox(2, hNum = 1, vNum = 1)
+
+			self.setupForQi()
+		elif self.layoutSpec.operator == JointOperator.Liao:
+			self.setupCommonBox(2, hNum = 1, vNum = 1)
+
+			self.setupForLiao()
+		elif self.layoutSpec.operator == JointOperator.Zai:
+			self.setupCommonBox(2, hNum = 1, vNum = 1)
+
+			self.setupForZai()
+		elif self.layoutSpec.operator == JointOperator.Dou:
+			self.setupCommonBox(2, hNum = 1, vNum = 1)
+
+			self.setupForDou()
+		elif self.layoutSpec.operator == JointOperator.Mu:
+			self.setupCommonBox(3, hNum = 1, vNum = 1)
+
+			self.setupForMu()
+		elif self.layoutSpec.operator == JointOperator.Zuo:
+			self.setupCommonBox(3, hNum = 1, vNum = 1)
+
+			self.setupForZuo()
+		elif self.layoutSpec.operator == JointOperator.You:
+			self.setupCommonBox(3, hNum = 4, vNum = 1, hWeights = [1, 3, 2, 3, 1], vWeights = [4, 1])
+
+			self.setupForYou()
+		elif self.layoutSpec.operator == JointOperator.Liang:
+			self.setupCommonBox(3, hNum = 4, vNum = 1, hWeights = [1, 3, 2, 3, 1], vWeights = [1, 4])
+
+			self.setupForLiang()
+		elif self.layoutSpec.operator == JointOperator.Jia:
+			self.setupCommonBox(3, hNum = 2, vNum = 2, hWeights = [4, 2, 4], vWeights = [2, 6, 2])
+
+			self.setupForJia()
+		else:
+			pass
+
+	def setupCommonBox(self, numBoxes, hNum = 0, vNum = 0, hWeights = None, vWeights = None):
+		guideBox = GuideBox("guideBox", hNum = hNum, vNum = vNum, hWeights = hWeights, vWeights = vWeights)
+		boxes = [Box("box%s"%i) for i in range(numBoxes)]
+
+		self.appendCompoundConstraint(guideBox)
+		for box in boxes:
+			self.appendCompoundConstraint(box)
+
+		self.guideBox = guideBox
+		self.boxes = boxes
+
+	def setAsGuideBox(self, box):
+		guideBox = self.guideBox
+
+		self.appendConstraint(box.left == guideBox.left)
+		self.appendConstraint(box.top == guideBox.top)
+		self.appendConstraint(box.right == guideBox.right)
+		self.appendConstraint(box.bottom == guideBox.bottom)
+
+	def setupForGoose(self):
+		guideBox = self.guideBox
+		for index, box in enumerate(self.boxes):
+			self.appendConstraint(box.left == guideBox.getHGuideline(index))
+			self.appendConstraint(box.right == guideBox.getHGuideline(index + 1))
+
+			self.appendConstraint(box.top == guideBox.top)
+			self.appendConstraint(box.bottom == guideBox.bottom)
+
+	def setupForSilkworm(self):
+		guideBox = self.guideBox
+		for index, box in enumerate(self.boxes):
+			self.appendConstraint(box.left == guideBox.left)
+			self.appendConstraint(box.right == guideBox.right)
+
+			self.appendConstraint(box.top == guideBox.getVGuideline(index))
+			self.appendConstraint(box.bottom == guideBox.getVGuideline(index + 1))
+
+	def setupForLoop(self):
+		guideBox = self.guideBox
+		box0, box1 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.top == guideBox.getVGuideline(1))
+		self.appendConstraint(box1.right == guideBox.getHGuideline(2))
+		self.appendConstraint(box1.bottom == guideBox.getVGuideline(2))
+
+	def setupForQi(self):
+		guideBox = self.guideBox
+		box0, box1 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.top == guideBox.top)
+		self.appendConstraint(box1.right == guideBox.right)
+		self.appendConstraint(box1.bottom == guideBox.getVGuideline(1))
+
+	def setupForLiao(self):
+		guideBox = self.guideBox
+		box0, box1 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.top == guideBox.getVGuideline(1))
+		self.appendConstraint(box1.right == guideBox.right)
+		self.appendConstraint(box1.bottom == guideBox.bottom)
+
+	def setupForZai(self):
+		guideBox = self.guideBox
+		box0, box1 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.left)
+		self.appendConstraint(box1.top == guideBox.getVGuideline(1))
+		self.appendConstraint(box1.right == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.bottom == guideBox.bottom)
+
+	def setupForDou(self):
+		guideBox = self.guideBox
+		box0, box1 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.left)
+		self.appendConstraint(box1.top == guideBox.top)
+		self.appendConstraint(box1.right == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.bottom == guideBox.getVGuideline(1))
+
+	def setupForMu(self):
+		guideBox = self.guideBox
+		box0, box1, box2 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.left)
+		self.appendConstraint(box1.top == guideBox.getVGuideline(1))
+		self.appendConstraint(box1.right == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.bottom == guideBox.bottom)
+
+		self.appendConstraint(box2.left == guideBox.getHGuideline(1))
+		self.appendConstraint(box2.top == guideBox.getVGuideline(1))
+		self.appendConstraint(box2.right == guideBox.getHGuideline(2))
+		self.appendConstraint(box2.bottom == guideBox.bottom)
+
+	def setupForZuo(self):
+		guideBox = self.guideBox
+		box0, box1, box2 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.left)
+		self.appendConstraint(box1.top == guideBox.top)
+		self.appendConstraint(box1.right == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.bottom == guideBox.getVGuideline(1))
+
+		self.appendConstraint(box2.left == guideBox.getHGuideline(1))
+		self.appendConstraint(box2.top == guideBox.top)
+		self.appendConstraint(box2.right == guideBox.right)
+		self.appendConstraint(box2.bottom == guideBox.getVGuideline(1))
+
+	def setupForYou(self):
+		guideBox = self.guideBox
+		box0, box1, box2 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.top == guideBox.top)
+		self.appendConstraint(box1.right == guideBox.getHGuideline(2))
+		self.appendConstraint(box1.bottom == guideBox.getVGuideline(1))
+
+		self.appendConstraint(box2.left == guideBox.getHGuideline(3))
+		self.appendConstraint(box2.top == guideBox.top)
+		self.appendConstraint(box2.right == guideBox.getHGuideline(4))
+		self.appendConstraint(box2.bottom == guideBox.getVGuideline(1))
+
+	def setupForLiang(self):
+		guideBox = self.guideBox
+		box0, box1, box2 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.top == guideBox.getVGuideline(1))
+		self.appendConstraint(box1.right == guideBox.getHGuideline(2))
+		self.appendConstraint(box1.bottom == guideBox.bottom)
+
+		self.appendConstraint(box2.left == guideBox.getHGuideline(3))
+		self.appendConstraint(box2.top == guideBox.getVGuideline(1))
+		self.appendConstraint(box2.right == guideBox.getHGuideline(4))
+		self.appendConstraint(box2.bottom == guideBox.bottom)
+
+	def setupForJia(self):
+		guideBox = self.guideBox
+		box0, box1, box2 = self.boxes
+
+		self.setAsGuideBox(box0)
+
+		self.appendConstraint(box1.left == guideBox.left)
+		self.appendConstraint(box1.top == guideBox.getVGuideline(1))
+		self.appendConstraint(box1.right == guideBox.getHGuideline(1))
+		self.appendConstraint(box1.bottom == guideBox.getVGuideline(2))
+
+		self.appendConstraint(box2.left == guideBox.getHGuideline(2))
+		self.appendConstraint(box2.top == guideBox.getVGuideline(1))
+		self.appendConstraint(box2.right == guideBox.right)
+		self.appendConstraint(box2.bottom == guideBox.getVGuideline(2))
 
 class LayoutFactory:
 	# 字面框（Bounding Box）
@@ -79,63 +388,10 @@ class LayoutFactory:
 				for (left, top, right, bottom) in boundaries]
 
 	def _generateLayouts(self, spec: LayoutSpec, containerPane) -> [(int)]:
-		def compute(fromValue: int, toValue: int, frac: float) -> int:
-			return fromValue*(1-frac) + toValue*frac
+		problem = LayoutProblem(spec)
+		problem.bindContainer(containerPane)
 
-		operator = spec.operator
-		# Silkworm = '蚕'
-		# Goose = '鴻'
-		if operator == JointOperator.Goose:
-			return genHorizontalPanes(spec.weights, containerPane)
-		if operator == JointOperator.Silkworm:
-			return genVerticalPanes(spec.weights, containerPane)
-
-		(centerX, centerY) = containerPane.center
-		(left, top, right, bottom) = containerPane.boundary
-		if operator == JointOperator.Qi:
-			subPanes = [(centerX, top, right, centerY)]
-		elif operator == JointOperator.Liao:
-			subPanes = [(centerX, centerY, right, bottom)]
-		elif operator == JointOperator.Zai:
-			subPanes = [(left, centerY, centerX, bottom)]
-		elif operator == JointOperator.Dou:
-			subPanes = [(left, top, centerX, centerY)]
-		elif operator == JointOperator.Loop:
-			subPanes = [
-						(compute(left, right, 1/3), compute(top, bottom, 1/3),
-							compute(left, right, 2/3), compute(top, bottom, 2/3)),
-						]
-		elif operator == JointOperator.Mu:
-			subPanes = [
-						(left, centerY, centerX, bottom),
-						(centerX, centerY, right, bottom),
-						]
-		elif operator == JointOperator.Zuo:
-			subPanes = [
-						(left, top, centerX, centerY),
-						(centerX, top, right, centerY),
-						]
-		elif operator == JointOperator.You:
-			tmpBottom = compute(top, bottom, 0.8)
-			subPanes = [
-						(compute(left, right, 0.1), top, compute(left, right, 0.4), tmpBottom),
-						(compute(left, right, 0.6), top, compute(left, right, 0.9), tmpBottom),
-						]
-		elif operator == JointOperator.Liang:
-			tmpTop = compute(top, bottom, 0.2)
-			subPanes = [
-						(compute(left, right, 0.1), tmpTop, compute(left, right, 0.4), bottom),
-						(compute(left, right, 0.6), tmpTop, compute(left, right, 0.9), bottom),
-						]
-		elif operator == JointOperator.Jia:
-			tmpTop = compute(top, bottom, 0.2)
-			tmpBottom = compute(top, bottom, 0.8)
-			subPanes = [
-						(left, tmpTop, compute(left, right, 0.4), tmpBottom),
-						(compute(left, right, 0.6), tmpTop, right, tmpBottom),
-						]
-		else:
-			subPanes = []
-
-		return [containerPane.boundary] + subPanes
+		solver = Solver()
+		solver.solveProblem(problem)
+		return [box.boundary for box in problem.boxes]
 
