@@ -18,7 +18,7 @@
   + ply
   + Xie
     用於動態組字。
-    可到 https://github.com/xrloong/Xie 下載最新版本（https://github.com/xrloong/Xie/releases/download/v0.1.4/Xie-0.1.4-py3-none-any.whl）
+    可到 https://github.com/xrloong/Xie 下載最新版本（https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl）
 + 工具
   + xsltproc
   + xmllint
@@ -50,7 +50,7 @@ $ pkg install libxml2-utils
 在各平台共同的部分：
 ```console
 $ pip3 install lxml ruamel.yaml injector ply
-$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.4/Xie-0.1.4-py3-none-any.whl
+$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl
 ```
 
 計算
