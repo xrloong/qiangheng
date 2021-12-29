@@ -19,6 +19,9 @@
   + Xie
     用於動態組字。
     可到 https://github.com/xrloong/Xie 下載最新版本（https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl）
+  + xrSolver
+    約束滿足問題的求解器。
+    到 https://github.com/xrloong/xrSolver 下載最新版本（https://github.com/xrloong/xrSolver/releases/download/0.0.2/xrSolver-0.0.2-py3-none-any.whl）
 + 工具
   + xsltproc
   + xmllint
@@ -51,6 +54,9 @@ $ pkg install libxml2-utils
 ```console
 $ pip3 install lxml ruamel.yaml injector ply
 $ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl
+
+$ pip3 install https://github.com/xrloong/xrSolver/releases/download/0.0.2/xrSolver-0.0.2-py3-none-any.whl
+$ pip3 install https://github.com/xrloong/xrSolver/releases/download/0.0.2/xrSolver_cassowary-0.0.2-py3-none-any.whl
 ```
 
 計算
