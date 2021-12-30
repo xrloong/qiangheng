@@ -42,7 +42,7 @@ def genVerticalPanes(weights, containerPane):
 	paneList = []
 	offset = pane.top
 	for [pointStart, pointEnd] in zip(points[:-1], points[1:]):
-		newPane = Pane(pane.left, pointStart + offset, pane.right, pointEnd + offset)
+		newPane = (pane.left, pointStart + offset, pane.right, pointEnd + offset)
 		paneList.append(newPane)
 	return paneList
 
@@ -52,7 +52,7 @@ def genHorizontalPanes(weights, containerPane):
 	paneList = []
 	offset = pane.left
 	for [pointStart, pointEnd] in zip(points[:-1], points[1:]):
-		newPane = Pane(pointStart + offset, pane.top, pointEnd + offset, pane.bottom)
+		newPane = (pointStart + offset, pane.top, pointEnd + offset, pane.bottom)
 		paneList.append(newPane)
 	return paneList
 
@@ -74,9 +74,12 @@ class LayoutFactory:
 		pass
 
 	def generateLayouts(self, spec: LayoutSpec) -> [Pane]:
+		boundaries = self._generateLayouts(spec, LayoutFactory.DefaultBox)
+		return [Pane(left, top, right, bottom) for (left, top, right, bottom) in boundaries]
+
+	def _generateLayouts(self, spec: LayoutSpec, containerPane) -> [(int)]:
 		def compute(fromValue: int, toValue: int, frac: float) -> int:
 			return fromValue*(1-frac) + toValue*frac
-		containerPane = LayoutFactory.DefaultBox
 
 		operator = spec.operator
 		# Silkworm = '蚕'
@@ -89,49 +92,49 @@ class LayoutFactory:
 		(centerX, centerY) = containerPane.center
 		(left, top, right, bottom) = containerPane.boundary
 		if operator == JointOperator.Qi:
-			subPanes = [Pane(centerX, top, right, centerY)]
+			subPanes = [(centerX, top, right, centerY)]
 		elif operator == JointOperator.Liao:
-			subPanes = [Pane(centerX, centerY, right, bottom)]
+			subPanes = [(centerX, centerY, right, bottom)]
 		elif operator == JointOperator.Zai:
-			subPanes = [Pane(left, centerY, centerX, bottom)]
+			subPanes = [(left, centerY, centerX, bottom)]
 		elif operator == JointOperator.Dou:
-			subPanes = [Pane(left, top, centerX, centerY)]
+			subPanes = [(left, top, centerX, centerY)]
 		elif operator == JointOperator.Loop:
 			subPanes = [
-						Pane(compute(left, right, 0.33), compute(top, bottom, 0.33),
-							compute(left, right, 0.66), compute(top, bottom, 0.66)),
+						(compute(left, right, 1/3), compute(top, bottom, 1/3),
+							compute(left, right, 2/3), compute(top, bottom, 2/3)),
 						]
 		elif operator == JointOperator.Mu:
 			subPanes = [
-						Pane(left, centerY, centerX, bottom),
-						Pane(centerX, centerY, right, bottom),
+						(left, centerY, centerX, bottom),
+						(centerX, centerY, right, bottom),
 						]
 		elif operator == JointOperator.Zuo:
 			subPanes = [
-						Pane(left, top, centerX, centerY),
-						Pane(centerX, top, right, centerY),
+						(left, top, centerX, centerY),
+						(centerX, top, right, centerY),
 						]
 		elif operator == JointOperator.You:
 			tmpBottom = compute(top, bottom, 0.8)
 			subPanes = [
-						Pane(compute(left, right, 0.1), top, compute(left, right, 0.4), tmpBottom),
-						Pane(compute(left, right, 0.6), top, compute(left, right, 0.9), tmpBottom),
+						(compute(left, right, 0.1), top, compute(left, right, 0.4), tmpBottom),
+						(compute(left, right, 0.6), top, compute(left, right, 0.9), tmpBottom),
 						]
 		elif operator == JointOperator.Liang:
 			tmpTop = compute(top, bottom, 0.2)
 			subPanes = [
-						Pane(compute(left, right, 0.1), tmpTop, compute(left, right, 0.4), bottom),
-						Pane(compute(left, right, 0.6), tmpTop, compute(left, right, 0.9), bottom),
+						(compute(left, right, 0.1), tmpTop, compute(left, right, 0.4), bottom),
+						(compute(left, right, 0.6), tmpTop, compute(left, right, 0.9), bottom),
 						]
 		elif operator == JointOperator.Jia:
 			tmpTop = compute(top, bottom, 0.2)
 			tmpBottom = compute(top, bottom, 0.8)
 			subPanes = [
-						Pane(left, tmpTop, compute(left, right, 0.4), tmpBottom),
-						Pane(compute(left, right, 0.6), tmpTop, right, tmpBottom),
+						(left, tmpTop, compute(left, right, 0.4), tmpBottom),
+						(compute(left, right, 0.6), tmpTop, right, tmpBottom),
 						]
 		else:
 			subPanes = []
 
-		return [containerPane] + subPanes
+		return [containerPane.boundary] + subPanes
 

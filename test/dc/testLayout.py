@@ -16,15 +16,15 @@ class PaneUtilsTestCase(unittest.TestCase):
 
 	def test_genVerticalPanes(self):
 		self.assertEqual(genVerticalPanes([1, 2, 3], LayoutFactory.DefaultBox),
-				[Pane(8, 8, 247, 47.833333333333336), Pane(8, 47.833333333333336, 247, 127.5), Pane(8, 127.5, 247, 247)])
+				[(8, 8, 247, 47.833333333333336), (8, 47.833333333333336, 247, 127.5), (8, 127.5, 247, 247)])
 		self.assertEqual(genVerticalPanes([3, 2], LayoutFactory.DefaultBox),
-				[Pane(8, 8, 247, 151.39999999999998), Pane(8, 151.39999999999998, 247, 246.99999999999997)])
+				[(8, 8, 247, 151.39999999999998), (8, 151.39999999999998, 247, 246.99999999999997)])
 
 	def test_genHorizontalPanes(self):
 		self.assertEqual(genHorizontalPanes([1, 2, 3], LayoutFactory.DefaultBox),
-				[Pane(8, 8, 47.833333333333336, 247), Pane(47.833333333333336, 8, 127.5, 247), Pane(127.5, 8, 247, 247)])
+				[(8, 8, 47.833333333333336, 247), (47.833333333333336, 8, 127.5, 247), (127.5, 8, 247, 247)])
 		self.assertEqual(genHorizontalPanes([3, 2], LayoutFactory.DefaultBox),
-				[Pane(8, 8, 151.39999999999998, 247), Pane(151.39999999999998, 8, 246.99999999999997, 247)])
+				[(8, 8, 151.39999999999998, 247), (151.39999999999998, 8, 246.99999999999997, 247)])
 
 class LayoutGenerationTestCase(unittest.TestCase):
 	def setUp(self):
