@@ -75,7 +75,8 @@ class LayoutFactory:
 
 	def generateLayouts(self, spec: LayoutSpec) -> [Pane]:
 		boundaries = self._generateLayouts(spec, LayoutFactory.DefaultBox)
-		return [Pane(left, top, right, bottom) for (left, top, right, bottom) in boundaries]
+		return [Pane(round(left, 6), round(top, 6), round(right, 6), round(bottom, 6))
+				for (left, top, right, bottom) in boundaries]
 
 	def _generateLayouts(self, spec: LayoutSpec, containerPane) -> [(int)]:
 		def compute(fromValue: int, toValue: int, frac: float) -> int:
