@@ -135,72 +135,6 @@ class LayoutProblem(Problem):
 		self.appendConstraint(self.guideBox.right == containerPaine.right)
 		self.appendConstraint(self.guideBox.bottom == containerPaine.bottom)
 
-	def setup(self, spec: LayoutSpec):
-		operator = spec.operator
-		if operator == JointOperator.Goose:
-			numBoxes = len(spec.weights)
-			self.setupCommonBox(numBoxes, hNum = numBoxes - 1, hWeights = spec.weights)
-
-			self.setupForGoose()
-		elif operator == JointOperator.Silkworm:
-			numBoxes = len(spec.weights)
-			self.setupCommonBox(numBoxes, vNum = numBoxes - 1, vWeights = spec.weights)
-
-			self.setupForSilkworm()
-		elif operator == JointOperator.Loop:
-			self.setupCommonBox(2, hNum = 2, vNum = 2)
-
-			self.setupForLoop()
-		elif operator == JointOperator.Qi:
-			self.setupCommonBox(2, hNum = 1, vNum = 1)
-
-			self.setupForQi()
-		elif operator == JointOperator.Liao:
-			self.setupCommonBox(2, hNum = 1, vNum = 1)
-
-			self.setupForLiao()
-		elif operator == JointOperator.Zai:
-			self.setupCommonBox(2, hNum = 1, vNum = 1)
-
-			self.setupForZai()
-		elif operator == JointOperator.Dou:
-			self.setupCommonBox(2, hNum = 1, vNum = 1)
-
-			self.setupForDou()
-		elif operator == JointOperator.Mu:
-			self.setupCommonBox(3, hNum = 1, vNum = 1)
-
-			self.setupForMu()
-		elif operator == JointOperator.Zuo:
-			self.setupCommonBox(3, hNum = 1, vNum = 1)
-
-			self.setupForZuo()
-		elif operator == JointOperator.You:
-			self.setupCommonBox(3, hNum = 4, vNum = 1, hWeights = [1, 3, 2, 3, 1], vWeights = [4, 1])
-
-			self.setupForYou()
-		elif operator == JointOperator.Liang:
-			self.setupCommonBox(3, hNum = 4, vNum = 1, hWeights = [1, 3, 2, 3, 1], vWeights = [1, 4])
-
-			self.setupForLiang()
-		elif operator == JointOperator.Jia:
-			self.setupCommonBox(3, hNum = 2, vNum = 2, hWeights = [4, 2, 4], vWeights = [2, 6, 2])
-
-			self.setupForJia()
-		else:
-			pass
-
-	def setupCommonBox(self, numBoxes, hNum = 0, vNum = 0, hWeights = None, vWeights = None):
-		guideBox = GuideBox("guideBox", hNum = hNum, vNum = vNum, hWeights = hWeights, vWeights = vWeights)
-		boxes = [Box("box%s"%i) for i in range(numBoxes)]
-
-		self.appendCompoundConstraint(guideBox)
-		for box in boxes:
-			self.appendCompoundConstraint(box)
-
-		self.guideBox = guideBox
-		self.boxes = boxes
-
 	def setAsGuideBox(self, box):
 		guideBox = self.guideBox
 
@@ -368,8 +302,74 @@ class LayoutProblemFactory:
 
 	def generateLayoutProblem(self, spec: LayoutSpec):
 		layoutProblem = LayoutProblem()
-		layoutProblem.setup(spec)
+		self.setup(layoutProblem, spec)
 		return layoutProblem
+
+	def setupCommonBox(self, layoutProblem: LayoutProblem, numBoxes, hNum = 0, vNum = 0, hWeights = None, vWeights = None):
+		guideBox = GuideBox("guideBox", hNum = hNum, vNum = vNum, hWeights = hWeights, vWeights = vWeights)
+		boxes = [Box("box%s"%i) for i in range(numBoxes)]
+
+		layoutProblem.appendCompoundConstraint(guideBox)
+		for box in boxes:
+			layoutProblem.appendCompoundConstraint(box)
+
+		layoutProblem.guideBox = guideBox
+		layoutProblem.boxes = boxes
+
+	def setup(self, layoutProblem: LayoutProblem, spec: LayoutSpec):
+		operator = spec.operator
+		if operator == JointOperator.Goose:
+			numBoxes = len(spec.weights)
+			self.setupCommonBox(layoutProblem, numBoxes, hNum = numBoxes - 1, hWeights = spec.weights)
+
+			layoutProblem.setupForGoose()
+		elif operator == JointOperator.Silkworm:
+			numBoxes = len(spec.weights)
+			self.setupCommonBox(layoutProblem, numBoxes, vNum = numBoxes - 1, vWeights = spec.weights)
+
+			layoutProblem.setupForSilkworm()
+		elif operator == JointOperator.Loop:
+			self.setupCommonBox(layoutProblem, 2, hNum = 2, vNum = 2)
+
+			layoutProblem.setupForLoop()
+		elif operator == JointOperator.Qi:
+			self.setupCommonBox(layoutProblem, 2, hNum = 1, vNum = 1)
+
+			layoutProblem.setupForQi()
+		elif operator == JointOperator.Liao:
+			self.setupCommonBox(layoutProblem, 2, hNum = 1, vNum = 1)
+
+			layoutProblem.setupForLiao()
+		elif operator == JointOperator.Zai:
+			self.setupCommonBox(layoutProblem, 2, hNum = 1, vNum = 1)
+
+			layoutProblem.setupForZai()
+		elif operator == JointOperator.Dou:
+			self.setupCommonBox(layoutProblem, 2, hNum = 1, vNum = 1)
+
+			layoutProblem.setupForDou()
+		elif operator == JointOperator.Mu:
+			self.setupCommonBox(layoutProblem, 3, hNum = 1, vNum = 1)
+
+			layoutProblem.setupForMu()
+		elif operator == JointOperator.Zuo:
+			self.setupCommonBox(layoutProblem, 3, hNum = 1, vNum = 1)
+
+			layoutProblem.setupForZuo()
+		elif operator == JointOperator.You:
+			self.setupCommonBox(layoutProblem, 3, hNum = 4, vNum = 1, hWeights = [1, 3, 2, 3, 1], vWeights = [4, 1])
+
+			layoutProblem.setupForYou()
+		elif operator == JointOperator.Liang:
+			self.setupCommonBox(layoutProblem, 3, hNum = 4, vNum = 1, hWeights = [1, 3, 2, 3, 1], vWeights = [1, 4])
+
+			layoutProblem.setupForLiang()
+		elif operator == JointOperator.Jia:
+			self.setupCommonBox(layoutProblem, 3, hNum = 2, vNum = 2, hWeights = [4, 2, 4], vWeights = [2, 6, 2])
+
+			layoutProblem.setupForJia()
+		else:
+			pass
 
 class LayoutFactory:
 	# 字面框（Bounding Box）
