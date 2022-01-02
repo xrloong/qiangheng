@@ -123,15 +123,11 @@ class GuideBox(Box):
 		return super().getObjectives()
 
 class LayoutProblem(Problem):
-	def __init__(self, spec: LayoutSpec):
+	def __init__(self):
 		super().__init__()
-
-		self.layoutSpec = spec
 
 		self.guideBox = None
 		self.boxes = []
-
-		self.setup()
 
 	def bindContainer(self, containerPaine):
 		self.appendConstraint(self.guideBox.left == containerPaine.left)
@@ -139,54 +135,55 @@ class LayoutProblem(Problem):
 		self.appendConstraint(self.guideBox.right == containerPaine.right)
 		self.appendConstraint(self.guideBox.bottom == containerPaine.bottom)
 
-	def setup(self):
-		if self.layoutSpec.operator == JointOperator.Goose:
-			numBoxes = len(self.layoutSpec.weights)
-			self.setupCommonBox(numBoxes, hNum = numBoxes - 1, hWeights = self.layoutSpec.weights)
+	def setup(self, spec: LayoutSpec):
+		operator = spec.operator
+		if operator == JointOperator.Goose:
+			numBoxes = len(spec.weights)
+			self.setupCommonBox(numBoxes, hNum = numBoxes - 1, hWeights = spec.weights)
 
 			self.setupForGoose()
-		elif self.layoutSpec.operator == JointOperator.Silkworm:
-			numBoxes = len(self.layoutSpec.weights)
-			self.setupCommonBox(numBoxes, vNum = numBoxes - 1, vWeights = self.layoutSpec.weights)
+		elif operator == JointOperator.Silkworm:
+			numBoxes = len(spec.weights)
+			self.setupCommonBox(numBoxes, vNum = numBoxes - 1, vWeights = spec.weights)
 
 			self.setupForSilkworm()
-		elif self.layoutSpec.operator == JointOperator.Loop:
+		elif operator == JointOperator.Loop:
 			self.setupCommonBox(2, hNum = 2, vNum = 2)
 
 			self.setupForLoop()
-		elif self.layoutSpec.operator == JointOperator.Qi:
+		elif operator == JointOperator.Qi:
 			self.setupCommonBox(2, hNum = 1, vNum = 1)
 
 			self.setupForQi()
-		elif self.layoutSpec.operator == JointOperator.Liao:
+		elif operator == JointOperator.Liao:
 			self.setupCommonBox(2, hNum = 1, vNum = 1)
 
 			self.setupForLiao()
-		elif self.layoutSpec.operator == JointOperator.Zai:
+		elif operator == JointOperator.Zai:
 			self.setupCommonBox(2, hNum = 1, vNum = 1)
 
 			self.setupForZai()
-		elif self.layoutSpec.operator == JointOperator.Dou:
+		elif operator == JointOperator.Dou:
 			self.setupCommonBox(2, hNum = 1, vNum = 1)
 
 			self.setupForDou()
-		elif self.layoutSpec.operator == JointOperator.Mu:
+		elif operator == JointOperator.Mu:
 			self.setupCommonBox(3, hNum = 1, vNum = 1)
 
 			self.setupForMu()
-		elif self.layoutSpec.operator == JointOperator.Zuo:
+		elif operator == JointOperator.Zuo:
 			self.setupCommonBox(3, hNum = 1, vNum = 1)
 
 			self.setupForZuo()
-		elif self.layoutSpec.operator == JointOperator.You:
+		elif operator == JointOperator.You:
 			self.setupCommonBox(3, hNum = 4, vNum = 1, hWeights = [1, 3, 2, 3, 1], vWeights = [4, 1])
 
 			self.setupForYou()
-		elif self.layoutSpec.operator == JointOperator.Liang:
+		elif operator == JointOperator.Liang:
 			self.setupCommonBox(3, hNum = 4, vNum = 1, hWeights = [1, 3, 2, 3, 1], vWeights = [1, 4])
 
 			self.setupForLiang()
-		elif self.layoutSpec.operator == JointOperator.Jia:
+		elif operator == JointOperator.Jia:
 			self.setupCommonBox(3, hNum = 2, vNum = 2, hWeights = [4, 2, 4], vWeights = [2, 6, 2])
 
 			self.setupForJia()
@@ -365,6 +362,15 @@ class LayoutProblem(Problem):
 		self.appendConstraint(box2.right == guideBox.right)
 		self.appendConstraint(box2.bottom == guideBox.getVGuideline(2))
 
+class LayoutProblemFactory:
+	def __init__(self):
+		super().__init__()
+
+	def generateLayoutProblem(self, spec: LayoutSpec):
+		layoutProblem = LayoutProblem()
+		layoutProblem.setup(spec)
+		return layoutProblem
+
 class LayoutFactory:
 	# 字面框（Bounding Box）
 	BBOX_X_MIN = 0x08
@@ -380,7 +386,7 @@ class LayoutFactory:
 	)
 
 	def __init__(self):
-		pass
+		self.layoutProblemFactory = LayoutProblemFactory()
 
 	def generateLayouts(self, spec: LayoutSpec) -> [Pane]:
 		boundaries = self._generateLayouts(spec, LayoutFactory.DefaultBox)
@@ -388,7 +394,7 @@ class LayoutFactory:
 				for (left, top, right, bottom) in boundaries]
 
 	def _generateLayouts(self, spec: LayoutSpec, containerPane) -> [(int)]:
-		problem = LayoutProblem(spec)
+		problem = self.layoutProblemFactory.generateLayoutProblem(spec)
 		problem.bindContainer(containerPane)
 
 		solver = Solver()
