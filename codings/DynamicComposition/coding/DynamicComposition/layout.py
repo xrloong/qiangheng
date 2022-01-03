@@ -1,3 +1,5 @@
+import copy
+
 from enum import Enum
 
 from xie.graphics.shape import Pane
@@ -310,15 +312,36 @@ class LayoutProblemFactory:
 	def __init__(self):
 		super().__init__()
 
-	def generateBaseLayoutProblem(self, spec: LayoutSpec):
-		operator = spec.operator
+		self.problemPrototype = {
+				(JointOperator.Silkworm, 2): self.generateBaseLayoutProblem(JointOperator.Silkworm, numWeights=2),
+				(JointOperator.Silkworm, 3): self.generateBaseLayoutProblem(JointOperator.Silkworm, numWeights=3),
+				(JointOperator.Silkworm, 4): self.generateBaseLayoutProblem(JointOperator.Silkworm, numWeights=4),
+				(JointOperator.Silkworm, 5): self.generateBaseLayoutProblem(JointOperator.Silkworm, numWeights=5),
+				(JointOperator.Goose, 2): self.generateBaseLayoutProblem(JointOperator.Goose, numWeights=2),
+				(JointOperator.Goose, 3): self.generateBaseLayoutProblem(JointOperator.Goose, numWeights=3),
+				(JointOperator.Goose, 4): self.generateBaseLayoutProblem(JointOperator.Goose, numWeights=4),
+				(JointOperator.Goose, 5): self.generateBaseLayoutProblem(JointOperator.Goose, numWeights=5),
 
+				JointOperator.Loop: self.generateBaseLayoutProblem(JointOperator.Loop),
+				JointOperator.Qi: self.generateBaseLayoutProblem(JointOperator.Qi),
+				JointOperator.Liao: self.generateBaseLayoutProblem(JointOperator.Liao),
+				JointOperator.Zai: self.generateBaseLayoutProblem(JointOperator.Zai),
+				JointOperator.Dou: self.generateBaseLayoutProblem(JointOperator.Dou),
+
+				JointOperator.Mu: self.generateBaseLayoutProblem(JointOperator.Mu),
+				JointOperator.Zuo: self.generateBaseLayoutProblem(JointOperator.Zuo),
+				JointOperator.You: self.generateBaseLayoutProblem(JointOperator.You),
+				JointOperator.Liang: self.generateBaseLayoutProblem(JointOperator.Liang),
+				JointOperator.Jia: self.generateBaseLayoutProblem(JointOperator.Jia),
+				}
+
+	def generateBaseLayoutProblem(self, operator, numWeights = None):
 		layoutProblem = LayoutProblem()
 		if operator == JointOperator.Goose:
-			layoutProblem.initCommonBoxes(len(spec.weights), hNum = len(spec.weights) - 1)
+			layoutProblem.initCommonBoxes(numWeights, hNum = numWeights - 1)
 			layoutProblem.setupForGoose()
 		elif operator == JointOperator.Silkworm:
-			layoutProblem.initCommonBoxes(len(spec.weights), vNum = len(spec.weights) - 1)
+			layoutProblem.initCommonBoxes(numWeights, vNum = numWeights - 1)
 			layoutProblem.setupForSilkworm()
 		elif operator == JointOperator.Loop:
 			layoutProblem.initCommonBoxes(2, hNum = 2, vNum = 2)
@@ -399,10 +422,25 @@ class LayoutProblemFactory:
 			pass
 		return (hWeights, vWeights)
 
-	def generateLayoutProblem(self, spec: LayoutSpec):
+	def getCopyFromProtopty(self, spec: LayoutSpec):
 		operator = spec.operator
 
-		layoutProblem = self.generateBaseLayoutProblem(spec)
+		if operator in [JointOperator.Goose, JointOperator.Silkworm]:
+			key = (operator, len(spec.weights))
+		else:
+			key = operator
+
+		prototype = self.problemPrototype.get(key)
+		if not prototype:
+			numWeights = len(spec.weights) if spec.weights != None else None
+			prototype = self.generateBaseLayoutProblem(spec.operator, numWeights)
+			self.problemPrototype[key] = prototype
+
+		layoutProblem = copy.deepcopy(prototype)
+		return layoutProblem
+
+	def generateLayoutProblem(self, spec: LayoutSpec):
+		layoutProblem = self.getCopyFromProtopty(spec)
 		(hWeights, vWeights) = self.extractWeights(spec)
 		layoutProblem.setupGuideWeights(hWeights = hWeights, vWeights = vWeights)
 		layoutProblem.setupCommonBoxes()
