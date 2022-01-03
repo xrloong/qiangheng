@@ -310,18 +310,16 @@ class LayoutProblemFactory:
 	def __init__(self):
 		super().__init__()
 
-	def generateLayoutProblem(self, spec: LayoutSpec):
+	def generateBaseLayoutProblem(self, spec: LayoutSpec):
 		operator = spec.operator
 
 		layoutProblem = LayoutProblem()
 		if operator == JointOperator.Goose:
 			layoutProblem.initCommonBoxes(len(spec.weights), hNum = len(spec.weights) - 1)
 			layoutProblem.setupForGoose()
-			layoutProblem.setupGuideWeights(hWeights = spec.weights)
 		elif operator == JointOperator.Silkworm:
 			layoutProblem.initCommonBoxes(len(spec.weights), vNum = len(spec.weights) - 1)
 			layoutProblem.setupForSilkworm()
-			layoutProblem.setupGuideWeights(vWeights = spec.weights)
 		elif operator == JointOperator.Loop:
 			layoutProblem.initCommonBoxes(2, hNum = 2, vNum = 2)
 			layoutProblem.setupForLoop()
@@ -346,17 +344,67 @@ class LayoutProblemFactory:
 		elif operator == JointOperator.You:
 			layoutProblem.initCommonBoxes(3, hNum = 4, vNum = 1)
 			layoutProblem.setupForYou()
-			layoutProblem.setupGuideWeights(hWeights = [1, 3, 2, 3, 1], vWeights = [4, 1])
 		elif operator == JointOperator.Liang:
 			layoutProblem.initCommonBoxes(3, hNum = 4, vNum = 1)
 			layoutProblem.setupForLiang()
-			layoutProblem.setupGuideWeights(hWeights = [1, 3, 2, 3, 1], vWeights = [1, 4])
 		elif operator == JointOperator.Jia:
 			layoutProblem.initCommonBoxes(3, hNum = 2, vNum = 2)
 			layoutProblem.setupForJia()
-			layoutProblem.setupGuideWeights(hWeights = [4, 2, 4], vWeights = [2, 6, 2])
 		else:
 			pass
+		return layoutProblem
+
+	def extractWeights(self, spec: LayoutSpec):
+		operator = spec.operator
+
+		hWeights = []
+		vWeights = []
+		if operator == JointOperator.Goose:
+			hWeights = spec.weights
+			vWeights = None
+		elif operator == JointOperator.Silkworm:
+			hWeights = None
+			vWeights = spec.weights
+		elif operator == JointOperator.Loop:
+			hWeights = None
+			vWeights = None
+		elif operator == JointOperator.Qi:
+			hWeights = None
+			vWeights = None
+		elif operator == JointOperator.Liao:
+			hWeights = None
+			vWeights = None
+		elif operator == JointOperator.Zai:
+			hWeights = None
+			vWeights = None
+		elif operator == JointOperator.Dou:
+			hWeights = None
+			vWeights = None
+		elif operator == JointOperator.Mu:
+			hWeights = None
+			vWeights = None
+		elif operator == JointOperator.Zuo:
+			hWeights = None
+			vWeights = None
+		elif operator == JointOperator.You:
+			hWeights = [1, 3, 2, 3, 1]
+			vWeights = [4, 1]
+		elif operator == JointOperator.Liang:
+			hWeights = [1, 3, 2, 3, 1]
+			vWeights = [1, 4]
+		elif operator == JointOperator.Jia:
+			hWeights = [4, 2, 4]
+			vWeights = [2, 6, 2]
+		else:
+			pass
+		return (hWeights, vWeights)
+
+	def generateLayoutProblem(self, spec: LayoutSpec):
+		operator = spec.operator
+
+		layoutProblem = self.generateBaseLayoutProblem(spec)
+		(hWeights, vWeights) = self.extractWeights(spec)
+		layoutProblem.setupGuideWeights(hWeights = hWeights, vWeights = vWeights)
 		layoutProblem.setupCommonBoxes()
 		return layoutProblem
 
