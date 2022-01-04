@@ -218,32 +218,10 @@ dc:
 FORCE:
 
 test: FORCE
-	#PYTHONPATH=src python3 -m unittest discover -s test/
 	for cm in $(CMLIST);\
 	do\
-		make test-$$cm; \
+		pytest -c pytest-$$cm.ini; \
 	done
-
-test-ar: FORCE
-	PYTHONPATH="src:libs:codings/Array" python3 -m unittest discover -s test/ar/
-
-test-bs: FORCE
-	PYTHONPATH="src:libs:codings/Boshiamy" python3 -m unittest discover -s test/bs/
-
-test-cj: FORCE
-	PYTHONPATH="src:libs:codings/CangJie" python3 -m unittest discover -s test/cj/
-
-test-dy: FORCE
-	PYTHONPATH="src:libs:codings/DaYi" python3 -m unittest discover -s test/dy/
-
-test-zm: FORCE
-	PYTHONPATH="src:libs:codings/ZhengMa" python3 -m unittest discover -s test/zm/
-
-test-fc: FORCE
-	PYTHONPATH="src:libs:codings/FourCorner" python3 -m unittest discover -s test/fc/
-
-test-dc: FORCE
-	PYTHONPATH="src:libs:codings/DynamicComposition" python3 -m unittest discover -s test/dc/
 
 imtables: scim ibus gcin ovim msim
 
