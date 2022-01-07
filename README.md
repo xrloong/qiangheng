@@ -112,6 +112,18 @@ $ make xml puretable CMLIST="cj"
 $ src/qiangheng.py -p cj --format=xml
 ```
 
+測試
+====
+測試時會使用 tox
+```console
+$ pip3 install tox
+```
+
+測試
+```console
+$ tox
+```
+
 輸入法
 ======
 安裝
