@@ -329,19 +329,22 @@ tarballs-platform: all-icons
 tarball-all:
 	tar cjf $(TARBALLS_PATH)/qiangheng-$(VERSION).tar.bz2 --exclude-vcs --exclude=tarballs -C .. qiangheng
 
-python-fontforge: fontforge/Makefile
-	cd fontforge; make
-	cd fontforge; make install
-	cd tools/; ln -s ../fontforge/pyhook/.libs/fontforge.so .
+python-fontforge: fontforge/CMakeLists.txt
+	rm -rf fontforge/build tools/fontforge.so
 
-fontforge/Makefile: fontforge/configure
-	cd fontforge; PYTHON=python3 ./configure --prefix=$(INSTALL_DIR) --enable-pyextention --disable-programes --without-giflib --without-libjpeg --without-libpng --without-libtiff --without-cairo --without-libspiro --without-libzmq --without-libreadline --without-libuninameslist
+	# https://github.com/fontforge/fontforge/issues/5251
+	cd fontforge; sed -i.orig 's/\(%[^%[:space:]]*\)hs/\1s/g' fontforgeexe/searchview.c po/de.po po/ca.po po/hr.po po/it.po po/pl.po po/uk.po po/en_GB.po po/fr.po po/vi.po po/ko.po po/ja.po;
 
-fontforge/configure: fontforge/bootstrape
-	cd fontforge/; ./bootstrap
+	cd fontforge; ( \
+		mkdir build; \
+		cd build; \
+		cmake -GNinja .. -DPython3_EXECUTABLE=`which python3`; \
+		ninja; \
+		)
+	cd tools; ln -s ../fontforge/build/lib/fontforge.so .
 
-fontforge/bootstrape:
-	git clone -b 20190801 https://github.com/fontforge/fontforge.git
+fontforge/CMakeLists.txt:
+	git clone -b 20230101 https://github.com/fontforge/fontforge.git
 
 clean:
 	rm -rf $(ICON_PLATFORM_PATH)
