@@ -10,7 +10,7 @@ except ImportError:
 try:
 	import ruamel.yaml as yaml
 except ImportError:
-	print("Please install the libary wxPython")
+	print("Please install the libary ruamel.yaml")
 	import sys
 	sys.exit()
 
