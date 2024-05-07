@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
-import ruamel.yaml as yaml
+import ruamel.yaml as ryaml
 import lxml.etree as ET
 import sys
 
 infile = sys.argv[1]
 infofile = sys.argv[2]
 
-root = yaml.load(open(infile), yaml.cyaml.CSafeLoader)
-info = yaml.load(open(infofile), yaml.cyaml.CSafeLoader)
+yaml = ryaml.YAML()
+root = yaml.load(open(infile))
+info = yaml.load(open(infofile))
 
 codingType = root["編碼類型"]
 rootNode=ET.Element("編碼法", attrib={"編碼類型": codingType})

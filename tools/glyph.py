@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # coding=utf8
 
+import io
+
 try:
 	import xie
 except ImportError:
@@ -8,7 +10,7 @@ except ImportError:
 	import sys
 	sys.exit()
 try:
-	import ruamel.yaml as yaml
+	import ruamel.yaml as ryaml
 except ImportError:
 	print("Please install the libary ruamel.yaml")
 	import sys
@@ -38,8 +40,13 @@ class GlyphManager:
 
 		self.fontFile=fontFile
 
+		yaml = ryaml.YAML()
+		yaml.allow_unicode = True
+		yaml.default_flow_style = False
+		self.yaml = yaml
+
 	def loadFont(self):
-		node=yaml.load(open(self.fontFile), yaml.cyaml.CSafeLoader)
+		node = self.yaml.load(open(self.fontFile))
 
 		yamlNodeEncodingSet = node.get(GlyphManager.TAG_ENCODING_SET)
 		for yamlNodeChar in yamlNodeEncodingSet:
@@ -62,7 +69,7 @@ class GlyphManager:
 		return self.characterDB.keys()
 
 	def computeCharacterByStringDescription(self, description):
-		yamlNode = yaml.load(description, yaml.cyaml.CSafeLoader)
+		yamlNode = self.yaml.load(description)
 
 		character = None
 		if isinstance(yamlNode, (dict, )):
@@ -77,8 +84,11 @@ class GlyphManager:
 		glyph = yamlNodeChar.get(GlyphManager.TAG_GLYPH)
 		character = self.computeCharacterByGlyphDescriptions(charName, glyph)
 
-		description = yaml.dump({GlyphManager.TAG_GLYPH: glyph},
-				allow_unicode=True, default_flow_style=False)
+		text = io.StringIO()
+		self.yaml.dump({GlyphManager.TAG_GLYPH: glyph}, text)
+		description = text.getvalue()
+		text.close()
+
 		character.description = description.strip()
 
 		return character

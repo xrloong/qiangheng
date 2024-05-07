@@ -1,6 +1,6 @@
 import sys
 import Constant
-import ruamel.yaml as yaml
+import ruamel.yaml as ryaml
 
 from coding.Base import CodingRadixParser
 
@@ -28,10 +28,10 @@ class QHTreeParser:
 class QHSubstituteRuleParser:
 	@inject
 	def __init__(self):
-		pass
+		self.yaml = ryaml.YAML()
 
 	def loadSubstituteRules(self, filename):
-		node=yaml.load(open(filename), yaml.cyaml.CSafeLoader)
+		node = self.yaml.load(open(filename))
 		ruleSetNode=node.get(Constant.TAG_RULE_SET)
 
 		if not ruleSetNode:
@@ -51,6 +51,7 @@ class QHParser:
 	@inject
 	def __init__(self, treeParser: QHTreeParser):
 		self.treeParser = TreeParser
+		self.yaml = ryaml.YAML()
 
 	def parseStructure(self, structureExpression):
 		return self.treeParser.parse(structureExpression)
@@ -92,7 +93,7 @@ class QHParser:
 		return structureList
 
 	def loadCharacters(self, filename):
-		node=yaml.load(open(filename), yaml.cyaml.CSafeLoader)
+		node = self.yaml.load(open(filename))
 		return self.loadCharDescriptionByParsingYAML(node)
 
 	def convertDescriptionToFontVariance(self, description):
@@ -112,6 +113,7 @@ class QHRadixParser:
 	@inject
 	def __init__(self, codingRadixParser: CodingRadixParser):
 		self.codingRadixParser = codingRadixParser
+		self.yaml = ryaml.YAML()
 
 	def loadRadix(self, radixFileList):
 		radixDescriptionList = self.parse(radixFileList)
@@ -159,7 +161,7 @@ class QHRadixParser:
 		return totalRadixDescriptionList
 
 	def parseRadixFromYAML(self, filename):
-		rootNode=yaml.load(open(filename), Loader=yaml.cyaml.CSafeLoader)
+		rootNode = self.yaml.load(open(filename))
 
 		return self.parseRadixInfo(rootNode)
 

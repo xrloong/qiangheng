@@ -1,4 +1,5 @@
-import ruamel.yaml as yaml
+import ruamel.yaml as ryaml
+import sys
 
 # base writer
 class BaseWriter:
@@ -27,6 +28,15 @@ class CmYamlWriter(BaseWriter):
 		super().__init__()
 		self.codeMappingInfoInterpreter = codeMappingInfoInterpreter
 
+		yaml = ryaml.YAML()
+		yaml.explicit_start = True
+		yaml.explicit_end = True
+		yaml.allow_unicode = True
+		yaml.default_flow_style = False
+		yaml.width = 100
+
+		self.yaml = yaml
+
 	def writeCodeMapping(self, codeMappingInfoList):
 		codingTypeName = self.codeMappingInfoInterpreter.getCodingTypeName()
 
@@ -40,15 +50,7 @@ class CmYamlWriter(BaseWriter):
 			"編碼集": nodeCodeMaps
 		}
 
-		print(yaml.dump(codeMappingSet, Dumper = CustomDumper,
-			allow_unicode=True, default_flow_style=False,
-			explicit_start=True, explicit_end=True,
-			))
-
-class CustomDumper(yaml.cyaml.CDumper):
-	#Super neat hack to preserve the mapping key order. See https://stackoverflow.com/a/52621703/1497385
-	def represent_dict_preserve_order(self, data):
-		return self.represent_dict(data.items())
-
-CustomDumper.add_representer(dict, CustomDumper.represent_dict_preserve_order)
+		output = sys.stdout
+		self.yaml.dump(codeMappingSet, output)
+		print(file = output)
 

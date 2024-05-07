@@ -1,4 +1,4 @@
-import ruamel.yaml as yaml
+import ruamel.yaml as ryaml
 import abc
 
 from collections import OrderedDict
@@ -93,9 +93,10 @@ class GlyphTags(object):
 class GlyphParser(object):
 	def __init__(self):
 		super().__init__()
+		self.yaml = ryaml.YAML()
 
 	def load(self, filename):
-		rootNode = yaml.load(open(filename), Loader=yaml.SafeLoader)
+		rootNode = self.yaml.load(open(filename))
 		dataSet = self.parseAllDataSet(rootNode)
 		return dataSet
 

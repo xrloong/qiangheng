@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import ruamel.yaml as yaml
+import ruamel.yaml as ryaml
 import sys
 from optparse import OptionParser
 
@@ -11,7 +11,8 @@ codeType = options.type
 
 infile = args[0]
 
-root = yaml.load(open(infile), yaml.cyaml.CSafeLoader)
+yaml = ryaml.YAML()
+root = yaml.load(open(infile))
 
 codingType = root["編碼類型"]
 if "編碼集" in root:
