@@ -1,4 +1,4 @@
-import ruamel.yaml as ryaml
+import ruamel.yaml
 import sys
 
 # base writer
@@ -24,16 +24,9 @@ class QuietWriter(BaseWriter):
 
 # quiet writer
 class CmYamlWriter(BaseWriter):
-	def __init__(self, codeMappingInfoInterpreter):
+	def __init__(self, codeMappingInfoInterpreter, yaml: ruamel.yaml.YAML):
 		super().__init__()
 		self.codeMappingInfoInterpreter = codeMappingInfoInterpreter
-
-		yaml = ryaml.YAML()
-		yaml.explicit_start = True
-		yaml.explicit_end = True
-		yaml.allow_unicode = True
-		yaml.default_flow_style = False
-		yaml.width = 100
 
 		self.yaml = yaml
 

@@ -4,6 +4,8 @@
 from injector import Injector
 from injector import inject
 
+import ruamel.yaml
+
 from optparse import OptionParser
 
 from injection.module import PackageModule, ManagerModule
@@ -30,12 +32,20 @@ class QiangHeng:
 		quiet=options.quiet
 
 		codeMappingInfoInterpreter = package.codeMappingInfoInterpreter
-		writer = self.computeWriter(codeMappingInfoInterpreter, quiet)
+		yaml = ruamel.yaml.YAML()
+		yaml.explicit_start = True
+		yaml.explicit_end = True
+		yaml.allow_unicode = True
+		yaml.default_flow_style = False
+		yaml.width = 100
+
+		writer = self.computeWriter(codeMappingInfoInterpreter, quiet, yaml)
 
 		def configure(binder):
 			binder.bind(CodingConfig, to=CodingConfig(package))
 			binder.bind(Package, to=package)
 			binder.bind(Writer, to=writer)
+			binder.bind(ruamel.yaml.YAML, to=yaml)
 
 		injector = Injector([configure, PackageModule()])
 		structureManager = injector.get(StructureManager)
@@ -46,10 +56,10 @@ class QiangHeng:
 		mainManager.write()
 
 
-	def computeWriter(self, codeMappingInfoInterpreter, quiet: Quiet) -> Writer:
+	def computeWriter(self, codeMappingInfoInterpreter, quiet: Quiet, yaml: ruamel.yaml.YAML) -> Writer:
 		if not quiet:
 			from writer import CmYamlWriter
-			writer = CmYamlWriter(codeMappingInfoInterpreter)
+			writer = CmYamlWriter(codeMappingInfoInterpreter, yaml)
 		else:
 			# 不輸出結果
 			from writer import QuietWriter

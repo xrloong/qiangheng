@@ -1,6 +1,6 @@
 import sys
 import Constant
-import ruamel.yaml as ryaml
+import ruamel.yaml
 
 from coding.Base import CodingRadixParser
 
@@ -27,8 +27,8 @@ class QHTreeParser:
 
 class QHSubstituteRuleParser:
 	@inject
-	def __init__(self):
-		self.yaml = ryaml.YAML()
+	def __init__(self, yaml: ruamel.yaml.YAML):
+		self.yaml = yaml
 
 	def loadSubstituteRules(self, filename):
 		node = self.yaml.load(open(filename))
@@ -49,9 +49,9 @@ class QHSubstituteRuleParser:
 
 class QHParser:
 	@inject
-	def __init__(self, treeParser: QHTreeParser):
+	def __init__(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML):
 		self.treeParser = TreeParser
-		self.yaml = ryaml.YAML()
+		self.yaml = yaml
 
 	def parseStructure(self, structureExpression):
 		return self.treeParser.parse(structureExpression)
@@ -111,9 +111,9 @@ class QHRadixParser:
 	TAG_CODE='編碼'
 
 	@inject
-	def __init__(self, codingRadixParser: CodingRadixParser):
+	def __init__(self, codingRadixParser: CodingRadixParser, yaml: ruamel.yaml.YAML):
 		self.codingRadixParser = codingRadixParser
-		self.yaml = ryaml.YAML()
+		self.yaml = yaml
 
 	def loadRadix(self, radixFileList):
 		radixDescriptionList = self.parse(radixFileList)
