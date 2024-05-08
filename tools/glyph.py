@@ -10,7 +10,7 @@ except ImportError:
 	import sys
 	sys.exit()
 try:
-	import ruamel.yaml as ryaml
+	import ruamel.yaml
 except ImportError:
 	print("Please install the libary ruamel.yaml")
 	import sys
@@ -40,7 +40,7 @@ class GlyphManager:
 
 		self.fontFile=fontFile
 
-		yaml = ryaml.YAML()
+		yaml = ruamel.yaml.YAML()
 		yaml.allow_unicode = True
 		yaml.default_flow_style = False
 		self.yaml = yaml

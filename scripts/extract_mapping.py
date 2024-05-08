@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import ruamel.yaml as ryaml
+import ruamel.yaml
 import sys
 from optparse import OptionParser
 
@@ -11,7 +11,7 @@ codeType = options.type
 
 infile = args[0]
 
-yaml = ryaml.YAML()
+yaml = ruamel.yaml.YAML()
 root = yaml.load(open(infile))
 
 codingType = root["編碼類型"]

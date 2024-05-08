@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-import ruamel.yaml as ryaml
+import ruamel.yaml
 import lxml.etree as ET
 import sys
 
 infile = sys.argv[1]
 infofile = sys.argv[2]
 
-yaml = ryaml.YAML()
+yaml = ruamel.yaml.YAML()
 root = yaml.load(open(infile))
 info = yaml.load(open(infofile))
 
