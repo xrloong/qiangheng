@@ -28,16 +28,12 @@
         <xsl:if test="self::規則">
           <xsl:value-of select="$itemmark" />
           <xsl:text>比對: </xsl:text>
-          <xsl:text>"</xsl:text>
           <xsl:value-of select="@比對" />
-          <xsl:text>"</xsl:text>
           <xsl:value-of select="$newline" />
 
           <xsl:value-of select="$intent" /> <xsl:value-of select="$intent" />
           <xsl:text>替換: </xsl:text>
-          <xsl:text>"</xsl:text>
           <xsl:value-of select="@替換" />
-          <xsl:text>"</xsl:text>
           <xsl:value-of select="$newline" />
         </xsl:if>
     </xsl:for-each>
