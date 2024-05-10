@@ -256,7 +256,8 @@ class FCRadixParser(CodingRadixParser):
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
 		elementCodeInfo = radixInfo.getCodeElement()
 
-		cornerCodeList = elementCodeInfo.get(FCRadixParser.ATTRIB_ARCHITECTURE)
+		codes = elementCodeInfo.get(FCRadixParser.ATTRIB_CODE_EXPRESSION)
+		cornerCodeList = codes.split("|")
 		corners = tuple(convertCornerCodeToCornerUnits(cornerCode) for cornerCode in cornerCodeList)
 
 		if len(corners) >= 2:
