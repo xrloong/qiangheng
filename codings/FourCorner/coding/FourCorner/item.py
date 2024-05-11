@@ -2,9 +2,11 @@ from .constant import FCStroke
 from .constant import FCCorner
 
 class FCLump:
-	def __init__(self, obj):
+	def __init__(self, obj, sl = False):
+		self.sl = sl
 		if isinstance(obj, FCLump):
 			lump = obj
+			self.sl = lump.sl
 			self._top_left = lump.topLeft
 			self._top_right = lump.topRight
 			self._bottom_left = lump.bottomLeft

@@ -99,11 +99,20 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 
 
 	def encodeAsLoop(self, codeInfoList):
+		"""運算 "回" """
 		firstCodeInfo = codeInfoList[0]
 		lastCodeInfo = codeInfoList[-1]
 
-		lump = firstCodeInfo.cornerLump
-		return FCCodeInfo(FCLump(lump))
+		lump1 = firstCodeInfo.cornerLump
+		lump2 = lastCodeInfo.cornerLump
+
+		if lump1.sl:
+			fcLump1 = FCLump(lump1)
+			fcLump2 = FCLump(lump1.computeCodesOfTop() + lump2.computeCodesOfBottom())
+			return FCCodeInfo(fcLump1, fcLump2)
+		else:
+			lump = firstCodeInfo.cornerLump
+			return FCCodeInfo(FCLump(lump))
 
 	def encodeAsSilkworm(self, codeInfoList):
 		firstCodeInfo = codeInfoList[0]
@@ -250,8 +259,12 @@ class FCRadixParser(CodingRadixParser):
 
 	@staticmethod
 	def convertCornerCodeToLump(cornerCode):
+		sl = (cornerCode[0] == '*')
+		if cornerCode[0]=='*':
+			cornerCode = cornerCode[1:5]
+
 		corner = convertCornerCodeToCornerUnits(cornerCode)
-		lump = FCLump(corner)
+		lump = FCLump(corner, sl)
 		return lump
 
 	# 多型
