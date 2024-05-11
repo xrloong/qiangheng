@@ -248,6 +248,12 @@ class FCRadixParser(CodingRadixParser):
 	ATTRIB_CODE_EXPRESSION='編碼表示式'
 	ATTRIB_ARCHITECTURE='結構'
 
+	@staticmethod
+	def convertCornerCodeToLump(cornerCode):
+		corner = convertCornerCodeToCornerUnits(cornerCode)
+		lump = FCLump(corner)
+		return lump
+
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
@@ -258,11 +264,11 @@ class FCRadixParser(CodingRadixParser):
 
 		codes = elementCodeInfo.get(FCRadixParser.ATTRIB_CODE_EXPRESSION)
 		cornerCodeList = codes.split("|")
-		corners = tuple(convertCornerCodeToCornerUnits(cornerCode) for cornerCode in cornerCodeList)
+		lumps = tuple(map(FCRadixParser.convertCornerCodeToLump, cornerCodeList))
 
-		if len(corners) >= 2:
-			codeInfo = FCCodeInfo(FCLump(corners[0]), FCLump(corners[1]))
-		elif len(corners) == 1:
-			codeInfo = FCCodeInfo(FCLump(corners[0]))
+		if len(lumps) >= 2:
+			codeInfo = FCCodeInfo(lumps[0], lumps[1])
+		elif len(lumps) == 1:
+			codeInfo = FCCodeInfo(lumps[0])
 		return codeInfo
 
