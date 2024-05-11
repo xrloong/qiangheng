@@ -77,15 +77,9 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsSparrow(self, codeInfoList):
 		"""運算 "雀" """
-		firstCodeInfo = codeInfoList[0]
-		lastCodeInfo = codeInfoList[-1]
-
-		lump1 = firstCodeInfo.cornerLump
-		lump2 = lastCodeInfo.cornerLump
-
-		fcLump1 = FCLump(lump1)
-		fcLump2 = FCLump(lump1.computeCodesOfTop() + lump2.computeCodesOfBottom())
-		return FCCodeInfo(fcLump1, fcLump2)
+		print("不合法的運算：雀", file=sys.stderr)
+		codeInfo=self.encodeAsInvalidate(codeInfoList)
+		return codeInfo
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
