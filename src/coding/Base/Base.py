@@ -166,6 +166,7 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
+		assert len(codeInfoList) == 1
 		return self.encodeAsLoong(codeInfoList)
 
 
