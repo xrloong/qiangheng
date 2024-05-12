@@ -344,9 +344,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		direction='*'
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
+		codeInfo=self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
