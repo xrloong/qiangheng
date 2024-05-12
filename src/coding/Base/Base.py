@@ -154,18 +154,15 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 
 	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		codeInfo=self.generateDefaultCodeInfo()
-		return codeInfo
+		return self.encodeAsInvalidate(codeInfoList)
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
-		codeInfo=self.generateDefaultCodeInfo()
-		return codeInfo
+		return self.encodeAsInvalidate(codeInfoList)
 
 	def encodeAsSparrow(self, codeInfoList):
 		"""運算 "雀" """
-		codeInfo=self.generateDefaultCodeInfo()
-		return codeInfo
+		return self.encodeAsInvalidate(codeInfoList)
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """

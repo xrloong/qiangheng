@@ -134,10 +134,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		return isAllWithCode
 
 
-	def encodeAsTurtle(self, codeInfoList):
-		"""運算 "龜" """
-		return self.encodeAsInvalidate(codeInfoList)
-
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
@@ -147,10 +143,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 
 		codeInfo=self.generateDefaultCodeInfo([bs_code_list], bs_spcode)
 		return codeInfo
-
-	def encodeAsSparrow(self, codeInfoList):
-		"""運算 "雀" """
-		return self.encodeAsInvalidate(codeInfoList)
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """

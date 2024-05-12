@@ -328,10 +328,6 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		return True
 
 
-	def encodeAsTurtle(self, codeInfoList):
-		"""運算 "龜" """
-		return self.encodeAsInvalidate(direction)
-
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 		direction='*'

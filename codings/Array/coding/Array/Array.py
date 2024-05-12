@@ -108,10 +108,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		return isAllWithCode
 
 
-	def encodeAsTurtle(self, codeInfoList):
-		"""運算 "龜" """
-		return self.encodeAsInvalidate(codeInfoList)
-
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
@@ -121,10 +117,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo([arCode])
 
 		return codeInfo
-
-	def encodeAsSparrow(self, codeInfoList):
-		"""運算 "雀" """
-		return self.encodeAsInvalidate(codeInfoList)
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """

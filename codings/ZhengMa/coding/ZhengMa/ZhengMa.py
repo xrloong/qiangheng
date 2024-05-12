@@ -99,10 +99,6 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		return isAllWithCode
 
 
-	def encodeAsTurtle(self, codeInfoList):
-		"""運算 "龜" """
-		return self.encodeAsInvalidate(codeInfoList)
-
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
@@ -111,10 +107,6 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
 		codeInfo=self.generateDefaultCodeInfo([rtlist])
 		return codeInfo
-
-	def encodeAsSparrow(self, codeInfoList):
-		"""運算 "雀" """
-		return self.encodeAsInvalidate(codeInfoList)
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
