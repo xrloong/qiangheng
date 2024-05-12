@@ -42,12 +42,12 @@
 
    使用以下方式執行：
    ```console
-   $ PYTHONPATH="src:samples/GuiXie" time src/qiangheng.py -p coding.GuiXie > qhgx.yaml
+   $ PYTHONPATH="libs:src:samples/GuiXie" time src/qiangheng.py -p coding.GuiXie > qhgx.yaml
    ```
 
    使用以下方式測試：
    ```console
-   $ PYTHONPATH="src:samples/GuiXie" python3 -m unittest discover samples/GuiXie/test/
+   $ PYTHONPATH="libs:src:samples/GuiXie" python3 -m unittest discover samples/GuiXie/test/
    ```
 
 2. 實作 GXCodeInfo
