@@ -144,11 +144,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo([bs_code_list], bs_spcode)
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
-		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
-		return codeInfo
-
 
 	def encodeAsHan(self, codeInfoList):
 		"""運算 "函" """

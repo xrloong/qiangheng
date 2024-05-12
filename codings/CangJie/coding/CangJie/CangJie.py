@@ -342,11 +342,6 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
-		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
-		return codeInfo
-
 
 	def encodeAsSilkworm(self, codeInfoList):
 		direction='|'

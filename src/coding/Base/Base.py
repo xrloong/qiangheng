@@ -166,8 +166,7 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		codeInfo=self.generateDefaultCodeInfo()
-		return codeInfo
+		return self.encodeAsLoong(codeInfoList)
 
 
 	def encodeAsSilkworm(self, codeInfoList):

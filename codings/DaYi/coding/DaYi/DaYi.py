@@ -131,11 +131,6 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo([dyCode])
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
-		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
-		return codeInfo
-
 
 	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """

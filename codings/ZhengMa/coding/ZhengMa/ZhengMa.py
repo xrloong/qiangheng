@@ -108,11 +108,6 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.generateDefaultCodeInfo([rtlist])
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
-		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
-		return codeInfo
-
 
 	def encodeAsHan(self, codeInfoList):
 		"""運算 "爲" """

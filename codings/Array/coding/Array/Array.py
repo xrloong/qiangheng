@@ -118,11 +118,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
 		return codeInfo
 
-	def encodeAsEqual(self, codeInfoList):
-		"""運算 "爲" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
-		return codeInfo
-
 
 	def encodeAsTong(self, codeInfoList):
 		"""運算 "同" """
