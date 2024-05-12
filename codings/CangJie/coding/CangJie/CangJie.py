@@ -330,10 +330,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		direction='*'
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
-		return codeInfo
+		return self.encodeAsInvalidate(direction)
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """

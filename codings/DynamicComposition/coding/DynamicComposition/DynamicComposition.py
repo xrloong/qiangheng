@@ -117,21 +117,15 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsTurtle(self, codeInfoList):
 		"""運算 "龜" """
-		print("不合法的運算：龜", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
-		return codeInfo
+		return self.encodeAsInvalidate(codeInfoList)
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
-		print("不合法的運算：龍", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
-		return codeInfo
+		return self.encodeAsInvalidate(codeInfoList)
 
 	def encodeAsSparrow(self, codeInfoList):
 		"""運算 "雀" """
-		print("不合法的運算：雀", file=sys.stderr)
-		codeInfo=self.encodeAsInvalidate(codeInfoList)
-		return codeInfo
+		return self.encodeAsInvalidate(codeInfoList)
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
