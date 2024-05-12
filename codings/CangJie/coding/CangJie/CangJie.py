@@ -490,7 +490,7 @@ class CJRadixParser(CodingRadixParser):
 		if description!=None:
 			description_list=description.split(",")
 			for desc in description_list:
-				matchResult=re.match("(\w*)(\[(\w*)\](\w*))?", desc)
+				matchResult=re.match(r"(\w*)(\[(\w*)\](\w*))?", desc)
 				groups=matchResult.groups()
 				frontCode=groups[0]
 				tailingSurround=groups[2]
