@@ -148,6 +148,7 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 
 	def encodeAsInvalidate(self, codeInfoList):
 		"""不合法的運算"""
+		assert False
 		return None
 
 
