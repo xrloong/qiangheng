@@ -44,7 +44,7 @@
 
    使用以下方式執行：
    ```console
-   $ PYTHONPATH="libs:src:samples/GuiXie" time src/qiangheng.py -p coding.GuiXie > qhgx.yaml
+   $ PYTHONPATH="libs:src:samples/GuiXie" src/qiangheng.py -p coding.GuiXie > qhgx.yaml
    ```
 
    使用以下方式測試：
