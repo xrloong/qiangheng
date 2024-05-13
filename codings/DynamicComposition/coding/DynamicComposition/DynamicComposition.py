@@ -436,8 +436,8 @@ class DataStructureCanvasController(BaseTextCanvasController):
 			self.strokes.append(attrib)
 
 
-# YAML writer for drawing methods
-class DmCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
+# code mapping for drawing methods
+class DCCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
 	def __init__(self, codingType):
 		super().__init__(codingType)
 
