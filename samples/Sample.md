@@ -12,7 +12,7 @@
       * qhdata/radix/CJK.yaml 和 qhdata/radix/CJK-A.yaml
 
         在 CJK 和 CJK Ext-A 中，一些基本字根編碼。
-      * qhdata/radix/adjust.yaml
+      * qhdata/adjust.yaml
 
         對某個編碼法的字根，若有特殊規則不易透過程式來達成，可以在此增加。
       * qhdata/substitute.yaml
