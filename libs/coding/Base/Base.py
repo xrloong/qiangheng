@@ -326,7 +326,7 @@ class CodeMappingInfoInterpreter:
 		else:
 			return "描繪法"
 
-	def interpreteCodeMappingInfo(self, codeMappingInfo):
+	def interpretCodeMappingInfo(self, codeMappingInfo):
 		return {"字符": codeMappingInfo.getName(),
 			"類型": codeMappingInfo.getVariance(),
 			"按鍵序列": codeMappingInfo.getCode()}

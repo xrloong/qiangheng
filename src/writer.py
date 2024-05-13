@@ -35,7 +35,7 @@ class CmYamlWriter(BaseWriter):
 
 		nodeCodeMaps = []
 		for codeMappingInfo in codeMappingInfoList:
-			info = self.codeMappingInfoInterpreter.interpreteCodeMappingInfo(codeMappingInfo)
+			info = self.codeMappingInfoInterpreter.interpretCodeMappingInfo(codeMappingInfo)
 			nodeCodeMaps.append(info)
 
 		codeMappingSet = {

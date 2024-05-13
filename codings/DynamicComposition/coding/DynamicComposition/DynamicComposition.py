@@ -441,7 +441,7 @@ class DmCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
 	def __init__(self, codingType):
 		super().__init__(codingType)
 
-	def interpreteCodeMappingInfo(self, codeMappingInfo):
+	def interpretCodeMappingInfo(self, codeMappingInfo):
 		charName = codeMappingInfo.getName()
 		dcComponent = codeMappingInfo.getCode()
 		variance = codeMappingInfo.getVariance()
