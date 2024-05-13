@@ -17,6 +17,8 @@ CodingSubstituteFileList = [
 CodingRadixFileList = [
 	codingMethodDir + 'radix/CJK.yaml',
 	codingMethodDir + 'radix/CJK-A.yaml',
+]
+CodingAdjustFileList = [
 	codingMethodDir + 'radix/adjust.yaml'
 ]
 

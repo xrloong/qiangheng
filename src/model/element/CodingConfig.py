@@ -4,6 +4,7 @@ class CodingConfig:
 		self.commonTemplateFileList = self.getMainTemplateFile()
 		self.specificSubstituteFileList = package.CodingSubstituteFileList
 		self.specificRadixFileList = package.CodingRadixFileList
+		self.specificAdjustFileList = package.CodingAdjustFileList
 
 	def getCommonComponentFileList(self):
 		return self.commonComponentFileList
@@ -16,6 +17,9 @@ class CodingConfig:
 
 	def getSpecificRadixFileList(self):
 		return self.specificRadixFileList
+
+	def getSpecificAdjustFileList(self):
+		return self.specificAdjustFileList
 
 	def getMainComponentList(self):
 		mainDir = self.getMainDir()

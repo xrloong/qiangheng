@@ -12,6 +12,8 @@ CodingSubstituteFileList = [
 ]
 CodingRadixFileList = [
 ]
+CodingAdjustFileList = [
+]
 
 if __name__=='__main__':
 	pass

@@ -30,9 +30,10 @@ class StructureManager:
 		templateFiles = self.codingConfig.getCommonTemplateFileList()
 		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
 		radixFiles = self.codingConfig.getSpecificRadixFileList()
+		adjustFiles = self.codingConfig.getSpecificAdjustFileList()
 
 		self.compositionManager.loadComponents(componentFiles)
-		self.radixManager.loadRadix(radixFiles)
+		self.radixManager.loadRadix(radixFiles + adjustFiles)
 		self.templateManager.loadSubstituteRules(templateFiles)
 		self.substituteManager.loadSubstituteRules(substituteFiles)
 
