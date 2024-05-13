@@ -37,7 +37,6 @@ class QiangHeng:
 		yaml.explicit_end = True
 		yaml.allow_unicode = True
 		yaml.default_flow_style = False
-		yaml.width = 100
 
 		writer = self.computeWriter(codeMappingInfoInterpreter, quiet, yaml)
 
