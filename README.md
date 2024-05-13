@@ -192,16 +192,20 @@ $ tools/showglyph.py
   $ tools/gensvg.py
   ```
 
+說明
+====
+參考[說明文件](doc/qiangheng.pdf)。
+
 檔案架構
-========
+--------
 參考[檔案架構說明](README/FILES.md)。
 
 
 程式架構說明
-============
+------------
 請參考 doc/qiangheng.dia （使用 Dia）。
 
 範例
-====
+----
 參考[範例說明](samples/Sample.md)。
 
