@@ -412,7 +412,7 @@ class TemplateManager:
 		strokes = self.interpreter.retrieveStrokesOfComponentIntoPosition(referencedComponent, order, position)
 		return strokes
 
-class YamlCanvasController(BaseTextCanvasController):
+class DataStructureCanvasController(BaseTextCanvasController):
 	def __init__(self):
 		super().__init__()
 		self.strokes = []
@@ -449,7 +449,7 @@ class DmCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
 		component = dcComponent.getComponent()
 		character = Character(charName, component)
 
-		controller = YamlCanvasController()
+		controller = DataStructureCanvasController()
 		ds = DrawingSystem(controller)
 
 		ds.draw(character)
