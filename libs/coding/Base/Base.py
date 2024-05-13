@@ -326,7 +326,6 @@ class CodeMappingInfoInterpreter:
 		else:
 			return "描繪法"
 
-	# YAML writer for input methods
 	def interpreteCodeMappingInfo(self, codeMappingInfo):
 		return {"字符": codeMappingInfo.getName(),
 			"類型": codeMappingInfo.getVariance(),

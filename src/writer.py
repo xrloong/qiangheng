@@ -22,7 +22,7 @@ class QuietWriter(BaseWriter):
 	def writeCodeMapping(self, codeMappingInfoList):
 		pass
 
-# quiet writer
+# YAML writer
 class CmYamlWriter(BaseWriter):
 	def __init__(self, codeMappingInfoInterpreter, yaml: ruamel.yaml.YAML):
 		super().__init__()
