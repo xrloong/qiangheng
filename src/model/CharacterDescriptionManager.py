@@ -136,9 +136,15 @@ class RadixManager:
 		radixCodeInfoDB = radixHelper.loadRadix(radixFiles)
 		self.radixCodeInfoDB = radixCodeInfoDB
 
+	def loadAdjust(self, adjustFiles):
+		radixHelper = RadixHelper(self.radixParser)
+		radixCodeInfoDB = radixHelper.loadRadix(adjustFiles)
+
+		self.radixCodeInfoDB.update(radixCodeInfoDB)
+
 		resetRadixNameList = radixHelper.getResetRadixList()
 		for radixName in resetRadixNameList:
-			self.radixDB[radixName]=CharacterDescription(radixName)
+			self.radixDB[radixName] = CharacterDescription(radixName)
 
 	def getAllRadixes(self):
 		return self.radixDB.keys()

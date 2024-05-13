@@ -33,7 +33,8 @@ class StructureManager:
 		adjustFiles = self.codingConfig.getSpecificAdjustFileList()
 
 		self.compositionManager.loadComponents(componentFiles)
-		self.radixManager.loadRadix(radixFiles + adjustFiles)
+		self.radixManager.loadRadix(radixFiles)
+		self.radixManager.loadAdjust(adjustFiles)
 		self.templateManager.loadSubstituteRules(templateFiles)
 		self.substituteManager.loadSubstituteRules(substituteFiles)
 
