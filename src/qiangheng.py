@@ -32,7 +32,7 @@ class QiangHeng:
 		quiet=options.quiet
 
 		codeMappingInfoInterpreter = package.codeMappingInfoInterpreter
-		yaml = ruamel.yaml.YAML()
+		yaml = ruamel.yaml.YAML(typ = 'safe')
 		yaml.explicit_start = True
 		yaml.explicit_end = True
 		yaml.allow_unicode = True
