@@ -1,5 +1,7 @@
 # 範例
 
+## 中國字求㩪
+
 這個以「中國字庋㩪」為例，說明如何增加一個新的輸入法。
 1. 在 sample/GuiXie/ 增加相關檔案，包含：
    1. 編碼法資訊：
@@ -72,4 +74,13 @@
               - {"四角編碼": "1aaa"}
       ```
    2. 實作 GXRadixParser
+
+## 筆順
+類似動態組字，但只輸出筆劃名稱。
+1. 相關程式碼位於 samples/StrokeOrder
+2.
+   使用以下方式執行：
+   ```console
+   $ PYTHONPATH=libs:src:codings/DynamicComposition:samples/StrokeOrder src/qiangheng.py -p coding.StrokeOrder > qhso.yaml
+   ```
 
