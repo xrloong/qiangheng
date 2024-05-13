@@ -83,4 +83,34 @@ class RadixDescription:
 		radixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
 		self.radixCodeInfoList.extend(radixCodeInfoList)
 
+class RadixHelper:
+	def __init__(self):
+		self.descriptionDict = {}
+		self.radixCodeInfoDB = {}
+		self.resetRadixList = []
+
+	def addCodeInfoList(self, charName, radixCodeInfoList):
+		self.radixCodeInfoDB[charName] = radixCodeInfoList
+
+	def getResetRadixList(self):
+		return self.resetRadixList
+
+	def getCodeInfoDB(self):
+		return self.radixCodeInfoDB
+
+	def addDescription(self, charName, description):
+		if description.isToOverridePrev():
+			tmpRadixDesc = description
+			self.resetRadixList.append(charName)
+		else:
+			if charName in self.descriptionDict:
+				tmpRadixDesc = self.descriptionDict.get(charName)
+				tmpRadixDesc.mergeRadixDescription(description)
+			else:
+				tmpRadixDesc = description
+
+		self.descriptionDict[charName] = tmpRadixDesc
+
+	def getDescriptionList(self):
+		return list(self.descriptionDict.items())
 

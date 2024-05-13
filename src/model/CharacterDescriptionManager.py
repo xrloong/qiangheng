@@ -4,7 +4,7 @@ import abc
 
 from injector import inject
 from .element.CharacterDescription import CharacterDescription
-from .manager import RadixDescriptionManager
+from .helper import RadixHelper
 from parser.QHParser import QHParser
 from parser.QHParser import QHSubstituteRuleParser
 from parser.QHParser import QHRadixParser
@@ -130,23 +130,23 @@ class RadixManager:
 		self.radixDB = {}
 
 	def loadRadix(self, radixFiles):
-		radixDescriptionManager = RadixDescriptionManager()
+		radixHelper = RadixHelper()
 
 		radixDescriptionList = self.radixParser.loadRadix(radixFiles)
 		for radixDescription in radixDescriptionList:
 			radixName = radixDescription.getRadixName()
-			radixDescriptionManager.addDescription(radixName, radixDescription)
+			radixHelper.addDescription(radixName, radixDescription)
 
-		radixDescList=radixDescriptionManager.getDescriptionList()
+		radixDescList = radixHelper.getDescriptionList()
 
 		for [charName, radixDesc] in radixDescList:
 			radixCodeInfoList=self.radixParser.convertRadixDescToCodeInfoList(radixDesc)
-			radixDescriptionManager.addCodeInfoList(charName, radixCodeInfoList)
+			radixHelper.addCodeInfoList(charName, radixCodeInfoList)
 
 
-		self.radixCodeInfoDB = radixDescriptionManager.getCodeInfoDB()
+		self.radixCodeInfoDB = radixHelper.getCodeInfoDB()
 
-		resetRadixNameList = radixDescriptionManager.getResetRadixList()
+		resetRadixNameList = radixHelper.getResetRadixList()
 		for radixName in resetRadixNameList:
 			self.radixDB[radixName]=CharacterDescription(radixName)
 
