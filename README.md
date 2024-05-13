@@ -194,7 +194,7 @@ $ tools/showglyph.py
 
 檔案架構
 ========
-參考 [FILES.md](https://github.com/xrloong/qiangheng/blob/master/FILES.md)
+參考[檔案架構說明](README/FILES.md)。
 
 
 程式架構說明
