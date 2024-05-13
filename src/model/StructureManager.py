@@ -26,16 +26,29 @@ class StructureManager:
 		self._loadData()
 
 	def _loadData(self):
+		# 從設定中取得相關的檔案列表
+		# 共通資料及範本
 		componentFiles = self.codingConfig.getCommonComponentFileList()
 		templateFiles = self.codingConfig.getCommonTemplateFileList()
-		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
+
+		# 主要字根
 		radixFiles = self.codingConfig.getSpecificRadixFileList()
+
+		# 個別方法的替代及調整
+		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
 		adjustFiles = self.codingConfig.getSpecificAdjustFileList()
 
+
+		# 載入資料
+		# 共通資料及範本
 		self.compositionManager.loadComponents(componentFiles)
-		self.radixManager.loadRadix(radixFiles)
-		self.radixManager.loadAdjust(adjustFiles)
 		self.templateManager.loadSubstituteRules(templateFiles)
+
+		# 主要字根
+		self.radixManager.loadRadix(radixFiles)
+
+		# 個別方法的替代及調整
+		self.radixManager.loadAdjust(adjustFiles)
 		self.substituteManager.loadSubstituteRules(substituteFiles)
 
 	def getCompositionManager(self):
