@@ -18,7 +18,7 @@
   + ply
   + Xie
     用於動態組字。
-    可到 https://github.com/xrloong/Xie 下載最新版本（https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl）
+    可到 https://github.com/xrloong/Xie 下載[最新版本](https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl)
 + 工具
   + xsltproc
   + xmllint
@@ -178,7 +178,7 @@ $ tools/showglyph.py
   $ make python-fontforge
   ```
   其大致會做以下幾件事：
-  1. 下載 FontForge 源碼（https://github.com/fontforge/fontforge.git）
+  1. 下載 [FontForge](https://github.com/fontforge/fontforge.git) 源碼
   2. 以 Python3 來組態與編譯（需要額外安裝 libtool、libglib2.0-dev、libfreetype6-dev、libxml2-dev）
   3. 產生連結檔 src/fontforge.so ，會連結到 fontforge/pyhook/.libs/fontforge.so
 
