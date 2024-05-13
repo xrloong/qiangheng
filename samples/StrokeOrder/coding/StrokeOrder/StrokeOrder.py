@@ -1,37 +1,15 @@
-from coding.BaseCoding import CodingInfo
-from coding.BaseCoding import CodeInfo
-from coding.BaseCoding import CodeInfoEncoder
-from coding.BaseCoding import CodingRadixParser
+from coding.Base import CodeInfo
+from coding.Base import CodeInfoEncoder
+from coding.Base import CodingRadixParser
+from coding.Base import CodeMappingInfoInterpreter
 
-from .DynamicComposition import DCCodeInfo
-from .DynamicComposition import DCCodeInfoEncoder
-from .DynamicComposition import DCRadixParser
+from ..DynamicComposition.DynamicComposition import DCCodeInfo
+from ..DynamicComposition.DynamicComposition import DCCodeInfoEncoder
+from ..DynamicComposition.DynamicComposition import DCRadixParser
 
-class StrokeOrderInfo(CodingInfo):
-	"筆順"
-
-	IMName="筆順"
-	def __init__(self):
-		self.keyMaps=[
-			['0', '0',],
-			['1', '1',],
-			['2', '2',],
-			['3', '3',],
-			['4', '4',],
-			['5', '5',],
-			['6', '6',],
-			['7', '7',],
-			['8', '8',],
-			['9', '9',],
-			]
-		self.nameDict={
-				'cn':'笔順',
-				'tw':'筆順',
-				'hk':'筆順',
-				'en':'StrokeOrder',
-				}
-		self.iconfile="qhdc.svg"
-		self.maxkeylength=4
+from ..DynamicComposition.layout import JointOperator
+from ..DynamicComposition.layout import LayoutFactory
+from ..DynamicComposition.layout import LayoutSpec
 
 class SOCodeInfo(DCCodeInfo):
 	INSTALLMENT_SEPERATOR='|'
@@ -42,21 +20,34 @@ class SOCodeInfo(DCCodeInfo):
 		super().__init__(strokeGroup)
 
 	@staticmethod
-	def generateDefaultCodeInfo(strokeGroup):
-		codeInfo=SOCodeInfo(strokeGroup)
+	def generateDefaultCodeInfo(components, panes):
+		component = DCComponent.generateDefaultComponent(components, panes)
+		codeInfo = SOCodeInfo(component)
 		return codeInfo
 
-	def getCode(self):
-		strokeList=self.getStrokeList()
-		codeList=[stroke.getTypeName() for stroke in strokeList]
-		return ','.join(codeList)
-
 class SOCodeInfoEncoder(DCCodeInfoEncoder):
-	@classmethod
-	def generateDefaultCodeInfo(cls, strokeGroup):
-		return SOCodeInfo.generateDefaultCodeInfo(strokeGroup)
+	def generateDefaultCodeInfo(self, codeInfos, layoutSpec: LayoutSpec):
+		panes = self.layoutFactory.generateLayouts(layoutSpec)
+		components = [codeInfo.getComponent() for codeInfo in codeInfos]
+
+		return DCCodeInfo.generateDefaultCodeInfo(components, panes)
 
 class SORadixParser(DCRadixParser):
 	def __init__(self):
 		super().__init__()
+
+class SOCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
+	def __init__(self, codingType):
+		super().__init__(codingType)
+
+	def interpreteCodeMappingInfo(self, codeMappingInfo):
+		charName = codeMappingInfo.getName()
+		dcComponent = codeMappingInfo.getCode()
+		variance = codeMappingInfo.getVariance()
+
+		component = dcComponent.getComponent()
+		strokes = component.getStrokeList()
+		names = (stroke.getTypeName() for stroke in strokes)
+		code = "".join(names)
+		return {"字符": charName, "類型": variance, "筆順": code}
 
