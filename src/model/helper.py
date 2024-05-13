@@ -84,10 +84,26 @@ class RadixDescription:
 		self.radixCodeInfoList.extend(radixCodeInfoList)
 
 class RadixHelper:
-	def __init__(self):
+	def __init__(self, radixParser):
+		self.radixParser = radixParser
+
 		self.descriptionDict = {}
 		self.radixCodeInfoDB = {}
 		self.resetRadixList = []
+
+	def loadRadix(self, radixFiles):
+		radixDescriptionList = self.radixParser.loadRadix(radixFiles)
+		for radixDescription in radixDescriptionList:
+			radixName = radixDescription.getRadixName()
+			self.addDescription(radixName, radixDescription)
+
+		radixDescList = self.getDescriptionList()
+
+		for [charName, radixDesc] in radixDescList:
+			radixCodeInfoList = self.radixParser.convertRadixDescToCodeInfoList(radixDesc)
+			self.addCodeInfoList(charName, radixCodeInfoList)
+
+		return self.getCodeInfoDB()
 
 	def addCodeInfoList(self, charName, radixCodeInfoList):
 		self.radixCodeInfoDB[charName] = radixCodeInfoList

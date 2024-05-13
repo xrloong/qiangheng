@@ -126,25 +126,15 @@ class RadixManager:
 	@inject
 	def __init__(self, radixParser: QHRadixParser):
 		self.radixParser = radixParser
+
 		self.radixCodeInfoDB = {}
 		self.radixDB = {}
 
 	def loadRadix(self, radixFiles):
-		radixHelper = RadixHelper()
+		radixHelper = RadixHelper(self.radixParser)
 
-		radixDescriptionList = self.radixParser.loadRadix(radixFiles)
-		for radixDescription in radixDescriptionList:
-			radixName = radixDescription.getRadixName()
-			radixHelper.addDescription(radixName, radixDescription)
-
-		radixDescList = radixHelper.getDescriptionList()
-
-		for [charName, radixDesc] in radixDescList:
-			radixCodeInfoList=self.radixParser.convertRadixDescToCodeInfoList(radixDesc)
-			radixHelper.addCodeInfoList(charName, radixCodeInfoList)
-
-
-		self.radixCodeInfoDB = radixHelper.getCodeInfoDB()
+		radixCodeInfoDB = radixHelper.loadRadix(radixFiles)
+		self.radixCodeInfoDB = radixCodeInfoDB
 
 		resetRadixNameList = radixHelper.getResetRadixList()
 		for radixName in resetRadixNameList:
