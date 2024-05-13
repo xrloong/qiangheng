@@ -201,3 +201,7 @@ $ tools/showglyph.py
 ============
 請參考 doc/qiangheng.dia （使用 Dia）。
 
+範例
+====
+參考[範例說明](samples/Sample.md)。
+
