@@ -110,6 +110,10 @@ class GXCodeInfoEncoder(CodeInfoEncoder):
 		isAllWithCode=all(map(lambda codeInfo: codeInfo.isValid(), codeInfoList))
 		return isAllWithCode
 
+	def encodeAsLoong(self, codeInfoList):
+		"""運算 "龍" """
+		return self.generateDefaultCodeInfo()
+
 	def encodeAsSilkworm(self, codeInfoList):
 		"""運算 "蚕" """
 		gxLumps = sum((codeInfo.lumps for codeInfo in codeInfoList), ())
