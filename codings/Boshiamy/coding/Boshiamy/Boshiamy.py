@@ -154,12 +154,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
-	def encodeAsTong(self, codeInfoList):
-		"""運算 "同" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
 
 	def encodeAsZhe(self, codeInfoList):
 		"""運算 "這" """
@@ -179,26 +173,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
-
-	def getMergedCodeInfoListAsForGe(self, codeInfoList):
-		# 贏
-		if len(codeInfoList)<=1:
-			print("錯誤：", file=sys.stderr)
-			return codeInfoList
-		else:
-			firstCodeInfo=codeInfoList[0]
-			if firstCodeInfo.isInstallmentEncoded():
-				frontMainCode=firstCodeInfo.getInstallmentCode(0)
-				rearMainCode=firstCodeInfo.getInstallmentCode(1)
-
-				bs_spcode=firstCodeInfo.getBSSupplement()
-
-				# 第一個的補碼不影響結果
-				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode], bs_spcode)
-				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode], bs_spcode)
-				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
-			else:
-				return codeInfoList
 
 	@staticmethod
 	def computeBoshiamyCode(bsCodeList):
