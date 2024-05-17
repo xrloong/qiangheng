@@ -111,16 +111,10 @@ class BSCodeInfo(CodeInfo):
 	def isDigital(self):
 		return self._is_digital
 
-	def isInstallmentEncoded(self):
-		return len(self._codeList)>1
-
 	def getMainCodeList(self):
 		if self._codeList != None:
 			return sum(self._codeList, [])
 		return None
-
-	def getInstallmentCode(self, index):
-		return self._codeList[index]
 
 class BSCodeInfoEncoder(CodeInfoEncoder):
 	INSTALLMENT_SEPERATOR='|'
