@@ -87,10 +87,10 @@ class DYCodeInfo(CodeInfo):
 		RADIX_SLASH:'/',
 	}
 
-	def __init__(self, codeList):
+	def __init__(self, codes = ()):
 		super().__init__()
 
-		self._codeList=codeList
+		self.codes = codes
 
 	@staticmethod
 	def generateDefaultCodeInfo(codeList):
@@ -98,15 +98,14 @@ class DYCodeInfo(CodeInfo):
 		return codeInfo
 
 	def toCode(self):
-		mainRadixList=self.getMainCodeList()
-		mainCodeList=list(map(lambda x: DYCodeInfo.radixToCodeDict[x], mainRadixList))
+		mainRadixList = self.getMainCodeList()
+		mainCodeList = tuple(map(lambda x: DYCodeInfo.radixToCodeDict[x], mainRadixList))
 		code="".join(mainCodeList)
 		return (code[:3]+code[-1:] if len(code)>4 else code)
 
+
 	def getMainCodeList(self):
-		if self._codeList != None:
-			return sum(self._codeList, [])
-		return None
+		return self.codes
 
 class DYCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, codeList):
@@ -122,7 +121,7 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 
 		dyCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
 		dyCode=DYCodeInfoEncoder.computeDaYiCodeByCodeList(dyCodeList)
-		codeInfo=self.generateDefaultCodeInfo([dyCode])
+		codeInfo=self.generateDefaultCodeInfo(dyCode)
 		return codeInfo
 
 
@@ -151,6 +150,7 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 		codeInfo=self.encodeAsLoong([firstCodeInfo, secondCodeInfo, secondCodeInfo])
 		return codeInfo
+
 
 	def getCodeInfoExceptLast(self, codeInfo):
 		mainCodeList=codeInfo.getMainCodeList()
@@ -193,7 +193,6 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		return dyCode
 
 class DYRadixParser(CodingRadixParser):
-	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
 	ATTRIB_CODE_EXPRESSION='編碼表示式'
@@ -212,8 +211,7 @@ class DYRadixParser(CodingRadixParser):
 
 		codeList=None
 		if strCodeList!=None:
-			codeList=strCodeList.split(DYRadixParser.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(DYRadixParser.RADIX_SEPERATOR), codeList))
+			codeList = strCodeList.split(DYRadixParser.RADIX_SEPERATOR)
 
 		codeInfo=DYCodeInfo(codeList)
 		return codeInfo
