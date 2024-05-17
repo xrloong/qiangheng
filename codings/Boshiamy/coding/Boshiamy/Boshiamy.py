@@ -71,10 +71,10 @@ class BSCodeInfo(CodeInfo):
 		RADIX_Z:'z',
 	}
 
-	def __init__(self, codeList, supplementCode, isDigital):
+	def __init__(self, codes, supplementCode, isDigital):
 		super().__init__()
 
-		self._codeList=codeList
+		self._codes = codes
 		self._bs_spcode=supplementCode
 		self._is_digital=isDigital
 
@@ -103,7 +103,7 @@ class BSCodeInfo(CodeInfo):
 				return code
 
 	def getBSCodeList(self):
-		return self.getMainCodeList()
+		return self._codes
 
 	def getBSSupplement(self):
 		return self._bs_spcode
@@ -111,13 +111,7 @@ class BSCodeInfo(CodeInfo):
 	def isDigital(self):
 		return self._is_digital
 
-	def getMainCodeList(self):
-		if self._codeList != None:
-			return sum(self._codeList, [])
-		return None
-
 class BSCodeInfoEncoder(CodeInfoEncoder):
-	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
 	def generateDefaultCodeInfo(self, codeList, supplementCode):
@@ -135,7 +129,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		bs_code_list=BSCodeInfoEncoder.computeBoshiamyCode(bslist)
 		bs_spcode=codeInfoList[-1].getBSSupplement()
 
-		codeInfo=self.generateDefaultCodeInfo([bs_code_list], bs_spcode)
+		codeInfo=self.generateDefaultCodeInfo(bs_code_list, bs_spcode)
 		return codeInfo
 
 
@@ -175,7 +169,6 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		return bs_code_list
 
 class BSRadixParser(CodingRadixParser):
-	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
 	ATTRIB_CODE_EXPRESSION='編碼表示式'
@@ -198,8 +191,7 @@ class BSRadixParser(CodingRadixParser):
 
 		codeList=None
 		if strCodeList!=None:
-			codeList=strCodeList.split(BSRadixParser.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(BSRadixParser.RADIX_SEPERATOR), codeList))
+			codeList = strCodeList.split(BSRadixParser.RADIX_SEPERATOR)
 
 		codeInfo=BSCodeInfo(codeList, supplementCode, isDigital)
 		return codeInfo
