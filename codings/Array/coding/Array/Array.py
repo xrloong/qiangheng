@@ -88,16 +88,10 @@ class ARCodeInfo(CodeInfo):
 		return (code[:3]+code[-1] if len(code)>4 else code)
 
 
-	def isInstallmentEncoded(self):
-		return len(self._codeList)>1
-
 	def getMainCodeList(self):
 		if self._codeList != None:
 			return sum(self._codeList, [])
 		return None
-
-	def getInstallmentCode(self, index):
-		return self._codeList[index]
 
 class ARCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, codeList):
@@ -119,12 +113,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 
-	def encodeAsTong(self, codeInfoList):
-		"""運算 "同" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
 	def encodeAsHan(self, codeInfoList):
 		"""運算 "函" """
 		firstCodeInfo=codeInfoList[0]
@@ -141,12 +129,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 
 		codeInfo=self.encodeAsLoong([secondCodeInfo, firstCodeInfo])
-		return codeInfo
-
-	def encodeAsZai(self, codeInfoList):
-		"""運算 "載" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 	def encodeAsYou(self, codeInfoList):
@@ -230,23 +212,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 			newCodeInfoList.append(secondCodeInfo)
 
 		return newCodeInfoList
-
-	def getMergedCodeInfoListAsForGe(self, codeInfoList):
-		# 如 咸、戎
-		if len(codeInfoList)<=1:
-			print("錯誤：", file=sys.stderr)
-			return codeInfoList
-		else:
-			firstCodeInfo=codeInfoList[0]
-			if firstCodeInfo.isInstallmentEncoded():
-				frontMainCode=firstCodeInfo.getInstallmentCode(0)
-				rearMainCode=firstCodeInfo.getInstallmentCode(1)
-
-				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
-				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
-				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
-			else:
-				return codeInfoList
 
 	@staticmethod
 	def computeArrayCodeByCodeList(arCodeList):
