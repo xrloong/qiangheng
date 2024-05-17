@@ -79,16 +79,10 @@ class ZMCodeInfo(CodeInfo):
 		return self.getMainCodeList()
 
 
-	def isInstallmentEncoded(self):
-		return len(self._codeList)>1
-
 	def getMainCodeList(self):
 		if self._codeList != None:
 			return sum(self._codeList, [])
 		return None
-
-	def getInstallmentCode(self, index):
-		return self._codeList[index]
 
 class ZMCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, rtlist):
@@ -118,13 +112,6 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 
-	def encodeAsTong(self, codeInfoList):
-		"""運算 "同" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
-
 	def encodeAsYou(self, codeInfoList):
 		"""運算 "幽" """
 
@@ -144,24 +131,6 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
 		codeInfo=self.generateDefaultCodeInfo([rtlist[:1]])
 		return codeInfo
-
-	def getMergedCodeInfoListAsForGe(self, codeInfoList):
-		# 贏
-		if len(codeInfoList)<=1:
-			print("錯誤：", file=sys.stderr)
-			return codeInfoList
-		else:
-			firstCodeInfo=codeInfoList[0]
-			if firstCodeInfo.isInstallmentEncoded():
-				frontMainCode=firstCodeInfo.getInstallmentCode(0)
-				rearMainCode=firstCodeInfo.getInstallmentCode(1)
-
-				# 第一個的補碼不影響結果
-				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
-				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
-				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
-			else:
-				return codeInfoList
 
 class ZMRadixParser(CodingRadixParser):
 	INSTALLMENT_SEPERATOR='|'
