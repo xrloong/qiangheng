@@ -103,16 +103,10 @@ class DYCodeInfo(CodeInfo):
 		code="".join(mainCodeList)
 		return (code[:3]+code[-1:] if len(code)>4 else code)
 
-	def isInstallmentEncoded(self):
-		return len(self._codeList)>1
-
 	def getMainCodeList(self):
 		if self._codeList != None:
 			return sum(self._codeList, [])
 		return None
-
-	def getInstallmentCode(self, index):
-		return self._codeList[index]
 
 class DYCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, codeList):
@@ -132,25 +126,12 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 
-	def encodeAsLoop(self, codeInfoList):
-		"""運算 "回" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
-	def encodeAsTong(self, codeInfoList):
-		"""運算 "同" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
-		return codeInfo
-
 	def encodeAsHan(self, codeInfoList):
 		"""運算 "函" """
 		firstCodeInfo=codeInfoList[0]
 		secondCodeInfo=codeInfoList[1]
 
 		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(newCodeInfoList)
 		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
@@ -161,12 +142,6 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo=codeInfoList[1]
 
 		codeInfo=self.encodeAsLoong([secondCodeInfo, firstCodeInfo])
-		return codeInfo
-
-	def encodeAsZai(self, codeInfoList):
-		"""運算 "載" """
-		newCodeInfoList=self.getMergedCodeInfoListAsForGe(codeInfoList)
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
@@ -210,23 +185,6 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 			targetCodeInfo=None
 			newSecondCodeInfo=secondCodeInfo
 		return [newFirstCodeInfo, targetCodeInfo, newSecondCodeInfo]
-
-	def getMergedCodeInfoListAsForGe(self, codeInfoList):
-		# 如 咸、戎
-		if len(codeInfoList)<=1:
-			print("錯誤：", file=sys.stderr)
-			return codeInfoList
-		else:
-			firstCodeInfo=codeInfoList[0]
-			if firstCodeInfo.isInstallmentEncoded():
-				frontMainCode=firstCodeInfo.getInstallmentCode(0)
-				rearMainCode=firstCodeInfo.getInstallmentCode(1)
-
-				frontCodeInfo=self.generateDefaultCodeInfo([frontMainCode])
-				rearCodeInfo=self.generateDefaultCodeInfo([rearMainCode])
-				return [frontCodeInfo]+codeInfoList[1:]+[rearCodeInfo]
-			else:
-				return codeInfoList
 
 	@staticmethod
 	def computeDaYiCodeByCodeList(dyCodeList):
