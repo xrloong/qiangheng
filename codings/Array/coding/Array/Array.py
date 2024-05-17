@@ -71,10 +71,10 @@ class ARCodeInfo(CodeInfo):
 		RADIX_0_BOTTOM:'/',
 	}
 
-	def __init__(self, codeList=[]):
+	def __init__(self, codes = ()):
 		super().__init__()
 
-		self._codeList=codeList
+		self.codes = codes
 
 	@staticmethod
 	def generateDefaultCodeInfo(codeList):
@@ -82,16 +82,14 @@ class ARCodeInfo(CodeInfo):
 		return codeInfo
 
 	def toCode(self):
-		mainRadixList=self.getMainCodeList()
-		mainCodeList=list(map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList))
+		mainRadixList = self.getMainCodeList()
+		mainCodeList = tuple(map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList))
 		code="".join(mainCodeList)
 		return (code[:3]+code[-1] if len(code)>4 else code)
 
 
 	def getMainCodeList(self):
-		if self._codeList != None:
-			return sum(self._codeList, [])
-		return None
+		return self.codes
 
 class ARCodeInfoEncoder(CodeInfoEncoder):
 	def generateDefaultCodeInfo(self, codeList):
@@ -108,7 +106,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		arCodeList=list(map(lambda c: c.getMainCodeList(), codeInfoList))
 		tmpArCodeList=arCodeList
 		arCode=ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
-		codeInfo=self.generateDefaultCodeInfo([arCode])
+		codeInfo=self.generateDefaultCodeInfo(arCode)
 
 		return codeInfo
 
@@ -220,7 +218,6 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 		return arCode
 
 class ARRadixParser(CodingRadixParser):
-	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
 	ATTRIB_CODE_EXPRESSION='編碼表示式'
@@ -239,8 +236,7 @@ class ARRadixParser(CodingRadixParser):
 
 		str_rtlist=infoDict.get(ARRadixParser.ATTRIB_CODE_EXPRESSION)
 		if str_rtlist!=None:
-			codeList=str_rtlist.split(ARRadixParser.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(ARRadixParser.RADIX_SEPERATOR), codeList))
+			codeList = str_rtlist.split(ARRadixParser.RADIX_SEPERATOR)
 
 		codeInfo=ARCodeInfo(codeList)
 		return codeInfo
