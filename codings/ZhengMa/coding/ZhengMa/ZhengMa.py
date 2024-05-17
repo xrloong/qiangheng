@@ -19,7 +19,7 @@ class ZMCodeInfo(CodeInfo):
 
 	def toCode(self):
 		if self._codeListSingleton:
-			rtlist=sum(self._codeListSingleton, [])
+			rtlist=self._codeListSingleton
 			codeList=self.convertRadixListToCodeList(rtlist)
 			ans=self.computeCharacterCode(codeList)
 			return ans
@@ -81,7 +81,7 @@ class ZMCodeInfo(CodeInfo):
 
 	def getMainCodeList(self):
 		if self._codeList != None:
-			return sum(self._codeList, [])
+			return self._codeList
 		return None
 
 class ZMCodeInfoEncoder(CodeInfoEncoder):
@@ -99,7 +99,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		rtlist=sum(map(lambda c: c.getRtList(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		codeInfo=self.generateDefaultCodeInfo([rtlist])
+		codeInfo=self.generateDefaultCodeInfo(rtlist)
 		return codeInfo
 
 
@@ -129,11 +129,10 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		rtlist=sum(map(lambda c: c.getRtList(), codeInfoList), [])
 
 		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		codeInfo=self.generateDefaultCodeInfo([rtlist[:1]])
+		codeInfo=self.generateDefaultCodeInfo(rtlist[:1])
 		return codeInfo
 
 class ZMRadixParser(CodingRadixParser):
-	INSTALLMENT_SEPERATOR='|'
 	RADIX_SEPERATOR=','
 
 	ATTRIB_CODE_EXPRESSION='編碼表示式'
@@ -158,13 +157,11 @@ class ZMRadixParser(CodingRadixParser):
 		zm_extra=extra_code
 		codeList=[]
 		if strCodeList!=None:
-			codeList=strCodeList.split(ZMRadixParser.INSTALLMENT_SEPERATOR)
-			codeList=list(map(lambda x: x.split(ZMRadixParser.RADIX_SEPERATOR), codeList))
+			codeList=strCodeList.split(ZMRadixParser.RADIX_SEPERATOR)
 
 		codeListSingleton=[]
 		if strCodeListSingleton!=None:
-			codeListSingleton=strCodeListSingleton.split(ZMRadixParser.INSTALLMENT_SEPERATOR)
-			codeListSingleton=list(map(lambda x: x.split(ZMRadixParser.RADIX_SEPERATOR), codeListSingleton))
+			codeListSingleton=strCodeListSingleton.split(ZMRadixParser.RADIX_SEPERATOR)
 
 		codeInfo=ZMCodeInfo(codeList, zm_extra, codeListSingleton)
 		return codeInfo
