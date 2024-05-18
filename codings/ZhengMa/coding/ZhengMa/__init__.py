@@ -21,4 +21,5 @@ CodingRadixFileList = [
 CodingAdjustFileList = [
 	codingMethodDir + 'adjust.yaml'
 ]
+CodingFastFile = codingMethodDir + "fast.yaml"
 
