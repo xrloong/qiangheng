@@ -4,14 +4,14 @@ import sys
 # base writer
 class BaseWriter:
 	def write(self, characterInfoList):
-		codeMappingInfoList=self.genIMMapping(characterInfoList)
+		codeMappingInfoList = self.genIMMapping(characterInfoList)
 		self.writeCodeMapping(codeMappingInfoList)
 
 	def writeCodeMapping(self, codeMappingInfoList):
 		pass
 
 	def genIMMapping(self, characterInfoList):
-		table=[]
+		table = []
 		for characterInfo in characterInfoList:
 			table.extend(characterInfo.getCodeMappingInfoList())
 		return table
