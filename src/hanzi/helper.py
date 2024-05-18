@@ -21,12 +21,12 @@ class HanZiInterpreter:
 		nodeStructureInfo = nodeStructure.getStructureInfo()
 
 		structureList = nodeStructureInfo.getStructureList(True)
-		codeInfoList=sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
-		codeInfoList=filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
+		codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
+		codeInfoList = filter(lambda x: x.isSupportCharacterCode(), codeInfoList)
 
-		codeList=self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
+		codeList = self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
 
-		characterInfo=hanziNode.getTag()
+		characterInfo = hanziNode.getTag()
 		characterInfo.setCodeList(codeList)
 
 		return characterInfo
@@ -137,7 +137,7 @@ class HanZiNetworkItemFactory:
 	def generateCompoundStructure(self, operator, structureList):
 		return self._generateCompoundStructure(operator, structureList)
 
-	def getWrapperStructureByNodeName(self, nodeName, index=0):
+	def getWrapperStructureByNodeName(self, nodeName, index = 0):
 		self.touchNode(nodeName)
 		return self.getWrapperStructure(nodeName, index)
 
@@ -149,7 +149,7 @@ class HanZiNetworkItemFactory:
 		referenceNode = self.networkManager.findNode(name)
 		structure = self.generateWrapperStructure(referenceNode, index)
 
-		self.wrapperExpressionDict[wrapperExpression]=structure
+		self.wrapperExpressionDict[wrapperExpression] = structure
 		return structure
 
 	def generateWrapperStructure(self, referenceNode, index):
