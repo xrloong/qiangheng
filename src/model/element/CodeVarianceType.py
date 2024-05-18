@@ -2,18 +2,15 @@ import Constant
 
 class CodeVarianceType:
 	CODE_TYPE_STANDARD=0
-	CODE_TYPE_SIMPLIFIED=1
 	CODE_TYPE_TOLERANT=2
 
 	codeVarianceDict={
 		CODE_TYPE_STANDARD:Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD,
-		CODE_TYPE_SIMPLIFIED:Constant.VALUE_CODE_VARIANCE_TYPE_SIMPLIFIED,
 		CODE_TYPE_TOLERANT:Constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT,
 	}
 
 	codeVarianceStringDict={
 		Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD:CODE_TYPE_STANDARD,
-		Constant.VALUE_CODE_VARIANCE_TYPE_SIMPLIFIED:CODE_TYPE_SIMPLIFIED,
 		Constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT:CODE_TYPE_TOLERANT,
 	}
 
@@ -38,11 +35,9 @@ class CodeVarianceTypeFactory:
 
 	def __init__(self):
 		codeVarianceTypeStandard=CodeVarianceType(CodeVarianceType.CODE_TYPE_STANDARD)
-		codeVarianceTypeSimplified=CodeVarianceType(CodeVarianceType.CODE_TYPE_SIMPLIFIED)
 		codeVarianceTypeTolerant=CodeVarianceType(CodeVarianceType.CODE_TYPE_TOLERANT)
 		self.codeVarianceTypeDict={
 			CodeVarianceType.CODE_TYPE_STANDARD : codeVarianceTypeStandard,
-			CodeVarianceType.CODE_TYPE_SIMPLIFIED : codeVarianceTypeSimplified,
 			CodeVarianceType.CODE_TYPE_TOLERANT : codeVarianceTypeTolerant,
 		}
 
