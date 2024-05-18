@@ -137,7 +137,6 @@ class ZMRadixParser(CodingRadixParser):
 
 	ATTRIB_CODE_EXPRESSION='編碼表示式'
 	ATTRIB_SUPPLEMENTARY_CODE='補充資訊'
-	ATTRIB_SINGLETON_EXPRESSION='獨體表示式'
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
@@ -151,26 +150,22 @@ class ZMRadixParser(CodingRadixParser):
 
 		extra_code=infoDict.get(ZMRadixParser.ATTRIB_SUPPLEMENTARY_CODE)
 		strCodeList=infoDict.get(ZMRadixParser.ATTRIB_CODE_EXPRESSION)
-		strCodeListSingleton=infoDict.get(ZMRadixParser.ATTRIB_SINGLETON_EXPRESSION)
 
-		zm_code=''
-		zm_extra=extra_code
-		codeList=[]
-		if strCodeList!=None:
-			codeList=strCodeList.split(ZMRadixParser.RADIX_SEPERATOR)
+		zm_code = ''
+		zm_extra = extra_code
+		codes = []
+		if strCodeList != None:
+			codes = strCodeList.split(ZMRadixParser.RADIX_SEPERATOR)
 
 		# 鄭碼對「冂」內含物的形式，都統合成一個字根，如：冈、网、岡、罔
 		# 如果是構成其他字的一部分，就會當成一個字根，編碼為 LD
 		# 如果是要對此字根編碼，就不合成一個字根，而是使用原字根序列來編碼
-		codeListSingleton=[]
-		if strCodeListSingleton!=None:
-			codeListSingleton=strCodeListSingleton.split(ZMRadixParser.RADIX_SEPERATOR)
-		else:
-			if codeList[0][0] == '*':
-				newFirstCode = codeList[0][1:]
-				codeListSingleton = [newFirstCode] + codeList[1:]
-				codeList = [newFirstCode]
+		codesSingleton = []
+		if codes[0][0] == '*':
+			newFirstCode = codes[0][1:]
+			codesSingleton = [newFirstCode] + codes[1:]
+			codes = [newFirstCode]
 
-		codeInfo=ZMCodeInfo(codeList, zm_extra, codeListSingleton)
+		codeInfo = ZMCodeInfo(codes, zm_extra, codesSingleton)
 		return codeInfo
 
