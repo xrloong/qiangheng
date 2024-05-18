@@ -159,9 +159,17 @@ class ZMRadixParser(CodingRadixParser):
 		if strCodeList!=None:
 			codeList=strCodeList.split(ZMRadixParser.RADIX_SEPERATOR)
 
+		# 鄭碼對「冂」內含物的形式，都統合成一個字根，如：冈、网、岡、罔
+		# 如果是構成其他字的一部分，就會當成一個字根，編碼為 LD
+		# 如果是要對此字根編碼，就不合成一個字根，而是使用原字根序列來編碼
 		codeListSingleton=[]
 		if strCodeListSingleton!=None:
 			codeListSingleton=strCodeListSingleton.split(ZMRadixParser.RADIX_SEPERATOR)
+		else:
+			if codeList[0][0] == '*':
+				newFirstCode = codeList[0][1:]
+				codeListSingleton = [newFirstCode] + codeList[1:]
+				codeList = [newFirstCode]
 
 		codeInfo=ZMCodeInfo(codeList, zm_extra, codeListSingleton)
 		return codeInfo
