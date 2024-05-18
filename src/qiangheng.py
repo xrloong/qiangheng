@@ -23,13 +23,13 @@ from hanzi.helper import HanZiInterpreter
 
 class QiangHeng:
 	def __init__(self, options):
-		packageName=options.package
+		packageName = options.package
 
 		assert packageName, "需要使用 -p 來指定要載入的編碼法（輸入法或描繪法）模組名稱"
 
 		package = __import__(packageName, fromlist=["coding"])
 
-		quiet=options.quiet
+		quiet = options.quiet
 
 		codeMappingInfoInterpreter = package.codeMappingInfoInterpreter
 		yaml = ruamel.yaml.YAML(typ = 'safe')
@@ -41,16 +41,16 @@ class QiangHeng:
 		writer = self.computeWriter(codeMappingInfoInterpreter, quiet, yaml)
 
 		def configure(binder):
-			binder.bind(CodingConfig, to=CodingConfig(package))
-			binder.bind(Package, to=package)
-			binder.bind(Writer, to=writer)
-			binder.bind(ruamel.yaml.YAML, to=yaml)
+			binder.bind(CodingConfig, to = CodingConfig(package))
+			binder.bind(Package, to = package)
+			binder.bind(Writer, to = writer)
+			binder.bind(ruamel.yaml.YAML, to = yaml)
 
 		injector = Injector([configure, PackageModule()])
 		structureManager = injector.get(StructureManager)
 
 		injector = Injector([configure, PackageModule(), ManagerModule(structureManager)])
-		mainManager=injector.get(MainManager)
+		mainManager = injector.get(MainManager)
 		mainManager.compute()
 		mainManager.write()
 
@@ -106,11 +106,11 @@ class MainManager:
 
 def main():
 	oparser = OptionParser()
-	oparser.add_option("-p", dest="package", help="package")
-	oparser.add_option("-q", "--quiet", action="store_true", dest="quiet", default=False)
+	oparser.add_option("-p", dest = "package", help="package")
+	oparser.add_option("-q", "--quiet", action = "store_true", dest="quiet", default=False)
 	(options, args) = oparser.parse_args()
 
-	qiangheng=QiangHeng(options)
+	qiangheng = QiangHeng(options)
 
 if __name__ == "__main__":
 	main()
