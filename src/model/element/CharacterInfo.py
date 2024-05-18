@@ -13,12 +13,12 @@ class CharacterInfo:
 
 	@property
 	def codeMappingInfos(self):
-		characterInfoList = []
+		characterInfos = []
+
 		for codeAndType in self.codeProps:
 			code, variance = codeAndType
 			characterInfo = CodeMappingInfo.CodeMappingInfo(self.name, code, variance)
-			characterInfoList.append(characterInfo)
-		self.characterInfoList = characterInfoList
+			characterInfos.append(characterInfo)
 
-		return self.characterInfoList
+		return characterInfos
 
