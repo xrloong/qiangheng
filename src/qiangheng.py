@@ -92,6 +92,7 @@ class MainManager:
 
 	def compute(self):
 		self.computeCharacterInfo.compute(self.characters)
+		self.computeCharacterInfo.appendFastCodes()
 
 	def write(self):
 		characterInfoList = []

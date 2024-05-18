@@ -6,6 +6,12 @@ class CodingConfig:
 		self.specificRadixFileList = package.CodingRadixFileList
 		self.specificAdjustFileList = package.CodingAdjustFileList
 
+		try:
+			specificFastFile = package.CodingFastFile
+		except:
+			specificFastFile = None
+		self.specificFastFile = specificFastFile
+
 	def getCommonComponentFileList(self):
 		return self.commonComponentFileList
 
@@ -20,6 +26,9 @@ class CodingConfig:
 
 	def getSpecificAdjustFileList(self):
 		return self.specificAdjustFileList
+
+	def getSpecificFastFile(self):
+		return self.specificFastFile
 
 	def getMainComponentList(self):
 		mainDir = self.getMainDir()

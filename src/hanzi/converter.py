@@ -121,6 +121,17 @@ class ComputeCharacterInfo:
 		self.expandNodeStructure(nodeStructure)
 		self.computeNode(nodeStructure)
 
+	def appendFastCodes(self):
+		fastCharacterDict = self.structureManager.loadFastCodes()
+		for (character, fastCodeInfos) in fastCharacterDict.items():
+			assert len(fastCodeInfos) == 1
+			fastCodeInfo = fastCodeInfos[0]
+			fastCode = fastCodeInfo.toCode()
+
+			node = self.touchCharacter(character)
+			characterInfo = node.tag
+			characterInfo.setFastCode(fastCode)
+
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
 

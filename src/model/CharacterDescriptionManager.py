@@ -146,6 +146,11 @@ class RadixManager:
 		for radixName in resetRadixNameList:
 			self.radixDB[radixName] = CharacterDescription(radixName)
 
+	def loadFastCodes(self, fastFile):
+		radixHelper = RadixHelper(self.radixParser)
+		fastCodeCharacterDB = radixHelper.loadRadix([fastFile])
+		return fastCodeCharacterDB
+
 	def getAllRadixes(self):
 		return self.radixDB.keys()
 

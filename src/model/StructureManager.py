@@ -51,6 +51,11 @@ class StructureManager:
 		self.radixManager.loadAdjust(adjustFiles)
 		self.substituteManager.loadSubstituteRules(substituteFiles)
 
+	def loadFastCodes(self):
+		fastFile = self.codingConfig.getSpecificFastFile()
+		fastCodes = self.radixManager.loadFastCodes(fastFile) if fastFile else {}
+		return fastCodes
+
 	def getCompositionManager(self):
 		return self.compositionManager
 
