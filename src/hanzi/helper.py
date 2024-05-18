@@ -27,7 +27,7 @@ class HanZiInterpreter:
 		codeList = self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
 
 		characterInfo = hanziNode.getTag()
-		characterInfo.setCodeList(codeList)
+		characterInfo.setCodeProps(codeList)
 
 		return characterInfo
 

@@ -8,8 +8,8 @@ class CharacterInfo:
 	def character(self):
 		return self.name
 
-	def setCodeList(self, codeList):
-		self.codeProps = codeList
+	def setCodeProps(self, codeProps):
+		self.codeProps = codeProps
 
 	def getCodeMappingInfoList(self):
 		characterInfoList = []
