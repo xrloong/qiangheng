@@ -9,11 +9,11 @@ class CharacterInfo:
 		return self.name
 
 	def setCodeList(self, codeList):
-		self.codePropList = codeList
+		self.codeProps = codeList
 
 	def getCodeMappingInfoList(self):
 		characterInfoList = []
-		for codeAndType in self.codePropList:
+		for codeAndType in self.codeProps:
 			code, variance = codeAndType
 			characterInfo = CodeMappingInfo.CodeMappingInfo(self.name, code, variance)
 			characterInfoList.append(characterInfo)
