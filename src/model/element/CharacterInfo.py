@@ -11,7 +11,8 @@ class CharacterInfo:
 	def setCodeProps(self, codeProps):
 		self.codeProps = codeProps
 
-	def getCodeMappingInfoList(self):
+	@property
+	def codeMappingInfos(self):
 		characterInfoList = []
 		for codeAndType in self.codeProps:
 			code, variance = codeAndType

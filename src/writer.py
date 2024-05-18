@@ -13,7 +13,7 @@ class BaseWriter:
 	def genIMMapping(self, characterInfoList):
 		table = []
 		for characterInfo in characterInfoList:
-			table.extend(characterInfo.getCodeMappingInfoList())
+			table.extend(characterInfo.codeMappingInfos)
 		return table
 
 
