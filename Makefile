@@ -94,6 +94,7 @@ prepare-im:
 	cp -f $(QHDATA_PATH)/$(IM)/info.yaml $(GEN_QHDATA_PATH)/$(IM)/info.yaml
 	cp -f $(QHDATA_PATH)/$(IM)/substitute.yaml $(GEN_QHDATA_PATH)/$(IM)/substitute.yaml
 	cp -f $(QHDATA_PATH)/$(IM)/adjust.yaml $(GEN_QHDATA_PATH)/$(IM)/adjust.yaml
+	cp -f $(QHDATA_PATH)/$(IM)/fast.yaml $(GEN_QHDATA_PATH)/$(IM)/fast.yaml
 
 prepare-im-general:
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml
