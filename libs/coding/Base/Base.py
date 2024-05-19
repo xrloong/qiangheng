@@ -1,5 +1,3 @@
-from injector import inject
-
 from model.element import Operator
 from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
