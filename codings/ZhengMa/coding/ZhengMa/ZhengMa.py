@@ -94,13 +94,16 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		return isAllWithCode
 
 
+	def __computeRadicalsCodes(self, codeInfos):
+		codes = sum(map(lambda c: c.getRtList(), codeInfos), [])
+		codes = codes if len(codes) <= 4 else codes[:2]+codes[-2:]
+		return codes
+
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
-		rtlist = sum(map(lambda c: c.getRtList(), codeInfoList), [])
-
-		rtlist = rtlist if len(rtlist) <= 4 else rtlist[:2]+rtlist[-2:]
-		codeInfo = self.generateDefaultCodeInfo(rtlist)
+		codes = self.__computeRadicalsCodes(codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(codes)
 		return codeInfo
 
 
@@ -127,10 +130,8 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 	def encodeAsLiang(self, codeInfoList):
 		"""運算 "㒳" """
 
-		rtlist = sum(map(lambda c: c.getRtList(), codeInfoList), [])
-
-		rtlist = rtlist if len(rtlist) <= 4 else rtlist[:2]+rtlist[-2:]
-		codeInfo = self.generateDefaultCodeInfo(rtlist[:1])
+		codes = self.__computeRadicalsCodes(codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(codes[:1])
 		return codeInfo
 
 class ZMRadixParser(CodingRadixParser):
