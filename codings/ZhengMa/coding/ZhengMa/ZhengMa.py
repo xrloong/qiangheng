@@ -95,7 +95,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 
 
 	def __computeRadicalsCodes(self, codeInfos):
-		codes = sum(map(lambda c: c.getRtList(), codeInfos), [])
+		codes = sum(map(lambda c: c.getRtList(), codeInfos), ())
 		codes = codes if len(codes) <= 4 else codes[:2]+codes[-2:]
 		return codes
 
@@ -111,7 +111,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		"""運算 "爲" """
 		firstCodeInfo = codeInfoList[0]
 		secondCodeInfo = codeInfoList[1]
-		newCodeInfoList = [secondCodeInfo, firstCodeInfo]
+		newCodeInfoList = (secondCodeInfo, firstCodeInfo)
 		codeInfo = self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
@@ -123,7 +123,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		secondCodeInfo = codeInfoList[1]
 		thirdCodeInfo = codeInfoList[2]
 
-		newCodeInfoList = [secondCodeInfo, thirdCodeInfo, firstCodeInfo]
+		newCodeInfoList = (secondCodeInfo, thirdCodeInfo, firstCodeInfo)
 		codeInfo = self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
@@ -155,19 +155,19 @@ class ZMRadixParser(CodingRadixParser):
 
 		zm_code = ''
 		zm_extra = extra_code
-		codes = []
+		codes = ()
 		if strCodeList != None:
-			codes = strCodeList.split(ZMRadixParser.RADIX_SEPERATOR)
+			codes = tuple(strCodeList.split(ZMRadixParser.RADIX_SEPERATOR))
 
 		# 鄭碼對「冂」內含物的形式，都統合成一個字根，如：冈、网、岡、罔
 		# 如果是構成其他字的一部分，就會當成一個字根，編碼為 LD
 		# 如果是要對此字根編碼，就不合成一個字根，而是使用原字根序列來編碼
-		codesSingleton = []
+		codesSingleton = ()
 		if codes[0][0] == '*':
 			newFirstCode = codes[0][1:]
-			codesSingleton = [newFirstCode] + codes[1:]
-			codes = [newFirstCode]
+			codesSingleton = (newFirstCode, ) + codes[1:]
+			codes = (newFirstCode, )
 
-		codeInfo = ZMCodeInfo(codes, zm_extra, codesSingleton)
+		codeInfo = ZMCodeInfo(tuple(codes), zm_extra, tuple(codesSingleton))
 		return codeInfo
 
