@@ -6,70 +6,70 @@ class ZMCodeInfo(CodeInfo):
 	def __init__(self, rtList, extraCode, rtListSingleton):
 		super().__init__()
 
-		self._zm_code=''
-		self._codeList=rtList
-		self._codeListSingleton=rtListSingleton
+		self._zm_code = ''
+		self._codeList = rtList
+		self._codeListSingleton = rtListSingleton
 
-		self._zm_extra=extraCode
+		self._zm_extra = extraCode
 
 	@staticmethod
 	def generateDefaultCodeInfo(rtlist):
-		codeInfo=ZMCodeInfo(rtlist, None, None)
+		codeInfo = ZMCodeInfo(rtlist, None, None)
 		return codeInfo
 
 	def toCode(self):
 		if self._codeListSingleton:
-			rtlist=self._codeListSingleton
-			codeList=self.convertRadixListToCodeList(rtlist)
-			ans=self.computeCharacterCode(codeList)
+			rtlist = self._codeListSingleton
+			codeList = self.convertRadixListToCodeList(rtlist)
+			ans = self.computeCharacterCode(codeList)
 			return ans
 		else:
-			rtlist=self.getRtList()
-			codeList=self.convertRadixListToCodeList(rtlist)
-			ans=self.computeCharacterCode(codeList)
-			extraCode=self.getExtraCode()
+			rtlist = self.getRtList()
+			codeList = self.convertRadixListToCodeList(rtlist)
+			ans = self.computeCharacterCode(codeList)
+			extraCode = self.getExtraCode()
 			if extraCode:
-				ans+=extraCode
+				ans += extraCode
 			return ans
 
 	def convertRadixListToCodeList(self, radixList):
 		return radixList
 
 	def computeCharacterCode(self, rtlist):
-		ans=''
-		tmp_rtlist=rtlist
-		if len(tmp_rtlist)==0:
+		ans = ''
+		tmp_rtlist = rtlist
+		if len(tmp_rtlist) == 0:
 			return None
-		elif len(tmp_rtlist)==1:
-			ans=rtlist[0]
-		elif len(tmp_rtlist)==2:
-			if len(tmp_rtlist[0])==1 and len(tmp_rtlist[1])==1:
-				ans=''.join(rtlist[0:2])
-				ans=rtlist[0][0]+rtlist[-1][0]+'vv'
+		elif len(tmp_rtlist) == 1:
+			ans = rtlist[0]
+		elif len(tmp_rtlist) == 2:
+			if len(tmp_rtlist[0]) == 1 and len(tmp_rtlist[1]) == 1:
+				ans = ''.join(rtlist[0:2])
+				ans = rtlist[0][0]+rtlist[-1][0]+'vv'
 			else:
-				ans=(rtlist[0]+rtlist[-1])[:4]
-		elif len(tmp_rtlist)==3:
-			if len(tmp_rtlist[0])==1:
-				ans=rtlist[0][0]+rtlist[1][0]+rtlist[-1][0:2]
-			elif len(tmp_rtlist[0])==2:
-				ans=rtlist[0][0:2]+rtlist[-2][0]+rtlist[-1][0]
-			elif len(tmp_rtlist[0])==3:
-				ans=rtlist[0][0:3]+rtlist[-1][0]
-			else:
-				# 錯誤處理
-				ans=rtlist[0][0:4]
-		elif len(tmp_rtlist)>=4:
-			if len(tmp_rtlist[0])==1:
-				ans=rtlist[0][0]+rtlist[1][0]+rtlist[-2][0]+rtlist[-1][0]
-			elif len(tmp_rtlist[0])==2:
-				ans=rtlist[0][0:2]+rtlist[-2][0]+rtlist[-1][0]
-			elif len(tmp_rtlist[0])==3:
-				ans=rtlist[0][0:3]+rtlist[-1][0]
+				ans = (rtlist[0]+rtlist[-1])[:4]
+		elif len(tmp_rtlist) == 3:
+			if len(tmp_rtlist[0]) == 1:
+				ans = rtlist[0][0]+rtlist[1][0]+rtlist[-1][0:2]
+			elif len(tmp_rtlist[0]) == 2:
+				ans = rtlist[0][0:2]+rtlist[-2][0]+rtlist[-1][0]
+			elif len(tmp_rtlist[0]) == 3:
+				ans = rtlist[0][0:3]+rtlist[-1][0]
 			else:
 				# 錯誤處理
-				ans=rtlist[0][0:4]
+				ans = rtlist[0][0:4]
+		elif len(tmp_rtlist) >= 4:
+			if len(tmp_rtlist[0]) == 1:
+				ans = rtlist[0][0]+rtlist[1][0]+rtlist[-2][0]+rtlist[-1][0]
+			elif len(tmp_rtlist[0]) == 2:
+				ans = rtlist[0][0:2]+rtlist[-2][0]+rtlist[-1][0]
+			elif len(tmp_rtlist[0]) == 3:
+				ans = rtlist[0][0:3]+rtlist[-1][0]
+			else:
+				# 錯誤處理
+				ans = rtlist[0][0:4]
 		else:
-			ans=''
+			ans = ''
 		return ans
 
 	def getExtraCode(self):
@@ -89,67 +89,67 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 		return ZMCodeInfo.generateDefaultCodeInfo(rtlist)
 
 	def isAvailableOperation(self, codeInfoList):
-		isAllWithCode=codeInfoList and all(map(lambda x: x.getRtList(), codeInfoList))
+		isAllWithCode = codeInfoList and all(map(lambda x: x.getRtList(), codeInfoList))
 		return isAllWithCode
 
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
-		rtlist=sum(map(lambda c: c.getRtList(), codeInfoList), [])
+		rtlist = sum(map(lambda c: c.getRtList(), codeInfoList), [])
 
-		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		codeInfo=self.generateDefaultCodeInfo(rtlist)
+		rtlist = rtlist if len(rtlist) <= 4 else rtlist[:2]+rtlist[-2:]
+		codeInfo = self.generateDefaultCodeInfo(rtlist)
 		return codeInfo
 
 
 	def encodeAsHan(self, codeInfoList):
 		"""運算 "爲" """
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		newCodeInfoList=[secondCodeInfo, firstCodeInfo]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		newCodeInfoList = [secondCodeInfo, firstCodeInfo]
+		codeInfo = self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 
 	def encodeAsYou(self, codeInfoList):
 		"""運算 "幽" """
 
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		thirdCodeInfo = codeInfoList[2]
 
-		newCodeInfoList=[secondCodeInfo, thirdCodeInfo, firstCodeInfo]
-		codeInfo=self.encodeAsLoong(newCodeInfoList)
+		newCodeInfoList = [secondCodeInfo, thirdCodeInfo, firstCodeInfo]
+		codeInfo = self.encodeAsLoong(newCodeInfoList)
 		return codeInfo
 
 	def encodeAsLiang(self, codeInfoList):
 		"""運算 "㒳" """
 
-		rtlist=sum(map(lambda c: c.getRtList(), codeInfoList), [])
+		rtlist = sum(map(lambda c: c.getRtList(), codeInfoList), [])
 
-		rtlist=rtlist if len(rtlist)<=4 else rtlist[:2]+rtlist[-2:]
-		codeInfo=self.generateDefaultCodeInfo(rtlist[:1])
+		rtlist = rtlist if len(rtlist) <= 4 else rtlist[:2]+rtlist[-2:]
+		codeInfo = self.generateDefaultCodeInfo(rtlist[:1])
 		return codeInfo
 
 class ZMRadixParser(CodingRadixParser):
-	RADIX_SEPERATOR=','
+	RADIX_SEPERATOR = ','
 
-	ATTRIB_CODE_EXPRESSION='編碼表示式'
-	ATTRIB_SUPPLEMENTARY_CODE='補充資訊'
+	ATTRIB_CODE_EXPRESSION = '編碼表示式'
+	ATTRIB_SUPPLEMENTARY_CODE = '補充資訊'
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
-		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
+		codeInfo = self.convertRadixDescToCodeInfoByExpression(radixDesc)
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
-		elementCodeInfo=radixInfo.getCodeElement()
+		elementCodeInfo = radixInfo.getCodeElement()
 
-		infoDict=elementCodeInfo
+		infoDict = elementCodeInfo
 
-		extra_code=infoDict.get(ZMRadixParser.ATTRIB_SUPPLEMENTARY_CODE)
-		strCodeList=infoDict.get(ZMRadixParser.ATTRIB_CODE_EXPRESSION)
+		extra_code = infoDict.get(ZMRadixParser.ATTRIB_SUPPLEMENTARY_CODE)
+		strCodeList = infoDict.get(ZMRadixParser.ATTRIB_CODE_EXPRESSION)
 
 		zm_code = ''
 		zm_extra = extra_code

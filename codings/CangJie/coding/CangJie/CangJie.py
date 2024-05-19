@@ -6,12 +6,12 @@ import re
 
 class CJLump:
 	def __init__(self, frontCode, containerCode, interiorCode):
-		self.frontCode=frontCode
-		self.containerCode=containerCode
-		self.interiorCode=interiorCode
+		self.frontCode = frontCode
+		self.containerCode = containerCode
+		self.interiorCode = interiorCode
 
-		self.isBodyContainer=False
-		self.isDirtySingleton=False
+		self.isBodyContainer = False
+		self.isDirtySingleton = False
 	def __str__(self):
 		return "%s"%self.getXCode()
 
@@ -31,14 +31,14 @@ class CJLump:
 		return CJCodeHelper(self)
 
 	def getCode(self, headCount, tailCount):
-		helper=self.getHelper()
+		helper = self.getHelper()
 		return helper.getCode(headCount, tailCount).lower()
 
 	def getCodeAsSingleton(self):
 		return self.getCode(3, 1)
 
 	def isHeadWithOne(self):
-		return (len(self.getCodeAsHead())==1)
+		return (len(self.getCodeAsHead()) == 1)
 
 	def getCodeAsHead(self):
 		return self.getCode(1, 1)
@@ -51,37 +51,37 @@ class CJLump:
 
 	@staticmethod
 	def computeTotalCode(cjLumpList):
-		code=''
+		code = ''
 		if len(cjLumpList) == 1:
-			code=cjLumpList[0].getCodeAsSingleton()
+			code = cjLumpList[0].getCodeAsSingleton()
 		elif len(cjLumpList) > 1:
-			code=cjLumpList[0].getCodeAsHead()
-			code+=CJLump.computeBodyCode(cjLumpList[1:])
+			code = cjLumpList[0].getCodeAsHead()
+			code += CJLump.computeBodyCode(cjLumpList[1:])
 		else:
-			code=''
+			code = ''
 		return code
 
 	@staticmethod
 	def computeBodyCode(cjLumpList):
-		code=''
+		code = ''
 		if len(cjLumpList) == 1:
-			cjLumpList[0].isBodyContainer=False
-			code=cjLumpList[0].getCodeAsBody()
+			cjLumpList[0].isBodyContainer = False
+			code = cjLumpList[0].getCodeAsBody()
 		elif len(cjLumpList) > 1:
-			code=cjLumpList[0].getCodeAsHead()
-			tmpCJLump=CJLump.generateBody(cjLumpList[1:])
+			code = cjLumpList[0].getCodeAsHead()
+			tmpCJLump = CJLump.generateBody(cjLumpList[1:])
 			if(cjLumpList[0].isHeadWithOne()):
-				tmpCJLump=CJLump.generateBody(cjLumpList[1:])
-				code+=tmpCJLump.getCodeAsHead()
+				tmpCJLump = CJLump.generateBody(cjLumpList[1:])
+				code += tmpCJLump.getCodeAsHead()
 			else:
-				code+=cjLumpList[-1].getCodeAsTail()
+				code += cjLumpList[-1].getCodeAsTail()
 		else:
-			code=''
+			code = ''
 		return code
 
 	@staticmethod
 	def computeSingletonCode(cjLumpList):
-		tmpLump=CJLump.generateSingleton(cjLumpList)
+		tmpLump = CJLump.generateSingleton(cjLumpList)
 		return tmpLump.getCodeAsSingleton()
 
 	@staticmethod
@@ -90,55 +90,55 @@ class CJLump:
 
 	@staticmethod
 	def generateBody(cjLumpList):
-		lastCJLump=cjLumpList[-1]
+		lastCJLump = cjLumpList[-1]
 
-		lastCJLump.isBodyContainer=True
+		lastCJLump.isBodyContainer = True
 		[frontCode, containerCode, interiorCode] = lastCJLump.getXCode()
-		lastCJLump.isBodyContainer=False
+		lastCJLump.isBodyContainer = False
 
-		tmpFrontCode=("".join(map(lambda x: x.getCodeAsHead(), cjLumpList[:-1])))
+		tmpFrontCode = ("".join(map(lambda x: x.getCodeAsHead(), cjLumpList[:-1])))
 
-		tmpCJLump=CJLump.generate(tmpFrontCode+frontCode, containerCode, interiorCode)
+		tmpCJLump = CJLump.generate(tmpFrontCode+frontCode, containerCode, interiorCode)
 		return tmpCJLump
 
 	@staticmethod
 	def generateSingleton(cjLumpList):
-		lastCJLump=cjLumpList[-1]
+		lastCJLump = cjLumpList[-1]
 
-		lastCJLump.isBodyContainer=True
+		lastCJLump.isBodyContainer = True
 		[frontCode, containerCode, interiorCode] = lastCJLump.getXCode()
-		lastCJLump.isBodyContainer=False
+		lastCJLump.isBodyContainer = False
 
-		tmpFrontCode=("".join(map(lambda x: x.getCodeAsBody(), cjLumpList[:-1])))
+		tmpFrontCode = ("".join(map(lambda x: x.getCodeAsBody(), cjLumpList[:-1])))
 
-		tmpCJLump=CJLump.generate(tmpFrontCode+frontCode, containerCode, interiorCode)
+		tmpCJLump = CJLump.generate(tmpFrontCode+frontCode, containerCode, interiorCode)
 		return tmpCJLump
 
 	@staticmethod
 	def generateContainer(cjLumpList):
-		firstCJLump=cjLumpList[0]
+		firstCJLump = cjLumpList[0]
 		[frontCode, containerCode, interiorCode] = firstCJLump.getXCode()
 
-		tmpCJLump=CJLump.generateBody(cjLumpList[1:])
-		tmpInteriorCode=tmpCJLump.getCodeAsHead()
-		cjLump=CJLump.generate(frontCode, containerCode, interiorCode)
+		tmpCJLump = CJLump.generateBody(cjLumpList[1:])
+		tmpInteriorCode = tmpCJLump.getCodeAsHead()
+		cjLump = CJLump.generate(frontCode, containerCode, interiorCode)
 		return ContainerCJLump(cjLump, tmpCJLump)
 
 class ContainerCJLump(CJLump):
 	def __init__(self, outerLump, innerLump):
-		self.outerLump=outerLump
-		self.innerLump=innerLump
-		self.isBodyContainer=False
+		self.outerLump = outerLump
+		self.innerLump = innerLump
+		self.isBodyContainer = False
 
 	def getHelper(self):
 		return ContainerCJCodeHelper(self.outerLump, self.innerLump)
 
 	def getCodeAsBody(self):
-		code=self.outerLump.getCodeAsHead()
-		if len(code)==1:
-			code+=self.innerLump.getCodeAsHead()
-		elif len(code)==2:
-			code+=self.innerLump.getCodeAsTail()
+		code = self.outerLump.getCodeAsHead()
+		if len(code) == 1:
+			code += self.innerLump.getCodeAsHead()
+		elif len(code) == 2:
+			code += self.innerLump.getCodeAsTail()
 		return code
 
 	def getXCode(self):
@@ -153,51 +153,51 @@ class CJCodeHelper:
 	def __init__(self, cjLump):
 		[self.frontCode, self.containerCode, self.interiorCode] = cjLump.getXCode()
 
-		self.innerHelper=None
+		self.innerHelper = None
 
 	def getCode(self, headCount, tailCount):
 		return (self.getHeadCode(headCount)+self.getTailCode(tailCount))
 
 	def getHeadCode(self, headCount):
-		head=""
+		head = ""
 		for i in range(headCount):
-			head+=self.getH()
+			head += self.getH()
 		return head
 
 	def getTailCode(self, tailCount):
-		tail=""
+		tail = ""
 		for i in range(tailCount):
-			tail=tail+self.getT()
+			tail = tail+self.getT()
 		return tail
 
 	def getH(self):
 		if self.frontCode:
-			c=self.frontCode[0]
-			self.frontCode=self.frontCode[1:]
+			c = self.frontCode[0]
+			self.frontCode = self.frontCode[1:]
 			return c
 		elif self.containerCode:
-			c=self.containerCode[0]
-			self.containerCode=self.containerCode[1:]
+			c = self.containerCode[0]
+			self.containerCode = self.containerCode[1:]
 			return c
 		elif self.interiorCode:
-			c=self.interiorCode[0]
-			self.interiorCode=self.interiorCode[1:]
+			c = self.interiorCode[0]
+			self.interiorCode = self.interiorCode[1:]
 			return c
 		else:
 			return ""
 
 	def getT(self):
 		if self.containerCode:
-			c=self.containerCode[-1]
-			self.containerCode=self.containerCode[:-1]
+			c = self.containerCode[-1]
+			self.containerCode = self.containerCode[:-1]
 			return c
 		elif self.interiorCode:
-			c=self.interiorCode[-1]
-			self.interiorCode=self.interiorCode[:-1]
+			c = self.interiorCode[-1]
+			self.interiorCode = self.interiorCode[:-1]
 			return c
 		elif self.frontCode:
-			c=self.frontCode[-1]
-			self.frontCode=self.frontCode[:-1]
+			c = self.frontCode[-1]
+			self.frontCode = self.frontCode[:-1]
 			return c
 		else:
 			return ""
@@ -209,56 +209,56 @@ class ContainerCJCodeHelper(CJCodeHelper):
 
 	def getH(self):
 		if self.outerFrontCode:
-			c=self.outerFrontCode[0]
-			self.outerFrontCode=self.outerFrontCode[1:]
+			c = self.outerFrontCode[0]
+			self.outerFrontCode = self.outerFrontCode[1:]
 			return c
 		elif self.outerContainerCode:
-			c=self.outerContainerCode[0]
-			self.outerContainerCode=self.outerContainerCode[1:]
+			c = self.outerContainerCode[0]
+			self.outerContainerCode = self.outerContainerCode[1:]
 			return c
 		elif self.innerFrontCode:
-			c=self.innerFrontCode[0]
-			self.innerFrontCode=self.innerFrontCode[1:]
+			c = self.innerFrontCode[0]
+			self.innerFrontCode = self.innerFrontCode[1:]
 			return c
 		elif self.innerContainerCode:
-			c=self.innerContainerCode[0]
-			self.innerContainerCode=self.innerContainerCode[1:]
+			c = self.innerContainerCode[0]
+			self.innerContainerCode = self.innerContainerCode[1:]
 			return c
 		elif self.outerInteriorCode:
-			c=self.outerInteriorCode[0]
-			self.outerInteriorCode=self.outerInteriorCode[1:]
+			c = self.outerInteriorCode[0]
+			self.outerInteriorCode = self.outerInteriorCode[1:]
 			return c
 		elif self.innerInteriorCode:
-			c=self.innerInteriorCode[0]
-			self.innerInteriorCode=self.innerInteriorCode[1:]
+			c = self.innerInteriorCode[0]
+			self.innerInteriorCode = self.innerInteriorCode[1:]
 			return c
 		else:
 			return ""
 
 	def getT(self):
 		if self.outerContainerCode:
-			c=self.outerContainerCode[-1]
-			self.outerContainerCode=self.outerContainerCode[:-1]
+			c = self.outerContainerCode[-1]
+			self.outerContainerCode = self.outerContainerCode[:-1]
 			return c
 		elif self.outerInteriorCode:
-			c=self.outerInteriorCode[-1]
-			self.outerInteriorCode=self.outerInteriorCode[:-1]
+			c = self.outerInteriorCode[-1]
+			self.outerInteriorCode = self.outerInteriorCode[:-1]
 			return c
 		elif self.innerContainerCode:
-			c=self.innerContainerCode[-1]
-			self.innerContainerCode=self.innerContainerCode[:-1]
+			c = self.innerContainerCode[-1]
+			self.innerContainerCode = self.innerContainerCode[:-1]
 			return c
 		elif self.innerInteriorCode:
-			c=self.innerInteriorCode[-1]
-			self.innerInteriorCode=self.innerInteriorCode[:-1]
+			c = self.innerInteriorCode[-1]
+			self.innerInteriorCode = self.innerInteriorCode[:-1]
 			return c
 		elif self.innerFrontCode:
-			c=self.innerFrontCode[-1]
-			self.innerFrontCode=self.innerFrontCode[:-1]
+			c = self.innerFrontCode[-1]
+			self.innerFrontCode = self.innerFrontCode[:-1]
 			return c
 		elif self.outerFrontCode:
-			c=self.outerFrontCode[-1]
-			self.outerFrontCode=self.outerFrontCode[:-1]
+			c = self.outerFrontCode[-1]
+			self.outerFrontCode = self.outerFrontCode[:-1]
 			return c
 		else:
 			return ""
@@ -267,26 +267,26 @@ class CJCodeInfo(CodeInfo):
 	def __init__(self, direction, cjLumpList, cjLumpListSingleton):
 		super().__init__()
 
-		self.direction=direction
-		self.cjLumpList=cjLumpList
-		self.cjLumpListSingleton=cjLumpListSingleton
+		self.direction = direction
+		self.cjLumpList = cjLumpList
+		self.cjLumpListSingleton = cjLumpListSingleton
 
 	@staticmethod
 	def generateDefaultCodeInfo(direction, cjLumpList):
-		codeInfo=CJCodeInfo(direction, cjLumpList, None)
+		codeInfo = CJCodeInfo(direction, cjLumpList, None)
 
 		return codeInfo
 
 	def toCode(self):
-		direction=self.getDirection()
+		direction = self.getDirection()
 
 		if self.cjLumpListSingleton:
-			rtlist=self.cjLumpList
-			rtlist=self.cjLumpListSingleton
+			rtlist = self.cjLumpList
+			rtlist = self.cjLumpListSingleton
 			return CJLump.computeTotalCode(rtlist)
 		else:
-			rtlist=self.cjLumpList
-			if direction=='$':
+			rtlist = self.cjLumpList
+			if direction == '$':
 				return CJLump.computeSingletonCode(rtlist)
 			else:
 				return CJLump.computeTotalCode(rtlist)
@@ -302,8 +302,8 @@ class GridCJCodeInfo(CJCodeInfo):
 	def __init__(self, codeInfoV, codeInfoH):
 		CodeInfo.__init__(self)
 #		super().__init__(codeInfoV.getDirection, codeInfoV.getLumpList, None)
-		self.codeInfoV=codeInfoV
-		self.codeInfoH=codeInfoH
+		self.codeInfoV = codeInfoV
+		self.codeInfoH = codeInfoH
 
 	def toCode(self):
 		return self.codeInfoV.toCode()
@@ -330,174 +330,174 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
-		direction='*'
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
+		direction = '*'
+		cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsSparrow(self, codeInfoList):
 		"""運算 "雀" """
-		direction='$'
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
+		direction = '$'
+		cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 
 	def encodeAsSilkworm(self, codeInfoList):
-		direction='|'
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
+		direction = '|'
+		cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
-		direction='-'
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
+		direction = '-'
+		cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsLoop(self, codeInfoList):
-		direction='@'
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
+		direction = '@'
+		cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 
 	def encodeAsMu(self, codeInfoList):
-		direction='$'
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
+		direction = '$'
+		cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsZuo(self, codeInfoList):
-		direction='$'
-		codeInfoList=self.convertCodeInfoListOfZuoOrder(codeInfoList)
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
+		direction = '$'
+		codeInfoList = self.convertCodeInfoListOfZuoOrder(codeInfoList)
+		cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 	def encodeAsJia(self, codeInfoList):
-		direction='$'
-		cjLumpList=CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
-		codeInfo=self.generateDefaultCodeInfo(direction, cjLumpList)
+		direction = '$'
+		cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(direction, codeInfoList)
+		codeInfo = self.generateDefaultCodeInfo(direction, cjLumpList)
 		return codeInfo
 
 
 	def encodeAsLin(self, codeInfoList):
 		"""運算 "粦" """
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		thirdCodeInfo = codeInfoList[2]
 
-		topCodeInfo=self.encodeAsLoong([firstCodeInfo])
-		bottomCodeInfo=self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
+		topCodeInfo = self.encodeAsLoong([firstCodeInfo])
+		bottomCodeInfo = self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
 
-		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
+		codeInfo = self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
 
 	def encodeAsYi(self, codeInfoList):
 		"""運算 "燚" """
-		firstCodeInfo=codeInfoList[0]
+		firstCodeInfo = codeInfoList[0]
 
-		tmpCodeInfoH=self.encodeAsGoose([firstCodeInfo, firstCodeInfo])
-		codeInfoV=self.encodeAsSilkworm([tmpCodeInfoH, tmpCodeInfoH])
+		tmpCodeInfoH = self.encodeAsGoose([firstCodeInfo, firstCodeInfo])
+		codeInfoV = self.encodeAsSilkworm([tmpCodeInfoH, tmpCodeInfoH])
 
-		tmpCodeInfoV=self.encodeAsSilkworm([firstCodeInfo, firstCodeInfo])
-		codeInfoH=self.encodeAsGoose([tmpCodeInfoV, tmpCodeInfoV])
+		tmpCodeInfoV = self.encodeAsSilkworm([firstCodeInfo, firstCodeInfo])
+		codeInfoH = self.encodeAsGoose([tmpCodeInfoV, tmpCodeInfoV])
 
-		codeInfo=GridCJCodeInfo(codeInfoV, codeInfoH)
+		codeInfo = GridCJCodeInfo(codeInfoV, codeInfoH)
 
 		return codeInfo
 
 	@staticmethod
 	def computeLumpListInDirection(direction, codeInfo):
-		tmpDirCode=codeInfo.getDirection()
+		tmpDirCode = codeInfo.getDirection()
 
-		if direction=='$':
-			lumpList=codeInfo.getLumpList()
+		if direction == '$':
+			lumpList = codeInfo.getLumpList()
 		elif tmpDirCode in ['@']:
-			tmpRadixList=codeInfo.getLumpList()
-			tmpCJLump=CJLump.generateContainer(tmpRadixList)
-			lumpList=[tmpCJLump]
+			tmpRadixList = codeInfo.getLumpList()
+			tmpCJLump = CJLump.generateContainer(tmpRadixList)
+			lumpList = [tmpCJLump]
 		elif tmpDirCode in ['*']:
-			tmpRadixList=codeInfo.getLumpList()
-			tmpCJLump=CJLump.generateBody(tmpRadixList)
-			lumpList=[tmpCJLump]
+			tmpRadixList = codeInfo.getLumpList()
+			tmpCJLump = CJLump.generateBody(tmpRadixList)
+			lumpList = [tmpCJLump]
 		elif tmpDirCode in ['+'] and isinstance(codeInfo, GridCJCodeInfo):
-			if direction=='-':
-				newCodeInfo=codeInfo.getCodeInfoH()
-				lumpList=newCodeInfo.getLumpList()
-			elif direction=='|':
-				newCodeInfo=codeInfo.getCodeInfoV()
-				lumpList=newCodeInfo.getLumpList()
+			if direction == '-':
+				newCodeInfo = codeInfo.getCodeInfoH()
+				lumpList = newCodeInfo.getLumpList()
+			elif direction == '|':
+				newCodeInfo = codeInfo.getCodeInfoV()
+				lumpList = newCodeInfo.getLumpList()
 			else:
-				ci=codeInfo.getCodeInfoV()
-				tmpCJLump=CJLump.generateBody(ci.getLumpList())
-				lumpList=[tmpCJLump]
+				ci = codeInfo.getCodeInfoV()
+				tmpCJLump = CJLump.generateBody(ci.getLumpList())
+				lumpList = [tmpCJLump]
 		else:
-			if tmpDirCode==direction:
+			if tmpDirCode == direction:
 				# 同向
-				lumpList=codeInfo.getLumpList()
+				lumpList = codeInfo.getLumpList()
 			else:
 				# 不同向
-				tmpRadixList=codeInfo.getLumpList()
-				tmpCJLump=CJLump.generateBody(tmpRadixList)
-				lumpList=[tmpCJLump]
+				tmpRadixList = codeInfo.getLumpList()
+				tmpCJLump = CJLump.generateBody(tmpRadixList)
+				lumpList = [tmpCJLump]
 		return lumpList
 
 	@staticmethod
 	def convertCodeInfoListToRadixList(direction, codeInfoList):
-		ansLumpList=[]
+		ansLumpList = []
 		for tmpCodeInfo in codeInfoList:
-			tmpRadixList=CJCodeInfoEncoder.computeLumpListInDirection(direction, tmpCodeInfo)
+			tmpRadixList = CJCodeInfoEncoder.computeLumpListInDirection(direction, tmpCodeInfo)
 			ansLumpList.extend(tmpRadixList)
 		return ansLumpList
 
 class CJRadixParser(CodingRadixParser):
-	ATTRIB_CODE_EXPRESSION='編碼表示式'
-	ATTRIB_SINGLETON_EXPRESSION='獨體表示式'
+	ATTRIB_CODE_EXPRESSION = '編碼表示式'
+	ATTRIB_SINGLETON_EXPRESSION = '獨體表示式'
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
-		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
+		codeInfo = self.convertRadixDescToCodeInfoByExpression(radixDesc)
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
-		elementCodeInfo=radixInfo.getCodeElement()
+		elementCodeInfo = radixInfo.getCodeElement()
 
-		infoDict=elementCodeInfo
+		infoDict = elementCodeInfo
 
-		description=infoDict.get(CJRadixParser.ATTRIB_CODE_EXPRESSION)
-		direction=description[0]
+		description = infoDict.get(CJRadixParser.ATTRIB_CODE_EXPRESSION)
+		direction = description[0]
 
-		description_singleton=infoDict.get(CJRadixParser.ATTRIB_SINGLETON_EXPRESSION)
+		description_singleton = infoDict.get(CJRadixParser.ATTRIB_SINGLETON_EXPRESSION)
 
-		cjLumpList=self.parseCJLumpList(description[1:])
-		cjLumpList_singleton=self.parseCJLumpList(description_singleton)
-		codeInfo=CJCodeInfo(direction, cjLumpList, cjLumpList_singleton)
+		cjLumpList = self.parseCJLumpList(description[1:])
+		cjLumpList_singleton = self.parseCJLumpList(description_singleton)
+		codeInfo = CJCodeInfo(direction, cjLumpList, cjLumpList_singleton)
 
 		return codeInfo
 
 	def parseCJLumpList(self, description):
-		cjLumpList=[]
+		cjLumpList = []
 
-		if description!=None:
-			description_list=description.split(",")
+		if description != None:
+			description_list = description.split(",")
 			for desc in description_list:
-				matchResult=re.match(r"(\w*)(\[(\w*)\](\w*))?", desc)
-				groups=matchResult.groups()
-				frontCode=groups[0]
-				tailingSurround=groups[2]
-				rearCode=groups[3]
-				if tailingSurround==None:
-					tailingSurround=""
+				matchResult = re.match(r"(\w*)(\[(\w*)\](\w*))?", desc)
+				groups = matchResult.groups()
+				frontCode = groups[0]
+				tailingSurround = groups[2]
+				rearCode = groups[3]
+				if tailingSurround == None:
+					tailingSurround = ""
 
-				matchResult=re.match("([A-Z]*)([a-z]*)", tailingSurround)
-				groups=matchResult.groups()
+				matchResult = re.match("([A-Z]*)([a-z]*)", tailingSurround)
+				groups = matchResult.groups()
 
-				containerCode=groups[0]
-				interiorCode=groups[1]
+				containerCode = groups[0]
+				interiorCode = groups[1]
 
-				cjLump=CJLump.generate(frontCode, containerCode, interiorCode)
+				cjLump = CJLump.generate(frontCode, containerCode, interiorCode)
 				cjLumpList.append(cjLump)
 
 		return cjLumpList

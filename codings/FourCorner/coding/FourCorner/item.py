@@ -131,9 +131,9 @@ class FCLump:
 		return self._bottom_right
 
 class FCBrick:
-	TYPE_INVALIDATE=0
-	TYPE_STROKE=1
-	TYPE_REFERENCE=2
+	TYPE_INVALIDATE = 0
+	TYPE_STROKE = 1
+	TYPE_REFERENCE = 2
 	def __init__(self, position = FCCorner.CornerNone):
 		self.setAsInvalidate()
 		self._position = position
@@ -161,24 +161,24 @@ class FCBrick:
 			return self._position
 
 	def setAsInvalidate(self):
-		self._type=FCBrick.TYPE_INVALIDATE
+		self._type = FCBrick.TYPE_INVALIDATE
 
 	def setAsStroke(self, stroke):
-		self._type=FCBrick.TYPE_STROKE
-		self.stroke=stroke
+		self._type = FCBrick.TYPE_STROKE
+		self.stroke = stroke
 
 	def setAsReference(self, wrapperBrick):
-		self._type=FCBrick.TYPE_REFERENCE
-		self.wrapperBrick=wrapperBrick
+		self._type = FCBrick.TYPE_REFERENCE
+		self.wrapperBrick = wrapperBrick
 
 	def isInvalidate(self):
-		return self._type==FCBrick.TYPE_INVALIDATE
+		return self._type == FCBrick.TYPE_INVALIDATE
 
 	def isStroke(self):
-		return self._type==FCBrick.TYPE_STROKE
+		return self._type == FCBrick.TYPE_STROKE
 
 	def isReference(self):
-		return self._type==FCBrick.TYPE_REFERENCE
+		return self._type == FCBrick.TYPE_REFERENCE
 
 	def setUsedByPosition(self):
 		self.setUsedByCorner(self._position)
@@ -187,12 +187,12 @@ class FCBrick:
 		if self.isReference():
 			self.wrapperBrick.setUsedByCorner(corner)
 			return
-		self._usedByCorner=corner
+		self._usedByCorner = corner
 
 	def isUsed(self):
 		if self.isReference():
 			return self.wrapperBrick.isUsed()
-		return self.getUsedCorner()!=FCCorner.CornerNone
+		return self.getUsedCorner() != FCCorner.CornerNone
 
 	def getUsedCorner(self):
 		if self.isStroke():

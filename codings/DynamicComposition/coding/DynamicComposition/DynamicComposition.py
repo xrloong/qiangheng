@@ -21,7 +21,7 @@ except ImportError as e:
 	可到 https://github.com/xrloong/Xie 下載最新版本，並以 pip 安裝，或使可使用以下指令：
 	$ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl
 """
-	print(message, file=sys.stderr)
+	print(message, file = sys.stderr)
 	sys.exit(1)
 
 from xie.graphics import Pane
@@ -43,7 +43,7 @@ class DCComponent:
 	componentFactory = ComponentFactory()
 
 	def __init__(self, component):
-		self.component=component
+		self.component = component
 
 	def getCount(self):
 		return self.component.getCount()
@@ -88,7 +88,7 @@ class DCCodeInfo(CodeInfo):
 		return codeInfo
 
 	def toCode(self):
-		component=self.getComponent()
+		component = self.getComponent()
 		return component
 
 	def getComponent(self):
@@ -112,13 +112,13 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return DCCodeInfo.generateDefaultCodeInfo(components, panes)
 
 	def isAvailableOperation(self, codeInfoList):
-		isAllWithCode=all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
+		isAllWithCode = all(map(lambda x: x.getStrokeCount()>0, codeInfoList))
 		return isAllWithCode
 
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		firstCodeInfo=codeInfoList[0]
+		firstCodeInfo = codeInfoList[0]
 		return firstCodeInfo
 
 
@@ -188,24 +188,24 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 		return codeInfo
 
 class DCRadixParser(CodingRadixParser):
-	TAG_STROKE_GROUP='筆劃組'
-	TAG_STROKE='筆劃'
-	TAG_GEOMETRY='幾何'
-	TAG_SCOPE='範圍'
-	TAG_STROKE='筆劃'
-	TAG_NAME='名稱'
-	TAG_TYPE='類型'
-	TAG_START_POINT='起始點'
-	TAG_PARAMETER='參數'
-	TAG_BBOX='字面框'
+	TAG_STROKE_GROUP = '筆劃組'
+	TAG_STROKE = '筆劃'
+	TAG_GEOMETRY = '幾何'
+	TAG_SCOPE = '範圍'
+	TAG_STROKE = '筆劃'
+	TAG_NAME = '名稱'
+	TAG_TYPE = '類型'
+	TAG_START_POINT = '起始點'
+	TAG_PARAMETER = '參數'
+	TAG_BBOX = '字面框'
 
-	TAG_CODE_INFORMATION='編碼資訊'
-	ATTRIB_CODE_EXPRESSION='資訊表示式'
+	TAG_CODE_INFORMATION = '編碼資訊'
+	ATTRIB_CODE_EXPRESSION = '資訊表示式'
 
-	TAG_CHARACTER_SET='字符集'
-	TAG_CHARACTER='字符'
+	TAG_CHARACTER_SET = '字符集'
+	TAG_CHARACTER = '字符'
 
-	TAG_NAME='名稱'
+	TAG_NAME = '名稱'
 
 	def __init__(self):
 		self.glyphParser = GlyphParser()
@@ -213,13 +213,13 @@ class DCRadixParser(CodingRadixParser):
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
-		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
+		codeInfo = self.convertRadixDescToCodeInfoByExpression(radixDesc)
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
-		elementCodeInfo=radixInfo.getCodeElement()
+		elementCodeInfo = radixInfo.getCodeElement()
 
-		componentNodeList=elementCodeInfo.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
+		componentNodeList = elementCodeInfo.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
 		lastComponentNode = componentNodeList[0]
 
 		component = self.parseComponent(lastComponentNode)
@@ -228,16 +228,16 @@ class DCRadixParser(CodingRadixParser):
 		return codeInfo
 
 	def parseRadixInfo(self, rootNode):
-		characterSetNode=rootNode.get(DCRadixParser.TAG_CHARACTER_SET)
+		characterSetNode = rootNode.get(DCRadixParser.TAG_CHARACTER_SET)
 		for characterNode in characterSetNode:
-			charName=characterNode.get(DCRadixParser.TAG_NAME)
-			radixDescription=self.parseRadixDescription(characterNode)
+			charName = characterNode.get(DCRadixParser.TAG_NAME)
+			radixDescription = self.parseRadixDescription(characterNode)
 
 			self.radixDescriptionManager.addDescription(charName, radixDescription)
 
 	def parseGeometry(self, geometryNode):
-		descriptionRegion=geometryNode.get(DCRadixParser.TAG_SCOPE)
-		pane=self.parsePane(descriptionRegion)
+		descriptionRegion = geometryNode.get(DCRadixParser.TAG_SCOPE)
+		pane = self.parsePane(descriptionRegion)
 		return pane
 
 	def parseComponent(self, componentNode):
@@ -248,7 +248,7 @@ class DCRadixParser(CodingRadixParser):
 		return component
 
 	def parseStrokes(self, strokeNode):
-		strokes=[]
+		strokes = []
 		for strokeNode in strokeNode:
 			element = self.glyphParser.parseElement(strokeNode)
 			assert element.isReference
@@ -258,10 +258,10 @@ class DCRadixParser(CodingRadixParser):
 		return strokes
 
 	def parsePane(self, descriptionRegion):
-		left=int(descriptionRegion[0:2], 16)
-		top=int(descriptionRegion[2:4], 16)
-		right=int(descriptionRegion[4:6], 16)
-		bottom=int(descriptionRegion[6:8], 16)
+		left = int(descriptionRegion[0:2], 16)
+		top = int(descriptionRegion[2:4], 16)
+		right = int(descriptionRegion[4:6], 16)
+		bottom = int(descriptionRegion[6:8], 16)
 		return Pane(left, top, right, bottom)
 
 class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
@@ -274,11 +274,11 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 		self.templates = {}
 
 	def getStroke(self, name, index):
-		component=self.templates.get(name)
+		component = self.templates.get(name)
 		return component.getStrokeList()[index]
 
 	def applyComponentWithTransformation(self, component, position):
-		if position != None:
+		if position !=  None:
 			pane = Pane(*position)
 			component = self.componentFactory.generateComponentByComponentPane(component, pane)
 		return component
@@ -388,7 +388,7 @@ class TemplateManager:
 
 	def put(self, name, template):
 		assert isinstance(template, Component)
-		self.templates[name]=template
+		self.templates[name] = template
 
 	def get(self, name):
 		return self.templates.get(name)
@@ -421,15 +421,15 @@ class DataStructureCanvasController(BaseTextCanvasController):
 		return self.strokes
 
 	def onPreDrawCharacter(self, character):
-		self.strokes=[]
+		self.strokes = []
 
 	def onPreDrawStroke(self, stroke):
 		self.clearStrokeExpression()
 
 	def onPostDrawStroke(self, stroke):
-		e=self.getStrokeExpression()
+		e = self.getStrokeExpression()
 		if e:
-			attrib={
+			attrib = {
 				"名稱": stroke.getName(),
 				"描繪": e,
 				}

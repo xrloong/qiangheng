@@ -10,7 +10,7 @@ fontVariance = FontVariance.Traditional
 codeMappingInfoInterpreter = DCCodeMappingInfoInterpreter(codingType)
 
 codingMethodName = "dc"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
+codingMethodDir = "gen/qhdata/{method}/".format(method = codingMethodName)
 CodingSubstituteFileList = [
 	codingMethodDir + 'substitute.yaml',
 ]

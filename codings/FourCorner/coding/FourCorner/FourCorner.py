@@ -65,12 +65,12 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 
 	def encodeAsEqual(self, codeInfoList):
 		"""運算 "爲" """
-		targetCodeInfo=codeInfoList[0]
-		corners=[targetCodeInfo.topLeft,
+		targetCodeInfo = codeInfoList[0]
+		corners = [targetCodeInfo.topLeft,
 			targetCodeInfo.topRight,
 			targetCodeInfo.bottomLeft,
 			targetCodeInfo.bottomRight ]
-		codeInfo=self.generateDefaultCodeInfo(corners)
+		codeInfo = self.generateDefaultCodeInfo(corners)
 		return codeInfo
 
 
@@ -230,13 +230,13 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 		return FCCodeInfo(FCLump(corners))
 
 class FCRadixParser(CodingRadixParser):
-	ATTRIB_CODE_EXPRESSION='編碼表示式'
-	ATTRIB_ARCHITECTURE='結構'
+	ATTRIB_CODE_EXPRESSION = '編碼表示式'
+	ATTRIB_ARCHITECTURE = '結構'
 
 	@staticmethod
 	def convertCornerCodeToLump(cornerCode):
 		sl = (cornerCode[0] == '*')
-		if cornerCode[0]=='*':
+		if cornerCode[0] == '*':
 			cornerCode = cornerCode[1:5]
 
 		corner = convertCornerCodeToCornerUnits(cornerCode)
@@ -245,7 +245,7 @@ class FCRadixParser(CodingRadixParser):
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
-		codeInfo=self.convertRadixDescToCodeInfoByExpression(radixDesc)
+		codeInfo = self.convertRadixDescToCodeInfoByExpression(radixDesc)
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
@@ -255,7 +255,7 @@ class FCRadixParser(CodingRadixParser):
 		cornerCodeList = codes.split("|")
 		lumps = tuple(map(FCRadixParser.convertCornerCodeToLump, cornerCodeList))
 
-		if len(lumps) >= 2:
+		if len(lumps) >=  2:
 			codeInfo = FCCodeInfo(lumps[0], lumps[1])
 		elif len(lumps) == 1:
 			codeInfo = FCCodeInfo(lumps[0])
