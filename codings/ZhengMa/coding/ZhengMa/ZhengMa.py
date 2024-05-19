@@ -3,12 +3,12 @@ from coding.Base import CodeInfoEncoder
 from coding.Base import CodingRadixParser
 
 class ZMCodeInfo(CodeInfo):
-	def __init__(self, rtList, extraCode, rtListSingleton):
+	def __init__(self, codes, extraCode, codesSingleton):
 		super().__init__()
 
 		self._zm_code = ''
-		self._codeList = rtList
-		self._codeListSingleton = rtListSingleton
+		self._codes = codes
+		self._codesSingleton = codesSingleton
 
 		self._zm_extra = extraCode
 
@@ -19,15 +19,15 @@ class ZMCodeInfo(CodeInfo):
 
 	@property
 	def code(self):
-		if self._codeListSingleton:
-			rtlist = self._codeListSingleton
-			codeList = self.convertRadixListToCodeList(rtlist)
-			ans = self.computeCharacterCode(codeList)
+		if self._codesSingleton:
+			rtlist = self._codesSingleton
+			codes = self.convertRadixListToCodeList(rtlist)
+			ans = self.computeCharacterCode(codes)
 			return ans
 		else:
 			rtlist = self.getRtList()
-			codeList = self.convertRadixListToCodeList(rtlist)
-			ans = self.computeCharacterCode(codeList)
+			codes = self.convertRadixListToCodeList(rtlist)
+			ans = self.computeCharacterCode(codes)
 			extraCode = self.getExtraCode()
 			if extraCode:
 				ans += extraCode
@@ -81,8 +81,8 @@ class ZMCodeInfo(CodeInfo):
 
 
 	def getMainCodeList(self):
-		if self._codeList != None:
-			return self._codeList
+		if self._codes != None:
+			return self._codes
 		return None
 
 class ZMCodeInfoEncoder(CodeInfoEncoder):
