@@ -126,7 +126,7 @@ class ComputeCharacterInfo:
 		for (character, fastCodeInfos) in fastCharacterDict.items():
 			assert len(fastCodeInfos) == 1
 			fastCodeInfo = fastCodeInfos[0]
-			fastCode = fastCodeInfo.toCode()
+			fastCode = fastCodeInfo.code
 
 			node = self.touchCharacter(character)
 			characterInfo = node.tag

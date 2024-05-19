@@ -8,7 +8,7 @@ class CodeInfoInterpreter:
 		self.codeInfoEncoder = codeInfoEncoder
 
 	def interpretCodeInfo(self, codeInfo):
-		return codeInfo.toCode()
+		return codeInfo.code
 
 	def encodeToCodeInfo(self, operator, codeInfoList):
 		codeInfo=self.codeInfoEncoder.setByComps(operator, codeInfoList)

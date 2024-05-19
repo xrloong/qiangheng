@@ -81,7 +81,8 @@ class ARCodeInfo(CodeInfo):
 		codeInfo = ARCodeInfo(codeList)
 		return codeInfo
 
-	def toCode(self):
+	@property
+	def code(self):
 		mainRadixList = self.getMainCodeList()
 		mainCodeList = tuple(map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList))
 		code = "".join(mainCodeList)

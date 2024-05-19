@@ -23,7 +23,8 @@ class FCCodeInfo(CodeInfo):
 			codeCorner = lump.computeCodesOfAll()
 		self._codeLump = FCLump(codeCorner)
 
-	def toCode(self):
+	@property
+	def code(self):
 		return "%s%s%s%s"%(computeCornerUnitCode(self.codeLump.topLeft),
 				computeCornerUnitCode(self.codeLump.topRight),
 				computeCornerUnitCode(self.codeLump.bottomLeft),

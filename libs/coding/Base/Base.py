@@ -16,7 +16,8 @@ class CodeInfo(IfCodeInfo):
 		codeInfo=CodeInfo()
 		return codeInfo
 
-	def toCode(self):
+	@property
+	def code(self):
 		return ""
 
 	@staticmethod

@@ -15,21 +15,21 @@ class ARCodeInfoTestCase(unittest.TestCase):
 	def testArray(self):
 		# 一
 		codeInfo=ARCodeInfo(['1-'])
-		self.assertEqual(codeInfo.toCode(), 'a')
+		self.assertEqual(codeInfo.code, 'a')
 
 		# 丁
 		codeInfo=ARCodeInfo(['1-', '3-'])
-		self.assertEqual(codeInfo.toCode(), 'ad')
+		self.assertEqual(codeInfo.code, 'ad')
 
 		# 丐
 		codeInfo=ARCodeInfo(['1-', '3^', '5-'])
-		self.assertEqual(codeInfo.toCode(), 'aeg')
+		self.assertEqual(codeInfo.code, 'aeg')
 
 		# 丏
 		codeInfo=ARCodeInfo(['1-', '3-', '2-', '5-'])
-		self.assertEqual(codeInfo.toCode(), 'adsg')
+		self.assertEqual(codeInfo.code, 'adsg')
 
 		# 噩
 		codeInfo=ARCodeInfo(['1^', '0-', '4^', '0-', '0-'])
-		self.assertEqual(codeInfo.toCode(), 'q;r;')
+		self.assertEqual(codeInfo.code, 'q;r;')
 

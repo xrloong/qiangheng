@@ -17,7 +17,8 @@ class ZMCodeInfo(CodeInfo):
 		codeInfo = ZMCodeInfo(rtlist, None, None)
 		return codeInfo
 
-	def toCode(self):
+	@property
+	def code(self):
 		if self._codeListSingleton:
 			rtlist = self._codeListSingleton
 			codeList = self.convertRadixListToCodeList(rtlist)

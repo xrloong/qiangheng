@@ -277,7 +277,8 @@ class CJCodeInfo(CodeInfo):
 
 		return codeInfo
 
-	def toCode(self):
+	@property
+	def code(self):
 		direction = self.getDirection()
 
 		if self.cjLumpListSingleton:
@@ -305,8 +306,9 @@ class GridCJCodeInfo(CJCodeInfo):
 		self.codeInfoV = codeInfoV
 		self.codeInfoH = codeInfoH
 
-	def toCode(self):
-		return self.codeInfoV.toCode()
+	@property
+	def code(self):
+		return self.codeInfoV.code
 
 	def getDirection(self):
 		return '+'

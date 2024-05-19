@@ -97,7 +97,8 @@ class DYCodeInfo(CodeInfo):
 		codeInfo = DYCodeInfo(codeList)
 		return codeInfo
 
-	def toCode(self):
+	@property
+	def code(self):
 		mainRadixList = self.getMainCodeList()
 		mainCodeList = tuple(map(lambda x: DYCodeInfo.radixToCodeDict[x], mainRadixList))
 		code = "".join(mainCodeList)

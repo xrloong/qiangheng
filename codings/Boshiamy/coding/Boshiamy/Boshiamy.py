@@ -83,7 +83,8 @@ class BSCodeInfo(CodeInfo):
 		codeInfo = BSCodeInfo(codeList, supplementCode, False)
 		return codeInfo
 
-	def toCode(self):
+	@property
+	def code(self):
 		codeList = self.getBSCodeList()
 		supplementCode = self.getBSSupplement()
 		

@@ -87,7 +87,8 @@ class DCCodeInfo(CodeInfo):
 		codeInfo = DCCodeInfo(component)
 		return codeInfo
 
-	def toCode(self):
+	@property
+	def code(self):
 		component = self.getComponent()
 		return component
 

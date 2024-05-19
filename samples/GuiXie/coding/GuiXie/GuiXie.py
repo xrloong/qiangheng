@@ -95,7 +95,8 @@ class GXCodeInfo(CodeInfo):
 	def computeCode(self):
 		return "{}/{}{}".format(self.computeGenreCode(), self.computeBodyCode(), self.computeRectCountCode())
 
-	def toCode(self):
+	@property
+	def code(self):
 		if not self.isValid():
 			return ""
 		if self._genre != GXGenre.Zhong and len(self._lumps)<=1:

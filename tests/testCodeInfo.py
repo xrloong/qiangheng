@@ -15,11 +15,11 @@ class CodeInfoTestCase(unittest.TestCase):
 		codeInfo=CodeInfo()
 		self.assertIsNotNone(codeInfo)
 
-		self.assertEqual(codeInfo.toCode(), "")
+		self.assertEqual(codeInfo.code, "")
 
 	def testGenerateDefault(self):
 		codeInfo=CodeInfo.generateDefaultCodeInfo()
 		self.assertIsNotNone(codeInfo)
 
-		self.assertEqual(codeInfo.toCode(), "")
+		self.assertEqual(codeInfo.code, "")
 
