@@ -9,7 +9,9 @@ import ruamel.yaml
 from optparse import OptionParser
 
 from injection.module import PackageModule, ManagerModule, IOModule
+from injection.module import CharacterModule
 from injection.key import Writer
+from injection.key import Characters
 
 from coding.Base import CodingType
 from coding.Base import CodeMappingInfoInterpreter
@@ -34,7 +36,7 @@ class QiangHeng:
 		injector = Injector([ioModule, packageModule])
 		structureManager = injector.get(StructureManager)
 
-		injector = Injector([ioModule, packageModule, ManagerModule(structureManager)])
+		injector = Injector([ioModule, packageModule, ManagerModule(structureManager), CharacterModule()])
 		mainManager = injector.get(MainManager)
 		mainManager.compute()
 		mainManager.write()
@@ -48,7 +50,8 @@ class MainManager:
 			computeCharacterInfo: ComputeCharacterInfo,
 			hanziInterpreter: HanZiInterpreter,
 			codeMappingInfoInterpreter: CodeMappingInfoInterpreter,
-			writer: Writer):
+			writer: Writer,
+			characters: Characters):
 		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 		self.computeCharacterInfo = computeCharacterInfo
@@ -56,16 +59,7 @@ class MainManager:
 		self.codeMappingInfoInterpreter = codeMappingInfoInterpreter
 		self.writer = writer
 
-		self.characters = self.generateTargetCharacters()
-
-	def generateTargetCharacters(self):
-#		characters = self.structureManager.getAllCharacters()
-
-		import itertools
-		rangeCJK = range(0x4e00, 0x9fa5+1)
-		rangeCJKextA = range(0x3400, 0x4db5+1)
-		characters = [chr(c) for c in itertools.chain(rangeCJK, rangeCJKextA)]
-		return characters
+		self.characters = characters
 
 	def compute(self):
 		self.computeCharacterInfo.compute(self.characters)

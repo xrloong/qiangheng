@@ -2,7 +2,9 @@ from injector import Module
 from injector import provider
 
 import ruamel.yaml
+import itertools
 
+from injection.key import Characters
 from injection.key import Writer
 from injection.key import Quiet
 
@@ -97,3 +99,18 @@ class IOModule(Module):
 			from writer import QuietWriter
 			writer = QuietWriter()
 		return writer
+
+class CharacterModule(Module):
+	__rangeCJK = range(0x4E00, 0x9FA5 + 1)
+	__rangeCJKextA = range(0x3400, 0x4DB5 + 1)
+
+	def __getCharacters(self) -> itertools.chain:
+		return itertools.chain(
+				CharacterModule.__rangeCJK,
+				CharacterModule.__rangeCJKextA,
+				)
+
+	@provider
+	def provideCharaceters(self) -> Characters:
+		characters = tuple(chr(c) for c in self.__getCharacters())
+		return characters
