@@ -45,14 +45,12 @@ class MainManager:
 	@inject
 	def __init__(self,
 			hanziNetwork: HanZiNetwork,
-			structureManager: StructureManager,
 			computeCharacterInfo: ComputeCharacterInfo,
 			hanziInterpreter: HanZiInterpreter,
 			codeMappingInfoInterpreter: CodeMappingInfoInterpreter,
 			writer: Writer,
 			characters: Characters):
 		self.hanziNetwork = hanziNetwork
-		self.structureManager = structureManager
 		self.computeCharacterInfo = computeCharacterInfo
 		self.hanziInterpreter = hanziInterpreter
 		self.codeMappingInfoInterpreter = codeMappingInfoInterpreter
