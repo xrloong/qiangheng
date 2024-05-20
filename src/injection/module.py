@@ -10,6 +10,7 @@ from coding.Base import CodeInfoEncoder
 from coding.Base import CodingRadixParser
 from coding.Base import CodeMappingInfoInterpreter
 
+from model.element.CodingConfig import CodingConfig
 from model.element.enum import CodingType
 from model.element.enum import FontVariance
 
@@ -21,6 +22,17 @@ from model.CharacterDescriptionManager import RadixManager
 from .key import Package
 
 class PackageModule(Module):
+	def __init__(self, codingPackage: Package):
+		self.codingPackage = codingPackage
+
+	@provider
+	def provideCodingPackage(self) -> Package:
+		return self.codingPackage
+
+	@provider
+	def provideCodingConfig(self, codingPackage: Package) -> CodingConfig:
+		return CodingConfig(codingPackage)
+
 	@provider
 	def provideCodeInfoEncoder(self, codingPackage: Package) -> CodeInfoEncoder:
 		return codingPackage.CodeInfoEncoder()

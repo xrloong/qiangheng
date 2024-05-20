@@ -9,12 +9,10 @@ import ruamel.yaml
 from optparse import OptionParser
 
 from injection.module import PackageModule, ManagerModule, IOModule
-from injection.key import Package
 from injection.key import Writer
 
 from coding.Base import CodingType
 from coding.Base import CodeMappingInfoInterpreter
-from model.element.CodingConfig import CodingConfig
 from model.StructureManager import StructureManager
 
 from hanzi.network import HanZiNetwork
@@ -31,16 +29,12 @@ class QiangHeng:
 
 		quiet = options.quiet
 
-		def configure(binder):
-			binder.bind(CodingConfig, to = CodingConfig(package))
-			binder.bind(Package, to = package)
-
 		ioModule = IOModule(quiet)
-		packageModule = PackageModule()
-		injector = Injector([configure, ioModule, packageModule])
+		packageModule = PackageModule(package)
+		injector = Injector([ioModule, packageModule])
 		structureManager = injector.get(StructureManager)
 
-		injector = Injector([configure, ioModule, packageModule, ManagerModule(structureManager)])
+		injector = Injector([ioModule, packageModule, ManagerModule(structureManager)])
 		mainManager = injector.get(MainManager)
 		mainManager.compute()
 		mainManager.write()
