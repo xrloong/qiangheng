@@ -5,7 +5,6 @@ from writer import BaseWriter
 Package = typing.NewType('package', type(typing))
 
 Quiet = typing.NewType('quiet', bool)
-OutputFormat = typing.NewType('outputFormat', str)
 Writer = typing.NewType('writer', BaseWriter)
 
 TAG_VERSION='版本號'

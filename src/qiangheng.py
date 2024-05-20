@@ -10,7 +10,7 @@ from optparse import OptionParser
 
 from injection.module import PackageModule, ManagerModule
 from Constant import Package
-from Constant import Quiet, OutputFormat
+from Constant import Quiet
 from Constant import Writer
 
 from coding.Base import CodingType
