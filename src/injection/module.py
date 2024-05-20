@@ -12,7 +12,7 @@ from hanzi.network import HanZiNetwork
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 
-from Constant import Package
+from .key import Package
 
 class PackageModule(Module):
 	@provider

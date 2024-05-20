@@ -1,12 +1,3 @@
-import typing
-
-from writer import BaseWriter
-
-Package = typing.NewType('package', type(typing))
-
-Quiet = typing.NewType('quiet', bool)
-Writer = typing.NewType('writer', BaseWriter)
-
 TAG_VERSION='版本號'
 
 TAG_FILE_TYPE='文件類型'
