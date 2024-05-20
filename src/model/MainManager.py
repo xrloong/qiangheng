@@ -15,19 +15,20 @@ from hanzi.helper import HanZiInterpreter
 class MainManager:
 	@inject
 	def __init__(self,
+			characters: Characters,
 			hanziNetwork: HanZiNetwork,
 			computeCharacterInfo: ComputeCharacterInfo,
 			hanziInterpreter: HanZiInterpreter,
 			codeMappingInfoInterpreter: CodeMappingInfoInterpreter,
 			writer: Writer,
-			characters: Characters):
+			):
+		self.__characters = characters
+
 		self.__hanziNetwork = hanziNetwork
 		self.__computeCharacterInfo = computeCharacterInfo
 		self.__hanziInterpreter = hanziInterpreter
 		self.__codeMappingInfoInterpreter = codeMappingInfoInterpreter
 		self.__writer = writer
-
-		self.__characters = characters
 
 	def work(self):
 		self.__compute()
