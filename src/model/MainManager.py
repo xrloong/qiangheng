@@ -38,13 +38,13 @@ class MainManager:
 		self.__computeCharacterInfo.appendFastCodes()
 
 	def __write(self):
-		characterInfoList = []
+		characterInfos = []
 		for character in self.__characters:
 			charNode = self.__hanziNetwork.findNode(character)
 			if charNode:
 				characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
-				characterInfoList.append(characterInfo)
-		characterInfoList = sorted(characterInfoList, key=lambda c: c.character)
+				characterInfos.append(characterInfo)
+		characterInfos = tuple(sorted(characterInfos, key=lambda c: c.character))
 
-		self.__writer.write(characterInfoList, self.__codeMappingInfoInterpreter)
+		self.__writer.write(characterInfos, self.__codeMappingInfoInterpreter)
 
