@@ -21,30 +21,30 @@ class MainManager:
 			codeMappingInfoInterpreter: CodeMappingInfoInterpreter,
 			writer: Writer,
 			characters: Characters):
-		self.hanziNetwork = hanziNetwork
-		self.computeCharacterInfo = computeCharacterInfo
-		self.hanziInterpreter = hanziInterpreter
-		self.codeMappingInfoInterpreter = codeMappingInfoInterpreter
-		self.writer = writer
+		self.__hanziNetwork = hanziNetwork
+		self.__computeCharacterInfo = computeCharacterInfo
+		self.__hanziInterpreter = hanziInterpreter
+		self.__codeMappingInfoInterpreter = codeMappingInfoInterpreter
+		self.__writer = writer
 
-		self.characters = characters
+		self.__characters = characters
 
 	def work(self):
-		self.compute()
-		self.write()
+		self.__compute()
+		self.__write()
 
-	def compute(self):
-		self.computeCharacterInfo.compute(self.characters)
-		self.computeCharacterInfo.appendFastCodes()
+	def __compute(self):
+		self.__computeCharacterInfo.compute(self.__characters)
+		self.__computeCharacterInfo.appendFastCodes()
 
-	def write(self):
+	def __write(self):
 		characterInfoList = []
-		for character in self.characters:
-			charNode = self.hanziNetwork.findNode(character)
+		for character in self.__characters:
+			charNode = self.__hanziNetwork.findNode(character)
 			if charNode:
-				characterInfo = self.hanziInterpreter.interpretCharacterInfo(charNode)
+				characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
 				characterInfoList.append(characterInfo)
 		characterInfoList = sorted(characterInfoList, key=lambda c: c.character)
 
-		self.writer.write(characterInfoList, self.codeMappingInfoInterpreter)
+		self.__writer.write(characterInfoList, self.__codeMappingInfoInterpreter)
 
