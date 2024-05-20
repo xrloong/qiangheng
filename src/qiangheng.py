@@ -14,6 +14,7 @@ from injection.key import Quiet
 from injection.key import Writer
 
 from coding.Base import CodingType
+from coding.Base import CodeMappingInfoInterpreter
 from model.element.CodingConfig import CodingConfig
 from model.StructureManager import StructureManager
 
@@ -31,14 +32,13 @@ class QiangHeng:
 
 		quiet = options.quiet
 
-		codeMappingInfoInterpreter = package.codeMappingInfoInterpreter
 		yaml = ruamel.yaml.YAML(typ = 'safe')
 		yaml.explicit_start = True
 		yaml.explicit_end = True
 		yaml.allow_unicode = True
 		yaml.default_flow_style = False
 
-		writer = self.computeWriter(codeMappingInfoInterpreter, quiet, yaml)
+		writer = self.computeWriter(quiet, yaml)
 
 		def configure(binder):
 			binder.bind(CodingConfig, to = CodingConfig(package))
@@ -55,10 +55,10 @@ class QiangHeng:
 		mainManager.write()
 
 
-	def computeWriter(self, codeMappingInfoInterpreter, quiet: Quiet, yaml: ruamel.yaml.YAML) -> Writer:
+	def computeWriter(self, quiet: Quiet, yaml: ruamel.yaml.YAML) -> Writer:
 		if not quiet:
 			from writer import CmYamlWriter
-			writer = CmYamlWriter(codeMappingInfoInterpreter, yaml)
+			writer = CmYamlWriter(yaml)
 		else:
 			# 不輸出結果
 			from writer import QuietWriter
@@ -72,11 +72,13 @@ class MainManager:
 			structureManager: StructureManager,
 			computeCharacterInfo: ComputeCharacterInfo,
 			hanziInterpreter: HanZiInterpreter,
+			codeMappingInfoInterpreter: CodeMappingInfoInterpreter,
 			writer: Writer):
 		self.hanziNetwork = hanziNetwork
 		self.structureManager = structureManager
 		self.computeCharacterInfo = computeCharacterInfo
 		self.hanziInterpreter = hanziInterpreter
+		self.codeMappingInfoInterpreter = codeMappingInfoInterpreter
 		self.writer = writer
 
 		self.characters = self.generateTargetCharacters()
@@ -103,7 +105,7 @@ class MainManager:
 				characterInfoList.append(characterInfo)
 		characterInfoList = sorted(characterInfoList, key=lambda c: c.character)
 
-		self.writer.write(characterInfoList)
+		self.writer.write(characterInfoList, self.codeMappingInfoInterpreter)
 
 def main():
 	oparser = OptionParser()

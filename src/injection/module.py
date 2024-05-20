@@ -3,6 +3,7 @@ from injector import provider
 
 from coding.Base import CodeInfoEncoder
 from coding.Base import CodingRadixParser
+from coding.Base import CodeMappingInfoInterpreter
 
 from model.element.enum import CodingType
 from model.element.enum import FontVariance
@@ -30,6 +31,10 @@ class PackageModule(Module):
 	@provider
 	def provideFontVariance(self, codingPackage: Package) -> FontVariance:
 		return codingPackage.fontVariance
+
+	@provider
+	def provideCodeMappingInfoInterpreter(self, codingPackage: Package) -> CodeMappingInfoInterpreter:
+		return codingPackage.codeMappingInfoInterpreter
 
 class ManagerModule(Module):
 	def __init__(self, structureManager):
