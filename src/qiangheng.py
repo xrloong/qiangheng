@@ -37,8 +37,7 @@ class QiangHeng:
 
 		injector = Injector([ioModule, packageModule, ManagerModule(structureManager), CharacterModule()])
 		mainManager = injector.get(MainManager)
-		mainManager.compute()
-		mainManager.write()
+		mainManager.work()
 
 
 class MainManager:
@@ -57,6 +56,10 @@ class MainManager:
 		self.writer = writer
 
 		self.characters = characters
+
+	def work(self):
+		self.compute()
+		self.write()
 
 	def compute(self):
 		self.computeCharacterInfo.compute(self.characters)
