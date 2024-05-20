@@ -101,13 +101,40 @@ class IOModule(Module):
 		return writer
 
 class CharacterModule(Module):
-	__rangeCJK = range(0x4E00, 0x9FA5 + 1)
-	__rangeCJKextA = range(0x3400, 0x4DB5 + 1)
+    # Unicode 15.1
+    # CJK Unified Ideographs —— 4E00-9FFF
+    # CJK Unified Ideographs Extension A —— 3400-4DBF
+    # CJK Unified Ideographs Extension B —— 20000–2A6DF
+    # CJK Unified Ideographs Extension C —— 2A700-2B739
+    # CJK Unified Ideographs Extension D —— 2B740–2B81D
+    # CJK Unified Ideographs Extension E —— 2B820–2CEA1
+    # CJK Unified Ideographs Extension F —— 2CEB0–2EBE0
+    # CJK Unified Ideographs Extension G —— 30000–3134A
+    # CJK Unified Ideographs Extension H —— 31350–323AF
+    # CJK Unified Ideographs Extension I —— 2EBF0–2EE5D
+    # CJK Compatibility Ideographs —— F900–FAFF
+    # CJK Compatibility Ideographs Supplement —— 2F800–2FA1F
+    # Kangxi Radicals —— 2F00–2FDF
+    # CJK Radicals Supplement —— 2E80–2EFF
+
+	__rangeCJK__implemented = range(0x4E00, 0x9FA5 + 1)
+	__rangeCJKextA__implemented = range(0x3400, 0x4DB5 + 1)
+
+	__rangeCJK = range(0x4E00, 0x9FFF + 1)
+	__rangeCJKextA = range(0x3400, 0x4DBF + 1)
+	__rangeCJKextB = range(0x20000, 0x2A6DF + 1)
+	__rangeCJKextC = range(0x2A700, 0x2B739 + 1)
+	__rangeCJKextD = range(0x2B740, 0x2B81D + 1)
+	__rangeCJKextE = range(0x2B820, 0x2CEA1 + 1)
+	__rangeCJKextF = range(0x2CEB0, 0x2EBE0 + 1)
+	__rangeCJKextG = range(0x30000, 0x3134A + 1)
+	__rangeCJKextH = range(0x31350, 0x323AF + 1)
+	__rangeCJKextI = range(0x2EBF0, 0x2EE5D + 1)
 
 	def __getCharacters(self) -> itertools.chain:
 		return itertools.chain(
-				CharacterModule.__rangeCJK,
-				CharacterModule.__rangeCJKextA,
+				CharacterModule.__rangeCJK__implemented,
+				CharacterModule.__rangeCJKextA__implemented,
 				)
 
 	@provider
