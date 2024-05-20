@@ -3,6 +3,8 @@ from injector import inject
 from .helper import HanZiNetworkManager
 from .helper import HanZiCodeInfosComputer
 from .helper import HanZiNetworkItemFactory
+from .helper import HanZiInterpreter
+from .network import HanZiNetwork
 
 from model.element.enum import FontVariance
 
@@ -211,4 +213,27 @@ class ConstructCharacter:
 
 	def computeNode(self, nodeStructure):
 		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
+
+class ComputeCharacter:
+	@inject
+	def __init__(self,
+			hanziNetwork: HanZiNetwork,
+			hanziInterpreter: HanZiInterpreter,
+			):
+		self.__hanziNetwork = hanziNetwork
+		self.__hanziInterpreter = hanziInterpreter
+
+	def compute(self, characters: list):
+		characterInfos = []
+		for character in characters:
+			characterInfo = self.__computeOne(character)
+			if characterInfo:
+				characterInfos.append(characterInfo)
+		return characterInfos
+
+	def __computeOne(self, character: str):
+		charNode = self.__hanziNetwork.findNode(character)
+		if charNode:
+			characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
+			return characterInfo
 

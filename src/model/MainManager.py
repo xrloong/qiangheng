@@ -8,25 +8,22 @@ from injection.key import Characters
 
 from coding.Base import CodeMappingInfoInterpreter
 
-from hanzi.network import HanZiNetwork
 from hanzi.converter import ConstructCharacter
-from hanzi.helper import HanZiInterpreter
+from hanzi.converter import ComputeCharacter
 
 class MainManager:
 	@inject
 	def __init__(self,
 			characters: Characters,
-			hanziNetwork: HanZiNetwork,
 			constructCharacter: ConstructCharacter,
-			hanziInterpreter: HanZiInterpreter,
+			computeCharacter: ComputeCharacter,
 			codeMappingInfoInterpreter: CodeMappingInfoInterpreter,
 			writer: Writer,
 			):
 		self.__characters = characters
 
-		self.__hanziNetwork = hanziNetwork
 		self.__constructCharacter = constructCharacter
-		self.__hanziInterpreter = hanziInterpreter
+		self.__computeCharacter = computeCharacter
 		self.__codeMappingInfoInterpreter = codeMappingInfoInterpreter
 		self.__writer = writer
 
@@ -39,12 +36,7 @@ class MainManager:
 		self.__constructCharacter.appendFastCodes()
 
 	def __write(self):
-		characterInfos = []
-		for character in self.__characters:
-			charNode = self.__hanziNetwork.findNode(character)
-			if charNode:
-				characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
-				characterInfos.append(characterInfo)
+		characterInfos = self.__computeCharacter.compute(self.__characters)
 		characterInfos = tuple(sorted(characterInfos, key=lambda c: c.character))
 
 		self.__writer.write(characterInfos, self.__codeMappingInfoInterpreter)
