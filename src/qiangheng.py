@@ -8,9 +8,8 @@ import ruamel.yaml
 
 from optparse import OptionParser
 
-from injection.module import PackageModule, ManagerModule
+from injection.module import PackageModule, ManagerModule, IOModule
 from injection.key import Package
-from injection.key import Quiet
 from injection.key import Writer
 
 from coding.Base import CodingType
@@ -32,39 +31,20 @@ class QiangHeng:
 
 		quiet = options.quiet
 
-		yaml = ruamel.yaml.YAML(typ = 'safe')
-		yaml.explicit_start = True
-		yaml.explicit_end = True
-		yaml.allow_unicode = True
-		yaml.default_flow_style = False
-
-		writer = self.computeWriter(quiet, yaml)
-
 		def configure(binder):
 			binder.bind(CodingConfig, to = CodingConfig(package))
 			binder.bind(Package, to = package)
-			binder.bind(Writer, to = writer)
-			binder.bind(ruamel.yaml.YAML, to = yaml)
 
+		ioModule = IOModule(quiet)
 		packageModule = PackageModule()
-		injector = Injector([configure, packageModule])
+		injector = Injector([configure, ioModule, packageModule])
 		structureManager = injector.get(StructureManager)
 
-		injector = Injector([configure, packageModule, ManagerModule(structureManager)])
+		injector = Injector([configure, ioModule, packageModule, ManagerModule(structureManager)])
 		mainManager = injector.get(MainManager)
 		mainManager.compute()
 		mainManager.write()
 
-
-	def computeWriter(self, quiet: Quiet, yaml: ruamel.yaml.YAML) -> Writer:
-		if not quiet:
-			from writer import CmYamlWriter
-			writer = CmYamlWriter(yaml)
-		else:
-			# 不輸出結果
-			from writer import QuietWriter
-			writer = QuietWriter()
-		return writer
 
 class MainManager:
 	@inject
