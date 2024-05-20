@@ -46,10 +46,11 @@ class QiangHeng:
 			binder.bind(Writer, to = writer)
 			binder.bind(ruamel.yaml.YAML, to = yaml)
 
-		injector = Injector([configure, PackageModule()])
+		packageModule = PackageModule()
+		injector = Injector([configure, packageModule])
 		structureManager = injector.get(StructureManager)
 
-		injector = Injector([configure, PackageModule(), ManagerModule(structureManager)])
+		injector = Injector([configure, packageModule, ManagerModule(structureManager)])
 		mainManager = injector.get(MainManager)
 		mainManager.compute()
 		mainManager.write()
