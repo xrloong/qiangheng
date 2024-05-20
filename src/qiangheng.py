@@ -13,7 +13,6 @@ from injection.module import CharacterModule
 from injection.key import Writer
 from injection.key import Characters
 
-from coding.Base import CodingType
 from coding.Base import CodeMappingInfoInterpreter
 from model.StructureManager import StructureManager
 

@@ -13,7 +13,6 @@ from coding.Base import CodingRadixParser
 from coding.Base import CodeMappingInfoInterpreter
 
 from model.element.CodingConfig import CodingConfig
-from model.element.enum import CodingType
 from model.element.enum import FontVariance
 
 from hanzi.network import HanZiNetwork
@@ -42,10 +41,6 @@ class PackageModule(Module):
 	@provider
 	def provideCodingRadixParser(self, codingPackage: Package) -> CodingRadixParser:
 		return codingPackage.CodingRadixParser()
-
-	@provider
-	def provideCodingType(self, codingPackage: Package) -> CodingType:
-		return codingPackage.codingType
 
 	@provider
 	def provideFontVariance(self, codingPackage: Package) -> FontVariance:

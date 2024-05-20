@@ -1,13 +1,11 @@
-from coding.Base import CodingType
 from coding.Base import FontVariance
 from coding.Base import CodeMappingInfoInterpreter
 
 from .DaYi import DYCodeInfoEncoder as CodeInfoEncoder
 from .DaYi import DYRadixParser as CodingRadixParser
 
-codingType = CodingType.Input
 fontVariance = FontVariance.Traditional
-codeMappingInfoInterpreter = CodeMappingInfoInterpreter(codingType)
+codeMappingInfoInterpreter = CodeMappingInfoInterpreter()
 
 codingMethodName = "dy"
 codingMethodDir = "gen/qhdata/{method}/".format(method = codingMethodName)

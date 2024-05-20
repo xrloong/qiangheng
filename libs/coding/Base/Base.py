@@ -316,7 +316,7 @@ class CodingRadixParser(IfCodingRadixParser):
 	pass
 
 class CodeMappingInfoInterpreter:
-	def __init__(self, codingType):
+	def __init__(self, codingType = CodingType.Input):
 		self.codingType = codingType
 
 	def getCodingTypeName(self):

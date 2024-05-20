@@ -1,13 +1,11 @@
-from coding.Base import CodingType
 from coding.Base import FontVariance
 
 from .StrokeOrder import SOCodeInfoEncoder as CodeInfoEncoder
 from .StrokeOrder import SORadixParser as CodingRadixParser
 from .StrokeOrder import SOCodeMappingInfoInterpreter
 
-codingType = CodingType.Input
 fontVariance = FontVariance.Traditional
-codeMappingInfoInterpreter = SOCodeMappingInfoInterpreter(codingType)
+codeMappingInfoInterpreter = SOCodeMappingInfoInterpreter()
 
 codingMethodName = "dc"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)

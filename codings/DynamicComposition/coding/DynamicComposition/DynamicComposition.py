@@ -1,5 +1,6 @@
 import abc
 
+from coding.Base import CodingType
 from coding.Base import CodeInfo
 from coding.Base import CodeInfoEncoder
 from coding.Base import CodingRadixParser
@@ -439,8 +440,8 @@ class DataStructureCanvasController(BaseTextCanvasController):
 
 # code mapping for drawing methods
 class DCCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
-	def __init__(self, codingType):
-		super().__init__(codingType)
+	def __init__(self):
+		super().__init__(CodingType.Drawing)
 
 	def interpretCodeMappingInfo(self, codeMappingInfo):
 		charName = codeMappingInfo.getName()

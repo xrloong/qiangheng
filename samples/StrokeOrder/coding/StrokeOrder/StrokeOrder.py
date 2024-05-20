@@ -37,8 +37,8 @@ class SORadixParser(DCRadixParser):
 		super().__init__()
 
 class SOCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
-	def __init__(self, codingType):
-		super().__init__(codingType)
+	def __init__(self):
+		super().__init__()
 
 	def interpretCodeMappingInfo(self, codeMappingInfo):
 		charName = codeMappingInfo.getName()
