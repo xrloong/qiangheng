@@ -9,7 +9,7 @@ from injection.key import Characters
 from coding.Base import CodeMappingInfoInterpreter
 
 from hanzi.network import HanZiNetwork
-from hanzi.converter import ComputeCharacterInfo
+from hanzi.converter import ConstructCharacter
 from hanzi.helper import HanZiInterpreter
 
 class MainManager:
@@ -17,7 +17,7 @@ class MainManager:
 	def __init__(self,
 			characters: Characters,
 			hanziNetwork: HanZiNetwork,
-			computeCharacterInfo: ComputeCharacterInfo,
+			constructCharacter: ConstructCharacter,
 			hanziInterpreter: HanZiInterpreter,
 			codeMappingInfoInterpreter: CodeMappingInfoInterpreter,
 			writer: Writer,
@@ -25,7 +25,7 @@ class MainManager:
 		self.__characters = characters
 
 		self.__hanziNetwork = hanziNetwork
-		self.__computeCharacterInfo = computeCharacterInfo
+		self.__constructCharacter = constructCharacter
 		self.__hanziInterpreter = hanziInterpreter
 		self.__codeMappingInfoInterpreter = codeMappingInfoInterpreter
 		self.__writer = writer
@@ -35,8 +35,8 @@ class MainManager:
 		self.__write()
 
 	def __compute(self):
-		self.__computeCharacterInfo.compute(self.__characters)
-		self.__computeCharacterInfo.appendFastCodes()
+		self.__constructCharacter.compute(self.__characters)
+		self.__constructCharacter.appendFastCodes()
 
 	def __write(self):
 		characterInfos = []

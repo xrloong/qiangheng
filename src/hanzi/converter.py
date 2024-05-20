@@ -87,7 +87,7 @@ class SubsituteRearrangeCallback(BaseRearrangeCallback):
 	def setApplied(self, structure):
 		structure.getTag().setSubstituteApplied()
 
-class ComputeCharacterInfo:
+class ConstructCharacter:
 	@inject
 	def __init__(self,
 			fontVariance: FontVariance,
