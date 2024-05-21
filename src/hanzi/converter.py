@@ -141,17 +141,30 @@ class ConstructCharacter:
 		return self.itemFactory.touchNode(character)
 
 	def expandNodeStructure(self, nodeStructure):
+		networkManager = self.networkManager
+
 		nodeStructureInfo = nodeStructure.getStructureInfo()
 
 		character = nodeStructureInfo.getName()
-		if self.networkManager.isNodeExpanded(character):
+		if networkManager.isNodeExpanded(character):
 			return
 
-		if self.radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
-			radixInfoList = self.radixManager.getRadixCodeInfoList(character)
+		structureManager = self.structureManager
+
+		radixManager = self.radixManager
+		itemFactory = self.itemFactory
+
+		treInterpreter = self.treInterpreter
+		templateManager = structureManager.getTemplateManager()
+		substituteManager = structureManager.getSubstituteManager()
+		templateRearrangeCallback = TemplateRearrangeCallback(self, treInterpreter)
+		substituteRearrangeCallback = SubsituteRearrangeCallback(self, treInterpreter)
+
+		if radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
+			radixInfoList = radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
-				structure = self.itemFactory.getUnitStructure(radixCodeInfo)
-				self.networkManager.addStructureIntoNode(structure, nodeStructure)
+				structure = itemFactory.getUnitStructure(radixCodeInfo)
+				networkManager.addStructureIntoNode(structure, nodeStructure)
 
 		charDesc = self.queryDescription(character)
 
@@ -166,17 +179,12 @@ class ConstructCharacter:
 
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
-			templateRearrangeCallback = TemplateRearrangeCallback(self, self.treInterpreter)
-			templateManager = self.structureManager.getTemplateManager()
 			templateManager.recursivelyRearrangeStructure(structure, templateRearrangeCallback)
-
-			substituteRearrangeCallback = SubsituteRearrangeCallback(self, self.treInterpreter)
-			substituteManager = self.structureManager.getSubstituteManager()
 			substituteManager.recursivelyRearrangeStructure(structure, substituteRearrangeCallback)
 
-			self.networkManager.addStructureIntoNode(structure, nodeStructure)
+			networkManager.addStructureIntoNode(structure, nodeStructure)
 			if isMainStructure:
-				self.networkManager.setMainStructureOfNode(structure, nodeStructure)
+				networkManager.setMainStructureOfNode(structure, nodeStructure)
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():
