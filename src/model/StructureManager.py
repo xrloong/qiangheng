@@ -17,11 +17,11 @@ class StructureManager:
 			templateManager: SubstituteManager,
 			substituteManager: SubstituteManager
 			):
-		self.codingConfig=codingConfig
-		self.compositionManager=compositionManager
-		self.radixManager=radixManager
-		self.templateManager=templateManager
-		self.substituteManager=substituteManager
+		self.codingConfig = codingConfig
+		self.compositionManager = compositionManager
+		self.radixManager = radixManager
+		self.templateManager = templateManager
+		self.substituteManager = substituteManager
 
 		self._loadData()
 
