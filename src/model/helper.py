@@ -15,38 +15,38 @@ class StructureDescriptionGenerator:
 		self.operationManager = operationManager
 
 	def generateLeafNode(self, nodeExpression):
-		structDesc=self.generateNode()
+		structDesc = self.generateNode()
 		structDesc.setReferenceExpression(nodeExpression)
 		structDesc.generateName()
 		return structDesc
 
-	def generateNode(self, structInfo=['龜', []]):
-		operatorName, compList=structInfo
-		operator=self.operationManager.generateOperator(operatorName)
-		structDesc=StructureDescription(operator, compList)
+	def generateNode(self, structInfo = ['龜', []]):
+		operatorName, compList = structInfo
+		operator = self.operationManager.generateOperator(operatorName)
+		structDesc = StructureDescription(operator, compList)
 		structDesc.generateName()
 		return structDesc
 
 class RadixCodeInfoDescription:
 	def __init__(self, infoDict, codeElementCodeInfo):
-		self.codeVariance=CodeVarianceTypeFactory.generate()
-		self.codeElementCodeInfo=codeElementCodeInfo
+		self.codeVariance = CodeVarianceTypeFactory.generate()
+		self.codeElementCodeInfo = codeElementCodeInfo
 
 		self.setupCodeAttribute(infoDict)
 
 	def setupCodeAttribute(self, infoDict):
-		codeVarianceString=infoDict.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
+		codeVarianceString = infoDict.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
 		self.setCodeVarianceType(codeVarianceString)
 
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupportingFromProperty(infoDict)
+		[isSupportCharacterCode, isSupportRadixCode] = CodeInfo.computeSupportingFromProperty(infoDict)
 		self.setSupportCode(isSupportCharacterCode, isSupportRadixCode)
 
 	def setSupportCode(self, isSupportCharacterCode, isSupportRadixCode):
-		self._isSupportCharacterCode=isSupportCharacterCode
-		self._isSupportRadixCode=isSupportRadixCode
+		self._isSupportCharacterCode = isSupportCharacterCode
+		self._isSupportRadixCode = isSupportRadixCode
 
 	def setCodeVarianceType(self, codeVarianceString):
-		self.codeVariance=CodeVarianceTypeFactory.generateByString(codeVarianceString)
+		self.codeVariance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
 
 	def getCodeVarianceType(self):
 		return self.codeVariance
@@ -61,10 +61,10 @@ class RadixCodeInfoDescription:
 		return self.codeElementCodeInfo
 
 class RadixDescription:
-	def __init__(self, radixName, radixCodeInfoList, toOverride=True):
-		self.radixName=radixName
-		self.radixCodeInfoList=radixCodeInfoList
-		self.toOverridePrev=toOverride
+	def __init__(self, radixName, radixCodeInfoList, toOverride = True):
+		self.radixName = radixName
+		self.radixCodeInfoList = radixCodeInfoList
+		self.toOverridePrev = toOverride
 
 	def isToOverridePrev(self):
 		return self.toOverridePrev
@@ -80,7 +80,7 @@ class RadixDescription:
 			return self.radixCodeInfoList[index]
 
 	def mergeRadixDescription(self, radixDesc):
-		radixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
+		radixCodeInfoList = radixDesc.getRadixCodeInfoDescriptionList()
 		self.radixCodeInfoList.extend(radixCodeInfoList)
 
 class RadixHelper:
