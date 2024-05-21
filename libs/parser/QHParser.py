@@ -12,12 +12,9 @@ from model.helper import StructureDescriptionGenerator
 from model.helper import RadixDescription
 from model.helper import RadixCodeInfoDescription
 
-from injector import inject
-
 from parser import TreeParser
 
 class QHTreeParser:
-	@inject
 	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
 		self.treeParser = TreeParser
 		self.treeParser.nodeGenerator = nodeGenerator
@@ -26,7 +23,6 @@ class QHTreeParser:
 		return self.treeParser.parse(expression)
 
 class QHSubstituteRuleParser:
-	@inject
 	def __init__(self, yaml: ruamel.yaml.YAML):
 		self.yaml = yaml
 
@@ -48,7 +44,6 @@ class QHSubstituteRuleParser:
 		return substituteRules
 
 class QHParser:
-	@inject
 	def __init__(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML):
 		self.treeParser = TreeParser
 		self.yaml = yaml
@@ -110,7 +105,6 @@ class QHRadixParser:
 	TAG_CODE_INFORMATION='編碼資訊'
 	TAG_CODE='編碼'
 
-	@inject
 	def __init__(self, codingRadixParser: CodingRadixParser, yaml: ruamel.yaml.YAML):
 		self.codingRadixParser = codingRadixParser
 		self.yaml = yaml

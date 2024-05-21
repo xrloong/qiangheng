@@ -15,6 +15,13 @@ from coding.Base import CodeMappingInfoInterpreter
 from model.element.CodingConfig import CodingConfig
 from model.element.enum import FontVariance
 
+from model.helper import StructureDescriptionGenerator
+
+from parser.QHParser import QHTreeParser
+from parser.QHParser import QHSubstituteRuleParser
+from parser.QHParser import QHParser
+from parser.QHParser import QHRadixParser
+
 from hanzi.network import HanZiNetwork
 
 from model.StructureManager import StructureManager
@@ -49,6 +56,26 @@ class PackageModule(Module):
 	@provider
 	def provideCodeMappingInfoInterpreter(self, codingPackage: Package) -> CodeMappingInfoInterpreter:
 		return codingPackage.codeMappingInfoInterpreter
+
+class ParserModule(Module):
+	def __init__(self):
+		pass
+
+	@provider
+	def provideQHTreeParser(self, nodeGenerator: StructureDescriptionGenerator) -> QHTreeParser:
+		return QHTreeParser(nodeGenerator = nodeGenerator)
+
+	@provider
+	def provideQHSubstituteRuleParser(self, yaml: ruamel.yaml.YAML) -> QHSubstituteRuleParser:
+		return QHSubstituteRuleParser(yaml = yaml)
+
+	@provider
+	def provideQHParser(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML) -> QHParser:
+		return QHParser(treeParser = treeParser, yaml = yaml)
+
+	@provider
+	def provideQHRadixParser(self, codingRadixParser: CodingRadixParser, yaml: ruamel.yaml.YAML) -> QHRadixParser:
+		return QHRadixParser(codingRadixParser = codingRadixParser, yaml = yaml)
 
 class ManagerModule(Module):
 	def __init__(self, structureManager):

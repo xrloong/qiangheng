@@ -7,6 +7,7 @@ from injector import inject
 from optparse import OptionParser
 
 from injection.module import PackageModule, ManagerModule, IOModule
+from injection.module import ParserModule
 from injection.module import CharacterModule
 
 from model.StructureManager import StructureManager
@@ -24,7 +25,7 @@ class QiangHeng:
 
 		ioModule = IOModule(quiet)
 		packageModule = PackageModule(package)
-		injector = Injector([ioModule, packageModule])
+		injector = Injector([ioModule, packageModule, ParserModule])
 		structureManager = injector.get(StructureManager)
 
 		injector = Injector([ioModule, packageModule, ManagerModule(structureManager), CharacterModule()])
