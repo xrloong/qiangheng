@@ -166,13 +166,13 @@ class ConstructCharacter:
 
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
-			rearrangeCallback = TemplateRearrangeCallback(self, self.treInterpreter)
+			templateRearrangeCallback = TemplateRearrangeCallback(self, self.treInterpreter)
 			templateManager = self.structureManager.getTemplateManager()
-			templateManager.recursivelyRearrangeStructure(structure, rearrangeCallback)
+			templateManager.recursivelyRearrangeStructure(structure, templateRearrangeCallback)
 
-			rearrangeCallback = SubsituteRearrangeCallback(self, self.treInterpreter)
+			substituteRearrangeCallback = SubsituteRearrangeCallback(self, self.treInterpreter)
 			substituteManager = self.structureManager.getSubstituteManager()
-			substituteManager.recursivelyRearrangeStructure(structure, rearrangeCallback)
+			substituteManager.recursivelyRearrangeStructure(structure, substituteRearrangeCallback)
 
 			self.networkManager.addStructureIntoNode(structure, nodeStructure)
 			if isMainStructure:
