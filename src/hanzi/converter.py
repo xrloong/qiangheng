@@ -34,7 +34,7 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
 		return self.itemFactory.getWrapperStructureByNodeName(nodeName)
 
 	def generateLeafNodeByReference(self, referencedTreeNode, index):
-		structure=referencedTreeNode
+		structure = referencedTreeNode
 		return self.itemFactory.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
 
 	def generateNode(self, operatorName, children):
@@ -47,11 +47,11 @@ class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
 
 
 def isBelongToFontVariance(characterFontVariance, targetFontVariance):
-	if targetFontVariance == FontVariance.All:
+	if targetFontVariance ==  FontVariance.All:
 		return True
-	elif targetFontVariance == FontVariance.Traditional:
+	elif targetFontVariance ==  FontVariance.Traditional:
 		return characterFontVariance in [FontVariance.All, FontVariance.Traditional]
-	elif targetFontVariance == FontVariance.Simplified:
+	elif targetFontVariance ==  FontVariance.Simplified:
 		return characterFontVariance in [FontVariance.All, FontVariance.Simplified]
 	else:
 		return False
@@ -126,7 +126,7 @@ class ConstructCharacter:
 	def appendFastCodes(self):
 		fastCharacterDict = self.structureManager.loadFastCodes()
 		for (character, fastCodeInfos) in fastCharacterDict.items():
-			assert len(fastCodeInfos) == 1
+			assert len(fastCodeInfos) ==  1
 			fastCodeInfo = fastCodeInfos[0]
 			fastCode = fastCodeInfo.code
 
@@ -147,16 +147,16 @@ class ConstructCharacter:
 		if self.networkManager.isNodeExpanded(character):
 			return
 
-		if self.radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList())==0:
-			radixInfoList=self.radixManager.getRadixCodeInfoList(character)
+		if self.radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
+			radixInfoList = self.radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = self.itemFactory.getUnitStructure(radixCodeInfo)
 				self.networkManager.addStructureIntoNode(structure, nodeStructure)
 
-		charDesc=self.queryDescription(character)
+		charDesc = self.queryDescription(character)
 
 		nodeName = character
-		structDescList=charDesc.getStructureList()
+		structDescList = charDesc.getStructureList()
 		for structDesc in structDescList:
 			if structDesc.isEmpty():
 				continue
@@ -164,7 +164,7 @@ class ConstructCharacter:
 			characterFontVariance = structDesc.getFontVariance()
 			isMainStructure = isBelongToFontVariance(characterFontVariance, self.fontVariance)
 
-			structure=self.recursivelyConvertDescriptionToStructure(structDesc)
+			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
 			rearrangeCallback = TemplateRearrangeCallback(self, self.treInterpreter)
 			templateManager = self.structureManager.getTemplateManager()
@@ -180,34 +180,34 @@ class ConstructCharacter:
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():
-			structure=self.generateReferenceLink(structDesc)
+			structure = self.generateReferenceLink(structDesc)
 		else:
-			structure=self.generateLink(structDesc)
+			structure = self.generateLink(structDesc)
 
 		return structure
 
 	def generateReferenceLink(self, structDesc):
-		name=structDesc.getReferenceName()
-		nodeExpression=structDesc.getReferenceExpression()
+		name = structDesc.getReferenceName()
+		nodeExpression = structDesc.getReferenceExpression()
 
 		self.constructCharacter(name)
 
-		l=nodeExpression.split(".")
+		l = nodeExpression.split(".")
 		if len(l)>1:
-			subIndex=int(l[1])
+			subIndex = int(l[1])
 		else:
-			subIndex=0
+			subIndex = 0
 
 		return self.itemFactory.getWrapperStructureByNodeName(name, subIndex)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
-		childDescList=self.structureManager.queryChildren(structDesc)
+		childDescList = self.structureManager.queryChildren(structDesc)
 		for childSrcDesc in childDescList:
 			childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
 			childStructureList.append(childStructure)
 
-		operator=structDesc.getOperator()
+		operator = structDesc.getOperator()
 
 		return self.itemFactory.getCompoundStructure(operator, childStructureList)
 
