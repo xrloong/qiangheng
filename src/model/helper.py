@@ -77,19 +77,21 @@ class RadixDescription:
 
 class RadixHelper:
 	def __init__(self, radixParser):
-		self.radixParser = radixParser
+		self.__radixParser = radixParser
 
-		self.descriptionDict = {}
-		self.radixCodeInfoDB = {}
+		self.__descriptionDict = {}
+		self.__radixCodeInfoDB = {}
 
 	def loadRadix(self, radixFiles):
-		radixDescriptionList = self.radixParser.loadRadix(radixFiles)
+		radixParser = self.__radixParser
+
+		radixDescriptionList = radixParser.loadRadix(radixFiles)
 		for radixDescription in radixDescriptionList:
 			radixName = radixDescription.getRadixName()
-			radixCodeInfos = self.radixParser.convertRadixDescToCodeInfoList(radixDescription)
+			radixCodeInfos = radixParser.convertRadixDescToCodeInfoList(radixDescription)
 
-			self.descriptionDict[radixName] = radixDescription
-			self.radixCodeInfoDB[radixName] = radixCodeInfos
+			self.__descriptionDict[radixName] = radixDescription
+			self.__radixCodeInfoDB[radixName] = radixCodeInfos
 
-		return self.radixCodeInfoDB
+		return self.__radixCodeInfoDB
 
