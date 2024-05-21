@@ -88,9 +88,8 @@ class RadixHelper:
 			radixName = radixDescription.getRadixName()
 			self.addDescription(radixName, radixDescription)
 
-		radixDescList = self.getDescriptionList()
-
-		for [charName, radixDesc] in radixDescList:
+		descriptions = tuple(self.descriptionDict.items())
+		for [charName, radixDesc] in descriptions:
 			radixCodeInfoList = self.radixParser.convertRadixDescToCodeInfoList(radixDesc)
 			self.addCodeInfoList(charName, radixCodeInfoList)
 
@@ -104,7 +103,4 @@ class RadixHelper:
 
 	def addDescription(self, charName, description):
 		self.descriptionDict[charName] = description
-
-	def getDescriptionList(self):
-		return list(self.descriptionDict.items())
 
