@@ -62,9 +62,6 @@ class StructureManager:
 	def getRadixManager(self):
 		return self.radixManager
 
-	def getAllCharacters(self):
-		return set(self.compositionManager.getAllCharacters()) | set(self.radixManager.getAllRadixes()) 
-
 	def queryCharacterDescription(self, character):
 		charDesc = self.radixManager.queryRadix(character)
 		if not charDesc:

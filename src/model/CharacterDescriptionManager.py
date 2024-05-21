@@ -101,9 +101,6 @@ class CompositionManager:
 		self.characterDB={}
 
 
-	def getAllCharacters(self):
-		return self.characterDB.keys()
-
 	def queryCharacter(self, characterName):
 		return self.characterDB.get(characterName, None)
 
@@ -150,9 +147,6 @@ class RadixManager:
 		radixHelper = RadixHelper(self.radixParser)
 		fastCodeCharacterDB = radixHelper.loadRadix([fastFile])
 		return fastCodeCharacterDB
-
-	def getAllRadixes(self):
-		return self.radixDB.keys()
 
 	def queryRadix(self, characterName):
 		return self.radixDB.get(characterName, None)
