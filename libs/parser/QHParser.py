@@ -176,12 +176,11 @@ class QHRadixParser:
 
 	def parseRadixDescription(self, nodeCharacter):
 		radixCodeInfoDescList=[]
-		toOverridePrev=("是" == nodeCharacter.get("覆蓋"))
 		radixName=nodeCharacter.get(Constant.TAG_NAME)
 		for elementCodeInfo in nodeCharacter.get(QHRadixParser.TAG_CODE_INFORMATION):
 			radixCodeInfoDesc=self.convertElementToRadixInfo(elementCodeInfo)
 			radixCodeInfoDescList.append(radixCodeInfoDesc)
-		return RadixDescription(radixName, radixCodeInfoDescList, toOverridePrev)
+		return RadixDescription(radixName, radixCodeInfoDescList)
 
 	def parseFileType(self, rootNode):
 		fileType=rootNode.get(Constant.TAG_FILE_TYPE)

@@ -142,7 +142,7 @@ class RadixManager:
 
 		self.radixCodeInfoDB.update(radixCodeInfoDB)
 
-		resetRadixNameList = radixHelper.getResetRadixList()
+		resetRadixNameList = radixCodeInfoDB.keys()
 		for radixName in resetRadixNameList:
 			self.radixDB[radixName] = CharacterDescription(radixName)
 
