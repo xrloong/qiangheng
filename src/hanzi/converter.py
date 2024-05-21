@@ -95,7 +95,6 @@ class ConstructCharacter:
 			fontVariance: FontVariance,
 
 			structureManager: StructureManager,
-			radixManager: RadixManager,
 			treInterpreter: HanZiTreeRegExpInterpreter,
 
 			networkManager: HanZiNetworkManager,
@@ -105,7 +104,6 @@ class ConstructCharacter:
 		self.fontVariance = fontVariance
 
 		self.structureManager = structureManager
-		self.radixManager = radixManager
 
 		self.networkManager = networkManager
 		self.codeInfosComputer = codeInfosComputer
@@ -151,7 +149,7 @@ class ConstructCharacter:
 
 		structureManager = self.structureManager
 
-		radixManager = self.radixManager
+		radixManager = structureManager.getRadixManager()
 		itemFactory = self.itemFactory
 
 		treInterpreter = self.treInterpreter
