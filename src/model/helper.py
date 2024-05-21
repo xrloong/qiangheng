@@ -85,8 +85,8 @@ class RadixHelper:
 	def loadRadix(self, radixFiles):
 		radixParser = self.__radixParser
 
-		radixDescriptionList = radixParser.loadRadix(radixFiles)
-		for radixDescription in radixDescriptionList:
+		radixDescriptions = radixParser.loadRadix(radixFiles)
+		for radixDescription in radixDescriptions:
 			radixName = radixDescription.getRadixName()
 			radixCodeInfos = radixParser.convertRadixDescToCodeInfoList(radixDescription)
 
