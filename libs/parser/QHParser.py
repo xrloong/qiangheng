@@ -28,17 +28,17 @@ class QHSubstituteRuleParser:
 
 	def loadSubstituteRules(self, filename):
 		node = self.yaml.load(open(filename))
-		ruleSetNode=node.get(Constant.TAG_RULE_SET)
+		ruleSetNode = node.get(Constant.TAG_RULE_SET)
 
 		if not ruleSetNode:
 			return []
 
-		substituteRules=[]
+		substituteRules = []
 		for node in ruleSetNode:
-			matchPattern=node.get(Constant.TAG_MATCH)
-			replacePattern=node.get(Constant.TAG_SUBSTITUTE)
+			matchPattern = node.get(Constant.TAG_MATCH)
+			replacePattern = node.get(Constant.TAG_SUBSTITUTE)
 
-			substitueRule=SubstituteRule(matchPattern, replacePattern)
+			substitueRule = SubstituteRule(matchPattern, replacePattern)
 			substituteRules.append(substitueRule)
 
 		return substituteRules
@@ -57,9 +57,9 @@ class QHParser:
 
 		charDescList = []
 		for node in charGroupNode:
-			charName=node.get(Constant.TAG_NAME)
+			charName = node.get(Constant.TAG_NAME)
 
-			charDesc=CharacterDescription(charName)
+			charDesc = CharacterDescription(charName)
 
 			structureList = self.loadStructureSet(node)
 			charDesc.setStructureList(structureList)
@@ -68,9 +68,9 @@ class QHParser:
 		return charDescList
 
 	def loadStructureSet(self, charNode):
-		structureList=[]
+		structureList = []
 		if Constant.TAG_STRUCTURE_SET in charNode:
-			nodeStructureList=charNode.get(Constant.TAG_STRUCTURE_SET)
+			nodeStructureList = charNode.get(Constant.TAG_STRUCTURE_SET)
 
 			for structureDict in nodeStructureList:
 				structureExpression = structureDict[Constant.TAG_STRUCTURE]
@@ -102,8 +102,8 @@ class QHParser:
 			return FontVariance.All
 
 class QHRadixParser:
-	TAG_CODE_INFORMATION='編碼資訊'
-	TAG_CODE='編碼'
+	TAG_CODE_INFORMATION = '編碼資訊'
+	TAG_CODE = '編碼'
 
 	def __init__(self, codingRadixParser: CodingRadixParser, yaml: ruamel.yaml.YAML):
 		self.codingRadixParser = codingRadixParser
@@ -114,36 +114,36 @@ class QHRadixParser:
 		return radixDescriptionList
 
 	def convertRadixDescToCodeInfoList(self, radixDesc):
-		radixCodeInfoList=[]
-		tmpRadixCodeInfoList=radixDesc.getRadixCodeInfoDescriptionList()
+		radixCodeInfoList = []
+		tmpRadixCodeInfoList = radixDesc.getRadixCodeInfoDescriptionList()
 		for radixInfo in tmpRadixCodeInfoList:
-			codeInfo=self.convertRadixDescToCodeInfoWithAttribute(radixInfo)
+			codeInfo = self.convertRadixDescToCodeInfoWithAttribute(radixInfo)
 			if codeInfo:
 				radixCodeInfoList.append(codeInfo)
 		return radixCodeInfoList
 
 	def convertRadixDescToCodeInfoWithAttribute(self, radixDesc):
-		codeInfo=self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
+		codeInfo = self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
 
-		codeVariance=radixDesc.getCodeVarianceType()
-		isSupportCharacterCode=radixDesc.isSupportCharacterCode()
-		isSupportRadixCode=radixDesc.isSupportRadixCode()
+		codeVariance = radixDesc.getCodeVarianceType()
+		isSupportCharacterCode = radixDesc.isSupportCharacterCode()
+		isSupportRadixCode = radixDesc.isSupportRadixCode()
 		codeInfo.setCodeInfoAttribute(codeVariance, isSupportCharacterCode, isSupportRadixCode)
 
 		return codeInfo
 
 	def convertElementToRadixInfo(self, elementCodeInfo):
-		infoDict={}
+		infoDict = {}
 		if elementCodeInfo is not None:
-			infoDict=elementCodeInfo
+			infoDict = elementCodeInfo
 
-		codeElementCodeInfo=elementCodeInfo
-		radixInfoDescription=RadixCodeInfoDescription(infoDict, codeElementCodeInfo)
+		codeElementCodeInfo = elementCodeInfo
+		radixInfoDescription = RadixCodeInfoDescription(infoDict, codeElementCodeInfo)
 		return radixInfoDescription
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
-		codeInfo=CodeInfo()
+		codeInfo = CodeInfo()
 		return codeInfo
 
 	def parse(self, toRadixList):
@@ -161,26 +161,26 @@ class QHRadixParser:
 
 	def parseRadixInfo(self, rootNode):
 		radixDescriptionList = []
-		characterSetNode=rootNode.get(Constant.TAG_CHARACTER_SET)
+		characterSetNode = rootNode.get(Constant.TAG_CHARACTER_SET)
 		for characterNode in characterSetNode:
-			charName=characterNode.get(Constant.TAG_NAME)
-			radixDescription=self.parseRadixDescription(characterNode)
+			charName = characterNode.get(Constant.TAG_NAME)
+			radixDescription = self.parseRadixDescription(characterNode)
 			radixDescriptionList.append(radixDescription)
 		return radixDescriptionList
 
 	def parseRadixDescription(self, nodeCharacter):
-		radixCodeInfoDescList=[]
-		radixName=nodeCharacter.get(Constant.TAG_NAME)
+		radixCodeInfoDescList = []
+		radixName = nodeCharacter.get(Constant.TAG_NAME)
 		for elementCodeInfo in nodeCharacter.get(QHRadixParser.TAG_CODE_INFORMATION):
-			radixCodeInfoDesc=self.convertElementToRadixInfo(elementCodeInfo)
+			radixCodeInfoDesc = self.convertElementToRadixInfo(elementCodeInfo)
 			radixCodeInfoDescList.append(radixCodeInfoDesc)
 		return RadixDescription(radixName, radixCodeInfoDescList)
 
 	def parseFileType(self, rootNode):
-		fileType=rootNode.get(Constant.TAG_FILE_TYPE)
+		fileType = rootNode.get(Constant.TAG_FILE_TYPE)
 		return fileType
 
 	def parseInputMethod(self, rootNode):
-		nameInputMethod=rootNode.get(Constant.TAG_INPUT_METHOD)
+		nameInputMethod = rootNode.get(Constant.TAG_INPUT_METHOD)
 		return nameInputMethod
 
