@@ -49,7 +49,7 @@ $ pkg install libxml2-utils
 
 在各平台共同的部分：
 ```console
-$ pip3 install lxml ruamel.yaml injector ply numpy
+$ pip3 install lxml ruamel.yaml injector ply numpy pydantic
 $ pip3 install https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl
 ```
 
