@@ -135,13 +135,13 @@ class QHRadixParser:
 		return codeInfo
 
 	def convertElementToRadixInfo(self, elementCodeInfo):
-		infoDict = {}
-		if elementCodeInfo is not None:
-			infoDict = elementCodeInfo
-		codeVarianceString = infoDict.get(constant.TAG_CODE_VARIANCE_TYPE, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
+		from .model import RadixCodeInfoModel
+		model = RadixCodeInfoModel(**elementCodeInfo)
+
+		codeVarianceString = model.varianceType
 		variance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
 
-		isSupportRadixCode = not bool("字符碼" in infoDict)
+		isSupportRadixCode = model.isSupportRadixCode
 
 		codeElementCodeInfo = elementCodeInfo
 		radixInfoDescription = RadixCodeInfoDescription(codeElementCodeInfo, variance)
