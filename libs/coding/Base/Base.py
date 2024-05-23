@@ -22,15 +22,11 @@ class CodeInfo(IfCodeInfo):
 
 	@staticmethod
 	def computeSupportingFromProperty(propDict):
-		hasCharacter=bool("字符碼" in propDict)
+		hasCharacter = bool("字符碼" in propDict)
 
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupporting(hasCharacter)
-		return [isSupportCharacterCode, isSupportRadixCode]
-
-	@staticmethod
-	def computeSupporting(hasCharacter):
 		isSupportCharacterCode = True
 		isSupportRadixCode = not hasCharacter
+
 		return [isSupportCharacterCode, isSupportRadixCode]
 
 	def setCodeInfoAttribute(self, codeVariance, isSupportCharacterCode, isSupportRadixCode):
