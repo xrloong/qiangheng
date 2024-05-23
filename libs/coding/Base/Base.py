@@ -20,13 +20,6 @@ class CodeInfo(IfCodeInfo):
 	def code(self):
 		return ""
 
-	@staticmethod
-	def computeSupportingFromProperty(propDict):
-		isSupportCharacterCode = True
-		isSupportRadixCode = not bool("字符碼" in propDict)
-
-		return [isSupportCharacterCode, isSupportRadixCode]
-
 	def setCodeInfoAttribute(self, codeVariance, isSupportCharacterCode, isSupportRadixCode):
 		self.multiplyCodeVarianceType(codeVariance)
 		self._isSupportCharacterCode=isSupportCharacterCode

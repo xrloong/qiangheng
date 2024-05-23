@@ -150,7 +150,8 @@ class QHRadixParser:
 
 	def __parseCodeAttributes(self, infoDict):
 		codeVarianceString = infoDict.get(constant.TAG_CODE_VARIANCE_TYPE, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
-		(isSupportCharacterCode, isSupportRadixCode) = CodeInfo.computeSupportingFromProperty(infoDict)
+		isSupportCharacterCode = True
+		isSupportRadixCode = not bool("字符碼" in infoDict)
 		return (codeVarianceString, isSupportCharacterCode, isSupportRadixCode)
 
 	# 多型
