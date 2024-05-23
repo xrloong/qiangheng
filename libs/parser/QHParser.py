@@ -139,20 +139,17 @@ class QHRadixParser:
 		infoDict = {}
 		if elementCodeInfo is not None:
 			infoDict = elementCodeInfo
-		(codeVarianceString, isSupportCharacterCode, isSupportRadixCode) = self.__parseCodeAttributes(infoDict)
+		codeVarianceString = infoDict.get(constant.TAG_CODE_VARIANCE_TYPE, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
 		variance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
+
+		isSupportCharacterCode = True
+		isSupportRadixCode = not bool("字符碼" in infoDict)
 
 		codeElementCodeInfo = elementCodeInfo
 		radixInfoDescription = RadixCodeInfoDescription(codeElementCodeInfo, variance)
 		radixInfoDescription.setSupportCode(isSupportCharacterCode, isSupportRadixCode)
 
 		return radixInfoDescription
-
-	def __parseCodeAttributes(self, infoDict):
-		codeVarianceString = infoDict.get(constant.TAG_CODE_VARIANCE_TYPE, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
-		isSupportCharacterCode = True
-		isSupportRadixCode = not bool("字符碼" in infoDict)
-		return (codeVarianceString, isSupportCharacterCode, isSupportRadixCode)
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
