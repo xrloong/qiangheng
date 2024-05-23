@@ -28,8 +28,8 @@ class StructureDescriptionGenerator:
 
 class RadixCodeInfoDescription:
 	def __init__(self, infoDict, codeElementCodeInfo):
-		self.codeVariance = CodeVarianceTypeFactory.generate()
-		self.codeElementCodeInfo = codeElementCodeInfo
+		self.__codeVariance = CodeVarianceTypeFactory.generate()
+		self.__codeElementCodeInfo = codeElementCodeInfo
 
 		self.setupCodeAttribute(infoDict)
 
@@ -41,23 +41,23 @@ class RadixCodeInfoDescription:
 		self.setSupportCode(isSupportCharacterCode, isSupportRadixCode)
 
 	def setSupportCode(self, isSupportCharacterCode, isSupportRadixCode):
-		self._isSupportCharacterCode = isSupportCharacterCode
-		self._isSupportRadixCode = isSupportRadixCode
+		self.__isSupportCharacterCode = isSupportCharacterCode
+		self.__isSupportRadixCode = isSupportRadixCode
 
 	def setCodeVarianceType(self, codeVarianceString):
-		self.codeVariance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
+		self.__codeVariance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
 
 	def getCodeVarianceType(self):
-		return self.codeVariance
+		return self.__codeVariance
 
 	def isSupportCharacterCode(self):
-		return self._isSupportCharacterCode
+		return self.__isSupportCharacterCode
 
 	def isSupportRadixCode(self):
-		return self._isSupportRadixCode
+		return self.__isSupportRadixCode
 
 	def getCodeElement(self):
-		return self.codeElementCodeInfo
+		return self.__codeElementCodeInfo
 
 class RadixDescription:
 	def __init__(self, radixName, radixCodeInfoList):
