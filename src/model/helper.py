@@ -1,12 +1,9 @@
 from injector import inject
 
-from coding.Base import CodeInfo
-
 from .element.StructureDescription import StructureDescription
-from .element.CodeVarianceType import CodeVarianceTypeFactory
 from .manager import OperatorManager
 
-from parser import constant
+from .element.CodeVarianceType import CodeVarianceType
 
 class StructureDescriptionGenerator:
 	@inject
@@ -27,25 +24,13 @@ class StructureDescriptionGenerator:
 		return structDesc
 
 class RadixCodeInfoDescription:
-	def __init__(self, infoDict, codeElementCodeInfo):
-		self.__codeVariance = CodeVarianceTypeFactory.generate()
+	def __init__(self, codeElementCodeInfo, variance: CodeVarianceType):
+		self.__codeVariance = variance
 		self.__codeElementCodeInfo = codeElementCodeInfo
-
-		self.setupCodeAttribute(infoDict)
-
-	def setupCodeAttribute(self, infoDict):
-		codeVarianceString = infoDict.get(constant.TAG_CODE_VARIANCE_TYPE, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
-		self.setCodeVarianceType(codeVarianceString)
-
-		[isSupportCharacterCode, isSupportRadixCode] = CodeInfo.computeSupportingFromProperty(infoDict)
-		self.setSupportCode(isSupportCharacterCode, isSupportRadixCode)
 
 	def setSupportCode(self, isSupportCharacterCode, isSupportRadixCode):
 		self.__isSupportCharacterCode = isSupportCharacterCode
 		self.__isSupportRadixCode = isSupportRadixCode
-
-	def setCodeVarianceType(self, codeVarianceString):
-		self.__codeVariance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
 
 	@property
 	def codeVariance(self):

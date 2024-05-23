@@ -3,8 +3,10 @@ import Constant
 import ruamel.yaml
 
 from coding.Base import CodingRadixParser
+from coding.Base import CodeInfo
 
 from model.element.enum import FontVariance
+from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
 from model.element.SubstituteRule import SubstituteRule
 from model.element.CharacterDescription import CharacterDescription
@@ -12,6 +14,7 @@ from model.helper import StructureDescriptionGenerator
 from model.helper import RadixDescription
 from model.helper import RadixCodeInfoDescription
 
+from parser import constant
 from parser import TreeParser
 
 class QHTreeParser:
@@ -136,10 +139,19 @@ class QHRadixParser:
 		infoDict = {}
 		if elementCodeInfo is not None:
 			infoDict = elementCodeInfo
+		(codeVarianceString, isSupportCharacterCode, isSupportRadixCode) = self.__parseCodeAttributes(infoDict)
+		variance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
 
 		codeElementCodeInfo = elementCodeInfo
-		radixInfoDescription = RadixCodeInfoDescription(infoDict, codeElementCodeInfo)
+		radixInfoDescription = RadixCodeInfoDescription(codeElementCodeInfo, variance)
+		radixInfoDescription.setSupportCode(isSupportCharacterCode, isSupportRadixCode)
+
 		return radixInfoDescription
+
+	def __parseCodeAttributes(self, infoDict):
+		codeVarianceString = infoDict.get(constant.TAG_CODE_VARIANCE_TYPE, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
+		(isSupportCharacterCode, isSupportRadixCode) = CodeInfo.computeSupportingFromProperty(infoDict)
+		return (codeVarianceString, isSupportCharacterCode, isSupportRadixCode)
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
