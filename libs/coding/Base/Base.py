@@ -29,12 +29,8 @@ class CodeInfo(IfCodeInfo):
 
 	@staticmethod
 	def computeSupporting(hasCharacter):
-		if hasCharacter:
-			isSupportCharacterCode=True
-			isSupportRadixCode=False
-		else:
-			isSupportCharacterCode=True
-			isSupportRadixCode=True
+		isSupportCharacterCode = True
+		isSupportRadixCode = not hasCharacter
 		return [isSupportCharacterCode, isSupportRadixCode]
 
 	def setCodeInfoAttribute(self, codeVariance, isSupportCharacterCode, isSupportRadixCode):
