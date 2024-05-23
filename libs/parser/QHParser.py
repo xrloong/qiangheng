@@ -129,9 +129,8 @@ class QHRadixParser:
 		codeInfo = self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
 
 		codeVariance = radixDesc.codeVariance
-		isSupportCharacterCode = radixDesc.isSupportCharacterCode
 		isSupportRadixCode = radixDesc.isSupportRadixCode
-		codeInfo.setCodeInfoAttribute(codeVariance, isSupportCharacterCode, isSupportRadixCode)
+		codeInfo.setCodeInfoAttribute(codeVariance, isSupportRadixCode)
 
 		return codeInfo
 
@@ -142,12 +141,11 @@ class QHRadixParser:
 		codeVarianceString = infoDict.get(constant.TAG_CODE_VARIANCE_TYPE, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
 		variance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
 
-		isSupportCharacterCode = True
 		isSupportRadixCode = not bool("字符碼" in infoDict)
 
 		codeElementCodeInfo = elementCodeInfo
 		radixInfoDescription = RadixCodeInfoDescription(codeElementCodeInfo, variance)
-		radixInfoDescription.setSupportCode(isSupportCharacterCode, isSupportRadixCode)
+		radixInfoDescription.setSupportCode(isSupportRadixCode)
 
 		return radixInfoDescription
 

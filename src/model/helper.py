@@ -28,17 +28,12 @@ class RadixCodeInfoDescription:
 		self.__codeVariance = variance
 		self.__codeElementCodeInfo = codeElementCodeInfo
 
-	def setSupportCode(self, isSupportCharacterCode, isSupportRadixCode):
-		self.__isSupportCharacterCode = isSupportCharacterCode
+	def setSupportCode(self, isSupportRadixCode):
 		self.__isSupportRadixCode = isSupportRadixCode
 
 	@property
 	def codeVariance(self):
 		return self.__codeVariance
-
-	@property
-	def isSupportCharacterCode(self):
-		return self.__isSupportCharacterCode
 
 	@property
 	def isSupportRadixCode(self):

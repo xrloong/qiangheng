@@ -8,7 +8,6 @@ from .interface import IfCodeInfo, IfCodeInfoEncoder, IfCodingRadixParser
 class CodeInfo(IfCodeInfo):
 	def __init__(self):
 		self.codeVariance=CodeVarianceTypeFactory.generate()
-		self._isSupportCharacterCode=True
 		self._isSupportRadixCode=True
 
 	@staticmethod
@@ -20,9 +19,8 @@ class CodeInfo(IfCodeInfo):
 	def code(self):
 		return ""
 
-	def setCodeInfoAttribute(self, codeVariance, isSupportCharacterCode, isSupportRadixCode):
+	def setCodeInfoAttribute(self, codeVariance, isSupportRadixCode):
 		self.multiplyCodeVarianceType(codeVariance)
-		self._isSupportCharacterCode=isSupportCharacterCode
 		self._isSupportRadixCode=isSupportRadixCode
 
 	def __str__(self):
@@ -30,9 +28,6 @@ class CodeInfo(IfCodeInfo):
 
 	def __repr__(self):
 		return str(self)
-
-	def isSupportCharacterCode(self):
-		return self._isSupportCharacterCode
 
 	def isSupportRadixCode(self):
 		return self._isSupportRadixCode
