@@ -23,9 +23,8 @@ class CodeInfo(IfCodeInfo):
 	@staticmethod
 	def computeSupportingFromProperty(propDict):
 		hasCharacter=bool("字符碼" in propDict)
-		hasRadix=bool("字根碼" in propDict)
 
-		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupporting(hasCharacter, hasRadix)
+		[isSupportCharacterCode, isSupportRadixCode]=CodeInfo.computeSupporting(hasCharacter, False)
 		return [isSupportCharacterCode, isSupportRadixCode]
 
 	@staticmethod
