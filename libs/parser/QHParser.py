@@ -138,9 +138,7 @@ class QHRadixParser:
 		from .model import RadixCodeInfoModel
 		model = RadixCodeInfoModel(**elementCodeInfo)
 
-		codeVarianceString = model.varianceType
-		variance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
-
+		variance = model.variance
 		isSupportRadixCode = model.isSupportRadixCode
 
 		codeElementCodeInfo = elementCodeInfo

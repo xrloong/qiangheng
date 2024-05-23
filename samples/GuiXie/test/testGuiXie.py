@@ -43,12 +43,6 @@ class GuiXieTestCase(unittest.TestCase):
 			except FileNotFoundError:
 				self.fail("{} 不存在".format(f))
 
-	def test_codingType_exists(self):
-		try:
-			from coding.GuiXie import codingType
-		except ImportError:
-			self.fail("coding.GuiXie 中缺少 codingType")
-
 	def test_fontVariance_exists(self):
 		try:
 			from coding.GuiXie import fontVariance
