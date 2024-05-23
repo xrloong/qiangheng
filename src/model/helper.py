@@ -47,16 +47,20 @@ class RadixCodeInfoDescription:
 	def setCodeVarianceType(self, codeVarianceString):
 		self.__codeVariance = CodeVarianceTypeFactory.generateByString(codeVarianceString)
 
-	def getCodeVarianceType(self):
+	@property
+	def codeVariance(self):
 		return self.__codeVariance
 
+	@property
 	def isSupportCharacterCode(self):
 		return self.__isSupportCharacterCode
 
+	@property
 	def isSupportRadixCode(self):
 		return self.__isSupportRadixCode
 
-	def getCodeElement(self):
+	@property
+	def codeElement(self):
 		return self.__codeElementCodeInfo
 
 class RadixDescription:

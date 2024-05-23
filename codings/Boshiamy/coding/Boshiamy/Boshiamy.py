@@ -182,7 +182,7 @@ class BSRadixParser(CodingRadixParser):
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
-		elementCodeInfo = radixInfo.getCodeElement()
+		elementCodeInfo = radixInfo.codeElement
 
 		infoDict = elementCodeInfo
 

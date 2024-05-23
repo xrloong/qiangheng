@@ -219,7 +219,7 @@ class DCRadixParser(CodingRadixParser):
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
-		elementCodeInfo = radixInfo.getCodeElement()
+		elementCodeInfo = radixInfo.codeElement
 
 		componentNodeList = elementCodeInfo.get(DCRadixParser.ATTRIB_CODE_EXPRESSION)
 		lastComponentNode = componentNodeList[0]

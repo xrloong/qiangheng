@@ -125,9 +125,9 @@ class QHRadixParser:
 	def convertRadixDescToCodeInfoWithAttribute(self, radixDesc):
 		codeInfo = self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
 
-		codeVariance = radixDesc.getCodeVarianceType()
-		isSupportCharacterCode = radixDesc.isSupportCharacterCode()
-		isSupportRadixCode = radixDesc.isSupportRadixCode()
+		codeVariance = radixDesc.codeVariance
+		isSupportCharacterCode = radixDesc.isSupportCharacterCode
+		isSupportRadixCode = radixDesc.isSupportRadixCode
 		codeInfo.setCodeInfoAttribute(codeVariance, isSupportCharacterCode, isSupportRadixCode)
 
 		return codeInfo

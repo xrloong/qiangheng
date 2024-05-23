@@ -150,7 +150,7 @@ class GXRadixParser(CodingRadixParser):
 		return tuple(gxLumps)
 
 	def convertRadixDescToCodeInfo(self, radixDesc):
-		codeElement = radixDesc.getCodeElement()
+		codeElement = radixDesc.codeElement
 		if GXRadixParser.ATTRIB_GENRE in codeElement:
 			genreDesc = codeElement[GXRadixParser.ATTRIB_GENRE]
 			genre = GXRadixParser.genreNameToGenre[genreDesc]

@@ -250,7 +250,7 @@ class FCRadixParser(CodingRadixParser):
 		return codeInfo
 
 	def convertRadixDescToCodeInfoByExpression(self, radixInfo):
-		elementCodeInfo = radixInfo.getCodeElement()
+		elementCodeInfo = radixInfo.codeElement
 
 		codes = elementCodeInfo.get(FCRadixParser.ATTRIB_CODE_EXPRESSION)
 		cornerCodeList = codes.split("|")
