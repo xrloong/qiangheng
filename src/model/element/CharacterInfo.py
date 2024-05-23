@@ -2,7 +2,7 @@ from . import CodeMappingInfo
 from .CodeVarianceType import CodeVarianceType
 from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
-import Constant
+from parser import constant
 
 class CharacterInfo:
 	def __init__(self, charName):
@@ -17,7 +17,7 @@ class CharacterInfo:
 		self.codeProps = codeProps
 
 	def setFastCode(self, code):
-		variance = Constant.VALUE_CODE_VARIANCE_TYPE_SIMPLIFIED
+		variance = constant.VALUE_CODE_VARIANCE_TYPE_SIMPLIFIED
 		self.fastCodeInfo = CodeMappingInfo.CodeMappingInfo(self.name, code, variance)
 
 	@property

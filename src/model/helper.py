@@ -6,8 +6,7 @@ from .element.StructureDescription import StructureDescription
 from .element.CodeVarianceType import CodeVarianceTypeFactory
 from .manager import OperatorManager
 
-
-import Constant
+from parser import constant
 
 class StructureDescriptionGenerator:
 	@inject
@@ -35,7 +34,7 @@ class RadixCodeInfoDescription:
 		self.setupCodeAttribute(infoDict)
 
 	def setupCodeAttribute(self, infoDict):
-		codeVarianceString = infoDict.get(Constant.TAG_CODE_VARIANCE_TYPE, Constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
+		codeVarianceString = infoDict.get(constant.TAG_CODE_VARIANCE_TYPE, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
 		self.setCodeVarianceType(codeVarianceString)
 
 		[isSupportCharacterCode, isSupportRadixCode] = CodeInfo.computeSupportingFromProperty(infoDict)
