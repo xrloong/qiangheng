@@ -2,17 +2,17 @@ from enum import Enum
 
 from parser import constant
 
-class CodeVarianceType(Enum):
+class CodeVariance(Enum):
 	STANDARD = (0, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
 	TOLERANT = (2, constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT)
 
 	@staticmethod
 	def fromString(codeVarianceString):
-		codeVarianceTypeDict = {
-			constant.VALUE_CODE_VARIANCE_TYPE_STANDARD: CodeVarianceType.STANDARD,
-			constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT: CodeVarianceType.TOLERANT,
+		codeVarianceDict = {
+			constant.VALUE_CODE_VARIANCE_TYPE_STANDARD: CodeVariance.STANDARD,
+			constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT: CodeVariance.TOLERANT,
 		}
-		return codeVarianceTypeDict.get(codeVarianceString, CodeVarianceType.STANDARD)
+		return codeVarianceDict.get(codeVarianceString, CodeVariance.STANDARD)
 
 	def __init__(self, value, strValue):
 		self.__value = value

@@ -3,7 +3,7 @@ from injector import inject
 from .element.StructureDescription import StructureDescription
 from .manager import OperatorManager
 
-from .element.CodeVarianceType import CodeVarianceType
+from .element.CodeVariance import CodeVariance
 
 class StructureDescriptionGenerator:
 	@inject
@@ -24,7 +24,7 @@ class StructureDescriptionGenerator:
 		return structDesc
 
 class RadixCodeInfoDescription:
-	def __init__(self, codeElementCodeInfo, variance: CodeVarianceType):
+	def __init__(self, codeElementCodeInfo, variance: CodeVariance):
 		self.__codeVariance = variance
 		self.__codeElementCodeInfo = codeElementCodeInfo
 

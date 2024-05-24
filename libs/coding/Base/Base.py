@@ -1,5 +1,5 @@
 from model.element import Operator
-from model.element.CodeVarianceType import CodeVarianceType
+from model.element.CodeVariance import CodeVariance
 
 from model.element.enum import CodingType
 
@@ -7,7 +7,7 @@ from .interface import IfCodeInfo, IfCodeInfoEncoder, IfCodingRadixParser
 
 class CodeInfo(IfCodeInfo):
 	def __init__(self):
-		self.codeVariance = CodeVarianceType.STANDARD
+		self.codeVariance = CodeVariance.STANDARD
 		self._isSupportRadixCode=True
 
 	@staticmethod
@@ -20,7 +20,7 @@ class CodeInfo(IfCodeInfo):
 		return ""
 
 	def setCodeInfoAttribute(self, codeVariance, isSupportRadixCode):
-		self.multiplyCodeVarianceType(codeVariance)
+		self.multiplyCodeVariance(codeVariance)
 		self._isSupportRadixCode=isSupportRadixCode
 
 	def __str__(self):
@@ -32,11 +32,11 @@ class CodeInfo(IfCodeInfo):
 	def isSupportRadixCode(self):
 		return self._isSupportRadixCode
 
-	def getCodeVarianceType(self):
+	def getCodeVariance(self):
 		return self.codeVariance
 
-	def multiplyCodeVarianceType(self, codeVariance):
-		self.codeVariance=self.codeVariance*codeVariance
+	def multiplyCodeVariance(self, codeVariance):
+		self.codeVariance = self.codeVariance*codeVariance
 
 	@property
 	def variance(self):

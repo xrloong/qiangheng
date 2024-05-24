@@ -1,5 +1,5 @@
 from . import CodeMappingInfo
-from .CodeVarianceType import CodeVarianceType
+from .CodeVariance import CodeVariance
 
 from parser import constant
 
@@ -23,8 +23,8 @@ class CharacterInfo:
 	def codeMappingInfos(self):
 		characterInfos = []
 
-		for codeAndType in self.codeProps:
-			code, variance = codeAndType
+		for codeAndVariance in self.codeProps:
+			code, variance = codeAndVariance
 			characterInfo = CodeMappingInfo.CodeMappingInfo(self.name, code, variance)
 			characterInfos.append(characterInfo)
 		if self.fastCodeInfo:

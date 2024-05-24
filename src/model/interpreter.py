@@ -14,8 +14,8 @@ class CodeInfoInterpreter:
 		codeInfo=self.codeInfoEncoder.setByComps(operator, codeInfoList)
 		if codeInfo!=None:
 			for childCodeInfo in codeInfoList:
-				codeVariance=childCodeInfo.getCodeVarianceType()
-				codeInfo.multiplyCodeVarianceType(codeVariance)
+				codeVariance=childCodeInfo.getCodeVariance()
+				codeInfo.multiplyCodeVariance(codeVariance)
 		return codeInfo
 
 	def interpretCodeInfoList(self, codeInfoList):
