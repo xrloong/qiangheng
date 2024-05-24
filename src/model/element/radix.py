@@ -1,12 +1,10 @@
 from .CodeVariance import CodeVariance
 
 class RadixCodeInfoDescription:
-	def __init__(self, codeElementCodeInfo, variance: CodeVariance):
+	def __init__(self, variance: CodeVariance, isSupportRadixCode: bool, codeElementCodeInfo):
 		self.__codeVariance = variance
-		self.__codeElementCodeInfo = codeElementCodeInfo
-
-	def setSupportCode(self, isSupportRadixCode):
 		self.__isSupportRadixCode = isSupportRadixCode
+		self.__codeElementCodeInfo = codeElementCodeInfo
 
 	@property
 	def codeVariance(self):
