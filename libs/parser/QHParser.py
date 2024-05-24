@@ -34,10 +34,14 @@ class QHSubstituteRuleParser:
 		if not ruleSetNode:
 			return []
 
+		from .model import SubstituteRuleModel
+
 		substituteRules = []
 		for node in ruleSetNode:
-			matchPattern = node.get(Constant.TAG_MATCH)
-			replacePattern = node.get(Constant.TAG_SUBSTITUTE)
+			model = SubstituteRuleModel(**node)
+
+			matchPattern = model.pattern
+			replacePattern = model.replacement
 
 			substitueRule = SubstituteRule(matchPattern, replacePattern)
 			substituteRules.append(substitueRule)

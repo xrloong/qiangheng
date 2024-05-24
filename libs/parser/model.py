@@ -24,3 +24,8 @@ class RadixCodeInfoModel(BaseModel):
 	@property
 	def isSupportRadixCode(self):
 		return not self.__hasSupportCharacterCode
+
+class SubstituteRuleModel(BaseModel):
+	pattern: str = Field(alias = '比對')
+	replacement: str = Field(alias = '替換')
+
