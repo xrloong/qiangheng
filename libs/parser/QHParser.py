@@ -9,9 +9,8 @@ from model.element.enum import FontVariance
 
 from model.element.SubstituteRule import SubstituteRule
 from model.element.CharacterDescription import CharacterDescription
+from model.element.radix import RadixCodeInfoDescription, RadixDescription
 from model.helper import StructureDescriptionGenerator
-from model.helper import RadixDescription
-from model.helper import RadixCodeInfoDescription
 
 from parser import constant
 from parser import TreeParser
