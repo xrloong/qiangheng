@@ -16,8 +16,6 @@ TAG_RADIX = '字根'
 TAG_CHARACTER_SET = '字符集'
 TAG_CHARACTER = '字符'
 
-TAG_RULE_SET = '規則集'
-
 TAG_NAME = '名稱'
 TAG_STRUCTURE_SET = '結構集'
 TAG_STRUCTURE = '結構'

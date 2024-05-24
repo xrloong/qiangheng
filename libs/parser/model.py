@@ -29,3 +29,6 @@ class SubstituteRuleModel(BaseModel):
 	pattern: str = Field(alias = '比對')
 	replacement: str = Field(alias = '替換')
 
+class SubstituteRuleSetModel(BaseModel):
+	rules: list[SubstituteRuleModel] = Field(alias = '規則集')
+

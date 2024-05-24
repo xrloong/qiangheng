@@ -28,20 +28,11 @@ class QHSubstituteRuleParser:
 		self.yaml = yaml
 
 	def loadSubstituteRules(self, filename):
+		from .model import SubstituteRuleSetModel
+
 		node = self.yaml.load(open(filename))
-		ruleSetNode = node.get(Constant.TAG_RULE_SET)
-
-		if not ruleSetNode:
-			return []
-
-		from .model import SubstituteRuleModel
-
-		substituteRules = []
-		for node in ruleSetNode:
-			model = SubstituteRuleModel(**node)
-			substitueRule = SubstituteRule(model = model)
-			substituteRules.append(substitueRule)
-
+		model = SubstituteRuleSetModel(**node)
+		substituteRules = tuple(SubstituteRule(model = ruleModel) for ruleModel in model.rules)
 		return substituteRules
 
 class QHParser:
