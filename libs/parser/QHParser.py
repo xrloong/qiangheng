@@ -139,7 +139,7 @@ class QHRadixParser:
 		variance = model.variance
 		isSupportRadixCode = model.isSupportRadixCode
 
-		return RadixCodeInfoDescription(variance, isSupportRadixCode, elementCodeInfo)
+		return RadixCodeInfoDescription(model, elementCodeInfo)
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):

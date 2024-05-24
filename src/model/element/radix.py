@@ -1,9 +1,11 @@
+from parser.model import RadixCodeInfoModel
+
 from .CodeVariance import CodeVariance
 
 class RadixCodeInfoDescription:
-	def __init__(self, variance: CodeVariance, isSupportRadixCode: bool, codeElementCodeInfo):
-		self.__codeVariance = variance
-		self.__isSupportRadixCode = isSupportRadixCode
+	def __init__(self, model: RadixCodeInfoModel, codeElementCodeInfo):
+		self.__codeVariance = model.variance
+		self.__isSupportRadixCode = model.isSupportRadixCode
 		self.__codeElementCodeInfo = codeElementCodeInfo
 
 	@property
