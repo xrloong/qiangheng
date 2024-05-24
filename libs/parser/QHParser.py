@@ -120,13 +120,9 @@ class QHRadixParser:
 
 		return codeInfo
 
-	def convertElementToRadixInfo(self, elementCodeInfo):
+	def convertElementToRadixInfo(self, elementCodeInfo) -> RadixCodeInfoDescription:
 		from .model import RadixCodeInfoModel
 		model = RadixCodeInfoModel(**elementCodeInfo)
-
-		variance = model.variance
-		isSupportRadixCode = model.isSupportRadixCode
-
 		return RadixCodeInfoDescription(model, elementCodeInfo)
 
 	# 多型
