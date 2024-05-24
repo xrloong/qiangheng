@@ -34,9 +34,14 @@ class SubstituteManager:
 		self.opToRuleDict = {}
 
 	def loadSubstituteRules(self, substituteFiles):
+		from parser.model import SubstituteRuleSetModel
+		from model.element.SubstituteRule import SubstituteRuleSet
+
 		totalSubstituteRules = []
 		for filename in substituteFiles:
-			substituteRuleSet = self.parser.loadSubstituteRuleSet(filename)
+			model = self.parser.loadSubstituteRuleSet(filename)
+			substituteRuleSet = SubstituteRuleSet(model = model)
+
 			substituteRules = substituteRuleSet.rules
 			totalSubstituteRules.extend(substituteRules)
 		self.substituteRules = totalSubstituteRules

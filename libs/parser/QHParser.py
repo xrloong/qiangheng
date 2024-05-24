@@ -5,9 +5,10 @@ import ruamel.yaml
 from coding.Base import CodingRadixParser
 from coding.Base import CodeInfo
 
+from .model import SubstituteRuleSetModel
+
 from model.element.enum import FontVariance
 
-from model.element.SubstituteRule import SubstituteRuleSet
 from model.element.CharacterDescription import CharacterDescription
 from model.element.radix import RadixCodeInfoDescription, RadixDescription
 from model.helper import StructureDescriptionGenerator
@@ -27,13 +28,9 @@ class QHSubstituteRuleParser:
 	def __init__(self, yaml: ruamel.yaml.YAML):
 		self.yaml = yaml
 
-	def loadSubstituteRuleSet(self, filename) -> SubstituteRuleSet:
-		from .model import SubstituteRuleSetModel
-
+	def loadSubstituteRuleSet(self, filename) -> SubstituteRuleSetModel:
 		node = self.yaml.load(open(filename))
-		model = SubstituteRuleSetModel(**node)
-		substituteRuleSet = SubstituteRuleSet(model = model)
-		return substituteRuleSet
+		return SubstituteRuleSetModel(**node)
 
 class QHParser:
 	def __init__(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML):
