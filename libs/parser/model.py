@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import Field
 
-from model.element.CodeVarianceType import CodeVarianceTypeFactory
+from model.element.CodeVarianceType import CodeVarianceType
 
 class RadixCodeInfoModel(BaseModel):
 	varianceString: Optional[str] = Field(alias = '類型', default = None)
@@ -14,7 +14,7 @@ class RadixCodeInfoModel(BaseModel):
 
 	@property
 	def variance(self):
-		variance = CodeVarianceTypeFactory.generateByString(self.varianceString)
+		variance = CodeVarianceType.fromString(self.varianceString)
 		return variance
 
 	@property
