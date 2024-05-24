@@ -6,7 +6,6 @@ from coding.Base import CodingRadixParser
 from coding.Base import CodeInfo
 
 from model.element.enum import FontVariance
-from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
 from model.element.SubstituteRule import SubstituteRule
 from model.element.CharacterDescription import CharacterDescription

@@ -1,6 +1,5 @@
 from . import CodeMappingInfo
 from .CodeVarianceType import CodeVarianceType
-from model.element.CodeVarianceType import CodeVarianceTypeFactory
 
 from parser import constant
 
