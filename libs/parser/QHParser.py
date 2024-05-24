@@ -27,7 +27,7 @@ class QHSubstituteRuleParser:
 	def __init__(self, yaml: ruamel.yaml.YAML):
 		self.yaml = yaml
 
-	def loadSubstituteRules(self, filename):
+	def loadSubstituteRules(self, filename) -> (SubstituteRule):
 		from .model import SubstituteRuleSetModel
 
 		node = self.yaml.load(open(filename))
