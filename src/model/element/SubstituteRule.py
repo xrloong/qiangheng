@@ -1,4 +1,5 @@
 from parser.model import SubstituteRuleModel
+from parser.model import SubstituteRuleSetModel
 
 from model.tree.regexp import compile
 
@@ -16,3 +17,8 @@ class SubstituteRule:
 
 	def getTRE(self):
 		return self.tre
+
+class SubstituteRuleSet:
+	def __init__(self, model: SubstituteRuleSetModel):
+		self.rules = tuple(SubstituteRule(model = ruleModel) for ruleModel in model.rules)
+

@@ -36,7 +36,8 @@ class SubstituteManager:
 	def loadSubstituteRules(self, substituteFiles):
 		totalSubstituteRules = []
 		for filename in substituteFiles:
-			substituteRules = self.parser.loadSubstituteRules(filename)
+			substituteRuleSet = self.parser.loadSubstituteRuleSet(filename)
+			substituteRules = substituteRuleSet.rules
 			totalSubstituteRules.extend(substituteRules)
 		self.substituteRules = totalSubstituteRules
 
