@@ -39,11 +39,7 @@ class QHSubstituteRuleParser:
 		substituteRules = []
 		for node in ruleSetNode:
 			model = SubstituteRuleModel(**node)
-
-			matchPattern = model.pattern
-			replacePattern = model.replacement
-
-			substitueRule = SubstituteRule(matchPattern, replacePattern)
+			substitueRule = SubstituteRule(model = model)
 			substituteRules.append(substitueRule)
 
 		return substituteRules
