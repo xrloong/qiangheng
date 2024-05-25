@@ -201,7 +201,6 @@ class DCRadixParser(CodingRadixParser):
 	TAG_PARAMETER = '參數'
 	TAG_BBOX = '字面框'
 
-	TAG_CODE_INFORMATION = '編碼資訊'
 	ATTRIB_CODE_EXPRESSION = '資訊表示式'
 
 	TAG_CHARACTER_SET = '字符集'
