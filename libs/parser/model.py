@@ -9,10 +9,10 @@ from model.element.CodeVariance import CodeVariance
 class RadixCodeInfoModel(BaseModel):
 	model_config = ConfigDict(frozen = True)
 
-	varianceString: Optional[str] = Field(alias = '類型', default = None)
+	varianceString: Optional[str] = Field(alias = '類型', frozen = True, default = None)
 	supportCharacterCode: Optional[str] = Field(
             alias = '字符碼', pattern = "是",
-            default = None,
+            frozen = True, default = None,
             )
 
 	@property
@@ -31,11 +31,11 @@ class RadixCodeInfoModel(BaseModel):
 class SubstituteRuleModel(BaseModel):
 	model_config = ConfigDict(frozen = True)
 
-	pattern: str = Field(alias = '比對')
-	replacement: str = Field(alias = '替換')
+	pattern: str = Field(alias = '比對', frozen = True)
+	replacement: str = Field(alias = '替換', frozen = True)
 
 class SubstituteRuleSetModel(BaseModel):
 	model_config = ConfigDict(frozen = True)
 
-	rules: list[SubstituteRuleModel] = Field(alias = '規則集')
+	rules: list[SubstituteRuleModel] = Field(alias = '規則集', frozen = True)
 
