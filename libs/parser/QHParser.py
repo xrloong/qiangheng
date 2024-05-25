@@ -110,13 +110,10 @@ class QHRadixParser:
 
 		return totalRadixDescriptionList
 
-	def parseRadixFromYAML(self, filename):
-		rootNode = self.yaml.load(open(filename))
-
-		return self.parseRadixInfo(rootNode)
-
-	def parseRadixInfo(self, rootNode) -> [RadixDescription]:
+	def parseRadixFromYAML(self, filename) -> [RadixDescription]:
 		from model.element.radix import RadicalSet
+
+		rootNode = self.yaml.load(open(filename))
 
 		model = RadicalSetModel(**rootNode)
 		radicalSet = RadicalSet(model = model)
