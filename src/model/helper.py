@@ -4,6 +4,7 @@ from .element.StructureDescription import StructureDescription
 from .manager import OperatorManager
 
 from model.element.radix import RadicalSet
+from model.element.radix import RadixDescription
 
 class StructureDescriptionGenerator:
 	@inject
@@ -27,10 +28,8 @@ class RadixHelper:
 	def __init__(self, radixParser):
 		self.__radixParser = radixParser
 
-		self.__descriptionDict = {}
-		self.__radixCodeInfoDB = {}
 
-	def loadRadix(self, radixFiles):
+	def loadRadix(self, radixFiles) -> dict[str, RadixDescription]:
 		radixParser = self.__radixParser
 
 		radixDescriptions = []
@@ -39,12 +38,12 @@ class RadixHelper:
 			radicalSet = RadicalSet(model = model)
 			radixDescriptions.extend(radicalSet.radicals)
 
+		radixCodeInfoDB = {}
 		for radixDescription in radixDescriptions:
 			radixName = radixDescription.getRadixName()
 			radixCodeInfos = radixParser.convertRadixDescToCodeInfoList(radixDescription)
 
-			self.__descriptionDict[radixName] = radixDescription
-			self.__radixCodeInfoDB[radixName] = radixCodeInfos
+			radixCodeInfoDB[radixName] = radixCodeInfos
 
-		return self.__radixCodeInfoDB
+		return radixCodeInfoDB
 
