@@ -98,24 +98,16 @@ class QHRadixParser:
 		self.codingRadixParser = codingRadixParser
 		self.yaml = yaml
 
-	def loadRadix(self, radixFileList):
-		radixDescriptionList = self.parse(radixFileList)
-		return radixDescriptionList
-
-	def parse(self, toRadixList):
-		totalRadixDescriptionList = []
-		for filename in toRadixList:
-			radixDescriptionList = self.parseRadixFromYAML(filename)
-			totalRadixDescriptionList.extend(radixDescriptionList)
-
-		return totalRadixDescriptionList
-
-	def parseRadixFromYAML(self, filename) -> [RadixDescription]:
+	def loadRadix(self, radixFiles) -> [RadixDescription]:
 		from model.element.radix import RadicalSet
 
-		model = self.loadRadicalSet(filename)
-		radicalSet = RadicalSet(model = model)
-		return radicalSet.radicals
+		totalRadixDescriptionList = []
+		for filename in radixFiles:
+			model = self.loadRadicalSet(filename)
+			radicalSet = RadicalSet(model = model)
+			totalRadixDescriptionList.extend(radicalSet.radicals)
+
+		return totalRadixDescriptionList
 
 	def loadRadicalSet(self, filename) -> RadicalSetModel:
 		node = self.yaml.load(open(filename))
