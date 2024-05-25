@@ -16,10 +16,10 @@ from model.element.CodingConfig import CodingConfig
 from model.element.enum import FontVariance
 
 from model.helper import StructureDescriptionGenerator
+from model.helper import QHRadixParser
 
 from parser.QHParser import QHTreeParser
 from parser.QHParser import QHParser
-from parser.QHParser import QHRadixParser
 
 from hanzi.network import HanZiNetwork
 

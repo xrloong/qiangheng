@@ -2,15 +2,12 @@ import sys
 import Constant
 import ruamel.yaml
 
-from coding.Base import CodingRadixParser
-
 from .model import SubstituteRuleSetModel
 from .model import RadicalSetModel
 
 from model.element.enum import FontVariance
 
 from model.element.CharacterDescription import CharacterDescription
-from model.element.radix import RadixDescription
 from model.helper import StructureDescriptionGenerator
 
 from parser import constant
@@ -89,25 +86,3 @@ class QHParser:
 			return FontVariance.Simplified
 		else:
 			return FontVariance.All
-
-class QHRadixParser:
-	def __init__(self, codingRadixParser: CodingRadixParser):
-		self.codingRadixParser = codingRadixParser
-
-	def convertRadixDescToCodeInfoList(self, radixDesc):
-		radixCodeInfoList = []
-		tmpRadixCodeInfoList = radixDesc.getRadixCodeInfoDescriptionList()
-		for radixInfo in tmpRadixCodeInfoList:
-			codeInfo = self.convertRadixDescToCodeInfoWithAttribute(radixInfo)
-			if codeInfo:
-				radixCodeInfoList.append(codeInfo)
-		return radixCodeInfoList
-
-	def convertRadixDescToCodeInfoWithAttribute(self, radixDesc):
-		codeInfo = self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
-
-		codeVariance = radixDesc.codeVariance
-		isSupportRadixCode = radixDesc.isSupportRadixCode
-		codeInfo.setCodeInfoAttribute(codeVariance, isSupportRadixCode)
-
-		return codeInfo

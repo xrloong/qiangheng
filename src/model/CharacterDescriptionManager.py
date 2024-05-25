@@ -4,10 +4,11 @@ import abc
 
 from injector import inject
 from .element.CharacterDescription import CharacterDescription
-from parser.QHParser import QHParser, QHRadixParser
+from parser.QHParser import QHParser
 
 from model.element.radix import RadicalSet
 from model.element.radix import RadixDescription
+from model.helper import QHRadixParser
 
 class RearrangeCallback(object, metaclass=abc.ABCMeta):
 	@abc.abstractmethod
