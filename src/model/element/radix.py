@@ -3,10 +3,10 @@ from parser.model import RadixCodeInfoModel
 from .CodeVariance import CodeVariance
 
 class RadixCodeInfoDescription:
-	def __init__(self, model: RadixCodeInfoModel, codeElementCodeInfo):
+	def __init__(self, model: RadixCodeInfoModel):
 		self.__codeVariance = model.variance
 		self.__isSupportRadixCode = model.isSupportRadixCode
-		self.__codeElementCodeInfo = codeElementCodeInfo
+		self.__codeElementCodeInfo = model.dict()
 
 	@property
 	def codeVariance(self):
