@@ -113,11 +113,13 @@ class QHRadixParser:
 	def parseRadixFromYAML(self, filename) -> [RadixDescription]:
 		from model.element.radix import RadicalSet
 
-		rootNode = self.yaml.load(open(filename))
-
-		model = RadicalSetModel(**rootNode)
+		model = self.loadRadicalSet(filename)
 		radicalSet = RadicalSet(model = model)
 		return radicalSet.radicals
+
+	def loadRadicalSet(self, filename) -> RadicalSetModel:
+		node = self.yaml.load(open(filename))
+		return RadicalSetModel(**node)
 
 	def convertRadixDescToCodeInfoList(self, radixDesc):
 		radixCodeInfoList = []
