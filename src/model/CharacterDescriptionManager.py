@@ -4,10 +4,12 @@ import abc
 
 from injector import inject
 from .element.CharacterDescription import CharacterDescription
-from .helper import RadixHelper
 from parser.QHParser import QHParser
 from parser.QHParser import QHSubstituteRuleParser
 from parser.QHParser import QHRadixParser
+
+from model.element.radix import RadicalSet
+from model.element.radix import RadixDescription
 
 class RearrangeCallback(object, metaclass=abc.ABCMeta):
 	@abc.abstractmethod
@@ -134,14 +136,11 @@ class RadixManager:
 		self.radixDB = {}
 
 	def loadMainRadicals(self, radixFiles):
-		radixHelper = RadixHelper(self.radixParser)
-
-		radixCodeInfoDB = radixHelper.loadRadix(radixFiles)
+		radixCodeInfoDB = self.__loadRadix(radixFiles)
 		self.radixCodeInfoDB = radixCodeInfoDB
 
 	def loadAdjust(self, adjustFiles):
-		radixHelper = RadixHelper(self.radixParser)
-		radixCodeInfoDB = radixHelper.loadRadix(adjustFiles)
+		radixCodeInfoDB = self.__loadRadix(adjustFiles)
 
 		self.radixCodeInfoDB.update(radixCodeInfoDB)
 
@@ -150,8 +149,7 @@ class RadixManager:
 			self.radixDB[radixName] = CharacterDescription(radixName)
 
 	def loadFastCodes(self, fastFile):
-		radixHelper = RadixHelper(self.radixParser)
-		fastCodeCharacterDB = radixHelper.loadRadix([fastFile])
+		fastCodeCharacterDB = self.__loadRadix([fastFile])
 		return fastCodeCharacterDB
 
 	def queryRadix(self, characterName):
@@ -163,6 +161,23 @@ class RadixManager:
 	def getRadixCodeInfoList(self, radixName):
 		return self.radixCodeInfoDB.get(radixName)
 
+	def __loadRadix(self, radixFiles: list[str]) -> dict[str, RadixDescription]:
+		radixParser = self.radixParser
+
+		radixDescriptions = []
+		for radicalFile in radixFiles:
+			model = radixParser.loadRadicalSet(radicalFile)
+			radicalSet = RadicalSet(model = model)
+			radixDescriptions.extend(radicalSet.radicals)
+
+		radixCodeInfoDB = {}
+		for radixDescription in radixDescriptions:
+			radixName = radixDescription.getRadixName()
+			radixCodeInfos = radixParser.convertRadixDescToCodeInfoList(radixDescription)
+
+			radixCodeInfoDB[radixName] = radixCodeInfos
+
+		return radixCodeInfoDB
 
 if __name__=='__main__':
 	pass
