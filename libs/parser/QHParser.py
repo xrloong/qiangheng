@@ -3,7 +3,6 @@ import Constant
 import ruamel.yaml
 
 from coding.Base import CodingRadixParser
-from coding.Base import CodeInfo
 
 from .model import SubstituteRuleSetModel
 from .model import RadicalSetModel
@@ -112,9 +111,3 @@ class QHRadixParser:
 		codeInfo.setCodeInfoAttribute(codeVariance, isSupportRadixCode)
 
 		return codeInfo
-
-	# 多型
-	def convertRadixDescToCodeInfo(self, radixDesc):
-		codeInfo = CodeInfo()
-		return codeInfo
-
