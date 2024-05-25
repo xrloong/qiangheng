@@ -120,11 +120,6 @@ class QHRadixParser:
 
 		return codeInfo
 
-	def convertElementToRadixInfo(self, elementCodeInfo) -> RadixCodeInfoDescription:
-		from .model import RadixCodeInfoModel
-		model = RadixCodeInfoModel(**elementCodeInfo)
-		return RadixCodeInfoDescription(model)
-
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
 		codeInfo = CodeInfo()
@@ -153,10 +148,14 @@ class QHRadixParser:
 		return radixDescriptionList
 
 	def parseRadixDescription(self, nodeCharacter):
+		from .model import RadixCodeInfoModel
+
 		radixCodeInfoDescList = []
 		radixName = nodeCharacter.get(Constant.TAG_NAME)
 		for elementCodeInfo in nodeCharacter.get(QHRadixParser.TAG_CODE_INFORMATION):
-			radixCodeInfoDesc = self.convertElementToRadixInfo(elementCodeInfo)
+			model = RadixCodeInfoModel(**elementCodeInfo)
+			radixCodeInfoDesc = RadixCodeInfoDescription(model)
+
 			radixCodeInfoDescList.append(radixCodeInfoDesc)
 		return RadixDescription(radixName, radixCodeInfoDescList)
 
