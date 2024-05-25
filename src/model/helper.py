@@ -28,8 +28,7 @@ class RadixHelper:
 	def __init__(self, radixParser):
 		self.__radixParser = radixParser
 
-
-	def loadRadix(self, radixFiles) -> dict[str, RadixDescription]:
+	def loadRadix(self, radixFiles: list[str]) -> dict[str, RadixDescription]:
 		radixParser = self.__radixParser
 
 		radixDescriptions = []
