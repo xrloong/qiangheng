@@ -1,4 +1,5 @@
 from parser.model import RadixCodeInfoModel
+from parser.model import RadicalModel
 
 from .CodeVariance import CodeVariance
 
@@ -21,9 +22,9 @@ class RadixCodeInfoDescription:
 		return self.__codeElementCodeInfo
 
 class RadixDescription:
-	def __init__(self, radixName, radixCodeInfoList):
-		self.radixName = radixName
-		self.radixCodeInfoList = radixCodeInfoList
+	def __init__(self, model: RadicalModel):
+		self.radixName = model.name
+		self.radixCodeInfoList = tuple(RadixCodeInfoDescription(model = modelCoding) for modelCoding in model.codings)
 
 	def getRadixName(self):
 		return self.radixName

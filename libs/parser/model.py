@@ -28,6 +28,13 @@ class RadixCodeInfoModel(BaseModel):
 	def isSupportRadixCode(self):
 		return not self.__hasSupportCharacterCode
 
+class RadicalModel(BaseModel):
+	model_config = ConfigDict(frozen = True)
+
+	name: str = Field(alias = '名稱', frozen = True)
+	comment: str = Field(alias = '註記', frozen = True)
+	codings: list[RadixCodeInfoModel] = Field(alias = '編碼資訊', frozen = True)
+
 class SubstituteRuleModel(BaseModel):
 	model_config = ConfigDict(frozen = True)
 

@@ -10,7 +10,7 @@ from .model import SubstituteRuleSetModel
 from model.element.enum import FontVariance
 
 from model.element.CharacterDescription import CharacterDescription
-from model.element.radix import RadixCodeInfoDescription, RadixDescription
+from model.element.radix import RadixDescription
 from model.helper import StructureDescriptionGenerator
 
 from parser import constant
@@ -91,7 +91,6 @@ class QHParser:
 			return FontVariance.All
 
 class QHRadixParser:
-	TAG_CODE_INFORMATION = '編碼資訊'
 	TAG_CODE = '編碼'
 
 	def __init__(self, codingRadixParser: CodingRadixParser, yaml: ruamel.yaml.YAML):
@@ -148,14 +147,8 @@ class QHRadixParser:
 		return radixDescriptionList
 
 	def parseRadixDescription(self, nodeCharacter):
-		from .model import RadixCodeInfoModel
+		from .model import RadicalModel
 
-		radixCodeInfoDescList = []
-		radixName = nodeCharacter.get(Constant.TAG_NAME)
-		for elementCodeInfo in nodeCharacter.get(QHRadixParser.TAG_CODE_INFORMATION):
-			model = RadixCodeInfoModel(**elementCodeInfo)
-			radixCodeInfoDesc = RadixCodeInfoDescription(model)
-
-			radixCodeInfoDescList.append(radixCodeInfoDesc)
-		return RadixDescription(radixName, radixCodeInfoDescList)
+		model = RadicalModel(**nodeCharacter)
+		return RadixDescription(model = model)
 
