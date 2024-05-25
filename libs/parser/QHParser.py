@@ -92,8 +92,6 @@ class QHParser:
 			return FontVariance.All
 
 class QHRadixParser:
-	TAG_CODE = '編碼'
-
 	def __init__(self, codingRadixParser: CodingRadixParser, yaml: ruamel.yaml.YAML):
 		self.codingRadixParser = codingRadixParser
 		self.yaml = yaml
