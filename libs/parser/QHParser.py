@@ -160,11 +160,3 @@ class QHRadixParser:
 			radixCodeInfoDescList.append(radixCodeInfoDesc)
 		return RadixDescription(radixName, radixCodeInfoDescList)
 
-	def parseFileType(self, rootNode):
-		fileType = rootNode.get(Constant.TAG_FILE_TYPE)
-		return fileType
-
-	def parseInputMethod(self, rootNode):
-		nameInputMethod = rootNode.get(Constant.TAG_INPUT_METHOD)
-		return nameInputMethod
-
