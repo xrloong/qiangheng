@@ -130,39 +130,39 @@ class CompositionManager:
 class RadixManager:
 	@inject
 	def __init__(self, radixParser: QHRadixParser):
-		self.radixParser = radixParser
+		self.__radixParser = radixParser
 
-		self.radixCodeInfoDB = {}
-		self.radixDB = {}
+		self.__radixCodeInfoDB = {}
+		self.__radixDB = {}
 
 	def loadMainRadicals(self, radixFiles):
 		radixCodeInfoDB = self.__loadRadix(radixFiles)
-		self.radixCodeInfoDB = radixCodeInfoDB
+		self.__radixCodeInfoDB = radixCodeInfoDB
 
 	def loadAdjust(self, adjustFiles):
 		radixCodeInfoDB = self.__loadRadix(adjustFiles)
 
-		self.radixCodeInfoDB.update(radixCodeInfoDB)
+		self.__radixCodeInfoDB.update(radixCodeInfoDB)
 
 		resetRadixNameList = radixCodeInfoDB.keys()
 		for radixName in resetRadixNameList:
-			self.radixDB[radixName] = CharacterDescription(radixName)
+			self.__radixDB[radixName] = CharacterDescription(radixName)
 
 	def loadFastCodes(self, fastFile):
 		fastCodeCharacterDB = self.__loadRadix([fastFile])
 		return fastCodeCharacterDB
 
 	def queryRadix(self, characterName):
-		return self.radixDB.get(characterName, None)
+		return self.__radixDB.get(characterName, None)
 
 	def hasRadix(self, radixName):
-		return (radixName in self.radixCodeInfoDB)
+		return (radixName in self.__radixCodeInfoDB)
 
 	def getRadixCodeInfoList(self, radixName):
-		return self.radixCodeInfoDB.get(radixName)
+		return self.__radixCodeInfoDB.get(radixName)
 
 	def __loadRadix(self, radixFiles: list[str]) -> dict[str, RadixDescription]:
-		radixParser = self.radixParser
+		radixParser = self.__radixParser
 
 		radixDescriptions = []
 		for radicalFile in radixFiles:
