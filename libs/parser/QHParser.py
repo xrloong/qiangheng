@@ -6,6 +6,7 @@ from coding.Base import CodingRadixParser
 from coding.Base import CodeInfo
 
 from .model import SubstituteRuleSetModel
+from .model import RadicalSetModel
 
 from model.element.enum import FontVariance
 
@@ -137,18 +138,8 @@ class QHRadixParser:
 
 		return self.parseRadixInfo(rootNode)
 
-	def parseRadixInfo(self, rootNode):
-		radixDescriptionList = []
-		characterSetNode = rootNode.get(Constant.TAG_CHARACTER_SET)
-		for characterNode in characterSetNode:
-			charName = characterNode.get(Constant.TAG_NAME)
-			radixDescription = self.parseRadixDescription(characterNode)
-			radixDescriptionList.append(radixDescription)
+	def parseRadixInfo(self, rootNode) -> [RadixDescription]:
+		model = RadicalSetModel(**rootNode)
+		radixDescriptionList = tuple(RadixDescription(model = modelRadical) for modelRadical in model.radicals)
 		return radixDescriptionList
-
-	def parseRadixDescription(self, nodeCharacter):
-		from .model import RadicalModel
-
-		model = RadicalModel(**nodeCharacter)
-		return RadixDescription(model = model)
 

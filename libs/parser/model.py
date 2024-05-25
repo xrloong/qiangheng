@@ -35,6 +35,11 @@ class RadicalModel(BaseModel):
 	comment: str = Field(alias = '註記', frozen = True)
 	codings: list[RadixCodeInfoModel] = Field(alias = '編碼資訊', frozen = True)
 
+class RadicalSetModel(BaseModel):
+	model_config = ConfigDict(frozen = True)
+
+	radicals: list[RadicalModel] = Field(alias = '字符集', frozen = True)
+
 class SubstituteRuleModel(BaseModel):
 	model_config = ConfigDict(frozen = True)
 
