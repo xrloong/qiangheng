@@ -45,7 +45,7 @@ class StructureManager:
 		self.templateManager.loadSubstituteRules(templateFiles)
 
 		# 主要字根
-		self.radixManager.loadRadix(radixFiles)
+		self.radixManager.loadMainRadicals(radixFiles)
 
 		# 個別方法的替代及調整
 		self.radixManager.loadAdjust(adjustFiles)

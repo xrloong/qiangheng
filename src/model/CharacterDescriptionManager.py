@@ -133,7 +133,7 @@ class RadixManager:
 		self.radixCodeInfoDB = {}
 		self.radixDB = {}
 
-	def loadRadix(self, radixFiles):
+	def loadMainRadicals(self, radixFiles):
 		radixHelper = RadixHelper(self.radixParser)
 
 		radixCodeInfoDB = radixHelper.loadRadix(radixFiles)
