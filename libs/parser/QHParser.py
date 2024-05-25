@@ -139,7 +139,9 @@ class QHRadixParser:
 		return self.parseRadixInfo(rootNode)
 
 	def parseRadixInfo(self, rootNode) -> [RadixDescription]:
+		from model.element.radix import RadicalSet
+
 		model = RadicalSetModel(**rootNode)
-		radixDescriptionList = tuple(RadixDescription(model = modelRadical) for modelRadical in model.radicals)
-		return radixDescriptionList
+		radicalSet = RadicalSet(model = model)
+		return radicalSet.radicals
 

@@ -1,5 +1,6 @@
 from parser.model import RadixCodeInfoModel
 from parser.model import RadicalModel
+from parser.model import RadicalSetModel
 
 from .CodeVariance import CodeVariance
 
@@ -35,4 +36,8 @@ class RadixDescription:
 	def getRadixCodeInfoDescription(self, index):
 		if index in range(leng(self.radixCodeInfoList)):
 			return self.radixCodeInfoList[index]
+
+class RadicalSet:
+	def __init__(self, model: RadicalSetModel):
+		self.radicals = tuple(RadixDescription(model = modelRadical) for modelRadical in model.radicals)
 
