@@ -10,7 +10,6 @@ from model.element.enum import FontVariance
 from model.element.CharacterDescription import CharacterDescription
 from model.helper import StructureDescriptionGenerator
 
-from parser import constant
 from parser import TreeParser
 
 class QHTreeParser:
