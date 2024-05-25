@@ -7,7 +7,7 @@ from pydantic import ConfigDict
 from model.element.CodeVariance import CodeVariance
 
 class RadixCodeInfoModel(BaseModel):
-	model_config = ConfigDict(frozen = True)
+	model_config = ConfigDict(frozen = True, extra = 'allow')
 
 	varianceString: Optional[str] = Field(alias = '類型', frozen = True, default = None)
 	supportCharacterCode: Optional[str] = Field(

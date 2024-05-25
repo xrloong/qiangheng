@@ -123,7 +123,7 @@ class QHRadixParser:
 	def convertElementToRadixInfo(self, elementCodeInfo) -> RadixCodeInfoDescription:
 		from .model import RadixCodeInfoModel
 		model = RadixCodeInfoModel(**elementCodeInfo)
-		return RadixCodeInfoDescription(model, elementCodeInfo)
+		return RadixCodeInfoDescription(model, model.dict())
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
