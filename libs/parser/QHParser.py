@@ -25,18 +25,18 @@ class QHTreeParser:
 	def parse(self, expression):
 		return self.treeParser.parse(expression)
 
-class QHSubstituteRuleParser:
-	def __init__(self, yaml: ruamel.yaml.YAML):
+class QHParser:
+	def __init__(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML):
+		self.treeParser = TreeParser
 		self.yaml = yaml
 
 	def loadSubstituteRuleSet(self, filename) -> SubstituteRuleSetModel:
 		node = self.yaml.load(open(filename))
 		return SubstituteRuleSetModel(**node)
 
-class QHParser:
-	def __init__(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML):
-		self.treeParser = TreeParser
-		self.yaml = yaml
+	def loadRadicalSet(self, filename) -> RadicalSetModel:
+		node = self.yaml.load(open(filename))
+		return RadicalSetModel(**node)
 
 	def parseStructure(self, structureExpression):
 		return self.treeParser.parse(structureExpression)
@@ -92,13 +92,8 @@ class QHParser:
 			return FontVariance.All
 
 class QHRadixParser:
-	def __init__(self, codingRadixParser: CodingRadixParser, yaml: ruamel.yaml.YAML):
+	def __init__(self, codingRadixParser: CodingRadixParser):
 		self.codingRadixParser = codingRadixParser
-		self.yaml = yaml
-
-	def loadRadicalSet(self, filename) -> RadicalSetModel:
-		node = self.yaml.load(open(filename))
-		return RadicalSetModel(**node)
 
 	def convertRadixDescToCodeInfoList(self, radixDesc):
 		radixCodeInfoList = []

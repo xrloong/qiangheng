@@ -4,9 +4,7 @@ import abc
 
 from injector import inject
 from .element.CharacterDescription import CharacterDescription
-from parser.QHParser import QHParser
-from parser.QHParser import QHSubstituteRuleParser
-from parser.QHParser import QHRadixParser
+from parser.QHParser import QHParser, QHRadixParser
 
 from model.element.radix import RadicalSet
 from model.element.radix import RadixDescription
@@ -30,7 +28,7 @@ class RearrangeCallback(object, metaclass=abc.ABCMeta):
 
 class SubstituteManager:
 	@inject
-	def __init__(self, parser: QHSubstituteRuleParser):
+	def __init__(self, parser: QHParser):
 		self.parser = parser
 		self.substituteRules = []
 		self.opToRuleDict = {}
@@ -129,7 +127,8 @@ class CompositionManager:
 
 class RadixManager:
 	@inject
-	def __init__(self, radixParser: QHRadixParser):
+	def __init__(self, parser: QHParser, radixParser: QHRadixParser):
+		self.__parser = parser
 		self.__radixParser = radixParser
 
 		self.__radixCodeInfoDB = {}
@@ -162,14 +161,14 @@ class RadixManager:
 		return self.__radixCodeInfoDB.get(radixName)
 
 	def __loadRadix(self, radixFiles: list[str]) -> dict[str, RadixDescription]:
-		radixParser = self.__radixParser
-
+		parser = self.__parser
 		radixDescriptions = []
 		for radicalFile in radixFiles:
-			model = radixParser.loadRadicalSet(radicalFile)
+			model = parser.loadRadicalSet(radicalFile)
 			radicalSet = RadicalSet(model = model)
 			radixDescriptions.extend(radicalSet.radicals)
 
+		radixParser = self.__radixParser
 		radixCodeInfoDB = {}
 		for radixDescription in radixDescriptions:
 			radixName = radixDescription.getRadixName()
