@@ -25,6 +25,7 @@ class StructureDescriptionGenerator:
 		return structDesc
 
 class RadicalCodingConverter:
+	@inject
 	def __init__(self, codingRadixParser: CodingRadixParser):
 		self.codingRadixParser = codingRadixParser
 
