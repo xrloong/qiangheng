@@ -24,7 +24,7 @@ class StructureDescriptionGenerator:
 		structDesc.generateName()
 		return structDesc
 
-class QHRadixParser:
+class RadicalCodingConverter:
 	def __init__(self, codingRadixParser: CodingRadixParser):
 		self.codingRadixParser = codingRadixParser
 

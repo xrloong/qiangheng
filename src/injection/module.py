@@ -16,7 +16,7 @@ from model.element.CodingConfig import CodingConfig
 from model.element.enum import FontVariance
 
 from model.helper import StructureDescriptionGenerator
-from model.helper import QHRadixParser
+from model.helper import RadicalCodingConverter
 
 from parser.QHParser import QHTreeParser
 from parser.QHParser import QHParser
@@ -69,8 +69,8 @@ class ParserModule(Module):
 		return QHParser(treeParser = treeParser, yaml = yaml)
 
 	@provider
-	def provideQHRadixParser(self, codingRadixParser: CodingRadixParser) -> QHRadixParser:
-		return QHRadixParser(codingRadixParser = codingRadixParser)
+	def provideRadicalCodingConverter(self, codingRadixParser: CodingRadixParser) -> RadicalCodingConverter:
+		return RadicalCodingConverter(codingRadixParser = codingRadixParser)
 
 class ManagerModule(Module):
 	def __init__(self, structureManager):

@@ -8,7 +8,7 @@ from parser.QHParser import QHParser
 
 from model.element.radix import RadicalSet
 from model.element.radix import RadixDescription
-from model.helper import QHRadixParser
+from model.helper import RadicalCodingConverter
 
 class RearrangeCallback(object, metaclass=abc.ABCMeta):
 	@abc.abstractmethod
@@ -128,9 +128,9 @@ class CompositionManager:
 
 class RadixManager:
 	@inject
-	def __init__(self, parser: QHParser, radixParser: QHRadixParser):
+	def __init__(self, parser: QHParser, radicalCodingConverter: RadicalCodingConverter):
 		self.__parser = parser
-		self.__radixParser = radixParser
+		self.__radicalCodingConverter = radicalCodingConverter
 
 		self.__radixCodeInfoDB = {}
 		self.__radixDB = {}
@@ -169,11 +169,11 @@ class RadixManager:
 			radicalSet = RadicalSet(model = model)
 			radixDescriptions.extend(radicalSet.radicals)
 
-		radixParser = self.__radixParser
+		radicalCodingConverter = self.__radicalCodingConverter
 		radixCodeInfoDB = {}
 		for radixDescription in radixDescriptions:
 			radixName = radixDescription.getRadixName()
-			radixCodeInfos = radixParser.convertRadixDescToCodeInfoList(radixDescription)
+			radixCodeInfos = radicalCodingConverter.convertRadixDescToCodeInfoList(radixDescription)
 
 			radixCodeInfoDB[radixName] = radixCodeInfos
 
