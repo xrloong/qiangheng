@@ -32,7 +32,6 @@ QHDATA_PATH			=	qhdata
 QHDATA_MAIN_PATH		=	$(QHDATA_PATH)/main
 QHDATA_MAIN_COMP_PATH		=	$(QHDATA_MAIN_PATH)/component
 QHDATA_MAIN_RADIX_PATH		=	$(QHDATA_MAIN_PATH)/radix
-QHDATA_TEMPLATE_FILE		=	$(QHDATA_MAIN_PATH)/template.xml
 QHDATA_STYLE_FILE		=	$(QHDATA_MAIN_PATH)/style.xml
 GEN_PATH			=	gen
 GEN_QHDATA_PATH			=	$(GEN_PATH)/$(QHDATA_PATH)
@@ -85,7 +84,7 @@ prepare-main:
 	xsltproc -o $(GEN_QHDATA_MAIN_COMP_PATH)/CJK.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_COMP_PATH)/CJK.xml
 	xsltproc -o $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml
 	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/style.yaml xslt/xml2yaml.xslt $(QHDATA_STYLE_FILE)
-	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/template.yaml xslt/xml2yaml-template.xslt $(QHDATA_TEMPLATE_FILE)
+	cp $(QHDATA_MAIN_PATH)/template.yaml $(GEN_QHDATA_MAIN_PATH)/template.yaml
 	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK.xml $(GEN_QHDATA_PATH)/ _CJK.xml
 	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK-A.xml $(GEN_QHDATA_PATH)/ _CJK-A.xml
 
