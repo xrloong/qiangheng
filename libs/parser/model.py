@@ -60,3 +60,12 @@ class SubstituteRuleSetModel(BaseModel):
 
 	rules: list[SubstituteRuleModel] = Field(alias = '規則集', frozen = True)
 
+class StructureModel(BaseModel):
+	model_config = ConfigDict(frozen = True, extra = 'allow')
+
+	expression: str = Field(alias = '結構', frozen = True)
+	font: Optional[str] = Field(
+        alias = '字體', pattern = "傳|簡",
+        frozen = True, default = None
+    )
+

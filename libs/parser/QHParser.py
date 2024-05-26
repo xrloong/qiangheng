@@ -53,16 +53,19 @@ class QHParser:
 		return charDescList
 
 	def loadStructureSet(self, charNode):
+		from .model import StructureModel
+
 		structureList = []
 		if Constant.TAG_STRUCTURE_SET in charNode:
 			nodeStructureList = charNode.get(Constant.TAG_STRUCTURE_SET)
 
 			for structureDict in nodeStructureList:
-				structureExpression = structureDict[Constant.TAG_STRUCTURE]
+				model = StructureModel(**structureDict)
+				structureExpression = model.expression
 
 				fontVariance = FontVariance.All
-				if Constant.TAG_FONT_VARIANCE in structureDict:
-					fontVarianceDescription = structureDict[Constant.TAG_FONT_VARIANCE]
+				if model.font:
+					fontVarianceDescription = model.font
 					fontVariance = self.convertDescriptionToFontVariance(fontVarianceDescription)
 
 				structureDesc = self.parseStructure(structureExpression)
