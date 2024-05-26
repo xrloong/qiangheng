@@ -23,10 +23,23 @@
           <xsl:value-of select="$intent" />
           <xsl:value-of select="$itemmark" />
           <xsl:text>比對: </xsl:text>
-          <xsl:text>"</xsl:text>
-            <xsl:call-template name="generate-規則" />
-          <xsl:text>"</xsl:text>
           <xsl:value-of select="$newline" />
+
+            <xsl:value-of select="$intent" />
+            <xsl:value-of select="$intent" />
+            <xsl:value-of select="$intent" />
+            <xsl:text>運算: </xsl:text>
+            <xsl:text>"</xsl:text>
+            <xsl:value-of select="@運算" />
+            <xsl:text>"</xsl:text>
+            <xsl:value-of select="$newline" />
+
+            <xsl:value-of select="$intent" />
+            <xsl:value-of select="$intent" />
+            <xsl:value-of select="$intent" />
+            <xsl:text>參數個數: </xsl:text>
+            <xsl:value-of select="@參數個數" />
+            <xsl:value-of select="$newline" />
 
           <xsl:value-of select="$intent" />
           <xsl:value-of select="$intent" />
@@ -60,15 +73,6 @@
           <xsl:value-of select="$str"/>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="generate-規則">
-    <xsl:param name="param_count" select="@參數個數" />
-    <xsl:text>({運算=</xsl:text>
-    <xsl:value-of select="@運算" />
-    <xsl:text>}</xsl:text>
-      <xsl:for-each select="(//node())[$param_count >= position()]"> .</xsl:for-each>
-    <xsl:text>)</xsl:text>
   </xsl:template>
 </xsl:stylesheet>
 

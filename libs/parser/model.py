@@ -40,11 +40,20 @@ class RadicalSetModel(BaseModel):
 
 	radicals: list[RadicalModel] = Field(alias = '字符集', frozen = True)
 
+class SubstituteRuleMatchingModel(BaseModel):
+	model_config = ConfigDict(frozen = True)
+
+	operator: str = Field(alias = '運算', frozen = True, default = None)
+	operandCount: int = Field(alias = '參數個數', frozen = True)
+
 class SubstituteRuleModel(BaseModel):
 	model_config = ConfigDict(frozen = True)
 
-	pattern: str = Field(alias = '比對', frozen = True)
+	matching: str | SubstituteRuleMatchingModel = Field(alias = '比對', frozen = True, default = None)
 	replacement: str = Field(alias = '替換', frozen = True)
+
+	templateName: Optional[str] = Field(alias = '範本名稱', frozen = True, default = None)
+	parameterCount: Optional[int] = Field(alias = '參數個數', frozen = True, default = None)
 
 class SubstituteRuleSetModel(BaseModel):
 	model_config = ConfigDict(frozen = True)
