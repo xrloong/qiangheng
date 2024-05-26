@@ -69,14 +69,6 @@ class BaseRearrangeCallback(SubstituteManager.RearrangeCallback):
 	def matchAndReplace(self, tre, structure, result):
 		return self.treInterpreter.matchAndReplace(tre, structure, result)
 
-class TemplateRearrangeCallback(BaseRearrangeCallback):
-	def __init__(self, computeCharacterInfo, treInterpreter):
-		super().__init__(computeCharacterInfo, treInterpreter)
-
-class SubsituteRearrangeCallback(BaseRearrangeCallback):
-	def __init__(self, computeCharacterInfo, treInterpreter):
-		super().__init__(computeCharacterInfo, treInterpreter)
-
 class ConstructCharacter:
 	@inject
 	def __init__(self,
@@ -143,8 +135,7 @@ class ConstructCharacter:
 		treInterpreter = self.treInterpreter
 		templateManager = structureManager.getTemplateManager()
 		substituteManager = structureManager.getSubstituteManager()
-		templateRearrangeCallback = TemplateRearrangeCallback(self, treInterpreter)
-		substituteRearrangeCallback = SubsituteRearrangeCallback(self, treInterpreter)
+		rearrangeCallback = BaseRearrangeCallback(self, treInterpreter)
 
 		if radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
@@ -165,8 +156,8 @@ class ConstructCharacter:
 
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
-			templateManager.recursivelyRearrangeStructure(structure, templateRearrangeCallback)
-			substituteManager.recursivelyRearrangeStructure(structure, substituteRearrangeCallback)
+			templateManager.recursivelyRearrangeStructure(structure, rearrangeCallback)
+			substituteManager.recursivelyRearrangeStructure(structure, rearrangeCallback)
 
 			networkManager.addStructureIntoNode(structure, nodeStructure)
 			if isMainStructure:
