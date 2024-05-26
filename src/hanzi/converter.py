@@ -89,7 +89,7 @@ class ConstructCharacter:
 		self.codeInfosComputer = codeInfosComputer
 		self.itemFactory = itemFactory
 
-		self.treInterpreter = treInterpreter
+		self.rearrangeCallback = ConstructCharacter.RearrangeCallback(self, treInterpreter)
 
 	def compute(self, characters):
 		for character in characters:
@@ -132,10 +132,8 @@ class ConstructCharacter:
 		radixManager = structureManager.getRadixManager()
 		itemFactory = self.itemFactory
 
-		treInterpreter = self.treInterpreter
 		templateManager = structureManager.getTemplateManager()
 		substituteManager = structureManager.getSubstituteManager()
-		rearrangeCallback = ConstructCharacter.RearrangeCallback(self, treInterpreter)
 
 		if radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
@@ -156,8 +154,8 @@ class ConstructCharacter:
 
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
-			templateManager.recursivelyRearrangeStructure(structure, rearrangeCallback)
-			substituteManager.recursivelyRearrangeStructure(structure, rearrangeCallback)
+			templateManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
+			substituteManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
 
 			networkManager.addStructureIntoNode(structure, nodeStructure)
 			if isMainStructure:
