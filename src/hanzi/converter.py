@@ -56,20 +56,20 @@ def isBelongToFontVariance(characterFontVariance, targetFontVariance):
 	else:
 		return False
 
-class BaseRearrangeCallback(SubstituteManager.RearrangeCallback):
-	def __init__(self, computeCharacterInfo, treInterpreter):
-		self.computeCharacterInfo = computeCharacterInfo
-		self.treInterpreter = treInterpreter
-
-	def prepare(self, structure):
-		nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
-		if nodeStructure:
-			self.computeCharacterInfo.expandNodeStructure(nodeStructure)
-
-	def matchAndReplace(self, tre, structure, result):
-		return self.treInterpreter.matchAndReplace(tre, structure, result)
-
 class ConstructCharacter:
+	class RearrangeCallback(SubstituteManager.RearrangeCallback):
+		def __init__(self, computeCharacterInfo, treInterpreter):
+			self.computeCharacterInfo = computeCharacterInfo
+			self.treInterpreter = treInterpreter
+
+		def prepare(self, structure):
+			nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
+			if nodeStructure:
+				self.computeCharacterInfo.expandNodeStructure(nodeStructure)
+
+		def matchAndReplace(self, tre, structure, result):
+			return self.treInterpreter.matchAndReplace(tre, structure, result)
+
 	@inject
 	def __init__(self,
 			fontVariance: FontVariance,
@@ -135,7 +135,7 @@ class ConstructCharacter:
 		treInterpreter = self.treInterpreter
 		templateManager = structureManager.getTemplateManager()
 		substituteManager = structureManager.getSubstituteManager()
-		rearrangeCallback = BaseRearrangeCallback(self, treInterpreter)
+		rearrangeCallback = ConstructCharacter.RearrangeCallback(self, treInterpreter)
 
 		if radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
