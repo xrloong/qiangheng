@@ -59,7 +59,7 @@ class SubstituteManager:
 	def getSubstituteRules(self):
 		return self.substituteRules
 
-	def recursivelyRearrangeStructure(self, structure, rearrangeCallback):
+	def recursivelyRearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
 		rearrangeCallback.prepare(structure)
 
 		if rearrangeCallback.checkApplied(structure):
@@ -71,7 +71,7 @@ class SubstituteManager:
 
 		rearrangeCallback.setApplied(structure)
 
-	def rearrangeStructure(self, structure, rearrangeCallback):
+	def rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
 		def expandLeaf(structure):
 			rearrangeCallback.prepare(structure)
 
