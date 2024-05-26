@@ -74,20 +74,20 @@ class TemplateRearrangeCallback(BaseRearrangeCallback):
 		super().__init__(computeCharacterInfo, treInterpreter)
 
 	def checkApplied(self, structure):
-		return structure.getTag().isTemplateApplied()
+		return False
 
 	def setApplied(self, structure):
-		structure.getTag().setTemplateApplied()
+		pass
 
 class SubsituteRearrangeCallback(BaseRearrangeCallback):
 	def __init__(self, computeCharacterInfo, treInterpreter):
 		super().__init__(computeCharacterInfo, treInterpreter)
 
 	def checkApplied(self, structure):
-		return structure.getTag().isSubstituteApplied()
+		return False
 
 	def setApplied(self, structure):
-		structure.getTag().setSubstituteApplied()
+		pass
 
 class ConstructCharacter:
 	@inject
