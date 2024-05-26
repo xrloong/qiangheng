@@ -16,12 +16,6 @@ class SubstituteManager:
 		def prepare(self, structure): pass
 
 		@abc.abstractmethod
-		def checkApplied(self, structure): pass
-
-		@abc.abstractmethod
-		def setApplied(self, structure): pass
-
-		@abc.abstractmethod
 		def matchAndReplace(self, tre, structure, result): pass
 
 	@inject
@@ -58,14 +52,9 @@ class SubstituteManager:
 	def recursivelyRearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
 		rearrangeCallback.prepare(structure)
 
-		if rearrangeCallback.checkApplied(structure):
-			return
-
 		self.rearrangeStructure(structure, rearrangeCallback)
 		for childStructure in structure.getStructureList():
 			self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
-
-		rearrangeCallback.setApplied(structure)
 
 	def rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
 		def expandLeaf(structure):
