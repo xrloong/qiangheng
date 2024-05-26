@@ -10,7 +10,7 @@ from model.element.enum import FontVariance
 
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
-from model.CharacterDescriptionManager import RearrangeCallback
+from model.CharacterDescriptionManager import SubstituteManager
 from model.tree.regexp import TreeRegExpInterpreter
 from model.tree.regexp import BasicTreeProxy
 from model.tree.regexp import TreeNodeGenerator
@@ -56,7 +56,7 @@ def isBelongToFontVariance(characterFontVariance, targetFontVariance):
 	else:
 		return False
 
-class BaseRearrangeCallback(RearrangeCallback):
+class BaseRearrangeCallback(SubstituteManager.RearrangeCallback):
 	def __init__(self, computeCharacterInfo, treInterpreter):
 		self.computeCharacterInfo = computeCharacterInfo
 		self.treInterpreter = treInterpreter

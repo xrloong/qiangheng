@@ -10,24 +10,20 @@ from model.element.radix import RadicalSet
 from model.element.radix import RadixDescription
 from model.helper import RadicalCodingConverter
 
-class RearrangeCallback(object, metaclass=abc.ABCMeta):
-	@abc.abstractmethod
-	def prepare(self, structure):
-		pass
-
-	@abc.abstractmethod
-	def checkApplied(self, structure):
-		pass
-
-	@abc.abstractmethod
-	def setApplied(self, structure):
-		pass
-
-	@abc.abstractmethod
-	def matchAndReplace(self, tre, structure, result):
-		pass
-
 class SubstituteManager:
+	class RearrangeCallback(object, metaclass=abc.ABCMeta):
+		@abc.abstractmethod
+		def prepare(self, structure): pass
+
+		@abc.abstractmethod
+		def checkApplied(self, structure): pass
+
+		@abc.abstractmethod
+		def setApplied(self, structure): pass
+
+		@abc.abstractmethod
+		def matchAndReplace(self, tre, structure, result): pass
+
 	@inject
 	def __init__(self, parser: QHParser):
 		self.parser = parser
