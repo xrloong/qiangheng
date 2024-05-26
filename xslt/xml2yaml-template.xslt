@@ -29,7 +29,11 @@
           <xsl:value-of select="$intent" />
           <xsl:value-of select="$intent" />
           <xsl:text>替換: </xsl:text>
-          <xsl:value-of select="@替換" />
+          <xsl:text>"</xsl:text>
+          <xsl:call-template name="yamlescape">
+            <xsl:with-param name="str" select="@替換" />
+          </xsl:call-template>
+          <xsl:text>"</xsl:text>
           <xsl:value-of select="$newline" />
 
         </xsl:if>
@@ -39,6 +43,21 @@
   <xsl:template match="comment()">
     <xsl:text># </xsl:text><xsl:value-of select="." />
     <xsl:value-of select="$newline" />
+  </xsl:template>
+
+  <xsl:template name="yamlescape">
+   <xsl:param name="str" select="."/>
+    <xsl:choose>
+      <xsl:when test="contains($str, '\')">
+        <xsl:value-of select="concat(substring-before($str, '\'), '\\' )"/>
+        <xsl:call-template name="yamlescape">
+          <xsl:with-param name="str" select="substring-after($str, '\')"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+          <xsl:value-of select="$str"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="generate-規則">
