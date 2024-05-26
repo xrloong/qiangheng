@@ -23,7 +23,9 @@
           <xsl:value-of select="$intent" />
           <xsl:value-of select="$itemmark" />
           <xsl:text>比對: </xsl:text>
-          <xsl:call-template name="generate-規則" />
+          <xsl:text>"</xsl:text>
+            <xsl:call-template name="generate-規則" />
+          <xsl:text>"</xsl:text>
           <xsl:value-of select="$newline" />
 
           <xsl:value-of select="$intent" />
