@@ -1,19 +1,19 @@
 class TreeRegExp:
 	def __init__(self):
 		self.children = []
-		self.prop={}
+		self.prop = {}
 
 		self.flagWithStar = False
 		self.flagIsDot = False
 
-		self.matched=[]
+		self.matched = []
 
 	def __str__(self):
 		return "%s"%self.prop
 
 	@staticmethod
 	def generateDot():
-		tre=TreeRegExp()
+		tre = TreeRegExp()
 		tre.setAsDot()
 		return tre
 
@@ -21,7 +21,7 @@ class TreeRegExp:
 		self.prop.update(prop)
 
 	def setChildren(self, children):
-		self.children=children
+		self.children = children
 
 
 	def setAsDot(self):
@@ -47,39 +47,39 @@ class TreeRegExp:
 			l.append(c)
 			for child in c.children:
 				traversal(child)
-		l=[]
+		l = []
 		traversal(self);
 		return l;
 
 	def getComp(self, n):
-		s, t=self.countComp(0, n)
-		if s==n:
+		s, t = self.countComp(0, n)
+		if s == n:
 			return t
 		else:
 			return None
 
 	def countComp(self, m, target):
-		if m==target:
+		if m == target:
 			return (m, self)
 		else:
-			s=m
-			t=self
+			s = m
+			t = self
 			for c in self.children:
-				s, t=c.countComp(s+1, target)
-				if(s==target):
+				s, t = c.countComp(s+1, target)
+				if(s == target):
 					return s, t
 			return (s, t)
 
 class MatchResult:
 	def __init__(self):
-		self.result=False
-		self.matched={}
+		self.result = False
+		self.matched = {}
 
 	def setTrue(self):
-		self.result=True
+		self.result = True
 
 	def setFalse(self):
-		self.result=False
+		self.result = False
 
 	def isMatched(self):
 		return self.result
@@ -102,7 +102,7 @@ class BasicTreeProxy:
 		return tree.get("children", [])
 
 	def matchSingle(self, tre, tree):
-		prop=tre.prop
+		prop = tre.prop
 
 		isMatch = True
 		if "名稱" in prop:
