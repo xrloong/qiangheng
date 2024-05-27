@@ -113,15 +113,6 @@ class BasicTreeProxy:
 
 		return isMatch
 
-	def generateLeafNode(self, nodeName):
-		return None
-
-	def generateNode(self, operatorName, children):
-		return None
-
-	def generateLeafNodeByReference(self, referencedNode, index):
-		return None
-
 
 class TreeNodeGenerator:
 	def generateLeafNode(self, nodeName):
