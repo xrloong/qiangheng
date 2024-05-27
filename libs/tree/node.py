@@ -4,19 +4,14 @@
 class Node: pass
 
 class Node:
-    def __init__(self, structure = ('龜', ())):
-        operator, nodes = (structure)
-        self.__operator = operator
-        self.__nodes = tuple(nodes)
+	def __init__(self, prop: dict = {}, children: tuple[Node] = ()):
+		self.__prop = prop
+		self.__children = children
 
-    @staticmethod
-    def generateLeaf(expression):
-        return expression
+	@property
+	def prop(self) -> dict:
+		return self.__prop
 
-    @property
-    def operator(self) -> str:
-        return self.__operator
-
-    @property
-    def nodes(self) -> tuple[str]:
-        return self.__nodes
+	@property
+	def children(self) -> tuple[str]:
+		return self.__children

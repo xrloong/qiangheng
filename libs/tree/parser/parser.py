@@ -1,6 +1,8 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
+from ..node import Node
+
 tokens = (
 	'NAME',
 	'PARENTHESIS_LEFT',
@@ -29,13 +31,13 @@ def p_node(t):
 		| PARENTHESIS_LEFT prop node_list PARENTHESIS_RIGHT
 		| PARENTHESIS_LEFT prop PARENTHESIS_RIGHT"""
 	if len(t) == 3:
-		node = nodeGenerator.generateNode()
+		node = Node()
 		t[0] = node
 
 	if len(t) == 4:
 		prop = t[2]
 
-		node = nodeGenerator.generateNode(prop)
+		node = Node(prop)
 
 		t[0] = node
 
@@ -43,7 +45,7 @@ def p_node(t):
 		prop = t[2]
 		nodes = t[3]
 
-		node = nodeGenerator.generateNode(prop, nodes)
+		node = Node(prop, nodes)
 
 		t[0] = node
 
@@ -68,7 +70,7 @@ def p_error(t):
 	print("Syntax error at '%s'" % t.value)
 
 
-def parse(expression):
+def parse(expression) -> Node:
 	return parser.parse(expression, lexer = lexer)
 
 
