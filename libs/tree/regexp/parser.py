@@ -1,3 +1,7 @@
+import ply.lex as lex
+import ply.yacc as yacc
+
+from .item import TreeRegExp
 
 tokens = (
 	'NAME',
@@ -8,32 +12,27 @@ tokens = (
 	'BACKREF_LEFT',
 	'BACKREF_RIGHT',
 	'STAR',
-#	'QUESTION',
-#	'PLUS',
 	'DOT',
 	'EQUAL',
-#	'COMMA',
 	)
 
-t_NAME		 =  r'[一-龥㐀-䶵\[\]][一-龥㐀-䶵\[\]\.0-9]*'
+t_NAME			 =  r'[一-龥㐀-䶵\[\]][一-龥㐀-䶵\[\]\.0-9]*'
 t_PARENTHESIS_LEFT	 =  r'\('
 t_PARENTHESIS_RIGHT	 =  r'\)'
-t_BRACE_LEFT	 =  r'\{'
-t_BRACE_RIGHT	 =  r'\}'
+t_BRACE_LEFT		 =  r'\{'
+t_BRACE_RIGHT		 =  r'\}'
 t_BACKREF_LEFT	 =  r'\\\('
 t_BACKREF_RIGHT	 =  r'\\\)'
 t_STAR	 =  r'\*'
-#t_QUESTION	 =  r'\?'
-#t_PLUS	 =  r'\+'
 t_DOT	 =  r'\.'
-t_EQUAL	 =  r' = '
-#t_COMMA	 =  r','
+t_EQUAL			 =  r' = '
 
 t_ignore = " \t"
 
 def t_error(t):
 	print("Illegal character '%s'" % t.value[0])
 	t.lexer.skip(1)
+
 
 def p_node(t):
 	"""node : PARENTHESIS_LEFT prop PARENTHESIS_RIGHT
@@ -95,15 +94,11 @@ def p_prop(t):
 def p_error(t):
 	print("Syntax error at '%s'" % t.value)
 
-import ply.lex as lex
+
+def compile(expression):
+	return parser.parse(expression, lexer = lexer)
+
+
 lexer = lex.lex()
-#
-import ply.yacc as yacc
 parser = yacc.yacc()
-
-def compile(tre):
-	root = parser.parse(tre, lexer = lexer)
-	return root
-
-from .item import TreeRegExp
 
