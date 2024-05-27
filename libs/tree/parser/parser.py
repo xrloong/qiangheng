@@ -1,7 +1,7 @@
-import Constant
-
 import ply.lex as lex
 import ply.yacc as yacc
+
+from . import constant
 
 tokens = (
 	'NAME',
@@ -37,7 +37,7 @@ def p_node(t):
 	if len(t) == 4:
 		prop = t[2]
 
-		nodeExpression = prop.get(Constant.TAG_REPLACEMENT)
+		nodeExpression = prop.get(constant.TAG_REPLACEMENT)
 		structDesc = nodeGenerator.generateLeafNode(nodeExpression)
 
 		t[0] = structDesc
@@ -46,7 +46,7 @@ def p_node(t):
 		prop = t[2]
 		structDescList = t[3]
 
-		operatorName = prop.get(Constant.TAG_OPERATOR)
+		operatorName = prop.get(constant.TAG_OPERATOR)
 		comp = nodeGenerator.generateNode([operatorName, structDescList])
 
 		t[0] = comp
