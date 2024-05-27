@@ -2,7 +2,7 @@ from parser.model import SubstituteRuleMatchingModel
 from parser.model import SubstituteRuleModel
 from parser.model import SubstituteRuleSetModel
 
-from model.tree.regexp import compile
+from tree.regexp import compile
 
 class SubstituteRule:
 	def __init__(self, model: SubstituteRuleModel):

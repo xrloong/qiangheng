@@ -11,9 +11,10 @@ from model.element.enum import FontVariance
 from model.StructureManager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 from model.CharacterDescriptionManager import SubstituteManager
-from model.tree.regexp import TreeRegExpInterpreter
-from model.tree.regexp import BasicTreeProxy
-from model.tree.regexp import TreeNodeGenerator
+
+from tree.regexp import TreeRegExpInterpreter
+from tree.regexp import BasicTreeProxy
+from tree.regexp import TreeNodeGenerator
 
 class HanZiTreeProxy(BasicTreeProxy):
 	def getChildren(self, currentStructure):
