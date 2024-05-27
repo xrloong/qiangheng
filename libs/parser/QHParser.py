@@ -22,7 +22,7 @@ class QHTreeParser:
 
 class QHParser:
 	def __init__(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML):
-		self.treeParser = TreeParser
+		self.treeParser = treeParser
 		self.yaml = yaml
 
 	def loadSubstituteRuleSet(self, filename) -> SubstituteRuleSetModel:
