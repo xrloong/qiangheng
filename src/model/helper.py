@@ -2,6 +2,7 @@ from injector import inject
 
 from coding.Base import CodingRadixParser
 from tree.parser import TreeParser
+from tree.parser import constant
 
 from .element.StructureDescription import StructureDescription
 from .manager import OperatorManager
@@ -12,14 +13,21 @@ class StructureDescriptionGenerator:
 	def __init__(self, operationManager: OperatorManager):
 		self.operationManager = operationManager
 
-	def generateLeafNode(self, nodeExpression) -> StructureDescription:
+	def generateLeafNode(self, prop: dict) -> StructureDescription:
+		nodeExpression = prop.get(constant.TAG_REPLACEMENT)
 		structDesc = self.generateNode()
 		structDesc.setReferenceExpression(nodeExpression)
 		structDesc.generateName()
 		return structDesc
 
-	def generateNode(self, structInfo = ['龜', []]) -> StructureDescription:
-		operatorName, compList = structInfo
+	def generateNode(self, prop: dict = {}, children: tuple = ()) -> StructureDescription:
+		if len(prop):
+			operatorName = prop.get(constant.TAG_OPERATOR)
+			compList = children
+		else:
+			operatorName = '龜'
+			compList = ()
+
 		operator = self.operationManager.generateOperator(operatorName)
 		structDesc = StructureDescription(operator, compList)
 		structDesc.generateName()

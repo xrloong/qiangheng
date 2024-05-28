@@ -1,8 +1,6 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
-from . import constant
-
 tokens = (
 	'NAME',
 	'PARENTHESIS_LEFT',
@@ -31,25 +29,23 @@ def p_node(t):
 		| PARENTHESIS_LEFT prop node_list PARENTHESIS_RIGHT
 		| PARENTHESIS_LEFT prop PARENTHESIS_RIGHT"""
 	if len(t) == 3:
-		comp = nodeGenerator.generateNode()
-		t[0] = comp
+		node = nodeGenerator.generateNode()
+		t[0] = node
 
 	if len(t) == 4:
 		prop = t[2]
 
-		nodeExpression = prop.get(constant.TAG_REPLACEMENT)
-		structDesc = nodeGenerator.generateLeafNode(nodeExpression)
+		node = nodeGenerator.generateLeafNode(prop)
 
-		t[0] = structDesc
+		t[0] = node
 
 	if len(t) == 5:
 		prop = t[2]
-		structDescList = t[3]
+		nodes = t[3]
 
-		operatorName = prop.get(constant.TAG_OPERATOR)
-		comp = nodeGenerator.generateNode([operatorName, structDescList])
+		node = nodeGenerator.generateNode(prop, nodes)
 
-		t[0] = comp
+		t[0] = node
 
 def p_node_list(t):
 	"""node_list : node
