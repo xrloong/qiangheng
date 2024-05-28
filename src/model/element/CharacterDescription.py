@@ -26,12 +26,11 @@ class RadicalCharacterDescription(AbcCharacterDescription):
 		return ()
 
 class CharacterDescription(AbcCharacterDescription):
-	def __init__(self, model: CharacterDecompositionModel, structureParser: StructureParser):
+	def __init__(self, model: CharacterDecompositionModel):
 		self.__name = model.name
 
 		decompositions = tuple(DecompositionDescription(structureModel) for structureModel in model.structureSet)
-		structures = tuple(decomposition.generateStructure(structureParser) for decomposition in decompositions)
-		self.__structures = structures
+		self.__decompositions = decompositions
 
 	@property
 	def name(self):
@@ -40,4 +39,7 @@ class CharacterDescription(AbcCharacterDescription):
 	@property
 	def structures(self):
 		return self.__structures
+
+	def prepareStructures(self, structureParser: StructureParser):
+		self.__structures = tuple(decomposition.generateStructure(structureParser) for decomposition in self.__decompositions)
 
