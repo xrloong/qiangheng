@@ -76,3 +76,8 @@ class CharacterDecompositionModel(BaseModel):
 	comment: str = Field(alias = '註記', frozen = True)
 	structureSet: list[StructureModel] = Field(alias = '結構集', frozen = True)
 
+class CharacterDecompositionSetModel(BaseModel):
+	model_config = ConfigDict(frozen = True, extra = 'allow')
+
+	decompositionSet: list[CharacterDecompositionModel] = Field(alias = '字符集', frozen = True)
+

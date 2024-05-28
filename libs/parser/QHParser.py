@@ -1,7 +1,7 @@
 import sys
-import Constant
 import ruamel.yaml
 
+from .model import CharacterDecompositionSetModel
 from .model import SubstituteRuleSetModel
 from .model import RadicalSetModel
 
@@ -22,17 +22,8 @@ class QHParser:
 		return RadicalSetModel(**node)
 
 	def loadCharDescriptionByParsingYAML(self, rootNode):
-		from .model import CharacterDecompositionModel
-
-		charGroupNode = rootNode.get(Constant.TAG_CHARACTER_SET)
-		charGroupNode = charGroupNode if charGroupNode is not None else []
-
-		charDescList = []
-		for node in charGroupNode:
-			model = CharacterDecompositionModel(**node)
-			charDesc = CharacterDescription(model, self.structureParser)
-
-			charDescList.append(charDesc)
+		model = CharacterDecompositionSetModel(**rootNode)
+		charDescList = tuple(CharacterDescription(decompositionModel, self.structureParser) for decompositionModel in model.decompositionSet)
 		return charDescList
 
 	def loadCharacters(self, filename):
