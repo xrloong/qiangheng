@@ -14,15 +14,10 @@ class StructureDescriptionGenerator:
 		self.operationManager = operationManager
 
 	def generateNode(self, prop: dict = {}, children: tuple = ()) -> StructureDescription:
-		if len(prop):
-			operatorName = prop.get(constant.TAG_OPERATOR)
-			compList = children
-		else:
-			operatorName = '龜'
-			compList = ()
-
+		operatorName = prop.get(constant.TAG_OPERATOR, '龜')
 		operator = self.operationManager.generateOperator(operatorName)
-		structDesc = StructureDescription(operator, compList)
+
+		structDesc = StructureDescription(operator, children)
 
 		replacement = prop.get(constant.TAG_REPLACEMENT)
 		if replacement:
