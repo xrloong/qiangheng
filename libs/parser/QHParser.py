@@ -4,12 +4,8 @@ from .model import CharacterDecompositionSetModel
 from .model import SubstituteRuleSetModel
 from .model import RadicalSetModel
 
-from model.element.CharacterDescription import CharacterDescription
-from model.helper import StructureParser
-
 class QHParser:
-	def __init__(self, structureParser: StructureParser, yaml: ruamel.yaml.YAML):
-		self.structureParser = structureParser
+	def __init__(self, yaml: ruamel.yaml.YAML):
 		self.yaml = yaml
 
 	def loadSubstituteRuleSet(self, filename) -> SubstituteRuleSetModel:

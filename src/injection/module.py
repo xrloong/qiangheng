@@ -64,8 +64,8 @@ class ParserModule(Module):
 		return StructureParser(nodeGenerator = nodeGenerator)
 
 	@provider
-	def provideQHParser(self, structureParser: StructureParser, yaml: ruamel.yaml.YAML) -> QHParser:
-		return QHParser(structureParser = structureParser, yaml = yaml)
+	def provideQHParser(self, yaml: ruamel.yaml.YAML) -> QHParser:
+		return QHParser(yaml = yaml)
 
 class ManagerModule(Module):
 	def __init__(self, structureManager):
