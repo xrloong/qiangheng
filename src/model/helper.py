@@ -13,13 +13,6 @@ class StructureDescriptionGenerator:
 	def __init__(self, operationManager: OperatorManager):
 		self.operationManager = operationManager
 
-	def generateLeafNode(self, prop: dict) -> StructureDescription:
-		nodeExpression = prop.get(constant.TAG_REPLACEMENT)
-		structDesc = self.generateNode()
-		structDesc.setReferenceExpression(nodeExpression)
-		structDesc.generateName()
-		return structDesc
-
 	def generateNode(self, prop: dict = {}, children: tuple = ()) -> StructureDescription:
 		if len(prop):
 			operatorName = prop.get(constant.TAG_OPERATOR)
@@ -30,6 +23,11 @@ class StructureDescriptionGenerator:
 
 		operator = self.operationManager.generateOperator(operatorName)
 		structDesc = StructureDescription(operator, compList)
+
+		replacement = prop.get(constant.TAG_REPLACEMENT)
+		if replacement:
+			structDesc.setReferenceExpression(replacement)
+
 		structDesc.generateName()
 		return structDesc
 

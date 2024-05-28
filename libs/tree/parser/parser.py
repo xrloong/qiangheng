@@ -35,7 +35,7 @@ def p_node(t):
 	if len(t) == 4:
 		prop = t[2]
 
-		node = nodeGenerator.generateLeafNode(prop)
+		node = nodeGenerator.generateNode(prop)
 
 		t[0] = node
 
