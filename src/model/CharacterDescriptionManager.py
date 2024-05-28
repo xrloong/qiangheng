@@ -108,12 +108,7 @@ class CompositionManager:
 
 	def _saveChar(self, charDesc):
 		charName = charDesc.name
-
-		if charName in self.characterDB:
-			origCharDesc=self.characterDB.get(charName)
-			origCharDesc.setStructureList(charDesc.structures)
-		else:
-			self.characterDB[charName]=charDesc
+		self.characterDB[charName] = charDesc
 
 class RadixManager:
 	@inject
