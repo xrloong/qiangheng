@@ -103,12 +103,10 @@ class CompositionManager:
 		for filename in componentFiles:
 			charDecompSetModel = self.qhparser.loadCharacterDecompositionSet(filename)
 			charDescs = tuple(CharacterDescription(decompositionModel, self.structureParser) for decompositionModel in charDecompSetModel.decompositionSet)
-			for charDesc in charDescs:
-				self._saveChar(charDesc)
 
-	def _saveChar(self, charDesc):
-		charName = charDesc.name
-		self.characterDB[charName] = charDesc
+			for charDesc in charDescs:
+				charName = charDesc.name
+				self.characterDB[charName] = charDesc
 
 class RadixManager:
 	@inject
