@@ -5,8 +5,6 @@ import ruamel.yaml
 from .model import SubstituteRuleSetModel
 from .model import RadicalSetModel
 
-from model.element.enum import FontVariance
-
 from model.element.CharacterDescription import CharacterDescription
 from model.helper import StructureParser
 
@@ -53,13 +51,8 @@ class QHParser:
 				model = StructureModel(**structureDict)
 				structureExpression = model.expression
 
-				fontVariance = FontVariance.All
-				if model.font:
-					fontVarianceDescription = model.font
-					fontVariance = self.convertDescriptionToFontVariance(fontVarianceDescription)
-
 				structureDesc = self.parseStructure(structureExpression)
-				structureDesc.changeFontVariance(fontVariance)
+				structureDesc.updateFontVariance(model.font)
 
 				structureList.append(structureDesc)
 
@@ -68,13 +61,3 @@ class QHParser:
 	def loadCharacters(self, filename):
 		node = self.yaml.load(open(filename))
 		return self.loadCharDescriptionByParsingYAML(node)
-
-	def convertDescriptionToFontVariance(self, description):
-		if not description:
-			return FontVariance.All
-		elif description in Constant.LIST__FONT_VARIANCE__TRADITIONAL:
-			return FontVariance.Traditional
-		elif description in Constant.LIST__FONT_VARIANCE__SIMPLIFIED:
-			return FontVariance.Simplified
-		else:
-			return FontVariance.All

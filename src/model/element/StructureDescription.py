@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import Constant
+
 from .enum import FontVariance
 
 class StructureDescription:
@@ -26,7 +28,10 @@ class StructureDescription:
 
 		return structureDescription
 
-	def changeFontVariance(self, fontVariance):
+	def updateFontVariance(self, fontVarianceDescription: str):
+		fontVariance = FontVariance.All
+		if fontVarianceDescription:
+			fontVariance = self.__convertDescriptionToFontVariance(fontVarianceDescription)
 		self.fontVariance = fontVariance
 
 	def getFontVariance(self):
@@ -80,3 +85,12 @@ class StructureDescription:
 	def target(self):
 		return self
 
+	def __convertDescriptionToFontVariance(self, description):
+		if not description:
+			return FontVariance.All
+		elif description in Constant.LIST__FONT_VARIANCE__TRADITIONAL:
+			return FontVariance.Traditional
+		elif description in Constant.LIST__FONT_VARIANCE__SIMPLIFIED:
+			return FontVariance.Simplified
+		else:
+			return FontVariance.All
