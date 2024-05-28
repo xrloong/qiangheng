@@ -1,4 +1,3 @@
-import sys
 import ruamel.yaml
 
 from .model import CharacterDecompositionSetModel
