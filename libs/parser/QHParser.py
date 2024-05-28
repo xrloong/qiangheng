@@ -23,6 +23,8 @@ class QHParser:
 		return RadicalSetModel(**node)
 
 	def loadCharDescriptionByParsingYAML(self, rootNode):
+		from .model import CharacterDecompositionModel
+
 		charGroupNode = rootNode.get(Constant.TAG_CHARACTER_SET)
 		charGroupNode = charGroupNode if charGroupNode is not None else []
 
@@ -32,18 +34,12 @@ class QHParser:
 
 			charDesc = CharacterDescription(charName)
 
-			structureList = self.loadStructureSet(node)
-			charDesc.setStructureList(structureList)
+			model = CharacterDecompositionModel(**node)
+			structures = tuple(StructureDescription.generate(structureModel, self.structureParser) for structureModel in model.structureSet)
+			charDesc.setStructureList(structures)
 
 			charDescList.append(charDesc)
 		return charDescList
-
-	def loadStructureSet(self, charNode):
-		from .model import CharacterDecompositionModel
-
-		model = CharacterDecompositionModel(**charNode)
-		structures = tuple(StructureDescription.generate(structureModel, self.structureParser) for structureModel in model.structureSet)
-		return structures
 
 	def loadCharacters(self, filename):
 		node = self.yaml.load(open(filename))
