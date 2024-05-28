@@ -103,11 +103,11 @@ class CompositionManager:
 				self._saveChar(charDesc)
 
 	def _saveChar(self, charDesc):
-		charName=charDesc.getName()
+		charName = charDesc.name
 
 		if charName in self.characterDB:
 			origCharDesc=self.characterDB.get(charName)
-			origCharDesc.setStructureList(charDesc.getStructureList())
+			origCharDesc.setStructureList(charDesc.structures)
 		else:
 			self.characterDB[charName]=charDesc
 

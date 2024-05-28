@@ -1,18 +1,20 @@
 
 class CharacterDescription:
 	def __init__(self, name):
-		self.name=name
-		self.structList=[]
+		self.__name = name
+		self.__structures = ()
 
-	def getName(self):
-		return self.name
+	@property
+	def name(self):
+		return self.__name
 
-	def getStructureList(self):
-		return self.structList
+	@property
+	def structures(self):
+		return self.__structures
 
-	def setStructureList(self, structList):
-		self.structList=structList
+	def setStructureList(self, structures):
+		self.__structures = structures
 
-	def extendStructureList(self, structList):
-		self.structList.extend(structList)
+	def extendStructureList(self, structures):
+		self.__structures.extend(structures)
 

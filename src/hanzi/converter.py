@@ -145,7 +145,7 @@ class ConstructCharacter:
 		charDesc = self.queryDescription(character)
 
 		nodeName = character
-		structDescList = charDesc.getStructureList()
+		structDescList = charDesc.structures
 		for structDesc in structDescList:
 			if structDesc.isEmpty():
 				continue
