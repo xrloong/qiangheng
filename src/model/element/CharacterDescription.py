@@ -39,9 +39,3 @@ class CharacterDescription(AbcCharacterDescription):
 	def structures(self):
 		return self.__structures
 
-	def setStructureList(self, structures):
-		self.__structures = structures
-
-	def extendStructureList(self, structures):
-		self.__structures.extend(structures)
-
