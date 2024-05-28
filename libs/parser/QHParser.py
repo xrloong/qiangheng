@@ -8,11 +8,11 @@ from .model import RadicalSetModel
 from model.element.enum import FontVariance
 
 from model.element.CharacterDescription import CharacterDescription
-from model.helper import QHTreeParser
+from model.helper import StructureParser
 
 class QHParser:
-	def __init__(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML):
-		self.treeParser = treeParser
+	def __init__(self, structureParser: StructureParser, yaml: ruamel.yaml.YAML):
+		self.structureParser = structureParser
 		self.yaml = yaml
 
 	def loadSubstituteRuleSet(self, filename) -> SubstituteRuleSetModel:
@@ -24,7 +24,7 @@ class QHParser:
 		return RadicalSetModel(**node)
 
 	def parseStructure(self, structureExpression):
-		return self.treeParser.parse(structureExpression)
+		return self.structureParser.parse(structureExpression)
 
 	def loadCharDescriptionByParsingYAML(self, rootNode):
 		charGroupNode = rootNode.get(Constant.TAG_CHARACTER_SET)

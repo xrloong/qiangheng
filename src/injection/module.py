@@ -16,7 +16,7 @@ from model.element.CodingConfig import CodingConfig
 from model.element.enum import FontVariance
 
 from model.helper import StructureDescriptionGenerator
-from model.helper import QHTreeParser
+from model.helper import StructureParser
 
 from parser.QHParser import QHParser
 
@@ -60,12 +60,12 @@ class ParserModule(Module):
 		pass
 
 	@provider
-	def provideQHTreeParser(self, nodeGenerator: StructureDescriptionGenerator) -> QHTreeParser:
-		return QHTreeParser(nodeGenerator = nodeGenerator)
+	def provideStructureParser(self, nodeGenerator: StructureDescriptionGenerator) -> StructureParser:
+		return StructureParser(nodeGenerator = nodeGenerator)
 
 	@provider
-	def provideQHParser(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML) -> QHParser:
-		return QHParser(treeParser = treeParser, yaml = yaml)
+	def provideQHParser(self, structureParser: StructureParser, yaml: ruamel.yaml.YAML) -> QHParser:
+		return QHParser(structureParser = structureParser, yaml = yaml)
 
 class ManagerModule(Module):
 	def __init__(self, structureManager):

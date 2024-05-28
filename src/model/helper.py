@@ -25,7 +25,7 @@ class StructureDescriptionGenerator:
 		structDesc.generateName()
 		return structDesc
 
-class QHTreeParser:
+class StructureParser:
 	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
 		self.treeParser = TreeParser
 		self.treeParser.nodeGenerator = nodeGenerator
