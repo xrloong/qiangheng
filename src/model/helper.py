@@ -1,6 +1,7 @@
 from injector import inject
 
 from coding.Base import CodingRadixParser
+from tree.parser import TreeParser
 
 from .element.StructureDescription import StructureDescription
 from .manager import OperatorManager
@@ -23,6 +24,14 @@ class StructureDescriptionGenerator:
 		structDesc = StructureDescription(operator, compList)
 		structDesc.generateName()
 		return structDesc
+
+class QHTreeParser:
+	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
+		self.treeParser = TreeParser
+		self.treeParser.nodeGenerator = nodeGenerator
+
+	def parse(self, expression):
+		return self.treeParser.parse(expression)
 
 class RadicalCodingConverter:
 	@inject

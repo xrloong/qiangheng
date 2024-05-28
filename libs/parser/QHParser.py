@@ -8,17 +8,7 @@ from .model import RadicalSetModel
 from model.element.enum import FontVariance
 
 from model.element.CharacterDescription import CharacterDescription
-from model.helper import StructureDescriptionGenerator
-
-from tree.parser import TreeParser
-
-class QHTreeParser:
-	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
-		self.treeParser = TreeParser
-		self.treeParser.nodeGenerator = nodeGenerator
-
-	def parse(self, expression):
-		return self.treeParser.parse(expression)
+from model.helper import QHTreeParser
 
 class QHParser:
 	def __init__(self, treeParser: QHTreeParser, yaml: ruamel.yaml.YAML):
