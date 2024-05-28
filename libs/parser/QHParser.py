@@ -6,7 +6,6 @@ from .model import SubstituteRuleSetModel
 from .model import RadicalSetModel
 
 from model.element.CharacterDescription import CharacterDescription
-from model.element.StructureDescription import StructureDescription
 from model.helper import StructureParser
 
 class QHParser:
@@ -30,13 +29,8 @@ class QHParser:
 
 		charDescList = []
 		for node in charGroupNode:
-			charName = node.get(Constant.TAG_NAME)
-
-			charDesc = CharacterDescription(charName)
-
 			model = CharacterDecompositionModel(**node)
-			structures = tuple(StructureDescription.generate(structureModel, self.structureParser) for structureModel in model.structureSet)
-			charDesc.setStructureList(structures)
+			charDesc = CharacterDescription(model, self.structureParser)
 
 			charDescList.append(charDesc)
 		return charDescList
