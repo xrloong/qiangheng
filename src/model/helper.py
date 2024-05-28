@@ -12,13 +12,13 @@ class StructureDescriptionGenerator:
 	def __init__(self, operationManager: OperatorManager):
 		self.operationManager = operationManager
 
-	def generateLeafNode(self, nodeExpression):
+	def generateLeafNode(self, nodeExpression) -> StructureDescription:
 		structDesc = self.generateNode()
 		structDesc.setReferenceExpression(nodeExpression)
 		structDesc.generateName()
 		return structDesc
 
-	def generateNode(self, structInfo = ['龜', []]):
+	def generateNode(self, structInfo = ['龜', []]) -> StructureDescription:
 		operatorName, compList = structInfo
 		operator = self.operationManager.generateOperator(operatorName)
 		structDesc = StructureDescription(operator, compList)
@@ -30,7 +30,7 @@ class StructureParser:
 		self.treeParser = TreeParser
 		self.treeParser.nodeGenerator = nodeGenerator
 
-	def parse(self, expression):
+	def parse(self, expression) -> StructureDescription:
 		return self.treeParser.parse(expression)
 
 class RadicalCodingConverter:
