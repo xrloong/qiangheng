@@ -49,9 +49,8 @@ class QHParser:
 
 			for structureDict in nodeStructureList:
 				model = StructureModel(**structureDict)
-				structureExpression = model.expression
 
-				structureDesc = self.parseStructure(structureExpression)
+				structureDesc = self.parseStructure(model.expression)
 				structureDesc.updateFontVariance(model.font)
 
 				structureList.append(structureDesc)
