@@ -16,6 +16,6 @@ class QHParser:
 		node = self.yaml.load(open(filename))
 		return RadicalSetModel(**node)
 
-	def loadCharacters(self, filename) -> CharacterDecompositionSetModel:
+	def loadCharacterDecompositionSet(self, filename) -> CharacterDecompositionSetModel:
 		node = self.yaml.load(open(filename))
 		return CharacterDecompositionSetModel(**node)

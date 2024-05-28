@@ -101,7 +101,7 @@ class CompositionManager:
 
 	def loadComponents(self, componentFiles):
 		for filename in componentFiles:
-			charDecompSetModel = self.qhparser.loadCharacters(filename)
+			charDecompSetModel = self.qhparser.loadCharacterDecompositionSet(filename)
 			charDescs = tuple(CharacterDescription(decompositionModel, self.structureParser) for decompositionModel in charDecompSetModel.decompositionSet)
 			for charDesc in charDescs:
 				self._saveChar(charDesc)
