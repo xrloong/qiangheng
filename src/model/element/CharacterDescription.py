@@ -41,5 +41,10 @@ class CharacterDescription(AbcCharacterDescription):
 		return self.__structures
 
 	def prepareStructures(self, structureParser: StructureParser):
-		self.__structures = tuple(decomposition.generateStructure(structureParser) for decomposition in self.__decompositions)
+		def generateStructure(decomposition):
+			structureDesc = structureParser.parse(decomposition.expression)
+			structureDesc.updateFontVariance(decomposition.font)
+			return structureDesc
+
+		self.__structures = tuple(generateStructure(decomposition) for decomposition in self.__decompositions)
 

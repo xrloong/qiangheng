@@ -95,8 +95,11 @@ class DecompositionDescription:
 		self.__expression = model.expression
 		self.__font = model.font
 
-	def generateStructure(self, structureParser):
-		structureDesc = structureParser.parse(self.__expression)
-		structureDesc.updateFontVariance(self.__font)
-		return structureDesc
+	@property
+	def expression(self):
+		return self.__expression
+
+	@property
+	def font(self):
+		return self.__font
 
