@@ -21,9 +21,6 @@ class QHParser:
 		node = self.yaml.load(open(filename))
 		return RadicalSetModel(**node)
 
-	def parseStructure(self, structureExpression):
-		return self.structureParser.parse(structureExpression)
-
 	def loadCharDescriptionByParsingYAML(self, rootNode):
 		charGroupNode = rootNode.get(Constant.TAG_CHARACTER_SET)
 		charGroupNode = charGroupNode if charGroupNode is not None else []
@@ -50,7 +47,7 @@ class QHParser:
 			for structureDict in nodeStructureList:
 				model = StructureModel(**structureDict)
 
-				structureDesc = self.parseStructure(model.expression)
+				structureDesc = self.structureParser.parse(model.expression)
 				structureDesc.updateFontVariance(model.font)
 
 				structureList.append(structureDesc)
