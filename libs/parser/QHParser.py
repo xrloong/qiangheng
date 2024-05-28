@@ -6,6 +6,7 @@ from .model import SubstituteRuleSetModel
 from .model import RadicalSetModel
 
 from model.element.CharacterDescription import CharacterDescription
+from model.element.StructureDescription import StructureDescription
 from model.helper import StructureParser
 
 class QHParser:
@@ -47,8 +48,7 @@ class QHParser:
 			for structureDict in nodeStructureList:
 				model = StructureModel(**structureDict)
 
-				structureDesc = self.structureParser.parse(model.expression)
-				structureDesc.updateFontVariance(model.font)
+				structureDesc = StructureDescription.generate(model, self.structureParser)
 
 				structureList.append(structureDesc)
 

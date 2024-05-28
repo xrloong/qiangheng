@@ -4,6 +4,8 @@ import Constant
 
 from .enum import FontVariance
 
+from parser.model import StructureModel
+
 class StructureDescription:
 	def __init__(self, operator, compList):
 		self.fontVariance = FontVariance.All
@@ -20,6 +22,12 @@ class StructureDescription:
 
 	def __repr__(self):
 		return str(self)
+
+	@staticmethod
+	def generate(model: StructureModel, structureParser):
+		structureDesc = structureParser.parse(model.expression)
+		structureDesc.updateFontVariance(model.font)
+		return structureDesc
 
 	def clone(self):
 		compList=[c.clone() for c in self.getCompList()]
