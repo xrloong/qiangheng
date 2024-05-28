@@ -23,12 +23,6 @@ class StructureDescription:
 	def __repr__(self):
 		return str(self)
 
-	@staticmethod
-	def generate(model: StructureModel, structureParser):
-		structureDesc = structureParser.parse(model.expression)
-		structureDesc.updateFontVariance(model.font)
-		return structureDesc
-
 	def updateFontVariance(self, fontVarianceDescription: str):
 		fontVariance = FontVariance.All
 		if fontVarianceDescription:
@@ -95,3 +89,14 @@ class StructureDescription:
 			return FontVariance.Simplified
 		else:
 			return FontVariance.All
+
+class DecompositionDescription:
+	def __init__(self, model: StructureModel):
+		self.__expression = model.expression
+		self.__font = model.font
+
+	def generateStructure(self, structureParser):
+		structureDesc = structureParser.parse(self.__expression)
+		structureDesc.updateFontVariance(self.__font)
+		return structureDesc
+

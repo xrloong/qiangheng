@@ -3,6 +3,7 @@ import abc
 from parser.model import CharacterDecompositionModel
 
 from ..helper import StructureParser
+from .StructureDescription import DecompositionDescription
 from .StructureDescription import StructureDescription
 
 class AbcCharacterDescription(object, metaclass=abc.ABCMeta):
@@ -28,7 +29,8 @@ class CharacterDescription(AbcCharacterDescription):
 	def __init__(self, model: CharacterDecompositionModel, structureParser: StructureParser):
 		self.__name = model.name
 
-		structures = tuple(StructureDescription.generate(structureModel, structureParser) for structureModel in model.structureSet)
+		decompositions = tuple(DecompositionDescription(structureModel) for structureModel in model.structureSet)
+		structures = tuple(decomposition.generateStructure(structureParser) for decomposition in decompositions)
 		self.__structures = structures
 
 	@property
