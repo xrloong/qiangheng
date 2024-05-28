@@ -21,11 +21,9 @@ class QHParser:
 		node = self.yaml.load(open(filename))
 		return RadicalSetModel(**node)
 
-	def loadCharDescriptionByParsingYAML(self, rootNode):
-		model = CharacterDecompositionSetModel(**rootNode)
-		charDescList = tuple(CharacterDescription(decompositionModel, self.structureParser) for decompositionModel in model.decompositionSet)
-		return charDescList
-
-	def loadCharacters(self, filename):
+	def loadCharacters(self, filename) -> [CharacterDescription]:
 		node = self.yaml.load(open(filename))
-		return self.loadCharDescriptionByParsingYAML(node)
+		model = CharacterDecompositionSetModel(**node)
+		charDescs = tuple(CharacterDescription(decompositionModel, self.structureParser) for decompositionModel in model.decompositionSet)
+
+		return charDescs
