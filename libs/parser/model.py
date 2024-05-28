@@ -69,3 +69,10 @@ class StructureModel(BaseModel):
         frozen = True, default = None
     )
 
+class CharacterDecompositionModel(BaseModel):
+	model_config = ConfigDict(frozen = True, extra = 'allow')
+
+	name: str = Field(alias = '名稱', frozen = True)
+	comment: str = Field(alias = '註記', frozen = True)
+	structureSet: list[StructureModel] = Field(alias = '結構集', frozen = True)
+

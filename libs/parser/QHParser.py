@@ -39,20 +39,11 @@ class QHParser:
 		return charDescList
 
 	def loadStructureSet(self, charNode):
-		from .model import StructureModel
+		from .model import CharacterDecompositionModel
 
-		structureList = []
-		if Constant.TAG_STRUCTURE_SET in charNode:
-			nodeStructureList = charNode.get(Constant.TAG_STRUCTURE_SET)
-
-			for structureDict in nodeStructureList:
-				model = StructureModel(**structureDict)
-
-				structureDesc = StructureDescription.generate(model, self.structureParser)
-
-				structureList.append(structureDesc)
-
-		return structureList
+		model = CharacterDecompositionModel(**charNode)
+		structures = tuple(StructureDescription.generate(structureModel, self.structureParser) for structureModel in model.structureSet)
+		return structures
 
 	def loadCharacters(self, filename):
 		node = self.yaml.load(open(filename))
