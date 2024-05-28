@@ -29,13 +29,6 @@ class StructureDescription:
 		structureDesc.updateFontVariance(model.font)
 		return structureDesc
 
-	def clone(self):
-		compList=[c.clone() for c in self.getCompList()]
-		structureDescription=StructureDescription.generate(self.getOperator(), compList)
-		structureDescription.setReferenceExpression(self.getReferenceExpression())
-
-		return structureDescription
-
 	def updateFontVariance(self, fontVarianceDescription: str):
 		fontVariance = FontVariance.All
 		if fontVarianceDescription:
