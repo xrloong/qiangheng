@@ -10,6 +10,7 @@ from parser.QHParser import QHParser
 from model.element.radix import RadicalSet
 from model.element.radix import RadixDescription
 from model.helper import RadicalCodingConverter
+from model.helper import StructureParser
 
 class SubstituteManager:
 	class RearrangeCallback(object, metaclass=abc.ABCMeta):
@@ -88,8 +89,9 @@ class SubstituteManager:
 
 class CompositionManager:
 	@inject
-	def __init__(self, qhparser: QHParser):
+	def __init__(self, qhparser: QHParser, structureParser: StructureParser):
 		self.qhparser = qhparser
+		self.structureParser = structureParser
 
 		self.characterDB={}
 
@@ -99,8 +101,9 @@ class CompositionManager:
 
 	def loadComponents(self, componentFiles):
 		for filename in componentFiles:
-			charDescList=self.qhparser.loadCharacters(filename)
-			for charDesc in charDescList:
+			charDecompSetModel = self.qhparser.loadCharacters(filename)
+			charDescs = tuple(CharacterDescription(decompositionModel, self.structureParser) for decompositionModel in charDecompSetModel.decompositionSet)
+			for charDesc in charDescs:
 				self._saveChar(charDesc)
 
 	def _saveChar(self, charDesc):
