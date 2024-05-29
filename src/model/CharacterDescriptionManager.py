@@ -26,20 +26,23 @@ class SubstituteManager:
 	@inject
 	def __init__(self, qhparser: QHParser):
 		self.__qhparser = qhparser
-		self.__substituteRules = []
+		self.__substituteRules = ()
 		self.__opToRuleDict = {}
 
 	def loadSubstituteRules(self, substituteFiles):
-		totalSubstituteRules = []
-		for filename in substituteFiles:
-			model = self.__qhparser.loadSubstituteRuleSet(filename)
-			substituteRuleSet = SubstituteRuleSet(model = model)
+		substituteRuleSets = map(lambda filename: self.__loadSubstituteRuleSet(filename), substituteFiles)
+		rulesTuple = map(lambda substituteRuleSet: substituteRuleSet.rules, substituteRuleSets)
+		totalSubstituteRules = sum(rulesTuple, ())
+		self.__updateSubstituteRules(totalSubstituteRules)
 
-			substituteRules = substituteRuleSet.rules
-			totalSubstituteRules.extend(substituteRules)
-		self.__substituteRules = totalSubstituteRules
+	def __loadSubstituteRuleSet(self, filename: str) -> SubstituteRuleSet:
+		model = self.__qhparser.loadSubstituteRuleSet(filename)
+		return SubstituteRuleSet(model = model)
 
-		for rule in totalSubstituteRules:
+	def __updateSubstituteRules(self, substituteFiles):
+		self.__substituteRules = substituteFiles
+
+		for rule in substituteFiles:
 			tre = rule.getTRE()
 			opName = tre.prop["運算"]
 
