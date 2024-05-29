@@ -2,7 +2,6 @@ from injector import inject
 
 from coding.Base import CodingRadixParser
 from tree.node import Node
-from tree.parser import TreeParser
 from tree.parser import constant
 
 from .element.StructureDescription import StructureDescription
@@ -29,11 +28,7 @@ class StructureDescriptionGenerator:
 
 class StructureParser:
 	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
-		self.treeParser = TreeParser
 		self.nodeGenerator = nodeGenerator
-
-	def parse(self, expression) -> Node:
-		return self.treeParser.parse(expression)
 
 	def convert(self, node: Node) -> StructureDescription:
 		children = tuple(self.convert(n) for n in node.children)

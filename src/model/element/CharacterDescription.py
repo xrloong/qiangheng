@@ -32,8 +32,9 @@ class CharacterDescription:
 		if self.__structures is not None:
 			return
 
+		from tree.parser import TreeParser
 		def generateStructure(decomposition):
-			node = structureParser.parse(decomposition.expression)
+			node = TreeParser.parse(decomposition.expression)
 			structureDesc = structureParser.convert(node)
 			structureDesc.updateFontVariance(decomposition.font)
 			return structureDesc
