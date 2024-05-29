@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 
 import abc
-
 from injector import inject
-from .element.CharacterDescription import CharacterDescription
-from .element.CharacterDescription import RadicalCharacterDescription
+
 from parser.QHParser import QHParser
 
-from model.element.radix import RadicalSet
-from model.element.radix import RadixDescription
-from model.helper import RadicalCodingConverter
-from model.helper import StructureParser
+from .element.CharacterDescription import CharacterDescription
+from .element.CharacterDescription import RadicalCharacterDescription
+from .element.CharacterDescription import CharacterDecompositionSet
+from .element.SubstituteRule import SubstituteRuleSet
+from .element.radix import RadicalSet
+from .element.radix import RadixDescription
+
+from .helper import RadicalCodingConverter
+from .helper import StructureParser
 
 class SubstituteManager:
 	class RearrangeCallback(object, metaclass=abc.ABCMeta):
@@ -21,44 +24,41 @@ class SubstituteManager:
 		def matchAndReplace(self, tre, structure, result): pass
 
 	@inject
-	def __init__(self, parser: QHParser):
-		self.parser = parser
-		self.substituteRules = []
-		self.opToRuleDict = {}
+	def __init__(self, qhparser: QHParser):
+		self.__qhparser = qhparser
+		self.__substituteRules = ()
+		self.__opToRuleDict = {}
 
 	def loadSubstituteRules(self, substituteFiles):
-		from parser.model import SubstituteRuleSetModel
-		from model.element.SubstituteRule import SubstituteRuleSet
+		substituteRuleSets = map(lambda filename: self.__loadSubstituteRuleSet(filename), substituteFiles)
+		rulesTuple = map(lambda substituteRuleSet: substituteRuleSet.rules, substituteRuleSets)
+		totalSubstituteRules = sum(rulesTuple, ())
+		self.__updateSubstituteRules(totalSubstituteRules)
 
-		totalSubstituteRules = []
-		for filename in substituteFiles:
-			model = self.parser.loadSubstituteRuleSet(filename)
-			substituteRuleSet = SubstituteRuleSet(model = model)
+	def __loadSubstituteRuleSet(self, filename: str) -> SubstituteRuleSet:
+		model = self.__qhparser.loadSubstituteRuleSet(filename)
+		return SubstituteRuleSet(model = model)
 
-			substituteRules = substituteRuleSet.rules
-			totalSubstituteRules.extend(substituteRules)
-		self.substituteRules = totalSubstituteRules
+	def __updateSubstituteRules(self, substituteFiles):
+		self.__substituteRules = substituteFiles
 
-		for rule in totalSubstituteRules:
+		for rule in substituteFiles:
 			tre = rule.getTRE()
 			opName = tre.prop["運算"]
 
-			rules = self.opToRuleDict.get(opName, ())
+			rules = self.__opToRuleDict.get(opName, ())
 			rules = rules + (rule, )
 
-			self.opToRuleDict[opName] = rules
-
-	def getSubstituteRules(self):
-		return self.substituteRules
+			self.__opToRuleDict[opName] = rules
 
 	def recursivelyRearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
 		rearrangeCallback.prepare(structure)
 
-		self.rearrangeStructure(structure, rearrangeCallback)
+		self.__rearrangeStructure(structure, rearrangeCallback)
 		for childStructure in structure.getStructureList():
 			self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
-	def rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
+	def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
 		def expandLeaf(structure):
 			rearrangeCallback.prepare(structure)
 
@@ -80,11 +80,11 @@ class SubstituteManager:
 					break
 			return changed
 
-		substituteRules = self.substituteRules
+		substituteRules = self.__substituteRules
 		changed = True
 		while changed:
 			opName = structure.getExpandedOperatorName()
-			rules = self.opToRuleDict.get(opName, ())
+			rules = self.__opToRuleDict.get(opName, ())
 			changed = rearrangeStructureOneTurn(structure, rules)
 
 class CompositionManager:
@@ -102,11 +102,12 @@ class CompositionManager:
 	def loadComponents(self, componentFiles):
 		for filename in componentFiles:
 			charDecompSetModel = self.qhparser.loadCharacterDecompositionSet(filename)
-			charDescs = tuple(CharacterDescription(decompositionModel) for decompositionModel in charDecompSetModel.decompositionSet)
+			charDecompositionSet = CharacterDecompositionSet(model = charDecompSetModel)
+			charDecompositionSet.prepareStructures(self.structureParser)
 
+			charDescs = charDecompositionSet.charDescs
 			for charDesc in charDescs:
 				charName = charDesc.name
-				charDesc.prepareStructures(self.structureParser)
 				self.characterDB[charName] = charDesc
 
 class RadixManager:
