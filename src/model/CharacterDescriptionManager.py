@@ -7,6 +7,7 @@ from .element.CharacterDescription import CharacterDescription
 from .element.CharacterDescription import RadicalCharacterDescription
 from parser.QHParser import QHParser
 
+from model.element.SubstituteRule import SubstituteRuleSet
 from model.element.radix import RadicalSet
 from model.element.radix import RadixDescription
 from model.helper import RadicalCodingConverter
@@ -27,9 +28,6 @@ class SubstituteManager:
 		self.opToRuleDict = {}
 
 	def loadSubstituteRules(self, substituteFiles):
-		from parser.model import SubstituteRuleSetModel
-		from model.element.SubstituteRule import SubstituteRuleSet
-
 		totalSubstituteRules = []
 		for filename in substituteFiles:
 			model = self.parser.loadSubstituteRuleSet(filename)
