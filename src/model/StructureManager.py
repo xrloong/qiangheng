@@ -2,6 +2,7 @@ from injector import inject
 from injector import singleton
 
 from model.element.CodingConfig import CodingConfig
+from model.helper import StructureConverter
 
 from .CharacterDescriptionManager import CompositionManager
 from .CharacterDescriptionManager import SubstituteManager
@@ -15,13 +16,17 @@ class StructureManager:
 			compositionManager: CompositionManager,
 			radixManager: RadixManager,
 			templateManager: SubstituteManager,
-			substituteManager: SubstituteManager
+			substituteManager: SubstituteManager,
+
+			structureConverter: StructureConverter
 			):
 		self.codingConfig = codingConfig
 		self.compositionManager = compositionManager
 		self.radixManager = radixManager
 		self.templateManager = templateManager
 		self.substituteManager = substituteManager
+
+		self.__structureConverter = structureConverter
 
 		self._loadData()
 
@@ -66,6 +71,7 @@ class StructureManager:
 		charDesc = self.radixManager.queryRadix(character)
 		if not charDesc:
 			charDesc = self.compositionManager.queryCharacter(character)
+		charDesc.prepareStructures(self.__structureConverter)
 		return charDesc
 
 	def queryChildren(self, charDesc):

@@ -12,7 +12,6 @@ from .element.radix import RadicalSet
 from .element.radix import RadixDescription
 
 from .helper import RadicalCodingConverter
-from .helper import StructureConverter
 
 class SubstituteManager:
 	class RearrangeCallback(object, metaclass=abc.ABCMeta):
@@ -88,9 +87,8 @@ class SubstituteManager:
 
 class CompositionManager:
 	@inject
-	def __init__(self, qhparser: QHParser, structureConverter: StructureConverter):
+	def __init__(self, qhparser: QHParser):
 		self.qhparser = qhparser
-		self.structureConverter = structureConverter
 
 		self.characterDB={}
 
@@ -102,7 +100,6 @@ class CompositionManager:
 		for filename in componentFiles:
 			charDecompSetModel = self.qhparser.loadCharacterDecompositionSet(filename)
 			charDecompositionSet = CharacterDecompositionSet(model = charDecompSetModel)
-			charDecompositionSet.prepareStructures(self.structureConverter)
 
 			charDescs = charDecompositionSet.charDescs
 			for charDesc in charDescs:

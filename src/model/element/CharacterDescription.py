@@ -41,7 +41,3 @@ class CharacterDecompositionSet:
 	@property
 	def charDescs(self):
 		return self.__charDescs
-
-	def prepareStructures(self, structureConverter: StructureConverter):
-		for charDesc in self.charDescs:
-			charDesc.prepareStructures(structureConverter)
