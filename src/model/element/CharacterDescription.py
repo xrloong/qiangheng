@@ -56,3 +56,7 @@ class CharacterDecompositionSet:
 	@property
 	def charDescs(self):
 		return self.__charDescs
+
+	def prepareStructures(self, structureParser: StructureParser):
+		for charDesc in self.charDescs:
+			charDesc.prepareStructures(structureParser)

@@ -102,11 +102,11 @@ class CompositionManager:
 		for filename in componentFiles:
 			charDecompSetModel = self.qhparser.loadCharacterDecompositionSet(filename)
 			charDecompositionSet = CharacterDecompositionSet(model = charDecompSetModel)
+			charDecompositionSet.prepareStructures(self.structureParser)
 
 			charDescs = charDecompositionSet.charDescs
 			for charDesc in charDescs:
 				charName = charDesc.name
-				charDesc.prepareStructures(self.structureParser)
 				self.characterDB[charName] = charDesc
 
 class RadixManager:
