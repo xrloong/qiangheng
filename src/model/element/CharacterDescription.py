@@ -32,11 +32,7 @@ class CharacterDescription:
 		if self.__structures is not None:
 			return
 
-		def generateStructure(decomposition):
-			structureDesc = structureParser.convert(decomposition.node, decomposition.font)
-			return structureDesc
-
-		self.__structures = tuple(generateStructure(decomposition) for decomposition in self.__decompositions)
+		self.__structures = tuple(structureParser.convert(decomposition.node, decomposition.font) for decomposition in self.__decompositions)
 
 class CharacterDecompositionSet:
 	def __init__(self, model: CharacterDecompositionSetModel):
