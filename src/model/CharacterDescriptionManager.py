@@ -24,15 +24,15 @@ class SubstituteManager:
 		def matchAndReplace(self, tre, structure, result): pass
 
 	@inject
-	def __init__(self, parser: QHParser):
-		self.parser = parser
+	def __init__(self, qhparser: QHParser):
+		self.qhparser = qhparser
 		self.substituteRules = []
 		self.opToRuleDict = {}
 
 	def loadSubstituteRules(self, substituteFiles):
 		totalSubstituteRules = []
 		for filename in substituteFiles:
-			model = self.parser.loadSubstituteRuleSet(filename)
+			model = self.qhparser.loadSubstituteRuleSet(filename)
 			substituteRuleSet = SubstituteRuleSet(model = model)
 
 			substituteRules = substituteRuleSet.rules
