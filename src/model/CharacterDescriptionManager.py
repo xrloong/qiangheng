@@ -6,7 +6,6 @@ from injector import inject
 from parser.QHParser import QHParser
 
 from .element.CharacterDescription import CharacterDescription
-from .element.CharacterDescription import RadicalCharacterDescription
 from .element.CharacterDescription import CharacterDecompositionSet
 from .element.SubstituteRule import SubstituteRuleSet
 from .element.radix import RadicalSet
@@ -130,7 +129,7 @@ class RadixManager:
 
 		resetRadixNameList = radixCodeInfoDB.keys()
 		for radixName in resetRadixNameList:
-			self.__radixDB[radixName] = RadicalCharacterDescription(radixName)
+			self.__radixDB[radixName] = CharacterDescription(name = radixName)
 
 	def loadFastCodes(self, fastFile):
 		fastCodeCharacterDB = self.__loadRadix([fastFile])

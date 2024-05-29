@@ -1,4 +1,4 @@
-import abc
+from typing import Optional
 
 from parser.model import CharacterDecompositionModel
 from parser.model import CharacterDecompositionSetModel
@@ -7,31 +7,18 @@ from ..helper import StructureParser
 from .StructureDescription import DecompositionDescription
 from .StructureDescription import StructureDescription
 
-class AbcCharacterDescription(object, metaclass=abc.ABCMeta):
-	@abc.abstractproperty
-	def name(self): pass
+class CharacterDescription:
+	def __init__(self, name: Optional[str] = None, model: Optional[CharacterDecompositionModel] = None):
+		if model is not None:
+			self.__name = model.name
 
-	@abc.abstractproperty
-	def structures(self): pass
-
-class RadicalCharacterDescription(AbcCharacterDescription):
-	def __init__(self, name):
-		self.__name = name
-
-	@property
-	def name(self):
-		return self.__name
-
-	@property
-	def structures(self):
-		return ()
-
-class CharacterDescription(AbcCharacterDescription):
-	def __init__(self, model: CharacterDecompositionModel):
-		self.__name = model.name
-
-		decompositions = tuple(DecompositionDescription(structureModel) for structureModel in model.structureSet)
-		self.__decompositions = decompositions
+			decompositions = tuple(DecompositionDescription(structureModel) for structureModel in model.structureSet)
+			self.__decompositions = decompositions
+			self.__structures = None
+		elif name is not None:
+			self.__name = name
+			self.__decompositions = ()
+			self.__structures = ()
 
 	@property
 	def name(self):
@@ -42,6 +29,9 @@ class CharacterDescription(AbcCharacterDescription):
 		return self.__structures
 
 	def prepareStructures(self, structureParser: StructureParser):
+		if self.__structures is not None:
+			return
+
 		def generateStructure(decomposition):
 			structureDesc = structureParser.parse(decomposition.expression)
 			structureDesc.updateFontVariance(decomposition.font)
@@ -51,7 +41,7 @@ class CharacterDescription(AbcCharacterDescription):
 
 class CharacterDecompositionSet:
 	def __init__(self, model: CharacterDecompositionSetModel):
-		self.__charDescs = tuple(CharacterDescription(decompositionModel) for decompositionModel in model.decompositionSet)
+		self.__charDescs = tuple(CharacterDescription(model = decompositionModel) for decompositionModel in model.decompositionSet)
 
 	@property
 	def charDescs(self):
