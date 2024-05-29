@@ -27,7 +27,7 @@ class StructureDescriptionGenerator:
 		structDesc.generateName()
 		return structDesc
 
-class StructureParser:
+class StructureConverter:
 	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
 		self.nodeGenerator = nodeGenerator
 

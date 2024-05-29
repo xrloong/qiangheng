@@ -3,7 +3,7 @@ from typing import Optional
 from parser.model import CharacterDecompositionModel
 from parser.model import CharacterDecompositionSetModel
 
-from ..helper import StructureParser
+from ..helper import StructureConverter
 from .StructureDescription import DecompositionDescription
 from .StructureDescription import StructureDescription
 
@@ -28,11 +28,11 @@ class CharacterDescription:
 	def structures(self):
 		return self.__structures
 
-	def prepareStructures(self, structureParser: StructureParser):
+	def prepareStructures(self, structureConverter: StructureConverter):
 		if self.__structures is not None:
 			return
 
-		self.__structures = tuple(structureParser.convert(decomposition.node, decomposition.font) for decomposition in self.__decompositions)
+		self.__structures = tuple(structureConverter.convert(decomposition.node, decomposition.font) for decomposition in self.__decompositions)
 
 class CharacterDecompositionSet:
 	def __init__(self, model: CharacterDecompositionSetModel):
@@ -42,6 +42,6 @@ class CharacterDecompositionSet:
 	def charDescs(self):
 		return self.__charDescs
 
-	def prepareStructures(self, structureParser: StructureParser):
+	def prepareStructures(self, structureConverter: StructureConverter):
 		for charDesc in self.charDescs:
-			charDesc.prepareStructures(structureParser)
+			charDesc.prepareStructures(structureConverter)
