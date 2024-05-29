@@ -2,9 +2,9 @@ from injector import inject
 
 from coding.Base import CodingRadixParser
 from tree.node import Node
-from tree.parser import TreeParser
 from tree.parser import constant
 
+from .element.enum import FontVariance
 from .element.StructureDescription import StructureDescription
 from .manager import OperatorManager
 from model.element.radix import RadixDescription
@@ -27,14 +27,15 @@ class StructureDescriptionGenerator:
 		structDesc.generateName()
 		return structDesc
 
-class StructureParser:
+class StructureConverter:
+	@inject
 	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
-		self.treeParser = TreeParser
 		self.nodeGenerator = nodeGenerator
 
-	def parse(self, expression) -> StructureDescription:
-		treeNode = self.treeParser.parse(expression)
-		return self.__convert(treeNode)
+	def convert(self, node: Node, font: FontVariance) -> StructureDescription:
+		structureDescription = self.__convert(node)
+		structureDescription.updateFontVariance(font)
+		return structureDescription
 
 	def __convert(self, node: Node) -> StructureDescription:
 		children = tuple(self.__convert(n) for n in node.children)
