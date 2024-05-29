@@ -25,40 +25,37 @@ class SubstituteManager:
 
 	@inject
 	def __init__(self, qhparser: QHParser):
-		self.qhparser = qhparser
-		self.substituteRules = []
-		self.opToRuleDict = {}
+		self.__qhparser = qhparser
+		self.__substituteRules = []
+		self.__opToRuleDict = {}
 
 	def loadSubstituteRules(self, substituteFiles):
 		totalSubstituteRules = []
 		for filename in substituteFiles:
-			model = self.qhparser.loadSubstituteRuleSet(filename)
+			model = self.__qhparser.loadSubstituteRuleSet(filename)
 			substituteRuleSet = SubstituteRuleSet(model = model)
 
 			substituteRules = substituteRuleSet.rules
 			totalSubstituteRules.extend(substituteRules)
-		self.substituteRules = totalSubstituteRules
+		self.__substituteRules = totalSubstituteRules
 
 		for rule in totalSubstituteRules:
 			tre = rule.getTRE()
 			opName = tre.prop["運算"]
 
-			rules = self.opToRuleDict.get(opName, ())
+			rules = self.__opToRuleDict.get(opName, ())
 			rules = rules + (rule, )
 
-			self.opToRuleDict[opName] = rules
-
-	def getSubstituteRules(self):
-		return self.substituteRules
+			self.__opToRuleDict[opName] = rules
 
 	def recursivelyRearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
 		rearrangeCallback.prepare(structure)
 
-		self.rearrangeStructure(structure, rearrangeCallback)
+		self.__rearrangeStructure(structure, rearrangeCallback)
 		for childStructure in structure.getStructureList():
 			self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
-	def rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
+	def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
 		def expandLeaf(structure):
 			rearrangeCallback.prepare(structure)
 
@@ -80,11 +77,11 @@ class SubstituteManager:
 					break
 			return changed
 
-		substituteRules = self.substituteRules
+		substituteRules = self.__substituteRules
 		changed = True
 		while changed:
 			opName = structure.getExpandedOperatorName()
-			rules = self.opToRuleDict.get(opName, ())
+			rules = self.__opToRuleDict.get(opName, ())
 			changed = rearrangeStructureOneTurn(structure, rules)
 
 class CompositionManager:
