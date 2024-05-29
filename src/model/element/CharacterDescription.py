@@ -5,7 +5,6 @@ from parser.model import CharacterDecompositionSetModel
 
 from ..helper import StructureConverter
 from .StructureDescription import DecompositionDescription
-from .StructureDescription import StructureDescription
 
 class CharacterDescription:
 	def __init__(self, name: Optional[str] = None, model: Optional[CharacterDecompositionModel] = None):
