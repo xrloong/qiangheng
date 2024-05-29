@@ -33,9 +33,7 @@ class CharacterDescription:
 			return
 
 		def generateStructure(decomposition):
-			node = decomposition.node
-			structureDesc = structureParser.convert(node)
-			structureDesc.updateFontVariance(decomposition.font)
+			structureDesc = structureParser.convert(decomposition.node, decomposition.font)
 			return structureDesc
 
 		self.__structures = tuple(generateStructure(decomposition) for decomposition in self.__decompositions)
