@@ -28,6 +28,7 @@ class StructureDescriptionGenerator:
 		return structDesc
 
 class StructureConverter:
+	@inject
 	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
 		self.nodeGenerator = nodeGenerator
 
