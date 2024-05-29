@@ -7,6 +7,7 @@ from .element.CharacterDescription import CharacterDescription
 from .element.CharacterDescription import RadicalCharacterDescription
 from parser.QHParser import QHParser
 
+from model.element.CharacterDescription import CharacterDecompositionSet
 from model.element.SubstituteRule import SubstituteRuleSet
 from model.element.radix import RadicalSet
 from model.element.radix import RadixDescription
@@ -100,8 +101,9 @@ class CompositionManager:
 	def loadComponents(self, componentFiles):
 		for filename in componentFiles:
 			charDecompSetModel = self.qhparser.loadCharacterDecompositionSet(filename)
-			charDescs = tuple(CharacterDescription(decompositionModel) for decompositionModel in charDecompSetModel.decompositionSet)
+			charDecompositionSet = CharacterDecompositionSet(model = charDecompSetModel)
 
+			charDescs = charDecompositionSet.charDescs
 			for charDesc in charDescs:
 				charName = charDesc.name
 				charDesc.prepareStructures(self.structureParser)
