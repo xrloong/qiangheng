@@ -32,12 +32,11 @@ class StructureParser:
 		self.treeParser = TreeParser
 		self.nodeGenerator = nodeGenerator
 
-	def parse(self, expression) -> StructureDescription:
-		treeNode = self.treeParser.parse(expression)
-		return self.__convert(treeNode)
+	def parse(self, expression) -> Node:
+		return self.treeParser.parse(expression)
 
-	def __convert(self, node: Node) -> StructureDescription:
-		children = tuple(self.__convert(n) for n in node.children)
+	def convert(self, node: Node) -> StructureDescription:
+		children = tuple(self.convert(n) for n in node.children)
 		return self.nodeGenerator.generateNode(node.prop, children)
 
 class RadicalCodingConverter:
