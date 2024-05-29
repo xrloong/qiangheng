@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 
 import abc
-
 from injector import inject
-from .element.CharacterDescription import CharacterDescription
-from .element.CharacterDescription import RadicalCharacterDescription
+
 from parser.QHParser import QHParser
 
-from model.element.CharacterDescription import CharacterDecompositionSet
-from model.element.SubstituteRule import SubstituteRuleSet
-from model.element.radix import RadicalSet
-from model.element.radix import RadixDescription
-from model.helper import RadicalCodingConverter
-from model.helper import StructureParser
+from .element.CharacterDescription import CharacterDescription
+from .element.CharacterDescription import RadicalCharacterDescription
+from .element.CharacterDescription import CharacterDecompositionSet
+from .element.SubstituteRule import SubstituteRuleSet
+from .element.radix import RadicalSet
+from .element.radix import RadixDescription
+
+from .helper import RadicalCodingConverter
+from .helper import StructureParser
 
 class SubstituteManager:
 	class RearrangeCallback(object, metaclass=abc.ABCMeta):
