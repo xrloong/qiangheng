@@ -219,7 +219,7 @@ FORCE:
 test: FORCE
 	for cm in $(CMLIST);\
 	do\
-		pytest -c pytest-$$cm.ini; \
+		pytest -c tests/pytest-$$cm.ini --rootdir=.; \
 	done
 
 imtables: scim ibus gcin ovim msim
