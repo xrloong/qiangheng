@@ -130,11 +130,11 @@ class ConstructCharacter:
 
 		structureManager = self.structureManager
 
-		radixManager = structureManager.getRadixManager()
+		radixManager = structureManager.radixManager
 		itemFactory = self.itemFactory
 
-		templateManager = structureManager.getTemplateManager()
-		substituteManager = structureManager.getSubstituteManager()
+		templateManager = structureManager.templateManager
+		substituteManager = structureManager.substituteManager
 
 		if radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)

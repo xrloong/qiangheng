@@ -20,28 +20,46 @@ class StructureManager:
 
 			structureConverter: StructureConverter
 			):
-		self.codingConfig = codingConfig
-		self.compositionManager = compositionManager
-		self.radixManager = radixManager
-		self.templateManager = templateManager
-		self.substituteManager = substituteManager
+		self.__codingConfig = codingConfig
+		self.__compositionManager = compositionManager
+		self.__radixManager = radixManager
+		self.__templateManager = templateManager
+		self.__substituteManager = substituteManager
 
 		self.__structureConverter = structureConverter
 
-		self._loadData()
+		self.__loadData()
 
-	def _loadData(self):
+	@property
+	def compositionManager(self):
+		return self.__compositionManager
+
+	@property
+	def templateManager(self):
+		return self.__templateManager
+
+	@property
+	def substituteManager(self):
+		return self.__substituteManager
+
+	@property
+	def radixManager(self):
+		return self.__radixManager
+
+	def __loadData(self):
 		# 從設定中取得相關的檔案列表
 		# 共通資料及範本
-		componentFiles = self.codingConfig.getCommonComponentFileList()
-		templateFiles = self.codingConfig.getCommonTemplateFileList()
+		codingConfig = self.__codingConfig
+
+		componentFiles = codingConfig.getCommonComponentFileList()
+		templateFiles = codingConfig.getCommonTemplateFileList()
 
 		# 主要字根
-		radixFiles = self.codingConfig.getSpecificRadixFileList()
+		radixFiles = codingConfig.getSpecificRadixFileList()
 
 		# 個別方法的替代及調整
-		substituteFiles = self.codingConfig.getSpecificSubstituteFileList()
-		adjustFiles = self.codingConfig.getSpecificAdjustFileList()
+		substituteFiles = codingConfig.getSpecificSubstituteFileList()
+		adjustFiles = codingConfig.getSpecificAdjustFileList()
 
 
 		# 載入資料
@@ -57,12 +75,9 @@ class StructureManager:
 		self.substituteManager.loadSubstituteRules(substituteFiles)
 
 	def loadFastCodes(self):
-		fastFile = self.codingConfig.getSpecificFastFile()
+		fastFile = self.__codingConfig.getSpecificFastFile()
 		fastCodes = self.radixManager.loadFastCodes(fastFile) if fastFile else {}
 		return fastCodes
-
-	def getRadixManager(self):
-		return self.radixManager
 
 	def queryCharacterDescription(self, character):
 		charDesc = self.radixManager.queryRadix(character)
@@ -73,10 +88,4 @@ class StructureManager:
 
 	def queryChildren(self, charDesc):
 		return charDesc.getCompList()
-
-	def getTemplateManager(self):
-		return self.templateManager
-
-	def getSubstituteManager(self):
-		return self.substituteManager
 
