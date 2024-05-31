@@ -16,6 +16,37 @@ class TreeParserTestCase(unittest.TestCase):
 		self.assertEqual(node.prop, {})
 		self.assertEqual(node.children, ())
 
+	def testEquality(self):
+		import copy
+
+		node倉 = Node(prop = {"置換": "倉"})
+		node倉_1 = Node(prop = {"置換": "倉"})
+		node倉_2 = copy.copy(node倉)
+		node倉_3 = copy.deepcopy(node倉)
+
+		self.assertEqual(node倉, node倉_1)
+		self.assertEqual(node倉, node倉_2)
+		self.assertEqual(node倉, node倉_3)
+
+	def test_瑲_Equality(self):
+		node王_1 = Node(prop = {"置換": "王"})
+		node倉_1 = Node(prop = {"置換": "倉"})
+		node瑲_1 = Node(prop = {"運算": "鴻"}, children = (node王_1, node倉_1))
+
+		node王_2 = Node(prop = {"置換": "王"})
+		node倉_2 = Node(prop = {"置換": "倉"})
+		node瑲_2 = Node(prop = {"運算": "鴻"}, children = (node王_2, node倉_2))
+
+		self.assertEqual(node瑲_1, node瑲_2)
+
+	def testInquality(self):
+		import copy
+
+		node王 = Node(prop = {"置換": "王"})
+		node倉 = Node(prop = {"置換": "倉"})
+
+		self.assertNotEqual(node倉, node王)
+
 	def testProp(self):
 		node = Node(prop = {"測試屬性": "測試值"})
 		self.assertEqual(node.prop, {"測試屬性": "測試值"})
