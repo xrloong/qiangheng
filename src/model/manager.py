@@ -8,76 +8,113 @@ from .CharacterDescriptionManager import CompositionManager
 from .CharacterDescriptionManager import SubstituteManager
 from .CharacterDescriptionManager import RadixManager
 
+class QHDataCommonDataManager:
+	@inject
+	def __init__(self,
+			compositionManager: CompositionManager,
+			templateManager: SubstituteManager,
+			):
+		self.__compositionManager = compositionManager
+		self.__templateManager = templateManager
+
+	@property
+	def compositionManager(self) -> CompositionManager:
+		return self.__compositionManager
+
+	@property
+	def templateManager(self) -> SubstituteManager:
+		return self.__templateManager
+
+	def loadData(self, componentFiles: list[str], templateFiles: list[str]):
+		self.compositionManager.loadComponents(componentFiles)
+		self.templateManager.loadSubstituteRules(templateFiles)
+
+class QHDataCodingDataManager:
+	@inject
+	def __init__(self,
+			radixManager: RadixManager,
+			substituteManager: SubstituteManager,
+			):
+		self.__radixManager = radixManager
+		self.__substituteManager = substituteManager
+
+	@property
+	def radixManager(self) -> RadixManager:
+		return self.__radixManager
+
+	@property
+	def substituteManager(self) -> SubstituteManager:
+		return self.__substituteManager
+
+	def loadData(self, radixFiles: list[str], adjustFiles: list[str], substituteFiles: list[str]):
+		self.radixManager.loadMainRadicals(radixFiles)
+		self.radixManager.loadAdjust(adjustFiles)
+		self.substituteManager.loadSubstituteRules(substituteFiles)
+
+	def loadFastCodes(self, fastFile: str):
+		fastCodes = self.radixManager.loadFastCodes(fastFile) if fastFile else {}
+		return fastCodes
+
 @singleton
 class StructureManager:
 	@inject
 	def __init__(self,
 			codingConfig: CodingConfig,
-			compositionManager: CompositionManager,
-			radixManager: RadixManager,
-			templateManager: SubstituteManager,
-			substituteManager: SubstituteManager,
+
+			qhCommonDM: QHDataCommonDataManager,
+			qhCodingDM: QHDataCodingDataManager,
 
 			structureConverter: StructureConverter
 			):
 		self.__codingConfig = codingConfig
-		self.__compositionManager = compositionManager
-		self.__radixManager = radixManager
-		self.__templateManager = templateManager
-		self.__substituteManager = substituteManager
+
+		self.__qhCommonDM = qhCommonDM
+		self.__qhCodingDM = qhCodingDM
 
 		self.__structureConverter = structureConverter
 
 		self.__loadData()
 
 	@property
-	def compositionManager(self):
-		return self.__compositionManager
+	def compositionManager(self) -> CompositionManager:
+		return self.__qhCommonDM.compositionManager
 
 	@property
-	def templateManager(self):
-		return self.__templateManager
+	def templateManager(self) -> SubstituteManager:
+		return self.__qhCommonDM.templateManager
 
 	@property
-	def substituteManager(self):
-		return self.__substituteManager
+	def substituteManager(self) -> SubstituteManager:
+		return self.__qhCodingDM.substituteManager
 
 	@property
-	def radixManager(self):
-		return self.__radixManager
+	def radixManager(self) -> RadixManager:
+		return self.__qhCodingDM.radixManager
+
+	@property
+	def commonDM(self) -> QHDataCommonDataManager:
+		return self.__qhCommonDM
+
+	@property
+	def codingDM(self) -> QHDataCodingDataManager:
+		return self.__qhCodingDM
 
 	def __loadData(self):
-		# 從設定中取得相關的檔案列表
-		# 共通資料及範本
 		codingConfig = self.__codingConfig
 
-		componentFiles = codingConfig.getCommonComponentFileList()
-		templateFiles = codingConfig.getCommonTemplateFileList()
-
-		# 主要字根
-		radixFiles = codingConfig.getSpecificRadixFileList()
-
-		# 個別方法的替代及調整
-		substituteFiles = codingConfig.getSpecificSubstituteFileList()
-		adjustFiles = codingConfig.getSpecificAdjustFileList()
-
-
-		# 載入資料
-		# 共通資料及範本
-		self.compositionManager.loadComponents(componentFiles)
-		self.templateManager.loadSubstituteRules(templateFiles)
-
-		# 主要字根
-		self.radixManager.loadMainRadicals(radixFiles)
-
-		# 個別方法的替代及調整
-		self.radixManager.loadAdjust(adjustFiles)
-		self.substituteManager.loadSubstituteRules(substituteFiles)
+		self.commonDM.loadData(
+                componentFiles = codingConfig.getCommonComponentFileList(),
+                templateFiles = codingConfig.getCommonTemplateFileList(),
+                )
+		self.codingDM.loadData(
+                radixFiles = codingConfig.getSpecificRadixFileList(),
+                adjustFiles = codingConfig.getSpecificAdjustFileList(),
+                substituteFiles = codingConfig.getSpecificSubstituteFileList(),
+                )
 
 	def loadFastCodes(self):
 		fastFile = self.__codingConfig.getSpecificFastFile()
-		fastCodes = self.radixManager.loadFastCodes(fastFile) if fastFile else {}
-		return fastCodes
+		return self.codingDM.loadFastCodes(fastFile = fastFile)
 
 	def queryCharacterDescription(self, character):
 		charDesc = self.radixManager.queryRadix(character)
