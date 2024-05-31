@@ -53,9 +53,9 @@ def p_node_list(t):
 	"""node_list : node
 		| node node_list"""
 	if len(t) == 2:
-		t[0] = [t[1]]
+		t[0] = (t[1], )
 	if len(t) == 3:
-		t[0] = [t[1]]+t[2]
+		t[0] = (t[1], ) + t[2]
 
 def p_attrib(t):
 	'attrib : NAME EQUAL NAME'
