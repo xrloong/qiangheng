@@ -61,9 +61,6 @@ class StructureManager:
 		fastCodes = self.radixManager.loadFastCodes(fastFile) if fastFile else {}
 		return fastCodes
 
-	def getCompositionManager(self):
-		return self.compositionManager
-
 	def getRadixManager(self):
 		return self.radixManager
 
