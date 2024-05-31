@@ -8,7 +8,7 @@ from .network import HanZiNetwork
 
 from model.element.enum import FontVariance
 
-from model.StructureManager import StructureManager
+from model.manager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 from model.CharacterDescriptionManager import SubstituteManager
 
@@ -130,11 +130,11 @@ class ConstructCharacter:
 
 		structureManager = self.structureManager
 
-		radixManager = structureManager.getRadixManager()
+		radixManager = structureManager.radixManager
 		itemFactory = self.itemFactory
 
-		templateManager = structureManager.getTemplateManager()
-		substituteManager = structureManager.getSubstituteManager()
+		templateManager = structureManager.templateManager
+		substituteManager = structureManager.substituteManager
 
 		if radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
