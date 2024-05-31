@@ -6,7 +6,7 @@ from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
 
 from model.interpreter import CodeInfoInterpreter
 from model.element import CharacterInfo
-from model.manager import OperatorManager
+from model.helper import OperatorManager
 
 class HanZiInterpreter:
 	@inject
