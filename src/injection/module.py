@@ -22,7 +22,7 @@ from parser.QHParser import QHParser
 
 from hanzi.network import HanZiNetwork
 
-from model.StructureManager import StructureManager
+from model.manager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 
 from .key import Package

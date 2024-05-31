@@ -8,7 +8,7 @@ from .network import HanZiNetwork
 
 from model.element.enum import FontVariance
 
-from model.StructureManager import StructureManager
+from model.manager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 from model.CharacterDescriptionManager import SubstituteManager
 
