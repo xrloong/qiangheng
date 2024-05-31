@@ -6,7 +6,10 @@ class Node: pass
 class Node:
 	def __init__(self, prop: dict = {}, children: tuple[Node] = ()):
 		self.__prop = prop
-		self.__children = children
+		self.__children = tuple(children)
+
+	def __eq__(self, anohter):
+		return self.prop == anohter.prop and self.children == anohter.children
 
 	@property
 	def prop(self) -> dict:
