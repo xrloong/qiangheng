@@ -7,7 +7,7 @@ from tree.parser import constant
 from .element.enum import FontVariance
 from .element.StructureDescription import StructureDescription
 from .manager import OperatorManager
-from model.element.radix import RadixDescription
+from .element.radix import RadixDescription
 
 class StructureDescriptionGenerator:
 	@inject
