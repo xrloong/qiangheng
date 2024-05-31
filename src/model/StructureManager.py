@@ -1,8 +1,8 @@
 from injector import inject
 from injector import singleton
 
-from model.element.CodingConfig import CodingConfig
-from model.helper import StructureConverter
+from .element.CodingConfig import CodingConfig
+from .helper import StructureConverter
 
 from .CharacterDescriptionManager import CompositionManager
 from .CharacterDescriptionManager import SubstituteManager
