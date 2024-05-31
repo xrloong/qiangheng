@@ -217,6 +217,7 @@ dc:
 FORCE:
 
 test: FORCE
+	pytest -c tests/pytest-libs.ini --rootdir=.; \
 	for cm in $(CMLIST);\
 	do\
 		pytest -c tests/pytest-$$cm.ini --rootdir=.; \
