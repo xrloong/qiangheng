@@ -55,6 +55,7 @@ class QHDataCodingDataManager:
 		fastCodes = self.radixManager.loadFastCodes(fastFile) if fastFile else {}
 		return fastCodes
 
+@singleton
 class QHDataManager:
 	@inject
 	def __init__(self,
@@ -111,7 +112,6 @@ class QHDataManager:
 		fastFile = self.__codingConfig.getSpecificFastFile()
 		return self.codingDM.loadFastCodes(fastFile = fastFile)
 
-@singleton
 class StructureManager:
 	@inject
 	def __init__(self,
