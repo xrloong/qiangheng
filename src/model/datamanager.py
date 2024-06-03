@@ -3,9 +3,9 @@ from injector import singleton
 
 from .element.CodingConfig import CodingConfig
 
-from .CharacterDescriptionManager import CompositionManager
-from .CharacterDescriptionManager import SubstituteManager
-from .CharacterDescriptionManager import RadixManager
+from .manager import CompositionManager
+from .manager import SubstituteManager
+from .manager import RadixManager
 
 class QHDataCommonDataManager:
 	@inject
