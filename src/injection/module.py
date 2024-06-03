@@ -22,7 +22,6 @@ from parser.QHParser import QHParser
 from hanzi.network import HanZiNetwork
 
 from model.manager import QHDataManager
-from model.CharacterDescriptionManager import RadixManager
 
 from .key import Package
 
@@ -74,10 +73,6 @@ class ManagerModule(Module):
 	@provider
 	def provideHanZiNetwork(self) -> HanZiNetwork:
 		return self.hanziNetwork
-
-	@provider
-	def provideRadixManager(self, qhDataManager: QHDataManager) -> RadixManager:
-		return qhDataManager.radixManager
 
 class IOModule(Module):
 	def __init__(self, quiet):
