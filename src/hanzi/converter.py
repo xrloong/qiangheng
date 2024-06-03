@@ -5,10 +5,10 @@ from .helper import HanZiCodeInfosComputer
 from .helper import HanZiNetworkItemFactory
 from .helper import HanZiInterpreter
 from .network import HanZiNetwork
+from .manager import StructureManager
 
 from model.element.enum import FontVariance
 
-from model.manager import StructureManager
 from model.CharacterDescriptionManager import RadixManager
 from model.CharacterDescriptionManager import SubstituteManager
 

@@ -10,7 +10,7 @@ from injection.module import PackageModule, ManagerModule, IOModule
 from injection.module import ParserModule
 from injection.module import CharacterModule
 
-from model.manager import StructureManager
+from model.manager import QHDataManager
 from model.MainManager import MainManager
 
 class QiangHeng:
@@ -26,9 +26,9 @@ class QiangHeng:
 		ioModule = IOModule(quiet)
 		packageModule = PackageModule(package)
 		injector = Injector([ioModule, packageModule, ParserModule])
-		structureManager = injector.get(StructureManager)
+		qhDataManager = injector.get(QHDataManager)
 
-		injector = Injector([ioModule, packageModule, ManagerModule(structureManager), CharacterModule()])
+		injector = Injector([ioModule, packageModule, ManagerModule(qhDataManager), CharacterModule()])
 		mainManager = injector.get(MainManager)
 		mainManager.work()
 

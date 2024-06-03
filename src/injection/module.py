@@ -15,14 +15,13 @@ from coding.Base import CodeMappingInfoInterpreter
 from model.element.CodingConfig import CodingConfig
 from model.element.enum import FontVariance
 
-from model.helper import StructureDescriptionGenerator
 from model.helper import StructureConverter
 
 from parser.QHParser import QHParser
 
 from hanzi.network import HanZiNetwork
 
-from model.manager import StructureManager
+from model.manager import QHDataManager
 from model.CharacterDescriptionManager import RadixManager
 
 from .key import Package
@@ -60,29 +59,25 @@ class ParserModule(Module):
 		pass
 
 	@provider
-	def provideStructureConverter(self, nodeGenerator: StructureDescriptionGenerator) -> StructureConverter:
-		return StructureConverter(nodeGenerator = nodeGenerator)
-
-	@provider
 	def provideQHParser(self, yaml: ruamel.yaml.YAML) -> QHParser:
 		return QHParser(yaml = yaml)
 
 class ManagerModule(Module):
-	def __init__(self, structureManager):
-		self.structureManager = structureManager
+	def __init__(self, qhDataManager: QHDataManager):
+		self.qhDataManager = qhDataManager
 		self.hanziNetwork = HanZiNetwork()
 
 	@provider
-	def provideStructureManager(self) -> StructureManager:
-		return self.structureManager
+	def provideQHDataManager(self) -> QHDataManager:
+		return self.qhDataManager
 
 	@provider
 	def provideHanZiNetwork(self) -> HanZiNetwork:
 		return self.hanziNetwork
 
 	@provider
-	def provideRadixManager(self, structureManager: StructureManager) -> RadixManager:
-		return structureManager.radixManager
+	def provideRadixManager(self, qhDataManager: QHDataManager) -> RadixManager:
+		return qhDataManager.radixManager
 
 class IOModule(Module):
 	def __init__(self, quiet):
