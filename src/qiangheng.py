@@ -10,7 +10,7 @@ from injection.module import PackageModule, ManagerModule, IOModule
 from injection.module import ParserModule
 from injection.module import CharacterModule
 
-from model.manager import QHDataManager
+from model.datamanager import QHDataManager
 from model.MainManager import MainManager
 
 class QiangHeng:

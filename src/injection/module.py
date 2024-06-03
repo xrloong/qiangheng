@@ -21,7 +21,7 @@ from parser.QHParser import QHParser
 
 from hanzi.network import HanZiNetwork
 
-from model.manager import QHDataManager
+from model.datamanager import QHDataManager
 
 from .key import Package
 
