@@ -55,23 +55,18 @@ class QHDataCodingDataManager:
 		fastCodes = self.radixManager.loadFastCodes(fastFile) if fastFile else {}
 		return fastCodes
 
-@singleton
-class StructureManager:
+class QHDataManager:
 	@inject
 	def __init__(self,
-			codingConfig: CodingConfig,
-
 			qhCommonDM: QHDataCommonDataManager,
 			qhCodingDM: QHDataCodingDataManager,
 
-			structureConverter: StructureConverter
+			codingConfig: CodingConfig,
 			):
-		self.__codingConfig = codingConfig
-
 		self.__qhCommonDM = qhCommonDM
 		self.__qhCodingDM = qhCodingDM
 
-		self.__structureConverter = structureConverter
+		self.__codingConfig = codingConfig
 
 		self.__loadData()
 
@@ -115,6 +110,35 @@ class StructureManager:
 	def loadFastCodes(self):
 		fastFile = self.__codingConfig.getSpecificFastFile()
 		return self.codingDM.loadFastCodes(fastFile = fastFile)
+
+@singleton
+class StructureManager:
+	@inject
+	def __init__(self,
+			qhDM: QHDataManager,
+			structureConverter: StructureConverter
+			):
+		self.__qhDM = qhDM
+		self.__structureConverter = structureConverter
+
+	@property
+	def compositionManager(self) -> CompositionManager:
+		return self.__qhDM.compositionManager
+
+	@property
+	def templateManager(self) -> SubstituteManager:
+		return self.__qhDM.templateManager
+
+	@property
+	def substituteManager(self) -> SubstituteManager:
+		return self.__qhDM.substituteManager
+
+	@property
+	def radixManager(self) -> RadixManager:
+		return self.__qhDM.radixManager
+
+	def loadFastCodes(self):
+		return self.__qhDM.loadFastCodes()
 
 	def queryCharacterDescription(self, character):
 		charDesc = self.radixManager.queryRadix(character)
