@@ -15,7 +15,6 @@ from coding.Base import CodeMappingInfoInterpreter
 from model.element.CodingConfig import CodingConfig
 from model.element.enum import FontVariance
 
-from model.helper import StructureDescriptionGenerator
 from model.helper import StructureConverter
 
 from parser.QHParser import QHParser
@@ -58,10 +57,6 @@ class PackageModule(Module):
 class ParserModule(Module):
 	def __init__(self):
 		pass
-
-	@provider
-	def provideStructureConverter(self, nodeGenerator: StructureDescriptionGenerator) -> StructureConverter:
-		return StructureConverter(nodeGenerator = nodeGenerator)
 
 	@provider
 	def provideQHParser(self, yaml: ruamel.yaml.YAML) -> QHParser:

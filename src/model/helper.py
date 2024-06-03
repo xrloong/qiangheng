@@ -60,12 +60,12 @@ class OperatorManager:
 			operator=self.templateOperatorDict.get(operatorName)
 		return operator
 
-class StructureDescriptionGenerator:
+class StructureConverter:
 	@inject
 	def __init__(self, operationManager: OperatorManager):
 		self.operationManager = operationManager
 
-	def generateNode(self, prop: dict = {}, children: tuple = ()) -> StructureDescription:
+	def __generateNode(self, prop: dict = {}, children: tuple = ()) -> StructureDescription:
 		operatorName = prop.get(constant.TAG_OPERATOR, '龜')
 		operator = self.operationManager.generateOperator(operatorName)
 
@@ -78,11 +78,6 @@ class StructureDescriptionGenerator:
 		structDesc.generateName()
 		return structDesc
 
-class StructureConverter:
-	@inject
-	def __init__(self, nodeGenerator: StructureDescriptionGenerator):
-		self.nodeGenerator = nodeGenerator
-
 	def convert(self, node: Node, font: FontVariance) -> StructureDescription:
 		structureDescription = self.__convert(node)
 		structureDescription.updateFontVariance(font)
@@ -90,7 +85,7 @@ class StructureConverter:
 
 	def __convert(self, node: Node) -> StructureDescription:
 		children = tuple(self.__convert(n) for n in node.children)
-		return self.nodeGenerator.generateNode(node.prop, children)
+		return self.__generateNode(node.prop, children)
 
 class RadicalCodingConverter:
 	@inject
