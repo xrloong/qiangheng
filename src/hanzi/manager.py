@@ -2,11 +2,11 @@ from injector import inject
 
 from model.helper import StructureConverter
 
-from model.CharacterDescriptionManager import CompositionManager
-from model.CharacterDescriptionManager import SubstituteManager
-from model.CharacterDescriptionManager import RadixManager
+from model.manager import CompositionManager
+from model.manager import SubstituteManager
+from model.manager import RadixManager
 
-from model.manager import QHDataManager
+from model.datamanager import QHDataManager
 
 class StructureManager:
 	@inject

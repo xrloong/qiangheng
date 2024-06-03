@@ -9,8 +9,8 @@ from .manager import StructureManager
 
 from model.element.enum import FontVariance
 
-from model.CharacterDescriptionManager import RadixManager
-from model.CharacterDescriptionManager import SubstituteManager
+from model.manager import RadixManager
+from model.manager import SubstituteManager
 
 from tree.regexp import TreeRegExpInterpreter
 from tree.regexp import BasicTreeProxy

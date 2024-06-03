@@ -1,113 +1,164 @@
+#!/usr/bin/env python3
+
+import abc
 from injector import inject
-from injector import singleton
 
-from .element.CodingConfig import CodingConfig
+from parser.QHParser import QHParser
 
-from .CharacterDescriptionManager import CompositionManager
-from .CharacterDescriptionManager import SubstituteManager
-from .CharacterDescriptionManager import RadixManager
+from .element.CharacterDescription import CharacterDescription
+from .element.CharacterDescription import CharacterDecompositionSet
+from .element.SubstituteRule import SubstituteRuleSet
+from .element.radix import RadicalSet
+from .element.radix import RadixDescription
 
-class QHDataCommonDataManager:
+from .helper import RadicalCodingConverter
+
+class SubstituteManager:
+	class RearrangeCallback(object, metaclass=abc.ABCMeta):
+		@abc.abstractmethod
+		def prepare(self, structure): pass
+
+		@abc.abstractmethod
+		def matchAndReplace(self, tre, structure, result): pass
+
 	@inject
-	def __init__(self,
-			compositionManager: CompositionManager,
-			templateManager: SubstituteManager,
-			):
-		self.__compositionManager = compositionManager
-		self.__templateManager = templateManager
+	def __init__(self, qhparser: QHParser):
+		self.__qhparser = qhparser
+		self.__substituteRules = ()
+		self.__opToRuleDict = {}
 
-	@property
-	def compositionManager(self) -> CompositionManager:
-		return self.__compositionManager
+	def loadSubstituteRules(self, substituteFiles):
+		substituteRuleSets = map(lambda filename: self.__loadSubstituteRuleSet(filename), substituteFiles)
+		rulesTuple = map(lambda substituteRuleSet: substituteRuleSet.rules, substituteRuleSets)
+		totalSubstituteRules = sum(rulesTuple, ())
+		self.__updateSubstituteRules(totalSubstituteRules)
 
-	@property
-	def templateManager(self) -> SubstituteManager:
-		return self.__templateManager
+	def __loadSubstituteRuleSet(self, filename: str) -> SubstituteRuleSet:
+		model = self.__qhparser.loadSubstituteRuleSet(filename)
+		return SubstituteRuleSet(model = model)
 
-	def loadData(self, componentFiles: list[str], templateFiles: list[str]):
-		self.compositionManager.loadComponents(componentFiles)
-		self.templateManager.loadSubstituteRules(templateFiles)
+	def __updateSubstituteRules(self, substituteFiles):
+		self.__substituteRules = substituteFiles
 
-class QHDataCodingDataManager:
+		for rule in substituteFiles:
+			tre = rule.getTRE()
+			opName = tre.prop["運算"]
+
+			rules = self.__opToRuleDict.get(opName, ())
+			rules = rules + (rule, )
+
+			self.__opToRuleDict[opName] = rules
+
+	def recursivelyRearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
+		rearrangeCallback.prepare(structure)
+
+		self.__rearrangeStructure(structure, rearrangeCallback)
+		for childStructure in structure.getStructureList():
+			self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
+
+	def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
+		def expandLeaf(structure):
+			rearrangeCallback.prepare(structure)
+
+			children = structure.getStructureList()
+			for child in children:
+				expandLeaf(child)
+
+		def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
+			changed = False
+			for rule in filteredSubstituteRules:
+				tre = rule.getTRE()
+				result = rule.getReplacement()
+
+				tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
+				if tmpStructure != None:
+					structure.changeToStructure(tmpStructure)
+					structure = tmpStructure
+					changed = True
+					break
+			return changed
+
+		substituteRules = self.__substituteRules
+		changed = True
+		while changed:
+			opName = structure.getExpandedOperatorName()
+			rules = self.__opToRuleDict.get(opName, ())
+			changed = rearrangeStructureOneTurn(structure, rules)
+
+class CompositionManager:
 	@inject
-	def __init__(self,
-			radixManager: RadixManager,
-			substituteManager: SubstituteManager,
-			):
-		self.__radixManager = radixManager
-		self.__substituteManager = substituteManager
+	def __init__(self, qhparser: QHParser):
+		self.qhparser = qhparser
 
-	@property
-	def radixManager(self) -> RadixManager:
-		return self.__radixManager
+		self.characterDB={}
 
-	@property
-	def substituteManager(self) -> SubstituteManager:
-		return self.__substituteManager
 
-	def loadData(self, radixFiles: list[str], adjustFiles: list[str], substituteFiles: list[str]):
-		self.radixManager.loadMainRadicals(radixFiles)
-		self.radixManager.loadAdjust(adjustFiles)
-		self.substituteManager.loadSubstituteRules(substituteFiles)
+	def queryCharacter(self, characterName):
+		return self.characterDB.get(characterName, None)
 
-	def loadFastCodes(self, fastFile: str):
-		fastCodes = self.radixManager.loadFastCodes(fastFile) if fastFile else {}
-		return fastCodes
+	def loadComponents(self, componentFiles):
+		for filename in componentFiles:
+			charDecompSetModel = self.qhparser.loadCharacterDecompositionSet(filename)
+			charDecompositionSet = CharacterDecompositionSet(model = charDecompSetModel)
 
-@singleton
-class QHDataManager:
+			charDescs = charDecompositionSet.charDescs
+			for charDesc in charDescs:
+				charName = charDesc.name
+				self.characterDB[charName] = charDesc
+
+class RadixManager:
 	@inject
-	def __init__(self,
-			qhCommonDM: QHDataCommonDataManager,
-			qhCodingDM: QHDataCodingDataManager,
+	def __init__(self, parser: QHParser, radicalCodingConverter: RadicalCodingConverter):
+		self.__parser = parser
+		self.__radicalCodingConverter = radicalCodingConverter
 
-			codingConfig: CodingConfig,
-			):
-		self.__qhCommonDM = qhCommonDM
-		self.__qhCodingDM = qhCodingDM
+		self.__radixCodeInfoDB = {}
+		self.__radixDB = {}
 
-		self.__codingConfig = codingConfig
+	def loadMainRadicals(self, radixFiles):
+		radixCodeInfoDB = self.__loadRadix(radixFiles)
+		self.__radixCodeInfoDB = radixCodeInfoDB
 
-		self.__loadData()
+	def loadAdjust(self, adjustFiles):
+		radixCodeInfoDB = self.__loadRadix(adjustFiles)
 
-	@property
-	def compositionManager(self) -> CompositionManager:
-		return self.__qhCommonDM.compositionManager
+		self.__radixCodeInfoDB.update(radixCodeInfoDB)
 
-	@property
-	def templateManager(self) -> SubstituteManager:
-		return self.__qhCommonDM.templateManager
+		resetRadixNameList = radixCodeInfoDB.keys()
+		for radixName in resetRadixNameList:
+			self.__radixDB[radixName] = CharacterDescription(name = radixName)
 
-	@property
-	def substituteManager(self) -> SubstituteManager:
-		return self.__qhCodingDM.substituteManager
+	def loadFastCodes(self, fastFile):
+		fastCodeCharacterDB = self.__loadRadix([fastFile])
+		return fastCodeCharacterDB
 
-	@property
-	def radixManager(self) -> RadixManager:
-		return self.__qhCodingDM.radixManager
+	def queryRadix(self, characterName):
+		return self.__radixDB.get(characterName, None)
 
-	@property
-	def commonDM(self) -> QHDataCommonDataManager:
-		return self.__qhCommonDM
+	def hasRadix(self, radixName):
+		return (radixName in self.__radixCodeInfoDB)
 
-	@property
-	def codingDM(self) -> QHDataCodingDataManager:
-		return self.__qhCodingDM
+	def getRadixCodeInfoList(self, radixName):
+		return self.__radixCodeInfoDB.get(radixName)
 
-	def __loadData(self):
-		codingConfig = self.__codingConfig
+	def __loadRadix(self, radixFiles: list[str]) -> dict[str, RadixDescription]:
+		parser = self.__parser
+		radixDescriptions = []
+		for radicalFile in radixFiles:
+			model = parser.loadRadicalSet(radicalFile)
+			radicalSet = RadicalSet(model = model)
+			radixDescriptions.extend(radicalSet.radicals)
 
-		self.commonDM.loadData(
-                componentFiles = codingConfig.getCommonComponentFileList(),
-                templateFiles = codingConfig.getCommonTemplateFileList(),
-                )
-		self.codingDM.loadData(
-                radixFiles = codingConfig.getSpecificRadixFileList(),
-                adjustFiles = codingConfig.getSpecificAdjustFileList(),
-                substituteFiles = codingConfig.getSpecificSubstituteFileList(),
-                )
+		radicalCodingConverter = self.__radicalCodingConverter
+		radixCodeInfoDB = {}
+		for radixDescription in radixDescriptions:
+			radixName = radixDescription.getRadixName()
+			radixCodeInfos = radicalCodingConverter.convertRadixDescToCodeInfoList(radixDescription)
 
-	def loadFastCodes(self):
-		fastFile = self.__codingConfig.getSpecificFastFile()
-		return self.codingDM.loadFastCodes(fastFile = fastFile)
+			radixCodeInfoDB[radixName] = radixCodeInfos
+
+		return radixCodeInfoDB
+
+if __name__=='__main__':
+	pass
 
