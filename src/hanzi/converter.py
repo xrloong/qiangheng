@@ -1,10 +1,10 @@
 from injector import inject
 
-from .helper import HanZiNetworkManager
+from .helper import HanZiWorkspaceManager
 from .helper import HanZiCodeInfosComputer
-from .helper import HanZiNetworkItemFactory
+from .helper import HanZiWorkspaceItemFactory
 from .helper import HanZiInterpreter
-from .network import HanZiNetwork
+from .network import HanZiWorkspace
 from .manager import StructureManager
 
 from model.element.enum import FontVariance
@@ -28,7 +28,7 @@ class HanZiTreeProxy(BasicTreeProxy):
 
 class HanZiTreeNodeGenerator(TreeNodeGenerator):
 	@inject
-	def __init__(self, itemFactory: HanZiNetworkItemFactory):
+	def __init__(self, itemFactory: HanZiWorkspaceItemFactory):
 		self.itemFactory = itemFactory
 
 	def generateLeafNode(self, nodeName):
@@ -78,15 +78,15 @@ class ConstructCharacter:
 			structureManager: StructureManager,
 			treInterpreter: HanZiTreeRegExpInterpreter,
 
-			networkManager: HanZiNetworkManager,
+			workspaceManager: HanZiWorkspaceManager,
 			codeInfosComputer: HanZiCodeInfosComputer,
-			itemFactory: HanZiNetworkItemFactory
+			itemFactory: HanZiWorkspaceItemFactory
 			):
 		self.fontVariance = fontVariance
 
 		self.structureManager = structureManager
 
-		self.networkManager = networkManager
+		self.workspaceManager = workspaceManager
 		self.codeInfosComputer = codeInfosComputer
 		self.itemFactory = itemFactory
 
@@ -120,12 +120,12 @@ class ConstructCharacter:
 		return self.itemFactory.touchNode(character)
 
 	def expandNodeStructure(self, nodeStructure):
-		networkManager = self.networkManager
+		workspaceManager = self.workspaceManager
 
 		nodeStructureInfo = nodeStructure.getStructureInfo()
 
 		character = nodeStructureInfo.getName()
-		if networkManager.isNodeExpanded(character):
+		if workspaceManager.isNodeExpanded(character):
 			return
 
 		structureManager = self.structureManager
@@ -140,7 +140,7 @@ class ConstructCharacter:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = itemFactory.getUnitStructure(radixCodeInfo)
-				networkManager.addStructureIntoNode(structure, nodeStructure)
+				workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
 		charDesc = self.queryDescription(character)
 
@@ -158,9 +158,9 @@ class ConstructCharacter:
 			templateManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
 			substituteManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
 
-			networkManager.addStructureIntoNode(structure, nodeStructure)
+			workspaceManager.addStructureIntoNode(structure, nodeStructure)
 			if isMainStructure:
-				networkManager.setMainStructureOfNode(structure, nodeStructure)
+				workspaceManager.setMainStructureOfNode(structure, nodeStructure)
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():
@@ -201,10 +201,10 @@ class ConstructCharacter:
 class ComputeCharacter:
 	@inject
 	def __init__(self,
-			hanziNetwork: HanZiNetwork,
+			hanziWorkspace: HanZiWorkspace,
 			hanziInterpreter: HanZiInterpreter,
 			):
-		self.__hanziNetwork = hanziNetwork
+		self.__hanziWorkspace = hanziWorkspace
 		self.__hanziInterpreter = hanziInterpreter
 
 	def compute(self, characters: list):
@@ -216,7 +216,7 @@ class ComputeCharacter:
 		return characterInfos
 
 	def __computeOne(self, character: str):
-		charNode = self.__hanziNetwork.findNode(character)
+		charNode = self.__hanziWorkspace.findNode(character)
 		if charNode:
 			characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
 			return characterInfo
