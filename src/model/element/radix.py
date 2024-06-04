@@ -2,8 +2,6 @@ from parser.model import RadixCodeInfoModel
 from parser.model import RadicalModel
 from parser.model import RadicalSetModel
 
-from .CodeVariance import CodeVariance
-
 class RadixCodeInfoDescription:
 	def __init__(self, model: RadixCodeInfoModel):
 		self.__codeVariance = model.variance
