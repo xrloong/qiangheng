@@ -1,4 +1,4 @@
-from enum import Enum, IntEnum
+from enum import Enum, IntEnum, StrEnum
 
 from parser import constant
 
@@ -6,10 +6,10 @@ class CodingType(IntEnum):
 	Input = 1
 	Drawing = 2
 
-class FontVariance(IntEnum):
-	All = 1
-	Traditional = 2
-	Simplified = 3
+class FontVariance(StrEnum):
+	All = '全'
+	Traditional = '傳'
+	Simplified = '簡'
 
 class CodeVariance(Enum):
 	STANDARD = (0, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
