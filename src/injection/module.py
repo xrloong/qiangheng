@@ -19,7 +19,7 @@ from model.helper import StructureConverter
 
 from parser.QHParser import QHParser
 
-from hanzi.network import HanZiNetwork
+from hanzi.workspace import HanZiWorkspace
 
 from model.datamanager import QHDataManager
 
@@ -64,15 +64,15 @@ class ParserModule(Module):
 class ManagerModule(Module):
 	def __init__(self, qhDataManager: QHDataManager):
 		self.qhDataManager = qhDataManager
-		self.hanziNetwork = HanZiNetwork()
+		self.hanziWorkspace = HanZiWorkspace()
 
 	@provider
 	def provideQHDataManager(self) -> QHDataManager:
 		return self.qhDataManager
 
 	@provider
-	def provideHanZiNetwork(self) -> HanZiNetwork:
-		return self.hanziNetwork
+	def provideHanZiWorkspace(self) -> HanZiWorkspace:
+		return self.hanziWorkspace
 
 class IOModule(Module):
 	def __init__(self, quiet):

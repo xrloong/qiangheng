@@ -1,7 +1,7 @@
 from injector import inject
 
-from .network import HanZiNetwork
-from .network import HanZiStructure, HanZiNode
+from .workspace import HanZiWorkspace
+from .workspace import HanZiStructure, HanZiNode
 from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
 
 from model.interpreter import CodeInfoInterpreter
@@ -72,22 +72,22 @@ class HanZiCodeInfosComputer:
 		return codeInfo
 
 
-class HanZiNetworkManager:
+class HanZiWorkspaceManager:
 	@inject
-	def __init__(self, hanziNetwork: HanZiNetwork):
-		self.hanziNetwork = hanziNetwork
+	def __init__(self, hanziWorkspace: HanZiWorkspace):
+		self.hanziWorkspace = hanziWorkspace
 
 	def findNode(self, name):
-		return self.hanziNetwork.findNode(name)
+		return self.hanziWorkspace.findNode(name)
 
 	def isWithNode(self, name):
-		return self.hanziNetwork.isWithNode(name)
+		return self.hanziWorkspace.isWithNode(name)
 
 	def isNodeExpanded(self, name):
-		return self.hanziNetwork.isNodeExpanded(name)
+		return self.hanziWorkspace.isNodeExpanded(name)
 
 	def addNode(self, node):
-		return self.hanziNetwork.addNode(node)
+		return self.hanziWorkspace.addNode(node)
 
 	def addStructureIntoNode(self, structure, nodeStructure):
 		nodeStructure.getStructureInfo().addStructure(structure)
@@ -95,21 +95,21 @@ class HanZiNetworkManager:
 	def setMainStructureOfNode(self, structure, nodeStructure):
 		nodeStructure.getStructureInfo().setMainStructure(structure)
 
-class HanZiNetworkItemFactory:
+class HanZiWorkspaceItemFactory:
 	@inject
 	def __init__(self,
-		networkManager: HanZiNetworkManager,
+		workspaceManager: HanZiWorkspaceManager,
 		operatorManager: OperatorManager,
 		codeInfoInterpreter: CodeInfoInterpreter):
-		self.networkManager = networkManager
+		self.workspaceManager = workspaceManager
 		self.operatorManager = operatorManager
 		self.wrapperExpressionDict = {}
 
 	def touchNode(self, character):
-		if not self.networkManager.isWithNode(character):
+		if not self.workspaceManager.isWithNode(character):
 			node = self.generateNode(character)
-			self.networkManager.addNode(node)
-		return self.networkManager.findNode(character)
+			self.workspaceManager.addNode(node)
+		return self.workspaceManager.findNode(character)
 
 	def generateNode(self, character):
 		tag = self._generateNodeTag(character)
@@ -145,7 +145,7 @@ class HanZiNetworkItemFactory:
 		if (name, index) in self.wrapperExpressionDict:
 			return self.wrapperExpressionDict[wrapperExpression]
 
-		referenceNode = self.networkManager.findNode(name)
+		referenceNode = self.workspaceManager.findNode(name)
 		structure = self.generateWrapperStructure(referenceNode, index)
 
 		self.wrapperExpressionDict[wrapperExpression] = structure

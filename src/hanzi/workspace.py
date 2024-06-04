@@ -83,7 +83,7 @@ class HanZiStructure:
 		self.structureInfo = newTargetStructure.structureInfo
 
 
-class HanZiNetwork:
+class HanZiWorkspace:
 	def __init__(self):
 		self.nodeDict={}
 
