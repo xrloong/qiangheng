@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic import ConfigDict
 
-from model.element.CodeVariance import CodeVariance
+from model.element.enum import CodeVariance
 
 class RadixCodeInfoModel(BaseModel):
 	model_config = ConfigDict(frozen = True, extra = 'allow')
