@@ -1,12 +1,12 @@
-from enum import Enum
+from enum import Enum, IntEnum
 
 from parser import constant
 
-class CodingType(Enum):
+class CodingType(IntEnum):
 	Input = 1
 	Drawing = 2
 
-class FontVariance(Enum):
+class FontVariance(IntEnum):
 	All = 1
 	Traditional = 2
 	Simplified = 3
