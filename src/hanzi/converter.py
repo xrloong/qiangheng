@@ -4,7 +4,7 @@ from .helper import HanZiWorkspaceManager
 from .helper import HanZiCodeInfosComputer
 from .helper import HanZiWorkspaceItemFactory
 from .helper import HanZiInterpreter
-from .network import HanZiWorkspace
+from .workspace import HanZiWorkspace
 from .manager import StructureManager
 
 from model.element.enum import FontVariance
