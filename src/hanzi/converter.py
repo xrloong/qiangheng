@@ -7,7 +7,7 @@ from .helper import HanZiInterpreter
 from .workspace import HanZiWorkspace
 from .manager import StructureManager
 
-from model.element.enum import FontVariance
+from parser.enum import FontVariance
 
 from model.manager import RadixManager
 from model.manager import SubstituteManager

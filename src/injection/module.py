@@ -13,10 +13,10 @@ from coding.Base import CodingRadixParser
 from coding.Base import CodeMappingInfoInterpreter
 
 from model.element.CodingConfig import CodingConfig
-from model.element.enum import FontVariance
 
 from model.helper import StructureConverter
 
+from parser.enum import FontVariance
 from parser.QHParser import QHParser
 
 from hanzi.workspace import HanZiWorkspace
