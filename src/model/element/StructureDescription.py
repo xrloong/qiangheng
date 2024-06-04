@@ -24,10 +24,7 @@ class StructureDescription:
 	def __repr__(self):
 		return str(self)
 
-	def updateFontVariance(self, fontVarianceDescription: str):
-		fontVariance = FontVariance.All
-		if fontVarianceDescription:
-			fontVariance = self.__convertDescriptionToFontVariance(fontVarianceDescription)
+	def updateFontVariance(self, fontVariance: FontVariance):
 		self.fontVariance = fontVariance
 
 	def getFontVariance(self):
