@@ -1,6 +1,6 @@
 from . import CodeMappingInfo
 
-from parser import constant
+from parser.enum import CodeVariance
 
 class CharacterInfo:
 	def __init__(self, charName):
@@ -15,7 +15,7 @@ class CharacterInfo:
 		self.codeProps = codeProps
 
 	def setFastCode(self, code):
-		variance = constant.VALUE_CODE_VARIANCE_TYPE_SIMPLIFIED
+		variance = str(CodeVariance.SIMPLIFIED)
 		self.fastCodeInfo = CodeMappingInfo.CodeMappingInfo(self.name, code, variance)
 
 	@property

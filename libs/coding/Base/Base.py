@@ -40,7 +40,7 @@ class CodeInfo(IfCodeInfo):
 
 	@property
 	def variance(self):
-		return self.codeVariance.strValue
+		return self.codeVariance
 
 
 class CodeInfoEncoder(IfCodeInfoEncoder):

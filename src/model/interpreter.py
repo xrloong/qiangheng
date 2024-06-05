@@ -24,6 +24,6 @@ class CodeInfoInterpreter:
 			characterCode=self.interpretCodeInfo(codeInfo)
 			variance=codeInfo.variance
 			if characterCode:
-				codeList.append([characterCode, variance])
+				codeList.append([characterCode, str(variance)])
 
 		return codeList

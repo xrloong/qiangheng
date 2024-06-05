@@ -1,6 +1,4 @@
-from enum import Enum, IntEnum, StrEnum
-
-from parser import constant
+from enum import IntEnum, StrEnum
 
 class CodingType(IntEnum):
 	Input = 1
@@ -11,30 +9,30 @@ class FontVariance(StrEnum):
 	Traditional = '傳'
 	Simplified = '簡'
 
-class CodeVariance(Enum):
-	STANDARD = (0, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
-	TOLERANT = (2, constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT)
+class CodeVariance(StrEnum):
+	STANDARD = "標準"
+	SIMPLIFIED = "簡快"
+	TOLERANT = "容錯"
 
-	@staticmethod
-	def fromString(codeVarianceString):
-		codeVarianceDict = {
-			constant.VALUE_CODE_VARIANCE_TYPE_STANDARD: CodeVariance.STANDARD,
-			constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT: CodeVariance.TOLERANT,
-		}
-		return codeVarianceDict.get(codeVarianceString, CodeVariance.STANDARD)
-
-	def __init__(self, value, strValue):
-		self.__value = value
-		self.__strValue = strValue
+	def __init__(self, *args, **kwds):
+		self.__intValue = None
 
 	def __mul__(self, other):
-		if self.value < other.value:
+		if self.intValue < other.intValue:
 			codeVariance = other
 		else:
 			codeVariance = self
 		return codeVariance
 
 	@property
-	def strValue(self):
-		return self.__strValue
+	def intValue(self):
+		if not self.__intValue:
+			self.__intValue = self.__computeIntValue()
+		return self.__intValue
+
+	def __computeIntValue(self):
+		match self:
+			case CodeVariance.STANDARD: return 0
+			case CodeVariance.SIMPLIFIED: return 1
+			case CodeVariance.TOLERANT: return 2
 
