@@ -1,7 +1,5 @@
 from enum import IntEnum, StrEnum
 
-from parser import constant
-
 class CodingType(IntEnum):
 	Input = 1
 	Drawing = 2
@@ -12,9 +10,9 @@ class FontVariance(StrEnum):
 	Simplified = '簡'
 
 class CodeVariance(StrEnum):
-	STANDARD = constant.VALUE_CODE_VARIANCE_TYPE_STANDARD
-	SIMPLIFIED = constant.VALUE_CODE_VARIANCE_TYPE_SIMPLIFIED
-	TOLERANT = constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT
+	STANDARD = "標準"
+	SIMPLIFIED = "簡快"
+	TOLERANT = "容錯"
 
 	def __init__(self, *args, **kwds):
 		self.__intValue = None
