@@ -6,6 +6,7 @@ from pydantic import Field
 from .enum import CodeVariance
 
 class RadixCodeInfoModel(BaseModel,
+        strict = True,
         frozen = True,
         extra = 'allow',
         ):
@@ -29,6 +30,7 @@ class RadixCodeInfoModel(BaseModel,
 		return not self.__hasSupportCharacterCode
 
 class RadicalModel(BaseModel,
+        strict = True,
         frozen = True,
         ):
 	name: str = Field(alias = '名稱', frozen = True)
@@ -36,17 +38,20 @@ class RadicalModel(BaseModel,
 	codings: list[RadixCodeInfoModel] = Field(alias = '編碼資訊', frozen = True)
 
 class RadicalSetModel(BaseModel,
+        strict = True,
         frozen = True,
         ):
 	radicals: list[RadicalModel] = Field(alias = '字符集', frozen = True)
 
 class SubstituteRuleMatchingModel(BaseModel,
+        strict = True,
         frozen = True,
         ):
 	operator: str = Field(alias = '運算', frozen = True, default = None)
 	operandCount: int = Field(alias = '參數個數', frozen = True)
 
 class SubstituteRuleModel(BaseModel,
+        strict = True,
         frozen = True,
         ):
 	matching: str | SubstituteRuleMatchingModel = Field(alias = '比對', frozen = True, default = None)
@@ -56,11 +61,13 @@ class SubstituteRuleModel(BaseModel,
 	parameterCount: Optional[int] = Field(alias = '參數個數', frozen = True, default = None)
 
 class SubstituteRuleSetModel(BaseModel,
+        strict = True,
         frozen = True,
         ):
 	rules: list[SubstituteRuleModel] = Field(alias = '規則集', frozen = True)
 
 class StructureModel(BaseModel,
+        strict = True,
         frozen = True,
         ):
 	expression: str = Field(alias = '結構', frozen = True)
@@ -70,6 +77,7 @@ class StructureModel(BaseModel,
     )
 
 class CharacterDecompositionModel(BaseModel,
+        strict = True,
         frozen = True,
         ):
 	name: str = Field(alias = '名稱', frozen = True)
@@ -77,6 +85,7 @@ class CharacterDecompositionModel(BaseModel,
 	structureSet: list[StructureModel] = Field(alias = '結構集', frozen = True)
 
 class CharacterDecompositionSetModel(BaseModel,
+        strict = True,
         frozen = True,
         ):
 	decompositionSet: list[CharacterDecompositionModel] = Field(alias = '字符集', frozen = True)
