@@ -11,16 +11,14 @@ class RadixCodeInfoModel(BaseModel,
         frozen = True,
         extra = 'allow',
         ):
-	varianceString: Optional[str] = Field(alias = '類型', frozen = True, default = None)
+	variance: CodeVariance = Field(
+        alias = '類型', frozen = True,
+        strict = False, default = CodeVariance.STANDARD
+    )
 	supportCharacterCode: Optional[str] = Field(
             alias = '字符碼', pattern = "是",
             frozen = True, default = None,
             )
-
-	@property
-	def variance(self):
-		variance = CodeVariance.fromString(self.varianceString)
-		return variance
 
 	@property
 	def __hasSupportCharacterCode(self):

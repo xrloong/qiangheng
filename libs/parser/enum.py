@@ -18,14 +18,6 @@ class CodeVariance(StrEnum):
 	def __init__(self, *args, **kwds):
 		self.__intValue = None
 
-	@staticmethod
-	def fromString(codeVarianceString):
-		codeVarianceDict = {
-			constant.VALUE_CODE_VARIANCE_TYPE_STANDARD: CodeVariance.STANDARD,
-			constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT: CodeVariance.TOLERANT,
-		}
-		return codeVarianceDict.get(codeVarianceString, CodeVariance.STANDARD)
-
 	def __mul__(self, other):
 		if self.intValue < other.intValue:
 			codeVariance = other
