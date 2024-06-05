@@ -61,7 +61,7 @@ class SubstituteRuleSetModel(BaseModel):
 	rules: list[SubstituteRuleModel] = Field(alias = '規則集', frozen = True)
 
 class StructureModel(BaseModel):
-	model_config = ConfigDict(frozen = True, extra = 'allow')
+	model_config = ConfigDict(frozen = True)
 
 	expression: str = Field(alias = '結構', frozen = True)
 	font: Optional[str] = Field(
@@ -70,14 +70,14 @@ class StructureModel(BaseModel):
     )
 
 class CharacterDecompositionModel(BaseModel):
-	model_config = ConfigDict(frozen = True, extra = 'allow')
+	model_config = ConfigDict(frozen = True)
 
 	name: str = Field(alias = '名稱', frozen = True)
 	comment: str = Field(alias = '註記', frozen = True)
 	structureSet: list[StructureModel] = Field(alias = '結構集', frozen = True)
 
 class CharacterDecompositionSetModel(BaseModel):
-	model_config = ConfigDict(frozen = True, extra = 'allow')
+	model_config = ConfigDict(frozen = True)
 
 	decompositionSet: list[CharacterDecompositionModel] = Field(alias = '字符集', frozen = True)
 
