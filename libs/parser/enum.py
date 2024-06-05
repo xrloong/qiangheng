@@ -1,4 +1,4 @@
-from enum import Enum, IntEnum, StrEnum
+from enum import IntEnum, StrEnum
 
 from parser import constant
 
@@ -11,9 +11,12 @@ class FontVariance(StrEnum):
 	Traditional = '傳'
 	Simplified = '簡'
 
-class CodeVariance(Enum):
-	STANDARD = (0, constant.VALUE_CODE_VARIANCE_TYPE_STANDARD)
-	TOLERANT = (2, constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT)
+class CodeVariance(IntEnum):
+	STANDARD = 0
+	TOLERANT = 2
+
+	def __init__(self, *args, **kwds):
+		self.__strValue = None
 
 	@staticmethod
 	def fromString(codeVarianceString):
@@ -22,10 +25,6 @@ class CodeVariance(Enum):
 			constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT: CodeVariance.TOLERANT,
 		}
 		return codeVarianceDict.get(codeVarianceString, CodeVariance.STANDARD)
-
-	def __init__(self, value, strValue):
-		self.__value = value
-		self.__strValue = strValue
 
 	def __mul__(self, other):
 		if self.value < other.value:
@@ -36,5 +35,12 @@ class CodeVariance(Enum):
 
 	@property
 	def strValue(self):
+		if not self.__strValue:
+			self.__strValue = self.__computeStrValue()
 		return self.__strValue
+
+	def __computeStrValue(self):
+		match self:
+			case CodeVariance.STANDARD: return constant.VALUE_CODE_VARIANCE_TYPE_STANDARD
+			case CodeVariance.TOLERANT: return constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT
 
