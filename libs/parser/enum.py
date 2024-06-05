@@ -34,10 +34,6 @@ class CodeVariance(StrEnum):
 		return codeVariance
 
 	@property
-	def strValue(self):
-		return self.value
-
-	@property
 	def intValue(self):
 		if not self.__intValue:
 			self.__intValue = self.__computeIntValue()
