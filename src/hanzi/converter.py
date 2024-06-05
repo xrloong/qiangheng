@@ -1,13 +1,13 @@
 from injector import inject
 
+from element.enum import FontVariance
+
 from .helper import HanZiWorkspaceManager
 from .helper import HanZiCodeInfosComputer
 from .helper import HanZiWorkspaceItemFactory
 from .helper import HanZiInterpreter
 from .workspace import HanZiWorkspace
 from .manager import StructureManager
-
-from parser.enum import FontVariance
 
 from model.manager import RadixManager
 from model.manager import SubstituteManager

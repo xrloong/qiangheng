@@ -2,7 +2,7 @@
 
 from tree.parser import TreeParser
 
-from parser.enum import FontVariance
+from element.enum import FontVariance
 from parser.model import StructureModel
 
 class StructureDescription:

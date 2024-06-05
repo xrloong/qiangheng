@@ -1,7 +1,7 @@
-from model.element import Operator
+from element import operator as Operator
 
-from parser.enum import CodingType
-from parser.enum import CodeVariance
+from element.enum import CodingType
+from element.enum import CodeVariance
 
 from .interface import IfCodeInfo, IfCodeInfoEncoder, IfCodingRadixParser
 

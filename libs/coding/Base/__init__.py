@@ -3,8 +3,8 @@ from .Base import CodeInfoEncoder
 from .Base import CodingRadixParser
 from .Base import CodeMappingInfoInterpreter
 
-from parser.enum import CodingType
-from parser.enum import FontVariance
+from element.enum import CodingType
+from element.enum import FontVariance
 
 if __name__=='__main__':
 	pass

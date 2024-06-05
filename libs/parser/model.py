@@ -3,8 +3,8 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import Field
 
-from .enum import CodeVariance
-from .enum import FontVariance
+from element.enum import CodeVariance
+from element.enum import FontVariance
 
 class RadixCodeInfoModel(BaseModel,
         strict = True,
