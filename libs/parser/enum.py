@@ -11,12 +11,12 @@ class FontVariance(StrEnum):
 	Traditional = '傳'
 	Simplified = '簡'
 
-class CodeVariance(IntEnum):
-	STANDARD = 0
-	TOLERANT = 2
+class CodeVariance(StrEnum):
+	STANDARD = constant.VALUE_CODE_VARIANCE_TYPE_STANDARD
+	TOLERANT = constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT
 
 	def __init__(self, *args, **kwds):
-		self.__strValue = None
+		self.__intValue = None
 
 	@staticmethod
 	def fromString(codeVarianceString):
@@ -27,7 +27,7 @@ class CodeVariance(IntEnum):
 		return codeVarianceDict.get(codeVarianceString, CodeVariance.STANDARD)
 
 	def __mul__(self, other):
-		if self.value < other.value:
+		if self.intValue < other.intValue:
 			codeVariance = other
 		else:
 			codeVariance = self
@@ -35,12 +35,16 @@ class CodeVariance(IntEnum):
 
 	@property
 	def strValue(self):
-		if not self.__strValue:
-			self.__strValue = self.__computeStrValue()
-		return self.__strValue
+		return self.value
 
-	def __computeStrValue(self):
+	@property
+	def intValue(self):
+		if not self.__intValue:
+			self.__intValue = self.__computeIntValue()
+		return self.__intValue
+
+	def __computeIntValue(self):
 		match self:
-			case CodeVariance.STANDARD: return constant.VALUE_CODE_VARIANCE_TYPE_STANDARD
-			case CodeVariance.TOLERANT: return constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT
+			case CodeVariance.STANDARD: return 0
+			case CodeVariance.TOLERANT: return 2
 
