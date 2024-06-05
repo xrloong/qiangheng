@@ -4,8 +4,7 @@ from tree.parser import TreeParser
 
 import Constant
 
-from .enum import FontVariance
-
+from parser.enum import FontVariance
 from parser.model import StructureModel
 
 class StructureDescription:

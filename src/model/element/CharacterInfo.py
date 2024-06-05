@@ -1,5 +1,4 @@
 from . import CodeMappingInfo
-from .CodeVariance import CodeVariance
 
 from parser import constant
 
