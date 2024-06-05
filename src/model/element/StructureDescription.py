@@ -2,8 +2,6 @@
 
 from tree.parser import TreeParser
 
-import Constant
-
 from parser.enum import FontVariance
 from parser.model import StructureModel
 
@@ -24,10 +22,7 @@ class StructureDescription:
 	def __repr__(self):
 		return str(self)
 
-	def updateFontVariance(self, fontVarianceDescription: str):
-		fontVariance = FontVariance.All
-		if fontVarianceDescription:
-			fontVariance = self.__convertDescriptionToFontVariance(fontVarianceDescription)
+	def updateFontVariance(self, fontVariance: FontVariance):
 		self.fontVariance = fontVariance
 
 	def getFontVariance(self):
@@ -80,16 +75,6 @@ class StructureDescription:
 	@property
 	def target(self):
 		return self
-
-	def __convertDescriptionToFontVariance(self, description):
-		if not description:
-			return FontVariance.All
-		elif description in Constant.LIST__FONT_VARIANCE__TRADITIONAL:
-			return FontVariance.Traditional
-		elif description in Constant.LIST__FONT_VARIANCE__SIMPLIFIED:
-			return FontVariance.Simplified
-		else:
-			return FontVariance.All
 
 class DecompositionDescription:
 	def __init__(self, model: StructureModel):

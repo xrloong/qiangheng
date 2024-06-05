@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from pydantic import Field
 
 from .enum import CodeVariance
+from .enum import FontVariance
 
 class RadixCodeInfoModel(BaseModel,
         strict = True,
@@ -71,9 +72,9 @@ class StructureModel(BaseModel,
         frozen = True,
         ):
 	expression: str = Field(alias = '結構', frozen = True)
-	font: Optional[str] = Field(
-        alias = '字體', pattern = "傳|簡",
-        frozen = True, default = None
+	font: FontVariance = Field(
+        alias = '字體', frozen = True,
+        strict = False, default = FontVariance.All
     )
 
 class CharacterDecompositionModel(BaseModel,
