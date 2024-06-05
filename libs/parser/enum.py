@@ -13,6 +13,7 @@ class FontVariance(StrEnum):
 
 class CodeVariance(StrEnum):
 	STANDARD = constant.VALUE_CODE_VARIANCE_TYPE_STANDARD
+	SIMPLIFIED = constant.VALUE_CODE_VARIANCE_TYPE_SIMPLIFIED
 	TOLERANT = constant.VALUE_CODE_VARIANCE_TYPE_TOLERANT
 
 	def __init__(self, *args, **kwds):
@@ -34,5 +35,6 @@ class CodeVariance(StrEnum):
 	def __computeIntValue(self):
 		match self:
 			case CodeVariance.STANDARD: return 0
+			case CodeVariance.SIMPLIFIED: return 1
 			case CodeVariance.TOLERANT: return 2
 
