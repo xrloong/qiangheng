@@ -2,13 +2,13 @@ from typing import Optional
 
 from pydantic import BaseModel
 from pydantic import Field
-from pydantic import ConfigDict
 
 from .enum import CodeVariance
 
-class RadixCodeInfoModel(BaseModel):
-	model_config = ConfigDict(frozen = True, extra = 'allow')
-
+class RadixCodeInfoModel(BaseModel,
+        frozen = True,
+        extra = 'allow',
+        ):
 	varianceString: Optional[str] = Field(alias = '類型', frozen = True, default = None)
 	supportCharacterCode: Optional[str] = Field(
             alias = '字符碼', pattern = "是",
@@ -28,56 +28,56 @@ class RadixCodeInfoModel(BaseModel):
 	def isSupportRadixCode(self):
 		return not self.__hasSupportCharacterCode
 
-class RadicalModel(BaseModel):
-	model_config = ConfigDict(frozen = True)
-
+class RadicalModel(BaseModel,
+        frozen = True,
+        ):
 	name: str = Field(alias = '名稱', frozen = True)
 	comment: str = Field(alias = '註記', frozen = True)
 	codings: list[RadixCodeInfoModel] = Field(alias = '編碼資訊', frozen = True)
 
-class RadicalSetModel(BaseModel):
-	model_config = ConfigDict(frozen = True)
-
+class RadicalSetModel(BaseModel,
+        frozen = True,
+        ):
 	radicals: list[RadicalModel] = Field(alias = '字符集', frozen = True)
 
-class SubstituteRuleMatchingModel(BaseModel):
-	model_config = ConfigDict(frozen = True)
-
+class SubstituteRuleMatchingModel(BaseModel,
+        frozen = True,
+        ):
 	operator: str = Field(alias = '運算', frozen = True, default = None)
 	operandCount: int = Field(alias = '參數個數', frozen = True)
 
-class SubstituteRuleModel(BaseModel):
-	model_config = ConfigDict(frozen = True)
-
+class SubstituteRuleModel(BaseModel,
+        frozen = True,
+        ):
 	matching: str | SubstituteRuleMatchingModel = Field(alias = '比對', frozen = True, default = None)
 	replacement: str = Field(alias = '替換', frozen = True)
 
 	templateName: Optional[str] = Field(alias = '範本名稱', frozen = True, default = None)
 	parameterCount: Optional[int] = Field(alias = '參數個數', frozen = True, default = None)
 
-class SubstituteRuleSetModel(BaseModel):
-	model_config = ConfigDict(frozen = True)
-
+class SubstituteRuleSetModel(BaseModel,
+        frozen = True,
+        ):
 	rules: list[SubstituteRuleModel] = Field(alias = '規則集', frozen = True)
 
-class StructureModel(BaseModel):
-	model_config = ConfigDict(frozen = True)
-
+class StructureModel(BaseModel,
+        frozen = True,
+        ):
 	expression: str = Field(alias = '結構', frozen = True)
 	font: Optional[str] = Field(
         alias = '字體', pattern = "傳|簡",
         frozen = True, default = None
     )
 
-class CharacterDecompositionModel(BaseModel):
-	model_config = ConfigDict(frozen = True)
-
+class CharacterDecompositionModel(BaseModel,
+        frozen = True,
+        ):
 	name: str = Field(alias = '名稱', frozen = True)
 	comment: str = Field(alias = '註記', frozen = True)
 	structureSet: list[StructureModel] = Field(alias = '結構集', frozen = True)
 
-class CharacterDecompositionSetModel(BaseModel):
-	model_config = ConfigDict(frozen = True)
-
+class CharacterDecompositionSetModel(BaseModel,
+        frozen = True,
+        ):
 	decompositionSet: list[CharacterDecompositionModel] = Field(alias = '字符集', frozen = True)
 
