@@ -1,4 +1,4 @@
-from model.element import Operator
+from element import operator as Operator
 
 from element.enum import CodingType
 from element.enum import CodeVariance
