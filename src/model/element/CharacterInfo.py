@@ -1,6 +1,6 @@
 from . import CodeMappingInfo
 
-from parser.enum import CodeVariance
+from element.enum import CodeVariance
 
 class CharacterInfo:
 	def __init__(self, charName):

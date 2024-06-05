@@ -8,6 +8,8 @@ from injection.key import Characters
 from injection.key import Writer
 from injection.key import Quiet
 
+from element.enum import FontVariance
+
 from coding.Base import CodeInfoEncoder
 from coding.Base import CodingRadixParser
 from coding.Base import CodeMappingInfoInterpreter
@@ -16,7 +18,6 @@ from model.element.CodingConfig import CodingConfig
 
 from model.helper import StructureConverter
 
-from parser.enum import FontVariance
 from parser.QHParser import QHParser
 
 from hanzi.workspace import HanZiWorkspace

@@ -3,7 +3,7 @@ from injector import inject
 from coding.Base import CodingRadixParser
 from tree.node import Node
 from tree.parser import constant
-from parser.enum import FontVariance
+from element.enum import FontVariance
 
 from .element import Operator
 from .element.StructureDescription import StructureDescription
