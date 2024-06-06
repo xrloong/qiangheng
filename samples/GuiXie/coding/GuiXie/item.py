@@ -1,4 +1,4 @@
-from coding.Base import CodeInfo
+from coding.Input import CodeInfo
 
 from .constant import GXStroke
 from .constant import GXCorner

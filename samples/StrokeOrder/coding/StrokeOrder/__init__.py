@@ -1,4 +1,4 @@
-from coding.Base import FontVariance
+from coding.Input import FontVariance
 
 from .StrokeOrder import SOCodeInfoEncoder as CodeInfoEncoder
 from .StrokeOrder import SORadixParser as CodingRadixParser

@@ -1,6 +1,7 @@
+import abc
+
 from element.operator import Operator
 
-from element.enum import CodingType
 from element.enum import CodeVariance
 
 from .interface import IfCodeInfo, IfCodeInfoEncoder, IfCodingRadixParser
@@ -262,15 +263,9 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 class CodingRadixParser(IfCodingRadixParser):
 	pass
 
-class CodeMappingInfoInterpreter:
-	def __init__(self, codingType = CodingType.Input):
-		self.codingType = codingType
-
-	def getCodingTypeName(self):
-		if CodingType.Input == self.codingType:
-			return "輸入法"
-		else:
-			return "描繪法"
+class CodeMappingInfoInterpreter(object, metaclass=abc.ABCMeta):
+	@abc.abstractmethod
+	def getCodingTypeName(self): pass
 
 	def interpretCodeMappingInfo(self, codeMappingInfo):
 		return {"字符": codeMappingInfo.getName(),

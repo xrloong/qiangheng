@@ -1,5 +1,5 @@
-from coding.Base import FontVariance
-from coding.Base import CodeMappingInfoInterpreter
+from coding.Input import FontVariance
+from coding.Input import CodeMappingInfoInterpreter
 
 from .GuiXie import GXCodeInfoEncoder as CodeInfoEncoder
 from .GuiXie import GXRadixParser as CodingRadixParser

@@ -1,6 +1,6 @@
-from coding.Base import CodeInfo
-from coding.Base import CodeInfoEncoder
-from coding.Base import CodingRadixParser
+from coding.Input import CodeInfo
+from coding.Input import CodeInfoEncoder
+from coding.Input import CodingRadixParser
 
 from .constant import FCCorner
 
