@@ -44,5 +44,5 @@ class StructureManager:
 		return charDesc
 
 	def queryChildren(self, charDesc):
-		return charDesc.getCompList()
+		return charDesc.compList
 

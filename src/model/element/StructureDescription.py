@@ -7,74 +7,65 @@ from parser.model import StructureModel
 
 class StructureDescription:
 	def __init__(self, operator, compList):
-		self.fontVariance = FontVariance.All
+		self.__fontVariance = FontVariance.All
 
-		self.referenceExpression=None
+		self.__referenceExpression = None
 
-		self.flagIsRoot=False
+		self.__flagIsRoot = False
 
-		self.operator=operator
-		self.compList=compList
+		self.__operator = operator
+		self.__compList = compList
 
-	def __str__(self):
-		return '<{0}={1}|({2})>'.format(self.getReferenceExpression(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
+	@property
+	def target(self):
+		return self
 
-	def __repr__(self):
-		return str(self)
+	@property
+	def operator(self):
+		return self.__operator
 
-	def updateFontVariance(self, fontVariance: FontVariance):
-		self.fontVariance = fontVariance
+	@property
+	def compList(self):
+		return self.__compList
 
-	def getFontVariance(self):
-		return self.fontVariance
+	@property
+	def fontVariance(self):
+		return self.__fontVariance
 
-	def getUniqueName(self):
-		return self.name
+	@property
+	def referenceExpression(self):
+		return self.__referenceExpression
 
-	def generateName(self):
-		if self.isLeaf():
-			self.name=self.getReferenceExpression()
-		else:
-			strList = [self.getOperator().getName()]
-			strList.extend([comp.getUniqueName() for comp in self.compList])
-			self.name="({0})".format(" ".join(strList))
-
-	def setReferenceExpression(self, referenceExpression):
-		self.referenceExpression=referenceExpression
-
-	def getReferenceExpression(self):
-		return self.referenceExpression
-
-	def getReferenceName(self):
-		expression=self.referenceExpression
+	@property
+	def referenceName(self):
+		expression = self.__referenceExpression
 		if expression:
 			return expression.split(".")[0]
 		else:
 			return expression
 
+	def updateFontVariance(self, fontVariance: FontVariance):
+		self.__fontVariance = fontVariance
+
+	def getUniqueName(self):
+		return self.__name
+
+	def generateName(self):
+		if self.isLeaf():
+			self.__name = self.referenceExpression
+		else:
+			strList = [self.operator.getName()]
+			strList.extend([comp.getUniqueName() for comp in self.__compList])
+			self.__name = "({0})".format(" ".join(strList))
+
+	def setReferenceExpression(self, referenceExpression):
+		self.__referenceExpression = referenceExpression
+
 	def isLeaf(self):
-		return bool(self.getReferenceName())
+		return bool(self.referenceName)
 
 	def isEmpty(self):
-		return self.getOperator().getName()=='龜' or len(self.compList)==0
-
-	def setOperator(self, operator):
-		self.operator=operator
-		self.generateName()
-
-	def getOperator(self):
-		return self.operator
-
-	def setCompList(self, compList):
-		self.compList=compList
-		self.generateName()
-
-	def getCompList(self):
-		return self.compList
-
-	@property
-	def target(self):
-		return self
+		return self.operator.getName() == '龜' or len(self.__compList) == 0
 
 class DecompositionDescription:
 	def __init__(self, model: StructureModel):

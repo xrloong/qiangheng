@@ -150,7 +150,7 @@ class ConstructCharacter:
 			if structDesc.isEmpty():
 				continue
 
-			characterFontVariance = structDesc.getFontVariance()
+			characterFontVariance = structDesc.fontVariance
 			isMainStructure = isBelongToFontVariance(characterFontVariance, self.fontVariance)
 
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
@@ -171,8 +171,8 @@ class ConstructCharacter:
 		return structure
 
 	def generateReferenceLink(self, structDesc):
-		name = structDesc.getReferenceName()
-		nodeExpression = structDesc.getReferenceExpression()
+		name = structDesc.referenceName
+		nodeExpression = structDesc.referenceExpression
 
 		self.constructCharacter(name)
 
@@ -191,7 +191,7 @@ class ConstructCharacter:
 			childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
 			childStructureList.append(childStructure)
 
-		operator = structDesc.getOperator()
+		operator = structDesc.operator
 
 		return self.itemFactory.getCompoundStructure(operator, childStructureList)
 
