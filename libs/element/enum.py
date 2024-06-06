@@ -1,8 +1,4 @@
-from enum import IntEnum, StrEnum
-
-class CodingType(IntEnum):
-	Input = 1
-	Drawing = 2
+from enum import StrEnum
 
 class FontVariance(StrEnum):
 	All = '全'
