@@ -16,12 +16,6 @@ class StructureDescription:
 		self.__operator = operator
 		self.__compList = compList
 
-	def __str__(self):
-		return '<{0} = {1}|({2})>'.format(self.getReferenceExpression(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
-
-	def __repr__(self):
-		return str(self)
-
 	def updateFontVariance(self, fontVariance: FontVariance):
 		self.__fontVariance = fontVariance
 
