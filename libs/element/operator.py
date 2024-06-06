@@ -11,9 +11,6 @@ class Operator:
 	def getName(self):
 		return self.name
 
-	def setName(self, name):
-		self.name = name
-
 def _generateBuiltinOperator(operatorName):
 	return Operator(operatorName)
 
