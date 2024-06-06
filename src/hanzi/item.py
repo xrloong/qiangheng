@@ -2,23 +2,6 @@ import abc
 
 from injector import inject
 
-class StructureTag:
-	def __init__(self):
-		self.flagIsTemplateApplied = False
-		self.flagIsSubstituteApplied = False
-
-	def isTemplateApplied(self):
-		return self.flagIsTemplateApplied
-
-	def isSubstituteApplied(self):
-		return self.flagIsSubstituteApplied
-
-	def setTemplateApplied(self):
-		self.flagIsTemplateApplied=True
-
-	def setSubstituteApplied(self):
-		self.flagIsSubstituteApplied=True
-
 class StructureInfo(object, metaclass=abc.ABCMeta):
 	def __init__(self):
 		self.codeInfos = None

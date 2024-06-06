@@ -1,4 +1,3 @@
-from .item import StructureTag
 from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo, NodeStructureInfo
 
 class HanZiNode:
@@ -24,7 +23,6 @@ class HanZiNode:
 class HanZiStructure:
 	def __init__(self, structureInfo):
 		self.structureInfo = structureInfo
-		self.tag = StructureTag()
 		self.oldStructureInfoList = []
 
 
