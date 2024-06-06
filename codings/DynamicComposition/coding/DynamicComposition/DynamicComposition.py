@@ -1,5 +1,3 @@
-import abc
-
 from coding.Base import CodingType
 from coding.Base import CodeInfo
 from coding.Base import CodeInfoEncoder
