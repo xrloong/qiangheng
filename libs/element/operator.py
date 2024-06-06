@@ -12,8 +12,9 @@ class Operator:
 	def name(self):
 		return self.__name
 
-def _generateBuiltinOperator(operatorName):
-	return Operator(operatorName)
+	@staticmethod
+	def generateBuiltin(operatorName):
+		return Operator(operatorName)
 
 # 龜
 # 爲
@@ -24,35 +25,35 @@ def _generateBuiltinOperator(operatorName):
 # 衍衷瓥粦
 # 錯
 
-OperatorTurtle = _generateBuiltinOperator('龜')
-OperatorLoong = _generateBuiltinOperator('龍')
-OperatorSparrow = _generateBuiltinOperator('雀')
-OperatorEqual = _generateBuiltinOperator('爲')
+OperatorTurtle = Operator.generateBuiltin('龜')
+OperatorLoong = Operator.generateBuiltin('龍')
+OperatorSparrow = Operator.generateBuiltin('雀')
+OperatorEqual = Operator.generateBuiltin('爲')
 
-OperatorSilkworm = _generateBuiltinOperator('蚕')
-OperatorGoose = _generateBuiltinOperator('鴻')
-OperatorLoop = _generateBuiltinOperator('回')
+OperatorSilkworm = Operator.generateBuiltin('蚕')
+OperatorGoose = Operator.generateBuiltin('鴻')
+OperatorLoop = Operator.generateBuiltin('回')
 
-OperatorQi = _generateBuiltinOperator('起')
-OperatorZhe = _generateBuiltinOperator('這')
-OperatorLiao = _generateBuiltinOperator('廖')
-OperatorZai = _generateBuiltinOperator('載')
-OperatorDou = _generateBuiltinOperator('斗')
+OperatorQi = Operator.generateBuiltin('起')
+OperatorZhe = Operator.generateBuiltin('這')
+OperatorLiao = Operator.generateBuiltin('廖')
+OperatorZai = Operator.generateBuiltin('載')
+OperatorDou = Operator.generateBuiltin('斗')
 
-OperatorTong = _generateBuiltinOperator('同')
-OperatorHan = _generateBuiltinOperator('函')
-OperatorQu = _generateBuiltinOperator('區')
-OperatorLeft = _generateBuiltinOperator('左')
+OperatorTong = Operator.generateBuiltin('同')
+OperatorHan = Operator.generateBuiltin('函')
+OperatorQu = Operator.generateBuiltin('區')
+OperatorLeft = Operator.generateBuiltin('左')
 
-OperatorMu = _generateBuiltinOperator('畞')
-OperatorZuo = _generateBuiltinOperator('㘴')
-OperatorYou = _generateBuiltinOperator('幽')
-OperatorLiang = _generateBuiltinOperator('㒳')
-OperatorJia = _generateBuiltinOperator('夾')
+OperatorMu = Operator.generateBuiltin('畞')
+OperatorZuo = Operator.generateBuiltin('㘴')
+OperatorYou = Operator.generateBuiltin('幽')
+OperatorLiang = Operator.generateBuiltin('㒳')
+OperatorJia = Operator.generateBuiltin('夾')
 
-OperatorLuan = _generateBuiltinOperator('䜌')
-OperatorBan = _generateBuiltinOperator('辦')
-OperatorLin = _generateBuiltinOperator('粦')
-OperatorLi = _generateBuiltinOperator('瓥')
-OperatorYi = _generateBuiltinOperator('燚')
+OperatorLuan = Operator.generateBuiltin('䜌')
+OperatorBan = Operator.generateBuiltin('辦')
+OperatorLin = Operator.generateBuiltin('粦')
+OperatorLi = Operator.generateBuiltin('瓥')
+OperatorYi = Operator.generateBuiltin('燚')
 
