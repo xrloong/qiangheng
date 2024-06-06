@@ -8,11 +8,11 @@ from .interface import IfCodeInfo, IfCodeInfoEncoder, IfCodingRadixParser
 class CodeInfo(IfCodeInfo):
 	def __init__(self):
 		self.codeVariance = CodeVariance.STANDARD
-		self._isSupportRadixCode=True
+		self._isSupportRadixCode = True
 
 	@staticmethod
 	def generateDefaultCodeInfo():
-		codeInfo=CodeInfo()
+		codeInfo = CodeInfo()
 		return codeInfo
 
 	@property
@@ -21,7 +21,7 @@ class CodeInfo(IfCodeInfo):
 
 	def setCodeInfoAttribute(self, codeVariance, isSupportRadixCode):
 		self.multiplyCodeVariance(codeVariance)
-		self._isSupportRadixCode=isSupportRadixCode
+		self._isSupportRadixCode = isSupportRadixCode
 
 	def __str__(self):
 		return "{{{0}}}".format(self.toCode())
@@ -48,70 +48,70 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 		return CodeInfo.generateDefaultCodeInfo()
 
 	def setByComps(self, operator, codeInfoList):
-		codeInfo=None
+		codeInfo = None
 
-		isAvailable=self.isAvailableOperation(codeInfoList)
+		isAvailable = self.isAvailableOperation(codeInfoList)
 		if isAvailable:
 			if Operator.OperatorTurtle.equals(operator):
-				codeInfo=self.encodeAsTurtle(codeInfoList)
+				codeInfo = self.encodeAsTurtle(codeInfoList)
 			elif Operator.OperatorLoong.equals(operator):
-				codeInfo=self.encodeAsLoong(codeInfoList)
+				codeInfo = self.encodeAsLoong(codeInfoList)
 			elif Operator.OperatorSparrow.equals(operator):
-				codeInfo=self.encodeAsSparrow(codeInfoList)
+				codeInfo = self.encodeAsSparrow(codeInfoList)
 			elif Operator.OperatorEqual.equals(operator):
-				codeInfo=self.encodeAsEqual(codeInfoList)
+				codeInfo = self.encodeAsEqual(codeInfoList)
 
 			elif Operator.OperatorSilkworm.equals(operator):
-				codeInfo=self.encodeAsSilkworm(codeInfoList)
+				codeInfo = self.encodeAsSilkworm(codeInfoList)
 			elif Operator.OperatorGoose.equals(operator):
-				codeInfo=self.encodeAsGoose(codeInfoList)
+				codeInfo = self.encodeAsGoose(codeInfoList)
 			elif Operator.OperatorLoop.equals(operator):
-				codeInfo=self.encodeAsLoop(codeInfoList)
+				codeInfo = self.encodeAsLoop(codeInfoList)
 
 			elif Operator.OperatorQi.equals(operator):
-				codeInfo=self.encodeAsQi(codeInfoList)
+				codeInfo = self.encodeAsQi(codeInfoList)
 			elif Operator.OperatorZhe.equals(operator):
-				codeInfo=self.encodeAsZhe(codeInfoList)
+				codeInfo = self.encodeAsZhe(codeInfoList)
 			elif Operator.OperatorLiao.equals(operator):
-				codeInfo=self.encodeAsLiao(codeInfoList)
+				codeInfo = self.encodeAsLiao(codeInfoList)
 			elif Operator.OperatorZai.equals(operator):
-				codeInfo=self.encodeAsZai(codeInfoList)
+				codeInfo = self.encodeAsZai(codeInfoList)
 			elif Operator.OperatorDou.equals(operator):
-				codeInfo=self.encodeAsDou(codeInfoList)
+				codeInfo = self.encodeAsDou(codeInfoList)
 
 			elif Operator.OperatorTong.equals(operator):
-				codeInfo=self.encodeAsTong(codeInfoList)
+				codeInfo = self.encodeAsTong(codeInfoList)
 			elif Operator.OperatorQu.equals(operator):
-				codeInfo=self.encodeAsQu(codeInfoList)
+				codeInfo = self.encodeAsQu(codeInfoList)
 			elif Operator.OperatorHan.equals(operator):
-				codeInfo=self.encodeAsHan(codeInfoList)
+				codeInfo = self.encodeAsHan(codeInfoList)
 			elif Operator.OperatorLeft.equals(operator):
-				codeInfo=self.encodeAsLeft(codeInfoList)
+				codeInfo = self.encodeAsLeft(codeInfoList)
 
 			elif Operator.OperatorMu.equals(operator):
-				codeInfo=self.encodeAsMu(codeInfoList)
+				codeInfo = self.encodeAsMu(codeInfoList)
 			elif Operator.OperatorZuo.equals(operator):
-				codeInfo=self.encodeAsZuo(codeInfoList)
+				codeInfo = self.encodeAsZuo(codeInfoList)
 			elif Operator.OperatorYou.equals(operator):
-				codeInfo=self.encodeAsYou(codeInfoList)
+				codeInfo = self.encodeAsYou(codeInfoList)
 			elif Operator.OperatorLiang.equals(operator):
-				codeInfo=self.encodeAsLiang(codeInfoList)
+				codeInfo = self.encodeAsLiang(codeInfoList)
 			elif Operator.OperatorJia.equals(operator):
-				codeInfo=self.encodeAsJia(codeInfoList)
+				codeInfo = self.encodeAsJia(codeInfoList)
 
 			elif Operator.OperatorLuan.equals(operator):
-				codeInfo=self.encodeAsLuan(codeInfoList)
+				codeInfo = self.encodeAsLuan(codeInfoList)
 			elif Operator.OperatorBan.equals(operator):
-				codeInfo=self.encodeAsBan(codeInfoList)
+				codeInfo = self.encodeAsBan(codeInfoList)
 			elif Operator.OperatorLin.equals(operator):
-				codeInfo=self.encodeAsLin(codeInfoList)
+				codeInfo = self.encodeAsLin(codeInfoList)
 			elif Operator.OperatorLi.equals(operator):
-				codeInfo=self.encodeAsLi(codeInfoList)
+				codeInfo = self.encodeAsLi(codeInfoList)
 			elif Operator.OperatorYi.equals(operator):
-				codeInfo=self.encodeAsYi(codeInfoList)
+				codeInfo = self.encodeAsYi(codeInfoList)
 
 			else:
-				codeInfo=self.encodeAsInvalidate(codeInfoList)
+				codeInfo = self.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
@@ -144,144 +144,144 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 
 	def encodeAsSilkworm(self, codeInfoList):
 		"""運算 "蚕" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 	def encodeAsGoose(self, codeInfoList):
 		"""運算 "鴻" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 	def encodeAsLoop(self, codeInfoList):
 		"""運算 "回" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
 	def encodeAsQi(self, codeInfoList):
 		"""運算 "起" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 	def encodeAsZhe(self, codeInfoList):
 		"""運算 "這" """
-		codeInfo=self.encodeAsQi(codeInfoList)
+		codeInfo = self.encodeAsQi(codeInfoList)
 		return codeInfo
 
 	def encodeAsLiao(self, codeInfoList):
 		"""運算 "廖" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 	def encodeAsZai(self, codeInfoList):
 		"""運算 "載" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 	def encodeAsDou(self, codeInfoList):
 		"""運算 "斗" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
 	def encodeAsTong(self, codeInfoList):
 		"""運算 "同" """
-		codeInfo=self.encodeAsLoop(codeInfoList)
+		codeInfo = self.encodeAsLoop(codeInfoList)
 		return codeInfo
 
 	def encodeAsQu(self, codeInfoList):
 		"""運算 "區" """
-		codeInfo=self.encodeAsLoop(codeInfoList)
+		codeInfo = self.encodeAsLoop(codeInfoList)
 		return codeInfo
 
 	def encodeAsHan(self, codeInfoList):
 		"""運算 "函" """
-		codeInfo=self.encodeAsLoop(codeInfoList)
+		codeInfo = self.encodeAsLoop(codeInfoList)
 		return codeInfo
 
 	def encodeAsLeft(self, codeInfoList):
 		"""運算 "左" """
-		codeInfo=self.encodeAsLoop(codeInfoList)
+		codeInfo = self.encodeAsLoop(codeInfoList)
 		return codeInfo
 
 
 	def encodeAsMu(self, codeInfoList):
 		"""運算 "畞" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 	def convertCodeInfoListOfZuoOrder(self, codeInfoList):
 		# 㘴的參數順序為：土、口、人（大部分到小部件）。
 		# 但大部分的輸入法順序為：口、人、土。
 
-		tmpCodeInfoList=codeInfoList[1:]+codeInfoList[:1]
+		tmpCodeInfoList = codeInfoList[1:]+codeInfoList[:1]
 		return tmpCodeInfoList
 
 	def encodeAsZuo(self, codeInfoList):
 		"""運算 "㘴" """
-		codeInfoList=self.convertCodeInfoListOfZuoOrder(codeInfoList)
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfoList = self.convertCodeInfoListOfZuoOrder(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 	def encodeAsYou(self, codeInfoList):
 		"""運算 "幽" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 	def encodeAsLiang(self, codeInfoList):
 		"""運算 "㒳" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 	def encodeAsJia(self, codeInfoList):
 		"""運算 "夾" """
-		codeInfo=self.encodeAsLoong(codeInfoList)
+		codeInfo = self.encodeAsLoong(codeInfoList)
 		return codeInfo
 
 
 	def encodeAsLuan(self, codeInfoList):
 		"""運算 "䜌" """
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		codeInfo=self.encodeAsGoose([secondCodeInfo, firstCodeInfo, secondCodeInfo])
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		codeInfo = self.encodeAsGoose([secondCodeInfo, firstCodeInfo, secondCodeInfo])
 		return codeInfo
 
 	def encodeAsBan(self, codeInfoList):
 		"""運算 "辦" """
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		codeInfo=self.encodeAsGoose([firstCodeInfo, secondCodeInfo, firstCodeInfo])
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		codeInfo = self.encodeAsGoose([firstCodeInfo, secondCodeInfo, firstCodeInfo])
 		return codeInfo
 
 
 	def encodeAsLin(self, codeInfoList):
 		"""運算 "粦" """
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		thirdCodeInfo = codeInfoList[2]
 
-		topCodeInfo=firstCodeInfo
-		bottomCodeInfo=self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
+		topCodeInfo = firstCodeInfo
+		bottomCodeInfo = self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
 
-		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
+		codeInfo = self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
 
 	def encodeAsLi(self, codeInfoList):
 		"""運算 "瓥" """
-		firstCodeInfo=codeInfoList[0]
-		secondCodeInfo=codeInfoList[1]
-		thirdCodeInfo=codeInfoList[2]
-		fourthCodeInfo=codeInfoList[3]
+		firstCodeInfo = codeInfoList[0]
+		secondCodeInfo = codeInfoList[1]
+		thirdCodeInfo = codeInfoList[2]
+		fourthCodeInfo = codeInfoList[3]
 
-		topCodeInfo=self.encodeAsGoose([firstCodeInfo, secondCodeInfo])
-		bottomCodeInfo=self.encodeAsGoose([thirdCodeInfo, fourthCodeInfo])
+		topCodeInfo = self.encodeAsGoose([firstCodeInfo, secondCodeInfo])
+		bottomCodeInfo = self.encodeAsGoose([thirdCodeInfo, fourthCodeInfo])
 
-		codeInfo=self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
+		codeInfo = self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
 		return codeInfo
 
 	def encodeAsYi(self, codeInfoList):
 		"""運算 "燚" """
-		firstCodeInfo=codeInfoList[0]
+		firstCodeInfo = codeInfoList[0]
 
 		return self.encodeAsLi([firstCodeInfo, firstCodeInfo, firstCodeInfo, firstCodeInfo, ])
 
