@@ -7,14 +7,14 @@ from parser.model import StructureModel
 
 class StructureDescription:
 	def __init__(self, operator, compList):
-		self.fontVariance = FontVariance.All
+		self.__fontVariance = FontVariance.All
 
-		self.referenceExpression = None
+		self.__referenceExpression = None
 
-		self.flagIsRoot = False
+		self.__flagIsRoot = False
 
-		self.operator = operator
-		self.compList = compList
+		self.__operator = operator
+		self.__compList = compList
 
 	def __str__(self):
 		return '<{0} = {1}|({2})>'.format(self.getReferenceExpression(), self.getOperator().getName(), ",".join(map(str, self.getCompList())))
@@ -23,30 +23,30 @@ class StructureDescription:
 		return str(self)
 
 	def updateFontVariance(self, fontVariance: FontVariance):
-		self.fontVariance = fontVariance
+		self.__fontVariance = fontVariance
 
 	def getFontVariance(self):
-		return self.fontVariance
+		return self.__fontVariance
 
 	def getUniqueName(self):
-		return self.name
+		return self.__name
 
 	def generateName(self):
 		if self.isLeaf():
-			self.name = self.getReferenceExpression()
+			self.__name = self.getReferenceExpression()
 		else:
 			strList = [self.getOperator().getName()]
-			strList.extend([comp.getUniqueName() for comp in self.compList])
-			self.name = "({0})".format(" ".join(strList))
+			strList.extend([comp.getUniqueName() for comp in self.__compList])
+			self.__name = "({0})".format(" ".join(strList))
 
 	def setReferenceExpression(self, referenceExpression):
-		self.referenceExpression = referenceExpression
+		self.__referenceExpression = referenceExpression
 
 	def getReferenceExpression(self):
-		return self.referenceExpression
+		return self.__referenceExpression
 
 	def getReferenceName(self):
-		expression = self.referenceExpression
+		expression = self.__referenceExpression
 		if expression:
 			return expression.split(".")[0]
 		else:
@@ -56,21 +56,21 @@ class StructureDescription:
 		return bool(self.getReferenceName())
 
 	def isEmpty(self):
-		return self.getOperator().getName() == '龜' or len(self.compList) == 0
+		return self.getOperator().getName() == '龜' or len(self.__compList) == 0
 
 	def setOperator(self, operator):
-		self.operator = operator
+		self.__operator = operator
 		self.generateName()
 
 	def getOperator(self):
-		return self.operator
+		return self.__operator
 
 	def setCompList(self, compList):
-		self.compList = compList
+		self.__compList = compList
 		self.generateName()
 
 	def getCompList(self):
-		return self.compList
+		return self.__compList
 
 	@property
 	def target(self):
