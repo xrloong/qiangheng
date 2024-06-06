@@ -15,9 +15,6 @@ class Operator:
 	def setName(self, name):
 		self.name = name
 
-	def isBuiltin(self):
-		return self.builtin
-
 def _generateBuiltinOperator(operatorName):
 	return Operator(operatorName, builtin = True)
 
