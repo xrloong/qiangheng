@@ -52,66 +52,40 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 
 		isAvailable = self.isAvailableOperation(codeInfoList)
 		if isAvailable:
-			if operator == Operator.OperatorTurtle:
-				codeInfo = self.encodeAsTurtle(codeInfoList)
-			elif operator == Operator.OperatorLoong:
-				codeInfo = self.encodeAsLoong(codeInfoList)
-			elif operator == Operator.OperatorSparrow:
-				codeInfo = self.encodeAsSparrow(codeInfoList)
-			elif operator == Operator.OperatorEqual:
-				codeInfo = self.encodeAsEqual(codeInfoList)
+			match operator:
+				case Operator.OperatorTurtle: codeInfo = self.encodeAsTurtle(codeInfoList)
+				case Operator.OperatorLoong: codeInfo = self.encodeAsLoong(codeInfoList)
+				case Operator.OperatorSparrow: codeInfo = self.encodeAsSparrow(codeInfoList)
+				case Operator.OperatorEqual: codeInfo = self.encodeAsEqual(codeInfoList)
 
-			elif operator == Operator.OperatorSilkworm:
-				codeInfo = self.encodeAsSilkworm(codeInfoList)
-			elif operator == Operator.OperatorGoose:
-				codeInfo = self.encodeAsGoose(codeInfoList)
-			elif operator == Operator.OperatorLoop:
-				codeInfo = self.encodeAsLoop(codeInfoList)
+				case Operator.OperatorSilkworm: codeInfo = self.encodeAsSilkworm(codeInfoList)
+				case Operator.OperatorGoose: codeInfo = self.encodeAsGoose(codeInfoList)
+				case Operator.OperatorLoop: codeInfo = self.encodeAsLoop(codeInfoList)
 
-			elif operator == Operator.OperatorQi:
-				codeInfo = self.encodeAsQi(codeInfoList)
-			elif operator == Operator.OperatorZhe:
-				codeInfo = self.encodeAsZhe(codeInfoList)
-			elif operator == Operator.OperatorLiao:
-				codeInfo = self.encodeAsLiao(codeInfoList)
-			elif operator == Operator.OperatorZai:
-				codeInfo = self.encodeAsZai(codeInfoList)
-			elif operator == Operator.OperatorDou:
-				codeInfo = self.encodeAsDou(codeInfoList)
+				case Operator.OperatorQi: codeInfo = self.encodeAsQi(codeInfoList)
+				case Operator.OperatorZhe: codeInfo = self.encodeAsZhe(codeInfoList)
+				case Operator.OperatorLiao: codeInfo = self.encodeAsLiao(codeInfoList)
+				case Operator.OperatorZai: codeInfo = self.encodeAsZai(codeInfoList)
+				case Operator.OperatorDou: codeInfo = self.encodeAsDou(codeInfoList)
 
-			elif operator == Operator.OperatorTong:
-				codeInfo = self.encodeAsTong(codeInfoList)
-			elif operator == Operator.OperatorQu:
-				codeInfo = self.encodeAsQu(codeInfoList)
-			elif operator == Operator.OperatorHan:
-				codeInfo = self.encodeAsHan(codeInfoList)
-			elif operator == Operator.OperatorLeft:
-				codeInfo = self.encodeAsLeft(codeInfoList)
+				case Operator.OperatorTong: codeInfo = self.encodeAsTong(codeInfoList)
+				case Operator.OperatorQu: codeInfo = self.encodeAsQu(codeInfoList)
+				case Operator.OperatorHan: codeInfo = self.encodeAsHan(codeInfoList)
+				case Operator.OperatorLeft: codeInfo = self.encodeAsLeft(codeInfoList)
 
-			elif operator == Operator.OperatorMu:
-				codeInfo = self.encodeAsMu(codeInfoList)
-			elif operator == Operator.OperatorZuo:
-				codeInfo = self.encodeAsZuo(codeInfoList)
-			elif operator == Operator.OperatorYou:
-				codeInfo = self.encodeAsYou(codeInfoList)
-			elif operator == Operator.OperatorLiang:
-				codeInfo = self.encodeAsLiang(codeInfoList)
-			elif operator == Operator.OperatorJia:
-				codeInfo = self.encodeAsJia(codeInfoList)
+				case Operator.OperatorMu: codeInfo = self.encodeAsMu(codeInfoList)
+				case Operator.OperatorZuo: codeInfo = self.encodeAsZuo(codeInfoList)
+				case Operator.OperatorYou: codeInfo = self.encodeAsYou(codeInfoList)
+				case Operator.OperatorLiang: codeInfo = self.encodeAsLiang(codeInfoList)
+				case Operator.OperatorJia: codeInfo = self.encodeAsJia(codeInfoList)
 
-			elif operator == Operator.OperatorLuan:
-				codeInfo = self.encodeAsLuan(codeInfoList)
-			elif operator == Operator.OperatorBan:
-				codeInfo = self.encodeAsBan(codeInfoList)
-			elif operator == Operator.OperatorLin:
-				codeInfo = self.encodeAsLin(codeInfoList)
-			elif operator == Operator.OperatorLi:
-				codeInfo = self.encodeAsLi(codeInfoList)
-			elif operator == Operator.OperatorYi:
-				codeInfo = self.encodeAsYi(codeInfoList)
+				case Operator.OperatorLuan: codeInfo = self.encodeAsLuan(codeInfoList)
+				case Operator.OperatorBan: codeInfo = self.encodeAsBan(codeInfoList)
+				case Operator.OperatorLin: codeInfo = self.encodeAsLin(codeInfoList)
+				case Operator.OperatorLi: codeInfo = self.encodeAsLi(codeInfoList)
+				case Operator.OperatorYi: codeInfo = self.encodeAsYi(codeInfoList)
 
-			else:
-				codeInfo = self.encodeAsInvalidate(codeInfoList)
+				case _: codeInfo = self.encodeAsInvalidate(codeInfoList)
 		return codeInfo
 
 	def isAvailableOperation(self, codeInfoList):
