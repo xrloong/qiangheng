@@ -20,11 +20,12 @@ class StructureDescription:
 	def target(self):
 		return self
 
+	@property
+	def fontVariance(self):
+		return self.__fontVariance
+
 	def updateFontVariance(self, fontVariance: FontVariance):
 		self.__fontVariance = fontVariance
-
-	def getFontVariance(self):
-		return self.__fontVariance
 
 	def getUniqueName(self):
 		return self.__name

@@ -150,7 +150,7 @@ class ConstructCharacter:
 			if structDesc.isEmpty():
 				continue
 
-			characterFontVariance = structDesc.getFontVariance()
+			characterFontVariance = structDesc.fontVariance
 			isMainStructure = isBelongToFontVariance(characterFontVariance, self.fontVariance)
 
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
