@@ -191,7 +191,7 @@ class ConstructCharacter:
 			childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
 			childStructureList.append(childStructure)
 
-		operator = structDesc.getOperator()
+		operator = structDesc.operator
 
 		return self.itemFactory.getCompoundStructure(operator, childStructureList)
 

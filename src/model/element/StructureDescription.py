@@ -21,6 +21,14 @@ class StructureDescription:
 		return self
 
 	@property
+	def operator(self):
+		return self.__operator
+
+	@property
+	def compList(self):
+		return self.__compList
+
+	@property
 	def fontVariance(self):
 		return self.__fontVariance
 
@@ -46,7 +54,7 @@ class StructureDescription:
 		if self.isLeaf():
 			self.__name = self.referenceExpression
 		else:
-			strList = [self.getOperator().getName()]
+			strList = [self.operator.getName()]
 			strList.extend([comp.getUniqueName() for comp in self.__compList])
 			self.__name = "({0})".format(" ".join(strList))
 
@@ -57,13 +65,7 @@ class StructureDescription:
 		return bool(self.referenceName)
 
 	def isEmpty(self):
-		return self.getOperator().getName() == '龜' or len(self.__compList) == 0
-
-	def getOperator(self):
-		return self.__operator
-
-	def getCompList(self):
-		return self.__compList
+		return self.operator.getName() == '龜' or len(self.__compList) == 0
 
 class DecompositionDescription:
 	def __init__(self, model: StructureModel):
