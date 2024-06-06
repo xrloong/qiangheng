@@ -5,7 +5,7 @@ class Operator:
 	def __str__(self):
 		return self.__name
 
-	def equals(self, other):
+	def __eq__(self, other):
 		return self.name == other.name
 
 	@property
