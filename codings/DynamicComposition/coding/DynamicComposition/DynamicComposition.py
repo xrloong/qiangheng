@@ -1,8 +1,7 @@
-from coding.Base import CodingType
-from coding.Base import CodeInfo
-from coding.Base import CodeInfoEncoder
-from coding.Base import CodingRadixParser
-from coding.Base import CodeMappingInfoInterpreter
+from coding.Drawing import CodeInfo
+from coding.Drawing import CodeInfoEncoder
+from coding.Drawing import CodingRadixParser
+from coding.Drawing import CodeMappingInfoInterpreter
 
 from parser.GlyphParser import GlyphTags
 from parser.GlyphParser import GlyphParser
@@ -437,9 +436,6 @@ class DataStructureCanvasController(BaseTextCanvasController):
 
 # code mapping for drawing methods
 class DCCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
-	def __init__(self):
-		super().__init__(CodingType.Drawing)
-
 	def interpretCodeMappingInfo(self, codeMappingInfo):
 		charName = codeMappingInfo.getName()
 		dcComponent = codeMappingInfo.getCode()

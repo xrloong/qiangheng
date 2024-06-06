@@ -1,5 +1,5 @@
-from coding.Base import FontVariance
-from coding.Base import CodeMappingInfoInterpreter
+from coding.Input import FontVariance
+from coding.Input import CodeMappingInfoInterpreter
 
 from .CangJie import CJCodeInfoEncoder as CodeInfoEncoder
 from .CangJie import CJRadixParser as CodingRadixParser

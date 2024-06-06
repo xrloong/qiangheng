@@ -1,4 +1,4 @@
-from coding.Base import FontVariance
+from coding.Drawing import FontVariance
 
 from .DynamicComposition import DCCodeInfoEncoder as CodeInfoEncoder
 from .DynamicComposition import DCRadixParser as CodingRadixParser

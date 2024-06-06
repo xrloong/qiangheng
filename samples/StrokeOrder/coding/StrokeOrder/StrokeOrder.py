@@ -1,7 +1,7 @@
-from coding.Base import CodeInfo
-from coding.Base import CodeInfoEncoder
-from coding.Base import CodingRadixParser
-from coding.Base import CodeMappingInfoInterpreter
+from coding.Input import CodeInfo
+from coding.Input import CodeInfoEncoder
+from coding.Input import CodingRadixParser
+from coding.Input import CodeMappingInfoInterpreter
 
 from ..DynamicComposition.DynamicComposition import DCCodeInfo
 from ..DynamicComposition.DynamicComposition import DCCodeInfoEncoder
