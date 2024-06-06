@@ -52,16 +52,8 @@ class StructureDescription:
 	def isEmpty(self):
 		return self.getOperator().getName() == '龜' or len(self.__compList) == 0
 
-	def setOperator(self, operator):
-		self.__operator = operator
-		self.generateName()
-
 	def getOperator(self):
 		return self.__operator
-
-	def setCompList(self, compList):
-		self.__compList = compList
-		self.generateName()
 
 	def getCompList(self):
 		return self.__compList
