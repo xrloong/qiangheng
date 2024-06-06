@@ -35,7 +35,7 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
 	def getExpandedOperatorName(self):
 		operator = self.getExpandedOperator()
 		if operator:
-			return operator.getName()
+			return operator.name
 		else:
 			return ""
 

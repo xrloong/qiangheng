@@ -54,7 +54,7 @@ class StructureDescription:
 		if self.isLeaf():
 			self.__name = self.referenceExpression
 		else:
-			strList = [self.operator.getName()]
+			strList = [self.operator.name]
 			strList.extend([comp.getUniqueName() for comp in self.__compList])
 			self.__name = "({0})".format(" ".join(strList))
 
@@ -65,7 +65,7 @@ class StructureDescription:
 		return bool(self.referenceName)
 
 	def isEmpty(self):
-		return self.operator.getName() == '龜' or len(self.__compList) == 0
+		return self.operator.name == '龜' or len(self.__compList) == 0
 
 class DecompositionDescription:
 	def __init__(self, model: StructureModel):

@@ -1,15 +1,16 @@
 class Operator:
 	def __init__(self, name):
-		self.name = name
+		self.__name = name
 
 	def __str__(self):
-		return self.name
+		return self.__name
 
 	def equals(self, other):
-		return self.getName() == other.getName()
+		return self.name == other.name
 
-	def getName(self):
-		return self.name
+	@property
+	def name(self):
+		return self.__name
 
 def _generateBuiltinOperator(operatorName):
 	return Operator(operatorName)
