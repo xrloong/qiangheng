@@ -3,7 +3,7 @@ from injector import inject
 from coding.Base import CodingRadixParser
 from tree.node import Node
 from tree.parser import constant
-from element import operator as Operator
+from element.operator import Operator
 from element.enum import FontVariance
 
 from .element.StructureDescription import StructureDescription
@@ -15,37 +15,37 @@ class OperatorManager:
 	@inject
 	def __init__(self):
 		self.builtinOperatorDict = {
-			'龜': Operator.OperatorTurtle,
-			'龍': Operator.OperatorLoong,
-			'雀': Operator.OperatorSparrow,
-			'爲': Operator.OperatorEqual,
+			'龜': Operator.Turtle,
+			'龍': Operator.Loong,
+			'雀': Operator.Sparrow,
+			'爲': Operator.Equal,
 
-			'蚕': Operator.OperatorSilkworm,
-			'鴻': Operator.OperatorGoose,
-			'回': Operator.OperatorLoop,
+			'蚕': Operator.Silkworm,
+			'鴻': Operator.Goose,
+			'回': Operator.Loop,
 
-			'起': Operator.OperatorQi,
-			'這': Operator.OperatorZhe,
-			'廖': Operator.OperatorLiao,
-			'載': Operator.OperatorZai,
-			'斗': Operator.OperatorDou,
+			'起': Operator.Qi,
+			'這': Operator.Zhe,
+			'廖': Operator.Liao,
+			'載': Operator.Zai,
+			'斗': Operator.Dou,
 
-			'同': Operator.OperatorTong,
-			'區': Operator.OperatorQu,
-			'函': Operator.OperatorHan,
-			'左': Operator.OperatorLeft,
+			'同': Operator.Tong,
+			'區': Operator.Qu,
+			'函': Operator.Han,
+			'左': Operator.Left,
 
-			'畞': Operator.OperatorMu,
-			'㘴': Operator.OperatorZuo,
-			'幽': Operator.OperatorYou,
-			'㒳': Operator.OperatorLiang,
-			'夾': Operator.OperatorJia,
+			'畞': Operator.Mu,
+			'㘴': Operator.Zuo,
+			'幽': Operator.You,
+			'㒳': Operator.Liang,
+			'夾': Operator.Jia,
 
-			'䜌': Operator.OperatorLuan,
-			'辦': Operator.OperatorBan,
-			'粦': Operator.OperatorLin,
-			'瓥': Operator.OperatorLi,
-			'燚': Operator.OperatorYi,
+			'䜌': Operator.Luan,
+			'辦': Operator.Ban,
+			'粦': Operator.Lin,
+			'瓥': Operator.Li,
+			'燚': Operator.Yi,
 		}
 		self.templateOperatorDict = {
 		}
@@ -55,7 +55,7 @@ class OperatorManager:
 			operator = self.builtinOperatorDict.get(operatorName)
 		else:
 			if operatorName not in self.templateOperatorDict:
-				operator = Operator.Operator(operatorName)
+				operator = Operator(operatorName)
 				self.templateOperatorDict[operatorName] = operator
 			operator = self.templateOperatorDict.get(operatorName)
 		return operator

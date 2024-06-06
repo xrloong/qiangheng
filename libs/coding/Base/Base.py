@@ -1,4 +1,4 @@
-from element import operator as Operator
+from element.operator import Operator
 
 from element.enum import CodingType
 from element.enum import CodeVariance
@@ -53,37 +53,37 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 		isAvailable = self.isAvailableOperation(codeInfoList)
 		if isAvailable:
 			match operator:
-				case Operator.OperatorTurtle: codeInfo = self.encodeAsTurtle(codeInfoList)
-				case Operator.OperatorLoong: codeInfo = self.encodeAsLoong(codeInfoList)
-				case Operator.OperatorSparrow: codeInfo = self.encodeAsSparrow(codeInfoList)
-				case Operator.OperatorEqual: codeInfo = self.encodeAsEqual(codeInfoList)
+				case Operator.Turtle: codeInfo = self.encodeAsTurtle(codeInfoList)
+				case Operator.Loong: codeInfo = self.encodeAsLoong(codeInfoList)
+				case Operator.Sparrow: codeInfo = self.encodeAsSparrow(codeInfoList)
+				case Operator.Equal: codeInfo = self.encodeAsEqual(codeInfoList)
 
-				case Operator.OperatorSilkworm: codeInfo = self.encodeAsSilkworm(codeInfoList)
-				case Operator.OperatorGoose: codeInfo = self.encodeAsGoose(codeInfoList)
-				case Operator.OperatorLoop: codeInfo = self.encodeAsLoop(codeInfoList)
+				case Operator.Silkworm: codeInfo = self.encodeAsSilkworm(codeInfoList)
+				case Operator.Goose: codeInfo = self.encodeAsGoose(codeInfoList)
+				case Operator.Loop: codeInfo = self.encodeAsLoop(codeInfoList)
 
-				case Operator.OperatorQi: codeInfo = self.encodeAsQi(codeInfoList)
-				case Operator.OperatorZhe: codeInfo = self.encodeAsZhe(codeInfoList)
-				case Operator.OperatorLiao: codeInfo = self.encodeAsLiao(codeInfoList)
-				case Operator.OperatorZai: codeInfo = self.encodeAsZai(codeInfoList)
-				case Operator.OperatorDou: codeInfo = self.encodeAsDou(codeInfoList)
+				case Operator.Qi: codeInfo = self.encodeAsQi(codeInfoList)
+				case Operator.Zhe: codeInfo = self.encodeAsZhe(codeInfoList)
+				case Operator.Liao: codeInfo = self.encodeAsLiao(codeInfoList)
+				case Operator.Zai: codeInfo = self.encodeAsZai(codeInfoList)
+				case Operator.Dou: codeInfo = self.encodeAsDou(codeInfoList)
 
-				case Operator.OperatorTong: codeInfo = self.encodeAsTong(codeInfoList)
-				case Operator.OperatorQu: codeInfo = self.encodeAsQu(codeInfoList)
-				case Operator.OperatorHan: codeInfo = self.encodeAsHan(codeInfoList)
-				case Operator.OperatorLeft: codeInfo = self.encodeAsLeft(codeInfoList)
+				case Operator.Tong: codeInfo = self.encodeAsTong(codeInfoList)
+				case Operator.Qu: codeInfo = self.encodeAsQu(codeInfoList)
+				case Operator.Han: codeInfo = self.encodeAsHan(codeInfoList)
+				case Operator.Left: codeInfo = self.encodeAsLeft(codeInfoList)
 
-				case Operator.OperatorMu: codeInfo = self.encodeAsMu(codeInfoList)
-				case Operator.OperatorZuo: codeInfo = self.encodeAsZuo(codeInfoList)
-				case Operator.OperatorYou: codeInfo = self.encodeAsYou(codeInfoList)
-				case Operator.OperatorLiang: codeInfo = self.encodeAsLiang(codeInfoList)
-				case Operator.OperatorJia: codeInfo = self.encodeAsJia(codeInfoList)
+				case Operator.Mu: codeInfo = self.encodeAsMu(codeInfoList)
+				case Operator.Zuo: codeInfo = self.encodeAsZuo(codeInfoList)
+				case Operator.You: codeInfo = self.encodeAsYou(codeInfoList)
+				case Operator.Liang: codeInfo = self.encodeAsLiang(codeInfoList)
+				case Operator.Jia: codeInfo = self.encodeAsJia(codeInfoList)
 
-				case Operator.OperatorLuan: codeInfo = self.encodeAsLuan(codeInfoList)
-				case Operator.OperatorBan: codeInfo = self.encodeAsBan(codeInfoList)
-				case Operator.OperatorLin: codeInfo = self.encodeAsLin(codeInfoList)
-				case Operator.OperatorLi: codeInfo = self.encodeAsLi(codeInfoList)
-				case Operator.OperatorYi: codeInfo = self.encodeAsYi(codeInfoList)
+				case Operator.Luan: codeInfo = self.encodeAsLuan(codeInfoList)
+				case Operator.Ban: codeInfo = self.encodeAsBan(codeInfoList)
+				case Operator.Lin: codeInfo = self.encodeAsLin(codeInfoList)
+				case Operator.Li: codeInfo = self.encodeAsLi(codeInfoList)
+				case Operator.Yi: codeInfo = self.encodeAsYi(codeInfoList)
 
 				case _: codeInfo = self.encodeAsInvalidate(codeInfoList)
 		return codeInfo
