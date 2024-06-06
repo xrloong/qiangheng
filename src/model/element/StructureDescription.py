@@ -16,6 +16,10 @@ class StructureDescription:
 		self.__operator = operator
 		self.__compList = compList
 
+	@property
+	def target(self):
+		return self
+
 	def updateFontVariance(self, fontVariance: FontVariance):
 		self.__fontVariance = fontVariance
 
@@ -57,10 +61,6 @@ class StructureDescription:
 
 	def getCompList(self):
 		return self.__compList
-
-	@property
-	def target(self):
-		return self
 
 class DecompositionDescription:
 	def __init__(self, model: StructureModel):
