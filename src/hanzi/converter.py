@@ -171,8 +171,8 @@ class ConstructCharacter:
 		return structure
 
 	def generateReferenceLink(self, structDesc):
-		name = structDesc.getReferenceName()
-		nodeExpression = structDesc.getReferenceExpression()
+		name = structDesc.referenceName
+		nodeExpression = structDesc.referenceExpression
 
 		self.constructCharacter(name)
 

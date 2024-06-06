@@ -24,6 +24,18 @@ class StructureDescription:
 	def fontVariance(self):
 		return self.__fontVariance
 
+	@property
+	def referenceExpression(self):
+		return self.__referenceExpression
+
+	@property
+	def referenceName(self):
+		expression = self.__referenceExpression
+		if expression:
+			return expression.split(".")[0]
+		else:
+			return expression
+
 	def updateFontVariance(self, fontVariance: FontVariance):
 		self.__fontVariance = fontVariance
 
@@ -32,7 +44,7 @@ class StructureDescription:
 
 	def generateName(self):
 		if self.isLeaf():
-			self.__name = self.getReferenceExpression()
+			self.__name = self.referenceExpression
 		else:
 			strList = [self.getOperator().getName()]
 			strList.extend([comp.getUniqueName() for comp in self.__compList])
@@ -41,18 +53,8 @@ class StructureDescription:
 	def setReferenceExpression(self, referenceExpression):
 		self.__referenceExpression = referenceExpression
 
-	def getReferenceExpression(self):
-		return self.__referenceExpression
-
-	def getReferenceName(self):
-		expression = self.__referenceExpression
-		if expression:
-			return expression.split(".")[0]
-		else:
-			return expression
-
 	def isLeaf(self):
-		return bool(self.getReferenceName())
+		return bool(self.referenceName)
 
 	def isEmpty(self):
 		return self.getOperator().getName() == '龜' or len(self.__compList) == 0
