@@ -1,25 +1,20 @@
 class Operator:
-	def __init__(self, name, builtin=False):
-		self.name=name
-		self.builtin=builtin
+	def __init__(self, name):
+		self.__name = name
 
 	def __str__(self):
-		return self.name
+		return self.__name
 
-	def equals(self, other):
-		return self.getName()==other.getName()
+	def __eq__(self, other):
+		return self.name == other.name
 
-	def getName(self):
-		return self.name
+	@property
+	def name(self):
+		return self.__name
 
-	def setName(self, name):
-		self.name=name
-
-	def isBuiltin(self):
-		return self.builtin
-
-def _generateBuiltinOperator(operatorName):
-	return Operator(operatorName, builtin=True)
+	@staticmethod
+	def generateBuiltin(operatorName):
+		return Operator(operatorName)
 
 # 龜
 # 爲
@@ -30,35 +25,35 @@ def _generateBuiltinOperator(operatorName):
 # 衍衷瓥粦
 # 錯
 
-OperatorTurtle=_generateBuiltinOperator('龜')
-OperatorLoong=_generateBuiltinOperator('龍')
-OperatorSparrow=_generateBuiltinOperator('雀')
-OperatorEqual=_generateBuiltinOperator('爲')
+Operator.Turtle = Operator.generateBuiltin('龜')
+Operator.Loong = Operator.generateBuiltin('龍')
+Operator.Sparrow = Operator.generateBuiltin('雀')
+Operator.Equal = Operator.generateBuiltin('爲')
 
-OperatorSilkworm=_generateBuiltinOperator('蚕')
-OperatorGoose=_generateBuiltinOperator('鴻')
-OperatorLoop=_generateBuiltinOperator('回')
+Operator.Silkworm = Operator.generateBuiltin('蚕')
+Operator.Goose = Operator.generateBuiltin('鴻')
+Operator.Loop = Operator.generateBuiltin('回')
 
-OperatorQi=_generateBuiltinOperator('起')
-OperatorZhe=_generateBuiltinOperator('這')
-OperatorLiao=_generateBuiltinOperator('廖')
-OperatorZai=_generateBuiltinOperator('載')
-OperatorDou=_generateBuiltinOperator('斗')
+Operator.Qi = Operator.generateBuiltin('起')
+Operator.Zhe = Operator.generateBuiltin('這')
+Operator.Liao = Operator.generateBuiltin('廖')
+Operator.Zai = Operator.generateBuiltin('載')
+Operator.Dou = Operator.generateBuiltin('斗')
 
-OperatorTong=_generateBuiltinOperator('同')
-OperatorHan=_generateBuiltinOperator('函')
-OperatorQu=_generateBuiltinOperator('區')
-OperatorLeft=_generateBuiltinOperator('左')
+Operator.Tong = Operator.generateBuiltin('同')
+Operator.Han = Operator.generateBuiltin('函')
+Operator.Qu = Operator.generateBuiltin('區')
+Operator.Left = Operator.generateBuiltin('左')
 
-OperatorMu=_generateBuiltinOperator('畞')
-OperatorZuo=_generateBuiltinOperator('㘴')
-OperatorYou=_generateBuiltinOperator('幽')
-OperatorLiang=_generateBuiltinOperator('㒳')
-OperatorJia=_generateBuiltinOperator('夾')
+Operator.Mu = Operator.generateBuiltin('畞')
+Operator.Zuo = Operator.generateBuiltin('㘴')
+Operator.You = Operator.generateBuiltin('幽')
+Operator.Liang = Operator.generateBuiltin('㒳')
+Operator.Jia = Operator.generateBuiltin('夾')
 
-OperatorLuan=_generateBuiltinOperator('䜌')
-OperatorBan=_generateBuiltinOperator('辦')
-OperatorLin=_generateBuiltinOperator('粦')
-OperatorLi=_generateBuiltinOperator('瓥')
-OperatorYi=_generateBuiltinOperator('燚')
+Operator.Luan = Operator.generateBuiltin('䜌')
+Operator.Ban = Operator.generateBuiltin('辦')
+Operator.Lin = Operator.generateBuiltin('粦')
+Operator.Li = Operator.generateBuiltin('瓥')
+Operator.Yi = Operator.generateBuiltin('燚')
 
