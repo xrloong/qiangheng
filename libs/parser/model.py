@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 from pydantic import Field
+from pydantic import field_validator
 
 from element.enum import CodeVariance
 from element.enum import FontVariance
@@ -74,6 +75,13 @@ class StructureModel(BaseModel,
         alias = '字體', frozen = True,
         strict = False, default = FontVariance.All
     )
+
+	@field_validator('font')
+	@classmethod
+	def __check_font(cls, value):
+		if value not in {FontVariance.Traditional, FontVariance.Simplified}:
+			raise ValueError('字體 應使用 傳|簡')
+		return value
 
 class CharacterDecompositionModel(BaseModel,
         strict = True,
