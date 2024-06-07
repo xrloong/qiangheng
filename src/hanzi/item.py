@@ -42,8 +42,8 @@ class StructureInfo(object, metaclass = abc.ABCMeta):
 	def getExpandedStructureList(self):
 		return self.getStructureList()
 
-	def getChildStructures(self):
-		return ()
+	@abc.abstractproperty
+	def childStructures(self): pass
 
 	def getReferenceExpression(self):
 		return None
@@ -69,7 +69,8 @@ class UnitStructureInfo(StructureInfo):
 		self.__referenceNode = None
 		self.__index = 0
 
-	def getChildStructures(self):
+	@property
+	def childStructures(self):
 		return ()
 
 	@property
@@ -112,7 +113,8 @@ class WrapperStructureInfo(StructureInfo):
 		else:
 			return self.getStructureList()
 
-	def getChildStructures(self):
+	@property
+	def childStructures(self):
 		nodeStructure = self.getReferencedNodeStructure()
 		return (nodeStructure, )
 
@@ -142,7 +144,8 @@ class CompoundStructureInfo(StructureInfo):
 		self.__operator = operator
 		self.__structureList = structureList
 
-	def getChildStructures(self):
+	@property
+	def childStructures(self):
 		return self.getStructureList()
 
 	@property
@@ -189,7 +192,8 @@ class NodeStructureInfo(StructureInfo):
 		else:
 			return None
 
-	def getChildStructures(self):
+	@property
+	def childStructures(self):
 		return self.getStructureList(True)
 
 	@property
