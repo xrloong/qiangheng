@@ -1,7 +1,7 @@
-from coding.Input import CodeInfo
-from coding.Input import CodeInfoEncoder
-from coding.Input import CodingRadixParser
-from coding.Input import CodeMappingInfoInterpreter
+from coding.Drawing import CodeInfo
+from coding.Drawing import CodeInfoEncoder
+from coding.Drawing import CodingRadixParser
+from coding.Drawing import CodeMappingInfoInterpreter
 
 from ..DynamicComposition.DynamicComposition import DCCodeInfo
 from ..DynamicComposition.DynamicComposition import DCCodeInfoEncoder
@@ -47,7 +47,6 @@ class SOCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
 
 		component = dcComponent.getComponent()
 		strokes = component.getStrokeList()
-		names = (stroke.getTypeName() for stroke in strokes)
-		code = "".join(names)
-		return {"字符": charName, "類型": variance, "筆順": code}
+		names = tuple(stroke.getTypeName() for stroke in strokes)
+		return {"字符": charName, "類型": variance, "筆順": names}
 
