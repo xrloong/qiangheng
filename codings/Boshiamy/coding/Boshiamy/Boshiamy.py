@@ -86,11 +86,8 @@ class BSCodeInfo(CodeInfo):
 	@property
 	def code(self):
 		codeSequence = self.codeSequence
-		supplementCode = self.supplementCode
 		
 		if codeSequence == None:
-			return None
-		elif not self.ignoreSupplement and supplementCode == None:
 			return None
 		else:
 			code = "".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], codeSequence))
@@ -99,6 +96,9 @@ class BSCodeInfo(CodeInfo):
 					# 根據嘸蝦米規則，如果是一到十等數目的字，則不用加補碼
 					return code
 				else:
+					supplementCode = self.supplementCode
+					if supplementCode == None:
+						return None
 					return code + supplementCode
 			elif len(code)>4:
 				return code[:3] + code[-1:]
