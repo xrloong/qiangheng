@@ -21,6 +21,13 @@ class RadixCodeInfoModel(BaseModel,
             frozen = True, default = None,
             )
 
+	@field_validator('variance')
+	@classmethod
+	def __check_variance(cls, value):
+		if value not in {CodeVariance.STANDARD, CodeVariance.TOLERANT}:
+			raise ValueError('類型 應使用 標準|容錯')
+		return value
+
 	@property
 	def __hasSupportCharacterCode(self):
 		return bool(self.supportCharacterCode)
