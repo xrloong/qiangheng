@@ -97,9 +97,9 @@ class BSCodeInfo(CodeInfo):
 					# 根據嘸蝦米規則，如果是一到十等數目的字，則不用加補碼
 					return code
 				else:
-					return code+supplementCode
+					return code + supplementCode
 			elif len(code)>4:
-				return code[:3]+code[-1:]
+				return code[:3] + code[-1:]
 			else:
 				return code
 
@@ -166,7 +166,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 	@staticmethod
 	def computeBoshiamyCode(bsCodeList):
 		bslist = list(sum(bsCodeList, []))
-		bs_code_list = (bslist[:3]+bslist[-1:]) if len(bslist)>4 else bslist
+		bs_code_list = (bslist[:3] + bslist[-1:]) if len(bslist)>4 else bslist
 		return bs_code_list
 
 class BSRadixParser(CodingRadixParser):
