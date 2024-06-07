@@ -64,7 +64,7 @@ class ConstructCharacter:
 			self.treInterpreter = treInterpreter
 
 		def prepare(self, structure):
-			nodeStructure = structure.getStructureInfo().getReferencedNodeStructure()
+			nodeStructure = structure.structureInfo.getReferencedNodeStructure()
 			if nodeStructure:
 				self.computeCharacterInfo.expandNodeStructure(nodeStructure)
 
@@ -122,7 +122,7 @@ class ConstructCharacter:
 	def expandNodeStructure(self, nodeStructure):
 		workspaceManager = self.workspaceManager
 
-		nodeStructureInfo = nodeStructure.getStructureInfo()
+		nodeStructureInfo = nodeStructure.structureInfo
 
 		character = nodeStructureInfo.getName()
 		if workspaceManager.isNodeExpanded(character):

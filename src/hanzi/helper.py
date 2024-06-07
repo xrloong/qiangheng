@@ -18,7 +18,7 @@ class HanZiInterpreter:
 
 	def _getNodeCharacterInfo(self, hanziNode):
 		nodeStructure = hanziNode.nodeStructure
-		nodeStructureInfo = nodeStructure.getStructureInfo()
+		nodeStructureInfo = nodeStructure.structureInfo
 
 		structureList = nodeStructureInfo.getStructureList(True)
 		codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
@@ -51,7 +51,7 @@ class HanZiCodeInfosComputer:
 		self._generateCodeInfosOfStructure(structure)
 
 	def _generateCodeInfosOfStructure(self, structure):
-		structureInfo = structure.getStructureInfo()
+		structureInfo = structure.structureInfo
 		operator = structureInfo.getOperator()
 
 		codeInfosCollection = structureInfo.getCodeInfosTuple()
@@ -90,10 +90,10 @@ class HanZiWorkspaceManager:
 		return self.hanziWorkspace.addNode(node)
 
 	def addStructureIntoNode(self, structure, nodeStructure):
-		nodeStructure.getStructureInfo().addStructure(structure)
+		nodeStructure.structureInfo.addStructure(structure)
 
 	def setMainStructureOfNode(self, structure, nodeStructure):
-		nodeStructure.getStructureInfo().setMainStructure(structure)
+		nodeStructure.structureInfo.setMainStructure(structure)
 
 class HanZiWorkspaceItemFactory:
 	@inject

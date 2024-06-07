@@ -25,10 +25,11 @@ class HanZiNode:
 
 class HanZiStructure:
 	def __init__(self, structureInfo):
-		self.structureInfo = structureInfo
+		self.__structureInfo = structureInfo
 
-	def getStructureInfo(self):
-		return self.structureInfo
+	@property
+	def structureInfo(self):
+		return self.__structureInfo
 
 	def getComputedCodeInfos(self):
 		return self.structureInfo.getComputedCodeInfos()
@@ -75,7 +76,7 @@ class HanZiStructure:
 		return self.structureInfo.getChildStructures()
 
 	def changeToStructure(self, newTargetStructure):
-		self.structureInfo = newTargetStructure.structureInfo
+		self.__structureInfo = newTargetStructure.structureInfo
 
 
 class HanZiWorkspace:
@@ -95,7 +96,7 @@ class HanZiWorkspace:
 	def isNodeExpanded(self, name):
 		node = self.findNode(name)
 		nodeStructure = node.nodeStructure
-		nodeStructureInfo = nodeStructure.getStructureInfo()
+		nodeStructureInfo = nodeStructure.structureInfo
 		mainStructure = nodeStructureInfo.getMainStructure()
 		return bool(mainStructure)
 

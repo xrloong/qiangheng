@@ -79,7 +79,7 @@ class WrapperStructureInfo(StructureInfo):
 	def __init__(self, nodeStructure, index):
 		super().__init__()
 
-		nodeStructureInfo = nodeStructure.getStructureInfo()
+		nodeStructureInfo = nodeStructure.structureInfo
 		referenceName = nodeStructureInfo.getName()
 		if index==0:
 			referenceExpression = "{}".format(referenceName)
@@ -99,7 +99,7 @@ class WrapperStructureInfo(StructureInfo):
 		nodeStructureInfo = self.getReferencedNodeStructureInfo()
 		expandedStructure = nodeStructureInfo.getMainStructure()
 		if expandedStructure:
-			return expandedStructure.getStructureInfo().getOperator()
+			return expandedStructure.structureInfo.getOperator()
 		else:
 			return self.getOperator()
 
@@ -144,7 +144,7 @@ class CompoundStructureInfo(StructureInfo):
 		return self.getStructureList()
 
 	def getCodeInfosTuple(self):
-		codeInfosList = [s.getStructureInfo().getRadixCodeInfoList() for s in self.getStructureList()]
+		codeInfosList = [s.structureInfo.getRadixCodeInfoList() for s in self.getStructureList()]
 		return CompoundStructureInfo.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
 
 	def getOperator(self):
@@ -181,7 +181,7 @@ class NodeStructureInfo(StructureInfo):
 	def getOperator(self):
 		mainStructure = self.getMainStructure()
 		if mainStructure:
-			structureInfo = mainStructure.getStructureInfo()
+			structureInfo = mainStructure.structureInfo
 			return structureInfo.getOperator()
 		else:
 			return None
