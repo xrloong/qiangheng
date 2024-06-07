@@ -4,19 +4,19 @@ from injector import inject
 
 class StructureInfo(object, metaclass = abc.ABCMeta):
 	def __init__(self):
-		self.codeInfos = None
+		self.__codeInfos = None
 
 	def setComputedCodeInfos(self, codeInfos):
-		self.codeInfos = codeInfos
+		self.__codeInfos = codeInfos
 
 	def getComputedCodeInfos(self):
-		return self.codeInfos
+		return self.__codeInfos
 
 	def isCodeInfoGenerated(self):
-		return self.codeInfos !=  None
+		return self.__codeInfos !=  None
 
 	def getRadixCodeInfoList(self):
-		return filter(lambda x: x.isSupportRadixCode(), self.codeInfos)
+		return filter(lambda x: x.isSupportRadixCode(), self.__codeInfos)
 
 
 	def getOperator(self):
@@ -64,16 +64,16 @@ class UnitStructureInfo(StructureInfo):
 	def __init__(self, radixCodeInfo):
 		super().__init__()
 
-		self.radixCodeInfo = radixCodeInfo
+		self.__radixCodeInfo = radixCodeInfo
 
-		self.referenceNode = None
-		self.index = 0
+		self.__referenceNode = None
+		self.__index = 0
 
 	def getChildStructures(self):
 		return ()
 
 	def getCodeInfosTuple(self):
-		return ((self.radixCodeInfo, ), )
+		return ((self.__radixCodeInfo, ), )
 
 class WrapperStructureInfo(StructureInfo):
 	def __init__(self, nodeStructure, index):
@@ -86,10 +86,10 @@ class WrapperStructureInfo(StructureInfo):
 		else:
 			referenceExpression = "{}.{}".format(referenceName,index)
 
-		self.nodeStructure = nodeStructure
-		self.nodeStructureInfo = nodeStructureInfo
-		self.index = index
-		self.referenceExpression = referenceExpression
+		self.__nodeStructure = nodeStructure
+		self.__nodeStructureInfo = nodeStructureInfo
+		self.__index = index
+		self.__referenceExpression = referenceExpression
 
 	def getOperatorName(self):
 		nodeStructureInfo = self.getReferencedNodeStructureInfo()
@@ -116,29 +116,29 @@ class WrapperStructureInfo(StructureInfo):
 		return (nodeStructure, )
 
 	def getCodeInfosTuple(self):
-		nodeStructureInfo = self.nodeStructureInfo
-		index = self.index
+		nodeStructureInfo = self.__nodeStructureInfo
+		index = self.__index
 
 		structureList = nodeStructureInfo.getSubStructureList(index)
 		codeInfosList = sum((s.getComputedCodeInfos() for s in structureList), ())
 		return tuple((codeInfos, ) for codeInfos in codeInfosList)
 
 	def getReferenceExpression(self):
-		return self.referenceExpression
+		return self.__referenceExpression
 
 	def getReferencedNodeStructure(self):
-		return self.nodeStructure
+		return self.__nodeStructure
 
 	def getReferencedNodeStructureInfo(self):
-		return self.nodeStructureInfo
+		return self.__nodeStructureInfo
 
 
 class CompoundStructureInfo(StructureInfo):
 	def __init__(self, operator, structureList):
 		super().__init__()
 
-		self.operator = operator
-		self.structureList = structureList
+		self.__operator = operator
+		self.__structureList = structureList
 
 	def getChildStructures(self):
 		return self.getStructureList()
@@ -148,10 +148,10 @@ class CompoundStructureInfo(StructureInfo):
 		return CompoundStructureInfo.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
 
 	def getOperator(self):
-		return self.operator
+		return self.__operator
 
 	def getStructureList(self):
-		return self.structureList
+		return self.__structureList
 
 	@staticmethod
 	def getAllCodeInfoListFromCodeInfoCollection(codeInfoListCollection):
@@ -172,11 +172,11 @@ class NodeStructureInfo(StructureInfo):
 	def __init__(self, name):
 		super().__init__()
 
-		self.name = name
+		self.__name = name
 
-		self.unitStructureList = []
-		self.normalStructureList = []
-		self.mainStructure = None
+		self.__unitStructureList = []
+		self.__normalStructureList = []
+		self.__mainStructure = None
 
 	def getOperator(self):
 		mainStructure = self.getMainStructure()
@@ -193,39 +193,39 @@ class NodeStructureInfo(StructureInfo):
 		return ()
 
 	def getName(self):
-		return self.name
+		return self.__name
 
 	def getMainStructure(self):
-		return self.mainStructure
+		return self.__mainStructure
 
 	def setMainStructure(self, structure):
-		self.mainStructure = structure
+		self.__mainStructure = structure
 
 	def addStructure(self, structure):
 		if structure.isUnit():
-			self.unitStructureList.append(structure)
+			self.__unitStructureList.append(structure)
 		else:
-			self.normalStructureList.append(structure)
+			self.__normalStructureList.append(structure)
 
 	def getStructureList(self, isWithUnit = False):
 		structureList = []
 
-		if self.mainStructure:
-			structureList = [self.mainStructure]
+		if self.__mainStructure:
+			structureList = [self.__mainStructure]
 
 		if isWithUnit:
-			structureList.extend(self.unitStructureList)
+			structureList.extend(self.__unitStructureList)
 
 		return structureList
 
 	def getUnitStructureList(self):
-		return self.unitStructureList
+		return self.__unitStructureList
 
 	def getNormalStructureList(self):
-		return self.normalStructureList
+		return self.__normalStructureList
 
 	def getSubStructure(self, index):
-		structure = self.mainStructure
+		structure = self.__mainStructure
 		if not structure:
 			return None
 
