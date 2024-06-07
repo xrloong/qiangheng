@@ -71,12 +71,12 @@ class BSCodeInfo(CodeInfo):
 		RADIX_Z:'z',
 	}
 
-	def __init__(self, codes, supplementCode, isDigital):
+	def __init__(self, codeSequence, supplementCode, isDigital):
 		super().__init__()
 
-		self._codes = codes
-		self._bs_spcode = supplementCode
-		self._is_digital = isDigital
+		self.__codeSequence = codeSequence
+		self.__bs_spcode = supplementCode
+		self.__is_digital = isDigital
 
 	@staticmethod
 	def generateDefaultCodeInfo(codeList, supplementCode):
@@ -85,15 +85,15 @@ class BSCodeInfo(CodeInfo):
 
 	@property
 	def code(self):
-		codeList = self.getBSCodeList()
-		supplementCode = self.getBSSupplement()
+		codeSequence = self.codeSequence
+		supplementCode = self.supplementCode
 		
-		if codeList == None or supplementCode == None:
+		if codeSequence == None or supplementCode == None:
 			return None
 		else:
-			code = "".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], codeList))
+			code = "".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], codeSequence))
 			if len(code)<3:
-				if self.isDigital():
+				if self.isDigital:
 					# 根據嘸蝦米規則，如果是一到十等數目的字，則不用加補碼
 					return code
 				else:
@@ -103,14 +103,17 @@ class BSCodeInfo(CodeInfo):
 			else:
 				return code
 
-	def getBSCodeList(self):
-		return self._codes
+	@property
+	def codeSequence(self):
+		return self.__codeSequence
 
-	def getBSSupplement(self):
-		return self._bs_spcode
+	@property
+	def supplementCode(self):
+		return self.__bs_spcode
 
+	@property
 	def isDigital(self):
-		return self._is_digital
+		return self.__is_digital
 
 class BSCodeInfoEncoder(CodeInfoEncoder):
 	RADIX_SEPERATOR = ','
@@ -119,16 +122,16 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 		return BSCodeInfo.generateDefaultCodeInfo(codeList, supplementCode)
 
 	def isAvailableOperation(self, codeInfoList):
-		isAllWithCode = all(map(lambda x: x.getBSCodeList(), codeInfoList))
+		isAllWithCode = all(map(lambda x: x.codeSequence, codeInfoList))
 		return isAllWithCode
 
 
 	def encodeAsLoong(self, codeInfoList):
 		"""運算 "龍" """
 
-		bslist = list(map(lambda c: c.getBSCodeList(), codeInfoList))
+		bslist = list(map(lambda c: c.codeSequence, codeInfoList))
 		bs_code_list = BSCodeInfoEncoder.computeBoshiamyCode(bslist)
-		bs_spcode = codeInfoList[-1].getBSSupplement()
+		bs_spcode = codeInfoList[-1].supplementCode
 
 		codeInfo = self.generateDefaultCodeInfo(bs_code_list, bs_spcode)
 		return codeInfo
