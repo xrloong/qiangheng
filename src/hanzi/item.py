@@ -192,9 +192,6 @@ class NodeStructureInfo(StructureInfo):
 	def getCodeInfosTuple(self):
 		return ()
 
-	def __str__(self):
-		return self.name
-
 	def getName(self):
 		return self.name
 
