@@ -71,12 +71,12 @@ class BSCodeInfo(CodeInfo):
 		RADIX_Z:'z',
 	}
 
-	def __init__(self, codeSequence, supplementCode, isDigital):
+	def __init__(self, codeSequence, supplementCode, ignoreSupplementCode):
 		super().__init__()
 
 		self.__codeSequence = codeSequence
 		self.__bs_spcode = supplementCode
-		self.__is_digital = isDigital
+		self.__ignore_supplement_code = ignoreSupplementCode
 
 	@staticmethod
 	def generateDefaultCodeInfo(codeList, supplementCode):
@@ -114,12 +114,8 @@ class BSCodeInfo(CodeInfo):
 		return self.__bs_spcode
 
 	@property
-	def isDigital(self):
-		return self.__is_digital
-
-	@property
 	def ignoreSupplement(self):
-		return self.isDigital
+		return self.__ignore_supplement_code
 
 class BSCodeInfoEncoder(CodeInfoEncoder):
 	RADIX_SEPERATOR = ','
@@ -182,8 +178,8 @@ class BSRadixParser(CodingRadixParser):
 	RADIX_SEPERATOR = ','
 
 	ATTRIB_CODE_EXPRESSION = '編碼表示式'
-	ATTRIB_DIGITAL = '基本數字'
 	ATTRIB_SUPPLEMENTARY_CODE = '嘸蝦米補碼'
+	ATTRIB_IGNORE_SUPPLEMENTARY_CODE = '忽略補碼'
 
 	# 多型
 	def convertRadixDescToCodeInfo(self, radixDesc):
@@ -197,12 +193,12 @@ class BSRadixParser(CodingRadixParser):
 
 		strCodeList = infoDict.get(BSRadixParser.ATTRIB_CODE_EXPRESSION)
 		supplementCode = infoDict.get(BSRadixParser.ATTRIB_SUPPLEMENTARY_CODE)
-		isDigital = True if infoDict.get(BSRadixParser.ATTRIB_DIGITAL) != None else False
+		ignoreSupplementCode = True if infoDict.get(BSRadixParser.ATTRIB_IGNORE_SUPPLEMENTARY_CODE) != None else False
 
 		codeList = None
 		if strCodeList != None:
 			codeList = strCodeList.split(BSRadixParser.RADIX_SEPERATOR)
 
-		codeInfo = BSCodeInfo(codeList, supplementCode, isDigital)
+		codeInfo = BSCodeInfo(codeList, supplementCode, ignoreSupplementCode)
 		return codeInfo
 
