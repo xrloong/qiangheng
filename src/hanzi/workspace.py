@@ -25,10 +25,6 @@ class HanZiStructure:
 		self.structureInfo = structureInfo
 		self.oldStructureInfoList = []
 
-
-	def getTag(self):
-		return self.tag
-
 	def getStructureInfo(self):
 		return self.structureInfo
 
