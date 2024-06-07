@@ -81,17 +81,17 @@ class HanZiStructure:
 
 class HanZiWorkspace:
 	def __init__(self):
-		self.nodeDict = {}
+		self.__nodeDict = {}
 
 	def addNode(self, node):
 		name = node.name
-		self.nodeDict[name] = node
+		self.__nodeDict[name] = node
 
 	def isWithNode(self, name):
-		return name in self.nodeDict
+		return name in self.__nodeDict
 
 	def findNode(self, name):
-		return self.nodeDict.get(name)
+		return self.__nodeDict.get(name)
 
 	def isNodeExpanded(self, name):
 		node = self.findNode(name)
