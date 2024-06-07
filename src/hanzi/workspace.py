@@ -23,7 +23,6 @@ class HanZiNode:
 class HanZiStructure:
 	def __init__(self, structureInfo):
 		self.structureInfo = structureInfo
-		self.oldStructureInfoList = []
 
 	def getStructureInfo(self):
 		return self.structureInfo
@@ -73,7 +72,6 @@ class HanZiStructure:
 		return self.structureInfo.getChildStructures()
 
 	def changeToStructure(self, newTargetStructure):
-		self.oldStructureInfoList.append(newTargetStructure.structureInfo)
 		self.structureInfo = newTargetStructure.structureInfo
 
 
