@@ -57,8 +57,8 @@ class StructureInfo(object, metaclass = abc.ABCMeta):
 	def getStructureList(self):
 		return []
 
-	def getCodeInfosTuple(self):
-		return ()
+	@abc.abstractproperty
+	def codeInfos(self): pass
 
 class UnitStructureInfo(StructureInfo):
 	def __init__(self, radixCodeInfo):
@@ -72,7 +72,8 @@ class UnitStructureInfo(StructureInfo):
 	def getChildStructures(self):
 		return ()
 
-	def getCodeInfosTuple(self):
+	@property
+	def codeInfos(self):
 		return ((self.__radixCodeInfo, ), )
 
 class WrapperStructureInfo(StructureInfo):
@@ -115,7 +116,8 @@ class WrapperStructureInfo(StructureInfo):
 		nodeStructure = self.getReferencedNodeStructure()
 		return (nodeStructure, )
 
-	def getCodeInfosTuple(self):
+	@property
+	def codeInfos(self):
 		nodeStructureInfo = self.__nodeStructureInfo
 		index = self.__index
 
@@ -143,7 +145,8 @@ class CompoundStructureInfo(StructureInfo):
 	def getChildStructures(self):
 		return self.getStructureList()
 
-	def getCodeInfosTuple(self):
+	@property
+	def codeInfos(self):
 		codeInfosList = [s.structureInfo.getRadixCodeInfoList() for s in self.getStructureList()]
 		return CompoundStructureInfo.getAllCodeInfoListFromCodeInfoCollection(codeInfosList)
 
@@ -189,7 +192,8 @@ class NodeStructureInfo(StructureInfo):
 	def getChildStructures(self):
 		return self.getStructureList(True)
 
-	def getCodeInfosTuple(self):
+	@property
+	def codeInfos(self):
 		return ()
 
 	def getName(self):
