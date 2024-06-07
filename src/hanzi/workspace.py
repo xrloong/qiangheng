@@ -1,36 +1,37 @@
+from model.element import CharacterInfo
+
 from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo, NodeStructureInfo
 
 class HanZiNode:
-	def __init__(self, name, tag):
-		self.name = name
-		self.tag = tag
+	def __init__(self, name):
+		self.__name = name
+		self.__tag = CharacterInfo.CharacterInfo(name)
 
 		nodeStructureInfo = NodeStructureInfo(name)
-		self.nodeStructure = HanZiStructure(nodeStructureInfo)
+		self.__nodeStructure = HanZiStructure(nodeStructureInfo)
 
 	def __str__(self):
 		return self.name
 
-	def getName(self):
-		return self.name
+	@property
+	def name(self):
+		return self.__name
 
-	def getNodeStructure(self):
-		return self.nodeStructure
+	@property
+	def nodeStructure(self):
+		return self.__nodeStructure
 
-	def getTag(self):
-		return self.tag
+	@property
+	def tag(self):
+		return self.__tag
 
 class HanZiStructure:
 	def __init__(self, structureInfo):
-		self.structureInfo = structureInfo
-		self.oldStructureInfoList = []
+		self.__structureInfo = structureInfo
 
-
-	def getTag(self):
-		return self.tag
-
-	def getStructureInfo(self):
-		return self.structureInfo
+	@property
+	def structureInfo(self):
+		return self.__structureInfo
 
 	def getComputedCodeInfos(self):
 		return self.structureInfo.getComputedCodeInfos()
@@ -77,28 +78,27 @@ class HanZiStructure:
 		return self.structureInfo.getChildStructures()
 
 	def changeToStructure(self, newTargetStructure):
-		self.oldStructureInfoList.append(newTargetStructure.structureInfo)
-		self.structureInfo = newTargetStructure.structureInfo
+		self.__structureInfo = newTargetStructure.structureInfo
 
 
 class HanZiWorkspace:
 	def __init__(self):
-		self.nodeDict={}
+		self.__nodeDict = {}
 
 	def addNode(self, node):
-		name = node.getName()
-		self.nodeDict[name]=node
+		name = node.name
+		self.__nodeDict[name] = node
 
 	def isWithNode(self, name):
-		return name in self.nodeDict
+		return name in self.__nodeDict
 
 	def findNode(self, name):
-		return self.nodeDict.get(name)
+		return self.__nodeDict.get(name)
 
 	def isNodeExpanded(self, name):
 		node = self.findNode(name)
-		nodeStructure = node.getNodeStructure()
-		nodeStructureInfo = nodeStructure.getStructureInfo()
+		nodeStructure = node.nodeStructure
+		nodeStructureInfo = nodeStructure.structureInfo
 		mainStructure = nodeStructureInfo.getMainStructure()
 		return bool(mainStructure)
 

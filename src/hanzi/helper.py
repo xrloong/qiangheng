@@ -5,7 +5,6 @@ from .workspace import HanZiStructure, HanZiNode
 from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
 
 from model.interpreter import CodeInfoInterpreter
-from model.element import CharacterInfo
 from model.helper import OperatorManager
 
 class HanZiInterpreter:
@@ -17,15 +16,15 @@ class HanZiInterpreter:
 		return self._getNodeCharacterInfo(characterNode)
 
 	def _getNodeCharacterInfo(self, hanziNode):
-		nodeStructure = hanziNode.getNodeStructure()
-		nodeStructureInfo = nodeStructure.getStructureInfo()
+		nodeStructure = hanziNode.nodeStructure
+		nodeStructureInfo = nodeStructure.structureInfo
 
 		structureList = nodeStructureInfo.getStructureList(True)
 		codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
 
 		codeList = self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
 
-		characterInfo = hanziNode.getTag()
+		characterInfo = hanziNode.tag
 		characterInfo.setCodeProps(codeList)
 
 		return characterInfo
@@ -51,7 +50,7 @@ class HanZiCodeInfosComputer:
 		self._generateCodeInfosOfStructure(structure)
 
 	def _generateCodeInfosOfStructure(self, structure):
-		structureInfo = structure.getStructureInfo()
+		structureInfo = structure.structureInfo
 		operator = structureInfo.getOperator()
 
 		codeInfosCollection = structureInfo.getCodeInfosTuple()
@@ -90,10 +89,10 @@ class HanZiWorkspaceManager:
 		return self.hanziWorkspace.addNode(node)
 
 	def addStructureIntoNode(self, structure, nodeStructure):
-		nodeStructure.getStructureInfo().addStructure(structure)
+		nodeStructure.structureInfo.addStructure(structure)
 
 	def setMainStructureOfNode(self, structure, nodeStructure):
-		nodeStructure.getStructureInfo().setMainStructure(structure)
+		nodeStructure.structureInfo.setMainStructure(structure)
 
 class HanZiWorkspaceItemFactory:
 	@inject
@@ -112,13 +111,8 @@ class HanZiWorkspaceItemFactory:
 		return self.workspaceManager.findNode(character)
 
 	def generateNode(self, character):
-		tag = self._generateNodeTag(character)
-		node = HanZiNode(character, tag)
+		node = HanZiNode(character)
 		return node
-
-	def _generateNodeTag(self, character):
-		tag = CharacterInfo.CharacterInfo(character)
-		return tag
 
 	def getUnitStructure(self, radixCodeInfo):
 		return self.generateUnitStructure(radixCodeInfo)
@@ -159,7 +153,7 @@ class HanZiWorkspaceItemFactory:
 		return HanZiStructure(structureInfo)
 
 	def _generateWrapperStructure(self, referenceNode, index):
-		nodeStrcuture = referenceNode.getNodeStructure()
+		nodeStrcuture = referenceNode.nodeStructure
 		structureInfo = WrapperStructureInfo(nodeStrcuture, index)
 		return HanZiStructure(structureInfo)
 
