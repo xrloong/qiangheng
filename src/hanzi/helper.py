@@ -53,7 +53,7 @@ class HanZiCodeInfosComputer:
 		structureInfo = structure.structureInfo
 		operator = structureInfo.getOperator()
 
-		codeInfosCollection = structureInfo.getCodeInfosTuple()
+		codeInfosCollection = structureInfo.codeInfos
 
 		allCodeInfos = self._computeAllCodeInfos(operator, codeInfosCollection)
 		structureInfo.setComputedCodeInfos(allCodeInfos)
