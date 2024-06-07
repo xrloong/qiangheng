@@ -2,7 +2,7 @@ import abc
 
 from injector import inject
 
-class StructureInfo(object, metaclass=abc.ABCMeta):
+class StructureInfo(object, metaclass = abc.ABCMeta):
 	def __init__(self):
 		self.codeInfos = None
 
@@ -13,7 +13,7 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
 		return self.codeInfos
 
 	def isCodeInfoGenerated(self):
-		return self.codeInfos != None
+		return self.codeInfos !=  None
 
 	def getRadixCodeInfoList(self):
 		return filter(lambda x: x.isSupportRadixCode(), self.codeInfos)
@@ -66,8 +66,8 @@ class UnitStructureInfo(StructureInfo):
 
 		self.radixCodeInfo = radixCodeInfo
 
-		self.referenceNode=None
-		self.index=0
+		self.referenceNode = None
+		self.index = 0
 
 	def getChildStructures(self):
 		return ()
@@ -81,7 +81,7 @@ class WrapperStructureInfo(StructureInfo):
 
 		nodeStructureInfo = nodeStructure.structureInfo
 		referenceName = nodeStructureInfo.getName()
-		if index==0:
+		if index == 0:
 			referenceExpression = "{}".format(referenceName)
 		else:
 			referenceExpression = "{}.{}".format(referenceName,index)
@@ -162,7 +162,7 @@ class CompoundStructureInfo(StructureInfo):
 						for codeInfo in infoListOfNode]
 			return ansListList
 
-		combineInfoListList=[]
+		combineInfoListList = []
 		for codeInfoList in codeInfoListCollection:
 			combineInfoListList = combineList(combineInfoListList, codeInfoList)
 
@@ -199,7 +199,7 @@ class NodeStructureInfo(StructureInfo):
 		return self.mainStructure
 
 	def setMainStructure(self, structure):
-		self.mainStructure=structure
+		self.mainStructure = structure
 
 	def addStructure(self, structure):
 		if structure.isUnit():
@@ -207,11 +207,11 @@ class NodeStructureInfo(StructureInfo):
 		else:
 			self.normalStructureList.append(structure)
 
-	def getStructureList(self, isWithUnit=False):
-		structureList=[]
+	def getStructureList(self, isWithUnit = False):
+		structureList = []
 
 		if self.mainStructure:
-			structureList=[self.mainStructure]
+			structureList = [self.mainStructure]
 
 		if isWithUnit:
 			structureList.extend(self.unitStructureList)
@@ -229,14 +229,14 @@ class NodeStructureInfo(StructureInfo):
 		if not structure:
 			return None
 
-		structureList=structure.getStructureList()
+		structureList = structure.getStructureList()
 		return structureList[index]
 
 	def getSubStructureList(self, subIndex = 0):
 		if(subIndex > 0):
-			structure=self.getSubStructure(subIndex - 1)
-			structureList=[structure]
+			structure = self.getSubStructure(subIndex - 1)
+			structureList = [structure]
 		else:
-			structureList=self.getStructureList(True)
+			structureList = self.getStructureList(True)
 		return structureList
 
