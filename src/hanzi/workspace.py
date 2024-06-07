@@ -2,23 +2,26 @@ from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
 
 class HanZiNode:
 	def __init__(self, name, tag):
-		self.name = name
-		self.tag = tag
+		self.__name = name
+		self.__tag = tag
 
 		nodeStructureInfo = NodeStructureInfo(name)
-		self.nodeStructure = HanZiStructure(nodeStructureInfo)
+		self.__nodeStructure = HanZiStructure(nodeStructureInfo)
 
 	def __str__(self):
 		return self.name
 
-	def getName(self):
-		return self.name
+	@property
+	def name(self):
+		return self.__name
 
-	def getNodeStructure(self):
-		return self.nodeStructure
+	@property
+	def nodeStructure(self):
+		return self.__nodeStructure
 
-	def getTag(self):
-		return self.tag
+	@property
+	def tag(self):
+		return self.__tag
 
 class HanZiStructure:
 	def __init__(self, structureInfo):
@@ -80,7 +83,7 @@ class HanZiWorkspace:
 		self.nodeDict = {}
 
 	def addNode(self, node):
-		name = node.getName()
+		name = node.name
 		self.nodeDict[name] = node
 
 	def isWithNode(self, name):
@@ -91,7 +94,7 @@ class HanZiWorkspace:
 
 	def isNodeExpanded(self, name):
 		node = self.findNode(name)
-		nodeStructure = node.getNodeStructure()
+		nodeStructure = node.nodeStructure
 		nodeStructureInfo = nodeStructure.getStructureInfo()
 		mainStructure = nodeStructureInfo.getMainStructure()
 		return bool(mainStructure)

@@ -98,7 +98,7 @@ class ConstructCharacter:
 
 	def constructCharacter(self, character):
 		node = self.touchCharacter(character)
-		nodeStructure = node.getNodeStructure()
+		nodeStructure = node.nodeStructure
 		self.expandNodeStructure(nodeStructure)
 		self.computeNode(nodeStructure)
 

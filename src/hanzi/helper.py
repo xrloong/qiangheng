@@ -17,7 +17,7 @@ class HanZiInterpreter:
 		return self._getNodeCharacterInfo(characterNode)
 
 	def _getNodeCharacterInfo(self, hanziNode):
-		nodeStructure = hanziNode.getNodeStructure()
+		nodeStructure = hanziNode.nodeStructure
 		nodeStructureInfo = nodeStructure.getStructureInfo()
 
 		structureList = nodeStructureInfo.getStructureList(True)
@@ -25,7 +25,7 @@ class HanZiInterpreter:
 
 		codeList = self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
 
-		characterInfo = hanziNode.getTag()
+		characterInfo = hanziNode.tag
 		characterInfo.setCodeProps(codeList)
 
 		return characterInfo
@@ -159,7 +159,7 @@ class HanZiWorkspaceItemFactory:
 		return HanZiStructure(structureInfo)
 
 	def _generateWrapperStructure(self, referenceNode, index):
-		nodeStrcuture = referenceNode.getNodeStructure()
+		nodeStrcuture = referenceNode.nodeStructure
 		structureInfo = WrapperStructureInfo(nodeStrcuture, index)
 		return HanZiStructure(structureInfo)
 
