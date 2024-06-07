@@ -5,7 +5,6 @@ from .workspace import HanZiStructure, HanZiNode
 from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
 
 from model.interpreter import CodeInfoInterpreter
-from model.element import CharacterInfo
 from model.helper import OperatorManager
 
 class HanZiInterpreter:
@@ -112,13 +111,8 @@ class HanZiWorkspaceItemFactory:
 		return self.workspaceManager.findNode(character)
 
 	def generateNode(self, character):
-		tag = self._generateNodeTag(character)
-		node = HanZiNode(character, tag)
+		node = HanZiNode(character)
 		return node
-
-	def _generateNodeTag(self, character):
-		tag = CharacterInfo.CharacterInfo(character)
-		return tag
 
 	def getUnitStructure(self, radixCodeInfo):
 		return self.generateUnitStructure(radixCodeInfo)

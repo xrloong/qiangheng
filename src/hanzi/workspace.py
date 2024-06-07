@@ -1,9 +1,11 @@
+from model.element import CharacterInfo
+
 from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo, NodeStructureInfo
 
 class HanZiNode:
-	def __init__(self, name, tag):
+	def __init__(self, name):
 		self.__name = name
-		self.__tag = tag
+		self.__tag = CharacterInfo.CharacterInfo(name)
 
 		nodeStructureInfo = NodeStructureInfo(name)
 		self.__nodeStructure = HanZiStructure(nodeStructureInfo)
