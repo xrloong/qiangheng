@@ -83,11 +83,11 @@ class HanZiStructure:
 
 class HanZiWorkspace:
 	def __init__(self):
-		self.nodeDict={}
+		self.nodeDict = {}
 
 	def addNode(self, node):
 		name = node.getName()
-		self.nodeDict[name]=node
+		self.nodeDict[name] = node
 
 	def isWithNode(self, name):
 		return name in self.nodeDict
