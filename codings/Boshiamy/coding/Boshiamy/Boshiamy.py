@@ -88,12 +88,14 @@ class BSCodeInfo(CodeInfo):
 		codeSequence = self.codeSequence
 		supplementCode = self.supplementCode
 		
-		if codeSequence == None or supplementCode == None:
+		if codeSequence == None:
+			return None
+		elif not self.ignoreSupplement and supplementCode == None:
 			return None
 		else:
 			code = "".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], codeSequence))
 			if len(code)<3:
-				if self.isDigital:
+				if self.ignoreSupplement:
 					# 根據嘸蝦米規則，如果是一到十等數目的字，則不用加補碼
 					return code
 				else:
@@ -114,6 +116,10 @@ class BSCodeInfo(CodeInfo):
 	@property
 	def isDigital(self):
 		return self.__is_digital
+
+	@property
+	def ignoreSupplement(self):
+		return self.isDigital
 
 class BSCodeInfoEncoder(CodeInfoEncoder):
 	RADIX_SEPERATOR = ','
