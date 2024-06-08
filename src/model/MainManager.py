@@ -9,7 +9,7 @@ from injection.key import Characters
 
 from coding.Base import CodeMappingInfoInterpreter
 
-from hanzi.converter import ConstructCharacter
+from hanzi.converter import CharacterComputingWork
 
 class MainManager:
 	@inject
@@ -24,7 +24,7 @@ class MainManager:
 		injector = self.__injector
 
 		characters = injector.get(Characters)
-		constructCharacter = injector.get(ConstructCharacter)
+		constructCharacter = injector.get(CharacterComputingWork)
 
 		characters = sorted(characters)
 

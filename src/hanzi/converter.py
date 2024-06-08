@@ -11,7 +11,7 @@ from .manager import StructureManager
 
 from model.manager import SubstituteManager
 
-class ConstructCharacter:
+class CharacterComputingWork:
 	class RearrangeCallback(SubstituteManager.RearrangeCallback):
 		def __init__(self, computeCharacterInfo, treInterpreter):
 			self.computeCharacterInfo = computeCharacterInfo
@@ -46,7 +46,7 @@ class ConstructCharacter:
 		self.codeInfosComputer = codeInfosComputer
 		self.itemFactory = itemFactory
 
-		self.rearrangeCallback = ConstructCharacter.RearrangeCallback(self, treInterpreter)
+		self.rearrangeCallback = CharacterComputingWork.RearrangeCallback(self, treInterpreter)
 
 		self.__hanziInterpreter = hanziInterpreter
 
