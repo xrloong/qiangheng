@@ -47,16 +47,6 @@ class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
 		super().__init__(HanZiTreeProxy(), treeNodeGenerator)
 
 
-def isBelongToFontVariance(characterFontVariance, targetFontVariance):
-	if targetFontVariance ==  FontVariance.All:
-		return True
-	elif targetFontVariance ==  FontVariance.Traditional:
-		return characterFontVariance in [FontVariance.All, FontVariance.Traditional]
-	elif targetFontVariance ==  FontVariance.Simplified:
-		return characterFontVariance in [FontVariance.All, FontVariance.Simplified]
-	else:
-		return False
-
 class ConstructCharacter:
 	class RearrangeCallback(SubstituteManager.RearrangeCallback):
 		def __init__(self, computeCharacterInfo, treInterpreter):
@@ -151,7 +141,7 @@ class ConstructCharacter:
 				continue
 
 			characterFontVariance = structDesc.fontVariance
-			isMainStructure = isBelongToFontVariance(characterFontVariance, self.fontVariance)
+			isMainStructure = characterFontVariance.belongsTo(self.fontVariance)
 
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
