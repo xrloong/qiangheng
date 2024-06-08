@@ -6,46 +6,11 @@ from .helper import HanZiWorkspaceManager
 from .helper import HanZiCodeInfosComputer
 from .helper import HanZiWorkspaceItemFactory
 from .helper import HanZiInterpreter
+from .helper import HanZiTreeRegExpInterpreter
 from .workspace import HanZiWorkspace
 from .manager import StructureManager
 
-from model.manager import RadixManager
 from model.manager import SubstituteManager
-
-from tree.regexp import TreeRegExpInterpreter
-from tree.regexp import BasicTreeProxy
-from tree.regexp import TreeNodeGenerator
-
-class HanZiTreeProxy(BasicTreeProxy):
-	def getChildren(self, currentStructure):
-		return currentStructure.getExpandedStructureList()
-
-	def matchSingle(self, tre, currentStructure):
-		prop = tre.prop
-		opName = prop.get("運算")
-		refExp = prop.get("名稱")
-		return currentStructure.isMatchStructure(operatorName = opName, referenceExpression = refExp)
-
-class HanZiTreeNodeGenerator(TreeNodeGenerator):
-	@inject
-	def __init__(self, itemFactory: HanZiWorkspaceItemFactory):
-		self.itemFactory = itemFactory
-
-	def generateLeafNode(self, nodeName):
-		return self.itemFactory.getWrapperStructureByNodeName(nodeName)
-
-	def generateLeafNodeByReference(self, referencedTreeNode, index):
-		structure = referencedTreeNode
-		return self.itemFactory.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
-
-	def generateNode(self, operatorName, children):
-		return self.itemFactory.getCompoundStructureByOperatorName(operatorName, children)
-
-class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
-	@inject
-	def __init__(self, treeNodeGenerator: HanZiTreeNodeGenerator):
-		super().__init__(HanZiTreeProxy(), treeNodeGenerator)
-
 
 class ConstructCharacter:
 	class RearrangeCallback(SubstituteManager.RearrangeCallback):
