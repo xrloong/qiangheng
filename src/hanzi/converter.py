@@ -59,7 +59,7 @@ class ConstructCharacter:
 	def appendFastCodes(self):
 		fastCharacterDict = self.structureManager.loadFastCodes()
 		for (character, fastCodeInfos) in fastCharacterDict.items():
-			assert len(fastCodeInfos) ==  1
+			assert len(fastCodeInfos) == 1
 			fastCodeInfo = fastCodeInfos[0]
 			fastCode = fastCodeInfo.code
 
