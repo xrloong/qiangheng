@@ -13,7 +13,7 @@ from .manager import StructureManager
 from model.element.CharacterInfo import CharacterInfo
 from model.manager import SubstituteManager
 
-class CharacterComputingWork:
+class CharacterComputingHelper:
 	class RearrangeCallback(SubstituteManager.RearrangeCallback):
 		def __init__(self, computeCharacterInfo, treInterpreter):
 			self.computeCharacterInfo = computeCharacterInfo
@@ -48,7 +48,7 @@ class CharacterComputingWork:
 		self.codeInfosComputer = codeInfosComputer
 		self.itemFactory = itemFactory
 
-		self.rearrangeCallback = CharacterComputingWork.RearrangeCallback(self, treInterpreter)
+		self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(self, treInterpreter)
 
 		self.__hanziInterpreter = hanziInterpreter
 
@@ -163,4 +163,15 @@ class CharacterComputingWork:
 				characterInfos.append(characterInfo)
 
 		return characterInfos
+
+class CharacterComputingWork:
+	@inject
+	def __init__(self,
+			computingHelper: CharacterComputingHelper,
+			):
+		self.__computingHelper = computingHelper
+
+	def compute(self, characters) -> list[CharacterInfo]:
+		computingHelper = self.__computingHelper
+		return computingHelper.compute(characters)
 
