@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import abc
+
+from typing import Optional
 from injector import inject
 
 from parser.QHParser import QHParser
@@ -115,6 +117,8 @@ class RadixManager:
 		self.__radixCodeInfoDB = {}
 		self.__radixDB = {}
 
+		self.__fastCodeDB = {}
+
 	def loadMainRadicals(self, radixFiles):
 		radixCodeInfoDB = self.__loadRadix(radixFiles)
 		self.__radixCodeInfoDB = radixCodeInfoDB
@@ -130,7 +134,17 @@ class RadixManager:
 
 	def loadFastCodes(self, fastFile):
 		fastCodeCharacterDB = self.__loadRadix([fastFile])
-		return fastCodeCharacterDB
+		self.__fastCodeDB.update(fastCodeCharacterDB)
+
+	def queryFastCode(self, character) -> Optional[str]:
+		fastCodeInfos = self.__fastCodeDB.get(character, None)
+		if fastCodeInfos:
+			assert len(fastCodeInfos) == 1
+			fastCodeInfo = fastCodeInfos[0]
+			fastCode = fastCodeInfo.code if fastCodeInfo else None
+			return fastCode
+		else:
+			return None
 
 	def queryRadix(self, characterName):
 		return self.__radixDB.get(characterName, None)
