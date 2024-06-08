@@ -9,8 +9,7 @@ from injection.key import Characters
 
 from coding.Base import CodeMappingInfoInterpreter
 
-from hanzi.converter import ConstructCharacter
-from hanzi.converter import ComputeCharacter
+from hanzi.converter import CharacterComputingWork
 
 class MainManager:
 	@inject
@@ -18,25 +17,22 @@ class MainManager:
 		self.__injector = injector
 
 	def work(self):
-		self.__compute()
-		self.__write()
+		characterInfos = self.__compute()
+		self.__write(characterInfos)
 
 	def __compute(self):
 		injector = self.__injector
 
 		characters = injector.get(Characters)
-		constructCharacter = injector.get(ConstructCharacter)
-		constructCharacter.compute(characters)
-		constructCharacter.appendFastCodes(characters)
+		constructCharacter = injector.get(CharacterComputingWork)
 
-	def __write(self):
+		characters = sorted(characters)
+
+		characterInfos = constructCharacter.compute(characters)
+		return characterInfos
+
+	def __write(self, characterInfos):
 		injector = self.__injector
-
-		characters = injector.get(Characters)
-		computeCharacter = injector.get(ComputeCharacter)
-
-		characterInfos = computeCharacter.compute(characters)
-		characterInfos = tuple(sorted(characterInfos, key=lambda c: c.character))
 
 		codeMappingInfoInterpreter = injector.get(CodeMappingInfoInterpreter)
 		writer = injector.get(Writer)

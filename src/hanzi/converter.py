@@ -11,7 +11,7 @@ from .manager import StructureManager
 
 from model.manager import SubstituteManager
 
-class ConstructCharacter:
+class CharacterComputingWork:
 	class RearrangeCallback(SubstituteManager.RearrangeCallback):
 		def __init__(self, computeCharacterInfo, treInterpreter):
 			self.computeCharacterInfo = computeCharacterInfo
@@ -34,35 +34,46 @@ class ConstructCharacter:
 
 			workspaceManager: HanZiWorkspaceManager,
 			codeInfosComputer: HanZiCodeInfosComputer,
-			itemFactory: HanZiWorkspaceItemFactory
+			itemFactory: HanZiWorkspaceItemFactory,
+
+			hanziInterpreter: HanZiInterpreter,
 			):
 		self.fontVariance = fontVariance
 
 		self.structureManager = structureManager
 
-		self.workspaceManager = workspaceManager
+		self.__workspaceManager = workspaceManager
 		self.codeInfosComputer = codeInfosComputer
 		self.itemFactory = itemFactory
 
-		self.rearrangeCallback = ConstructCharacter.RearrangeCallback(self, treInterpreter)
+		self.rearrangeCallback = CharacterComputingWork.RearrangeCallback(self, treInterpreter)
+
+		self.__hanziInterpreter = hanziInterpreter
 
 	def compute(self, characters):
-		for character in characters:
-			self.constructCharacter(character)
+		characterInfos = []
 
-	def constructCharacter(self, character):
+		for character in characters:
+			self.__constructOne(character)
+			characterInfo = self.__computeOne(character)
+			if characterInfo:
+				characterInfos.append(characterInfo)
+
+		return characterInfos
+
+	def __constructOne(self, character):
+		self.__constructCharacter(character)
+		fastCode = self.structureManager.queryFastCode(character)
+		if fastCode:
+			node = self.touchCharacter(character)
+			characterInfo = node.tag
+			characterInfo.setFastCode(fastCode)
+
+	def __constructCharacter(self, character):
 		node = self.touchCharacter(character)
 		nodeStructure = node.nodeStructure
 		self.expandNodeStructure(nodeStructure)
 		self.computeNode(nodeStructure)
-
-	def appendFastCodes(self, characters):
-		for character in characters:
-			fastCode = self.structureManager.queryFastCode(character)
-			if fastCode:
-				node = self.touchCharacter(character)
-				characterInfo = node.tag
-				characterInfo.setFastCode(fastCode)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
@@ -71,7 +82,7 @@ class ConstructCharacter:
 		return self.itemFactory.touchNode(character)
 
 	def expandNodeStructure(self, nodeStructure):
-		workspaceManager = self.workspaceManager
+		workspaceManager = self.__workspaceManager
 
 		nodeStructureInfo = nodeStructure.structureInfo
 
@@ -125,7 +136,7 @@ class ConstructCharacter:
 		name = structDesc.referenceName
 		nodeExpression = structDesc.referenceExpression
 
-		self.constructCharacter(name)
+		self.__constructCharacter(name)
 
 		l = nodeExpression.split(".")
 		if len(l)>1:
@@ -148,23 +159,6 @@ class ConstructCharacter:
 
 	def computeNode(self, nodeStructure):
 		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
-
-class ComputeCharacter:
-	@inject
-	def __init__(self,
-			workspaceManager: HanZiWorkspaceManager,
-			hanziInterpreter: HanZiInterpreter,
-			):
-		self.__workspaceManager = workspaceManager
-		self.__hanziInterpreter = hanziInterpreter
-
-	def compute(self, characters: list):
-		characterInfos = []
-		for character in characters:
-			characterInfo = self.__computeOne(character)
-			if characterInfo:
-				characterInfos.append(characterInfo)
-		return characterInfos
 
 	def __computeOne(self, character: str):
 		charNode = self.__workspaceManager.findNode(character)
