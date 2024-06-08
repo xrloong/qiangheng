@@ -50,19 +50,18 @@ class ConstructCharacter:
 		for character in characters:
 			self.constructCharacter(character)
 
-	def constructCharacter(self, character):
-		node = self.touchCharacter(character)
-		nodeStructure = node.nodeStructure
-		self.expandNodeStructure(nodeStructure)
-		self.computeNode(nodeStructure)
-
-	def appendFastCodes(self, characters):
 		for character in characters:
 			fastCode = self.structureManager.queryFastCode(character)
 			if fastCode:
 				node = self.touchCharacter(character)
 				characterInfo = node.tag
 				characterInfo.setFastCode(fastCode)
+
+	def constructCharacter(self, character):
+		node = self.touchCharacter(character)
+		nodeStructure = node.nodeStructure
+		self.expandNodeStructure(nodeStructure)
+		self.computeNode(nodeStructure)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)

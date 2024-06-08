@@ -31,7 +31,6 @@ class MainManager:
 		characters = sorted(characters)
 
 		constructCharacter.compute(characters)
-		constructCharacter.appendFastCodes(characters)
 		characterInfos = computeCharacter.compute(characters)
 
 		return characterInfos
