@@ -50,25 +50,6 @@ class CharacterComputingWork:
 
 		self.__hanziInterpreter = hanziInterpreter
 
-	def compute(self, characters):
-		characterInfos = []
-
-		for character in characters:
-			self.__constructOne(character)
-			characterInfo = self.__computeOne(character)
-			if characterInfo:
-				characterInfos.append(characterInfo)
-
-		return characterInfos
-
-	def __constructOne(self, character):
-		self.__constructCharacter(character)
-		fastCode = self.structureManager.queryFastCode(character)
-		if fastCode:
-			node = self.touchCharacter(character)
-			characterInfo = node.tag
-			characterInfo.setFastCode(fastCode)
-
 	def __constructCharacter(self, character):
 		node = self.touchCharacter(character)
 		nodeStructure = node.nodeStructure
@@ -165,4 +146,23 @@ class CharacterComputingWork:
 		if charNode:
 			characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
 			return characterInfo
+
+	def __constructOne(self, character):
+		self.__constructCharacter(character)
+		fastCode = self.structureManager.queryFastCode(character)
+		if fastCode:
+			node = self.touchCharacter(character)
+			characterInfo = node.tag
+			characterInfo.setFastCode(fastCode)
+
+	def compute(self, characters):
+		characterInfos = []
+
+		for character in characters:
+			self.__constructOne(character)
+			characterInfo = self.__computeOne(character)
+			if characterInfo:
+				characterInfos.append(characterInfo)
+
+		return characterInfos
 
