@@ -40,7 +40,7 @@ class ConstructCharacter:
 
 		self.structureManager = structureManager
 
-		self.workspaceManager = workspaceManager
+		self.__workspaceManager = workspaceManager
 		self.codeInfosComputer = codeInfosComputer
 		self.itemFactory = itemFactory
 
@@ -71,7 +71,7 @@ class ConstructCharacter:
 		return self.itemFactory.touchNode(character)
 
 	def expandNodeStructure(self, nodeStructure):
-		workspaceManager = self.workspaceManager
+		workspaceManager = self.__workspaceManager
 
 		nodeStructureInfo = nodeStructure.structureInfo
 
