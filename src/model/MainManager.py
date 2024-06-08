@@ -18,27 +18,26 @@ class MainManager:
 		self.__injector = injector
 
 	def work(self):
-		self.__compute()
-		self.__write()
+		characterInfos = self.__compute()
+		self.__write(characterInfos)
 
 	def __compute(self):
 		injector = self.__injector
 
 		characters = injector.get(Characters)
 		constructCharacter = injector.get(ConstructCharacter)
-
-		characters = sorted(characters)
-		constructCharacter.compute(characters)
-		constructCharacter.appendFastCodes(characters)
-
-	def __write(self):
-		injector = self.__injector
-
-		characters = injector.get(Characters)
 		computeCharacter = injector.get(ComputeCharacter)
 
 		characters = sorted(characters)
+
+		constructCharacter.compute(characters)
+		constructCharacter.appendFastCodes(characters)
 		characterInfos = computeCharacter.compute(characters)
+
+		return characterInfos
+
+	def __write(self, characterInfos):
+		injector = self.__injector
 
 		codeMappingInfoInterpreter = injector.get(CodeMappingInfoInterpreter)
 		writer = injector.get(Writer)
