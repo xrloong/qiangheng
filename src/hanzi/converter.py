@@ -6,56 +6,10 @@ from .helper import HanZiWorkspaceManager
 from .helper import HanZiCodeInfosComputer
 from .helper import HanZiWorkspaceItemFactory
 from .helper import HanZiInterpreter
-from .workspace import HanZiWorkspace
+from .helper import HanZiTreeRegExpInterpreter
 from .manager import StructureManager
 
-from model.manager import RadixManager
 from model.manager import SubstituteManager
-
-from tree.regexp import TreeRegExpInterpreter
-from tree.regexp import BasicTreeProxy
-from tree.regexp import TreeNodeGenerator
-
-class HanZiTreeProxy(BasicTreeProxy):
-	def getChildren(self, currentStructure):
-		return currentStructure.getExpandedStructureList()
-
-	def matchSingle(self, tre, currentStructure):
-		prop = tre.prop
-		opName = prop.get("運算")
-		refExp = prop.get("名稱")
-		return currentStructure.isMatchStructure(operatorName = opName, referenceExpression = refExp)
-
-class HanZiTreeNodeGenerator(TreeNodeGenerator):
-	@inject
-	def __init__(self, itemFactory: HanZiWorkspaceItemFactory):
-		self.itemFactory = itemFactory
-
-	def generateLeafNode(self, nodeName):
-		return self.itemFactory.getWrapperStructureByNodeName(nodeName)
-
-	def generateLeafNodeByReference(self, referencedTreeNode, index):
-		structure = referencedTreeNode
-		return self.itemFactory.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
-
-	def generateNode(self, operatorName, children):
-		return self.itemFactory.getCompoundStructureByOperatorName(operatorName, children)
-
-class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
-	@inject
-	def __init__(self, treeNodeGenerator: HanZiTreeNodeGenerator):
-		super().__init__(HanZiTreeProxy(), treeNodeGenerator)
-
-
-def isBelongToFontVariance(characterFontVariance, targetFontVariance):
-	if targetFontVariance ==  FontVariance.All:
-		return True
-	elif targetFontVariance ==  FontVariance.Traditional:
-		return characterFontVariance in [FontVariance.All, FontVariance.Traditional]
-	elif targetFontVariance ==  FontVariance.Simplified:
-		return characterFontVariance in [FontVariance.All, FontVariance.Simplified]
-	else:
-		return False
 
 class ConstructCharacter:
 	class RearrangeCallback(SubstituteManager.RearrangeCallback):
@@ -151,7 +105,7 @@ class ConstructCharacter:
 				continue
 
 			characterFontVariance = structDesc.fontVariance
-			isMainStructure = isBelongToFontVariance(characterFontVariance, self.fontVariance)
+			isMainStructure = characterFontVariance.belongsTo(self.fontVariance)
 
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
@@ -201,10 +155,10 @@ class ConstructCharacter:
 class ComputeCharacter:
 	@inject
 	def __init__(self,
-			hanziWorkspace: HanZiWorkspace,
+			workspaceManager: HanZiWorkspaceManager,
 			hanziInterpreter: HanZiInterpreter,
 			):
-		self.__hanziWorkspace = hanziWorkspace
+		self.__workspaceManager = workspaceManager
 		self.__hanziInterpreter = hanziInterpreter
 
 	def compute(self, characters: list):
@@ -216,7 +170,7 @@ class ComputeCharacter:
 		return characterInfos
 
 	def __computeOne(self, character: str):
-		charNode = self.__hanziWorkspace.findNode(character)
+		charNode = self.__workspaceManager.findNode(character)
 		if charNode:
 			characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
 			return characterInfo
