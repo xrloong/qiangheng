@@ -48,14 +48,15 @@ class ConstructCharacter:
 
 	def compute(self, characters):
 		for character in characters:
-			self.__constructCharacter(character)
+			self.__constructOne(character)
 
-		for character in characters:
-			fastCode = self.structureManager.queryFastCode(character)
-			if fastCode:
-				node = self.touchCharacter(character)
-				characterInfo = node.tag
-				characterInfo.setFastCode(fastCode)
+	def __constructOne(self, character):
+		self.__constructCharacter(character)
+		fastCode = self.structureManager.queryFastCode(character)
+		if fastCode:
+			node = self.touchCharacter(character)
+			characterInfo = node.tag
+			characterInfo.setFastCode(fastCode)
 
 	def __constructCharacter(self, character):
 		node = self.touchCharacter(character)
