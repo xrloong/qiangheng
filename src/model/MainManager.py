@@ -10,7 +10,6 @@ from injection.key import Characters
 from coding.Base import CodeMappingInfoInterpreter
 
 from hanzi.converter import ConstructCharacter
-from hanzi.converter import ComputeCharacter
 
 class MainManager:
 	@inject
@@ -26,13 +25,10 @@ class MainManager:
 
 		characters = injector.get(Characters)
 		constructCharacter = injector.get(ConstructCharacter)
-		computeCharacter = injector.get(ComputeCharacter)
 
 		characters = sorted(characters)
 
-		constructCharacter.compute(characters)
-		characterInfos = computeCharacter.compute(characters)
-
+		characterInfos = constructCharacter.compute(characters)
 		return characterInfos
 
 	def __write(self, characterInfos):

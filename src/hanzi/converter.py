@@ -34,7 +34,9 @@ class ConstructCharacter:
 
 			workspaceManager: HanZiWorkspaceManager,
 			codeInfosComputer: HanZiCodeInfosComputer,
-			itemFactory: HanZiWorkspaceItemFactory
+			itemFactory: HanZiWorkspaceItemFactory,
+
+			hanziInterpreter: HanZiInterpreter,
 			):
 		self.fontVariance = fontVariance
 
@@ -46,9 +48,18 @@ class ConstructCharacter:
 
 		self.rearrangeCallback = ConstructCharacter.RearrangeCallback(self, treInterpreter)
 
+		self.__hanziInterpreter = hanziInterpreter
+
 	def compute(self, characters):
 		for character in characters:
 			self.__constructOne(character)
+
+		characterInfos = []
+		for character in characters:
+			characterInfo = self.__computeOne(character)
+			if characterInfo:
+				characterInfos.append(characterInfo)
+		return characterInfos
 
 	def __constructOne(self, character):
 		self.__constructCharacter(character)
@@ -148,23 +159,6 @@ class ConstructCharacter:
 
 	def computeNode(self, nodeStructure):
 		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
-
-class ComputeCharacter:
-	@inject
-	def __init__(self,
-			workspaceManager: HanZiWorkspaceManager,
-			hanziInterpreter: HanZiInterpreter,
-			):
-		self.__workspaceManager = workspaceManager
-		self.__hanziInterpreter = hanziInterpreter
-
-	def compute(self, characters: list):
-		characterInfos = []
-		for character in characters:
-			characterInfo = self.__computeOne(character)
-			if characterInfo:
-				characterInfos.append(characterInfo)
-		return characterInfos
 
 	def __computeOne(self, character: str):
 		charNode = self.__workspaceManager.findNode(character)
