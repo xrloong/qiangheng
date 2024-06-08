@@ -48,7 +48,7 @@ class ConstructCharacter:
 
 	def compute(self, characters):
 		for character in characters:
-			self.constructCharacter(character)
+			self.__constructCharacter(character)
 
 		for character in characters:
 			fastCode = self.structureManager.queryFastCode(character)
@@ -57,7 +57,7 @@ class ConstructCharacter:
 				characterInfo = node.tag
 				characterInfo.setFastCode(fastCode)
 
-	def constructCharacter(self, character):
+	def __constructCharacter(self, character):
 		node = self.touchCharacter(character)
 		nodeStructure = node.nodeStructure
 		self.expandNodeStructure(nodeStructure)
@@ -124,7 +124,7 @@ class ConstructCharacter:
 		name = structDesc.referenceName
 		nodeExpression = structDesc.referenceExpression
 
-		self.constructCharacter(name)
+		self.__constructCharacter(name)
 
 		l = nodeExpression.split(".")
 		if len(l)>1:
