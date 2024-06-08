@@ -35,8 +35,8 @@ class MainManager:
 		characters = injector.get(Characters)
 		computeCharacter = injector.get(ComputeCharacter)
 
+		characters = sorted(characters)
 		characterInfos = computeCharacter.compute(characters)
-		characterInfos = tuple(sorted(characterInfos, key=lambda c: c.character))
 
 		codeMappingInfoInterpreter = injector.get(CodeMappingInfoInterpreter)
 		writer = injector.get(Writer)
