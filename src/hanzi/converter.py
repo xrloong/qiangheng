@@ -7,7 +7,6 @@ from .helper import HanZiCodeInfosComputer
 from .helper import HanZiWorkspaceItemFactory
 from .helper import HanZiInterpreter
 from .helper import HanZiTreeRegExpInterpreter
-from .workspace import HanZiWorkspace
 from .manager import StructureManager
 
 from model.manager import SubstituteManager
@@ -156,10 +155,10 @@ class ConstructCharacter:
 class ComputeCharacter:
 	@inject
 	def __init__(self,
-			hanziWorkspace: HanZiWorkspace,
+			workspaceManager: HanZiWorkspaceManager,
 			hanziInterpreter: HanZiInterpreter,
 			):
-		self.__hanziWorkspace = hanziWorkspace
+		self.__workspaceManager = workspaceManager
 		self.__hanziInterpreter = hanziInterpreter
 
 	def compute(self, characters: list):
@@ -171,7 +170,7 @@ class ComputeCharacter:
 		return characterInfos
 
 	def __computeOne(self, character: str):
-		charNode = self.__hanziWorkspace.findNode(character)
+		charNode = self.__workspaceManager.findNode(character)
 		if charNode:
 			characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
 			return characterInfo
