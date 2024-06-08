@@ -26,6 +26,8 @@ class MainManager:
 
 		characters = injector.get(Characters)
 		constructCharacter = injector.get(ConstructCharacter)
+
+		characters = sorted(characters)
 		constructCharacter.compute(characters)
 		constructCharacter.appendFastCodes(characters)
 
