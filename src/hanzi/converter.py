@@ -51,14 +51,14 @@ class ConstructCharacter:
 		self.__hanziInterpreter = hanziInterpreter
 
 	def compute(self, characters):
+		characterInfos = []
+
 		for character in characters:
 			self.__constructOne(character)
-
-		characterInfos = []
-		for character in characters:
 			characterInfo = self.__computeOne(character)
 			if characterInfo:
 				characterInfos.append(characterInfo)
+
 		return characterInfos
 
 	def __constructOne(self, character):
