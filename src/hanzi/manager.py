@@ -1,3 +1,4 @@
+from typing import Optional
 from injector import inject
 
 from model.helper import StructureConverter
@@ -33,9 +34,6 @@ class StructureManager:
 	def radixManager(self) -> RadixManager:
 		return self.__qhDM.radixManager
 
-	def loadFastCodes(self):
-		return self.__qhDM.loadFastCodes()
-
 	def queryCharacterDescription(self, character):
 		charDesc = self.radixManager.queryRadix(character)
 		if not charDesc:
@@ -45,4 +43,7 @@ class StructureManager:
 
 	def queryChildren(self, charDesc):
 		return charDesc.compList
+
+	def queryFastCode(self, character) -> Optional[str]:
+		return self.radixManager.queryFastCode(character)
 

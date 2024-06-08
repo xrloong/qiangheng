@@ -1,3 +1,5 @@
+from typing import Optional
+
 from injector import inject
 from injector import singleton
 
@@ -45,14 +47,15 @@ class QHDataCodingDataManager:
 	def substituteManager(self) -> SubstituteManager:
 		return self.__substituteManager
 
-	def loadData(self, radixFiles: list[str], adjustFiles: list[str], substituteFiles: list[str]):
+	def loadData(self,
+              radixFiles: list[str], adjustFiles: list[str], fastFile: Optional[str],
+              substituteFiles: list[str],
+              ):
 		self.radixManager.loadMainRadicals(radixFiles)
 		self.radixManager.loadAdjust(adjustFiles)
+		if fastFile:
+			self.radixManager.loadFastCodes(fastFile)
 		self.substituteManager.loadSubstituteRules(substituteFiles)
-
-	def loadFastCodes(self, fastFile: str):
-		fastCodes = self.radixManager.loadFastCodes(fastFile) if fastFile else {}
-		return fastCodes
 
 @singleton
 class QHDataManager:
@@ -104,10 +107,7 @@ class QHDataManager:
 		self.codingDM.loadData(
                 radixFiles = codingConfig.getSpecificRadixFileList(),
                 adjustFiles = codingConfig.getSpecificAdjustFileList(),
+                fastFile = codingConfig.getSpecificFastFile(),
                 substituteFiles = codingConfig.getSpecificSubstituteFileList(),
                 )
-
-	def loadFastCodes(self):
-		fastFile = self.__codingConfig.getSpecificFastFile()
-		return self.codingDM.loadFastCodes(fastFile = fastFile)
 

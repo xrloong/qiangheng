@@ -27,7 +27,7 @@ class MainManager:
 		characters = injector.get(Characters)
 		constructCharacter = injector.get(ConstructCharacter)
 		constructCharacter.compute(characters)
-		constructCharacter.appendFastCodes()
+		constructCharacter.appendFastCodes(characters)
 
 	def __write(self):
 		injector = self.__injector
