@@ -54,7 +54,8 @@ class CharacterComputingWork:
 		node = self.touchCharacter(character)
 		nodeStructure = node.nodeStructure
 		self.expandNodeStructure(nodeStructure)
-		self.computeNode(nodeStructure)
+		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
+
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
@@ -137,9 +138,6 @@ class CharacterComputingWork:
 		operator = structDesc.operator
 
 		return self.itemFactory.getCompoundStructure(operator, childStructureList)
-
-	def computeNode(self, nodeStructure):
-		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
 
 	def __computeOne(self, character: str):
 		charNode = self.__workspaceManager.findNode(character)
