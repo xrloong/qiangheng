@@ -1,3 +1,4 @@
+from typing import Optional
 from injector import inject
 
 from element.enum import FontVariance
@@ -9,9 +10,10 @@ from .helper import HanZiInterpreter
 from .helper import HanZiTreeRegExpInterpreter
 from .manager import StructureManager
 
+from model.element.CharacterInfo import CharacterInfo
 from model.manager import SubstituteManager
 
-class CharacterComputingWork:
+class CharacterComputingHelper:
 	class RearrangeCallback(SubstituteManager.RearrangeCallback):
 		def __init__(self, computeCharacterInfo, treInterpreter):
 			self.computeCharacterInfo = computeCharacterInfo
@@ -46,34 +48,16 @@ class CharacterComputingWork:
 		self.codeInfosComputer = codeInfosComputer
 		self.itemFactory = itemFactory
 
-		self.rearrangeCallback = CharacterComputingWork.RearrangeCallback(self, treInterpreter)
+		self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(self, treInterpreter)
 
 		self.__hanziInterpreter = hanziInterpreter
-
-	def compute(self, characters):
-		characterInfos = []
-
-		for character in characters:
-			self.__constructOne(character)
-			characterInfo = self.__computeOne(character)
-			if characterInfo:
-				characterInfos.append(characterInfo)
-
-		return characterInfos
-
-	def __constructOne(self, character):
-		self.__constructCharacter(character)
-		fastCode = self.structureManager.queryFastCode(character)
-		if fastCode:
-			node = self.touchCharacter(character)
-			characterInfo = node.tag
-			characterInfo.setFastCode(fastCode)
 
 	def __constructCharacter(self, character):
 		node = self.touchCharacter(character)
 		nodeStructure = node.nodeStructure
 		self.expandNodeStructure(nodeStructure)
-		self.computeNode(nodeStructure)
+		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
+
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
@@ -157,12 +141,34 @@ class CharacterComputingWork:
 
 		return self.itemFactory.getCompoundStructure(operator, childStructureList)
 
-	def computeNode(self, nodeStructure):
-		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
+	def __appendFastCode(self, character: str):
+		fastCode = self.structureManager.queryFastCode(character)
+		if fastCode:
+			node = self.touchCharacter(character)
+			characterInfo = node.tag
+			characterInfo.setFastCode(fastCode)
 
-	def __computeOne(self, character: str):
+	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
+		self.__constructCharacter(character)
+		self.__appendFastCode(character)
 		charNode = self.__workspaceManager.findNode(character)
-		if charNode:
-			characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
-			return characterInfo
+		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
+
+class CharacterComputingWork:
+	@inject
+	def __init__(self,
+			computingHelper: CharacterComputingHelper,
+			):
+		self.__computingHelper = computingHelper
+
+	def compute(self, characters) -> list[CharacterInfo]:
+		computingHelper = self.__computingHelper
+
+		characterInfos = []
+		for character in characters:
+			characterInfo = computingHelper.computeCharacter(character)
+			if characterInfo:
+				characterInfos.append(characterInfo)
+
+		return characterInfos
 
