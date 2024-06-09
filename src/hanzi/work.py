@@ -164,12 +164,13 @@ class CharacterComputingWork:
 			):
 		self.__computingHelper = computingHelper
 
-	def compute(self, characters) -> list[CharacterInfo]:
+	def compute(self, characters, separateComputing) -> list[CharacterInfo]:
 		computingHelper = self.__computingHelper
 
 		characterInfos = []
 		for character in characters:
-			computingHelper.reset()
+			if separateComputing:
+				computingHelper.reset()
 
 			characterInfo = computingHelper.computeCharacter(character)
 			if characterInfo:

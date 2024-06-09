@@ -5,6 +5,7 @@ import ruamel.yaml
 import itertools
 
 from injection.key import Characters
+from injection.key import SeparateComputing
 from injection.key import Writer
 from injection.key import Quiet
 
@@ -144,3 +145,7 @@ class CharacterModule(Module):
 	def provideCharaceters(self) -> Characters:
 		characters = tuple(chr(c) for c in self.__getCharacters())
 		return characters
+
+	@provider
+	def provideSeparateComputing(self) -> SeparateComputing:
+		return False

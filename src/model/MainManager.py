@@ -6,6 +6,7 @@ from injector import Injector
 
 from injection.key import Writer
 from injection.key import Characters
+from injection.key import SeparateComputing
 
 from coding.Base import CodeMappingInfoInterpreter
 
@@ -24,11 +25,12 @@ class MainManager:
 		injector = self.__injector
 
 		characters = injector.get(Characters)
+		separateComputing = injector.get(SeparateComputing)
 		constructCharacter = injector.get(CharacterComputingWork)
 
 		characters = sorted(characters)
 
-		characterInfos = constructCharacter.compute(characters)
+		characterInfos = constructCharacter.compute(characters, separateComputing)
 		return characterInfos
 
 	def __write(self, characterInfos):
