@@ -1,3 +1,4 @@
+from typing import Optional
 from injector import inject
 
 from element.enum import FontVariance
@@ -9,6 +10,7 @@ from .helper import HanZiInterpreter
 from .helper import HanZiTreeRegExpInterpreter
 from .manager import StructureManager
 
+from model.element.CharacterInfo import CharacterInfo
 from model.manager import SubstituteManager
 
 class CharacterComputingWork:
@@ -139,7 +141,7 @@ class CharacterComputingWork:
 
 		return self.itemFactory.getCompoundStructure(operator, childStructureList)
 
-	def __computeOne(self, character: str):
+	def __computeOne(self, character: str) -> Optional[CharacterInfo]:
 		charNode = self.__workspaceManager.findNode(character)
 		if charNode:
 			characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
@@ -153,7 +155,7 @@ class CharacterComputingWork:
 			characterInfo = node.tag
 			characterInfo.setFastCode(fastCode)
 
-	def compute(self, characters):
+	def compute(self, characters) -> list[CharacterInfo]:
 		characterInfos = []
 
 		for character in characters:

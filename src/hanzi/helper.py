@@ -4,6 +4,7 @@ from .workspace import HanZiWorkspace
 from .workspace import HanZiStructure, HanZiNode
 from .item import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
 
+from model.element.CharacterInfo import CharacterInfo
 from model.interpreter import CodeInfoInterpreter
 from model.helper import OperatorManager
 
@@ -16,10 +17,10 @@ class HanZiInterpreter:
 	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
 		self.codeInfoInterpreter = codeInfoInterpreter
 
-	def interpretCharacterInfo(self, characterNode):
+	def interpretCharacterInfo(self, characterNode) -> CharacterInfo:
 		return self._getNodeCharacterInfo(characterNode)
 
-	def _getNodeCharacterInfo(self, hanziNode):
+	def _getNodeCharacterInfo(self, hanziNode) -> CharacterInfo:
 		nodeStructure = hanziNode.nodeStructure
 		nodeStructureInfo = nodeStructure.structureInfo
 

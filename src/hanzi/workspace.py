@@ -22,7 +22,7 @@ class HanZiNode:
 		return self.__nodeStructure
 
 	@property
-	def tag(self):
+	def tag(self) -> CharacterInfo.CharacterInfo:
 		return self.__tag
 
 class HanZiStructure:
