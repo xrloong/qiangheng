@@ -9,7 +9,7 @@ from injection.key import Characters
 
 from coding.Base import CodeMappingInfoInterpreter
 
-from hanzi.converter import CharacterComputingWork
+from hanzi.work import CharacterComputingWork
 
 class MainManager:
 	@inject
