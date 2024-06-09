@@ -141,10 +141,6 @@ class CharacterComputingWork:
 
 		return self.itemFactory.getCompoundStructure(operator, childStructureList)
 
-	def __computeOne(self, character: str) -> Optional[CharacterInfo]:
-		charNode = self.__workspaceManager.findNode(character)
-		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
-
 	def __constructOne(self, character):
 		self.__constructCharacter(character)
 		fastCode = self.structureManager.queryFastCode(character)
@@ -152,13 +148,14 @@ class CharacterComputingWork:
 			node = self.touchCharacter(character)
 			characterInfo = node.tag
 			characterInfo.setFastCode(fastCode)
+		charNode = self.__workspaceManager.findNode(character)
+		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
 
 	def compute(self, characters) -> list[CharacterInfo]:
 		characterInfos = []
 
 		for character in characters:
-			self.__constructOne(character)
-			characterInfo = self.__computeOne(character)
+			characterInfo = self.__constructOne(character)
 			if characterInfo:
 				characterInfos.append(characterInfo)
 
