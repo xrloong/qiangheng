@@ -154,16 +154,6 @@ class CharacterComputingHelper:
 		charNode = self.__workspaceManager.findNode(character)
 		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
 
-	def compute(self, characters) -> list[CharacterInfo]:
-		characterInfos = []
-
-		for character in characters:
-			characterInfo = self.computeCharacter(character)
-			if characterInfo:
-				characterInfos.append(characterInfo)
-
-		return characterInfos
-
 class CharacterComputingWork:
 	@inject
 	def __init__(self,
@@ -173,5 +163,12 @@ class CharacterComputingWork:
 
 	def compute(self, characters) -> list[CharacterInfo]:
 		computingHelper = self.__computingHelper
-		return computingHelper.compute(characters)
+
+		characterInfos = []
+		for character in characters:
+			characterInfo = computingHelper.computeCharacter(character)
+			if characterInfo:
+				characterInfos.append(characterInfo)
+
+		return characterInfos
 
