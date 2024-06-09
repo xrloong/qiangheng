@@ -143,9 +143,7 @@ class CharacterComputingWork:
 
 	def __computeOne(self, character: str) -> Optional[CharacterInfo]:
 		charNode = self.__workspaceManager.findNode(character)
-		if charNode:
-			characterInfo = self.__hanziInterpreter.interpretCharacterInfo(charNode)
-			return characterInfo
+		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
 
 	def __constructOne(self, character):
 		self.__constructCharacter(character)
