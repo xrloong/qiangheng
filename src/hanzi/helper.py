@@ -99,6 +99,9 @@ class HanZiWorkspaceManager:
 	def setMainStructureOfNode(self, structure, nodeStructure):
 		nodeStructure.structureInfo.setMainStructure(structure)
 
+	def reset(self):
+		self.hanziWorkspace.reset()
+
 class HanZiWorkspaceItemFactory:
 	@inject
 	def __init__(self,
