@@ -85,6 +85,9 @@ class HanZiWorkspace:
 	def __init__(self):
 		self.__nodeDict = {}
 
+	def reset(self):
+		self.__nodeDict = {}
+
 	def addNode(self, node):
 		name = node.name
 		self.__nodeDict[name] = node

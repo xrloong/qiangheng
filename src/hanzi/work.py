@@ -148,6 +148,9 @@ class CharacterComputingHelper:
 			characterInfo = node.tag
 			characterInfo.setFastCode(fastCode)
 
+	def reset(self):
+		self.__workspaceManager.reset()
+
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
 		self.__constructCharacter(character)
 		self.__appendFastCode(character)
@@ -166,6 +169,8 @@ class CharacterComputingWork:
 
 		characterInfos = []
 		for character in characters:
+			computingHelper.reset()
+
 			characterInfo = computingHelper.computeCharacter(character)
 			if characterInfo:
 				characterInfos.append(characterInfo)
