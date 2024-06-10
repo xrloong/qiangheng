@@ -107,7 +107,7 @@ class HanZiWorkspaceItemFactory:
 	def __init__(self,
 		workspaceManager: HanZiWorkspaceManager,
 		operatorManager: OperatorManager,
-		codeInfoInterpreter: CodeInfoInterpreter):
+		):
 		self.workspaceManager = workspaceManager
 		self.operatorManager = operatorManager
 		self.wrapperExpressionDict = {}
