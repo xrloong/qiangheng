@@ -104,12 +104,8 @@ class HanZiWorkspaceManager:
 
 class HanZiWorkspaceItemFactory:
 	@inject
-	def __init__(self,
-		workspaceManager: HanZiWorkspaceManager,
-		operatorManager: OperatorManager,
-		):
+	def __init__(self, workspaceManager: HanZiWorkspaceManager):
 		self.workspaceManager = workspaceManager
-		self.operatorManager = operatorManager
 		self.wrapperExpressionDict = {}
 
 	def touchNode(self, character):
@@ -129,10 +125,6 @@ class HanZiWorkspaceItemFactory:
 		return self._generateUnitStructure(radixCodeInfo)
 
 	def getCompoundStructure(self, operator, structureList):
-		return self.generateCompoundStructure(operator, structureList)
-
-	def getCompoundStructureByOperatorName(self, operatorName, structureList):
-		operator = self.operatorManager.generateOperator(operatorName)
 		return self.generateCompoundStructure(operator, structureList)
 
 	def generateCompoundStructure(self, operator, structureList):
@@ -185,8 +177,12 @@ class HanZiTreeProxy(BasicTreeProxy):
 
 class HanZiTreeNodeGenerator(TreeNodeGenerator):
 	@inject
-	def __init__(self, itemFactory: HanZiWorkspaceItemFactory):
+	def __init__(self,
+              itemFactory: HanZiWorkspaceItemFactory,
+              operatorManager: OperatorManager,
+              ):
 		self.itemFactory = itemFactory
+		self.__operatorManager = operatorManager
 
 	def generateLeafNode(self, nodeName):
 		return self.itemFactory.getWrapperStructureByNodeName(nodeName)
@@ -196,7 +192,8 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
 		return self.itemFactory.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
 
 	def generateNode(self, operatorName, children):
-		return self.itemFactory.getCompoundStructureByOperatorName(operatorName, children)
+		operator = self.__operatorManager.generateOperator(operatorName)
+		return self.itemFactory.generateCompoundStructure(operator, children)
 
 class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
 	@inject
