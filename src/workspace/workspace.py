@@ -1,6 +1,6 @@
 from model.element import CharacterInfo
 
-from workspace import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo, NodeStructureInfo
+from .info import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo, NodeStructureInfo
 
 class HanZiNode:
 	def __init__(self, name):

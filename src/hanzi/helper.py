@@ -1,7 +1,7 @@
 from injector import inject
 
-from .workspace import HanZiWorkspace
-from .workspace import HanZiStructure, HanZiNode
+from workspace import HanZiStructure, HanZiNode
+from workspace import HanZiWorkspace
 from workspace import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
 
 from model.element.CharacterInfo import CharacterInfo
