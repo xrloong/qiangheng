@@ -96,15 +96,14 @@ class CharacterComputingHelper:
 			if structDesc.isEmpty():
 				continue
 
-			characterFontVariance = structDesc.fontVariance
-			isMainStructure = characterFontVariance.belongsTo(self.fontVariance)
-
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
 			templateManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
 			substituteManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
 
 			workspaceManager.addStructureIntoNode(structure, nodeStructure)
+
+			isMainStructure = self.fontVariance.contains(structDesc.fontVariance)
 			if isMainStructure:
 				workspaceManager.setMainStructureOfNode(structure, nodeStructure)
 

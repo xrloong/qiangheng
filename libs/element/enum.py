@@ -5,15 +5,16 @@ class FontVariance(StrEnum):
 	Traditional = '傳'
 	Simplified = '簡'
 
-	def belongsTo(self, targetFontVariance):
-		if targetFontVariance == FontVariance.All:
-			return True
-		elif targetFontVariance == FontVariance.Traditional:
-			return self in [FontVariance.All, FontVariance.Traditional]
-		elif targetFontVariance == FontVariance.Simplified:
-			return self in [FontVariance.All, FontVariance.Simplified]
-		else:
-			return False
+	def contains(self, other):
+		match self:
+			case FontVariance.All:
+				return True
+			case FontVariance.Traditional:
+				return other in [FontVariance.All, FontVariance.Traditional]
+			case FontVariance.Simplified:
+				return other in [FontVariance.All, FontVariance.Simplified]
+			case _:
+				return False
 
 class CodeVariance(StrEnum):
 	STANDARD = "標準"
