@@ -79,9 +79,6 @@ class CharacterComputingHelper:
 		radixManager = structureManager.radixManager
 		itemFactory = self.itemFactory
 
-		templateManager = structureManager.templateManager
-		substituteManager = structureManager.substituteManager
-
 		if radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
@@ -98,9 +95,6 @@ class CharacterComputingHelper:
 
 			structure = self.__convertToStructure(structDesc)
 
-			templateManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
-			substituteManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
-
 			workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
 			isMainStructure = self.fontVariance.contains(structDesc.fontVariance)
@@ -109,6 +103,14 @@ class CharacterComputingHelper:
 
 	def __convertToStructure(self, structDesc):
 		structure = self.recursivelyConvertDescriptionToStructure(structDesc)
+
+		structureManager = self.structureManager
+		templateManager = structureManager.templateManager
+		substituteManager = structureManager.substituteManager
+
+		templateManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
+		substituteManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
+
 		return structure
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
