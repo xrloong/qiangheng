@@ -96,8 +96,7 @@ class CharacterComputingHelper:
 			if structDesc.isEmpty():
 				continue
 
-			characterFontVariance = structDesc.fontVariance
-			isMainStructure = characterFontVariance.belongsTo(self.fontVariance)
+			isMainStructure = self.fontVariance.contains(structDesc.fontVariance)
 
 			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 

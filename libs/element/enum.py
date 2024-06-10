@@ -5,6 +5,9 @@ class FontVariance(StrEnum):
 	Traditional = '傳'
 	Simplified = '簡'
 
+	def contains(self, other):
+		return other.belongsTo(self)
+
 	def belongsTo(self, targetFontVariance):
 		match targetFontVariance:
 			case FontVariance.All:
