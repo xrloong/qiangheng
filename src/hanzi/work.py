@@ -96,7 +96,7 @@ class CharacterComputingHelper:
 			if structDesc.isEmpty():
 				continue
 
-			structure = self.recursivelyConvertDescriptionToStructure(structDesc)
+			structure = self.__convertToStructure(structDesc)
 
 			templateManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
 			substituteManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
@@ -106,6 +106,10 @@ class CharacterComputingHelper:
 			isMainStructure = self.fontVariance.contains(structDesc.fontVariance)
 			if isMainStructure:
 				workspaceManager.setMainStructureOfNode(structure, nodeStructure)
+
+	def __convertToStructure(self, structDesc):
+		structure = self.recursivelyConvertDescriptionToStructure(structDesc)
+		return structure
 
 	def recursivelyConvertDescriptionToStructure(self, structDesc):
 		if structDesc.isLeaf():
