@@ -171,6 +171,9 @@ class HanZiWorkspaceItemFactory:
 
 
 class HanZiTreeProxy(BasicTreeProxy):
+	@inject
+	def __init__(self): pass
+
 	def getChildren(self, currentStructure):
 		return currentStructure.getExpandedStructureList()
 
@@ -197,6 +200,9 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
 
 class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
 	@inject
-	def __init__(self, treeNodeGenerator: HanZiTreeNodeGenerator):
+	def __init__(self,
+                 treeProxy: HanZiTreeProxy,
+                 treeNodeGenerator: HanZiTreeNodeGenerator
+              ):
 		super().__init__(HanZiTreeProxy(), treeNodeGenerator)
 
