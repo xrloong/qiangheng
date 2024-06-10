@@ -1,7 +1,9 @@
 from .item import MatchResult
+from .item import BasicTreeProxy
+from .item import TreeNodeGenerator
 
 class TreeRegExpInterpreter:
-	def __init__(self, proxy, treeNodeGenerator):
+	def __init__(self, proxy: BasicTreeProxy, treeNodeGenerator: TreeNodeGenerator):
 		self.proxy = proxy
 		self.treeNodeGenerator = treeNodeGenerator
 
