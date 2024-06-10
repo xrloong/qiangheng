@@ -21,7 +21,7 @@ from model.helper import StructureConverter
 
 from parser.QHParser import QHParser
 
-from hanzi.workspace import HanZiWorkspace
+from workspace import HanZiWorkspace
 
 from model.datamanager import QHDataManager
 
