@@ -33,13 +33,13 @@ class HanZiWorkspaceManager:
 		return node
 
 	def getUnitStructure(self, radixCodeInfo):
-		return self._generateUnitStructure(radixCodeInfo)
+		return self.__generateUnitStructure(radixCodeInfo)
 
 	def getCompoundStructure(self, operator, structureList):
 		return self.generateCompoundStructure(operator, structureList)
 
 	def generateCompoundStructure(self, operator, structureList):
-		return self._generateCompoundStructure(operator, structureList)
+		return self.__generateCompoundStructure(operator, structureList)
 
 	def getWrapperStructureByNodeName(self, nodeName, index = 0):
 		self.touchNode(nodeName)
@@ -51,21 +51,21 @@ class HanZiWorkspaceManager:
 			return self.__wrapperExpressionDict[wrapperExpression]
 
 		referenceNode = self.findNode(name)
-		structure = self._generateWrapperStructure(referenceNode, index)
+		structure = self.__generateWrapperStructure(referenceNode, index)
 
 		self.__wrapperExpressionDict[wrapperExpression] = structure
 		return structure
 
-	def _generateUnitStructure(self, radixCodeInfo):
+	def __generateUnitStructure(self, radixCodeInfo):
 		structureInfo = UnitStructureInfo(radixCodeInfo)
 		return HanZiStructure(structureInfo)
 
-	def _generateWrapperStructure(self, referenceNode, index):
+	def __generateWrapperStructure(self, referenceNode, index):
 		nodeStrcuture = referenceNode.nodeStructure
 		structureInfo = WrapperStructureInfo(nodeStrcuture, index)
 		return HanZiStructure(structureInfo)
 
-	def _generateCompoundStructure(self, operator, structureList):
+	def __generateCompoundStructure(self, operator, structureList):
 		structureInfo = CompoundStructureInfo(operator, structureList)
 		return HanZiStructure(structureInfo)
 
