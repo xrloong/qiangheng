@@ -130,7 +130,7 @@ class CharacterComputingHelper:
 		else:
 			subIndex = 0
 
-		return self.__workspaceManager.getWrapperStructureByNodeName(name, subIndex)
+		return self.__workspaceManager.getWrapperStructure(name, subIndex)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
@@ -141,7 +141,7 @@ class CharacterComputingHelper:
 
 		operator = structDesc.operator
 
-		return self.__workspaceManager.getCompoundStructure(operator, childStructureList)
+		return self.__workspaceManager.generateCompoundStructure(operator, childStructureList)
 
 	def __appendFastCode(self, character: str):
 		fastCode = self.structureManager.queryFastCode(character)

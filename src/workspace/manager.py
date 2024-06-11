@@ -19,17 +19,12 @@ class HanZiWorkspaceManager:
 	def getUnitStructure(self, radixCodeInfo):
 		return self.__generateUnitStructure(radixCodeInfo)
 
-	def getCompoundStructure(self, operator, structureList):
-		return self.generateCompoundStructure(operator, structureList)
-
 	def generateCompoundStructure(self, operator, structureList):
 		return self.__generateCompoundStructure(operator, structureList)
 
-	def getWrapperStructureByNodeName(self, nodeName, index = 0):
-		self.touchNode(nodeName)
-		return self.getWrapperStructure(nodeName, index)
+	def getWrapperStructure(self, name, index = 0):
+		self.touchNode(name)
 
-	def getWrapperStructure(self, name, index):
 		wrapperExpression = (name, index)
 		if (name, index) in self.__wrapperExpressionDict:
 			return self.__wrapperExpressionDict[wrapperExpression]

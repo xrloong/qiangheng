@@ -97,11 +97,10 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
 		self.__operatorManager = operatorManager
 
 	def generateLeafNode(self, nodeName):
-		return self.__workspaceManager.getWrapperStructureByNodeName(nodeName)
+		return self.__workspaceManager.getWrapperStructure(nodeName)
 
 	def generateLeafNodeByReference(self, referencedTreeNode, index):
-		structure = referencedTreeNode
-		return self.__workspaceManager.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
+		return self.__workspaceManager.getWrapperStructure(referencedTreeNode.getReferencedNodeName(), index)
 
 	def generateNode(self, operatorName, children):
 		operator = self.__operatorManager.generateOperator(operatorName)
