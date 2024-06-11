@@ -14,10 +14,7 @@ class HanZiWorkspaceManager:
 		self.__workspace.reset()
 
 	def touchNode(self, character):
-		if not self.__workspace.isWithNode(character):
-			node = HanZiNode(character)
-			self.__workspace.addNode(node)
-		return self.__workspace.findNode(character)
+		return self.__workspace.touchNode(character)
 
 	def getUnitStructure(self, radixCodeInfo):
 		return self.__generateUnitStructure(radixCodeInfo)
