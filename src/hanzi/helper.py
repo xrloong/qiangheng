@@ -80,6 +80,7 @@ class HanZiWorkspaceManager:
 	@inject
 	def __init__(self, hanziWorkspace: HanZiWorkspace):
 		self.hanziWorkspace = hanziWorkspace
+		self.wrapperExpressionDict = {}
 
 	def findNode(self, name):
 		return self.hanziWorkspace.findNode(name)
@@ -96,17 +97,11 @@ class HanZiWorkspaceManager:
 	def reset(self):
 		self.hanziWorkspace.reset()
 
-class HanZiWorkspaceItemFactory:
-	@inject
-	def __init__(self, workspaceManager: HanZiWorkspaceManager):
-		self.workspaceManager = workspaceManager
-		self.wrapperExpressionDict = {}
-
 	def touchNode(self, character):
-		if not self.workspaceManager.isWithNode(character):
+		if not self.isWithNode(character):
 			node = self.generateNode(character)
-			self.workspaceManager.addNode(node)
-		return self.workspaceManager.findNode(character)
+			self.addNode(node)
+		return self.findNode(character)
 
 	def generateNode(self, character):
 		node = HanZiNode(character)
@@ -133,7 +128,7 @@ class HanZiWorkspaceItemFactory:
 		if (name, index) in self.wrapperExpressionDict:
 			return self.wrapperExpressionDict[wrapperExpression]
 
-		referenceNode = self.workspaceManager.findNode(name)
+		referenceNode = self.findNode(name)
 		structure = self.generateWrapperStructure(referenceNode, index)
 
 		self.wrapperExpressionDict[wrapperExpression] = structure
@@ -178,10 +173,10 @@ class HanZiTreeProxy(BasicTreeProxy):
 class HanZiTreeNodeGenerator(TreeNodeGenerator):
 	@inject
 	def __init__(self,
-              itemFactory: HanZiWorkspaceItemFactory,
+              workspaceManager: HanZiWorkspaceManager,
               operatorManager: OperatorManager,
               ):
-		self.itemFactory = itemFactory
+		self.itemFactory = workspaceManager
 		self.__operatorManager = operatorManager
 
 	def generateLeafNode(self, nodeName):
