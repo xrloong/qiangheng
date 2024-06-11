@@ -33,9 +33,6 @@ class HanZiWorkspaceManager:
 		return node
 
 	def getUnitStructure(self, radixCodeInfo):
-		return self.generateUnitStructure(radixCodeInfo)
-
-	def generateUnitStructure(self, radixCodeInfo):
 		return self._generateUnitStructure(radixCodeInfo)
 
 	def getCompoundStructure(self, operator, structureList):
