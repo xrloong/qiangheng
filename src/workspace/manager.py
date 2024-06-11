@@ -54,13 +54,10 @@ class HanZiWorkspaceManager:
 			return self.__wrapperExpressionDict[wrapperExpression]
 
 		referenceNode = self.findNode(name)
-		structure = self.generateWrapperStructure(referenceNode, index)
+		structure = self._generateWrapperStructure(referenceNode, index)
 
 		self.__wrapperExpressionDict[wrapperExpression] = structure
 		return structure
-
-	def generateWrapperStructure(self, referenceNode, index):
-		return self._generateWrapperStructure(referenceNode, index)
 
 	def _generateUnitStructure(self, radixCodeInfo):
 		structureInfo = UnitStructureInfo(radixCodeInfo)
