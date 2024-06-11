@@ -176,19 +176,19 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
               workspaceManager: HanZiWorkspaceManager,
               operatorManager: OperatorManager,
               ):
-		self.itemFactory = workspaceManager
+		self.__workspaceManager = workspaceManager
 		self.__operatorManager = operatorManager
 
 	def generateLeafNode(self, nodeName):
-		return self.itemFactory.getWrapperStructureByNodeName(nodeName)
+		return self.__workspaceManager.getWrapperStructureByNodeName(nodeName)
 
 	def generateLeafNodeByReference(self, referencedTreeNode, index):
 		structure = referencedTreeNode
-		return self.itemFactory.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
+		return self.__workspaceManager.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
 
 	def generateNode(self, operatorName, children):
 		operator = self.__operatorManager.generateOperator(operatorName)
-		return self.itemFactory.generateCompoundStructure(operator, children)
+		return self.__workspaceManager.generateCompoundStructure(operator, children)
 
 class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
 	@inject
