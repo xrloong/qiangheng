@@ -3,7 +3,8 @@ from injector import inject
 
 from element.enum import FontVariance
 
-from .helper import HanZiWorkspaceManager
+from workspace import HanZiWorkspaceManager
+
 from .helper import HanZiCodeInfosComputer
 from .helper import HanZiInterpreter
 from .helper import HanZiTreeRegExpInterpreter
