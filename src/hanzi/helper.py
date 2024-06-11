@@ -78,24 +78,24 @@ class HanZiCodeInfosComputer:
 
 class HanZiWorkspaceManager:
 	@inject
-	def __init__(self, hanziWorkspace: HanZiWorkspace):
-		self.hanziWorkspace = hanziWorkspace
-		self.wrapperExpressionDict = {}
+	def __init__(self, workspace: HanZiWorkspace):
+		self.__workspace = workspace
+		self.__wrapperExpressionDict = {}
 
 	def findNode(self, name):
-		return self.hanziWorkspace.findNode(name)
+		return self.__workspace.findNode(name)
 
 	def isWithNode(self, name):
-		return self.hanziWorkspace.isWithNode(name)
+		return self.__workspace.isWithNode(name)
 
 	def isNodeExpanded(self, name):
-		return self.hanziWorkspace.isNodeExpanded(name)
+		return self.__workspace.isNodeExpanded(name)
 
 	def addNode(self, node):
-		return self.hanziWorkspace.addNode(node)
+		return self.__workspace.addNode(node)
 
 	def reset(self):
-		self.hanziWorkspace.reset()
+		self.__workspace.reset()
 
 	def touchNode(self, character):
 		if not self.isWithNode(character):
@@ -125,13 +125,13 @@ class HanZiWorkspaceManager:
 
 	def getWrapperStructure(self, name, index):
 		wrapperExpression = (name, index)
-		if (name, index) in self.wrapperExpressionDict:
-			return self.wrapperExpressionDict[wrapperExpression]
+		if (name, index) in self.__wrapperExpressionDict:
+			return self.__wrapperExpressionDict[wrapperExpression]
 
 		referenceNode = self.findNode(name)
 		structure = self.generateWrapperStructure(referenceNode, index)
 
-		self.wrapperExpressionDict[wrapperExpression] = structure
+		self.__wrapperExpressionDict[wrapperExpression] = structure
 		return structure
 
 	def generateWrapperStructure(self, referenceNode, index):
