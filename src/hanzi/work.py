@@ -156,7 +156,7 @@ class CharacterComputingHelper:
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
 		self.__constructCharacter(character)
 		self.__appendFastCode(character)
-		charNode = self.__workspaceManager.findNode(character)
+		charNode = self.touchCharacter(character)
 		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
 
 class CharacterComputingWork:
