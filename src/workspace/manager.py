@@ -7,9 +7,6 @@ class HanZiWorkspaceManager:
 		self.__workspace = HanZiWorkspace()
 		self.__wrapperExpressionDict = {}
 
-	def findNode(self, name):
-		return self.__workspace.findNode(name)
-
 	def isNodeExpanded(self, name):
 		return self.__workspace.isNodeExpanded(name)
 
@@ -20,7 +17,7 @@ class HanZiWorkspaceManager:
 		if not self.__workspace.isWithNode(character):
 			node = HanZiNode(character)
 			self.__workspace.addNode(node)
-		return self.findNode(character)
+		return self.__workspace.findNode(character)
 
 	def getUnitStructure(self, radixCodeInfo):
 		return self.__generateUnitStructure(radixCodeInfo)
