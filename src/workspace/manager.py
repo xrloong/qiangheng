@@ -10,9 +10,6 @@ class HanZiWorkspaceManager:
 	def findNode(self, name):
 		return self.__workspace.findNode(name)
 
-	def isWithNode(self, name):
-		return self.__workspace.isWithNode(name)
-
 	def isNodeExpanded(self, name):
 		return self.__workspace.isNodeExpanded(name)
 
@@ -23,7 +20,7 @@ class HanZiWorkspaceManager:
 		self.__workspace.reset()
 
 	def touchNode(self, character):
-		if not self.isWithNode(character):
+		if not self.__workspace.isWithNode(character):
 			node = HanZiNode(character)
 			self.addNode(node)
 		return self.findNode(character)
