@@ -88,24 +88,24 @@ class HanZiWorkspace:
 	def reset(self):
 		self.__nodeDict = {}
 
-	def addNode(self, node):
+	def __addNode(self, node):
 		name = node.name
 		self.__nodeDict[name] = node
 
-	def isWithNode(self, name):
+	def __isWithNode(self, name):
 		return name in self.__nodeDict
 
-	def findNode(self, name):
+	def __findNode(self, name):
 		return self.__nodeDict.get(name)
 
 	def touchNode(self, character):
-		if not self.isWithNode(character):
+		if not self.__isWithNode(character):
 			node = HanZiNode(character)
-			self.addNode(node)
-		return self.findNode(character)
+			self.__addNode(node)
+		return self.__findNode(character)
 
 	def isNodeExpanded(self, name):
-		node = self.findNode(name)
+		node = self.__findNode(name)
 		nodeStructure = node.nodeStructure
 		nodeStructureInfo = nodeStructure.structureInfo
 		mainStructure = nodeStructureInfo.getMainStructure()
