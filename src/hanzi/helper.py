@@ -77,9 +77,8 @@ class HanZiCodeInfosComputer:
 
 
 class HanZiWorkspaceManager:
-	@inject
-	def __init__(self, workspace: HanZiWorkspace):
-		self.__workspace = workspace
+	def __init__(self):
+		self.__workspace = HanZiWorkspace()
 		self.__wrapperExpressionDict = {}
 
 	def findNode(self, name):
