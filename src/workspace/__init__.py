@@ -1,7 +1,4 @@
-from .info import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo, NodeStructureInfo
-
-from .workspace import HanZiNode, HanZiStructure
-from .workspace import HanZiWorkspace
+from .manager import HanZiWorkspaceManager
 
 if __name__=='__main__':
 	pass

@@ -3,9 +3,9 @@ from injector import inject
 
 from element.enum import FontVariance
 
-from .helper import HanZiWorkspaceManager
+from workspace import HanZiWorkspaceManager
+
 from .helper import HanZiCodeInfosComputer
-from .helper import HanZiWorkspaceItemFactory
 from .helper import HanZiInterpreter
 from .helper import HanZiTreeRegExpInterpreter
 from .manager import StructureManager
@@ -36,7 +36,6 @@ class CharacterComputingHelper:
 
 			workspaceManager: HanZiWorkspaceManager,
 			codeInfosComputer: HanZiCodeInfosComputer,
-			itemFactory: HanZiWorkspaceItemFactory,
 
 			hanziInterpreter: HanZiInterpreter,
 			):
@@ -46,7 +45,6 @@ class CharacterComputingHelper:
 
 		self.__workspaceManager = workspaceManager
 		self.codeInfosComputer = codeInfosComputer
-		self.itemFactory = itemFactory
 
 		self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(self, treInterpreter)
 
@@ -63,7 +61,7 @@ class CharacterComputingHelper:
 		return self.structureManager.queryCharacterDescription(characterName)
 
 	def touchCharacter(self, character):
-		return self.itemFactory.touchNode(character)
+		return self.__workspaceManager.touchNode(character)
 
 	def expandNodeStructure(self, nodeStructure):
 		workspaceManager = self.__workspaceManager
@@ -77,12 +75,11 @@ class CharacterComputingHelper:
 		structureManager = self.structureManager
 
 		radixManager = structureManager.radixManager
-		itemFactory = self.itemFactory
 
 		if radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
-				structure = itemFactory.getUnitStructure(radixCodeInfo)
+				structure = workspaceManager.getUnitStructure(radixCodeInfo)
 				workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
 		charDesc = self.queryDescription(character)
@@ -133,7 +130,7 @@ class CharacterComputingHelper:
 		else:
 			subIndex = 0
 
-		return self.itemFactory.getWrapperStructureByNodeName(name, subIndex)
+		return self.__workspaceManager.getWrapperStructureByNodeName(name, subIndex)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
@@ -144,7 +141,7 @@ class CharacterComputingHelper:
 
 		operator = structDesc.operator
 
-		return self.itemFactory.getCompoundStructure(operator, childStructureList)
+		return self.__workspaceManager.getCompoundStructure(operator, childStructureList)
 
 	def __appendFastCode(self, character: str):
 		fastCode = self.structureManager.queryFastCode(character)

@@ -1,8 +1,6 @@
 from injector import inject
 
-from workspace import HanZiStructure, HanZiNode
-from workspace import HanZiWorkspace
-from workspace import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
+from workspace import HanZiWorkspaceManager
 
 from model.element.CharacterInfo import CharacterInfo
 from model.interpreter import CodeInfoInterpreter
@@ -76,92 +74,6 @@ class HanZiCodeInfosComputer:
 		return codeInfo
 
 
-class HanZiWorkspaceManager:
-	@inject
-	def __init__(self, hanziWorkspace: HanZiWorkspace):
-		self.hanziWorkspace = hanziWorkspace
-
-	def findNode(self, name):
-		return self.hanziWorkspace.findNode(name)
-
-	def isWithNode(self, name):
-		return self.hanziWorkspace.isWithNode(name)
-
-	def isNodeExpanded(self, name):
-		return self.hanziWorkspace.isNodeExpanded(name)
-
-	def addNode(self, node):
-		return self.hanziWorkspace.addNode(node)
-
-	def addStructureIntoNode(self, structure, nodeStructure):
-		nodeStructure.structureInfo.addStructure(structure)
-
-	def setMainStructureOfNode(self, structure, nodeStructure):
-		nodeStructure.structureInfo.setMainStructure(structure)
-
-	def reset(self):
-		self.hanziWorkspace.reset()
-
-class HanZiWorkspaceItemFactory:
-	@inject
-	def __init__(self, workspaceManager: HanZiWorkspaceManager):
-		self.workspaceManager = workspaceManager
-		self.wrapperExpressionDict = {}
-
-	def touchNode(self, character):
-		if not self.workspaceManager.isWithNode(character):
-			node = self.generateNode(character)
-			self.workspaceManager.addNode(node)
-		return self.workspaceManager.findNode(character)
-
-	def generateNode(self, character):
-		node = HanZiNode(character)
-		return node
-
-	def getUnitStructure(self, radixCodeInfo):
-		return self.generateUnitStructure(radixCodeInfo)
-
-	def generateUnitStructure(self, radixCodeInfo):
-		return self._generateUnitStructure(radixCodeInfo)
-
-	def getCompoundStructure(self, operator, structureList):
-		return self.generateCompoundStructure(operator, structureList)
-
-	def generateCompoundStructure(self, operator, structureList):
-		return self._generateCompoundStructure(operator, structureList)
-
-	def getWrapperStructureByNodeName(self, nodeName, index = 0):
-		self.touchNode(nodeName)
-		return self.getWrapperStructure(nodeName, index)
-
-	def getWrapperStructure(self, name, index):
-		wrapperExpression = (name, index)
-		if (name, index) in self.wrapperExpressionDict:
-			return self.wrapperExpressionDict[wrapperExpression]
-
-		referenceNode = self.workspaceManager.findNode(name)
-		structure = self.generateWrapperStructure(referenceNode, index)
-
-		self.wrapperExpressionDict[wrapperExpression] = structure
-		return structure
-
-	def generateWrapperStructure(self, referenceNode, index):
-		return self._generateWrapperStructure(referenceNode, index)
-
-	def _generateUnitStructure(self, radixCodeInfo):
-		structureInfo = UnitStructureInfo(radixCodeInfo)
-		return HanZiStructure(structureInfo)
-
-	def _generateWrapperStructure(self, referenceNode, index):
-		nodeStrcuture = referenceNode.nodeStructure
-		structureInfo = WrapperStructureInfo(nodeStrcuture, index)
-		return HanZiStructure(structureInfo)
-
-	def _generateCompoundStructure(self, operator, structureList):
-		structureInfo = CompoundStructureInfo(operator, structureList)
-		return HanZiStructure(structureInfo)
-
-
 class HanZiTreeProxy(BasicTreeProxy):
 	@inject
 	def __init__(self): pass
@@ -178,22 +90,22 @@ class HanZiTreeProxy(BasicTreeProxy):
 class HanZiTreeNodeGenerator(TreeNodeGenerator):
 	@inject
 	def __init__(self,
-              itemFactory: HanZiWorkspaceItemFactory,
+              workspaceManager: HanZiWorkspaceManager,
               operatorManager: OperatorManager,
               ):
-		self.itemFactory = itemFactory
+		self.__workspaceManager = workspaceManager
 		self.__operatorManager = operatorManager
 
 	def generateLeafNode(self, nodeName):
-		return self.itemFactory.getWrapperStructureByNodeName(nodeName)
+		return self.__workspaceManager.getWrapperStructureByNodeName(nodeName)
 
 	def generateLeafNodeByReference(self, referencedTreeNode, index):
 		structure = referencedTreeNode
-		return self.itemFactory.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
+		return self.__workspaceManager.getWrapperStructureByNodeName(structure.getReferencedNodeName(), index)
 
 	def generateNode(self, operatorName, children):
 		operator = self.__operatorManager.generateOperator(operatorName)
-		return self.itemFactory.generateCompoundStructure(operator, children)
+		return self.__workspaceManager.generateCompoundStructure(operator, children)
 
 class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
 	@inject
