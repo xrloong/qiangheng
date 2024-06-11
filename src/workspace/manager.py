@@ -13,16 +13,13 @@ class HanZiWorkspaceManager:
 	def isNodeExpanded(self, name):
 		return self.__workspace.isNodeExpanded(name)
 
-	def addNode(self, node):
-		return self.__workspace.addNode(node)
-
 	def reset(self):
 		self.__workspace.reset()
 
 	def touchNode(self, character):
 		if not self.__workspace.isWithNode(character):
 			node = HanZiNode(character)
-			self.addNode(node)
+			self.__workspace.addNode(node)
 		return self.findNode(character)
 
 	def getUnitStructure(self, radixCodeInfo):
