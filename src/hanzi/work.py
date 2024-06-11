@@ -130,7 +130,7 @@ class CharacterComputingHelper:
 		else:
 			subIndex = 0
 
-		return self.__workspaceManager.getWrapperStructureByNodeName(name, subIndex)
+		return self.__workspaceManager.getWrapperStructure(name, subIndex)
 
 	def generateLink(self, structDesc):
 		childStructureList = []
