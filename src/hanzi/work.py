@@ -83,7 +83,7 @@ class CharacterComputingHelper:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = itemFactory.getUnitStructure(radixCodeInfo)
-				workspaceManager.addStructureIntoNode(structure, nodeStructure)
+				itemFactory.addStructureIntoNode(structure, nodeStructure)
 
 		charDesc = self.queryDescription(character)
 
@@ -95,11 +95,11 @@ class CharacterComputingHelper:
 
 			structure = self.__convertToStructure(structDesc)
 
-			workspaceManager.addStructureIntoNode(structure, nodeStructure)
+			itemFactory.addStructureIntoNode(structure, nodeStructure)
 
 			isMainStructure = self.fontVariance.contains(structDesc.fontVariance)
 			if isMainStructure:
-				workspaceManager.setMainStructureOfNode(structure, nodeStructure)
+				itemFactory.setMainStructureOfNode(structure, nodeStructure)
 
 	def __convertToStructure(self, structDesc):
 		structure = self.recursivelyConvertDescriptionToStructure(structDesc)

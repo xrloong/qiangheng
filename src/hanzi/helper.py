@@ -93,12 +93,6 @@ class HanZiWorkspaceManager:
 	def addNode(self, node):
 		return self.hanziWorkspace.addNode(node)
 
-	def addStructureIntoNode(self, structure, nodeStructure):
-		nodeStructure.structureInfo.addStructure(structure)
-
-	def setMainStructureOfNode(self, structure, nodeStructure):
-		nodeStructure.structureInfo.setMainStructure(structure)
-
 	def reset(self):
 		self.hanziWorkspace.reset()
 
@@ -160,6 +154,12 @@ class HanZiWorkspaceItemFactory:
 	def _generateCompoundStructure(self, operator, structureList):
 		structureInfo = CompoundStructureInfo(operator, structureList)
 		return HanZiStructure(structureInfo)
+
+	def addStructureIntoNode(self, structure, nodeStructure):
+		nodeStructure.structureInfo.addStructure(structure)
+
+	def setMainStructureOfNode(self, structure, nodeStructure):
+		nodeStructure.structureInfo.setMainStructure(structure)
 
 
 class HanZiTreeProxy(BasicTreeProxy):
