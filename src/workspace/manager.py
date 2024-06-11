@@ -50,7 +50,7 @@ class HanZiWorkspaceManager:
 		if (name, index) in self.__wrapperExpressionDict:
 			return self.__wrapperExpressionDict[wrapperExpression]
 
-		referenceNode = self.findNode(name)
+		referenceNode = self.touchNode(name)
 		structure = self.__generateWrapperStructure(referenceNode, index)
 
 		self.__wrapperExpressionDict[wrapperExpression] = structure
