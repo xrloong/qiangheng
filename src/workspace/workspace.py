@@ -37,6 +37,9 @@ class HanZiStructure:
 	def name(self) -> str:
 		return self.structureInfo.getName()
 
+	def hasUnitStructures(self) -> bool:
+		return self.structureInfo.hasUnitStructures()
+
 	def getComputedCodeInfos(self):
 		return self.structureInfo.getComputedCodeInfos()
 
