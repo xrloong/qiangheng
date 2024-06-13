@@ -33,6 +33,17 @@ class HanZiStructure:
 	def structureInfo(self):
 		return self.__structureInfo
 
+	@property
+	def referencedNodeStructure(self):
+		return self.structureInfo.referencedNodeStructure
+
+	@property
+	def name(self) -> str:
+		return self.structureInfo.getName()
+
+	def hasUnitStructures(self) -> bool:
+		return self.structureInfo.hasUnitStructures()
+
 	def getComputedCodeInfos(self):
 		return self.structureInfo.getComputedCodeInfos()
 
@@ -54,7 +65,7 @@ class HanZiStructure:
 	def isMatchStructure(self, operatorName = None, referenceExpression = None):
 		isMatch = True
 		if referenceExpression:
-			isMatch &= referenceExpression == self.structureInfo.getReferenceExpression()
+			isMatch &= referenceExpression == self.structureInfo.referenceExpression
 
 		if operatorName:
 			isMatch &= operatorName == self.structureInfo.getExpandedOperatorName()
@@ -65,7 +76,7 @@ class HanZiStructure:
 		return self.structureInfo.getStructureList()
 
 	def getReferencedNodeName(self):
-		nodeStructureInfo = self.structureInfo.getReferencedNodeStructureInfo()
+		nodeStructureInfo = self.structureInfo.referencedNodeStructureInfo
 		return nodeStructureInfo.getName()
 
 	def getExpandedOperatorName(self):

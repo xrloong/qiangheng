@@ -45,14 +45,17 @@ class StructureInfo(object, metaclass = abc.ABCMeta):
 	@abc.abstractproperty
 	def childStructures(self): pass
 
-	def getReferenceExpression(self):
+	@property
+	def referenceExpression(self):
 		return None
 
-	def getReferencedNodeStructure(self):
+	@property
+	def referencedNodeStructure(self):
 		return None
 
-	def getReferencedNodeStructureInfo(self):
-		return None
+	@property
+	def referencedNodeStructureInfo(self):
+		return self.referencedNodeStructure.structureInfo
 
 	def getStructureList(self):
 		return []
@@ -89,16 +92,15 @@ class WrapperStructureInfo(StructureInfo):
 			referenceExpression = "{}.{}".format(referenceName,index)
 
 		self.__nodeStructure = nodeStructure
-		self.__nodeStructureInfo = nodeStructureInfo
 		self.__index = index
 		self.__referenceExpression = referenceExpression
 
 	def getOperatorName(self):
-		nodeStructureInfo = self.getReferencedNodeStructureInfo()
+		nodeStructureInfo = self.referencedNodeStructureInfo
 		return nodeStructureInfo.getOperatorName()
 
 	def getExpandedOperator(self):
-		nodeStructureInfo = self.getReferencedNodeStructureInfo()
+		nodeStructureInfo = self.referencedNodeStructureInfo
 		expandedStructure = nodeStructureInfo.getMainStructure()
 		if expandedStructure:
 			return expandedStructure.structureInfo.getOperator()
@@ -106,7 +108,7 @@ class WrapperStructureInfo(StructureInfo):
 			return self.getOperator()
 
 	def getExpandedStructureList(self):
-		nodeStructureInfo = self.getReferencedNodeStructureInfo()
+		nodeStructureInfo = self.referencedNodeStructureInfo
 		expandedStructure = nodeStructureInfo.getMainStructure()
 		if expandedStructure:
 			return expandedStructure.getStructureList()
@@ -115,27 +117,25 @@ class WrapperStructureInfo(StructureInfo):
 
 	@property
 	def childStructures(self):
-		nodeStructure = self.getReferencedNodeStructure()
+		nodeStructure = self.referencedNodeStructure
 		return (nodeStructure, )
 
 	@property
 	def codeInfos(self):
-		nodeStructureInfo = self.__nodeStructureInfo
+		nodeStructureInfo = self.__nodeStructure.structureInfo
 		index = self.__index
 
 		structureList = nodeStructureInfo.getSubStructureList(index)
 		codeInfosList = sum((s.getComputedCodeInfos() for s in structureList), ())
 		return tuple((codeInfos, ) for codeInfos in codeInfosList)
 
-	def getReferenceExpression(self):
+	@property
+	def referenceExpression(self):
 		return self.__referenceExpression
 
-	def getReferencedNodeStructure(self):
+	@property
+	def referencedNodeStructure(self):
 		return self.__nodeStructure
-
-	def getReferencedNodeStructureInfo(self):
-		return self.__nodeStructureInfo
-
 
 class CompoundStructureInfo(StructureInfo):
 	def __init__(self, operator, structureList):
@@ -181,7 +181,6 @@ class NodeStructureInfo(StructureInfo):
 		self.__name = name
 
 		self.__unitStructureList = []
-		self.__normalStructureList = []
 		self.__mainStructure = None
 
 	def getOperator(self):
@@ -212,8 +211,6 @@ class NodeStructureInfo(StructureInfo):
 	def addStructure(self, structure):
 		if structure.isUnit():
 			self.__unitStructureList.append(structure)
-		else:
-			self.__normalStructureList.append(structure)
 
 	def getStructureList(self, isWithUnit = False):
 		structureList = []
@@ -226,11 +223,12 @@ class NodeStructureInfo(StructureInfo):
 
 		return structureList
 
-	def getUnitStructureList(self):
+	@property
+	def unitStructures(self):
 		return self.__unitStructureList
 
-	def getNormalStructureList(self):
-		return self.__normalStructureList
+	def hasUnitStructures(self) -> bool:
+		return len(self.__unitStructureList) > 0
 
 	def getSubStructure(self, index):
 		structure = self.__mainStructure
