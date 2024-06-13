@@ -227,6 +227,9 @@ class NodeStructureInfo(StructureInfo):
 	def unitStructures(self):
 		return self.__unitStructureList
 
+	def hasUnitStructures(self) -> bool:
+		return len(self.__unitStructureList) > 0
+
 	def getSubStructure(self, index):
 		structure = self.__mainStructure
 		if not structure:
