@@ -141,16 +141,16 @@ class CharacterComputingHelper:
 	def __appendRadicalCodes(self, nodeStructure):
 		assert nodeStructure.isNode()
 
-		radixManager = self.structureManager.radixManager
-
-		character = nodeStructure.name
-		if radixManager.hasRadix(character) and not nodeStructure.hasUnitStructures():
+		if not nodeStructure.hasUnitStructures():
 			workspaceManager = self.__workspaceManager
+			radixManager = self.structureManager.radixManager
 
-			radixInfoList = radixManager.getRadixCodeInfoList(character)
-			for radixCodeInfo in radixInfoList:
-				structure = workspaceManager.getUnitStructure(radixCodeInfo)
-				workspaceManager.addStructureIntoNode(structure, nodeStructure)
+			character = nodeStructure.name
+			if radixManager.hasRadix(character):
+				radixInfoList = radixManager.getRadixCodeInfoList(character)
+				for radixCodeInfo in radixInfoList:
+					structure = workspaceManager.getUnitStructure(radixCodeInfo)
+					workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
 
 	def __appendFastCode(self, character: str):
