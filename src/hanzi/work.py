@@ -53,9 +53,10 @@ class CharacterComputingHelper:
 	def __constructCharacter(self, character):
 		node = self.touchCharacter(character)
 		nodeStructure = node.nodeStructure
+		assert nodeStructure.isNode()
+
 		self.expandNodeStructure(nodeStructure)
 		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
-
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
@@ -64,6 +65,8 @@ class CharacterComputingHelper:
 		return self.__workspaceManager.touchNode(character)
 
 	def expandNodeStructure(self, nodeStructure):
+		assert nodeStructure.isNode()
+
 		workspaceManager = self.__workspaceManager
 
 		nodeStructureInfo = nodeStructure.structureInfo

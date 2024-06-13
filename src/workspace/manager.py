@@ -52,8 +52,12 @@ class HanZiWorkspaceManager:
 		return HanZiStructure(structureInfo)
 
 	def addStructureIntoNode(self, structure: HanZiStructure, nodeStructure: HanZiStructure):
+		assert nodeStructure.isNode()
+
 		nodeStructure.structureInfo.addStructure(structure)
 
 	def setMainStructureOfNode(self, structure: HanZiStructure, nodeStructure: HanZiStructure):
+		assert nodeStructure.isNode()
+
 		nodeStructure.structureInfo.setMainStructure(structure)
 
