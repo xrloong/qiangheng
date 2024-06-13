@@ -20,7 +20,7 @@ class CharacterComputingHelper:
 			self.treInterpreter = treInterpreter
 
 		def prepare(self, structure):
-			nodeStructure = structure.structureInfo.getReferencedNodeStructure()
+			nodeStructure = structure.structureInfo.referencedNodeStructure
 			if nodeStructure:
 				self.computeCharacterInfo.expandNodeStructure(nodeStructure)
 
