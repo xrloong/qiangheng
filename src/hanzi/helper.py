@@ -22,7 +22,7 @@ class HanZiInterpreter:
 		nodeStructure = hanziNode.nodeStructure
 		nodeStructureInfo = nodeStructure.structureInfo
 
-		structureList = nodeStructureInfo.getStructureList(True)
+		structureList = nodeStructureInfo.childStructures
 		codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
 
 		codeList = self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
