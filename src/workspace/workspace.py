@@ -34,10 +34,6 @@ class HanZiStructure:
 		return self.__structureInfo
 
 	@property
-	def referencedNodeStructure(self):
-		return self.structureInfo.referencedNodeStructure
-
-	@property
 	def name(self) -> str:
 		return self.structureInfo.getName()
 

@@ -21,8 +21,8 @@ class CharacterComputingHelper:
 
 		def prepare(self, structure):
 			if structure.isWrapper():
-				charName = structure.getReferencedNodeName()
-				self.computeCharacterInfo.constructCharacter(charName)
+				character = structure.getReferencedNodeName()
+				self.computeCharacterInfo.constructCharacter(character)
 
 		def matchAndReplace(self, tre, structure, result):
 			return self.treInterpreter.matchAndReplace(tre, structure, result)
