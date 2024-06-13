@@ -75,13 +75,7 @@ class CharacterComputingHelper:
 
 		structureManager = self.structureManager
 
-		radixManager = structureManager.radixManager
-
-		if radixManager.hasRadix(character) and not nodeStructure.hasUnitStructures():
-			radixInfoList = radixManager.getRadixCodeInfoList(character)
-			for radixCodeInfo in radixInfoList:
-				structure = workspaceManager.getUnitStructure(radixCodeInfo)
-				workspaceManager.addStructureIntoNode(structure, nodeStructure)
+		self.__appendRadicalCodes(nodeStructure)
 
 		charDesc = self.queryDescription(character)
 
@@ -143,6 +137,21 @@ class CharacterComputingHelper:
 		operator = structDesc.operator
 
 		return self.__workspaceManager.generateCompoundStructure(operator, childStructureList)
+
+	def __appendRadicalCodes(self, nodeStructure):
+		assert nodeStructure.isNode()
+
+		radixManager = self.structureManager.radixManager
+
+		character = nodeStructure.name
+		if radixManager.hasRadix(character) and not nodeStructure.hasUnitStructures():
+			workspaceManager = self.__workspaceManager
+
+			radixInfoList = radixManager.getRadixCodeInfoList(character)
+			for radixCodeInfo in radixInfoList:
+				structure = workspaceManager.getUnitStructure(radixCodeInfo)
+				workspaceManager.addStructureIntoNode(structure, nodeStructure)
+
 
 	def __appendFastCode(self, character: str):
 		fastCode = self.structureManager.queryFastCode(character)
