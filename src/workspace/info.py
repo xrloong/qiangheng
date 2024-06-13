@@ -52,7 +52,7 @@ class StructureInfo(object, metaclass = abc.ABCMeta):
 		return None
 
 	def getReferencedNodeStructureInfo(self):
-		return None
+		return self.getReferencedNodeStructure().structureInfo
 
 	def getStructureList(self):
 		return []
@@ -89,7 +89,6 @@ class WrapperStructureInfo(StructureInfo):
 			referenceExpression = "{}.{}".format(referenceName,index)
 
 		self.__nodeStructure = nodeStructure
-		self.__nodeStructureInfo = nodeStructureInfo
 		self.__index = index
 		self.__referenceExpression = referenceExpression
 
@@ -120,7 +119,7 @@ class WrapperStructureInfo(StructureInfo):
 
 	@property
 	def codeInfos(self):
-		nodeStructureInfo = self.__nodeStructureInfo
+		nodeStructureInfo = self.__nodeStructure.structureInfo
 		index = self.__index
 
 		structureList = nodeStructureInfo.getSubStructureList(index)
@@ -132,9 +131,6 @@ class WrapperStructureInfo(StructureInfo):
 
 	def getReferencedNodeStructure(self):
 		return self.__nodeStructure
-
-	def getReferencedNodeStructureInfo(self):
-		return self.__nodeStructureInfo
 
 
 class CompoundStructureInfo(StructureInfo):
