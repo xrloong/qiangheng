@@ -21,8 +21,8 @@ class CharacterComputingHelper:
 
 		def prepare(self, structure):
 			if structure.isWrapper():
-				nodeStructure = structure.referencedNodeStructure
-				self.computeCharacterInfo.expandNodeStructure(nodeStructure)
+				character = structure.referencedNodeName
+				self.computeCharacterInfo.constructCharacter(character)
 
 		def matchAndReplace(self, tre, structure, result):
 			return self.treInterpreter.matchAndReplace(tre, structure, result)
@@ -50,10 +50,13 @@ class CharacterComputingHelper:
 
 		self.__hanziInterpreter = hanziInterpreter
 
-	def __constructCharacter(self, character):
+	def constructCharacter(self, character):
 		node = self.touchCharacter(character)
 		nodeStructure = node.nodeStructure
 		assert nodeStructure.isNode()
+
+		self.__appendRadicalCodes(nodeStructure)
+		self.__appendFastCode(character)
 
 		self.expandNodeStructure(nodeStructure)
 		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
@@ -74,14 +77,6 @@ class CharacterComputingHelper:
 			return
 
 		structureManager = self.structureManager
-
-		radixManager = structureManager.radixManager
-
-		if radixManager.hasRadix(character) and not nodeStructure.hasUnitStructures():
-			radixInfoList = radixManager.getRadixCodeInfoList(character)
-			for radixCodeInfo in radixInfoList:
-				structure = workspaceManager.getUnitStructure(radixCodeInfo)
-				workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
 		charDesc = self.queryDescription(character)
 
@@ -123,7 +118,7 @@ class CharacterComputingHelper:
 		name = structDesc.referenceName
 		nodeExpression = structDesc.referenceExpression
 
-		self.__constructCharacter(name)
+		self.constructCharacter(name)
 
 		l = nodeExpression.split(".")
 		if len(l)>1:
@@ -144,6 +139,21 @@ class CharacterComputingHelper:
 
 		return self.__workspaceManager.generateCompoundStructure(operator, childStructureList)
 
+	def __appendRadicalCodes(self, nodeStructure):
+		assert nodeStructure.isNode()
+
+		if not nodeStructure.hasUnitStructures():
+			workspaceManager = self.__workspaceManager
+			radixManager = self.structureManager.radixManager
+
+			character = nodeStructure.name
+			if radixManager.hasRadix(character):
+				radixInfoList = radixManager.getRadixCodeInfoList(character)
+				for radixCodeInfo in radixInfoList:
+					structure = workspaceManager.getUnitStructure(radixCodeInfo)
+					workspaceManager.addStructureIntoNode(structure, nodeStructure)
+
+
 	def __appendFastCode(self, character: str):
 		fastCode = self.structureManager.queryFastCode(character)
 		if fastCode:
@@ -155,8 +165,7 @@ class CharacterComputingHelper:
 		self.__workspaceManager.reset()
 
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
-		self.__constructCharacter(character)
-		self.__appendFastCode(character)
+		self.constructCharacter(character)
 		charNode = self.touchCharacter(character)
 		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
 
