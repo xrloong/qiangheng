@@ -55,6 +55,8 @@ class CharacterComputingHelper:
 		nodeStructure = node.nodeStructure
 		assert nodeStructure.isNode()
 
+		self.__appendRadicalCodes(nodeStructure)
+
 		self.expandNodeStructure(nodeStructure)
 		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
 
@@ -74,8 +76,6 @@ class CharacterComputingHelper:
 			return
 
 		structureManager = self.structureManager
-
-		self.__appendRadicalCodes(nodeStructure)
 
 		charDesc = self.queryDescription(character)
 
