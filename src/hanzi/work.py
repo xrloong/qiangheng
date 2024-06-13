@@ -20,8 +20,8 @@ class CharacterComputingHelper:
 			self.treInterpreter = treInterpreter
 
 		def prepare(self, structure):
-			nodeStructure = structure.referencedNodeStructure
-			if nodeStructure:
+			if structure.isWrapper():
+				nodeStructure = structure.referencedNodeStructure
 				self.computeCharacterInfo.expandNodeStructure(nodeStructure)
 
 		def matchAndReplace(self, tre, structure, result):
