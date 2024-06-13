@@ -56,6 +56,7 @@ class CharacterComputingHelper:
 		assert nodeStructure.isNode()
 
 		self.__appendRadicalCodes(nodeStructure)
+		self.__appendFastCode(character)
 
 		self.expandNodeStructure(nodeStructure)
 		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
@@ -165,7 +166,6 @@ class CharacterComputingHelper:
 
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
 		self.constructCharacter(character)
-		self.__appendFastCode(character)
 		charNode = self.touchCharacter(character)
 		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
 
