@@ -181,7 +181,6 @@ class NodeStructureInfo(StructureInfo):
 		self.__name = name
 
 		self.__unitStructureList = []
-		self.__normalStructureList = []
 		self.__mainStructure = None
 
 	def getOperator(self):
@@ -212,8 +211,6 @@ class NodeStructureInfo(StructureInfo):
 	def addStructure(self, structure):
 		if structure.isUnit():
 			self.__unitStructureList.append(structure)
-		else:
-			self.__normalStructureList.append(structure)
 
 	def getStructureList(self, isWithUnit = False):
 		structureList = []
@@ -228,9 +225,6 @@ class NodeStructureInfo(StructureInfo):
 
 	def getUnitStructureList(self):
 		return self.__unitStructureList
-
-	def getNormalStructureList(self):
-		return self.__normalStructureList
 
 	def getSubStructure(self, index):
 		structure = self.__mainStructure
