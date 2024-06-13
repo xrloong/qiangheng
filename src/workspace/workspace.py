@@ -37,6 +37,11 @@ class HanZiStructure:
 	def name(self) -> str:
 		return self.structureInfo.getName()
 
+	@property
+	def referencedNodeName(self):
+		nodeStructureInfo = self.structureInfo.referencedNodeStructureInfo
+		return nodeStructureInfo.getName()
+
 	def hasUnitStructures(self) -> bool:
 		return self.structureInfo.hasUnitStructures()
 
@@ -70,10 +75,6 @@ class HanZiStructure:
 
 	def getStructureList(self):
 		return self.structureInfo.getStructureList()
-
-	def getReferencedNodeName(self):
-		nodeStructureInfo = self.structureInfo.referencedNodeStructureInfo
-		return nodeStructureInfo.getName()
 
 	def getExpandedOperatorName(self):
 		return self.structureInfo.getExpandedOperatorName()
