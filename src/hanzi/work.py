@@ -76,7 +76,7 @@ class CharacterComputingHelper:
 
 		radixManager = structureManager.radixManager
 
-		if radixManager.hasRadix(character) and len(nodeStructureInfo.getUnitStructureList()) == 0:
+		if radixManager.hasRadix(character) and len(nodeStructureInfo.unitStructures) == 0:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
 				structure = workspaceManager.getUnitStructure(radixCodeInfo)

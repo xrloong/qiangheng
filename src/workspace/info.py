@@ -223,7 +223,8 @@ class NodeStructureInfo(StructureInfo):
 
 		return structureList
 
-	def getUnitStructureList(self):
+	@property
+	def unitStructures(self):
 		return self.__unitStructureList
 
 	def getSubStructure(self, index):
