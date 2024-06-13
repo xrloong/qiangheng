@@ -50,7 +50,7 @@ class CharacterComputingHelper:
 
 		self.__hanziInterpreter = hanziInterpreter
 
-	def __constructCharacter(self, character):
+	def constructCharacter(self, character):
 		node = self.touchCharacter(character)
 		nodeStructure = node.nodeStructure
 		assert nodeStructure.isNode()
@@ -123,7 +123,7 @@ class CharacterComputingHelper:
 		name = structDesc.referenceName
 		nodeExpression = structDesc.referenceExpression
 
-		self.__constructCharacter(name)
+		self.constructCharacter(name)
 
 		l = nodeExpression.split(".")
 		if len(l)>1:
@@ -155,7 +155,7 @@ class CharacterComputingHelper:
 		self.__workspaceManager.reset()
 
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
-		self.__constructCharacter(character)
+		self.constructCharacter(character)
 		self.__appendFastCode(character)
 		charNode = self.touchCharacter(character)
 		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
