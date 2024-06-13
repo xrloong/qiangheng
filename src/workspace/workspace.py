@@ -33,6 +33,10 @@ class HanZiStructure:
 	def structureInfo(self):
 		return self.__structureInfo
 
+	@property
+	def name(self) -> str:
+		return self.structureInfo.getName()
+
 	def getComputedCodeInfos(self):
 		return self.structureInfo.getComputedCodeInfos()
 

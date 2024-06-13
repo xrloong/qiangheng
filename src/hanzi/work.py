@@ -69,9 +69,7 @@ class CharacterComputingHelper:
 
 		workspaceManager = self.__workspaceManager
 
-		nodeStructureInfo = nodeStructure.structureInfo
-
-		character = nodeStructureInfo.getName()
+		character = nodeStructure.name
 		if workspaceManager.isNodeExpanded(character):
 			return
 
@@ -79,6 +77,7 @@ class CharacterComputingHelper:
 
 		radixManager = structureManager.radixManager
 
+		nodeStructureInfo = nodeStructure.structureInfo
 		if radixManager.hasRadix(character) and len(nodeStructureInfo.unitStructures) == 0:
 			radixInfoList = radixManager.getRadixCodeInfoList(character)
 			for radixCodeInfo in radixInfoList:
