@@ -26,8 +26,6 @@ class HanZiWorkspaceManager:
 		return self.__generateCompoundStructure(operator, structureList)
 
 	def getWrapperStructure(self, name: str, index: int = 0) -> HanZiStructure:
-		self.touchNode(name)
-
 		wrapperExpression = (name, index)
 		if (name, index) in self.__wrapperExpressionDict:
 			return self.__wrapperExpressionDict[wrapperExpression]
