@@ -1,5 +1,6 @@
 from injector import inject
 
+from workspace import HanZiStructure
 from workspace import HanZiWorkspaceManager
 
 from model.element.CharacterInfo import CharacterInfo
@@ -42,11 +43,11 @@ class HanZiCodeInfosComputer:
 	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
 		self.__codeInfoInterpreter = codeInfoInterpreter
 
-	def computeForNodeStructure(self, nodeStructure):
+	def computeForNodeStructure(self, nodeStructure: HanZiStructure):
 		"""設定某一個字符所包含的部件的碼"""
 		self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
 
-	def __recursivelyComputeCodeInfosOfStructureTree(self, structure):
+	def __recursivelyComputeCodeInfosOfStructureTree(self, structure: HanZiStructure):
 		if not structure:
 			return
 
@@ -57,7 +58,7 @@ class HanZiCodeInfosComputer:
 			self.__recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
 		self.__generateCodeInfosOfStructure(structure)
 
-	def __generateCodeInfosOfStructure(self, structure):
+	def __generateCodeInfosOfStructure(self, structure: HanZiStructure):
 		structureInfo = structure.structureInfo
 		operator = structureInfo.getOperator()
 
