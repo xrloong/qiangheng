@@ -40,7 +40,7 @@ class HanZiInterpreter:
 class HanZiCodeInfosComputer:
 	@inject
 	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
-		self.codeInfoInterpreter = codeInfoInterpreter
+		self.__codeInfoInterpreter = codeInfoInterpreter
 
 	def computeForNodeStructure(self, nodeStructure):
 		"""設定某一個字符所包含的部件的碼"""
@@ -73,7 +73,7 @@ class HanZiCodeInfosComputer:
 
 	def _computeCodeInfo(self, operator, codeInfos):
 		if operator:
-			codeInfo = self.codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
+			codeInfo = self.__codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
 		else:
 			codeInfo = codeInfos[0]
 		return codeInfo
