@@ -95,13 +95,13 @@ class RadicalCodingConverter:
 		self.codingRadixParser = codingRadixParser
 
 	def convertToCodeInfos(self, radicalDescription: RadixDescription) -> tuple[CodeInfo]:
-		radixCodeInfoList = []
-		tmpRadixCodeInfoList = radicalDescription.getRadixCodeInfoDescriptionList()
-		for radixInfo in tmpRadixCodeInfoList:
-			codeInfo = self.__convertToCodeInfo(radixInfo)
+		radicalCodeInfoList: list[CodeInfo] = []
+		radicalCodeInfoDescripptions = radicalDescription.getRadixCodeInfoDescriptionList()
+		for radicalCodeInfoDesc in radicalCodeInfoDescripptions:
+			codeInfo = self.__convertToCodeInfo(radicalCodeInfoDesc)
 			if codeInfo:
-				radixCodeInfoList.append(codeInfo)
-		return tuple(radixCodeInfoList)
+				radicalCodeInfoList.append(codeInfo)
+		return tuple(radicalCodeInfoList)
 
 	def __convertToCodeInfo(self, radixDesc: RadixCodeInfoDescription) -> CodeInfo:
 		codeInfo = self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
