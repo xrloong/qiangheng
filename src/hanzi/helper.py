@@ -1,3 +1,4 @@
+from typing import Optional
 from injector import inject
 
 from workspace import HanZiNode, HanZiStructure
@@ -40,15 +41,21 @@ class HanZiInterpreter:
 
 class HanZiCodeInfosComputer:
 	@inject
-	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
+	def __init__(self,
+              codeInfoInterpreter: CodeInfoInterpreter,
+              hanziInterpreter: HanZiInterpreter,
+              ):
 		self.__codeInfoInterpreter = codeInfoInterpreter
+		self.__hanziInterpreter = hanziInterpreter
 
-	def computeForNode(self, node: HanZiNode):
+	def computeForNode(self, node: HanZiNode) -> Optional[CharacterInfo]:
 		"""設定某一個字符所包含的部件的碼"""
 		nodeStructure = node.nodeStructure
 		assert nodeStructure.isNode()
 
 		self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
+
+		return self.__hanziInterpreter.interpretCharacterInfo(node) if node else None
 
 	def __recursivelyComputeCodeInfosOfStructureTree(self, structure: HanZiStructure):
 		if not structure:

@@ -6,7 +6,6 @@ from element.enum import FontVariance
 from workspace import HanZiWorkspaceManager
 
 from .helper import HanZiCodeInfosComputer
-from .helper import HanZiInterpreter
 from .helper import HanZiTreeRegExpInterpreter
 from .manager import StructureManager
 
@@ -36,8 +35,6 @@ class CharacterComputingHelper:
 
 			workspaceManager: HanZiWorkspaceManager,
 			codeInfosComputer: HanZiCodeInfosComputer,
-
-			hanziInterpreter: HanZiInterpreter,
 			):
 		self.fontVariance = fontVariance
 
@@ -47,8 +44,6 @@ class CharacterComputingHelper:
 		self.codeInfosComputer = codeInfosComputer
 
 		self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(self, treInterpreter)
-
-		self.__hanziInterpreter = hanziInterpreter
 
 	def constructCharacter(self, character):
 		node = self.touchCharacter(character)
@@ -168,8 +163,7 @@ class CharacterComputingHelper:
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
 		self.constructCharacter(character)
 		charNode = self.touchCharacter(character)
-		self.codeInfosComputer.computeForNode(charNode)
-		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
+		return self.codeInfosComputer.computeForNode(charNode)
 
 class CharacterComputingWork:
 	@inject
