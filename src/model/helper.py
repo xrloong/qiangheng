@@ -1,5 +1,6 @@
 from injector import inject
 
+from coding.Base import CodeInfo
 from coding.Base import CodingRadixParser
 from tree.node import Node
 from tree.parser import constant
@@ -8,6 +9,7 @@ from element.enum import FontVariance
 
 from .element.StructureDescription import StructureDescription
 from .element.radix import RadixDescription
+from .element.radix import RadixCodeInfoDescription
 
 class OperatorManager:
 	# 使用享元模式
@@ -92,7 +94,7 @@ class RadicalCodingConverter:
 	def __init__(self, codingRadixParser: CodingRadixParser):
 		self.codingRadixParser = codingRadixParser
 
-	def convertRadixDescToCodeInfoList(self, radixDesc):
+	def convertRadixDescToCodeInfoList(self, radixDesc: RadixDescription) -> list[CodeInfo]:
 		radixCodeInfoList = []
 		tmpRadixCodeInfoList = radixDesc.getRadixCodeInfoDescriptionList()
 		for radixInfo in tmpRadixCodeInfoList:
@@ -101,7 +103,7 @@ class RadicalCodingConverter:
 				radixCodeInfoList.append(codeInfo)
 		return radixCodeInfoList
 
-	def convertRadixDescToCodeInfoWithAttribute(self, radixDesc):
+	def convertRadixDescToCodeInfoWithAttribute(self, radixDesc: RadixCodeInfoDescription) -> CodeInfo:
 		codeInfo = self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
 
 		codeVariance = radixDesc.codeVariance
