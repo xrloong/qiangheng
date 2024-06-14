@@ -59,7 +59,7 @@ class CharacterComputingHelper:
 		self.__appendFastCode(nodeStructure)
 
 		self.expandNodeStructure(nodeStructure)
-		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
+		self.codeInfosComputer.computeForNode(node)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
