@@ -45,5 +45,6 @@ class StructureManager:
 		return charDesc.compList
 
 	def queryFastCode(self, character) -> Optional[str]:
-		return self.radixManager.queryFastCode(character)
+		fastCodeInfo = self.radixManager.queryFastCodeInfo(character)
+		return fastCodeInfo.code if fastCodeInfo else None
 

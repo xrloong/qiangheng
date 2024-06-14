@@ -139,13 +139,12 @@ class RadixManager:
 		fastCodeCharacterDB = self.__loadRadix([fastFile], baseVariance = CodeVariance.SIMPLIFIED)
 		self.__fastCodeDB.update(fastCodeCharacterDB)
 
-	def queryFastCode(self, character) -> Optional[str]:
+	def queryFastCodeInfo(self, character) -> Optional[CodeInfo]:
 		fastCodeInfos = self.__fastCodeDB.get(character, None)
 		if fastCodeInfos:
 			assert len(fastCodeInfos) == 1
 			fastCodeInfo = fastCodeInfos[0]
-			fastCode = fastCodeInfo.code if fastCodeInfo else None
-			return fastCode
+			return fastCodeInfo
 		else:
 			return None
 
