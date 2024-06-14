@@ -98,12 +98,12 @@ class RadicalCodingConverter:
 		radixCodeInfoList = []
 		tmpRadixCodeInfoList = radixDesc.getRadixCodeInfoDescriptionList()
 		for radixInfo in tmpRadixCodeInfoList:
-			codeInfo = self.convertRadixDescToCodeInfoWithAttribute(radixInfo)
+			codeInfo = self.__convertToCodeInfo(radixInfo)
 			if codeInfo:
 				radixCodeInfoList.append(codeInfo)
 		return radixCodeInfoList
 
-	def convertRadixDescToCodeInfoWithAttribute(self, radixDesc: RadixCodeInfoDescription) -> CodeInfo:
+	def __convertToCodeInfo(self, radixDesc: RadixCodeInfoDescription) -> CodeInfo:
 		codeInfo = self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
 
 		codeVariance = radixDesc.codeVariance
