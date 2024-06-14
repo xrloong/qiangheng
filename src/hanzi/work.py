@@ -155,8 +155,10 @@ class CharacterComputingHelper:
 
 
 	def __appendFastCode(self, character: str):
-		fastCode = self.structureManager.queryFastCode(character)
-		if fastCode:
+		fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
+		if fastCodeInfo:
+			fastCode = fastCodeInfo.code if fastCodeInfo else None
+
 			node = self.touchCharacter(character)
 			characterInfo = node.tag
 			characterInfo.setFastCode(fastCode)
