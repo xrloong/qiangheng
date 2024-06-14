@@ -169,7 +169,7 @@ class RadixManager:
 		radixCodeInfoDB = {}
 		for radixDescription in radixDescriptions:
 			radixName = radixDescription.getRadixName()
-			radixCodeInfos = radicalCodingConverter.convertRadixDescToCodeInfoList(radixDescription)
+			radixCodeInfos = radicalCodingConverter.convertToCodeInfos(radicalDescription = radixDescription)
 
 			radixCodeInfoDB[radixName] = radixCodeInfos
 

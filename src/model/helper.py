@@ -94,14 +94,14 @@ class RadicalCodingConverter:
 	def __init__(self, codingRadixParser: CodingRadixParser):
 		self.codingRadixParser = codingRadixParser
 
-	def convertRadixDescToCodeInfoList(self, radixDesc: RadixDescription) -> list[CodeInfo]:
+	def convertToCodeInfos(self, radicalDescription: RadixDescription) -> tuple[CodeInfo]:
 		radixCodeInfoList = []
-		tmpRadixCodeInfoList = radixDesc.getRadixCodeInfoDescriptionList()
+		tmpRadixCodeInfoList = radicalDescription.getRadixCodeInfoDescriptionList()
 		for radixInfo in tmpRadixCodeInfoList:
 			codeInfo = self.__convertToCodeInfo(radixInfo)
 			if codeInfo:
 				radixCodeInfoList.append(codeInfo)
-		return radixCodeInfoList
+		return tuple(radixCodeInfoList)
 
 	def __convertToCodeInfo(self, radixDesc: RadixCodeInfoDescription) -> CodeInfo:
 		codeInfo = self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
