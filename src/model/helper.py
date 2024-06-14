@@ -5,6 +5,7 @@ from coding.Base import CodingRadixParser
 from tree.node import Node
 from tree.parser import constant
 from element.operator import Operator
+from element.enum import CodeVariance
 from element.enum import FontVariance
 
 from .element.StructureDescription import StructureDescription
@@ -94,19 +95,19 @@ class RadicalCodingConverter:
 	def __init__(self, codingRadixParser: CodingRadixParser):
 		self.codingRadixParser = codingRadixParser
 
-	def convertToCodeInfos(self, radicalDescription: RadixDescription) -> tuple[CodeInfo]:
+	def convertToCodeInfos(self, radicalDescription: RadixDescription, baseVariance: CodeVariance) -> tuple[CodeInfo]:
 		radicalCodeInfoList: list[CodeInfo] = []
 		radicalCodeInfoDescripptions = radicalDescription.getRadixCodeInfoDescriptionList()
 		for radicalCodeInfoDesc in radicalCodeInfoDescripptions:
-			codeInfo = self.__convertToCodeInfo(radicalCodeInfoDesc)
+			codeInfo = self.__convertToCodeInfo(radicalCodeInfoDesc, baseVariance = baseVariance)
 			if codeInfo:
 				radicalCodeInfoList.append(codeInfo)
 		return tuple(radicalCodeInfoList)
 
-	def __convertToCodeInfo(self, radixDesc: RadixCodeInfoDescription) -> CodeInfo:
+	def __convertToCodeInfo(self, radixDesc: RadixCodeInfoDescription, baseVariance: CodeVariance) -> CodeInfo:
 		codeInfo = self.codingRadixParser.convertRadixDescToCodeInfo(radixDesc)
 
-		codeVariance = radixDesc.codeVariance
+		codeVariance = baseVariance * radixDesc.codeVariance
 		isSupportRadixCode = radixDesc.isSupportRadixCode
 		codeInfo.setCodeInfoAttribute(codeVariance, isSupportRadixCode)
 

@@ -7,6 +7,7 @@ from injector import inject
 
 from parser.QHParser import QHParser
 
+from element.enum import CodeVariance
 from coding.Base import CodeInfo
 
 from .element.CharacterDescription import CharacterDescription
@@ -135,7 +136,7 @@ class RadixManager:
 			self.__radixDB[radixName] = CharacterDescription(name = radixName)
 
 	def loadFastCodes(self, fastFile):
-		fastCodeCharacterDB = self.__loadRadix([fastFile])
+		fastCodeCharacterDB = self.__loadRadix([fastFile], baseVariance = CodeVariance.SIMPLIFIED)
 		self.__fastCodeDB.update(fastCodeCharacterDB)
 
 	def queryFastCode(self, character) -> Optional[str]:
@@ -157,7 +158,7 @@ class RadixManager:
 	def getRadixCodeInfoList(self, radixName):
 		return self.__radixCodeInfoDB.get(radixName)
 
-	def __loadRadix(self, radixFiles: list[str]) -> dict[str, list[CodeInfo]]:
+	def __loadRadix(self, radixFiles: list[str], baseVariance: CodeVariance = CodeVariance.STANDARD) -> dict[str, list[CodeInfo]]:
 		parser = self.__parser
 		radixDescriptions = []
 		for radicalFile in radixFiles:
@@ -169,7 +170,7 @@ class RadixManager:
 		radixCodeInfoDB = {}
 		for radixDescription in radixDescriptions:
 			radixName = radixDescription.getRadixName()
-			radixCodeInfos = radicalCodingConverter.convertToCodeInfos(radicalDescription = radixDescription)
+			radixCodeInfos = radicalCodingConverter.convertToCodeInfos(radicalDescription = radixDescription, baseVariance = baseVariance)
 
 			radixCodeInfoDB[radixName] = radixCodeInfos
 
