@@ -1,5 +1,7 @@
+from typing import Optional
 from injector import inject
 
+from workspace import HanZiNode, HanZiStructure
 from workspace import HanZiWorkspaceManager
 
 from model.element.CharacterInfo import CharacterInfo
@@ -39,14 +41,23 @@ class HanZiInterpreter:
 
 class HanZiCodeInfosComputer:
 	@inject
-	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
-		self.codeInfoInterpreter = codeInfoInterpreter
+	def __init__(self,
+              codeInfoInterpreter: CodeInfoInterpreter,
+              hanziInterpreter: HanZiInterpreter,
+              ):
+		self.__codeInfoInterpreter = codeInfoInterpreter
+		self.__hanziInterpreter = hanziInterpreter
 
-	def computeForNodeStructure(self, nodeStructure):
+	def computeForNode(self, node: HanZiNode) -> Optional[CharacterInfo]:
 		"""設定某一個字符所包含的部件的碼"""
-		self._recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
+		nodeStructure = node.nodeStructure
+		assert nodeStructure.isNode()
 
-	def _recursivelyComputeCodeInfosOfStructureTree(self, structure):
+		self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
+
+		return self.__hanziInterpreter.interpretCharacterInfo(node) if node else None
+
+	def __recursivelyComputeCodeInfosOfStructureTree(self, structure: HanZiStructure):
 		if not structure:
 			return
 
@@ -54,26 +65,26 @@ class HanZiCodeInfosComputer:
 			return
 
 		for cihldStructure in structure.getChildStructures():
-			self._recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
-		self._generateCodeInfosOfStructure(structure)
+			self.__recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
+		self.__generateCodeInfosOfStructure(structure)
 
-	def _generateCodeInfosOfStructure(self, structure):
+	def __generateCodeInfosOfStructure(self, structure: HanZiStructure):
 		structureInfo = structure.structureInfo
 		operator = structureInfo.getOperator()
 
 		codeInfosCollection = structureInfo.codeInfos
 
-		allCodeInfos = self._computeAllCodeInfos(operator, codeInfosCollection)
+		allCodeInfos = self.__computeAllCodeInfos(operator, codeInfosCollection)
 		structureInfo.setComputedCodeInfos(allCodeInfos)
 
-	def _computeAllCodeInfos(self, operator, codeInfosCollection):
-		computedCodeInfoList = (self._computeCodeInfo(operator, codeInfos) for codeInfos in codeInfosCollection)
+	def __computeAllCodeInfos(self, operator, codeInfosCollection):
+		computedCodeInfoList = (self.__computeCodeInfo(operator, codeInfos) for codeInfos in codeInfosCollection)
 		allCodeInfos = tuple(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
 		return allCodeInfos
 
-	def _computeCodeInfo(self, operator, codeInfos):
+	def __computeCodeInfo(self, operator, codeInfos):
 		if operator:
-			codeInfo = self.codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
+			codeInfo = self.__codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
 		else:
 			codeInfo = codeInfos[0]
 		return codeInfo
