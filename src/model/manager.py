@@ -7,6 +7,8 @@ from injector import inject
 
 from parser.QHParser import QHParser
 
+from coding.Base import CodeInfo
+
 from .element.CharacterDescription import CharacterDescription
 from .element.CharacterDescription import CharacterDecompositionSet
 from .element.SubstituteRule import SubstituteRuleSet
@@ -155,7 +157,7 @@ class RadixManager:
 	def getRadixCodeInfoList(self, radixName):
 		return self.__radixCodeInfoDB.get(radixName)
 
-	def __loadRadix(self, radixFiles: list[str]) -> dict[str, RadixDescription]:
+	def __loadRadix(self, radixFiles: list[str]) -> dict[str, list[CodeInfo]]:
 		parser = self.__parser
 		radixDescriptions = []
 		for radicalFile in radixFiles:
