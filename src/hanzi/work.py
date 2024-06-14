@@ -59,7 +59,6 @@ class CharacterComputingHelper:
 		self.__appendFastCode(nodeStructure)
 
 		self.expandNodeStructure(nodeStructure)
-		self.codeInfosComputer.computeForNode(node)
 
 	def queryDescription(self, characterName):
 		return self.structureManager.queryCharacterDescription(characterName)
@@ -169,6 +168,7 @@ class CharacterComputingHelper:
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
 		self.constructCharacter(character)
 		charNode = self.touchCharacter(character)
+		self.codeInfosComputer.computeForNode(charNode)
 		return self.__hanziInterpreter.interpretCharacterInfo(charNode) if charNode else None
 
 class CharacterComputingWork:
