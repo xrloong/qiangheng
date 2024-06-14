@@ -56,7 +56,7 @@ class CharacterComputingHelper:
 		assert nodeStructure.isNode()
 
 		self.__appendRadicalCodes(nodeStructure)
-		self.__appendFastCode(character)
+		self.__appendFastCode(nodeStructure)
 
 		self.expandNodeStructure(nodeStructure)
 		self.codeInfosComputer.computeForNodeStructure(nodeStructure)
@@ -154,12 +154,14 @@ class CharacterComputingHelper:
 					workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
 
-	def __appendFastCode(self, character: str):
-		fastCode = self.structureManager.queryFastCode(character)
-		if fastCode:
-			node = self.touchCharacter(character)
-			characterInfo = node.tag
-			characterInfo.setFastCode(fastCode)
+	def __appendFastCode(self, nodeStructure):
+		assert nodeStructure.isNode()
+
+		if not nodeStructure.fastCodeInfo:
+			character = nodeStructure.name
+			fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
+			if fastCodeInfo:
+				nodeStructure.fastCodeInfo = fastCodeInfo
 
 	def reset(self):
 		self.__workspaceManager.reset()

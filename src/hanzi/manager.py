@@ -1,6 +1,8 @@
 from typing import Optional
 from injector import inject
 
+from coding.Base import CodeInfo
+
 from model.helper import StructureConverter
 
 from model.manager import CompositionManager
@@ -44,6 +46,6 @@ class StructureManager:
 	def queryChildren(self, charDesc):
 		return charDesc.compList
 
-	def queryFastCode(self, character) -> Optional[str]:
-		return self.radixManager.queryFastCode(character)
+	def queryFastCodeInfo(self, character: str) -> Optional[CodeInfo]:
+		return self.radixManager.queryFastCodeInfo(character)
 

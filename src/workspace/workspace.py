@@ -28,6 +28,7 @@ class HanZiNode:
 class HanZiStructure:
 	def __init__(self, structureInfo):
 		self.__structureInfo = structureInfo
+		self.__fastCodeInfo = None
 
 	@property
 	def structureInfo(self):
@@ -41,6 +42,14 @@ class HanZiStructure:
 	def referencedNodeName(self):
 		nodeStructureInfo = self.structureInfo.referencedNodeStructureInfo
 		return nodeStructureInfo.getName()
+
+	@property
+	def fastCodeInfo(self):
+		return self.__fastCodeInfo
+
+	@fastCodeInfo.setter
+	def fastCodeInfo(self, fastCodeInfo):
+		self.__fastCodeInfo = fastCodeInfo
 
 	def hasUnitStructures(self) -> bool:
 		return self.structureInfo.hasUnitStructures()

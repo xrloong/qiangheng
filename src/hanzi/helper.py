@@ -20,10 +20,15 @@ class HanZiInterpreter:
 
 	def _getNodeCharacterInfo(self, hanziNode) -> CharacterInfo:
 		nodeStructure = hanziNode.nodeStructure
+		assert nodeStructure.isNode()
 		nodeStructureInfo = nodeStructure.structureInfo
 
 		structureList = nodeStructureInfo.childStructures
 		codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
+
+		fastCodeInfo = nodeStructure.fastCodeInfo
+		if fastCodeInfo:
+			codeInfoList = codeInfoList + (fastCodeInfo, )
 
 		codeList = self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
 
