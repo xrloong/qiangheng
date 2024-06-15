@@ -18,10 +18,10 @@ class HanZiInterpreter:
 	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
 		self.__codeInfoInterpreter = codeInfoInterpreter
 
-	def interpretCharacterInfo(self, characterNode) -> CharacterInfo:
+	def interpretCharacterInfo(self, characterNode: HanZiNode) -> CharacterInfo:
 		return self.__getNodeCharacterInfo(characterNode)
 
-	def __getNodeCharacterInfo(self, hanziNode) -> CharacterInfo:
+	def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
 		nodeStructure = hanziNode.nodeStructure
 		assert nodeStructure.isNode()
 		nodeStructureInfo = nodeStructure.structureInfo
