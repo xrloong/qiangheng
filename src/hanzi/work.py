@@ -157,27 +157,3 @@ class CharacterComputingHelper:
 	def reset(self):
 		self.__workspaceManager.reset()
 
-class CharacterComputingWork:
-	@inject
-	def __init__(self,
-			computingHelper: CharacterComputingHelper,
-			codeInfosComputer: HanZiCodeInfosComputer,
-			):
-		self.__computingHelper = computingHelper
-		self.__codeInfosComputer = codeInfosComputer
-
-	def compute(self, characters, separateComputing) -> list[CharacterInfo]:
-		computingHelper = self.__computingHelper
-
-		characterInfos = []
-		for character in characters:
-			if separateComputing:
-				computingHelper.reset()
-
-			computingHelper.constructCharacter(character)
-			characterInfo = self.__codeInfosComputer.computeCharacter(character)
-			if characterInfo:
-				characterInfos.append(characterInfo)
-
-		return characterInfos
-
