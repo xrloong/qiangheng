@@ -6,6 +6,7 @@ from element.enum import FontVariance
 from workspace import HanZiNode, HanZiStructure
 from workspace import HanZiWorkspaceManager
 
+from model.element.StructureDescription import StructureDescription
 from model.element.CharacterInfo import CharacterInfo
 from model.interpreter import CodeInfoInterpreter
 from model.manager import SubstituteManager
@@ -25,15 +26,8 @@ class HanZiCodeInfosComputer:
 	def interpretCharacterInfo(self, characterNode: HanZiNode) -> CharacterInfo:
 		return self.__getNodeCharacterInfo(characterNode)
 
-	def __touchCharacter(self, character):
-		return self.__workspaceManager.touchNode(character)
-
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
-		charNode = self.__touchCharacter(character)
-		return self.__computeForNode(charNode)
-
-	def __computeForNode(self, node: HanZiNode) -> Optional[CharacterInfo]:
-		"""設定某一個字符所包含的部件的碼"""
+		node = self.__workspaceManager.touchNode(character)
 		nodeStructure = node.nodeStructure
 		assert nodeStructure.isNode()
 
@@ -55,23 +49,10 @@ class HanZiCodeInfosComputer:
 	def __generateCodeInfosOfStructure(self, structure: HanZiStructure):
 		structureInfo = structure.structureInfo
 		operator = structureInfo.getOperator()
-
 		codeInfosCollection = structureInfo.codeInfos
 
-		allCodeInfos = self.__computeAllCodeInfos(operator, codeInfosCollection)
+		allCodeInfos = self.__codeInfoInterpreter.computeAllCodeInfos(operator, codeInfosCollection)
 		structureInfo.setComputedCodeInfos(allCodeInfos)
-
-	def __computeAllCodeInfos(self, operator, codeInfosCollection):
-		computedCodeInfoList = (self.__computeCodeInfo(operator, codeInfos) for codeInfos in codeInfosCollection)
-		allCodeInfos = tuple(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
-		return allCodeInfos
-
-	def __computeCodeInfo(self, operator, codeInfos):
-		if operator:
-			codeInfo = self.__codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
-		else:
-			codeInfo = codeInfos[0]
-		return codeInfo
 
 	def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
 		nodeStructure = hanziNode.nodeStructure
@@ -123,8 +104,8 @@ class CharacterComputingHelper:
 
 		self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(self, treInterpreter)
 
-	def constructCharacter(self, character):
-		node = self.touchCharacter(character)
+	def constructCharacter(self, character: str):
+		node = self.__workspaceManager.touchNode(character)
 		nodeStructure = node.nodeStructure
 		assert nodeStructure.isNode()
 
@@ -133,10 +114,7 @@ class CharacterComputingHelper:
 
 		self.expandNodeStructure(nodeStructure)
 
-	def touchCharacter(self, character):
-		return self.__workspaceManager.touchNode(character)
-
-	def expandNodeStructure(self, nodeStructure):
+	def expandNodeStructure(self, nodeStructure: HanZiStructure):
 		assert nodeStructure.isNode()
 
 		workspaceManager = self.__workspaceManager
@@ -158,7 +136,7 @@ class CharacterComputingHelper:
 			if isMainStructure:
 				workspaceManager.setMainStructureOfNode(structure, nodeStructure)
 
-	def __convertToStructure(self, structDesc):
+	def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
 		structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
 		structureManager = self.structureManager
@@ -170,7 +148,7 @@ class CharacterComputingHelper:
 
 		return structure
 
-	def recursivelyConvertDescriptionToStructure(self, structDesc):
+	def recursivelyConvertDescriptionToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
 		if structDesc.isLeaf():
 			structure = self.generateReferenceLink(structDesc)
 		else:
@@ -178,7 +156,7 @@ class CharacterComputingHelper:
 
 		return structure
 
-	def generateReferenceLink(self, structDesc):
+	def generateReferenceLink(self, structDesc: StructureDescription) -> HanZiStructure:
 		name = structDesc.referenceName
 		nodeExpression = structDesc.referenceExpression
 
@@ -192,7 +170,7 @@ class CharacterComputingHelper:
 
 		return self.__workspaceManager.getWrapperStructure(name, subIndex)
 
-	def generateLink(self, structDesc):
+	def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
 		childStructureList = []
 		childDescList = self.structureManager.queryChildren(structDesc)
 		for childSrcDesc in childDescList:
@@ -203,7 +181,7 @@ class CharacterComputingHelper:
 
 		return self.__workspaceManager.generateCompoundStructure(operator, childStructureList)
 
-	def __appendRadicalCodes(self, nodeStructure):
+	def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
 		assert nodeStructure.isNode()
 
 		if not nodeStructure.hasUnitStructures():
@@ -218,7 +196,7 @@ class CharacterComputingHelper:
 					workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
 
-	def __appendFastCode(self, nodeStructure):
+	def __appendFastCode(self, nodeStructure: HanZiStructure):
 		assert nodeStructure.isNode()
 
 		if not nodeStructure.fastCodeInfo:
