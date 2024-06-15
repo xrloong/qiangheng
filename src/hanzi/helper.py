@@ -49,14 +49,10 @@ class HanZiCodeInfosComputer:
 	def __generateCodeInfosOfStructure(self, structure: HanZiStructure):
 		structureInfo = structure.structureInfo
 		operator = structureInfo.getOperator()
-
 		codeInfosCollection = structureInfo.codeInfos
 
-		allCodeInfos = self.__computeAllCodeInfos(operator, codeInfosCollection)
+		allCodeInfos = self.__codeInfoInterpreter.computeAllCodeInfos(operator, codeInfosCollection)
 		structureInfo.setComputedCodeInfos(allCodeInfos)
-
-	def __computeAllCodeInfos(self, operator, codeInfosCollection):
-		return self.__codeInfoInterpreter.computeAllCodeInfos(operator, codeInfosCollection)
 
 	def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
 		nodeStructure = hanziNode.nodeStructure
