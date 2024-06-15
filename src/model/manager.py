@@ -71,12 +71,10 @@ class SubstituteManager:
 				tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
 				if tmpStructure != None:
 					structure.changeToStructure(tmpStructure)
-					structure = tmpStructure
 					changed = True
 					break
 			return changed
 
-		substituteRules = self.__substituteRules
 		changed = True
 		while changed:
 			opName = structure.getExpandedOperatorName()
