@@ -133,9 +133,6 @@ class CharacterComputingHelper:
 
 		self.expandNodeStructure(nodeStructure)
 
-	def queryDescription(self, characterName):
-		return self.structureManager.queryCharacterDescription(characterName)
-
 	def touchCharacter(self, character):
 		return self.__workspaceManager.touchNode(character)
 
@@ -148,13 +145,8 @@ class CharacterComputingHelper:
 		if workspaceManager.isNodeExpanded(character):
 			return
 
-		structureManager = self.structureManager
-
-		charDesc = self.queryDescription(character)
-
-		nodeName = character
-		structDescList = charDesc.structures
-		for structDesc in structDescList:
+		structures = self.structureManager.queryStructures(character)
+		for structDesc in structures:
 			if structDesc.isEmpty():
 				continue
 
