@@ -5,13 +5,13 @@ from coding.Base import CodeInfoEncoder
 class CodeInfoInterpreter:
 	@inject
 	def __init__(self, codeInfoEncoder: CodeInfoEncoder):
-		self.codeInfoEncoder = codeInfoEncoder
+		self.__codeInfoEncoder = codeInfoEncoder
 
 	def __interpretCodeInfo(self, codeInfo):
 		return codeInfo.code
 
 	def encodeToCodeInfo(self, operator, codeInfoList):
-		codeInfo = self.codeInfoEncoder.setByComps(operator, codeInfoList)
+		codeInfo = self.__codeInfoEncoder.setByComps(operator, codeInfoList)
 		if codeInfo != None:
 			for childCodeInfo in codeInfoList:
 				codeVariance = childCodeInfo.getCodeVariance()
