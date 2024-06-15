@@ -1,28 +1,31 @@
 from injector import inject
 
+from element.operator import Operator
+
+from coding.Base import CodeInfo
 from coding.Base import CodeInfoEncoder
 
 class CodeInfoInterpreter:
 	@inject
 	def __init__(self, codeInfoEncoder: CodeInfoEncoder):
-		self.codeInfoEncoder = codeInfoEncoder
+		self.__codeInfoEncoder = codeInfoEncoder
 
-	def interpretCodeInfo(self, codeInfo):
+	def __interpretCodeInfo(self, codeInfo: CodeInfo) -> str:
 		return codeInfo.code
 
-	def encodeToCodeInfo(self, operator, codeInfoList):
-		codeInfo=self.codeInfoEncoder.setByComps(operator, codeInfoList)
-		if codeInfo!=None:
+	def encodeToCodeInfo(self, operator: Operator, codeInfoList: list[CodeInfo]) -> CodeInfo:
+		codeInfo = self.__codeInfoEncoder.setByComps(operator, codeInfoList)
+		if codeInfo != None:
 			for childCodeInfo in codeInfoList:
-				codeVariance=childCodeInfo.getCodeVariance()
+				codeVariance = childCodeInfo.getCodeVariance()
 				codeInfo.multiplyCodeVariance(codeVariance)
 		return codeInfo
 
-	def interpretCodeInfoList(self, codeInfoList):
-		codeList=[]
+	def interpretCodeInfoList(self, codeInfoList: list[CodeInfo]) -> list[(str, str)]:
+		codeList = []
 		for codeInfo in codeInfoList:
-			characterCode=self.interpretCodeInfo(codeInfo)
-			variance=codeInfo.variance
+			characterCode = self.__interpretCodeInfo(codeInfo)
+			variance = codeInfo.variance
 			if characterCode:
 				codeList.append([characterCode, str(variance)])
 
