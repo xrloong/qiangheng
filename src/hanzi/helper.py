@@ -19,9 +19,9 @@ class HanZiInterpreter:
 		self.codeInfoInterpreter = codeInfoInterpreter
 
 	def interpretCharacterInfo(self, characterNode) -> CharacterInfo:
-		return self._getNodeCharacterInfo(characterNode)
+		return self.__getNodeCharacterInfo(characterNode)
 
-	def _getNodeCharacterInfo(self, hanziNode) -> CharacterInfo:
+	def __getNodeCharacterInfo(self, hanziNode) -> CharacterInfo:
 		nodeStructure = hanziNode.nodeStructure
 		assert nodeStructure.isNode()
 		nodeStructureInfo = nodeStructure.structureInfo
