@@ -62,13 +62,6 @@ class SubstituteManager:
 			self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
 	def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
-		def expandLeaf(structure):
-			rearrangeCallback.prepare(structure)
-
-			children = structure.getStructureList()
-			for child in children:
-				expandLeaf(child)
-
 		def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
 			changed = False
 			for rule in filteredSubstituteRules:
