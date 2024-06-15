@@ -122,7 +122,7 @@ class CharacterComputingHelper:
 		self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(self, treInterpreter)
 
 	def constructCharacter(self, character: str):
-		node = self.touchCharacter(character)
+		node = self.__workspaceManager.touchNode(character)
 		nodeStructure = node.nodeStructure
 		assert nodeStructure.isNode()
 
@@ -130,9 +130,6 @@ class CharacterComputingHelper:
 		self.__appendFastCode(nodeStructure)
 
 		self.expandNodeStructure(nodeStructure)
-
-	def touchCharacter(self, character: str) -> HanZiNode:
-		return self.__workspaceManager.touchNode(character)
 
 	def expandNodeStructure(self, nodeStructure: HanZiStructure):
 		assert nodeStructure.isNode()
