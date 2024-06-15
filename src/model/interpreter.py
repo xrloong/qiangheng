@@ -11,18 +11,18 @@ class CodeInfoInterpreter:
 		return codeInfo.code
 
 	def encodeToCodeInfo(self, operator, codeInfoList):
-		codeInfo=self.codeInfoEncoder.setByComps(operator, codeInfoList)
-		if codeInfo!=None:
+		codeInfo = self.codeInfoEncoder.setByComps(operator, codeInfoList)
+		if codeInfo != None:
 			for childCodeInfo in codeInfoList:
-				codeVariance=childCodeInfo.getCodeVariance()
+				codeVariance = childCodeInfo.getCodeVariance()
 				codeInfo.multiplyCodeVariance(codeVariance)
 		return codeInfo
 
 	def interpretCodeInfoList(self, codeInfoList):
-		codeList=[]
+		codeList = []
 		for codeInfo in codeInfoList:
-			characterCode=self.interpretCodeInfo(codeInfo)
-			variance=codeInfo.variance
+			characterCode = self.interpretCodeInfo(codeInfo)
+			variance = codeInfo.variance
 			if characterCode:
 				codeList.append([characterCode, str(variance)])
 
