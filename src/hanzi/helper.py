@@ -56,9 +56,7 @@ class HanZiCodeInfosComputer:
 		structureInfo.setComputedCodeInfos(allCodeInfos)
 
 	def __computeAllCodeInfos(self, operator, codeInfosCollection):
-		computedCodeInfoList = (self.__codeInfoInterpreter.computeCodeInfo(operator, codeInfos) for codeInfos in codeInfosCollection)
-		allCodeInfos = tuple(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
-		return allCodeInfos
+		return self.__codeInfoInterpreter.computeAllCodeInfos(operator, codeInfosCollection)
 
 	def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
 		nodeStructure = hanziNode.nodeStructure
