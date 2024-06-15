@@ -42,10 +42,10 @@ class SubstituteManager:
 		model = self.__qhparser.loadSubstituteRuleSet(filename)
 		return SubstituteRuleSet(model = model)
 
-	def __updateSubstituteRules(self, substituteFiles):
-		self.__substituteRules = substituteFiles
+	def __updateSubstituteRules(self, substituteRules):
+		self.__substituteRules = substituteRules
 
-		for rule in substituteFiles:
+		for rule in substituteRules:
 			tre = rule.getTRE()
 			opName = tre.prop["運算"]
 
@@ -62,13 +62,6 @@ class SubstituteManager:
 			self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
 	def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
-		def expandLeaf(structure):
-			rearrangeCallback.prepare(structure)
-
-			children = structure.getStructureList()
-			for child in children:
-				expandLeaf(child)
-
 		def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
 			changed = False
 			for rule in filteredSubstituteRules:
@@ -78,12 +71,10 @@ class SubstituteManager:
 				tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
 				if tmpStructure != None:
 					structure.changeToStructure(tmpStructure)
-					structure = tmpStructure
 					changed = True
 					break
 			return changed
 
-		substituteRules = self.__substituteRules
 		changed = True
 		while changed:
 			opName = structure.getExpandedOperatorName()
