@@ -13,43 +13,17 @@ from model.manager import SubstituteManager
 from .tree import HanZiTreeRegExpInterpreter
 from .manager import StructureManager
 
-class HanZiInterpreter:
-	@inject
-	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
-		self.__codeInfoInterpreter = codeInfoInterpreter
-
-	def interpretCharacterInfo(self, characterNode: HanZiNode) -> CharacterInfo:
-		return self.__getNodeCharacterInfo(characterNode)
-
-	def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
-		nodeStructure = hanziNode.nodeStructure
-		assert nodeStructure.isNode()
-		nodeStructureInfo = nodeStructure.structureInfo
-
-		structureList = nodeStructureInfo.childStructures
-		codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
-
-		fastCodeInfo = nodeStructure.fastCodeInfo
-		if fastCodeInfo:
-			codeInfoList = codeInfoList + (fastCodeInfo, )
-
-		codeList = self.__codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
-
-		characterInfo = hanziNode.tag
-		characterInfo.setCodeProps(codeList)
-
-		return characterInfo
-
 class HanZiCodeInfosComputer:
 	@inject
 	def __init__(self,
               workspaceManager: HanZiWorkspaceManager,
               codeInfoInterpreter: CodeInfoInterpreter,
-              hanziInterpreter: HanZiInterpreter,
               ):
 		self.__workspaceManager = workspaceManager
 		self.__codeInfoInterpreter = codeInfoInterpreter
-		self.__hanziInterpreter = hanziInterpreter
+
+	def interpretCharacterInfo(self, characterNode: HanZiNode) -> CharacterInfo:
+		return self.__getNodeCharacterInfo(characterNode)
 
 	def __touchCharacter(self, character):
 		return self.__workspaceManager.touchNode(character)
@@ -65,7 +39,7 @@ class HanZiCodeInfosComputer:
 
 		self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
 
-		return self.__hanziInterpreter.interpretCharacterInfo(node) if node else None
+		return self.interpretCharacterInfo(node) if node else None
 
 	def __recursivelyComputeCodeInfosOfStructureTree(self, structure: HanZiStructure):
 		if not structure:
@@ -98,6 +72,25 @@ class HanZiCodeInfosComputer:
 		else:
 			codeInfo = codeInfos[0]
 		return codeInfo
+
+	def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
+		nodeStructure = hanziNode.nodeStructure
+		assert nodeStructure.isNode()
+		nodeStructureInfo = nodeStructure.structureInfo
+
+		structureList = nodeStructureInfo.childStructures
+		codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
+
+		fastCodeInfo = nodeStructure.fastCodeInfo
+		if fastCodeInfo:
+			codeInfoList = codeInfoList + (fastCodeInfo, )
+
+		codeList = self.__codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
+
+		characterInfo = hanziNode.tag
+		characterInfo.setCodeProps(codeList)
+
+		return characterInfo
 
 class CharacterComputingHelper:
 	class RearrangeCallback(SubstituteManager.RearrangeCallback):
