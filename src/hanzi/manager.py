@@ -39,6 +39,10 @@ class StructureManager:
 	def radixManager(self) -> RadixManager:
 		return self.__qhDM.radixManager
 
+	def queryStructures(self, character: str) -> tuple[StructureDescription]:
+		charDesc = self.queryCharacterDescription(character)
+		return charDesc.structures
+
 	def queryCharacterDescription(self, character: str) -> CharacterDescription:
 		charDesc = self.radixManager.queryRadix(character)
 		if not charDesc:
