@@ -10,6 +10,13 @@ class CodeInfoInterpreter:
 	def __init__(self, codeInfoEncoder: CodeInfoEncoder):
 		self.__codeInfoEncoder = codeInfoEncoder
 
+	def computeCodeInfo(self, operator: Operator, codeInfos: list[CodeInfo]) -> CodeInfo:
+		if operator:
+			codeInfo = self.encodeToCodeInfo(operator, codeInfos)
+		else:
+			codeInfo = codeInfos[0]
+		return codeInfo
+
 	def encodeToCodeInfo(self, operator: Operator, codeInfoList: list[CodeInfo]) -> CodeInfo:
 		codeInfo = self.__codeInfoEncoder.setByComps(operator, codeInfoList)
 		if codeInfo != None:

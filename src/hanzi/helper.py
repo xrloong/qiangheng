@@ -61,11 +61,7 @@ class HanZiCodeInfosComputer:
 		return allCodeInfos
 
 	def __computeCodeInfo(self, operator, codeInfos):
-		if operator:
-			codeInfo = self.__codeInfoInterpreter.encodeToCodeInfo(operator, codeInfos)
-		else:
-			codeInfo = codeInfos[0]
-		return codeInfo
+		return self.__codeInfoInterpreter.computeCodeInfo(operator, codeInfos)
 
 	def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
 		nodeStructure = hanziNode.nodeStructure
