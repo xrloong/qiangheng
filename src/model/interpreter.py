@@ -11,18 +11,18 @@ class CodeInfoInterpreter:
 		self.__codeInfoEncoder = codeInfoEncoder
 
 	def computeAllCodeInfos(self, operator: Operator, codeInfosCollection: list[list[CodeInfo]]) -> tuple[CodeInfo]:
-		computedCodeInfoList = (self.computeCodeInfo(operator, codeInfos) for codeInfos in codeInfosCollection)
+		computedCodeInfoList = (self.__computeCodeInfo(operator, codeInfos) for codeInfos in codeInfosCollection)
 		allCodeInfos = tuple(filter(lambda codeInfo: codeInfo != None, computedCodeInfoList))
 		return allCodeInfos
 
-	def computeCodeInfo(self, operator: Operator, codeInfos: list[CodeInfo]) -> CodeInfo:
+	def __computeCodeInfo(self, operator: Operator, codeInfos: list[CodeInfo]) -> CodeInfo:
 		if operator:
-			codeInfo = self.encodeToCodeInfo(operator, codeInfos)
+			codeInfo = self.__encodeToCodeInfo(operator, codeInfos)
 		else:
 			codeInfo = codeInfos[0]
 		return codeInfo
 
-	def encodeToCodeInfo(self, operator: Operator, codeInfoList: list[CodeInfo]) -> CodeInfo:
+	def __encodeToCodeInfo(self, operator: Operator, codeInfoList: list[CodeInfo]) -> CodeInfo:
 		codeInfo = self.__codeInfoEncoder.setByComps(operator, codeInfoList)
 		if codeInfo != None:
 			for childCodeInfo in codeInfoList:
