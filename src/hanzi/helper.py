@@ -148,11 +148,8 @@ class CharacterComputingHelper:
 		if workspaceManager.isNodeExpanded(character):
 			return
 
-		structureManager = self.structureManager
-
 		charDesc = self.queryDescription(character)
 
-		nodeName = character
 		structDescList = charDesc.structures
 		for structDesc in structDescList:
 			if structDesc.isEmpty():
