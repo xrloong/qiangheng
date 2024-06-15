@@ -42,10 +42,10 @@ class SubstituteManager:
 		model = self.__qhparser.loadSubstituteRuleSet(filename)
 		return SubstituteRuleSet(model = model)
 
-	def __updateSubstituteRules(self, substituteFiles):
-		self.__substituteRules = substituteFiles
+	def __updateSubstituteRules(self, substituteRules):
+		self.__substituteRules = substituteRules
 
-		for rule in substituteFiles:
+		for rule in substituteRules:
 			tre = rule.getTRE()
 			opName = tre.prop["運算"]
 
