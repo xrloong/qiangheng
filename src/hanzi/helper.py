@@ -16,7 +16,7 @@ from .manager import StructureManager
 class HanZiInterpreter:
 	@inject
 	def __init__(self, codeInfoInterpreter: CodeInfoInterpreter):
-		self.codeInfoInterpreter = codeInfoInterpreter
+		self.__codeInfoInterpreter = codeInfoInterpreter
 
 	def interpretCharacterInfo(self, characterNode) -> CharacterInfo:
 		return self.__getNodeCharacterInfo(characterNode)
@@ -33,7 +33,7 @@ class HanZiInterpreter:
 		if fastCodeInfo:
 			codeInfoList = codeInfoList + (fastCodeInfo, )
 
-		codeList = self.codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
+		codeList = self.__codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
 
 		characterInfo = hanziNode.tag
 		characterInfo.setCodeProps(codeList)
