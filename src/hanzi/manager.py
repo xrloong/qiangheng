@@ -3,6 +3,9 @@ from injector import inject
 
 from coding.Base import CodeInfo
 
+from model.element.CharacterDescription import CharacterDescription
+from model.element.StructureDescription import StructureDescription
+
 from model.helper import StructureConverter
 
 from model.manager import CompositionManager
@@ -36,14 +39,14 @@ class StructureManager:
 	def radixManager(self) -> RadixManager:
 		return self.__qhDM.radixManager
 
-	def queryCharacterDescription(self, character):
+	def queryCharacterDescription(self, character: str) -> CharacterDescription:
 		charDesc = self.radixManager.queryRadix(character)
 		if not charDesc:
 			charDesc = self.compositionManager.queryCharacter(character)
 		charDesc.prepareStructures(self.__structureConverter)
 		return charDesc
 
-	def queryChildren(self, charDesc):
+	def queryChildren(self, charDesc: StructureDescription) -> tuple[StructureDescription]:
 		return charDesc.compList
 
 	def queryFastCodeInfo(self, character: str) -> Optional[CodeInfo]:
