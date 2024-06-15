@@ -5,7 +5,7 @@ from element.enum import FontVariance
 from workspace import HanZiWorkspaceManager
 
 from .helper import HanZiCodeInfosComputer
-from .helper import HanZiTreeRegExpInterpreter
+from .tree import HanZiTreeRegExpInterpreter
 from .manager import StructureManager
 
 from model.element.CharacterInfo import CharacterInfo
