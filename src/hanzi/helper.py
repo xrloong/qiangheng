@@ -23,9 +23,6 @@ class HanZiCodeInfosComputer:
 		self.__workspaceManager = workspaceManager
 		self.__codeInfoInterpreter = codeInfoInterpreter
 
-	def interpretCharacterInfo(self, characterNode: HanZiNode) -> CharacterInfo:
-		return self.__getNodeCharacterInfo(characterNode)
-
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
 		node = self.__workspaceManager.touchNode(character)
 		nodeStructure = node.nodeStructure
@@ -33,7 +30,7 @@ class HanZiCodeInfosComputer:
 
 		self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
 
-		return self.interpretCharacterInfo(node) if node else None
+		return self.__getNodeCharacterInfo(node) if node else None
 
 	def __recursivelyComputeCodeInfosOfStructureTree(self, structure: HanZiStructure):
 		if not structure:
