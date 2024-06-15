@@ -42,13 +42,22 @@ class HanZiInterpreter:
 class HanZiCodeInfosComputer:
 	@inject
 	def __init__(self,
+              workspaceManager: HanZiWorkspaceManager,
               codeInfoInterpreter: CodeInfoInterpreter,
               hanziInterpreter: HanZiInterpreter,
               ):
+		self.__workspaceManager = workspaceManager
 		self.__codeInfoInterpreter = codeInfoInterpreter
 		self.__hanziInterpreter = hanziInterpreter
 
-	def computeForNode(self, node: HanZiNode) -> Optional[CharacterInfo]:
+	def __touchCharacter(self, character):
+		return self.__workspaceManager.touchNode(character)
+
+	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
+		charNode = self.__touchCharacter(character)
+		return self.__computeForNode(charNode)
+
+	def __computeForNode(self, node: HanZiNode) -> Optional[CharacterInfo]:
 		"""設定某一個字符所包含的部件的碼"""
 		nodeStructure = node.nodeStructure
 		assert nodeStructure.isNode()

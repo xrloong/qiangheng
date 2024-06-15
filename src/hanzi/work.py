@@ -1,4 +1,3 @@
-from typing import Optional
 from injector import inject
 
 from element.enum import FontVariance
@@ -34,14 +33,12 @@ class CharacterComputingHelper:
 			treInterpreter: HanZiTreeRegExpInterpreter,
 
 			workspaceManager: HanZiWorkspaceManager,
-			codeInfosComputer: HanZiCodeInfosComputer,
 			):
 		self.fontVariance = fontVariance
 
 		self.structureManager = structureManager
 
 		self.__workspaceManager = workspaceManager
-		self.codeInfosComputer = codeInfosComputer
 
 		self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(self, treInterpreter)
 
@@ -160,17 +157,14 @@ class CharacterComputingHelper:
 	def reset(self):
 		self.__workspaceManager.reset()
 
-	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
-		self.constructCharacter(character)
-		charNode = self.touchCharacter(character)
-		return self.codeInfosComputer.computeForNode(charNode)
-
 class CharacterComputingWork:
 	@inject
 	def __init__(self,
 			computingHelper: CharacterComputingHelper,
+			codeInfosComputer: HanZiCodeInfosComputer,
 			):
 		self.__computingHelper = computingHelper
+		self.__codeInfosComputer = codeInfosComputer
 
 	def compute(self, characters, separateComputing) -> list[CharacterInfo]:
 		computingHelper = self.__computingHelper
@@ -180,7 +174,8 @@ class CharacterComputingWork:
 			if separateComputing:
 				computingHelper.reset()
 
-			characterInfo = computingHelper.computeCharacter(character)
+			computingHelper.constructCharacter(character)
+			characterInfo = self.__codeInfosComputer.computeCharacter(character)
 			if characterInfo:
 				characterInfos.append(characterInfo)
 
