@@ -28,10 +28,6 @@ class HanZiCodeInfosComputer:
 
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
 		node = self.__workspaceManager.touchNode(character)
-		return self.__computeForNode(node)
-
-	def __computeForNode(self, node: HanZiNode) -> Optional[CharacterInfo]:
-		"""設定某一個字符所包含的部件的碼"""
 		nodeStructure = node.nodeStructure
 		assert nodeStructure.isNode()
 
