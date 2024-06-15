@@ -162,8 +162,7 @@ class CharacterComputingHelper:
 
 	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
 		self.constructCharacter(character)
-		charNode = self.touchCharacter(character)
-		return self.codeInfosComputer.computeForNode(charNode)
+		return self.codeInfosComputer.computeCharacter(character)
 
 class CharacterComputingWork:
 	@inject
