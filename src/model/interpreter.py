@@ -7,7 +7,7 @@ class CodeInfoInterpreter:
 	def __init__(self, codeInfoEncoder: CodeInfoEncoder):
 		self.codeInfoEncoder = codeInfoEncoder
 
-	def interpretCodeInfo(self, codeInfo):
+	def __interpretCodeInfo(self, codeInfo):
 		return codeInfo.code
 
 	def encodeToCodeInfo(self, operator, codeInfoList):
@@ -21,7 +21,7 @@ class CodeInfoInterpreter:
 	def interpretCodeInfoList(self, codeInfoList):
 		codeList = []
 		for codeInfo in codeInfoList:
-			characterCode = self.interpretCodeInfo(codeInfo)
+			characterCode = self.__interpretCodeInfo(codeInfo)
 			variance = codeInfo.variance
 			if characterCode:
 				codeList.append([characterCode, str(variance)])
