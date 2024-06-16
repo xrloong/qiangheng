@@ -8,15 +8,12 @@ fontVariance = FontVariance.Traditional
 codeMappingInfoInterpreter = CodeMappingInfoInterpreter()
 
 codingMethodName = "cj"
-codingMethodDir = "gen/qhdata/{method}/".format(method = codingMethodName)
+codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
 CodingSubstituteFileList = [
-	codingMethodDir + 'substitute.yaml',
+    codingMethodDir + "substitute.yaml",
 ]
 CodingRadixFileList = [
-	codingMethodDir + 'radix/CJK.yaml',
-	codingMethodDir + 'radix/CJK-A.yaml',
+    codingMethodDir + "radix/CJK.yaml",
+    codingMethodDir + "radix/CJK-A.yaml",
 ]
-CodingAdjustFileList = [
-	codingMethodDir + 'adjust.yaml'
-]
-
+CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]

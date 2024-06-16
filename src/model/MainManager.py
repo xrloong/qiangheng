@@ -13,42 +13,42 @@ from coding.Base import CodeMappingInfoInterpreter
 from hanzi.helper import CharacterComputingHelper
 from hanzi.helper import HanZiCodeInfosComputer
 
+
 class MainManager:
-	@inject
-	def __init__(self, injector: Injector):
-		self.__injector = injector
+    @inject
+    def __init__(self, injector: Injector):
+        self.__injector = injector
 
-	def work(self):
-		characterInfos = self.__compute()
-		self.__write(characterInfos)
+    def work(self):
+        characterInfos = self.__compute()
+        self.__write(characterInfos)
 
-	def __compute(self):
-		injector = self.__injector
+    def __compute(self):
+        injector = self.__injector
 
-		computingHelper = injector.get(CharacterComputingHelper)
-		codeInfosComputer = injector.get(HanZiCodeInfosComputer)
+        computingHelper = injector.get(CharacterComputingHelper)
+        codeInfosComputer = injector.get(HanZiCodeInfosComputer)
 
-		characters = injector.get(Characters)
-		separateComputing = injector.get(SeparateComputing)
+        characters = injector.get(Characters)
+        separateComputing = injector.get(SeparateComputing)
 
-		characters = sorted(characters)
+        characters = sorted(characters)
 
-		characterInfos = []
-		for character in characters:
-			if separateComputing:
-				computingHelper.reset()
+        characterInfos = []
+        for character in characters:
+            if separateComputing:
+                computingHelper.reset()
 
-			computingHelper.constructCharacter(character)
-			characterInfo = codeInfosComputer.computeCharacter(character)
-			if characterInfo:
-				characterInfos.append(characterInfo)
+            computingHelper.constructCharacter(character)
+            characterInfo = codeInfosComputer.computeCharacter(character)
+            if characterInfo:
+                characterInfos.append(characterInfo)
 
-		return characterInfos
+        return characterInfos
 
-	def __write(self, characterInfos):
-		injector = self.__injector
+    def __write(self, characterInfos):
+        injector = self.__injector
 
-		codeMappingInfoInterpreter = injector.get(CodeMappingInfoInterpreter)
-		writer = injector.get(Writer)
-		writer.write(characterInfos, codeMappingInfoInterpreter)
-
+        codeMappingInfoInterpreter = injector.get(CodeMappingInfoInterpreter)
+        writer = injector.get(Writer)
+        writer.write(characterInfos, codeMappingInfoInterpreter)

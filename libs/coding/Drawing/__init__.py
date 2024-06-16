@@ -5,6 +5,5 @@ from .Drawing import CodeMappingInfoInterpreter
 
 from element.enum import FontVariance
 
-if __name__=='__main__':
-	pass
-
+if __name__ == "__main__":
+    pass

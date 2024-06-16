@@ -10,14 +10,11 @@ codeMappingInfoInterpreter = SOCodeMappingInfoInterpreter()
 codingMethodName = "dc"
 codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
 CodingSubstituteFileList = [
-	codingMethodDir + 'substitute.yaml',
+    codingMethodDir + "substitute.yaml",
 ]
 CodingRadixFileList = [
-	codingMethodDir + 'radix/CJK.yaml',
-	codingMethodDir + 'radix/CJK-A.yaml',
+    codingMethodDir + "radix/CJK.yaml",
+    codingMethodDir + "radix/CJK-A.yaml",
 ]
-CodingAdjustFileList = [
-	codingMethodDir + 'adjust.yaml'
-]
-CodingTemplateFile = codingMethodDir + 'radix/template.yaml'
-
+CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]
+CodingTemplateFile = codingMethodDir + "radix/template.yaml"

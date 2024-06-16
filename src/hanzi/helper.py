@@ -14,194 +14,204 @@ from model.manager import SubstituteManager
 from .tree import HanZiTreeRegExpInterpreter
 from .manager import StructureManager
 
+
 class HanZiCodeInfosComputer:
-	@inject
-	def __init__(self,
-              workspaceManager: HanZiWorkspaceManager,
-              codeInfoInterpreter: CodeInfoInterpreter,
-              ):
-		self.__workspaceManager = workspaceManager
-		self.__codeInfoInterpreter = codeInfoInterpreter
+    @inject
+    def __init__(
+        self,
+        workspaceManager: HanZiWorkspaceManager,
+        codeInfoInterpreter: CodeInfoInterpreter,
+    ):
+        self.__workspaceManager = workspaceManager
+        self.__codeInfoInterpreter = codeInfoInterpreter
 
-	def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
-		node = self.__workspaceManager.touchNode(character)
-		nodeStructure = node.nodeStructure
-		assert nodeStructure.isNode()
+    def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
+        node = self.__workspaceManager.touchNode(character)
+        nodeStructure = node.nodeStructure
+        assert nodeStructure.isNode()
 
-		self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
+        self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
 
-		return self.__getNodeCharacterInfo(node) if node else None
+        return self.__getNodeCharacterInfo(node) if node else None
 
-	def __recursivelyComputeCodeInfosOfStructureTree(self, structure: HanZiStructure):
-		if not structure:
-			return
+    def __recursivelyComputeCodeInfosOfStructureTree(self, structure: HanZiStructure):
+        if not structure:
+            return
 
-		if structure.isCodeInfoGenerated():
-			return
+        if structure.isCodeInfoGenerated():
+            return
 
-		for cihldStructure in structure.getChildStructures():
-			self.__recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
-		self.__generateCodeInfosOfStructure(structure)
+        for cihldStructure in structure.getChildStructures():
+            self.__recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
+        self.__generateCodeInfosOfStructure(structure)
 
-	def __generateCodeInfosOfStructure(self, structure: HanZiStructure):
-		structureInfo = structure.structureInfo
-		operator = structureInfo.getOperator()
-		codeInfosCollection = structureInfo.codeInfos
+    def __generateCodeInfosOfStructure(self, structure: HanZiStructure):
+        structureInfo = structure.structureInfo
+        operator = structureInfo.getOperator()
+        codeInfosCollection = structureInfo.codeInfos
 
-		allCodeInfos = self.__codeInfoInterpreter.computeAllCodeInfos(operator, codeInfosCollection)
-		structureInfo.setComputedCodeInfos(allCodeInfos)
+        allCodeInfos = self.__codeInfoInterpreter.computeAllCodeInfos(
+            operator, codeInfosCollection
+        )
+        structureInfo.setComputedCodeInfos(allCodeInfos)
 
-	def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
-		nodeStructure = hanziNode.nodeStructure
-		assert nodeStructure.isNode()
-		nodeStructureInfo = nodeStructure.structureInfo
+    def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
+        nodeStructure = hanziNode.nodeStructure
+        assert nodeStructure.isNode()
+        nodeStructureInfo = nodeStructure.structureInfo
 
-		structureList = nodeStructureInfo.childStructures
-		codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
+        structureList = nodeStructureInfo.childStructures
+        codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
 
-		fastCodeInfo = nodeStructure.fastCodeInfo
-		if fastCodeInfo:
-			codeInfoList = codeInfoList + (fastCodeInfo, )
+        fastCodeInfo = nodeStructure.fastCodeInfo
+        if fastCodeInfo:
+            codeInfoList = codeInfoList + (fastCodeInfo,)
 
-		codeList = self.__codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
+        codeList = self.__codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
 
-		characterInfo = hanziNode.tag
-		characterInfo.setCodeProps(codeList)
+        characterInfo = hanziNode.tag
+        characterInfo.setCodeProps(codeList)
 
-		return characterInfo
+        return characterInfo
+
 
 class CharacterComputingHelper:
-	class RearrangeCallback(SubstituteManager.RearrangeCallback):
-		def __init__(self, computeCharacterInfo, treInterpreter):
-			self.computeCharacterInfo = computeCharacterInfo
-			self.treInterpreter = treInterpreter
+    class RearrangeCallback(SubstituteManager.RearrangeCallback):
+        def __init__(self, computeCharacterInfo, treInterpreter):
+            self.computeCharacterInfo = computeCharacterInfo
+            self.treInterpreter = treInterpreter
 
-		def prepare(self, structure):
-			if structure.isWrapper():
-				character = structure.referencedNodeName
-				self.computeCharacterInfo.constructCharacter(character)
+        def prepare(self, structure):
+            if structure.isWrapper():
+                character = structure.referencedNodeName
+                self.computeCharacterInfo.constructCharacter(character)
 
-		def matchAndReplace(self, tre, structure, result):
-			return self.treInterpreter.matchAndReplace(tre, structure, result)
+        def matchAndReplace(self, tre, structure, result):
+            return self.treInterpreter.matchAndReplace(tre, structure, result)
 
-	@inject
-	def __init__(self,
-			fontVariance: FontVariance,
+    @inject
+    def __init__(
+        self,
+        fontVariance: FontVariance,
+        structureManager: StructureManager,
+        treInterpreter: HanZiTreeRegExpInterpreter,
+        workspaceManager: HanZiWorkspaceManager,
+    ):
+        self.fontVariance = fontVariance
 
-			structureManager: StructureManager,
-			treInterpreter: HanZiTreeRegExpInterpreter,
+        self.structureManager = structureManager
 
-			workspaceManager: HanZiWorkspaceManager,
-			):
-		self.fontVariance = fontVariance
+        self.__workspaceManager = workspaceManager
 
-		self.structureManager = structureManager
+        self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(
+            self, treInterpreter
+        )
 
-		self.__workspaceManager = workspaceManager
+    def constructCharacter(self, character: str):
+        node = self.__workspaceManager.touchNode(character)
+        nodeStructure = node.nodeStructure
+        assert nodeStructure.isNode()
 
-		self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(self, treInterpreter)
+        self.__appendRadicalCodes(nodeStructure)
+        self.__appendFastCode(nodeStructure)
 
-	def constructCharacter(self, character: str):
-		node = self.__workspaceManager.touchNode(character)
-		nodeStructure = node.nodeStructure
-		assert nodeStructure.isNode()
+        self.expandNodeStructure(nodeStructure)
 
-		self.__appendRadicalCodes(nodeStructure)
-		self.__appendFastCode(nodeStructure)
+    def expandNodeStructure(self, nodeStructure: HanZiStructure):
+        assert nodeStructure.isNode()
 
-		self.expandNodeStructure(nodeStructure)
+        workspaceManager = self.__workspaceManager
 
-	def expandNodeStructure(self, nodeStructure: HanZiStructure):
-		assert nodeStructure.isNode()
+        character = nodeStructure.name
+        if workspaceManager.isNodeExpanded(character):
+            return
 
-		workspaceManager = self.__workspaceManager
+        structures = self.structureManager.queryStructures(character)
+        for structDesc in structures:
+            if structDesc.isEmpty():
+                continue
 
-		character = nodeStructure.name
-		if workspaceManager.isNodeExpanded(character):
-			return
+            structure = self.__convertToStructure(structDesc)
 
-		structures = self.structureManager.queryStructures(character)
-		for structDesc in structures:
-			if structDesc.isEmpty():
-				continue
+            workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
-			structure = self.__convertToStructure(structDesc)
+            isMainStructure = self.fontVariance.contains(structDesc.fontVariance)
+            if isMainStructure:
+                workspaceManager.setMainStructureOfNode(structure, nodeStructure)
 
-			workspaceManager.addStructureIntoNode(structure, nodeStructure)
+    def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
+        structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
-			isMainStructure = self.fontVariance.contains(structDesc.fontVariance)
-			if isMainStructure:
-				workspaceManager.setMainStructureOfNode(structure, nodeStructure)
+        structureManager = self.structureManager
+        templateManager = structureManager.templateManager
+        substituteManager = structureManager.substituteManager
 
-	def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
-		structure = self.recursivelyConvertDescriptionToStructure(structDesc)
+        templateManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
+        substituteManager.recursivelyRearrangeStructure(
+            structure, self.rearrangeCallback
+        )
 
-		structureManager = self.structureManager
-		templateManager = structureManager.templateManager
-		substituteManager = structureManager.substituteManager
+        return structure
 
-		templateManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
-		substituteManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
+    def recursivelyConvertDescriptionToStructure(
+        self, structDesc: StructureDescription
+    ) -> HanZiStructure:
+        if structDesc.isLeaf():
+            structure = self.generateReferenceLink(structDesc)
+        else:
+            structure = self.generateLink(structDesc)
 
-		return structure
+        return structure
 
-	def recursivelyConvertDescriptionToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
-		if structDesc.isLeaf():
-			structure = self.generateReferenceLink(structDesc)
-		else:
-			structure = self.generateLink(structDesc)
+    def generateReferenceLink(self, structDesc: StructureDescription) -> HanZiStructure:
+        name = structDesc.referenceName
+        nodeExpression = structDesc.referenceExpression
 
-		return structure
+        self.constructCharacter(name)
 
-	def generateReferenceLink(self, structDesc: StructureDescription) -> HanZiStructure:
-		name = structDesc.referenceName
-		nodeExpression = structDesc.referenceExpression
+        l = nodeExpression.split(".")
+        if len(l) > 1:
+            subIndex = int(l[1])
+        else:
+            subIndex = 0
 
-		self.constructCharacter(name)
+        return self.__workspaceManager.getWrapperStructure(name, subIndex)
 
-		l = nodeExpression.split(".")
-		if len(l)>1:
-			subIndex = int(l[1])
-		else:
-			subIndex = 0
+    def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
+        childStructureList = []
+        childDescList = self.structureManager.queryChildren(structDesc)
+        for childSrcDesc in childDescList:
+            childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
+            childStructureList.append(childStructure)
 
-		return self.__workspaceManager.getWrapperStructure(name, subIndex)
+        operator = structDesc.operator
 
-	def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
-		childStructureList = []
-		childDescList = self.structureManager.queryChildren(structDesc)
-		for childSrcDesc in childDescList:
-			childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
-			childStructureList.append(childStructure)
+        return self.__workspaceManager.generateCompoundStructure(
+            operator, childStructureList
+        )
 
-		operator = structDesc.operator
+    def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
+        assert nodeStructure.isNode()
 
-		return self.__workspaceManager.generateCompoundStructure(operator, childStructureList)
+        if not nodeStructure.hasUnitStructures():
+            workspaceManager = self.__workspaceManager
+            radixManager = self.structureManager.radixManager
 
-	def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
-		assert nodeStructure.isNode()
+            character = nodeStructure.name
+            if radixManager.hasRadix(character):
+                radixInfoList = radixManager.getRadixCodeInfoList(character)
+                for radixCodeInfo in radixInfoList:
+                    structure = workspaceManager.getUnitStructure(radixCodeInfo)
+                    workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
-		if not nodeStructure.hasUnitStructures():
-			workspaceManager = self.__workspaceManager
-			radixManager = self.structureManager.radixManager
+    def __appendFastCode(self, nodeStructure: HanZiStructure):
+        assert nodeStructure.isNode()
 
-			character = nodeStructure.name
-			if radixManager.hasRadix(character):
-				radixInfoList = radixManager.getRadixCodeInfoList(character)
-				for radixCodeInfo in radixInfoList:
-					structure = workspaceManager.getUnitStructure(radixCodeInfo)
-					workspaceManager.addStructureIntoNode(structure, nodeStructure)
+        if not nodeStructure.fastCodeInfo:
+            character = nodeStructure.name
+            fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
+            if fastCodeInfo:
+                nodeStructure.fastCodeInfo = fastCodeInfo
 
-
-	def __appendFastCode(self, nodeStructure: HanZiStructure):
-		assert nodeStructure.isNode()
-
-		if not nodeStructure.fastCodeInfo:
-			character = nodeStructure.name
-			fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
-			if fastCodeInfo:
-				nodeStructure.fastCodeInfo = fastCodeInfo
-
-	def reset(self):
-		self.__workspaceManager.reset()
-
+    def reset(self):
+        self.__workspaceManager.reset()

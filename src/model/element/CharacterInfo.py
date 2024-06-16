@@ -2,25 +2,25 @@ from . import CodeMappingInfo
 
 from element.enum import CodeVariance
 
+
 class CharacterInfo:
-	def __init__(self, charName):
-		self.name = charName
+    def __init__(self, charName):
+        self.name = charName
 
-	@property
-	def character(self):
-		return self.name
+    @property
+    def character(self):
+        return self.name
 
-	def setCodeProps(self, codeProps):
-		self.codeProps = codeProps
+    def setCodeProps(self, codeProps):
+        self.codeProps = codeProps
 
-	@property
-	def codeMappingInfos(self):
-		characterInfos = []
+    @property
+    def codeMappingInfos(self):
+        characterInfos = []
 
-		for codeAndVariance in self.codeProps:
-			code, variance = codeAndVariance
-			characterInfo = CodeMappingInfo.CodeMappingInfo(self.name, code, variance)
-			characterInfos.append(characterInfo)
+        for codeAndVariance in self.codeProps:
+            code, variance = codeAndVariance
+            characterInfo = CodeMappingInfo.CodeMappingInfo(self.name, code, variance)
+            characterInfos.append(characterInfo)
 
-		return characterInfos
-
+        return characterInfos

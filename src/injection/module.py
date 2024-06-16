@@ -27,82 +27,91 @@ from model.datamanager import QHDataManager
 
 from .key import Package
 
+
 class PackageModule(Module):
-	def __init__(self, codingPackage: Package):
-		self.codingPackage = codingPackage
+    def __init__(self, codingPackage: Package):
+        self.codingPackage = codingPackage
 
-	@provider
-	def provideCodingPackage(self) -> Package:
-		return self.codingPackage
+    @provider
+    def provideCodingPackage(self) -> Package:
+        return self.codingPackage
 
-	@provider
-	def provideCodingConfig(self, codingPackage: Package) -> CodingConfig:
-		return CodingConfig(codingPackage)
+    @provider
+    def provideCodingConfig(self, codingPackage: Package) -> CodingConfig:
+        return CodingConfig(codingPackage)
 
-	@provider
-	def provideCodeInfoEncoder(self, codingPackage: Package) -> CodeInfoEncoder:
-		return codingPackage.CodeInfoEncoder()
+    @provider
+    def provideCodeInfoEncoder(self, codingPackage: Package) -> CodeInfoEncoder:
+        return codingPackage.CodeInfoEncoder()
 
-	@provider
-	def provideCodingRadixParser(self, codingPackage: Package) -> CodingRadixParser:
-		return codingPackage.CodingRadixParser()
+    @provider
+    def provideCodingRadixParser(self, codingPackage: Package) -> CodingRadixParser:
+        return codingPackage.CodingRadixParser()
 
-	@provider
-	def provideFontVariance(self, codingPackage: Package) -> FontVariance:
-		return codingPackage.fontVariance
+    @provider
+    def provideFontVariance(self, codingPackage: Package) -> FontVariance:
+        return codingPackage.fontVariance
 
-	@provider
-	def provideCodeMappingInfoInterpreter(self, codingPackage: Package) -> CodeMappingInfoInterpreter:
-		return codingPackage.codeMappingInfoInterpreter
+    @provider
+    def provideCodeMappingInfoInterpreter(
+        self, codingPackage: Package
+    ) -> CodeMappingInfoInterpreter:
+        return codingPackage.codeMappingInfoInterpreter
+
 
 class ParserModule(Module):
-	def __init__(self):
-		pass
+    def __init__(self):
+        pass
 
-	@provider
-	def provideQHParser(self, yaml: ruamel.yaml.YAML) -> QHParser:
-		return QHParser(yaml = yaml)
+    @provider
+    def provideQHParser(self, yaml: ruamel.yaml.YAML) -> QHParser:
+        return QHParser(yaml=yaml)
+
 
 class ManagerModule(Module):
-	def __init__(self, qhDataManager: QHDataManager):
-		self.qhDataManager = qhDataManager
-		self.workspaceManager = HanZiWorkspaceManager()
+    def __init__(self, qhDataManager: QHDataManager):
+        self.qhDataManager = qhDataManager
+        self.workspaceManager = HanZiWorkspaceManager()
 
-	@provider
-	def provideQHDataManager(self) -> QHDataManager:
-		return self.qhDataManager
+    @provider
+    def provideQHDataManager(self) -> QHDataManager:
+        return self.qhDataManager
 
-	@provider
-	def provideHanZiWorkspaceManager(self) -> HanZiWorkspaceManager:
-		return self.workspaceManager
+    @provider
+    def provideHanZiWorkspaceManager(self) -> HanZiWorkspaceManager:
+        return self.workspaceManager
+
 
 class IOModule(Module):
-	def __init__(self, quiet):
-		self.quiet = quiet
+    def __init__(self, quiet):
+        self.quiet = quiet
 
-	@provider
-	def provideYaml(self) -> ruamel.yaml.YAML:
-		yaml = ruamel.yaml.YAML(typ = 'safe')
-		yaml.explicit_start = True
-		yaml.explicit_end = True
-		yaml.allow_unicode = True
-		yaml.default_flow_style = False
-		return yaml
+    @provider
+    def provideYaml(self) -> ruamel.yaml.YAML:
+        yaml = ruamel.yaml.YAML(typ="safe")
+        yaml.explicit_start = True
+        yaml.explicit_end = True
+        yaml.allow_unicode = True
+        yaml.default_flow_style = False
+        return yaml
 
-	@provider
-	def provideWriter(self, yaml: ruamel.yaml.YAML) -> Writer:
-		writer = self.computeWriter(self.quiet, yaml)
-		return writer
+    @provider
+    def provideWriter(self, yaml: ruamel.yaml.YAML) -> Writer:
+        writer = self.computeWriter(self.quiet, yaml)
+        return writer
 
-	def computeWriter(self, quiet: Quiet, yaml: ruamel.yaml.YAML) -> Writer:
-		if not quiet:
-			from writer import CmYamlWriter
-			writer = CmYamlWriter(yaml)
-		else:
-			# 不輸出結果
-			from writer import QuietWriter
-			writer = QuietWriter()
-		return writer
+    def computeWriter(self, quiet: Quiet, yaml: ruamel.yaml.YAML) -> Writer:
+        if not quiet:
+            from writer import CmYamlWriter
+
+            writer = CmYamlWriter(yaml)
+        else:
+            # 不輸出結果
+            from writer import QuietWriter
+
+            writer = QuietWriter()
+        return writer
+
 
 class CharacterModule(Module):
     # Unicode 15.1
@@ -121,31 +130,31 @@ class CharacterModule(Module):
     # Kangxi Radicals —— 2F00–2FDF
     # CJK Radicals Supplement —— 2E80–2EFF
 
-	__rangeCJK__implemented = range(0x4E00, 0x9FA5 + 1)
-	__rangeCJKextA__implemented = range(0x3400, 0x4DB5 + 1)
+    __rangeCJK__implemented = range(0x4E00, 0x9FA5 + 1)
+    __rangeCJKextA__implemented = range(0x3400, 0x4DB5 + 1)
 
-	__rangeCJK = range(0x4E00, 0x9FFF + 1)
-	__rangeCJKextA = range(0x3400, 0x4DBF + 1)
-	__rangeCJKextB = range(0x20000, 0x2A6DF + 1)
-	__rangeCJKextC = range(0x2A700, 0x2B739 + 1)
-	__rangeCJKextD = range(0x2B740, 0x2B81D + 1)
-	__rangeCJKextE = range(0x2B820, 0x2CEA1 + 1)
-	__rangeCJKextF = range(0x2CEB0, 0x2EBE0 + 1)
-	__rangeCJKextG = range(0x30000, 0x3134A + 1)
-	__rangeCJKextH = range(0x31350, 0x323AF + 1)
-	__rangeCJKextI = range(0x2EBF0, 0x2EE5D + 1)
+    __rangeCJK = range(0x4E00, 0x9FFF + 1)
+    __rangeCJKextA = range(0x3400, 0x4DBF + 1)
+    __rangeCJKextB = range(0x20000, 0x2A6DF + 1)
+    __rangeCJKextC = range(0x2A700, 0x2B739 + 1)
+    __rangeCJKextD = range(0x2B740, 0x2B81D + 1)
+    __rangeCJKextE = range(0x2B820, 0x2CEA1 + 1)
+    __rangeCJKextF = range(0x2CEB0, 0x2EBE0 + 1)
+    __rangeCJKextG = range(0x30000, 0x3134A + 1)
+    __rangeCJKextH = range(0x31350, 0x323AF + 1)
+    __rangeCJKextI = range(0x2EBF0, 0x2EE5D + 1)
 
-	def __getCharacters(self) -> itertools.chain:
-		return itertools.chain(
-				CharacterModule.__rangeCJK__implemented,
-				CharacterModule.__rangeCJKextA__implemented,
-				)
+    def __getCharacters(self) -> itertools.chain:
+        return itertools.chain(
+            CharacterModule.__rangeCJK__implemented,
+            CharacterModule.__rangeCJKextA__implemented,
+        )
 
-	@provider
-	def provideCharaceters(self) -> Characters:
-		characters = tuple(chr(c) for c in self.__getCharacters())
-		return characters
+    @provider
+    def provideCharaceters(self) -> Characters:
+        characters = tuple(chr(c) for c in self.__getCharacters())
+        return characters
 
-	@provider
-	def provideSeparateComputing(self) -> SeparateComputing:
-		return False
+    @provider
+    def provideSeparateComputing(self) -> SeparateComputing:
+        return False

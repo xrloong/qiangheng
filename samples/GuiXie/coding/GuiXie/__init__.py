@@ -10,13 +10,10 @@ codeMappingInfoInterpreter = CodeMappingInfoInterpreter()
 codingMethodName = "gx"
 codingMethodDir = "samples/GuiXie/qhdata/"
 CodingSubstituteFileList = [
-	codingMethodDir + 'substitute.yaml',
+    codingMethodDir + "substitute.yaml",
 ]
 CodingRadixFileList = [
-	codingMethodDir + 'radix/CJK.yaml',
-	codingMethodDir + 'radix/CJK-A.yaml',
+    codingMethodDir + "radix/CJK.yaml",
+    codingMethodDir + "radix/CJK-A.yaml",
 ]
-CodingAdjustFileList = [
-	codingMethodDir + 'adjust.yaml'
-]
-
+CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]
