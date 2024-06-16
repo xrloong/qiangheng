@@ -1,4 +1,3 @@
-from coding.ZhengMa.ZhengMa import ZMCodeInfo
 
 import unittest
 

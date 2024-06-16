@@ -14,7 +14,6 @@ from .element.CharacterDescription import CharacterDescription
 from .element.CharacterDescription import CharacterDecompositionSet
 from .element.SubstituteRule import SubstituteRuleSet
 from .element.radix import RadicalSet
-from .element.radix import RadixDescription
 
 from .helper import RadicalCodingConverter
 
@@ -78,7 +77,7 @@ class SubstituteManager:
                 result = rule.getReplacement()
 
                 tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
-                if tmpStructure != None:
+                if tmpStructure is not None:
                     structure.changeToStructure(tmpStructure)
                     changed = True
                     break

@@ -1,4 +1,3 @@
-from coding.DaYi.DaYi import DYCodeInfo
 
 import unittest
 

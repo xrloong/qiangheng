@@ -212,7 +212,7 @@ class DYRadixParser(CodingRadixParser):
         strCodeList = infoDict.get(DYRadixParser.ATTRIB_CODE_EXPRESSION)
 
         codeList = None
-        if strCodeList != None:
+        if strCodeList is not None:
             codeList = strCodeList.split(DYRadixParser.RADIX_SEPERATOR)
 
         codeInfo = DYCodeInfo(codeList)

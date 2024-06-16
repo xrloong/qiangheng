@@ -1,6 +1,5 @@
 import abc
 
-from injector import inject
 
 
 class StructureInfo(object, metaclass=abc.ABCMeta):
@@ -14,7 +13,7 @@ class StructureInfo(object, metaclass=abc.ABCMeta):
         return self.__codeInfos
 
     def isCodeInfoGenerated(self):
-        return self.__codeInfos != None
+        return self.__codeInfos is not None
 
     def getRadixCodeInfoList(self):
         return filter(lambda x: x.isSupportRadixCode(), self.__codeInfos)

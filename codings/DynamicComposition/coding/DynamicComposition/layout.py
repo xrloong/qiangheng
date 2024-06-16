@@ -31,7 +31,6 @@ def _splitLengthToList(length, weightList):
     unitLength = length / totalWeight
 
     pointList = []
-    newComponentList = []
     base = 0
     for weight in weightList:
         pointList.append(base)

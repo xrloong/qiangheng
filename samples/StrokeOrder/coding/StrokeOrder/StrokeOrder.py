@@ -1,14 +1,9 @@
-from coding.Drawing import CodeInfo
-from coding.Drawing import CodeInfoEncoder
-from coding.Drawing import CodingRadixParser
 from coding.Drawing import CodeMappingInfoInterpreter
 
 from ..DynamicComposition.DynamicComposition import DCCodeInfo
 from ..DynamicComposition.DynamicComposition import DCCodeInfoEncoder
 from ..DynamicComposition.DynamicComposition import DCRadixParser
 
-from ..DynamicComposition.layout import JointOperator
-from ..DynamicComposition.layout import LayoutFactory
 from ..DynamicComposition.layout import LayoutSpec
 
 

@@ -1,7 +1,6 @@
 import unittest
 
 from tree.node import Node
-from tree.parser import TreeParser
 
 
 class TreeParserTestCase(unittest.TestCase):
@@ -41,7 +40,6 @@ class TreeParserTestCase(unittest.TestCase):
         self.assertEqual(node瑲_1, node瑲_2)
 
     def testInquality(self):
-        import copy
 
         node王 = Node(prop={"置換": "王"})
         node倉 = Node(prop={"置換": "倉"})

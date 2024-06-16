@@ -1,6 +1,5 @@
 from . import CodeMappingInfo
 
-from element.enum import CodeVariance
 
 
 class CharacterInfo:

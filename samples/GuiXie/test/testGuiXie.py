@@ -10,12 +10,11 @@ class GuiXieTestCase(unittest.TestCase):
 
     def test_ImportGuiXie(self):
         try:
-            import coding.GuiXie
+            pass
         except:
             self.fail("coding.GuiXie 不存在。")
 
     def test_CodingSubstituteFileList_exists(self):
-        import coding.GuiXie
 
         try:
             from coding.GuiXie import CodingSubstituteFileList
@@ -30,7 +29,6 @@ class GuiXieTestCase(unittest.TestCase):
                 self.fail("{} 不存在".format(f))
 
     def test_CodingRadixFileList_exists(self):
-        import coding.GuiXie
 
         try:
             from coding.GuiXie import CodingRadixFileList

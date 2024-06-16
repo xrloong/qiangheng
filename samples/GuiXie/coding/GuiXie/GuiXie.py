@@ -4,7 +4,6 @@ from coding.Input import CodingRadixParser
 
 from .constant import GXGenre
 from .constant import GXStroke
-from .constant import GXCorner
 from .item import GXLump
 from .util import computeGenreCode, computeStrokeCode, computeRectCountCode
 from .util import constructCorners
@@ -60,7 +59,6 @@ class GXCodeInfo(CodeInfo):
         self._genre = genre
         self._lumps = gxLumps
 
-        innerLump = None
         if genre:
             lump1 = gxLumps[0]
             lump2 = gxLumps[-1]

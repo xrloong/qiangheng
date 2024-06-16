@@ -81,7 +81,7 @@ class ZMCodeInfo(CodeInfo):
         return self.getMainCodeList()
 
     def getMainCodeList(self):
-        if self._codes != None:
+        if self._codes is not None:
             return self._codes
         return None
 
@@ -152,10 +152,9 @@ class ZMRadixParser(CodingRadixParser):
         extra_code = infoDict.get(ZMRadixParser.ATTRIB_SUPPLEMENTARY_CODE)
         strCodeList = infoDict.get(ZMRadixParser.ATTRIB_CODE_EXPRESSION)
 
-        zm_code = ""
         zm_extra = extra_code
         codes = ()
-        if strCodeList != None:
+        if strCodeList is not None:
             codes = tuple(strCodeList.split(ZMRadixParser.RADIX_SEPERATOR))
 
         # 鄭碼對「冂」內含物的形式，都統合成一個字根，如：冈、网、岡、罔

@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from injector import Injector
-from injector import inject
 
 from optparse import OptionParser
 
@@ -44,7 +43,7 @@ def main():
     )
     (options, args) = oparser.parse_args()
 
-    qiangheng = QiangHeng(options)
+    QiangHeng(options)
 
 
 if __name__ == "__main__":

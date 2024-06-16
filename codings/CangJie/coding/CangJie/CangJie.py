@@ -126,7 +126,6 @@ class CJLump:
         [frontCode, containerCode, interiorCode] = firstCJLump.getXCode()
 
         tmpCJLump = CJLump.generateBody(cjLumpList[1:])
-        tmpInteriorCode = tmpCJLump.getCodeAsHead()
         cjLump = CJLump.generate(frontCode, containerCode, interiorCode)
         return ContainerCJLump(cjLump, tmpCJLump)
 
@@ -512,15 +511,15 @@ class CJRadixParser(CodingRadixParser):
     def parseCJLumpList(self, description):
         cjLumpList = []
 
-        if description != None:
+        if description is not None:
             description_list = description.split(",")
             for desc in description_list:
                 matchResult = re.match(r"(\w*)(\[(\w*)\](\w*))?", desc)
                 groups = matchResult.groups()
                 frontCode = groups[0]
                 tailingSurround = groups[2]
-                rearCode = groups[3]
-                if tailingSurround == None:
+
+                if tailingSurround is None:
                     tailingSurround = ""
 
                 matchResult = re.match("([A-Z]*)([a-z]*)", tailingSurround)

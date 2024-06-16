@@ -3,7 +3,6 @@ from coding.Drawing import CodeInfoEncoder
 from coding.Drawing import CodingRadixParser
 from coding.Drawing import CodeMappingInfoInterpreter
 
-from parser.GlyphParser import GlyphTags
 from parser.GlyphParser import GlyphParser
 from parser.GlyphParser import IfGlyphDescriptionInterpreter
 from parser.GlyphParser import GlyphElementDescription
@@ -12,7 +11,7 @@ from parser.GlyphParser import GlyphDataSetDescription
 
 try:
     import xie
-except ImportError as e:
+except ImportError:
     import sys
 
     message = """
@@ -154,7 +153,6 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
         layoutSpec = LayoutSpec(JointOperator.Liao)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 
-        lastCodeInfo = codeInfos[-1]
         return codeInfo
 
     def encodeAsZai(self, codeInfos):
@@ -284,7 +282,7 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
         return component.getStrokeList()[index]
 
     def applyComponentWithTransformation(self, component, position):
-        if position != None:
+        if position is not None:
             pane = Pane(*position)
             component = self.componentFactory.generateComponentByComponentPane(
                 component, pane
@@ -300,7 +298,6 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
     def interpretStrokeByDefinition(self, element):
         strokeType = element.strokeType
         params = element.params
-        startPoint = element.startPoint
         position = element.position
         pane = Pane(*position)
         splinePointsList = element.splinePointsList

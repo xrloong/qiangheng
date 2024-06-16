@@ -19,7 +19,7 @@ class CodeInfoInterpreter:
             for codeInfos in codeInfosCollection
         )
         allCodeInfos = tuple(
-            filter(lambda codeInfo: codeInfo != None, computedCodeInfoList)
+            filter(lambda codeInfo: codeInfo is not None, computedCodeInfoList)
         )
         return allCodeInfos
 
@@ -36,7 +36,7 @@ class CodeInfoInterpreter:
         self, operator: Operator, codeInfoList: list[CodeInfo]
     ) -> CodeInfo:
         codeInfo = self.__codeInfoEncoder.setByComps(operator, codeInfoList)
-        if codeInfo != None:
+        if codeInfo is not None:
             for childCodeInfo in codeInfoList:
                 codeVariance = childCodeInfo.getCodeVariance()
                 codeInfo.multiplyCodeVariance(codeVariance)

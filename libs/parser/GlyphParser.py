@@ -1,7 +1,6 @@
 import ruamel.yaml
 import abc
 
-from collections import OrderedDict
 
 
 class GlyphElementDescription:
@@ -143,7 +142,6 @@ class GlyphParser(object):
     def parseElement(self, elementNode):
         method = elementNode.get(GlyphTags.METHOD)
         element = GlyphElementDescription(method)
-        elementDict = OrderedDict({GlyphTags.METHOD: method})
 
         if method == GlyphTags.METHOD__DEFINITION:
             element = self.parseDefinitionElement(elementNode)

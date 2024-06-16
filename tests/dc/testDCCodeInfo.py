@@ -1,4 +1,3 @@
-from coding.DynamicComposition.DynamicComposition import DCCodeInfo
 
 import unittest
 

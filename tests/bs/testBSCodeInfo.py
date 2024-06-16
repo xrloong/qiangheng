@@ -1,4 +1,3 @@
-from coding.Boshiamy.Boshiamy import BSCodeInfo
 
 import unittest
 

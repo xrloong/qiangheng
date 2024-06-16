@@ -2,7 +2,6 @@ from coding.Input import CodeInfo
 from coding.Input import CodeInfoEncoder
 from coding.Input import CodingRadixParser
 
-from .constant import FCCorner
 
 from .item import FCLump
 
@@ -169,11 +168,9 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
     def encodeAsMu(self, codeInfoList):
         firstCodeInfo = codeInfoList[0]
         secondCodeInfo = codeInfoList[1]
-        thirdCodeInfo = codeInfoList[2]
 
         lump1 = firstCodeInfo.cornerLump
         lump2 = secondCodeInfo.cornerLump
-        lump3 = thirdCodeInfo.cornerLump
 
         corner1 = lump1.computeCodesOfTop()
         corner2 = lump2.computeCodesOfBottomLeft()
@@ -198,36 +195,24 @@ class FCCodeInfoEncoder(CodeInfoEncoder):
 
     def encodeAsYou(self, codeInfoList):
         firstCodeInfo = codeInfoList[0]
-        secondCodeInfo = codeInfoList[1]
-        thirdCodeInfo = codeInfoList[2]
 
         lump1 = firstCodeInfo.cornerLump
-        lump2 = secondCodeInfo.cornerLump
-        lump3 = thirdCodeInfo.cornerLump
 
         corners = lump1.computeCodesOfAll()
         return FCCodeInfo(FCLump(corners))
 
     def encodeAsLiang(self, codeInfoList):
         firstCodeInfo = codeInfoList[0]
-        secondCodeInfo = codeInfoList[1]
-        thirdCodeInfo = codeInfoList[2]
 
         lump1 = firstCodeInfo.cornerLump
-        lump2 = secondCodeInfo.cornerLump
-        lump3 = thirdCodeInfo.cornerLump
 
         corners = lump1.computeCodesOfAll()
         return FCCodeInfo(FCLump(corners))
 
     def encodeAsJia(self, codeInfoList):
         firstCodeInfo = codeInfoList[0]
-        secondCodeInfo = codeInfoList[1]
-        thirdCodeInfo = codeInfoList[2]
 
         lump1 = firstCodeInfo.cornerLump
-        lump2 = secondCodeInfo.cornerLump
-        lump3 = thirdCodeInfo.cornerLump
 
         corners = lump1.computeCodesOfAll()
         return FCCodeInfo(FCLump(corners))

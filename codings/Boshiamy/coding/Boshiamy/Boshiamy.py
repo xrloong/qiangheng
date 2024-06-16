@@ -88,7 +88,7 @@ class BSCodeInfo(CodeInfo):
     def code(self):
         codeSequence = self.codeSequence
 
-        if codeSequence == None:
+        if codeSequence is None:
             return None
         else:
             code = "".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], codeSequence))
@@ -98,7 +98,7 @@ class BSCodeInfo(CodeInfo):
                     return code
                 else:
                     supplementCode = self.supplementCode
-                    if supplementCode == None:
+                    if supplementCode is None:
                         return None
                     return code + supplementCode
             elif len(code) > 4:
@@ -195,12 +195,12 @@ class BSRadixParser(CodingRadixParser):
         supplementCode = infoDict.get(BSRadixParser.ATTRIB_SUPPLEMENTARY_CODE)
         ignoreSupplementCode = (
             True
-            if infoDict.get(BSRadixParser.ATTRIB_IGNORE_SUPPLEMENTARY_CODE) != None
+            if infoDict.get(BSRadixParser.ATTRIB_IGNORE_SUPPLEMENTARY_CODE) is not None
             else False
         )
 
         codeList = None
-        if strCodeList != None:
+        if strCodeList is not None:
             codeList = strCodeList.split(BSRadixParser.RADIX_SEPERATOR)
 
         codeInfo = BSCodeInfo(codeList, supplementCode, ignoreSupplementCode)

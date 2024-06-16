@@ -17,7 +17,6 @@ from coding.Base import CodeMappingInfoInterpreter
 
 from model.element.CodingConfig import CodingConfig
 
-from model.helper import StructureConverter
 
 from parser.QHParser import QHParser
 

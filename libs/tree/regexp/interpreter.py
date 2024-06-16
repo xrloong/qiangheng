@@ -49,7 +49,7 @@ class TreeRegExpInterpreter:
             while len(rest) > 0:
                 if rest[0] == "(":
                     rest, structDesc = genStructDescRecursive(rest, allComps)
-                    if structDesc != None:
+                    if structDesc is not None:
                         compList.append(structDesc)
                 elif rest[0] == ")":
                     rest = rest[1:]

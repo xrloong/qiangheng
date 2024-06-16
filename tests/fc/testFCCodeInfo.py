@@ -1,4 +1,3 @@
-from coding.FourCorner.FourCorner import FCCodeInfo
 
 import unittest
 

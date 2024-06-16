@@ -75,17 +75,10 @@ class FCLump:
         )
 
     def computeCodes(self, positions):
-        cornerToIndex = {
-            FCCorner.TopLeft: 0,
-            FCCorner.TopRight: 1,
-            FCCorner.BottomLeft: 2,
-            FCCorner.BottomRight: 3,
-        }
 
         cornerToBrick = {}
         bricks = []
         for pos in positions:
-            index = cornerToIndex[pos]
             stroke = self.getStroke(pos)
 
             brick = FCBrick(pos)

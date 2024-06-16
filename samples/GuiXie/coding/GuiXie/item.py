@@ -1,4 +1,3 @@
-from coding.Input import CodeInfo
 
 from .constant import GXStroke
 from .constant import GXCorner
@@ -120,17 +119,10 @@ class GXLump:
         )
 
     def computeCodes(self, positions):
-        cornerToIndex = {
-            GXCorner.TopLeft: 0,
-            GXCorner.TopRight: 1,
-            GXCorner.BottomLeft: 2,
-            GXCorner.BottomRight: 3,
-        }
 
         cornerToBrick = {}
         bricks = []
         for pos in positions:
-            index = cornerToIndex[pos]
             stroke = self.getStroke(pos)
 
             if isinstance(stroke, GXStroke):

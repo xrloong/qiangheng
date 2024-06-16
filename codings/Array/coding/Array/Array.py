@@ -191,7 +191,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
             firstCodeInfo = secondCodeInfo
             secondCodeInfo = xCodeInfo
 
-            if firstCodeInfo == None:
+            if firstCodeInfo is None:
                 continue
 
             for [firstRadix, secondRadix, targetRadix] in mergeCodeInfoList:
@@ -211,7 +211,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
             else:
                 newCodeInfoList.append(firstCodeInfo)
 
-        if secondCodeInfo != None:
+        if secondCodeInfo is not None:
             newCodeInfoList.append(secondCodeInfo)
 
         return newCodeInfoList
@@ -241,7 +241,7 @@ class ARRadixParser(CodingRadixParser):
         codeList = None
 
         str_rtlist = infoDict.get(ARRadixParser.ATTRIB_CODE_EXPRESSION)
-        if str_rtlist != None:
+        if str_rtlist is not None:
             codeList = str_rtlist.split(ARRadixParser.RADIX_SEPERATOR)
 
         codeInfo = ARCodeInfo(codeList)
