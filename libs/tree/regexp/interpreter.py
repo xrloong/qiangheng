@@ -9,7 +9,7 @@ class TreeRegExpInterpreter:
         self.proxy = proxy
         self.treeNodeGenerator = treeNodeGenerator
 
-    def matchAndReplace(self, tre: TreeRegExp, node, result: str):
+    def replace(self, tre: TreeRegExp, result: str):
         def generateTokens(expression):
             tokens = []
             length = len(expression)
@@ -78,9 +78,12 @@ class TreeRegExpInterpreter:
             structDesc = treeNodeGenerator.generateNode(operatorName, compList)
             return (rest, structDesc)
 
+        return genStructDesc(result, tre.getAll())
+
+    def matchAndReplace(self, tre: TreeRegExp, node, result: str):
         matchResult = self.match(tre, node)
         if matchResult.isMatched():
-            return genStructDesc(result, tre.getAll())
+            return self.replace(tre=tre, result=result)
         else:
             return None
 
