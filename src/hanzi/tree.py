@@ -8,6 +8,8 @@ from tree.regexp import TreeRegExpInterpreter
 from tree.regexp import BasicTreeProxy
 from tree.regexp import TreeNodeGenerator
 
+from tree.parser import TreeParser
+
 
 class HanZiTreeProxy(BasicTreeProxy):
     @inject
@@ -58,53 +60,21 @@ class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
         self.treeNodeGenerator = treeNodeGenerator
 
     def replace(self, tre: TreeRegExp, result: str):
-        def generateTokens(expression):
-            tokens = []
-            length = len(expression)
-            i = 0
-            while i < length:
-                if expression[i] in ["(", ")"]:
-                    tokens.append(expression[i])
-                    i += 1
-                elif expression[i] == "\\":
-                    j = i + 1
-                    while (
-                        j < length and expression[j].isdigit() or expression[j] == "."
-                    ):
-                        j += 1
-                    tokens.append(expression[i:j])
-                    i = j
-                elif expression[i] == " ":
-                    i += 1
-                else:
-                    j = i + 1
-                    while j < length and expression[j] not in ["(", ")", "\\", " "]:
-                        j += 1
-                    tokens.append(expression[i:j])
-                    i = j
-            return tokens
+        treeNodeGenerator = self.treeNodeGenerator
 
-        def genStructDesc(expression, allComps):
-            return genStructDescRecursive(generateTokens(expression), allComps)[1]
-
-        def genStructDescRecursive(tokens, allComps):
-            if not tokens[0] == "(":
-                return ([], None)
-
-            treeNodeGenerator = self.treeNodeGenerator
-            operatorName = tokens[1]
+        def convertNodeToStructure(node, allComps):
+            operatorName = node.prop["運算"]
             compList = []
-            rest = tokens[2:]
-            while len(rest) > 0:
-                if rest[0] == "(":
-                    rest, structDesc = genStructDescRecursive(rest, allComps)
-                    if structDesc is not None:
-                        compList.append(structDesc)
-                elif rest[0] == ")":
-                    rest = rest[1:]
-                    break
-                elif rest[0][:1] == "\\":
-                    refExp = rest[0][1:]
+            for childNode in node.children:
+                if "置換" in childNode.prop:
+                    compList.append(
+                        treeNodeGenerator.generateLeafNode(childNode.prop["置換"])
+                    )
+                elif childNode.isBackRef:
+                    # \1 or \1.1
+                    refExp = childNode.backRefExp
+
+                    refExp = refExp[1:]
                     refExpList = refExp.split(".")
                     if len(refExpList) < 2:
                         # \1
@@ -115,15 +85,15 @@ class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
                         index = int(refExpList[0])
                         subIndex = int(refExpList[1])
                         referenceNode = allComps[index].getMatched()[0]
-                        node = treeNodeGenerator.generateLeafNodeByReference(
+                        comp = treeNodeGenerator.generateLeafNodeByReference(
                             referenceNode, subIndex
                         )
-                        compList.append(node)
-                    rest = rest[1:]
+                        compList.append(comp)
                 else:
-                    compList.append(treeNodeGenerator.generateLeafNode(rest[0]))
-                    rest = rest[1:]
+                    comp = convertNodeToStructure(childNode, allComps)
+                    compList.append(comp)
             structDesc = treeNodeGenerator.generateNode(operatorName, compList)
-            return (rest, structDesc)
+            return structDesc
 
-        return genStructDesc(result, tre.getAll())
+        node = TreeParser.parse(result, supportBackReference=True)
+        return convertNodeToStructure(node, tre.getAll())
