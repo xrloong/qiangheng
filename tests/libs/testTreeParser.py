@@ -44,3 +44,19 @@ class TreeParserTestCase(unittest.TestCase):
 
         node = TreeParser.parse("({運算=鴻} ({置換=王}) ({置換=倉}))")
         self.assertEqual(node, nodeAnswer)
+
+    def testParseCompositionNode__Simple_1(self):
+        node王 = Node(prop={"置換": "王"})
+        node倉 = Node(prop={"置換": "倉"})
+        nodeAnswer = Node(prop={"運算": "鴻"}, children=(node王, node倉))
+
+        node = TreeParser.parse("(鴻 ({置換=王}) ({置換=倉}))")
+        self.assertEqual(node, nodeAnswer)
+
+    def testParseCompositionNode__Simple_2(self):
+        node王 = Node(prop={"置換": "王"})
+        node倉 = Node(prop={"置換": "倉"})
+        nodeAnswer = Node(prop={"運算": "鴻"}, children=(node王, node倉))
+
+        node = TreeParser.parse("(鴻 王 倉)")
+        self.assertEqual(node, nodeAnswer)
