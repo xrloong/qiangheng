@@ -12,8 +12,9 @@ class Node:
         self.__children = tuple(children)
 
     @staticmethod
-    def genProp(operator: str = None) -> dict[str: str]:
+    def genProp(name: str = None, operator: str = None) -> dict[str: str]:
         prop = {}
+        if name: prop["置換"] = name
         if operator: prop["運算"] = operator
         return prop
 

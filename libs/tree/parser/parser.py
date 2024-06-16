@@ -28,9 +28,15 @@ def t_error(t):
 
 
 def p_node(t):
-    """node : PARENTHESIS_LEFT PARENTHESIS_RIGHT
+    """node : NAME
+    | PARENTHESIS_LEFT PARENTHESIS_RIGHT
     | PARENTHESIS_LEFT prop node_list PARENTHESIS_RIGHT
     | PARENTHESIS_LEFT prop PARENTHESIS_RIGHT"""
+    if len(t) == 2:
+        prop = Node.genProp(name=t[1])
+        node = Node(prop=prop)
+        t[0] = node
+
     if len(t) == 3:
         node = Node()
         t[0] = node
