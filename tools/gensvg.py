@@ -2,7 +2,6 @@
 # coding=utf8
 
 from optparse import OptionParser
-import re
 import sys
 import os
 
@@ -60,7 +59,7 @@ def generateSVG(dirname):
             "stroke-width": str(strokeWidth),
             "fill": "white",
         }
-        rectNode = ET.SubElement(rootNode, "rect", attrib)
+        ET.SubElement(rootNode, "rect", attrib)
 
         attrib = {
             "stroke": "black",
@@ -68,7 +67,7 @@ def generateSVG(dirname):
             "fill": "none",
             "d": expression,
         }
-        pathNode = ET.SubElement(rootNode, "path", attrib)
+        ET.SubElement(rootNode, "path", attrib)
 
         xmlNode = ET.ElementTree(rootNode)
 

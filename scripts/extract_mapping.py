@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import ruamel.yaml
-import sys
 from optparse import OptionParser
 
 oparser = OptionParser()

@@ -1,5 +1,6 @@
 import lxml.etree as ET
-import os, sys
+import os
+import sys
 
 fileCJK = "CJK.xml"
 fileCJK_A = "CJK-A.xml"

@@ -2,7 +2,6 @@
 # coding=utf8
 
 from optparse import OptionParser
-import re
 import sys
 
 try:
