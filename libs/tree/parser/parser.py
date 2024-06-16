@@ -66,8 +66,14 @@ def p_attrib(t):
 
 
 def p_prop(t):
-    "prop : BRACE_LEFT attrib BRACE_RIGHT"
-    t[0] = t[2]
+    """prop : NAME
+    | BRACE_LEFT attrib BRACE_RIGHT"""
+
+    if len(t) == 2:
+        prop = Node.genProp(operator=t[1])
+        t[0] = prop
+    if len(t) == 4:
+        t[0] = t[2]
 
 
 def p_error(t):

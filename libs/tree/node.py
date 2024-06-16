@@ -11,6 +11,12 @@ class Node:
         self.__prop = prop
         self.__children = tuple(children)
 
+    @staticmethod
+    def genProp(operator: str = None) -> dict[str: str]:
+        prop = {}
+        if operator: prop["運算"] = operator
+        return prop
+
     def __eq__(self, another):
         return self.prop == another.prop and self.children == another.children
 
