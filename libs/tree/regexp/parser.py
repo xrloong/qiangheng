@@ -16,7 +16,7 @@ tokens = (
     "EQUAL",
 )
 
-t_NAME = r"[一-龥㐀-䶵\[\]][一-龥㐀-䶵\[\]\.0-9]*"
+t_NAME = r"([一-龥㐀-䶵]+|\[[一-龥㐀-䶵]+\])(\.[0-9])?"
 t_PARENTHESIS_LEFT = r"\("
 t_PARENTHESIS_RIGHT = r"\)"
 t_BRACE_LEFT = r"\{"
