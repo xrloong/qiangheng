@@ -38,7 +38,7 @@ def p_node(t):
     if len(t) == 4:
         prop = t[2]
 
-        node = Node(prop)
+        node = Node(prop=prop)
 
         t[0] = node
 
@@ -46,7 +46,7 @@ def p_node(t):
         prop = t[2]
         nodes = t[3]
 
-        node = Node(prop, nodes)
+        node = Node(prop=prop, children=nodes)
 
         t[0] = node
 
