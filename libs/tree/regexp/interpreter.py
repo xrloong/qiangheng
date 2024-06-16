@@ -80,13 +80,6 @@ class TreeRegExpInterpreter:
 
         return genStructDesc(result, tre.getAll())
 
-    def matchAndReplace(self, tre: TreeRegExp, node, result: str):
-        matchResult = self.match(tre, node)
-        if matchResult.isMatched():
-            return self.replace(tre=tre, result=result)
-        else:
-            return None
-
     def match(self, tre: TreeRegExp, node):
         return self.matchTree(tre, node)
 
