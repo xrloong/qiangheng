@@ -42,14 +42,15 @@ class TreeRegExp:
         return self.matched
 
     def getAll(self):
+        nodes = []
+
         def traversal(c):
-            l.append(c)
+            nodes.append(c)
             for child in c.children:
                 traversal(child)
 
-        l = []
         traversal(self)
-        return l
+        return nodes
 
     def getComp(self, n):
         s, t = self.countComp(0, n)
