@@ -2,7 +2,6 @@ import ruamel.yaml
 import abc
 
 
-
 class GlyphElementDescription:
     def __init__(self, method):
         self.method = method

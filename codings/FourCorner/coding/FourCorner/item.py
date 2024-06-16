@@ -75,7 +75,6 @@ class FCLump:
         )
 
     def computeCodes(self, positions):
-
         cornerToBrick = {}
         bricks = []
         for pos in positions:

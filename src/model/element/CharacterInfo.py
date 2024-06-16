@@ -1,7 +1,6 @@
 from . import CodeMappingInfo
 
 
-
 class CharacterInfo:
     def __init__(self, charName):
         self.name = charName

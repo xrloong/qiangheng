@@ -1,7 +1,6 @@
 import abc
 
 
-
 class StructureInfo(object, metaclass=abc.ABCMeta):
     def __init__(self):
         self.__codeInfos = None
