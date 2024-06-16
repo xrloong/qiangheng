@@ -11,8 +11,8 @@ class Node:
         self.__prop = prop
         self.__children = tuple(children)
 
-    def __eq__(self, anohter):
-        return self.prop == anohter.prop and self.children == anohter.children
+    def __eq__(self, another):
+        return self.prop == another.prop and self.children == another.children
 
     @property
     def prop(self) -> dict:
