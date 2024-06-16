@@ -1,3 +1,4 @@
+from .item import TreeRegExp
 from .item import MatchResult
 from .item import BasicTreeProxy
 from .item import TreeNodeGenerator
@@ -8,7 +9,7 @@ class TreeRegExpInterpreter:
         self.proxy = proxy
         self.treeNodeGenerator = treeNodeGenerator
 
-    def matchAndReplace(self, tre, node, result):
+    def matchAndReplace(self, tre: TreeRegExp, node, result: str):
         def generateTokens(expression):
             tokens = []
             length = len(expression)
@@ -83,10 +84,10 @@ class TreeRegExpInterpreter:
         else:
             return None
 
-    def match(self, tre, node):
+    def match(self, tre: TreeRegExp, node):
         return self.matchTree(tre, node)
 
-    def matchTree(self, tre, node):
+    def matchTree(self, tre: TreeRegExp, node):
         result = MatchResult()
         result1 = self.matchNode(tre, node)
         if result1:
@@ -102,10 +103,10 @@ class TreeRegExpInterpreter:
             result.setFalse()
         return result
 
-    def matchNode(self, tre, node):
+    def matchNode(self, tre: TreeRegExp, node):
         return self.proxy.matchSingle(tre, node)
 
-    def matchChildren(self, tre, node):
+    def matchChildren(self, tre: TreeRegExp, node):
         re_list = tre.children
         node_list = self.proxy.getChildren(node)
 
@@ -116,7 +117,7 @@ class TreeRegExpInterpreter:
 
         return self.matchList(re_list, node_list)
 
-    def matchList(self, treList, nodeList):
+    def matchList(self, treList: list[TreeRegExp], nodeList: list):
         if len(treList) == 0 and len(nodeList) == 0:
             result = MatchResult()
             result.setTrue()
@@ -137,7 +138,9 @@ class TreeRegExpInterpreter:
         result.setFalse()
         return result
 
-    def matchStar(self, treList, nodeList, targetTre):
+    def matchStar(
+        self, treList: list[TreeRegExp], nodeList: list, targetTre: TreeRegExp
+    ):
         index = 0
         while index < len(nodeList):
             node = nodeList[index]
