@@ -1,6 +1,9 @@
 from typing import Optional
 from injector import inject
 
+from tree.regexp.item import TreeRegExp
+from tree.regexp.item import MatchResult
+
 from element.enum import FontVariance
 
 from workspace import HanZiNode, HanZiStructure
@@ -86,8 +89,12 @@ class CharacterComputingHelper:
                 character = structure.referencedNodeName
                 self.computeCharacterInfo.constructCharacter(character)
 
-        def matchAndReplace(self, tre, structure, result):
-            return self.treInterpreter.matchAndReplace(tre, structure, result)
+        def matchAndReplace(self, tre: TreeRegExp, node, result: str):
+            matchResult: MatchResult = self.treInterpreter.match(tre, node)
+            if matchResult.isMatched():
+                return self.treInterpreter.replace(tre=tre, result=result)
+            else:
+                return None
 
     @inject
     def __init__(
