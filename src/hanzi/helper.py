@@ -28,10 +28,6 @@ class SubstituteHelper:
         def prepare(self, structure):
             pass
 
-        @abc.abstractmethod
-        def matchAndReplace(self, rule: SubstituteRule, structure):
-            pass
-
     def __init__(
         self,
         rules: tuple[SubstituteRule],
@@ -66,13 +62,17 @@ class SubstituteHelper:
         def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
             changed = False
             for rule in filteredSubstituteRules:
-                tmpStructure = rearrangeCallback.matchAndReplace(
-                    rule=rule, structure=structure
-                )
-                if tmpStructure is not None:
+                tre = rule.tre
+                goalNode = rule.goal
+
+                matchResult: MatchResult = self.treInterpreter.match(tre, structure)
+                if matchResult.isMatched():
+                    treeNodeGenerator = self.treeNodeGenerator
+                    tmpStructure = treeNodeGenerator.replace(tre=tre, goalNode=goalNode)
                     structure.changeToStructure(tmpStructure)
                     changed = True
                     break
+
             return changed
 
         changed = True
@@ -162,17 +162,6 @@ class CharacterComputingHelper:
             if structure.isWrapper():
                 character = structure.referencedNodeName
                 self.computeCharacterInfo.constructCharacter(character)
-
-        def matchAndReplace(self, rule: SubstituteRule, structure):
-            tre = rule.tre
-            goalNode = rule.goal
-
-            matchResult: MatchResult = self.treInterpreter.match(tre, structure)
-            if matchResult.isMatched():
-                treeNodeGenerator = self.treeNodeGenerator
-                return treeNodeGenerator.replace(tre=tre, goalNode=goalNode)
-            else:
-                return None
 
     @inject
     def __init__(
