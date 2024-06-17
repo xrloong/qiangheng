@@ -88,9 +88,3 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
             return structDesc
 
         return convertNodeToStructure(goalNode, tre.getAll())
-
-
-class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
-    @inject
-    def __init__(self, treeNodeGenerator: HanZiTreeNodeGenerator):
-        super().__init__(HanZiTreeProxy())

@@ -3,6 +3,7 @@ from injector import inject
 
 from tree.regexp.item import TreeRegExp
 from tree.regexp.item import MatchResult
+from tree.regexp import TreeRegExpInterpreter
 
 from tree.node import Node as TreeExpression
 from tree.parser import TreeParser
@@ -17,8 +18,8 @@ from model.element.CharacterInfo import CharacterInfo
 from model.interpreter import CodeInfoInterpreter
 from model.manager import SubstituteManager
 
+from .tree import HanZiTreeProxy
 from .tree import HanZiTreeNodeGenerator
-from .tree import HanZiTreeRegExpInterpreter
 from .manager import StructureManager
 
 
@@ -91,7 +92,7 @@ class CharacterComputingHelper:
         def __init__(
             self,
             computeCharacterInfo: CharacterComputingHelper,
-            treInterpreter: HanZiTreeRegExpInterpreter,
+            treInterpreter: TreeRegExpInterpreter,
             treeNodeGenerator: HanZiTreeNodeGenerator,
         ):
             self.computeCharacterInfo = computeCharacterInfo
@@ -116,7 +117,6 @@ class CharacterComputingHelper:
         self,
         fontVariance: FontVariance,
         structureManager: StructureManager,
-        treInterpreter: HanZiTreeRegExpInterpreter,
         workspaceManager: HanZiWorkspaceManager,
         treeNodeGenerator: HanZiTreeNodeGenerator,
     ):
@@ -126,6 +126,7 @@ class CharacterComputingHelper:
 
         self.__workspaceManager = workspaceManager
 
+        treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
         self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(
             computeCharacterInfo=self,
             treInterpreter=treInterpreter,
