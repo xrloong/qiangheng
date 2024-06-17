@@ -16,13 +16,9 @@ class SubstituteRule:
             pattern = "({{運算={name}}} {exp})".format(name=operator, exp=expression)
         else:
             pattern = matching
-        self.pattern = pattern
 
         self.replacement = model.replacement
-        self.tre = compile(self.pattern)
-
-    def getPattern(self):
-        return self.pattern
+        self.tre = compile(pattern)
 
     def getReplacement(self):
         return self.replacement
