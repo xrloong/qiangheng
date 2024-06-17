@@ -3,12 +3,9 @@ import abc
 from typing import Optional
 from injector import inject
 
-from tree.regexp.item import TreeRegExp
 from tree.regexp.item import MatchResult
 from tree.regexp import TreeRegExpInterpreter
 
-from tree.node import Node as TreeExpression
-from tree.parser import TreeParser
 
 from element.enum import FontVariance
 

@@ -4,12 +4,10 @@ from workspace import HanZiWorkspaceManager
 from model.helper import OperatorManager
 
 from tree.regexp.item import TreeRegExp
-from tree.regexp import TreeRegExpInterpreter
 from tree.regexp import BasicTreeProxy
 from tree.regexp import TreeNodeGenerator
 
 from tree.node import Node as TreeExpression
-from tree.parser import TreeParser
 
 
 class HanZiTreeProxy(BasicTreeProxy):
