@@ -3,6 +3,7 @@ from injector import inject
 
 from tree.regexp.item import TreeRegExp
 from tree.regexp.item import MatchResult
+from tree.regexp import TreeRegExpInterpreter
 
 from tree.node import Node as TreeExpression
 from tree.parser import TreeParser
@@ -17,7 +18,8 @@ from model.element.CharacterInfo import CharacterInfo
 from model.interpreter import CodeInfoInterpreter
 from model.manager import SubstituteManager
 
-from .tree import HanZiTreeRegExpInterpreter
+from .tree import HanZiTreeProxy
+from .tree import HanZiTreeNodeGenerator
 from .manager import StructureManager
 
 
@@ -82,10 +84,20 @@ class HanZiCodeInfosComputer:
 
 
 class CharacterComputingHelper:
+    pass
+
+
+class CharacterComputingHelper:
     class RearrangeCallback(SubstituteManager.RearrangeCallback):
-        def __init__(self, computeCharacterInfo, treInterpreter):
+        def __init__(
+            self,
+            computeCharacterInfo: CharacterComputingHelper,
+            treInterpreter: TreeRegExpInterpreter,
+            treeNodeGenerator: HanZiTreeNodeGenerator,
+        ):
             self.computeCharacterInfo = computeCharacterInfo
             self.treInterpreter = treInterpreter
+            self.treeNodeGenerator = treeNodeGenerator
 
         def prepare(self, structure):
             if structure.isWrapper():
@@ -95,7 +107,8 @@ class CharacterComputingHelper:
         def matchAndReplace(self, tre: TreeRegExp, node, goalNode: TreeExpression):
             matchResult: MatchResult = self.treInterpreter.match(tre, node)
             if matchResult.isMatched():
-                return self.treInterpreter.replace(tre=tre, goalNode=goalNode)
+                treeNodeGenerator = self.treeNodeGenerator
+                return treeNodeGenerator.replace(tre=tre, goalNode=goalNode)
             else:
                 return None
 
@@ -104,8 +117,8 @@ class CharacterComputingHelper:
         self,
         fontVariance: FontVariance,
         structureManager: StructureManager,
-        treInterpreter: HanZiTreeRegExpInterpreter,
         workspaceManager: HanZiWorkspaceManager,
+        treeNodeGenerator: HanZiTreeNodeGenerator,
     ):
         self.fontVariance = fontVariance
 
@@ -113,8 +126,11 @@ class CharacterComputingHelper:
 
         self.__workspaceManager = workspaceManager
 
+        treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
         self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(
-            self, treInterpreter
+            computeCharacterInfo=self,
+            treInterpreter=treInterpreter,
+            treeNodeGenerator=treeNodeGenerator,
         )
 
     def constructCharacter(self, character: str):
