@@ -2,8 +2,8 @@ from injector import inject
 
 from workspace import HanZiWorkspaceManager
 from model.helper import OperatorManager
+from model.element.SubstituteRule import SubstituteRule
 
-from tree.regexp.item import TreeRegExp
 from tree.regexp import BasicTreeProxy
 from tree.regexp import TreeNodeGenerator
 
@@ -49,7 +49,7 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
         operator = self.__operatorManager.generateOperator(operatorName)
         return self.__workspaceManager.generateCompoundStructure(operator, children)
 
-    def replace(self, tre: TreeRegExp, goalNode: TreeExpression):
+    def replace(self, rule: SubstituteRule):
         treeNodeGenerator = self
 
         def convertNodeToStructure(node: TreeExpression, allComps):
@@ -85,4 +85,6 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
             structDesc = treeNodeGenerator.generateNode(operatorName, compList)
             return structDesc
 
+        tre = rule.tre
+        goalNode = rule.goal
         return convertNodeToStructure(goalNode, tre.getAll())

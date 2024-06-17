@@ -64,12 +64,9 @@ class SubstituteHelper:
         def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
             changed = False
             for rule in filteredSubstituteRules:
-                tre = rule.tre
-                goalNode = rule.goal
-
-                matchResult: MatchResult = treInterpreter.match(tre, structure)
+                matchResult: MatchResult = treInterpreter.match(rule.tre, structure)
                 if matchResult.isMatched():
-                    tmpStructure = treeNodeGenerator.replace(tre=tre, goalNode=goalNode)
+                    tmpStructure = treeNodeGenerator.replace(rule=rule)
                     structure.changeToStructure(tmpStructure)
                     changed = True
                     break
