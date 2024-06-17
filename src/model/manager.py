@@ -7,6 +7,11 @@ from injector import inject
 
 from parser.QHParser import QHParser
 
+from tree.regexp.item import TreeRegExp
+
+from tree.node import Node as TreeExpression
+from tree.parser import TreeParser
+
 from element.enum import CodeVariance
 from coding.Base import CodeInfo
 
@@ -25,7 +30,7 @@ class SubstituteManager:
             pass
 
         @abc.abstractmethod
-        def matchAndReplace(self, tre, structure, result):
+        def matchAndReplace(self, tre: TreeRegExp, structure, goalNode: TreeExpression):
             pass
 
     @inject
@@ -75,8 +80,11 @@ class SubstituteManager:
             for rule in filteredSubstituteRules:
                 tre = rule.tre
                 result = rule.replacement
+                goal: TreeExpression = TreeParser.parse(
+                    result, supportBackReference=True
+                )
 
-                tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
+                tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, goal)
                 if tmpStructure is not None:
                     structure.changeToStructure(tmpStructure)
                     changed = True

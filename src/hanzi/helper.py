@@ -92,12 +92,9 @@ class CharacterComputingHelper:
                 character = structure.referencedNodeName
                 self.computeCharacterInfo.constructCharacter(character)
 
-        def matchAndReplace(self, tre: TreeRegExp, node, result: str):
+        def matchAndReplace(self, tre: TreeRegExp, node, goalNode: TreeExpression):
             matchResult: MatchResult = self.treInterpreter.match(tre, node)
             if matchResult.isMatched():
-                goalNode: TreeExpression = TreeParser.parse(
-                    result, supportBackReference=True
-                )
                 return self.treInterpreter.replace(tre=tre, goalNode=goalNode)
             else:
                 return None
