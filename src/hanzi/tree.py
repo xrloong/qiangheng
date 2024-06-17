@@ -51,15 +51,8 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
         operator = self.__operatorManager.generateOperator(operatorName)
         return self.__workspaceManager.generateCompoundStructure(operator, children)
 
-
-class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
-    @inject
-    def __init__(self, treeNodeGenerator: HanZiTreeNodeGenerator):
-        super().__init__(HanZiTreeProxy())
-        self.treeNodeGenerator = treeNodeGenerator
-
     def replace(self, tre: TreeRegExp, goalNode: TreeExpression):
-        treeNodeGenerator = self.treeNodeGenerator
+        treeNodeGenerator = self
 
         def convertNodeToStructure(node: TreeExpression, allComps):
             operatorName = node.prop["運算"]
@@ -95,3 +88,10 @@ class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
             return structDesc
 
         return convertNodeToStructure(goalNode, tre.getAll())
+
+
+class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
+    @inject
+    def __init__(self, treeNodeGenerator: HanZiTreeNodeGenerator):
+        super().__init__(HanZiTreeProxy())
+        self.treeNodeGenerator = treeNodeGenerator
