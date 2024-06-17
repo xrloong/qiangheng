@@ -53,34 +53,27 @@ class SubstituteHelper:
     ):
         rearrangeCallback.prepare(structure)
 
-        self.__rearrangeStructure(structure, rearrangeCallback)
+        self.__rearrangeStructure(structure)
         for childStructure in structure.getStructureList():
             self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
-    def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
+    def __rearrangeStructure(self, structure):
         treInterpreter = self.treInterpreter
         treeNodeGenerator = self.treeNodeGenerator
 
-        def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
-            changed = False
-            for rule in filteredSubstituteRules:
-                tre = rule.tre
-                goalNode = rule.goal
+        def match(rule, structure):
+            matchResult: MatchResult = treInterpreter.match(rule.tre, structure)
+            return matchResult.isMatched()
 
-                matchResult: MatchResult = treInterpreter.match(tre, structure)
-                if matchResult.isMatched():
-                    tmpStructure = treeNodeGenerator.replace(tre=tre, goalNode=goalNode)
-                    structure.changeToStructure(tmpStructure)
-                    changed = True
-                    break
-
-            return changed
-
-        changed = True
-        while changed:
+        while True:
             opName = structure.getExpandedOperatorName()
             rules = self.__opToRuleDict.get(opName, ())
-            changed = rearrangeStructureOneTurn(structure, rules)
+            rule = next((rule for rule in rules if match(rule, structure)), None)
+            if rule:
+                tmpStructure = treeNodeGenerator.replace(rule=rule)
+                structure.changeToStructure(tmpStructure)
+            else:
+                break
 
 
 class HanZiCodeInfosComputer:
