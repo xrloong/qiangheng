@@ -2,7 +2,11 @@ from parser.model import SubstituteRuleMatchingModel
 from parser.model import SubstituteRuleModel
 from parser.model import SubstituteRuleSetModel
 
+from tree.regexp.item import TreeRegExp
 from tree.regexp import compile
+
+from tree.node import Node as TreeExpression
+from tree.parser import TreeParser
 
 
 class SubstituteRule:
@@ -16,19 +20,20 @@ class SubstituteRule:
             pattern = "({{運算={name}}} {exp})".format(name=operator, exp=expression)
         else:
             pattern = matching
-        self.pattern = pattern
 
-        self.replacement = model.replacement
-        self.tre = compile(self.pattern)
+        goal: TreeExpression = TreeParser.parse(
+            model.replacement, supportBackReference=True
+        )
+        self.__goal = goal
+        self.__tre = compile(pattern)
 
-    def getPattern(self):
-        return self.pattern
+    @property
+    def tre(self):
+        return self.__tre
 
-    def getReplacement(self):
-        return self.replacement
-
-    def getTRE(self):
-        return self.tre
+    @property
+    def goal(self) -> TreeExpression:
+        return self.__goal
 
 
 class SubstituteRuleSet:

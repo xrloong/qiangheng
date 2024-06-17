@@ -7,6 +7,10 @@ from injector import inject
 
 from parser.QHParser import QHParser
 
+from tree.regexp.item import TreeRegExp
+
+from tree.node import Node as TreeExpression
+
 from element.enum import CodeVariance
 from coding.Base import CodeInfo
 
@@ -25,7 +29,7 @@ class SubstituteManager:
             pass
 
         @abc.abstractmethod
-        def matchAndReplace(self, tre, structure, result):
+        def matchAndReplace(self, tre: TreeRegExp, structure, goalNode: TreeExpression):
             pass
 
     @inject
@@ -52,7 +56,7 @@ class SubstituteManager:
         self.__substituteRules = substituteRules
 
         for rule in substituteRules:
-            tre = rule.getTRE()
+            tre = rule.tre
             opName = tre.prop["運算"]
 
             rules = self.__opToRuleDict.get(opName, ())
@@ -73,10 +77,10 @@ class SubstituteManager:
         def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
             changed = False
             for rule in filteredSubstituteRules:
-                tre = rule.getTRE()
-                result = rule.getReplacement()
+                tre = rule.tre
+                goal = rule.goal
 
-                tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
+                tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, goal)
                 if tmpStructure is not None:
                     structure.changeToStructure(tmpStructure)
                     changed = True

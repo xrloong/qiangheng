@@ -8,6 +8,7 @@ from tree.regexp import TreeRegExpInterpreter
 from tree.regexp import BasicTreeProxy
 from tree.regexp import TreeNodeGenerator
 
+from tree.node import Node as TreeExpression
 from tree.parser import TreeParser
 
 
@@ -59,10 +60,10 @@ class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
         super().__init__(HanZiTreeProxy())
         self.treeNodeGenerator = treeNodeGenerator
 
-    def replace(self, tre: TreeRegExp, result: str):
+    def replace(self, tre: TreeRegExp, goalNode: TreeExpression):
         treeNodeGenerator = self.treeNodeGenerator
 
-        def convertNodeToStructure(node, allComps):
+        def convertNodeToStructure(node: TreeExpression, allComps):
             operatorName = node.prop["運算"]
             compList = []
             for childNode in node.children:
@@ -95,5 +96,4 @@ class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
             structDesc = treeNodeGenerator.generateNode(operatorName, compList)
             return structDesc
 
-        node = TreeParser.parse(result, supportBackReference=True)
-        return convertNodeToStructure(node, tre.getAll())
+        return convertNodeToStructure(goalNode, tre.getAll())
