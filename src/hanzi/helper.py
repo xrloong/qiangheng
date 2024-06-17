@@ -31,10 +31,9 @@ class SubstituteHelper:
     def __init__(
         self,
         rules: tuple[SubstituteRule],
-        treInterpreter: TreeRegExpInterpreter,
         treeNodeGenerator: HanZiTreeNodeGenerator,
     ):
-        self.treInterpreter = treInterpreter
+        self.treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
         self.treeNodeGenerator = treeNodeGenerator
 
         opToRuleDict = {}
@@ -175,7 +174,6 @@ class CharacterComputingHelper:
 
         self.__workspaceManager = workspaceManager
 
-        treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
         self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(
             computeCharacterInfo=self,
         )
@@ -183,14 +181,12 @@ class CharacterComputingHelper:
         rules = structureManager.templateManager.substituteRules
         self.__templateHelper = SubstituteHelper(
             rules=rules,
-            treInterpreter=treInterpreter,
             treeNodeGenerator=treeNodeGenerator,
         )
 
         rules = structureManager.substituteManager.substituteRules
         self.__substituteHelper = SubstituteHelper(
             rules,
-            treInterpreter=treInterpreter,
             treeNodeGenerator=treeNodeGenerator,
         )
 
