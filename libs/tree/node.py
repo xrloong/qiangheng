@@ -7,16 +7,20 @@ class Node:
 
 
 class Node:
-    def __init__(self, prop: dict = {}, children: tuple[Node] = (), backRefExp: str = None):
+    def __init__(
+        self, prop: dict = {}, children: tuple[Node] = (), backRefExp: str = None
+    ):
         self.__prop = prop
         self.__children = tuple(children)
         self.__backRefExp = backRefExp
 
     @staticmethod
-    def genProp(name: str = None, operator: str = None) -> dict[str: str]:
+    def genProp(name: str = None, operator: str = None) -> dict[str:str]:
         prop = {}
-        if name: prop["置換"] = name
-        if operator: prop["運算"] = operator
+        if name:
+            prop["置換"] = name
+        if operator:
+            prop["運算"] = operator
         return prop
 
     def __eq__(self, another):
