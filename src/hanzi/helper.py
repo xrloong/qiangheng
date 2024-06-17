@@ -187,22 +187,11 @@ class CharacterComputingHelper:
             treeNodeGenerator=treeNodeGenerator,
         )
 
-        self.__templateHelper = None
-        self.__substituteHelper = None
+        rules = structureManager.templateManager.substituteRules
+        self.__templateHelper = SubstituteHelper(rules)
 
-    @property
-    def templateHelper(self) -> SubstituteHelper:
-        if self.__templateHelper is None:
-            rules = self.structureManager.templateManager.substituteRules
-            self.__templateHelper = SubstituteHelper(rules)
-        return self.__templateHelper
-
-    @property
-    def substituteHelper(self) -> SubstituteHelper:
-        if self.__substituteHelper is None:
-            rules = self.structureManager.substituteManager.substituteRules
-            self.__substituteHelper = SubstituteHelper(rules)
-        return self.__substituteHelper
+        rules = structureManager.substituteManager.substituteRules
+        self.__substituteHelper = SubstituteHelper(rules)
 
     def constructCharacter(self, character: str):
         node = self.__workspaceManager.touchNode(character)
@@ -239,10 +228,10 @@ class CharacterComputingHelper:
     def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
         structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
-        self.templateHelper.recursivelyRearrangeStructure(
+        self.__templateHelper.recursivelyRearrangeStructure(
             structure, self.rearrangeCallback
         )
-        self.substituteHelper.recursivelyRearrangeStructure(
+        self.__substituteHelper.recursivelyRearrangeStructure(
             structure, self.rearrangeCallback
         )
 
