@@ -18,26 +18,21 @@ from .element.CharacterDescription import CharacterDescription
 from .element.CharacterDescription import CharacterDecompositionSet
 from .element.SubstituteRule import SubstituteRule
 from .element.SubstituteRule import SubstituteRuleSet
+from .element.SubstituteRule import SubstituteRule
 from .element.radix import RadicalSet
 
 from .helper import RadicalCodingConverter
 
 
 class SubstituteManager:
-    class RearrangeCallback(object, metaclass=abc.ABCMeta):
-        @abc.abstractmethod
-        def prepare(self, structure):
-            pass
-
-        @abc.abstractmethod
-        def matchAndReplace(self, rule: SubstituteRule, structure):
-            pass
-
     @inject
     def __init__(self, qhparser: QHParser):
         self.__qhparser = qhparser
         self.__substituteRules = ()
-        self.__opToRuleDict = {}
+
+    @property
+    def substituteRules(self) -> tuple[SubstituteRule]:
+        return self.__substituteRules
 
     def loadSubstituteRules(self, substituteFiles):
         substituteRuleSets = map(
@@ -47,51 +42,11 @@ class SubstituteManager:
             lambda substituteRuleSet: substituteRuleSet.rules, substituteRuleSets
         )
         totalSubstituteRules = sum(rulesTuple, ())
-        self.__updateSubstituteRules(totalSubstituteRules)
+        self.__substituteRules = totalSubstituteRules
 
     def __loadSubstituteRuleSet(self, filename: str) -> SubstituteRuleSet:
         model = self.__qhparser.loadSubstituteRuleSet(filename)
         return SubstituteRuleSet(model=model)
-
-    def __updateSubstituteRules(self, substituteRules):
-        self.__substituteRules = substituteRules
-
-        for rule in substituteRules:
-            tre = rule.tre
-            opName = tre.prop["運算"]
-
-            rules = self.__opToRuleDict.get(opName, ())
-            rules = rules + (rule,)
-
-            self.__opToRuleDict[opName] = rules
-
-    def recursivelyRearrangeStructure(
-        self, structure, rearrangeCallback: RearrangeCallback
-    ):
-        rearrangeCallback.prepare(structure)
-
-        self.__rearrangeStructure(structure, rearrangeCallback)
-        for childStructure in structure.getStructureList():
-            self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
-
-    def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
-        def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
-            changed = False
-            for rule in filteredSubstituteRules:
-                tmpStructure = rearrangeCallback.matchAndReplace(
-                    rule=rule, structure=structure
-                )
-                if tmpStructure is not None:
-                    structure.changeToStructure(tmpStructure)
-                    changed = True
-                    break
-            return changed
-
-        changed = True
-        while changed:
-            opName = structure.getExpandedOperatorName()
-            rules = self.__opToRuleDict.get(opName, ())
-            changed = rearrangeStructureOneTurn(structure, rules)
 
 
 class CompositionManager:
