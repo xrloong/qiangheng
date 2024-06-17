@@ -1,3 +1,5 @@
+import abc
+
 from typing import Optional
 from injector import inject
 
@@ -15,12 +17,64 @@ from workspace import HanZiWorkspaceManager
 
 from model.element.StructureDescription import StructureDescription
 from model.element.CharacterInfo import CharacterInfo
+from model.element.SubstituteRule import SubstituteRule
 from model.interpreter import CodeInfoInterpreter
-from model.manager import SubstituteManager
 
 from .tree import HanZiTreeProxy
 from .tree import HanZiTreeNodeGenerator
 from .manager import StructureManager
+
+
+class SubstituteHelper:
+    class RearrangeCallback(object, metaclass=abc.ABCMeta):
+        @abc.abstractmethod
+        def prepare(self, structure):
+            pass
+
+        @abc.abstractmethod
+        def matchAndReplace(self, rule: SubstituteRule, structure):
+            pass
+
+    def __init__(self, rules: tuple[SubstituteRule]):
+        opToRuleDict = {}
+        for rule in rules:
+            tre = rule.tre
+            opName = tre.prop["運算"]
+
+            opRules = opToRuleDict.get(opName, ())
+            opRules = opRules + (rule,)
+
+            opToRuleDict[opName] = opRules
+
+        self.__opToRuleDict = opToRuleDict
+
+    def recursivelyRearrangeStructure(
+        self, structure, rearrangeCallback: RearrangeCallback
+    ):
+        rearrangeCallback.prepare(structure)
+
+        self.__rearrangeStructure(structure, rearrangeCallback)
+        for childStructure in structure.getStructureList():
+            self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
+
+    def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
+        def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
+            changed = False
+            for rule in filteredSubstituteRules:
+                tmpStructure = rearrangeCallback.matchAndReplace(
+                    rule=rule, structure=structure
+                )
+                if tmpStructure is not None:
+                    structure.changeToStructure(tmpStructure)
+                    changed = True
+                    break
+            return changed
+
+        changed = True
+        while changed:
+            opName = structure.getExpandedOperatorName()
+            rules = self.__opToRuleDict.get(opName, ())
+            changed = rearrangeStructureOneTurn(structure, rules)
 
 
 class HanZiCodeInfosComputer:
@@ -88,7 +142,7 @@ class CharacterComputingHelper:
 
 
 class CharacterComputingHelper:
-    class RearrangeCallback(SubstituteManager.RearrangeCallback):
+    class RearrangeCallback(SubstituteHelper.RearrangeCallback):
         def __init__(
             self,
             computeCharacterInfo: CharacterComputingHelper,
@@ -104,8 +158,11 @@ class CharacterComputingHelper:
                 character = structure.referencedNodeName
                 self.computeCharacterInfo.constructCharacter(character)
 
-        def matchAndReplace(self, tre: TreeRegExp, node, goalNode: TreeExpression):
-            matchResult: MatchResult = self.treInterpreter.match(tre, node)
+        def matchAndReplace(self, rule: SubstituteRule, structure):
+            tre = rule.tre
+            goalNode = rule.goal
+
+            matchResult: MatchResult = self.treInterpreter.match(tre, structure)
             if matchResult.isMatched():
                 treeNodeGenerator = self.treeNodeGenerator
                 return treeNodeGenerator.replace(tre=tre, goalNode=goalNode)
@@ -132,6 +189,23 @@ class CharacterComputingHelper:
             treInterpreter=treInterpreter,
             treeNodeGenerator=treeNodeGenerator,
         )
+
+        self.__templateHelper = None
+        self.__substituteHelper = None
+
+    @property
+    def templateHelper(self) -> SubstituteHelper:
+        if self.__templateHelper is None:
+            rules = self.structureManager.templateManager.substituteRules
+            self.__templateHelper = SubstituteHelper(rules)
+        return self.__templateHelper
+
+    @property
+    def substituteHelper(self) -> SubstituteHelper:
+        if self.__substituteHelper is None:
+            rules = self.structureManager.substituteManager.substituteRules
+            self.__substituteHelper = SubstituteHelper(rules)
+        return self.__substituteHelper
 
     def constructCharacter(self, character: str):
         node = self.__workspaceManager.touchNode(character)
@@ -168,12 +242,10 @@ class CharacterComputingHelper:
     def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
         structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
-        structureManager = self.structureManager
-        templateManager = structureManager.templateManager
-        substituteManager = structureManager.substituteManager
-
-        templateManager.recursivelyRearrangeStructure(structure, self.rearrangeCallback)
-        substituteManager.recursivelyRearrangeStructure(
+        self.templateHelper.recursivelyRearrangeStructure(
+            structure, self.rearrangeCallback
+        )
+        self.substituteHelper.recursivelyRearrangeStructure(
             structure, self.rearrangeCallback
         )
 
