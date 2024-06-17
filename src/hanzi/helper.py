@@ -32,7 +32,15 @@ class SubstituteHelper:
         def matchAndReplace(self, rule: SubstituteRule, structure):
             pass
 
-    def __init__(self, rules: tuple[SubstituteRule]):
+    def __init__(
+        self,
+        rules: tuple[SubstituteRule],
+        treInterpreter: TreeRegExpInterpreter,
+        treeNodeGenerator: HanZiTreeNodeGenerator,
+    ):
+        self.treInterpreter = treInterpreter
+        self.treeNodeGenerator = treeNodeGenerator
+
         opToRuleDict = {}
         for rule in rules:
             tre = rule.tre
@@ -188,10 +196,18 @@ class CharacterComputingHelper:
         )
 
         rules = structureManager.templateManager.substituteRules
-        self.__templateHelper = SubstituteHelper(rules)
+        self.__templateHelper = SubstituteHelper(
+            rules=rules,
+            treInterpreter=treInterpreter,
+            treeNodeGenerator=treeNodeGenerator,
+        )
 
         rules = structureManager.substituteManager.substituteRules
-        self.__substituteHelper = SubstituteHelper(rules)
+        self.__substituteHelper = SubstituteHelper(
+            rules,
+            treInterpreter=treInterpreter,
+            treeNodeGenerator=treeNodeGenerator,
+        )
 
     def constructCharacter(self, character: str):
         node = self.__workspaceManager.touchNode(character)
