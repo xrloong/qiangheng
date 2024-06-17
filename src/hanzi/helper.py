@@ -153,12 +153,8 @@ class CharacterComputingHelper:
         def __init__(
             self,
             computeCharacterInfo: CharacterComputingHelper,
-            treInterpreter: TreeRegExpInterpreter,
-            treeNodeGenerator: HanZiTreeNodeGenerator,
         ):
             self.computeCharacterInfo = computeCharacterInfo
-            self.treInterpreter = treInterpreter
-            self.treeNodeGenerator = treeNodeGenerator
 
         def prepare(self, structure):
             if structure.isWrapper():
@@ -182,8 +178,6 @@ class CharacterComputingHelper:
         treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
         self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(
             computeCharacterInfo=self,
-            treInterpreter=treInterpreter,
-            treeNodeGenerator=treeNodeGenerator,
         )
 
         rules = structureManager.templateManager.substituteRules
