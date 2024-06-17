@@ -15,6 +15,7 @@ from workspace import HanZiWorkspaceManager
 
 from model.element.StructureDescription import StructureDescription
 from model.element.CharacterInfo import CharacterInfo
+from model.element.SubstituteRule import SubstituteRule
 from model.interpreter import CodeInfoInterpreter
 from model.manager import SubstituteManager
 
@@ -104,8 +105,11 @@ class CharacterComputingHelper:
                 character = structure.referencedNodeName
                 self.computeCharacterInfo.constructCharacter(character)
 
-        def matchAndReplace(self, tre: TreeRegExp, node, goalNode: TreeExpression):
-            matchResult: MatchResult = self.treInterpreter.match(tre, node)
+        def matchAndReplace(self, rule: SubstituteRule, structure):
+            tre = rule.tre
+            goalNode = rule.goal
+
+            matchResult: MatchResult = self.treInterpreter.match(tre, structure)
             if matchResult.isMatched():
                 treeNodeGenerator = self.treeNodeGenerator
                 return treeNodeGenerator.replace(tre=tre, goalNode=goalNode)

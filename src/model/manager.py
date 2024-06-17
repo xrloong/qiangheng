@@ -16,6 +16,7 @@ from coding.Base import CodeInfo
 
 from .element.CharacterDescription import CharacterDescription
 from .element.CharacterDescription import CharacterDecompositionSet
+from .element.SubstituteRule import SubstituteRule
 from .element.SubstituteRule import SubstituteRuleSet
 from .element.radix import RadicalSet
 
@@ -29,7 +30,7 @@ class SubstituteManager:
             pass
 
         @abc.abstractmethod
-        def matchAndReplace(self, tre: TreeRegExp, structure, goalNode: TreeExpression):
+        def matchAndReplace(self, rule: SubstituteRule, structure):
             pass
 
     @inject
@@ -77,10 +78,9 @@ class SubstituteManager:
         def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
             changed = False
             for rule in filteredSubstituteRules:
-                tre = rule.tre
-                goal = rule.goal
-
-                tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, goal)
+                tmpStructure = rearrangeCallback.matchAndReplace(
+                    rule=rule, structure=structure
+                )
                 if tmpStructure is not None:
                     structure.changeToStructure(tmpStructure)
                     changed = True
