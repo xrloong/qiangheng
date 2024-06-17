@@ -10,7 +10,6 @@ from parser.QHParser import QHParser
 from tree.regexp.item import TreeRegExp
 
 from tree.node import Node as TreeExpression
-from tree.parser import TreeParser
 
 from element.enum import CodeVariance
 from coding.Base import CodeInfo
@@ -79,10 +78,7 @@ class SubstituteManager:
             changed = False
             for rule in filteredSubstituteRules:
                 tre = rule.tre
-                result = rule.replacement
-                goal: TreeExpression = TreeParser.parse(
-                    result, supportBackReference=True
-                )
+                goal = rule.goal
 
                 tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, goal)
                 if tmpStructure is not None:

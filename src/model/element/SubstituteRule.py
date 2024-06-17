@@ -5,6 +5,9 @@ from parser.model import SubstituteRuleSetModel
 from tree.regexp.item import TreeRegExp
 from tree.regexp import compile
 
+from tree.node import Node as TreeExpression
+from tree.parser import TreeParser
+
 
 class SubstituteRule:
     def __init__(self, model: SubstituteRuleModel):
@@ -18,7 +21,10 @@ class SubstituteRule:
         else:
             pattern = matching
 
-        self.__replacement = model.replacement
+        goal: TreeExpression = TreeParser.parse(
+            model.replacement, supportBackReference=True
+        )
+        self.__goal = goal
         self.__tre = compile(pattern)
 
     @property
@@ -26,8 +32,8 @@ class SubstituteRule:
         return self.__tre
 
     @property
-    def replacement(self):
-        return self.__replacement
+    def goal(self) -> TreeExpression:
+        return self.__goal
 
 
 class SubstituteRuleSet:
