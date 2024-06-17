@@ -61,23 +61,19 @@ class SubstituteHelper:
         treInterpreter = self.treInterpreter
         treeNodeGenerator = self.treeNodeGenerator
 
-        def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
-            changed = False
-            for rule in filteredSubstituteRules:
-                matchResult: MatchResult = treInterpreter.match(rule.tre, structure)
-                if matchResult.isMatched():
-                    tmpStructure = treeNodeGenerator.replace(rule=rule)
-                    structure.changeToStructure(tmpStructure)
-                    changed = True
-                    break
+        def match(rule, structure):
+            matchResult: MatchResult = treInterpreter.match(rule.tre, structure)
+            return matchResult.isMatched()
 
-            return changed
-
-        changed = True
-        while changed:
+        while True:
             opName = structure.getExpandedOperatorName()
             rules = self.__opToRuleDict.get(opName, ())
-            changed = rearrangeStructureOneTurn(structure, rules)
+            rule = next((rule for rule in rules if match(rule, structure)), None)
+            if rule:
+                tmpStructure = treeNodeGenerator.replace(rule=rule)
+                structure.changeToStructure(tmpStructure)
+            else:
+                break
 
 
 class HanZiCodeInfosComputer:
