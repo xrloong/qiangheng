@@ -82,8 +82,16 @@ class HanZiCodeInfosComputer:
 
 
 class CharacterComputingHelper:
+    pass
+
+
+class CharacterComputingHelper:
     class RearrangeCallback(SubstituteManager.RearrangeCallback):
-        def __init__(self, computeCharacterInfo, treInterpreter):
+        def __init__(
+            self,
+            computeCharacterInfo: CharacterComputingHelper,
+            treInterpreter: HanZiTreeRegExpInterpreter,
+        ):
             self.computeCharacterInfo = computeCharacterInfo
             self.treInterpreter = treInterpreter
 
@@ -114,7 +122,7 @@ class CharacterComputingHelper:
         self.__workspaceManager = workspaceManager
 
         self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(
-            self, treInterpreter
+            computeCharacterInfo=self, treInterpreter=treInterpreter
         )
 
     def constructCharacter(self, character: str):
