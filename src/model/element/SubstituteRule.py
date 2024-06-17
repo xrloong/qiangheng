@@ -2,6 +2,7 @@ from parser.model import SubstituteRuleMatchingModel
 from parser.model import SubstituteRuleModel
 from parser.model import SubstituteRuleSetModel
 
+from tree.regexp.item import TreeRegExp
 from tree.regexp import compile
 
 
@@ -17,14 +18,16 @@ class SubstituteRule:
         else:
             pattern = matching
 
-        self.replacement = model.replacement
-        self.tre = compile(pattern)
+        self.__replacement = model.replacement
+        self.__tre = compile(pattern)
 
-    def getReplacement(self):
-        return self.replacement
+    @property
+    def tre(self):
+        return self.__tre
 
-    def getTRE(self):
-        return self.tre
+    @property
+    def replacement(self):
+        return self.__replacement
 
 
 class SubstituteRuleSet:

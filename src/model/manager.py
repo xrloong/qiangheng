@@ -52,7 +52,7 @@ class SubstituteManager:
         self.__substituteRules = substituteRules
 
         for rule in substituteRules:
-            tre = rule.getTRE()
+            tre = rule.tre
             opName = tre.prop["運算"]
 
             rules = self.__opToRuleDict.get(opName, ())
@@ -73,8 +73,8 @@ class SubstituteManager:
         def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
             changed = False
             for rule in filteredSubstituteRules:
-                tre = rule.getTRE()
-                result = rule.getReplacement()
+                tre = rule.tre
+                result = rule.replacement
 
                 tmpStructure = rearrangeCallback.matchAndReplace(tre, structure, result)
                 if tmpStructure is not None:
