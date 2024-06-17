@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from tree.node import Node as TreeExpression
 from tree.parser import TreeParser
 
 from element.enum import FontVariance
@@ -71,11 +72,11 @@ class StructureDescription:
 
 class DecompositionDescription:
     def __init__(self, model: StructureModel):
-        self.__node = TreeParser.parse(model.expression)
+        self.__node: TreeExpression = TreeParser.parse(model.expression)
         self.__font = model.font
 
     @property
-    def node(self):
+    def node(self) -> TreeExpression:
         return self.__node
 
     @property
