@@ -59,15 +59,17 @@ class SubstituteHelper:
             self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
     def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
+        treInterpreter = self.treInterpreter
+        treeNodeGenerator = self.treeNodeGenerator
+
         def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
             changed = False
             for rule in filteredSubstituteRules:
                 tre = rule.tre
                 goalNode = rule.goal
 
-                matchResult: MatchResult = self.treInterpreter.match(tre, structure)
+                matchResult: MatchResult = treInterpreter.match(tre, structure)
                 if matchResult.isMatched():
-                    treeNodeGenerator = self.treeNodeGenerator
                     tmpStructure = treeNodeGenerator.replace(tre=tre, goalNode=goalNode)
                     structure.changeToStructure(tmpStructure)
                     changed = True
