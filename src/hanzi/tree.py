@@ -54,9 +54,7 @@ class HanZiTreeNodeGenerator(TreeNodeGenerator):
 
 class HanZiTreeRegExpInterpreter(TreeRegExpInterpreter):
     @inject
-    def __init__(
-        self, treeProxy: HanZiTreeProxy, treeNodeGenerator: HanZiTreeNodeGenerator
-    ):
+    def __init__(self, treeNodeGenerator: HanZiTreeNodeGenerator):
         super().__init__(HanZiTreeProxy())
         self.treeNodeGenerator = treeNodeGenerator
 
