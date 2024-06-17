@@ -3,12 +3,9 @@ import abc
 from typing import Optional
 from injector import inject
 
-from tree.regexp.item import TreeRegExp
 from tree.regexp.item import MatchResult
 from tree.regexp import TreeRegExpInterpreter
 
-from tree.node import Node as TreeExpression
-from tree.parser import TreeParser
 
 from element.enum import FontVariance
 
@@ -31,11 +28,14 @@ class SubstituteHelper:
         def prepare(self, structure):
             pass
 
-        @abc.abstractmethod
-        def matchAndReplace(self, rule: SubstituteRule, structure):
-            pass
+    def __init__(
+        self,
+        rules: tuple[SubstituteRule],
+        treeNodeGenerator: HanZiTreeNodeGenerator,
+    ):
+        self.treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
+        self.treeNodeGenerator = treeNodeGenerator
 
-    def __init__(self, rules: tuple[SubstituteRule]):
         opToRuleDict = {}
         for rule in rules:
             tre = rule.tre
@@ -58,16 +58,22 @@ class SubstituteHelper:
             self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
     def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
+        treInterpreter = self.treInterpreter
+        treeNodeGenerator = self.treeNodeGenerator
+
         def rearrangeStructureOneTurn(structure, filteredSubstituteRules):
             changed = False
             for rule in filteredSubstituteRules:
-                tmpStructure = rearrangeCallback.matchAndReplace(
-                    rule=rule, structure=structure
-                )
-                if tmpStructure is not None:
+                tre = rule.tre
+                goalNode = rule.goal
+
+                matchResult: MatchResult = treInterpreter.match(tre, structure)
+                if matchResult.isMatched():
+                    tmpStructure = treeNodeGenerator.replace(tre=tre, goalNode=goalNode)
                     structure.changeToStructure(tmpStructure)
                     changed = True
                     break
+
             return changed
 
         changed = True
@@ -146,28 +152,13 @@ class CharacterComputingHelper:
         def __init__(
             self,
             computeCharacterInfo: CharacterComputingHelper,
-            treInterpreter: TreeRegExpInterpreter,
-            treeNodeGenerator: HanZiTreeNodeGenerator,
         ):
             self.computeCharacterInfo = computeCharacterInfo
-            self.treInterpreter = treInterpreter
-            self.treeNodeGenerator = treeNodeGenerator
 
         def prepare(self, structure):
             if structure.isWrapper():
                 character = structure.referencedNodeName
                 self.computeCharacterInfo.constructCharacter(character)
-
-        def matchAndReplace(self, rule: SubstituteRule, structure):
-            tre = rule.tre
-            goalNode = rule.goal
-
-            matchResult: MatchResult = self.treInterpreter.match(tre, structure)
-            if matchResult.isMatched():
-                treeNodeGenerator = self.treeNodeGenerator
-                return treeNodeGenerator.replace(tre=tre, goalNode=goalNode)
-            else:
-                return None
 
     @inject
     def __init__(
@@ -183,29 +174,21 @@ class CharacterComputingHelper:
 
         self.__workspaceManager = workspaceManager
 
-        treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
         self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(
             computeCharacterInfo=self,
-            treInterpreter=treInterpreter,
+        )
+
+        rules = structureManager.templateManager.substituteRules
+        self.__templateHelper = SubstituteHelper(
+            rules=rules,
             treeNodeGenerator=treeNodeGenerator,
         )
 
-        self.__templateHelper = None
-        self.__substituteHelper = None
-
-    @property
-    def templateHelper(self) -> SubstituteHelper:
-        if self.__templateHelper is None:
-            rules = self.structureManager.templateManager.substituteRules
-            self.__templateHelper = SubstituteHelper(rules)
-        return self.__templateHelper
-
-    @property
-    def substituteHelper(self) -> SubstituteHelper:
-        if self.__substituteHelper is None:
-            rules = self.structureManager.substituteManager.substituteRules
-            self.__substituteHelper = SubstituteHelper(rules)
-        return self.__substituteHelper
+        rules = structureManager.substituteManager.substituteRules
+        self.__substituteHelper = SubstituteHelper(
+            rules,
+            treeNodeGenerator=treeNodeGenerator,
+        )
 
     def constructCharacter(self, character: str):
         node = self.__workspaceManager.touchNode(character)
@@ -242,10 +225,10 @@ class CharacterComputingHelper:
     def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
         structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
-        self.templateHelper.recursivelyRearrangeStructure(
+        self.__templateHelper.recursivelyRearrangeStructure(
             structure, self.rearrangeCallback
         )
-        self.substituteHelper.recursivelyRearrangeStructure(
+        self.__substituteHelper.recursivelyRearrangeStructure(
             structure, self.rearrangeCallback
         )
 

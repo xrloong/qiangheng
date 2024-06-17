@@ -2,7 +2,6 @@ from parser.model import SubstituteRuleMatchingModel
 from parser.model import SubstituteRuleModel
 from parser.model import SubstituteRuleSetModel
 
-from tree.regexp.item import TreeRegExp
 from tree.regexp import compile
 
 from tree.node import Node as TreeExpression

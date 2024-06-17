@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 
-import abc
 
 from typing import Optional
 from injector import inject
 
 from parser.QHParser import QHParser
 
-from tree.regexp.item import TreeRegExp
-
-from tree.node import Node as TreeExpression
 
 from element.enum import CodeVariance
 from coding.Base import CodeInfo
@@ -18,7 +14,6 @@ from .element.CharacterDescription import CharacterDescription
 from .element.CharacterDescription import CharacterDecompositionSet
 from .element.SubstituteRule import SubstituteRule
 from .element.SubstituteRule import SubstituteRuleSet
-from .element.SubstituteRule import SubstituteRule
 from .element.radix import RadicalSet
 
 from .helper import RadicalCodingConverter
