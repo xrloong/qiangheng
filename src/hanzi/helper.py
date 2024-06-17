@@ -53,11 +53,11 @@ class SubstituteHelper:
     ):
         rearrangeCallback.prepare(structure)
 
-        self.__rearrangeStructure(structure, rearrangeCallback)
+        self.__rearrangeStructure(structure)
         for childStructure in structure.getStructureList():
             self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
-    def __rearrangeStructure(self, structure, rearrangeCallback: RearrangeCallback):
+    def __rearrangeStructure(self, structure):
         treInterpreter = self.treInterpreter
         treeNodeGenerator = self.treeNodeGenerator
 
