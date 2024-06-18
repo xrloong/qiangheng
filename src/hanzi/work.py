@@ -266,6 +266,20 @@ class CharacterStructuringWork:
             operator, childStructureList
         )
 
+    def reset(self):
+        self.__workspaceManager.reset()
+
+
+class CharacterCodeAppendingWork:
+    @inject
+    def __init__(
+        self,
+        workspaceManager: HanZiWorkspaceManager,
+        structureManager: StructureManager,
+    ):
+        self.__workspaceManager = workspaceManager
+        self.structureManager = structureManager
+
     def appendCodesForAddedNodes(self):
         for node in self.__workspaceManager.addedNodes:
             self.__appendCharacterCodes(node.nodeStructure)
@@ -295,6 +309,3 @@ class CharacterStructuringWork:
             fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
             if fastCodeInfo:
                 nodeStructure.fastCodeInfo = fastCodeInfo
-
-    def reset(self):
-        self.__workspaceManager.reset()
