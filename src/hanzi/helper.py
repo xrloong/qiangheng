@@ -269,12 +269,12 @@ class CharacterComputingHelper:
         )
 
     def __appendCharacterCodes(self, nodeStructure: HanZiStructure):
+        assert nodeStructure.isNode()
+
         self.__appendRadicalCodes(nodeStructure)
         self.__appendFastCode(nodeStructure)
 
     def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
-        assert nodeStructure.isNode()
-
         if not nodeStructure.hasUnitStructures():
             workspaceManager = self.__workspaceManager
             radixManager = self.structureManager.radixManager
@@ -287,8 +287,6 @@ class CharacterComputingHelper:
                     workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
     def __appendFastCode(self, nodeStructure: HanZiStructure):
-        assert nodeStructure.isNode()
-
         if not nodeStructure.fastCodeInfo:
             character = nodeStructure.name
             fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
