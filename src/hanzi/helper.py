@@ -193,8 +193,7 @@ class CharacterComputingHelper:
         nodeStructure = node.nodeStructure
         assert nodeStructure.isNode()
 
-        self.__appendRadicalCodes(nodeStructure)
-        self.__appendFastCode(nodeStructure)
+        self.__appendCharacterCodes(nodeStructure)
 
         self.expandNodeStructure(nodeStructure)
 
@@ -268,6 +267,10 @@ class CharacterComputingHelper:
         return self.__workspaceManager.generateCompoundStructure(
             operator, childStructureList
         )
+
+    def __appendCharacterCodes(self, nodeStructure: HanZiStructure):
+        self.__appendRadicalCodes(nodeStructure)
+        self.__appendFastCode(nodeStructure)
 
     def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
         assert nodeStructure.isNode()
