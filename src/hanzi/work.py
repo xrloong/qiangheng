@@ -81,7 +81,7 @@ class SubstituteHelper:
                 break
 
 
-class HanZiCodeInfosComputer:
+class CharacterCodeComputingWork:
     @inject
     def __init__(
         self,
