@@ -10,8 +10,9 @@ from injection.key import SeparateComputing
 
 from coding.Base import CodeMappingInfoInterpreter
 
-from hanzi.helper import CharacterComputingHelper
-from hanzi.helper import HanZiCodeInfosComputer
+from hanzi.work import CharacterStructuringWork
+from hanzi.work import CharacterCodeAppendingWork
+from hanzi.work import CharacterCodeComputingWork
 
 
 class MainManager:
@@ -26,8 +27,9 @@ class MainManager:
     def __compute(self):
         injector = self.__injector
 
-        computingHelper = injector.get(CharacterComputingHelper)
-        codeInfosComputer = injector.get(HanZiCodeInfosComputer)
+        structuringWork = injector.get(CharacterStructuringWork)
+        appendingWork = injector.get(CharacterCodeAppendingWork)
+        computingWork = injector.get(CharacterCodeComputingWork)
 
         characters = injector.get(Characters)
         separateComputing = injector.get(SeparateComputing)
@@ -37,11 +39,11 @@ class MainManager:
         characterInfos = []
         for character in characters:
             if separateComputing:
-                computingHelper.reset()
+                structuringWork.reset()
 
-            computingHelper.constructCharacter(character)
-            computingHelper.appendCodesForAddedNodes()
-            characterInfo = codeInfosComputer.computeCharacter(character)
+            structuringWork.constructCharacter(character)
+            appendingWork.appendCodesForAddedNodes()
+            characterInfo = computingWork.computeCharacter(character)
             if characterInfo:
                 characterInfos.append(characterInfo)
 
