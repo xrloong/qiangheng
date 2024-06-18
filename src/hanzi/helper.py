@@ -57,18 +57,23 @@ class SubstituteHelper:
         for childStructure in structure.getStructureList():
             self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
-    def __rearrangeStructure(self, structure):
+    def __findMatchedRule(self, structure) -> Optional[SubstituteRule]:
         treInterpreter = self.treInterpreter
-        treeNodeGenerator = self.treeNodeGenerator
 
         def match(rule, structure):
             matchResult: MatchResult = treInterpreter.match(rule.tre, structure)
             return matchResult.isMatched()
 
+        opName = structure.getExpandedOperatorName()
+        rules = self.__opToRuleDict.get(opName, ())
+        rule = next((rule for rule in rules if match(rule, structure)), None)
+        return rule
+
+    def __rearrangeStructure(self, structure):
+        treeNodeGenerator = self.treeNodeGenerator
+
         while True:
-            opName = structure.getExpandedOperatorName()
-            rules = self.__opToRuleDict.get(opName, ())
-            rule = next((rule for rule in rules if match(rule, structure)), None)
+            rule = self.__findMatchedRule(structure)
             if rule:
                 tmpStructure = treeNodeGenerator.replace(rule=rule)
                 structure.changeToStructure(tmpStructure)
