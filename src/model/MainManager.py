@@ -10,8 +10,8 @@ from injection.key import SeparateComputing
 
 from coding.Base import CodeMappingInfoInterpreter
 
-from hanzi.helper import CharacterComputingHelper
-from hanzi.helper import HanZiCodeInfosComputer
+from hanzi.work import CharacterComputingHelper
+from hanzi.work import HanZiCodeInfosComputer
 
 
 class MainManager:
