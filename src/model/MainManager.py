@@ -26,7 +26,7 @@ class MainManager:
     def __compute(self):
         injector = self.__injector
 
-        computingHelper = injector.get(CharacterStructuringWork)
+        structuringWork = injector.get(CharacterStructuringWork)
         codeInfosComputer = injector.get(HanZiCodeInfosComputer)
 
         characters = injector.get(Characters)
@@ -37,10 +37,10 @@ class MainManager:
         characterInfos = []
         for character in characters:
             if separateComputing:
-                computingHelper.reset()
+                structuringWork.reset()
 
-            computingHelper.constructCharacter(character)
-            computingHelper.appendCodesForAddedNodes()
+            structuringWork.constructCharacter(character)
+            structuringWork.appendCodesForAddedNodes()
             characterInfo = codeInfosComputer.computeCharacter(character)
             if characterInfo:
                 characterInfos.append(characterInfo)

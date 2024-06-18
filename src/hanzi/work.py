@@ -149,14 +149,14 @@ class CharacterStructuringWork:
     class RearrangeCallback(SubstituteHelper.RearrangeCallback):
         def __init__(
             self,
-            computeCharacterInfo: CharacterStructuringWork,
+            structuringWork: CharacterStructuringWork,
         ):
-            self.computeCharacterInfo = computeCharacterInfo
+            self.structuringWork = structuringWork
 
         def prepare(self, structure):
             if structure.isWrapper():
                 character = structure.referencedNodeName
-                self.computeCharacterInfo.constructCharacter(character)
+                self.structuringWork.constructCharacter(character)
 
     @inject
     def __init__(
@@ -173,7 +173,7 @@ class CharacterStructuringWork:
         self.__workspaceManager = workspaceManager
 
         self.rearrangeCallback = CharacterStructuringWork.RearrangeCallback(
-            computeCharacterInfo=self,
+            structuringWork=self,
         )
 
         rules = structureManager.templateManager.substituteRules
