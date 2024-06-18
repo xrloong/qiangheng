@@ -10,6 +10,11 @@ class HanZiWorkspaceManager:
     def __init__(self):
         self.__workspace = HanZiWorkspace()
         self.__wrapperExpressionDict = {}
+        self.__addedNodes = []
+
+    @property
+    def addedNodes(self) -> tuple[HanZiNode]:
+        return tuple(self.__addedNodes)
 
     def isNodeExpanded(self, name: str) -> bool:
         return self.__workspace.isNodeExpanded(name)
@@ -17,8 +22,14 @@ class HanZiWorkspaceManager:
     def reset(self):
         self.__workspace.reset()
 
+    def resetAddedNodes(self):
+        self.__addedNodes = []
+
     def touchNode(self, character: str) -> HanZiNode:
-        return self.__workspace.touchNode(character)
+        (node, added) = self.__workspace.touchNode(character)
+        if added:
+            self.__addedNodes.append(node)
+        return node
 
     def getUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
         return self.__generateUnitStructure(radixCodeInfo)

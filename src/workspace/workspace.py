@@ -122,11 +122,15 @@ class HanZiWorkspace:
     def __findNode(self, name):
         return self.__nodeDict.get(name)
 
-    def touchNode(self, character):
+    def touchNode(self, character: str) -> (HanZiNode, bool):
         if not self.__isWithNode(character):
             node = HanZiNode(character)
             self.__addNode(node)
-        return self.__findNode(character)
+            added = True
+        else:
+            node = self.__findNode(character)
+            added = False
+        return (node, added)
 
     def isNodeExpanded(self, name):
         node = self.__findNode(name)

@@ -40,6 +40,7 @@ class MainManager:
                 computingHelper.reset()
 
             computingHelper.constructCharacter(character)
+            computingHelper.appendCodesForAddedNodes()
             characterInfo = codeInfosComputer.computeCharacter(character)
             if characterInfo:
                 characterInfos.append(characterInfo)

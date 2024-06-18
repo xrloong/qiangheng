@@ -57,18 +57,23 @@ class SubstituteHelper:
         for childStructure in structure.getStructureList():
             self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
 
-    def __rearrangeStructure(self, structure):
+    def __findMatchedRule(self, structure) -> Optional[SubstituteRule]:
         treInterpreter = self.treInterpreter
-        treeNodeGenerator = self.treeNodeGenerator
 
         def match(rule, structure):
             matchResult: MatchResult = treInterpreter.match(rule.tre, structure)
             return matchResult.isMatched()
 
+        opName = structure.getExpandedOperatorName()
+        rules = self.__opToRuleDict.get(opName, ())
+        rule = next((rule for rule in rules if match(rule, structure)), None)
+        return rule
+
+    def __rearrangeStructure(self, structure):
+        treeNodeGenerator = self.treeNodeGenerator
+
         while True:
-            opName = structure.getExpandedOperatorName()
-            rules = self.__opToRuleDict.get(opName, ())
-            rule = next((rule for rule in rules if match(rule, structure)), None)
+            rule = self.__findMatchedRule(structure)
             if rule:
                 tmpStructure = treeNodeGenerator.replace(rule=rule)
                 structure.changeToStructure(tmpStructure)
@@ -188,9 +193,6 @@ class CharacterComputingHelper:
         nodeStructure = node.nodeStructure
         assert nodeStructure.isNode()
 
-        self.__appendRadicalCodes(nodeStructure)
-        self.__appendFastCode(nodeStructure)
-
         self.expandNodeStructure(nodeStructure)
 
     def expandNodeStructure(self, nodeStructure: HanZiStructure):
@@ -264,9 +266,18 @@ class CharacterComputingHelper:
             operator, childStructureList
         )
 
-    def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
+    def appendCodesForAddedNodes(self):
+        for node in self.__workspaceManager.addedNodes:
+            self.__appendCharacterCodes(node.nodeStructure)
+        self.__workspaceManager.resetAddedNodes()
+
+    def __appendCharacterCodes(self, nodeStructure: HanZiStructure):
         assert nodeStructure.isNode()
 
+        self.__appendRadicalCodes(nodeStructure)
+        self.__appendFastCode(nodeStructure)
+
+    def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
         if not nodeStructure.hasUnitStructures():
             workspaceManager = self.__workspaceManager
             radixManager = self.structureManager.radixManager
@@ -279,8 +290,6 @@ class CharacterComputingHelper:
                     workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
     def __appendFastCode(self, nodeStructure: HanZiStructure):
-        assert nodeStructure.isNode()
-
         if not nodeStructure.fastCodeInfo:
             character = nodeStructure.name
             fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
