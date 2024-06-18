@@ -193,8 +193,6 @@ class CharacterComputingHelper:
         nodeStructure = node.nodeStructure
         assert nodeStructure.isNode()
 
-        self.__appendCharacterCodes(nodeStructure)
-
         self.expandNodeStructure(nodeStructure)
 
     def expandNodeStructure(self, nodeStructure: HanZiStructure):
@@ -267,6 +265,11 @@ class CharacterComputingHelper:
         return self.__workspaceManager.generateCompoundStructure(
             operator, childStructureList
         )
+
+    def appendCodesForAddedNodes(self):
+        for node in self.__workspaceManager.addedNodes:
+            self.__appendCharacterCodes(node.nodeStructure)
+        self.__workspaceManager.resetAddedNodes()
 
     def __appendCharacterCodes(self, nodeStructure: HanZiStructure):
         assert nodeStructure.isNode()
