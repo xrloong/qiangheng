@@ -81,66 +81,6 @@ class SubstituteHelper:
                 break
 
 
-class CharacterCodeComputingWork:
-    @inject
-    def __init__(
-        self,
-        workspaceManager: HanZiWorkspaceManager,
-        codeInfoInterpreter: CodeInfoInterpreter,
-    ):
-        self.__workspaceManager = workspaceManager
-        self.__codeInfoInterpreter = codeInfoInterpreter
-
-    def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
-        node = self.__workspaceManager.touchNode(character)
-        nodeStructure = node.nodeStructure
-        assert nodeStructure.isNode()
-
-        self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
-
-        return self.__getNodeCharacterInfo(node) if node else None
-
-    def __recursivelyComputeCodeInfosOfStructureTree(self, structure: HanZiStructure):
-        if not structure:
-            return
-
-        if structure.isCodeInfoGenerated():
-            return
-
-        for cihldStructure in structure.getChildStructures():
-            self.__recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
-        self.__generateCodeInfosOfStructure(structure)
-
-    def __generateCodeInfosOfStructure(self, structure: HanZiStructure):
-        structureInfo = structure.structureInfo
-        operator = structureInfo.getOperator()
-        codeInfosCollection = structureInfo.codeInfos
-
-        allCodeInfos = self.__codeInfoInterpreter.computeAllCodeInfos(
-            operator, codeInfosCollection
-        )
-        structureInfo.setComputedCodeInfos(allCodeInfos)
-
-    def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
-        nodeStructure = hanziNode.nodeStructure
-        assert nodeStructure.isNode()
-        nodeStructureInfo = nodeStructure.structureInfo
-
-        structureList = nodeStructureInfo.childStructures
-        codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
-
-        fastCodeInfo = nodeStructure.fastCodeInfo
-        if fastCodeInfo:
-            codeInfoList = codeInfoList + (fastCodeInfo,)
-
-        codeList = self.__codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
-
-        characterInfo = hanziNode.tag
-        characterInfo.setCodeProps(codeList)
-
-        return characterInfo
-
-
 class CharacterStructuringWork:
     pass
 
@@ -309,3 +249,63 @@ class CharacterCodeAppendingWork:
             fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
             if fastCodeInfo:
                 nodeStructure.fastCodeInfo = fastCodeInfo
+
+
+class CharacterCodeComputingWork:
+    @inject
+    def __init__(
+        self,
+        workspaceManager: HanZiWorkspaceManager,
+        codeInfoInterpreter: CodeInfoInterpreter,
+    ):
+        self.__workspaceManager = workspaceManager
+        self.__codeInfoInterpreter = codeInfoInterpreter
+
+    def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
+        node = self.__workspaceManager.touchNode(character)
+        nodeStructure = node.nodeStructure
+        assert nodeStructure.isNode()
+
+        self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
+
+        return self.__getNodeCharacterInfo(node) if node else None
+
+    def __recursivelyComputeCodeInfosOfStructureTree(self, structure: HanZiStructure):
+        if not structure:
+            return
+
+        if structure.isCodeInfoGenerated():
+            return
+
+        for cihldStructure in structure.getChildStructures():
+            self.__recursivelyComputeCodeInfosOfStructureTree(cihldStructure)
+        self.__generateCodeInfosOfStructure(structure)
+
+    def __generateCodeInfosOfStructure(self, structure: HanZiStructure):
+        structureInfo = structure.structureInfo
+        operator = structureInfo.getOperator()
+        codeInfosCollection = structureInfo.codeInfos
+
+        allCodeInfos = self.__codeInfoInterpreter.computeAllCodeInfos(
+            operator, codeInfosCollection
+        )
+        structureInfo.setComputedCodeInfos(allCodeInfos)
+
+    def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
+        nodeStructure = hanziNode.nodeStructure
+        assert nodeStructure.isNode()
+        nodeStructureInfo = nodeStructure.structureInfo
+
+        structureList = nodeStructureInfo.childStructures
+        codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
+
+        fastCodeInfo = nodeStructure.fastCodeInfo
+        if fastCodeInfo:
+            codeInfoList = codeInfoList + (fastCodeInfo,)
+
+        codeList = self.__codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
+
+        characterInfo = hanziNode.tag
+        characterInfo.setCodeProps(codeList)
+
+        return characterInfo
