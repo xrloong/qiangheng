@@ -141,15 +141,15 @@ class HanZiCodeInfosComputer:
         return characterInfo
 
 
-class CharacterComputingHelper:
+class CharacterStructuringWork:
     pass
 
 
-class CharacterComputingHelper:
+class CharacterStructuringWork:
     class RearrangeCallback(SubstituteHelper.RearrangeCallback):
         def __init__(
             self,
-            computeCharacterInfo: CharacterComputingHelper,
+            computeCharacterInfo: CharacterStructuringWork,
         ):
             self.computeCharacterInfo = computeCharacterInfo
 
@@ -172,7 +172,7 @@ class CharacterComputingHelper:
 
         self.__workspaceManager = workspaceManager
 
-        self.rearrangeCallback = CharacterComputingHelper.RearrangeCallback(
+        self.rearrangeCallback = CharacterStructuringWork.RearrangeCallback(
             computeCharacterInfo=self,
         )
 
