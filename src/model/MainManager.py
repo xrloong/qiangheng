@@ -27,7 +27,7 @@ class MainManager:
         injector = self.__injector
 
         structuringWork = injector.get(CharacterStructuringWork)
-        codeInfosComputer = injector.get(CharacterCodeComputingWork)
+        computingWork = injector.get(CharacterCodeComputingWork)
 
         characters = injector.get(Characters)
         separateComputing = injector.get(SeparateComputing)
@@ -41,7 +41,7 @@ class MainManager:
 
             structuringWork.constructCharacter(character)
             structuringWork.appendCodesForAddedNodes()
-            characterInfo = codeInfosComputer.computeCharacter(character)
+            characterInfo = computingWork.computeCharacter(character)
             if characterInfo:
                 characterInfos.append(characterInfo)
 
