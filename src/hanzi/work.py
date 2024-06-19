@@ -243,8 +243,10 @@ class CharacterCodeAppendingWork:
                 workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
     def __appendFastCode(self, nodeStructure: HanZiStructure):
+        radicalManager = self.structureManager.radixManager
+
         character = nodeStructure.name
-        fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
+        fastCodeInfo = radicalManager.queryFastCodeInfo(character)
         if fastCodeInfo:
             nodeStructure.fastCodeInfo = fastCodeInfo
 
