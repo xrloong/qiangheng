@@ -233,11 +233,11 @@ class CharacterCodeAppendingWork:
 
     def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
         workspaceManager = self.__workspaceManager
-        radixManager = self.structureManager.radixManager
+        radicalManager = self.structureManager.radixManager
 
         character = nodeStructure.name
-        if radixManager.hasRadix(character):
-            radixInfoList = radixManager.getRadixCodeInfoList(character)
+        if radicalManager.hasRadix(character):
+            radixInfoList = radicalManager.getRadixCodeInfoList(character)
             for radixCodeInfo in radixInfoList:
                 structure = workspaceManager.getUnitStructure(radixCodeInfo)
                 workspaceManager.addStructureIntoNode(structure, nodeStructure)
