@@ -218,7 +218,7 @@ class CharacterCodeAppendingWork:
         structureManager: StructureManager,
     ):
         self.__workspaceManager = workspaceManager
-        self.structureManager = structureManager
+        self.__radicalManager = structureManager.radixManager
 
     def appendCodesForAddedNodes(self):
         for node in self.__workspaceManager.addedNodes:
@@ -233,7 +233,7 @@ class CharacterCodeAppendingWork:
 
     def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
         workspaceManager = self.__workspaceManager
-        radicalManager = self.structureManager.radixManager
+        radicalManager = self.__radicalManager
 
         character = nodeStructure.name
         if radicalManager.hasRadix(character):
@@ -243,7 +243,7 @@ class CharacterCodeAppendingWork:
                 workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
     def __appendFastCode(self, nodeStructure: HanZiStructure):
-        radicalManager = self.structureManager.radixManager
+        radicalManager = self.__radicalManager
 
         character = nodeStructure.name
         fastCodeInfo = radicalManager.queryFastCodeInfo(character)
