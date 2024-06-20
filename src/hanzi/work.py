@@ -236,11 +236,10 @@ class CharacterCodeAppendingWork:
         radicalManager = self.__radicalManager
 
         character = nodeStructure.name
-        if radicalManager.hasRadix(character):
-            radixInfoList = radicalManager.getRadixCodeInfoList(character)
-            for radixCodeInfo in radixInfoList:
-                structure = workspaceManager.getUnitStructure(radixCodeInfo)
-                workspaceManager.addStructureIntoNode(structure, nodeStructure)
+        radixInfoList = radicalManager.getRadixCodeInfoList(character)
+        for radixCodeInfo in radixInfoList:
+            structure = workspaceManager.getUnitStructure(radixCodeInfo)
+            workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
     def __appendFastCode(self, nodeStructure: HanZiStructure):
         radicalManager = self.__radicalManager
