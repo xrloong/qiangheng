@@ -109,11 +109,8 @@ class RadixManager:
     def queryRadix(self, characterName):
         return self.__radixDB.get(characterName, None)
 
-    def hasRadix(self, radixName):
-        return radixName in self.__radixCodeInfoDB
-
     def getRadixCodeInfoList(self, radixName):
-        return self.__radixCodeInfoDB.get(radixName)
+        return self.__radixCodeInfoDB.get(radixName, ())
 
     def __loadRadix(
         self, radixFiles: list[str], baseVariance: CodeVariance = CodeVariance.STANDARD

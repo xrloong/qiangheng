@@ -218,7 +218,7 @@ class CharacterCodeAppendingWork:
         structureManager: StructureManager,
     ):
         self.__workspaceManager = workspaceManager
-        self.structureManager = structureManager
+        self.__radicalManager = structureManager.radixManager
 
     def appendCodesForAddedNodes(self):
         for node in self.__workspaceManager.addedNodes:
@@ -232,23 +232,22 @@ class CharacterCodeAppendingWork:
         self.__appendFastCode(nodeStructure)
 
     def __appendRadicalCodes(self, nodeStructure: HanZiStructure):
-        if not nodeStructure.hasUnitStructures():
-            workspaceManager = self.__workspaceManager
-            radixManager = self.structureManager.radixManager
+        workspaceManager = self.__workspaceManager
+        radicalManager = self.__radicalManager
 
-            character = nodeStructure.name
-            if radixManager.hasRadix(character):
-                radixInfoList = radixManager.getRadixCodeInfoList(character)
-                for radixCodeInfo in radixInfoList:
-                    structure = workspaceManager.getUnitStructure(radixCodeInfo)
-                    workspaceManager.addStructureIntoNode(structure, nodeStructure)
+        character = nodeStructure.name
+        radixInfoList = radicalManager.getRadixCodeInfoList(character)
+        for radixCodeInfo in radixInfoList:
+            structure = workspaceManager.getUnitStructure(radixCodeInfo)
+            workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
     def __appendFastCode(self, nodeStructure: HanZiStructure):
-        if not nodeStructure.fastCodeInfo:
-            character = nodeStructure.name
-            fastCodeInfo = self.structureManager.queryFastCodeInfo(character)
-            if fastCodeInfo:
-                nodeStructure.fastCodeInfo = fastCodeInfo
+        radicalManager = self.__radicalManager
+
+        character = nodeStructure.name
+        fastCodeInfo = radicalManager.queryFastCodeInfo(character)
+        if fastCodeInfo:
+            nodeStructure.fastCodeInfo = fastCodeInfo
 
 
 class CharacterCodeComputingWork:

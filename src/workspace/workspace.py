@@ -58,9 +58,6 @@ class HanZiStructure:
     def fastCodeInfo(self, fastCodeInfo):
         self.__fastCodeInfo = fastCodeInfo
 
-    def hasUnitStructures(self) -> bool:
-        return self.structureInfo.hasUnitStructures()
-
     def getComputedCodeInfos(self):
         return self.structureInfo.getComputedCodeInfos()
 

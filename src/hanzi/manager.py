@@ -1,7 +1,4 @@
-from typing import Optional
 from injector import inject
-
-from coding.Base import CodeInfo
 
 from model.element.CharacterDescription import CharacterDescription
 from model.element.StructureDescription import StructureDescription
@@ -52,6 +49,3 @@ class StructureManager:
         self, charDesc: StructureDescription
     ) -> tuple[StructureDescription]:
         return charDesc.compList
-
-    def queryFastCodeInfo(self, character: str) -> Optional[CodeInfo]:
-        return self.radixManager.queryFastCodeInfo(character)
