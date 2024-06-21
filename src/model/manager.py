@@ -109,7 +109,7 @@ class RadixManager:
     def queryRadix(self, characterName):
         return self.__radixDB.get(characterName, None)
 
-    def getRadixCodeInfoList(self, radixName):
+    def queryRadicalCodeInfos(self, radixName):
         return self.__radixCodeInfoDB.get(radixName, ())
 
     def __loadRadix(

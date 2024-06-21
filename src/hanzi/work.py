@@ -236,8 +236,8 @@ class CharacterCodeAppendingWork:
         radicalManager = self.__radicalManager
 
         character = nodeStructure.name
-        radixInfoList = radicalManager.getRadixCodeInfoList(character)
-        for radixCodeInfo in radixInfoList:
+        radicalCodeInfos = radicalManager.queryRadicalCodeInfos(character)
+        for radixCodeInfo in radicalCodeInfos:
             structure = workspaceManager.getUnitStructure(radixCodeInfo)
             workspaceManager.addStructureIntoNode(structure, nodeStructure)
 
