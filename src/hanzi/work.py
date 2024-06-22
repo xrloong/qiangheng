@@ -236,8 +236,7 @@ class CharacterCodeAppendingWork:
         workspaceManager.appendRadicalCodeInfos(nodeStructure, radicalCodeInfos)
 
         fastCodeInfo = radicalManager.queryFastCodeInfo(character)
-        if fastCodeInfo:
-            nodeStructure.fastCodeInfo = fastCodeInfo
+        workspaceManager.appendFastCodeInfo(nodeStructure, fastCodeInfo)
 
 
 class CharacterCodeComputingWork:

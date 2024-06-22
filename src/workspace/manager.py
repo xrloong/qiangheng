@@ -1,3 +1,5 @@
+from typing import Optional
+
 from .workspace import HanZiStructure, HanZiNode
 from .workspace import HanZiWorkspace
 from .workspace import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
@@ -37,6 +39,12 @@ class HanZiWorkspaceManager:
         for radixCodeInfo in radicalCodeInfos:
             structure = self.getUnitStructure(radixCodeInfo)
             self.addStructureIntoNode(structure, nodeStructure)
+
+    def appendFastCodeInfo(
+        self, nodeStructure: HanZiStructure, fastCodeInfo: Optional[CodeInfo]
+    ):
+        if fastCodeInfo:
+            nodeStructure.fastCodeInfo = fastCodeInfo
 
     def getUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
         return self.__generateUnitStructure(radixCodeInfo)
