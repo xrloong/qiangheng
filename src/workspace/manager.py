@@ -31,6 +31,13 @@ class HanZiWorkspaceManager:
             self.__addedNodes.append(node)
         return node
 
+    def appendRadicalCodeInfos(
+        self, nodeStructure: HanZiStructure, radicalCodeInfos: tuple[CodeInfo]
+    ):
+        for radixCodeInfo in radicalCodeInfos:
+            structure = self.getUnitStructure(radixCodeInfo)
+            self.addStructureIntoNode(structure, nodeStructure)
+
     def getUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
         return self.__generateUnitStructure(radixCodeInfo)
 

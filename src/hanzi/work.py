@@ -233,9 +233,7 @@ class CharacterCodeAppendingWork:
         character = nodeStructure.name
 
         radicalCodeInfos = radicalManager.queryRadicalCodeInfos(character)
-        for radixCodeInfo in radicalCodeInfos:
-            structure = workspaceManager.getUnitStructure(radixCodeInfo)
-            workspaceManager.addStructureIntoNode(structure, nodeStructure)
+        workspaceManager.appendRadicalCodeInfos(nodeStructure, radicalCodeInfos)
 
         fastCodeInfo = radicalManager.queryFastCodeInfo(character)
         if fastCodeInfo:
