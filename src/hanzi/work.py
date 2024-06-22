@@ -17,9 +17,10 @@ from model.element.StructureDescription import StructureDescription
 from model.element.CharacterInfo import CharacterInfo
 from model.element.SubstituteRule import SubstituteRule
 from model.interpreter import CodeInfoInterpreter
+from model.helper import OperatorManager
 
 from .tree import HanZiTreeProxy
-from .tree import HanZiTreeNodeGenerator
+from .tree import TreeNodeGenerator
 from .manager import StructureManager
 
 
@@ -32,7 +33,7 @@ class SubstituteHelper:
     def __init__(
         self,
         rules: tuple[SubstituteRule],
-        treeNodeGenerator: HanZiTreeNodeGenerator,
+        treeNodeGenerator: TreeNodeGenerator,
     ):
         self.treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
         self.treeNodeGenerator = treeNodeGenerator
@@ -124,7 +125,7 @@ class CharacterStructuringWork:
     pass
 
 
-class CharacterStructuringWork:
+class CharacterStructuringWork(TreeNodeGenerator):
     class RearrangeCallback(SubstituteHelper.RearrangeCallback):
         def __init__(
             self,
@@ -141,12 +142,13 @@ class CharacterStructuringWork:
     def __init__(
         self,
         fontVariance: FontVariance,
+        operatorManager: OperatorManager,
         structureManager: StructureManager,
         workspaceManager: HanZiWorkspaceManager,
-        treeNodeGenerator: HanZiTreeNodeGenerator,
     ):
         self.fontVariance = fontVariance
 
+        self.__operatorManager = operatorManager
         self.structureManager = structureManager
 
         self.__workspaceManager = workspaceManager
@@ -158,13 +160,13 @@ class CharacterStructuringWork:
         rules = structureManager.templateManager.substituteRules
         self.__templateHelper = SubstituteHelper(
             rules=rules,
-            treeNodeGenerator=treeNodeGenerator,
+            treeNodeGenerator=self,
         )
 
         rules = structureManager.substituteManager.substituteRules
         self.__substituteHelper = SubstituteHelper(
             rules,
-            treeNodeGenerator=treeNodeGenerator,
+            treeNodeGenerator=self,
         )
 
     def constructCharacter(self, character: str):
@@ -247,6 +249,18 @@ class CharacterStructuringWork:
 
     def reset(self):
         self.__workspaceManager.reset()
+
+    def generateLeafNode(self, nodeName):
+        return self.__workspaceManager.getWrapperStructure(nodeName)
+
+    def generateLeafNodeByReference(self, referencedTreeNode, index):
+        return self.__workspaceManager.getWrapperStructure(
+            referencedTreeNode.referencedNodeName, index
+        )
+
+    def generateNode(self, operatorName, children):
+        operator = self.__operatorManager.generateOperator(operatorName)
+        return self.__workspaceManager.generateCompoundStructure(operator, children)
 
 
 class CharacterCodeAppendingWork:

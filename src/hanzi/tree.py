@@ -1,8 +1,6 @@
 import abc
 from injector import inject
 
-from workspace import HanZiWorkspaceManager
-from model.helper import OperatorManager
 
 from tree.regexp import BasicTreeProxy
 
@@ -36,26 +34,3 @@ class TreeNodeGenerator(object, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def generateLeafNodeByReference(self, referencedNode, index):
         pass
-
-
-class HanZiTreeNodeGenerator(TreeNodeGenerator):
-    @inject
-    def __init__(
-        self,
-        workspaceManager: HanZiWorkspaceManager,
-        operatorManager: OperatorManager,
-    ):
-        self.__workspaceManager = workspaceManager
-        self.__operatorManager = operatorManager
-
-    def generateLeafNode(self, nodeName):
-        return self.__workspaceManager.getWrapperStructure(nodeName)
-
-    def generateLeafNodeByReference(self, referencedTreeNode, index):
-        return self.__workspaceManager.getWrapperStructure(
-            referencedTreeNode.referencedNodeName, index
-        )
-
-    def generateNode(self, operatorName, children):
-        operator = self.__operatorManager.generateOperator(operatorName)
-        return self.__workspaceManager.generateCompoundStructure(operator, children)
