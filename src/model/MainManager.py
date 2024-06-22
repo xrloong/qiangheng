@@ -42,7 +42,7 @@ class MainManager:
                 structuringWork.reset()
 
             structuringWork.constructCharacter(character)
-            appendingWork.appendCodesForAddedNodes()
+            appendingWork.appendCodesForAddedCharacters()
             characterInfo = computingWork.computeCharacter(character)
             if characterInfo:
                 characterInfos.append(characterInfo)

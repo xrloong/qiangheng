@@ -12,11 +12,11 @@ class HanZiWorkspaceManager:
     def __init__(self):
         self.__workspace = HanZiWorkspace()
         self.__wrapperExpressionDict = {}
-        self.__addedNodes = []
+        self.__addedCharacters = []
 
     @property
-    def addedNodes(self) -> tuple[HanZiNode]:
-        return tuple(self.__addedNodes)
+    def addedCharacters(self) -> tuple[str]:
+        return tuple(self.__addedCharacters)
 
     def isNodeExpanded(self, name: str) -> bool:
         return self.__workspace.isNodeExpanded(name)
@@ -24,13 +24,13 @@ class HanZiWorkspaceManager:
     def reset(self):
         self.__workspace.reset()
 
-    def resetAddedNodes(self):
-        self.__addedNodes = []
+    def resetAddedCharacters(self):
+        self.__addedCharacters = []
 
     def touchNode(self, character: str) -> HanZiNode:
         (node, added) = self.__workspace.touchNode(character)
         if added:
-            self.__addedNodes.append(node)
+            self.__addedCharacters.append(character)
         return node
 
     def appendRadicalCodeInfos(

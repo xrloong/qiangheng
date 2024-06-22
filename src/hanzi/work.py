@@ -220,13 +220,13 @@ class CharacterCodeAppendingWork:
         self.__workspaceManager = workspaceManager
         self.__radicalManager = structureManager.radixManager
 
-    def appendCodesForAddedNodes(self):
+    def appendCodesForAddedCharacters(self):
         workspaceManager = self.__workspaceManager
         radicalManager = self.__radicalManager
 
-        for node in self.__workspaceManager.addedNodes:
+        for character in self.__workspaceManager.addedCharacters:
+            node = self.__workspaceManager.touchNode(character)
             nodeStructure = node.nodeStructure
-            character = nodeStructure.name
 
             radicalCodeInfos = radicalManager.queryRadicalCodeInfos(character)
             workspaceManager.appendRadicalCodeInfos(nodeStructure, radicalCodeInfos)
@@ -234,7 +234,7 @@ class CharacterCodeAppendingWork:
             fastCodeInfo = radicalManager.queryFastCodeInfo(character)
             workspaceManager.appendFastCodeInfo(nodeStructure, fastCodeInfo)
 
-        self.__workspaceManager.resetAddedNodes()
+        self.__workspaceManager.resetAddedCharacters()
 
 
 class CharacterCodeComputingWork:
