@@ -51,10 +51,15 @@ class HanZiWorkspaceManager:
     def __genUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
         return self.__generateUnitStructure(radixCodeInfo)
 
-    def getCompoundStructure(
+    def __genCompoundStructure(
         self, operator: Operator, structures: tuple[HanZiStructure]
     ) -> HanZiStructure:
         return self.__generateCompoundStructure(operator, structures)
+
+    def getCompoundStructure(
+        self, operator: Operator, structures: tuple[HanZiStructure]
+    ) -> HanZiStructure:
+        return self.__genCompoundStructure(operator, structures)
 
     def getWrapperStructure(self, name: str, index: int = 0) -> HanZiStructure:
         wrapperExpression = (name, index)
