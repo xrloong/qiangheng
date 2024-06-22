@@ -229,10 +229,10 @@ class CharacterCodeAppendingWork:
             nodeStructure = node.nodeStructure
 
             radicalCodeInfos = radicalManager.queryRadicalCodeInfos(character)
-            workspaceManager.appendRadicalCodeInfos(nodeStructure, radicalCodeInfos)
-
             fastCodeInfo = radicalManager.queryFastCodeInfo(character)
-            workspaceManager.appendFastCodeInfo(nodeStructure, fastCodeInfo)
+            workspaceManager.appendCharacterCodes(
+                nodeStructure, (radicalCodeInfos, fastCodeInfo)
+            )
 
         self.__workspaceManager.resetAddedCharacters()
 

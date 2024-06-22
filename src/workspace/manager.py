@@ -33,16 +33,15 @@ class HanZiWorkspaceManager:
             self.__addedCharacters.append(character)
         return node
 
-    def appendRadicalCodeInfos(
-        self, nodeStructure: HanZiStructure, radicalCodeInfos: tuple[CodeInfo]
+    def appendCharacterCodes(
+        self,
+        nodeStructure: HanZiStructure,
+        characterCodes: (tuple[CodeInfo], Optional[CodeInfo]),
     ):
+        radicalCodeInfos, fastCodeInfo = characterCodes
         for radixCodeInfo in radicalCodeInfos:
             structure = self.getUnitStructure(radixCodeInfo)
             self.addStructureIntoNode(structure, nodeStructure)
-
-    def appendFastCodeInfo(
-        self, nodeStructure: HanZiStructure, fastCodeInfo: Optional[CodeInfo]
-    ):
         if fastCodeInfo:
             nodeStructure.fastCodeInfo = fastCodeInfo
 
