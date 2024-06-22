@@ -1,3 +1,4 @@
+import abc
 from injector import inject
 
 from workspace import HanZiWorkspaceManager
@@ -23,15 +24,18 @@ class HanZiTreeProxy(BasicTreeProxy):
         )
 
 
-class TreeNodeGenerator:
+class TreeNodeGenerator(object, metaclass=abc.ABCMeta):
+    @abc.abstractmethod
     def generateLeafNode(self, nodeName):
-        return None
+        pass
 
+    @abc.abstractmethod
     def generateNode(self, operatorName, children):
-        return None
+        pass
 
+    @abc.abstractmethod
     def generateLeafNodeByReference(self, referencedNode, index):
-        return None
+        pass
 
 
 class HanZiTreeNodeGenerator(TreeNodeGenerator):
