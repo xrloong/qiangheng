@@ -56,6 +56,9 @@ class HanZiWorkspaceManager:
     ) -> HanZiStructure:
         return self.__generateCompoundStructure(operator, structures)
 
+    def __genWrapperStructure(self, node: HanZiNode, index: int = 0) -> HanZiStructure:
+        return self.__generateWrapperStructure(node, index)
+
     def getCompoundStructure(
         self, operator: Operator, structures: tuple[HanZiStructure]
     ) -> HanZiStructure:
@@ -67,7 +70,7 @@ class HanZiWorkspaceManager:
             return self.__wrapperExpressionDict[wrapperExpression]
 
         referenceNode = self.touchNode(name)
-        structure = self.__generateWrapperStructure(referenceNode, index)
+        structure = self.__genWrapperStructure(referenceNode, index)
 
         self.__wrapperExpressionDict[wrapperExpression] = structure
         return structure
