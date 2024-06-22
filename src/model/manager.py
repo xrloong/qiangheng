@@ -98,13 +98,9 @@ class RadixManager:
         self.__fastCodeDB.update(fastCodeCharacterDB)
 
     def queryFastCodeInfo(self, character) -> Optional[CodeInfo]:
-        fastCodeInfos = self.__fastCodeDB.get(character, None)
-        if fastCodeInfos:
-            assert len(fastCodeInfos) == 1
-            fastCodeInfo = fastCodeInfos[0]
-            return fastCodeInfo
-        else:
-            return None
+        fastCodeInfos = self.__fastCodeDB.get(character, (None,))
+        assert len(fastCodeInfos) == 1
+        return fastCodeInfos[0]
 
     def queryRadix(self, characterName):
         return self.__radixDB.get(characterName, None)
