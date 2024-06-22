@@ -221,22 +221,20 @@ class CharacterCodeAppendingWork:
         self.__radicalManager = structureManager.radixManager
 
     def appendCodesForAddedNodes(self):
-        for node in self.__workspaceManager.addedNodes:
-            self.__appendCharacterCodes(node.nodeStructure)
-        self.__workspaceManager.resetAddedNodes()
-
-    def __appendCharacterCodes(self, nodeStructure: HanZiStructure):
         workspaceManager = self.__workspaceManager
         radicalManager = self.__radicalManager
 
-        assert nodeStructure.isNode()
-        character = nodeStructure.name
+        for node in self.__workspaceManager.addedNodes:
+            nodeStructure = node.nodeStructure
+            character = nodeStructure.name
 
-        radicalCodeInfos = radicalManager.queryRadicalCodeInfos(character)
-        workspaceManager.appendRadicalCodeInfos(nodeStructure, radicalCodeInfos)
+            radicalCodeInfos = radicalManager.queryRadicalCodeInfos(character)
+            workspaceManager.appendRadicalCodeInfos(nodeStructure, radicalCodeInfos)
 
-        fastCodeInfo = radicalManager.queryFastCodeInfo(character)
-        workspaceManager.appendFastCodeInfo(nodeStructure, fastCodeInfo)
+            fastCodeInfo = radicalManager.queryFastCodeInfo(character)
+            workspaceManager.appendFastCodeInfo(nodeStructure, fastCodeInfo)
+
+        self.__workspaceManager.resetAddedNodes()
 
 
 class CharacterCodeComputingWork:
