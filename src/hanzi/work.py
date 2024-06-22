@@ -9,6 +9,7 @@ from tree.regexp import TreeRegExpInterpreter
 
 
 from element.enum import FontVariance
+from element.operator import Operator
 
 from workspace import HanZiNode, HanZiStructure
 from workspace import HanZiWorkspaceManager
@@ -34,9 +35,11 @@ class SubstituteHelper:
         self,
         rules: tuple[SubstituteRule],
         treeNodeGenerator: TreeNodeGenerator,
+        operatorManager: OperatorManager,
     ):
         self.treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
         self.treeNodeGenerator = treeNodeGenerator
+        self.__operatorManager = operatorManager
 
         opToRuleDict = {}
         for rule in rules:
@@ -113,7 +116,8 @@ class SubstituteHelper:
                 else:
                     comp = convertNodeToStructure(childNode, allComps)
                     compList.append(comp)
-            structDesc = treeNodeGenerator.generateNode(operatorName, compList)
+            operator = self.__operatorManager.generateOperator(operatorName)
+            structDesc = treeNodeGenerator.generateNode(operator, compList)
             return structDesc
 
         tre = rule.tre
@@ -148,7 +152,6 @@ class CharacterStructuringWork(TreeNodeGenerator):
     ):
         self.fontVariance = fontVariance
 
-        self.__operatorManager = operatorManager
         self.structureManager = structureManager
 
         self.__workspaceManager = workspaceManager
@@ -161,12 +164,14 @@ class CharacterStructuringWork(TreeNodeGenerator):
         self.__templateHelper = SubstituteHelper(
             rules=rules,
             treeNodeGenerator=self,
+            operatorManager=operatorManager,
         )
 
         rules = structureManager.substituteManager.substituteRules
         self.__substituteHelper = SubstituteHelper(
             rules,
             treeNodeGenerator=self,
+            operatorManager=operatorManager,
         )
 
     def constructCharacter(self, character: str):
@@ -258,8 +263,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
             referencedTreeNode.referencedNodeName, index
         )
 
-    def generateNode(self, operatorName, children):
-        operator = self.__operatorManager.generateOperator(operatorName)
+    def generateNode(self, operator: Operator, children):
         return self.__workspaceManager.generateCompoundStructure(operator, children)
 
 

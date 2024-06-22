@@ -2,6 +2,8 @@ import abc
 from injector import inject
 
 
+from element.operator import Operator
+
 from tree.regexp import BasicTreeProxy
 
 
@@ -28,7 +30,7 @@ class TreeNodeGenerator(object, metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def generateNode(self, operatorName, children):
+    def generateNode(self, operator: Operator, children):
         pass
 
     @abc.abstractmethod
