@@ -3,11 +3,13 @@ import abc
 from typing import Optional
 from injector import inject
 
+from tree.node import Node as TreeExpression
 from tree.regexp.item import MatchResult
 from tree.regexp import TreeRegExpInterpreter
 
 
 from element.enum import FontVariance
+from element.operator import Operator
 
 from workspace import HanZiNode, HanZiStructure
 from workspace import HanZiWorkspaceManager
@@ -16,9 +18,10 @@ from model.element.StructureDescription import StructureDescription
 from model.element.CharacterInfo import CharacterInfo
 from model.element.SubstituteRule import SubstituteRule
 from model.interpreter import CodeInfoInterpreter
+from model.helper import OperatorManager
 
 from .tree import HanZiTreeProxy
-from .tree import HanZiTreeNodeGenerator
+from .tree import TreeNodeGenerator
 from .manager import StructureManager
 
 
@@ -31,10 +34,12 @@ class SubstituteHelper:
     def __init__(
         self,
         rules: tuple[SubstituteRule],
-        treeNodeGenerator: HanZiTreeNodeGenerator,
+        treeNodeGenerator: TreeNodeGenerator,
+        operatorManager: OperatorManager,
     ):
         self.treInterpreter = TreeRegExpInterpreter(HanZiTreeProxy())
         self.treeNodeGenerator = treeNodeGenerator
+        self.__operatorManager = operatorManager
 
         opToRuleDict = {}
         for rule in rules:
@@ -70,22 +75,61 @@ class SubstituteHelper:
         return rule
 
     def __rearrangeStructure(self, structure):
-        treeNodeGenerator = self.treeNodeGenerator
-
         while True:
             rule = self.__findMatchedRule(structure)
             if rule:
-                tmpStructure = treeNodeGenerator.replace(rule=rule)
+                tmpStructure = self.replace(rule=rule)
                 structure.changeToStructure(tmpStructure)
             else:
                 break
+
+    def replace(self, rule: SubstituteRule):
+        treeNodeGenerator = self.treeNodeGenerator
+
+        def convertNodeToStructure(node: TreeExpression, allComps):
+            operatorName = node.prop["運算"]
+            compList = []
+            for childNode in node.children:
+                if "置換" in childNode.prop:
+                    compList.append(
+                        treeNodeGenerator.generateLeafNode(childNode.prop["置換"])
+                    )
+                elif childNode.isBackRef:
+                    # \1 or \1.1
+                    refExp = childNode.backRefExp
+
+                    refExp = refExp[1:]
+                    refExpList = refExp.split(".")
+                    if len(refExpList) < 2:
+                        # \1
+                        index = int(refExpList[0])
+                        compList.extend(allComps[index].getMatched())
+                    else:
+                        # \1.1
+                        index = int(refExpList[0])
+                        subIndex = int(refExpList[1])
+                        referenceNode = allComps[index].getMatched()[0]
+                        comp = treeNodeGenerator.generateLeafNodeByReference(
+                            referenceNode, subIndex
+                        )
+                        compList.append(comp)
+                else:
+                    comp = convertNodeToStructure(childNode, allComps)
+                    compList.append(comp)
+            operator = self.__operatorManager.generateOperator(operatorName)
+            structDesc = treeNodeGenerator.generateNode(operator, compList)
+            return structDesc
+
+        tre = rule.tre
+        goalNode = rule.goal
+        return convertNodeToStructure(goalNode, tre.getAll())
 
 
 class CharacterStructuringWork:
     pass
 
 
-class CharacterStructuringWork:
+class CharacterStructuringWork(TreeNodeGenerator):
     class RearrangeCallback(SubstituteHelper.RearrangeCallback):
         def __init__(
             self,
@@ -102,9 +146,9 @@ class CharacterStructuringWork:
     def __init__(
         self,
         fontVariance: FontVariance,
+        operatorManager: OperatorManager,
         structureManager: StructureManager,
         workspaceManager: HanZiWorkspaceManager,
-        treeNodeGenerator: HanZiTreeNodeGenerator,
     ):
         self.fontVariance = fontVariance
 
@@ -119,13 +163,15 @@ class CharacterStructuringWork:
         rules = structureManager.templateManager.substituteRules
         self.__templateHelper = SubstituteHelper(
             rules=rules,
-            treeNodeGenerator=treeNodeGenerator,
+            treeNodeGenerator=self,
+            operatorManager=operatorManager,
         )
 
         rules = structureManager.substituteManager.substituteRules
         self.__substituteHelper = SubstituteHelper(
             rules,
-            treeNodeGenerator=treeNodeGenerator,
+            treeNodeGenerator=self,
+            operatorManager=operatorManager,
         )
 
     def constructCharacter(self, character: str):
@@ -208,6 +254,17 @@ class CharacterStructuringWork:
 
     def reset(self):
         self.__workspaceManager.reset()
+
+    def generateLeafNode(self, nodeName):
+        return self.__workspaceManager.getWrapperStructure(nodeName)
+
+    def generateLeafNodeByReference(self, referencedTreeNode, index):
+        return self.__workspaceManager.getWrapperStructure(
+            referencedTreeNode.referencedNodeName, index
+        )
+
+    def generateNode(self, operator: Operator, children):
+        return self.__workspaceManager.generateCompoundStructure(operator, children)
 
 
 class CharacterCodeAppendingWork:

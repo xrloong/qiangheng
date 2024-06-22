@@ -116,14 +116,3 @@ class BasicTreeProxy:
             isMatch &= prop.get("運算") == tree.get("operator")
 
         return isMatch
-
-
-class TreeNodeGenerator:
-    def generateLeafNode(self, nodeName):
-        return None
-
-    def generateNode(self, operatorName, children):
-        return None
-
-    def generateLeafNodeByReference(self, referencedNode, index):
-        return None
