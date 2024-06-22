@@ -3,6 +3,7 @@ import abc
 from typing import Optional
 from injector import inject
 
+from tree.node import Node as TreeExpression
 from tree.regexp.item import MatchResult
 from tree.regexp import TreeRegExpInterpreter
 
@@ -70,15 +71,53 @@ class SubstituteHelper:
         return rule
 
     def __rearrangeStructure(self, structure):
-        treeNodeGenerator = self.treeNodeGenerator
-
         while True:
             rule = self.__findMatchedRule(structure)
             if rule:
-                tmpStructure = treeNodeGenerator.replace(rule=rule)
+                tmpStructure = self.replace(rule=rule)
                 structure.changeToStructure(tmpStructure)
             else:
                 break
+
+    def replace(self, rule: SubstituteRule):
+        treeNodeGenerator = self.treeNodeGenerator
+
+        def convertNodeToStructure(node: TreeExpression, allComps):
+            operatorName = node.prop["運算"]
+            compList = []
+            for childNode in node.children:
+                if "置換" in childNode.prop:
+                    compList.append(
+                        treeNodeGenerator.generateLeafNode(childNode.prop["置換"])
+                    )
+                elif childNode.isBackRef:
+                    # \1 or \1.1
+                    refExp = childNode.backRefExp
+
+                    refExp = refExp[1:]
+                    refExpList = refExp.split(".")
+                    if len(refExpList) < 2:
+                        # \1
+                        index = int(refExpList[0])
+                        compList.extend(allComps[index].getMatched())
+                    else:
+                        # \1.1
+                        index = int(refExpList[0])
+                        subIndex = int(refExpList[1])
+                        referenceNode = allComps[index].getMatched()[0]
+                        comp = treeNodeGenerator.generateLeafNodeByReference(
+                            referenceNode, subIndex
+                        )
+                        compList.append(comp)
+                else:
+                    comp = convertNodeToStructure(childNode, allComps)
+                    compList.append(comp)
+            structDesc = treeNodeGenerator.generateNode(operatorName, compList)
+            return structDesc
+
+        tre = rule.tre
+        goalNode = rule.goal
+        return convertNodeToStructure(goalNode, tre.getAll())
 
 
 class CharacterStructuringWork:
