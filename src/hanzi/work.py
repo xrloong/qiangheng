@@ -225,11 +225,8 @@ class CharacterCodeAppendingWork:
         radicalManager = self.__radicalManager
 
         for character in self.__workspaceManager.addedCharacters:
-            radicalCodeInfos = radicalManager.queryRadicalCodeInfos(character)
-            fastCodeInfo = radicalManager.queryFastCodeInfo(character)
-            workspaceManager.appendCharacterCodes(
-                character, (radicalCodeInfos, fastCodeInfo)
-            )
+            characterCodes = radicalManager.queryCharacterCodes(character)
+            workspaceManager.appendCharacterCodes(character, characterCodes)
 
         self.__workspaceManager.resetAddedCharacters()
 

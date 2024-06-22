@@ -108,6 +108,13 @@ class RadixManager:
     def queryRadicalCodeInfos(self, radixName):
         return self.__radixCodeInfoDB.get(radixName, ())
 
+    def queryCharacterCodes(
+        self, character: str
+    ) -> (tuple[CodeInfo], Optional[CodeInfo]):
+        radicalCodeInfos = self.queryRadicalCodeInfos(character)
+        fastCodeInfo = self.queryFastCodeInfo(character)
+        return (radicalCodeInfos, fastCodeInfo)
+
     def __loadRadix(
         self, radixFiles: list[str], baseVariance: CodeVariance = CodeVariance.STANDARD
     ) -> dict[str, list[CodeInfo]]:
