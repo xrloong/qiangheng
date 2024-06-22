@@ -43,12 +43,12 @@ class HanZiWorkspaceManager:
 
         radicalCodeInfos, fastCodeInfo = characterCodes
         for radixCodeInfo in radicalCodeInfos:
-            structure = self.getUnitStructure(radixCodeInfo)
+            structure = self.__genUnitStructure(radixCodeInfo)
             self.addStructureIntoNode(structure, nodeStructure)
         if fastCodeInfo:
             nodeStructure.fastCodeInfo = fastCodeInfo
 
-    def getUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
+    def __genUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
         return self.__generateUnitStructure(radixCodeInfo)
 
     def generateCompoundStructure(
