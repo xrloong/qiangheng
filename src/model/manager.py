@@ -97,20 +97,16 @@ class RadixManager:
         )
         self.__fastCodeDB.update(fastCodeCharacterDB)
 
-    def queryFastCodeInfo(self, character) -> Optional[CodeInfo]:
-        fastCodeInfos = self.__fastCodeDB.get(character, None)
-        if fastCodeInfos:
-            assert len(fastCodeInfos) == 1
-            fastCodeInfo = fastCodeInfos[0]
-            return fastCodeInfo
-        else:
-            return None
-
     def queryRadix(self, characterName):
         return self.__radixDB.get(characterName, None)
 
-    def getRadixCodeInfoList(self, radixName):
-        return self.__radixCodeInfoDB.get(radixName, ())
+    def queryCharacterCodes(
+        self, character: str
+    ) -> (tuple[CodeInfo], Optional[CodeInfo]):
+        radicalCodeInfos = self.__radixCodeInfoDB.get(character, ())
+        fastCodeInfos = self.__fastCodeDB.get(character, (None,))
+        assert len(fastCodeInfos) == 1
+        return (radicalCodeInfos, fastCodeInfos[0])
 
     def __loadRadix(
         self, radixFiles: list[str], baseVariance: CodeVariance = CodeVariance.STANDARD

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from .workspace import HanZiStructure, HanZiNode
 from .workspace import HanZiWorkspace
 from .workspace import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
@@ -10,11 +12,11 @@ class HanZiWorkspaceManager:
     def __init__(self):
         self.__workspace = HanZiWorkspace()
         self.__wrapperExpressionDict = {}
-        self.__addedNodes = []
+        self.__addedCharacters = []
 
     @property
-    def addedNodes(self) -> tuple[HanZiNode]:
-        return tuple(self.__addedNodes)
+    def addedCharacters(self) -> tuple[str]:
+        return tuple(self.__addedCharacters)
 
     def isNodeExpanded(self, name: str) -> bool:
         return self.__workspace.isNodeExpanded(name)
@@ -22,14 +24,29 @@ class HanZiWorkspaceManager:
     def reset(self):
         self.__workspace.reset()
 
-    def resetAddedNodes(self):
-        self.__addedNodes = []
+    def resetAddedCharacters(self):
+        self.__addedCharacters = []
 
     def touchNode(self, character: str) -> HanZiNode:
         (node, added) = self.__workspace.touchNode(character)
         if added:
-            self.__addedNodes.append(node)
+            self.__addedCharacters.append(character)
         return node
+
+    def appendCharacterCodes(
+        self,
+        character: str,
+        characterCodes: (tuple[CodeInfo], Optional[CodeInfo]),
+    ):
+        node = self.touchNode(character)
+        nodeStructure = node.nodeStructure
+
+        radicalCodeInfos, fastCodeInfo = characterCodes
+        for radixCodeInfo in radicalCodeInfos:
+            structure = self.getUnitStructure(radixCodeInfo)
+            self.addStructureIntoNode(structure, nodeStructure)
+        if fastCodeInfo:
+            nodeStructure.fastCodeInfo = fastCodeInfo
 
     def getUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
         return self.__generateUnitStructure(radixCodeInfo)
