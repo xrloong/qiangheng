@@ -4,7 +4,6 @@ from workspace import HanZiWorkspaceManager
 from model.helper import OperatorManager
 
 from tree.regexp import BasicTreeProxy
-from tree.regexp import TreeNodeGenerator
 
 
 class HanZiTreeProxy(BasicTreeProxy):
@@ -22,6 +21,17 @@ class HanZiTreeProxy(BasicTreeProxy):
         return currentStructure.isMatchStructure(
             operatorName=opName, referenceExpression=refExp
         )
+
+
+class TreeNodeGenerator:
+    def generateLeafNode(self, nodeName):
+        return None
+
+    def generateNode(self, operatorName, children):
+        return None
+
+    def generateLeafNodeByReference(self, referencedNode, index):
+        return None
 
 
 class HanZiTreeNodeGenerator(TreeNodeGenerator):
