@@ -58,7 +58,8 @@ class HanZiWorkspaceManager:
         return self.__generateCompoundStructure(operator, structures)
 
     def __genWrapperStructure(self, node: HanZiNode, index: int = 0) -> HanZiStructure:
-        return self.__generateWrapperStructure(node, index)
+        structureInfo = self.__generateWrapperStructureInfo(node, index)
+        return HanZiStructure(structureInfo)
 
     def getCompoundStructure(
         self, operator: Operator, structures: tuple[HanZiStructure]
@@ -79,9 +80,10 @@ class HanZiWorkspaceManager:
     def __generateUnitStructureInfo(self, radixCodeInfo: CodeInfo) -> UnitStructureInfo:
         return UnitStructureInfo(radixCodeInfo)
 
-    def __generateWrapperStructure(self, node: HanZiNode, index: int) -> HanZiStructure:
-        structureInfo = WrapperStructureInfo(node.nodeStructure, index)
-        return HanZiStructure(structureInfo)
+    def __generateWrapperStructureInfo(
+        self, node: HanZiNode, index: int
+    ) -> WrapperStructureInfo:
+        return WrapperStructureInfo(node.nodeStructure, index)
 
     def __generateCompoundStructure(
         self, operator: Operator, structureList: list[HanZiStructure]
