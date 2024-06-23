@@ -248,7 +248,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
 
         operator = structDesc.operator
 
-        return self.__workspaceManager.generateCompoundStructure(
+        return self.__workspaceManager.getCompoundStructure(
             operator, childStructureList
         )
 
@@ -264,7 +264,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
         )
 
     def generateNode(self, operator: Operator, children):
-        return self.__workspaceManager.generateCompoundStructure(operator, children)
+        return self.__workspaceManager.getCompoundStructure(operator, children)
 
 
 class CharacterCodeAppendingWork:
