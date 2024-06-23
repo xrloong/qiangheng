@@ -195,13 +195,12 @@ class CharacterStructuringWork(TreeNodeGenerator):
             if structDesc.isEmpty():
                 continue
 
+            isMainStructure = self.fontVariance.contains(structDesc.fontVariance)
             structure = self.__convertToStructure(structDesc)
 
-            workspaceManager.addStructureIntoNode(structure, nodeStructure)
-
-            isMainStructure = self.fontVariance.contains(structDesc.fontVariance)
-            if isMainStructure:
-                workspaceManager.setMainStructureOfNode(structure, nodeStructure)
+            workspaceManager.addStructureIntoNode(
+                structure, nodeStructure, isMainStructure=isMainStructure
+            )
 
     def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
         structure = self.recursivelyConvertDescriptionToStructure(structDesc)
