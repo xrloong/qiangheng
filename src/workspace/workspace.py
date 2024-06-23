@@ -133,5 +133,5 @@ class HanZiWorkspace:
         node = self.__findNode(name)
         nodeStructure = node.nodeStructure
         nodeStructureInfo = nodeStructure.structureInfo
-        mainStructure = nodeStructureInfo.getMainStructure()
+        mainStructure = nodeStructureInfo.mainStructure
         return bool(mainStructure)
