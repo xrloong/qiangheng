@@ -79,11 +79,8 @@ class HanZiWorkspaceManager:
         structureInfo = UnitStructureInfo(radixCodeInfo)
         return HanZiStructure(structureInfo)
 
-    def __generateWrapperStructure(
-        self, referenceNode: HanZiNode, index: int
-    ) -> HanZiStructure:
-        nodeStrcuture = referenceNode.nodeStructure
-        structureInfo = WrapperStructureInfo(nodeStrcuture, index)
+    def __generateWrapperStructure(self, node: HanZiNode, index: int) -> HanZiStructure:
+        structureInfo = WrapperStructureInfo(node.nodeStructure, index)
         return HanZiStructure(structureInfo)
 
     def __generateCompoundStructure(
