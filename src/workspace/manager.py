@@ -49,7 +49,8 @@ class HanZiWorkspaceManager:
             nodeStructure.fastCodeInfo = fastCodeInfo
 
     def __genUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
-        return self.__generateUnitStructure(radixCodeInfo)
+        structureInfo = self.__generateUnitStructureInfo(radixCodeInfo)
+        return HanZiStructure(structureInfo)
 
     def __genCompoundStructure(
         self, operator: Operator, structures: tuple[HanZiStructure]
@@ -75,9 +76,8 @@ class HanZiWorkspaceManager:
         self.__wrapperExpressionDict[wrapperExpression] = structure
         return structure
 
-    def __generateUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
-        structureInfo = UnitStructureInfo(radixCodeInfo)
-        return HanZiStructure(structureInfo)
+    def __generateUnitStructureInfo(self, radixCodeInfo: CodeInfo) -> UnitStructureInfo:
+        return UnitStructureInfo(radixCodeInfo)
 
     def __generateWrapperStructure(self, node: HanZiNode, index: int) -> HanZiStructure:
         structureInfo = WrapperStructureInfo(node.nodeStructure, index)
