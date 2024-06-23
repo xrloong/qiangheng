@@ -92,15 +92,14 @@ class HanZiWorkspaceManager:
         return WrapperStructureInfo(node.nodeStructure, index)
 
     def addStructureIntoNode(
-        self, structure: HanZiStructure, nodeStructure: HanZiStructure
+        self,
+        structure: HanZiStructure,
+        nodeStructure: HanZiStructure,
+        isMainStructure: bool = False,
     ):
         assert nodeStructure.isNode()
 
         nodeStructure.structureInfo.addStructure(structure)
 
-    def setMainStructureOfNode(
-        self, structure: HanZiStructure, nodeStructure: HanZiStructure
-    ):
-        assert nodeStructure.isNode()
-
-        nodeStructure.structureInfo.setMainStructure(structure)
+        if isMainStructure:
+            nodeStructure.structureInfo.setMainStructure(structure)
