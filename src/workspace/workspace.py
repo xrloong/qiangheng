@@ -73,6 +73,9 @@ class HanZiStructure:
     def isNode(self):
         return isinstance(self.structureInfo, NodeStructureInfo)
 
+    def hasMainStructure(self) -> bool:
+        return self.structureInfo.hasMainStructure()
+
     def isCodeInfoGenerated(self):
         return self.structureInfo.isCodeInfoGenerated()
 
@@ -132,6 +135,4 @@ class HanZiWorkspace:
     def isNodeExpanded(self, name):
         node = self.__findNode(name)
         nodeStructure = node.nodeStructure
-        nodeStructureInfo = nodeStructure.structureInfo
-        mainStructure = nodeStructureInfo.mainStructure
-        return bool(mainStructure)
+        return nodeStructure.hasMainStructure()
