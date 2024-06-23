@@ -43,18 +43,15 @@ class HanZiWorkspaceManager:
 
         radicalCodeInfos, fastCodeInfo = characterCodes
         for radixCodeInfo in radicalCodeInfos:
-            structure = self.getUnitStructure(radixCodeInfo)
+            structure = self.__genUnitStructure(radixCodeInfo)
             self.addStructureIntoNode(structure, nodeStructure)
         if fastCodeInfo:
             nodeStructure.fastCodeInfo = fastCodeInfo
 
-    def getUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
-        return self.__generateUnitStructure(radixCodeInfo)
-
-    def generateCompoundStructure(
-        self, operator: Operator, structureList: list[HanZiStructure]
+    def getCompoundStructure(
+        self, operator: Operator, structures: tuple[HanZiStructure]
     ) -> HanZiStructure:
-        return self.__generateCompoundStructure(operator, structureList)
+        return self.__genCompoundStructure(operator, structures)
 
     def getWrapperStructure(self, name: str, index: int = 0) -> HanZiStructure:
         wrapperExpression = (name, index)
@@ -62,27 +59,37 @@ class HanZiWorkspaceManager:
             return self.__wrapperExpressionDict[wrapperExpression]
 
         referenceNode = self.touchNode(name)
-        structure = self.__generateWrapperStructure(referenceNode, index)
+        structure = self.__genWrapperStructure(referenceNode, index)
 
         self.__wrapperExpressionDict[wrapperExpression] = structure
         return structure
 
-    def __generateUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
-        structureInfo = UnitStructureInfo(radixCodeInfo)
+    def __genUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
+        structureInfo = self.__generateUnitStructureInfo(radixCodeInfo)
         return HanZiStructure(structureInfo)
 
-    def __generateWrapperStructure(
-        self, referenceNode: HanZiNode, index: int
+    def __genCompoundStructure(
+        self, operator: Operator, structures: tuple[HanZiStructure]
     ) -> HanZiStructure:
-        nodeStrcuture = referenceNode.nodeStructure
-        structureInfo = WrapperStructureInfo(nodeStrcuture, index)
+        structureInfo = self.__generateCompoundStructureInfo(operator, structures)
         return HanZiStructure(structureInfo)
 
-    def __generateCompoundStructure(
-        self, operator: Operator, structureList: list[HanZiStructure]
-    ) -> HanZiStructure:
-        structureInfo = CompoundStructureInfo(operator, structureList)
+    def __genWrapperStructure(self, node: HanZiNode, index: int = 0) -> HanZiStructure:
+        structureInfo = self.__generateWrapperStructureInfo(node, index)
         return HanZiStructure(structureInfo)
+
+    def __generateUnitStructureInfo(self, radixCodeInfo: CodeInfo) -> UnitStructureInfo:
+        return UnitStructureInfo(radixCodeInfo)
+
+    def __generateCompoundStructureInfo(
+        self, operator: Operator, structures: tuple[HanZiStructure]
+    ) -> CompoundStructureInfo:
+        return CompoundStructureInfo(operator, structures)
+
+    def __generateWrapperStructureInfo(
+        self, node: HanZiNode, index: int
+    ) -> WrapperStructureInfo:
+        return WrapperStructureInfo(node.nodeStructure, index)
 
     def addStructureIntoNode(
         self, structure: HanZiStructure, nodeStructure: HanZiStructure
