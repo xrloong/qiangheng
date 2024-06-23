@@ -215,12 +215,11 @@ class NodeStructureInfo(StructureInfo):
     def getMainStructure(self):
         return self.__mainStructure
 
-    def setMainStructure(self, structure):
-        self.__mainStructure = structure
-
-    def addStructure(self, structure):
+    def addStructure(self, structure, isMainStructure: bool):
         if structure.isUnit():
             self.__unitStructureList.append(structure)
+        if isMainStructure:
+            self.__mainStructure = structure
 
     def getStructureList(self, isWithUnit=False):
         structureList = []
