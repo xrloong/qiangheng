@@ -174,6 +174,9 @@ class CharacterStructuringWork(TreeNodeGenerator):
             operatorManager=operatorManager,
         )
 
+    def reset(self):
+        self.__workspaceManager.reset()
+
     def constructCharacter(self, character: str):
         node = self.__workspaceManager.touchNode(character)
         nodeStructure = node.nodeStructure
@@ -250,9 +253,6 @@ class CharacterStructuringWork(TreeNodeGenerator):
         return self.__workspaceManager.getCompoundStructure(
             operator, childStructureList
         )
-
-    def reset(self):
-        self.__workspaceManager.reset()
 
     def generateLeafNode(self, nodeName):
         return self.__workspaceManager.getWrapperStructure(nodeName)
