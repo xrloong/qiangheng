@@ -246,17 +246,15 @@ class CharacterStructuringWork(TreeNodeGenerator):
         return self.__workspaceManager.getWrapperStructure(name, subIndex)
 
     def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
-        childStructureList = []
-        childDescList = self.structureManager.queryChildren(structDesc)
-        for childSrcDesc in childDescList:
-            childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
-            childStructureList.append(childStructure)
-
         operator = structDesc.operator
 
-        return self.__workspaceManager.getCompoundStructure(
-            operator, childStructureList
+        childDescs = self.structureManager.queryChildren(structDesc)
+        childStructures = tuple(
+            self.recursivelyConvertDescriptionToStructure(childDesc)
+            for childDesc in childDescs
         )
+
+        return self.__workspaceManager.getCompoundStructure(operator, childStructures)
 
     def generateLeafNode(self, nodeName):
         return self.__workspaceManager.getWrapperStructure(nodeName)
