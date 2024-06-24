@@ -163,16 +163,20 @@ class CharacterStructuringWork(TreeNodeGenerator):
         rules = structureManager.templateManager.substituteRules
         self.__templateHelper = SubstituteHelper(
             rules=rules,
-            treeNodeGenerator=self,
+            treeNodeGenerator=self.treeNodeGenerator,
             operatorManager=operatorManager,
         )
 
         rules = structureManager.substituteManager.substituteRules
         self.__substituteHelper = SubstituteHelper(
             rules,
-            treeNodeGenerator=self,
+            treeNodeGenerator=self.treeNodeGenerator,
             operatorManager=operatorManager,
         )
+
+    @property
+    def treeNodeGenerator(self) -> TreeNodeGenerator:
+        return self
 
     def reset(self):
         self.__workspaceManager.reset()
