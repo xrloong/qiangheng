@@ -1,6 +1,7 @@
 from model.element import CharacterInfo
 
 from .info import (
+    StructureInfo,
     UnitStructureInfo,
     WrapperStructureInfo,
     CompoundStructureInfo,
@@ -9,12 +10,16 @@ from .info import (
 
 
 class HanZiStructure:
-    def __init__(self, structureInfo):
+    pass
+
+
+class HanZiStructure:
+    def __init__(self, structureInfo: StructureInfo):
         self.__structureInfo = structureInfo
         self.__fastCodeInfo = None
 
     @property
-    def structureInfo(self):
+    def structureInfo(self) -> StructureInfo:
         return self.__structureInfo
 
     @property
@@ -22,7 +27,7 @@ class HanZiStructure:
         return self.structureInfo.getName()
 
     @property
-    def referencedNodeName(self):
+    def referencedNodeName(self) -> str:
         nodeStructureInfo = self.structureInfo.referencedNodeStructureInfo
         return nodeStructureInfo.getName()
 
@@ -37,16 +42,16 @@ class HanZiStructure:
     def getComputedCodeInfos(self):
         return self.structureInfo.getComputedCodeInfos()
 
-    def isUnit(self):
+    def isUnit(self) -> bool:
         return isinstance(self.structureInfo, UnitStructureInfo)
 
-    def isWrapper(self):
+    def isWrapper(self) -> bool:
         return isinstance(self.structureInfo, WrapperStructureInfo)
 
-    def isCompound(self):
+    def isCompound(self) -> bool:
         return isinstance(self.structureInfo, CompoundStructureInfo)
 
-    def isNode(self):
+    def isNode(self) -> bool:
         return isinstance(self.structureInfo, NodeStructureInfo)
 
     def hasMainStructure(self) -> bool:
@@ -65,19 +70,19 @@ class HanZiStructure:
 
         return isMatch
 
-    def getStructureList(self):
+    def getStructureList(self) -> tuple[StructureInfo]:
         return self.structureInfo.getStructureList()
 
-    def getExpandedOperatorName(self):
+    def getExpandedOperatorName(self) -> str:
         return self.structureInfo.getExpandedOperatorName()
 
-    def getExpandedStructureList(self):
+    def getExpandedStructureList(self) -> tuple[HanZiStructure]:
         return self.structureInfo.getExpandedStructureList()
 
-    def getChildStructures(self):
+    def getChildStructures(self) -> tuple[HanZiStructure]:
         return self.structureInfo.childStructures
 
-    def changeToStructure(self, newTargetStructure):
+    def changeToStructure(self, newTargetStructure: HanZiStructure):
         self.__structureInfo = newTargetStructure.structureInfo
 
 
