@@ -24,15 +24,22 @@ class HanZiTreeProxy(BasicTreeProxy):
         )
 
 
+TreeNodeType = object
+
+
 class TreeNodeGenerator(object, metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def generateLeafNode(self, nodeName):
+    def generateLeafNode(self, name: str) -> TreeNodeType:
         pass
 
     @abc.abstractmethod
-    def generateNode(self, operator: Operator, children):
+    def generateNode(
+        self, operator: Operator, children: tuple[TreeNodeType]
+    ) -> TreeNodeType:
         pass
 
     @abc.abstractmethod
-    def generateLeafNodeByReference(self, referencedNode, index):
+    def generateLeafNodeByReference(
+        self, node: TreeNodeType, index: int
+    ) -> TreeNodeType:
         pass
