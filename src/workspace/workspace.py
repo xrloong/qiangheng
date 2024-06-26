@@ -8,30 +8,6 @@ from .info import (
 )
 
 
-class HanZiNode:
-    def __init__(self, name):
-        self.__name = name
-        self.__tag = CharacterInfo.CharacterInfo(name)
-
-        nodeStructureInfo = NodeStructureInfo(name)
-        self.__nodeStructure = HanZiStructure(nodeStructureInfo)
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def name(self):
-        return self.__name
-
-    @property
-    def nodeStructure(self):
-        return self.__nodeStructure
-
-    @property
-    def tag(self) -> CharacterInfo.CharacterInfo:
-        return self.__tag
-
-
 class HanZiStructure:
     def __init__(self, structureInfo):
         self.__structureInfo = structureInfo
@@ -103,6 +79,30 @@ class HanZiStructure:
 
     def changeToStructure(self, newTargetStructure):
         self.__structureInfo = newTargetStructure.structureInfo
+
+
+class HanZiNode:
+    def __init__(self, name):
+        self.__name = name
+        self.__tag = CharacterInfo.CharacterInfo(name)
+
+        nodeStructureInfo = NodeStructureInfo(name)
+        self.__nodeStructure = HanZiStructure(nodeStructureInfo)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def nodeStructure(self):
+        return self.__nodeStructure
+
+    @property
+    def tag(self) -> CharacterInfo.CharacterInfo:
+        return self.__tag
 
 
 class HanZiWorkspace:
