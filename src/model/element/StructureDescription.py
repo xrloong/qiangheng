@@ -13,6 +13,13 @@ class StructureDescription:
         self.__fontVariance = FontVariance.All
 
         self.__referenceExpression = replacement
+        if replacement:
+            parts = replacement.split(".")
+            name = parts[0]
+            subIndex = int(parts[1]) if len(parts) > 1 else 0
+            self.__reference = (name, subIndex)
+        else:
+            self.__reference = (None, 0)
 
         self.__flagIsRoot = False
 
@@ -36,16 +43,16 @@ class StructureDescription:
         return self.__fontVariance
 
     @property
+    def reference(self):
+        return self.__reference
+
+    @property
     def referenceExpression(self):
         return self.__referenceExpression
 
     @property
     def referenceName(self):
-        expression = self.__referenceExpression
-        if expression:
-            return expression.split(".")[0]
-        else:
-            return expression
+        return self.reference[0]
 
     def updateFontVariance(self, fontVariance: FontVariance):
         self.__fontVariance = fontVariance
