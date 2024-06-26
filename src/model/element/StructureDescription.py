@@ -52,14 +52,6 @@ class StructureDescription:
     def getUniqueName(self):
         return self.__name
 
-    def generateName(self):
-        if self.isLeaf():
-            self.__name = self.referenceExpression
-        else:
-            strList = [self.operator.name]
-            strList.extend([comp.getUniqueName() for comp in self.__compList])
-            self.__name = "({0})".format(" ".join(strList))
-
     def setReferenceExpression(self, referenceExpression):
         self.__referenceExpression = referenceExpression
 

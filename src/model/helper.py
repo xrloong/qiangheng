@@ -76,7 +76,6 @@ class StructureConverter:
         if replacement:
             structDesc.setReferenceExpression(replacement)
 
-        structDesc.generateName()
         return structDesc
 
     def convert(self, node: Node, font: FontVariance) -> StructureDescription:
