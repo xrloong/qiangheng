@@ -12,7 +12,6 @@ class StructureDescription:
     def __init__(self, operator, compList, replacement: Optional[str]):
         self.__fontVariance = FontVariance.All
 
-        self.__referenceExpression = replacement
         if replacement:
             parts = replacement.split(".")
             name = parts[0]
@@ -46,14 +45,6 @@ class StructureDescription:
     def reference(self):
         return self.__reference
 
-    @property
-    def referenceExpression(self):
-        return self.__referenceExpression
-
-    @property
-    def referenceName(self):
-        return self.reference[0]
-
     def updateFontVariance(self, fontVariance: FontVariance):
         self.__fontVariance = fontVariance
 
@@ -61,7 +52,7 @@ class StructureDescription:
         return self.__name
 
     def isLeaf(self):
-        return bool(self.referenceName)
+        return bool(self.reference[0])
 
     def isEmpty(self):
         return self.operator.name == "龜" or len(self.__compList) == 0
