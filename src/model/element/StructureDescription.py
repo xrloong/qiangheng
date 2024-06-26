@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from typing import Optional
 
 from tree.node import Node as TreeExpression
 from tree.parser import TreeParser
@@ -8,10 +9,10 @@ from parser.model import StructureModel
 
 
 class StructureDescription:
-    def __init__(self, operator, compList):
+    def __init__(self, operator, compList, replacement: Optional[str]):
         self.__fontVariance = FontVariance.All
 
-        self.__referenceExpression = None
+        self.__referenceExpression = replacement
 
         self.__flagIsRoot = False
 
@@ -51,9 +52,6 @@ class StructureDescription:
 
     def getUniqueName(self):
         return self.__name
-
-    def setReferenceExpression(self, referenceExpression):
-        self.__referenceExpression = referenceExpression
 
     def isLeaf(self):
         return bool(self.referenceName)

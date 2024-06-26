@@ -70,11 +70,8 @@ class StructureConverter:
         operatorName = prop.get(constant.TAG_OPERATOR, "龜")
         operator = self.operationManager.generateOperator(operatorName)
 
-        structDesc = StructureDescription(operator, children)
-
         replacement = prop.get(constant.TAG_REPLACEMENT)
-        if replacement:
-            structDesc.setReferenceExpression(replacement)
+        structDesc = StructureDescription(operator, children, replacement)
 
         return structDesc
 
