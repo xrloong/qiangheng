@@ -82,7 +82,7 @@ class HanZiStructure:
 
 
 class HanZiNode:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.__name = name
         self.__tag = CharacterInfo.CharacterInfo(name)
 
@@ -93,11 +93,11 @@ class HanZiNode:
         return self.name
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @property
-    def nodeStructure(self):
+    def nodeStructure(self) -> HanZiStructure:
         return self.__nodeStructure
 
     @property
