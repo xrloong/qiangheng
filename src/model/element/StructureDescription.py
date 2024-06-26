@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from typing import Optional
 
 from tree.node import Node as TreeExpression
 from tree.parser import TreeParser
@@ -8,10 +9,16 @@ from parser.model import StructureModel
 
 
 class StructureDescription:
-    def __init__(self, operator, compList):
+    def __init__(self, operator, compList, replacement: Optional[str]):
         self.__fontVariance = FontVariance.All
 
-        self.__referenceExpression = None
+        if replacement:
+            parts = replacement.split(".")
+            name = parts[0]
+            subIndex = int(parts[1]) if len(parts) > 1 else 0
+            self.__reference = (name, subIndex)
+        else:
+            self.__reference = (None, 0)
 
         self.__flagIsRoot = False
 
@@ -35,16 +42,8 @@ class StructureDescription:
         return self.__fontVariance
 
     @property
-    def referenceExpression(self):
-        return self.__referenceExpression
-
-    @property
-    def referenceName(self):
-        expression = self.__referenceExpression
-        if expression:
-            return expression.split(".")[0]
-        else:
-            return expression
+    def reference(self):
+        return self.__reference
 
     def updateFontVariance(self, fontVariance: FontVariance):
         self.__fontVariance = fontVariance
@@ -52,19 +51,8 @@ class StructureDescription:
     def getUniqueName(self):
         return self.__name
 
-    def generateName(self):
-        if self.isLeaf():
-            self.__name = self.referenceExpression
-        else:
-            strList = [self.operator.name]
-            strList.extend([comp.getUniqueName() for comp in self.__compList])
-            self.__name = "({0})".format(" ".join(strList))
-
-    def setReferenceExpression(self, referenceExpression):
-        self.__referenceExpression = referenceExpression
-
     def isLeaf(self):
-        return bool(self.referenceName)
+        return bool(self.reference[0])
 
     def isEmpty(self):
         return self.operator.name == "龜" or len(self.__compList) == 0

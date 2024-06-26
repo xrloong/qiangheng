@@ -232,17 +232,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
         return structure
 
     def generateReferenceLink(self, structDesc: StructureDescription) -> HanZiStructure:
-        name = structDesc.referenceName
-        nodeExpression = structDesc.referenceExpression
-
-        self.constructCharacter(name)
-
-        l = nodeExpression.split(".")
-        if len(l) > 1:
-            subIndex = int(l[1])
-        else:
-            subIndex = 0
-
+        name, subIndex = structDesc.reference
         return self.__workspaceManager.getWrapperStructure(name, subIndex)
 
     def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
