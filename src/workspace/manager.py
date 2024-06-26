@@ -99,4 +99,6 @@ class HanZiWorkspaceManager:
     ):
         assert nodeStructure.isNode()
 
-        nodeStructure.structureInfo.addStructure(structure, isMainStructure=isMainStructure)
+        nodeStructure.structureInfo.addStructure(
+            structure, isMainStructure=isMainStructure
+        )

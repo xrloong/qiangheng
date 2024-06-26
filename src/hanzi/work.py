@@ -163,16 +163,23 @@ class CharacterStructuringWork(TreeNodeGenerator):
         rules = structureManager.templateManager.substituteRules
         self.__templateHelper = SubstituteHelper(
             rules=rules,
-            treeNodeGenerator=self,
+            treeNodeGenerator=self.treeNodeGenerator,
             operatorManager=operatorManager,
         )
 
         rules = structureManager.substituteManager.substituteRules
         self.__substituteHelper = SubstituteHelper(
             rules,
-            treeNodeGenerator=self,
+            treeNodeGenerator=self.treeNodeGenerator,
             operatorManager=operatorManager,
         )
+
+    @property
+    def treeNodeGenerator(self) -> TreeNodeGenerator:
+        return self
+
+    def reset(self):
+        self.__workspaceManager.reset()
 
     def constructCharacter(self, character: str):
         node = self.__workspaceManager.touchNode(character)
@@ -239,20 +246,15 @@ class CharacterStructuringWork(TreeNodeGenerator):
         return self.__workspaceManager.getWrapperStructure(name, subIndex)
 
     def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
-        childStructureList = []
-        childDescList = self.structureManager.queryChildren(structDesc)
-        for childSrcDesc in childDescList:
-            childStructure = self.recursivelyConvertDescriptionToStructure(childSrcDesc)
-            childStructureList.append(childStructure)
-
         operator = structDesc.operator
 
-        return self.__workspaceManager.getCompoundStructure(
-            operator, childStructureList
+        childDescs = self.structureManager.queryChildren(structDesc)
+        childStructures = tuple(
+            self.recursivelyConvertDescriptionToStructure(childDesc)
+            for childDesc in childDescs
         )
 
-    def reset(self):
-        self.__workspaceManager.reset()
+        return self.__workspaceManager.getCompoundStructure(operator, childStructures)
 
     def generateLeafNode(self, nodeName):
         return self.__workspaceManager.getWrapperStructure(nodeName)
