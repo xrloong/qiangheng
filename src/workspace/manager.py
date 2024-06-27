@@ -53,7 +53,8 @@ class HanZiWorkspaceManager:
     ) -> HanZiStructure:
         return self.__genCompoundStructure(operator, structures)
 
-    def getWrapperStructure(self, name: str, subIndex: int) -> HanZiStructure:
+    def getWrapperStructure(self, reference: (str, int)) -> HanZiStructure:
+        (name, subIndex) = reference
         wrapperExpression = (name, subIndex)
         if (name, subIndex) in self.__wrapperExpressionDict:
             return self.__wrapperExpressionDict[wrapperExpression]
