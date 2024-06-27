@@ -232,8 +232,8 @@ class CharacterStructuringWork(TreeNodeGenerator):
         return structure
 
     def generateReferenceLink(self, structDesc: StructureDescription) -> HanZiStructure:
-        name, subIndex = structDesc.reference
-        return self.__workspaceManager.getWrapperStructure(name, subIndex)
+        reference = structDesc.reference
+        return self.__workspaceManager.getWrapperStructure(reference=reference)
 
     def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
         operator = structDesc.operator
@@ -247,14 +247,14 @@ class CharacterStructuringWork(TreeNodeGenerator):
         return self.__workspaceManager.getCompoundStructure(operator, childStructures)
 
     def generateLeafNode(self, name: str) -> HanZiStructure:
-        return self.__workspaceManager.getWrapperStructure(name)
+        reference = (name, 0)
+        return self.__workspaceManager.getWrapperStructure(reference=reference)
 
     def generateLeafNodeByReference(
         self, structure: HanZiStructure, index: int
     ) -> HanZiStructure:
-        return self.__workspaceManager.getWrapperStructure(
-            structure.referencedNodeName, index
-        )
+        reference = (structure.referencedNodeName, index)
+        return self.__workspaceManager.getWrapperStructure(reference=reference)
 
     def generateNode(
         self, operator: Operator, children: tuple[HanZiStructure]
