@@ -233,7 +233,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
 
     def generateReferenceLink(self, structDesc: StructureDescription) -> HanZiStructure:
         reference = structDesc.reference
-        return self.__workspaceManager.getWrapperStructure(reference=reference)
+        return self.treeNodeGenerator.generateLeafNode(reference=reference)
 
     def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
         operator = structDesc.operator
