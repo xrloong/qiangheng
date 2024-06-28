@@ -29,7 +29,7 @@ TreeNodeType = object
 
 class TreeNodeGenerator(object, metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def generateLeafNode(self, name: str) -> TreeNodeType:
+    def generateLeafNode(self, reference: (str, int)) -> TreeNodeType:
         pass
 
     @abc.abstractmethod

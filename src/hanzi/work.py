@@ -91,9 +91,9 @@ class SubstituteHelper:
             compList = []
             for childNode in node.children:
                 if "置換" in childNode.prop:
-                    compList.append(
-                        treeNodeGenerator.generateLeafNode(childNode.prop["置換"])
-                    )
+                    name = childNode.prop["置換"]
+                    reference = (name, 0)
+                    compList.append(treeNodeGenerator.generateLeafNode(reference))
                 elif childNode.isBackRef:
                     # \1 or \1.1
                     refExp = childNode.backRefExp
@@ -246,8 +246,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
 
         return self.__workspaceManager.getCompoundStructure(operator, childStructures)
 
-    def generateLeafNode(self, name: str) -> HanZiStructure:
-        reference = (name, 0)
+    def generateLeafNode(self, reference: (str, int)) -> HanZiStructure:
         return self.__workspaceManager.getWrapperStructure(reference=reference)
 
     def generateLeafNodeByReference(
