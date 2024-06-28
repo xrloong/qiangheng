@@ -7,8 +7,10 @@ from .workspace import UnitStructureInfo, WrapperStructureInfo, CompoundStructur
 from coding.Base import CodeInfo
 from element.operator import Operator
 
+from hanzi.tree import TreeNodeGenerator
 
-class HanZiWorkspaceManager:
+
+class HanZiWorkspaceManager(TreeNodeGenerator):
     def __init__(self):
         self.__workspace = HanZiWorkspace()
         self.__wrapperExpressionDict = {}
@@ -102,3 +104,17 @@ class HanZiWorkspaceManager:
         nodeStructure.structureInfo.addStructure(
             structure, isMainStructure=isMainStructure
         )
+
+    def generateLeafNode(self, reference: (str, int)) -> HanZiStructure:
+        return self.getWrapperStructure(reference=reference)
+
+    def generateLeafNodeByReference(
+        self, structure: HanZiStructure, index: int
+    ) -> HanZiStructure:
+        reference = (structure.referencedNodeName, index)
+        return self.getWrapperStructure(reference=reference)
+
+    def generateNode(
+        self, operator: Operator, children: tuple[HanZiStructure]
+    ) -> HanZiStructure:
+        return self.getCompoundStructure(operator, children)

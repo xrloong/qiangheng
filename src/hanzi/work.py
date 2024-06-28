@@ -91,9 +91,9 @@ class SubstituteHelper:
             compList = []
             for childNode in node.children:
                 if "置換" in childNode.prop:
-                    compList.append(
-                        treeNodeGenerator.generateLeafNode(childNode.prop["置換"])
-                    )
+                    name = childNode.prop["置換"]
+                    reference = (name, 0)
+                    compList.append(treeNodeGenerator.generateLeafNode(reference))
                 elif childNode.isBackRef:
                     # \1 or \1.1
                     refExp = childNode.backRefExp
@@ -129,7 +129,7 @@ class CharacterStructuringWork:
     pass
 
 
-class CharacterStructuringWork(TreeNodeGenerator):
+class CharacterStructuringWork:
     class RearrangeCallback(SubstituteHelper.RearrangeCallback):
         def __init__(
             self,
@@ -176,7 +176,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
 
     @property
     def treeNodeGenerator(self) -> TreeNodeGenerator:
-        return self
+        return self.__workspaceManager
 
     def reset(self):
         self.__workspaceManager.reset()
@@ -233,7 +233,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
 
     def generateReferenceLink(self, structDesc: StructureDescription) -> HanZiStructure:
         reference = structDesc.reference
-        return self.__workspaceManager.getWrapperStructure(reference=reference)
+        return self.treeNodeGenerator.generateLeafNode(reference=reference)
 
     def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
         operator = structDesc.operator
@@ -244,22 +244,9 @@ class CharacterStructuringWork(TreeNodeGenerator):
             for childDesc in childDescs
         )
 
-        return self.__workspaceManager.getCompoundStructure(operator, childStructures)
-
-    def generateLeafNode(self, name: str) -> HanZiStructure:
-        reference = (name, 0)
-        return self.__workspaceManager.getWrapperStructure(reference=reference)
-
-    def generateLeafNodeByReference(
-        self, structure: HanZiStructure, index: int
-    ) -> HanZiStructure:
-        reference = (structure.referencedNodeName, index)
-        return self.__workspaceManager.getWrapperStructure(reference=reference)
-
-    def generateNode(
-        self, operator: Operator, children: tuple[HanZiStructure]
-    ) -> HanZiStructure:
-        return self.__workspaceManager.getCompoundStructure(operator, children)
+        return self.treeNodeGenerator.generateNode(
+            operator=operator, children=childStructures
+        )
 
 
 class CharacterCodeAppendingWork:
