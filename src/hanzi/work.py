@@ -129,7 +129,7 @@ class CharacterStructuringWork:
     pass
 
 
-class CharacterStructuringWork(TreeNodeGenerator):
+class CharacterStructuringWork:
     class RearrangeCallback(SubstituteHelper.RearrangeCallback):
         def __init__(
             self,
@@ -176,7 +176,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
 
     @property
     def treeNodeGenerator(self) -> TreeNodeGenerator:
-        return self
+        return self.__workspaceManager
 
     def reset(self):
         self.__workspaceManager.reset()
@@ -247,20 +247,6 @@ class CharacterStructuringWork(TreeNodeGenerator):
         return self.treeNodeGenerator.generateNode(
             operator=operator, children=childStructures
         )
-
-    def generateLeafNode(self, reference: (str, int)) -> HanZiStructure:
-        return self.__workspaceManager.getWrapperStructure(reference=reference)
-
-    def generateLeafNodeByReference(
-        self, structure: HanZiStructure, index: int
-    ) -> HanZiStructure:
-        reference = (structure.referencedNodeName, index)
-        return self.__workspaceManager.getWrapperStructure(reference=reference)
-
-    def generateNode(
-        self, operator: Operator, children: tuple[HanZiStructure]
-    ) -> HanZiStructure:
-        return self.__workspaceManager.getCompoundStructure(operator, children)
 
 
 class CharacterCodeAppendingWork:
