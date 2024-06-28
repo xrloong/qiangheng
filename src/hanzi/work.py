@@ -244,7 +244,7 @@ class CharacterStructuringWork(TreeNodeGenerator):
             for childDesc in childDescs
         )
 
-        return self.__workspaceManager.getCompoundStructure(operator, childStructures)
+        return self.treeNodeGenerator.generateNode(operator, childStructures)
 
     def generateLeafNode(self, reference: (str, int)) -> HanZiStructure:
         return self.__workspaceManager.getWrapperStructure(reference=reference)
