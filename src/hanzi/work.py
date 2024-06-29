@@ -130,6 +130,7 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
 
         self.structureManager = structureManager
 
+        self.__radicalManager = structureManager.radixManager
         self.__workspaceManager = workspaceManager
 
         rules = structureManager.templateManager.substituteRules
@@ -213,32 +214,17 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
 
         return structure
 
+    def __appendCodes(self, character):
+        characterCodes = self.__radicalManager.queryCharacterCodes(character)
+        self.__workspaceManager.appendCharacterCodes(character, characterCodes)
+
     def onCreateNode(self, character: str, node: HanZiNode):
         nodeStructure = node.nodeStructure
         assert nodeStructure.isNode()
 
         self.expandNodeStructure(nodeStructure)
 
-
-class CharacterCodeAppendingWork:
-    @inject
-    def __init__(
-        self,
-        workspaceManager: HanZiWorkspaceManager,
-        structureManager: StructureManager,
-    ):
-        self.__workspaceManager = workspaceManager
-        self.__radicalManager = structureManager.radixManager
-
-    def appendCodesForAddedCharacters(self):
-        workspaceManager = self.__workspaceManager
-        radicalManager = self.__radicalManager
-
-        for character in self.__workspaceManager.addedCharacters:
-            characterCodes = radicalManager.queryCharacterCodes(character)
-            workspaceManager.appendCharacterCodes(character, characterCodes)
-
-        self.__workspaceManager.resetAddedCharacters()
+        self.__appendCodes(character)
 
 
 class CharacterCodeComputingWork:
