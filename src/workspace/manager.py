@@ -12,9 +12,7 @@ from hanzi.tree import TreeNodeGenerator
 
 class HanZiWorkspaceManager(TreeNodeGenerator):
     def __init__(self):
-        self.__workspace = HanZiWorkspace()
-        self.__wrapperExpressionDict = {}
-        self.__addedCharacters = []
+        self.reset()
 
     @property
     def addedCharacters(self) -> tuple[str]:
