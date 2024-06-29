@@ -223,8 +223,8 @@ class CharacterStructuringWork:
     def recursivelyConvertDescriptionToStructure(
         self, structDesc: StructureDescription
     ) -> HanZiStructure:
-        if bool(structDesc.reference[0]):
-            reference = structDesc.reference
+        reference = structDesc.reference
+        if bool(reference[0]):
             structure = self.treeNodeGenerator.generateLeafNode(reference=reference)
         else:
             operator = structDesc.operator
