@@ -61,7 +61,8 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
     def getCompoundStructure(
         self, operator: Operator, structures: tuple[HanZiStructure]
     ) -> HanZiStructure:
-        return self.__genCompoundStructure(operator, structures)
+        structureInfo = CompoundStructureInfo(operator, structures)
+        return HanZiStructure(structureInfo)
 
     def getWrapperStructure(self, reference: (str, int)) -> HanZiStructure:
         (name, subIndex) = reference
@@ -72,19 +73,8 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         structureInfo = self.__generateUnitStructureInfo(radixCodeInfo)
         return HanZiStructure(structureInfo)
 
-    def __genCompoundStructure(
-        self, operator: Operator, structures: tuple[HanZiStructure]
-    ) -> HanZiStructure:
-        structureInfo = self.__generateCompoundStructureInfo(operator, structures)
-        return HanZiStructure(structureInfo)
-
     def __generateUnitStructureInfo(self, radixCodeInfo: CodeInfo) -> UnitStructureInfo:
         return UnitStructureInfo(radixCodeInfo)
-
-    def __generateCompoundStructureInfo(
-        self, operator: Operator, structures: tuple[HanZiStructure]
-    ) -> CompoundStructureInfo:
-        return CompoundStructureInfo(operator, structures)
 
     def addStructureIntoNode(
         self,
