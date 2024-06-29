@@ -128,7 +128,7 @@ class CharacterStructuringWork:
     pass
 
 
-class CharacterStructuringWork:
+class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
     class RearrangeCallback(SubstituteHelper.RearrangeCallback):
         def __init__(
             self,
@@ -179,6 +179,12 @@ class CharacterStructuringWork:
 
     def reset(self):
         self.__workspaceManager.reset()
+
+    def setupOnCreateNodeListener(self):
+        self.__workspaceManager.setOnCreateNodeListener(self)
+
+    def resetOnCreateNodeListener(self):
+        self.__workspaceManager.setOnCreateNodeListener()
 
     def constructCharacter(self, character: str):
         node = self.__workspaceManager.touchNode(character)
@@ -240,6 +246,9 @@ class CharacterStructuringWork:
             )
 
         return structure
+
+    def onCreateNode(self, character: str):
+        pass
 
 
 class CharacterCodeAppendingWork:

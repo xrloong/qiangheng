@@ -34,6 +34,8 @@ class MainManager:
         characters = injector.get(Characters)
         separateComputing = injector.get(SeparateComputing)
 
+        structuringWork.setupOnCreateNodeListener()
+
         characters = sorted(characters)
 
         characterInfos = []
@@ -46,6 +48,8 @@ class MainManager:
             characterInfo = computingWork.computeCharacter(character)
             if characterInfo:
                 characterInfos.append(characterInfo)
+
+        structuringWork.resetOnCreateNodeListener()
 
         return characterInfos
 
