@@ -51,9 +51,6 @@ class StructureDescription:
     def getUniqueName(self):
         return self.__name
 
-    def isLeaf(self):
-        return bool(self.reference[0])
-
     def isEmpty(self):
         return self.operator.name == "龜" or len(self.__compList) == 0
 

@@ -9,7 +9,6 @@ from tree.regexp import TreeRegExpInterpreter
 
 
 from element.enum import FontVariance
-from element.operator import Operator
 
 from workspace import HanZiNode, HanZiStructure
 from workspace import HanZiWorkspaceManager
@@ -224,29 +223,23 @@ class CharacterStructuringWork:
     def recursivelyConvertDescriptionToStructure(
         self, structDesc: StructureDescription
     ) -> HanZiStructure:
-        if structDesc.isLeaf():
-            structure = self.generateReferenceLink(structDesc)
+        reference = structDesc.reference
+        if bool(reference[0]):
+            structure = self.treeNodeGenerator.generateLeafNode(reference=reference)
         else:
-            structure = self.generateLink(structDesc)
+            operator = structDesc.operator
+
+            childDescs = self.structureManager.queryChildren(structDesc)
+            childStructures = tuple(
+                self.recursivelyConvertDescriptionToStructure(childDesc)
+                for childDesc in childDescs
+            )
+
+            structure = self.treeNodeGenerator.generateNode(
+                operator=operator, children=childStructures
+            )
 
         return structure
-
-    def generateReferenceLink(self, structDesc: StructureDescription) -> HanZiStructure:
-        reference = structDesc.reference
-        return self.treeNodeGenerator.generateLeafNode(reference=reference)
-
-    def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
-        operator = structDesc.operator
-
-        childDescs = self.structureManager.queryChildren(structDesc)
-        childStructures = tuple(
-            self.recursivelyConvertDescriptionToStructure(childDesc)
-            for childDesc in childDescs
-        )
-
-        return self.treeNodeGenerator.generateNode(
-            operator=operator, children=childStructures
-        )
 
 
 class CharacterCodeAppendingWork:
