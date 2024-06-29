@@ -25,6 +25,8 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
 
     def reset(self):
         self.__workspace = HanZiWorkspace()
+        self.__wrapperExpressionDict = {}
+        self.__addedCharacters = []
 
     def resetAddedCharacters(self):
         self.__addedCharacters = []
