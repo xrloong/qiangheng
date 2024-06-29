@@ -9,7 +9,6 @@ from tree.regexp import TreeRegExpInterpreter
 
 
 from element.enum import FontVariance
-from element.operator import Operator
 
 from workspace import HanZiNode, HanZiStructure
 from workspace import HanZiWorkspaceManager
