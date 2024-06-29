@@ -224,15 +224,12 @@ class CharacterStructuringWork:
         self, structDesc: StructureDescription
     ) -> HanZiStructure:
         if structDesc.isLeaf():
-            structure = self.generateReferenceLink(structDesc)
+            reference = structDesc.reference
+            structure = self.treeNodeGenerator.generateLeafNode(reference=reference)
         else:
             structure = self.generateLink(structDesc)
 
         return structure
-
-    def generateReferenceLink(self, structDesc: StructureDescription) -> HanZiStructure:
-        reference = structDesc.reference
-        return self.treeNodeGenerator.generateLeafNode(reference=reference)
 
     def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
         operator = structDesc.operator
