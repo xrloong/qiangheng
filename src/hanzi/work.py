@@ -26,9 +26,7 @@ from .manager import StructureManager
 
 class SubstituteHelper:
     class RearrangeCallback(object, metaclass=abc.ABCMeta):
-        @abc.abstractmethod
-        def prepare(self, structure):
-            pass
+        pass
 
     def __init__(
         self,
@@ -55,8 +53,6 @@ class SubstituteHelper:
     def recursivelyRearrangeStructure(
         self, structure, rearrangeCallback: RearrangeCallback
     ):
-        rearrangeCallback.prepare(structure)
-
         self.__rearrangeStructure(structure)
         for childStructure in structure.getStructureList():
             self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
@@ -135,9 +131,6 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
             structuringWork: CharacterStructuringWork,
         ):
             self.structuringWork = structuringWork
-
-        def prepare(self, structure):
-            pass
 
     @inject
     def __init__(
