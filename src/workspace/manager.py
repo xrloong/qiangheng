@@ -1,3 +1,4 @@
+import abc
 from typing import Optional
 
 from .workspace import HanZiStructure, HanZiNode
@@ -11,12 +12,30 @@ from hanzi.tree import TreeNodeGenerator
 
 
 class HanZiWorkspaceManager(TreeNodeGenerator):
+    class OnCreateNodeListener(object, metaclass=abc.ABCMeta):
+        @abc.abstractmethod
+        def onCreateNode(self, character: str):
+            pass
+
+    class DummyOnCreateNodeListener(OnCreateNodeListener):
+        def onCreateNode(self, character: str):
+            pass
+
     def __init__(self):
         self.reset()
+        self.__onCreateNodeListener = HanZiWorkspaceManager.DummyOnCreateNodeListener()
 
     @property
     def addedCharacters(self) -> tuple[str]:
         return tuple(self.__addedCharacters)
+
+    def setOnCreateNodeListener(
+        self, listener: OnCreateNodeListener = DummyOnCreateNodeListener()
+    ):
+        self.__onCreateNodeListener = listener
+
+    def __notifyOnCreateNode(self, character: str):
+        self.__onCreateNodeListener.onCreateNode(character)
 
     def isNodeExpanded(self, name: str) -> bool:
         return self.__workspace.isNodeExpanded(name)
@@ -32,6 +51,7 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
     def touchNode(self, character: str) -> HanZiNode:
         (node, added) = self.__workspace.touchNode(character)
         if added:
+            self.__notifyOnCreateNode(character)
             self.__addedCharacters.append(character)
         return node
 
