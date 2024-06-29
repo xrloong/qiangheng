@@ -93,6 +93,7 @@ class HanZiNode:
 
         nodeStructureInfo = NodeStructureInfo(name)
         self.__nodeStructure = HanZiStructure(nodeStructureInfo)
+        self.__subStructureDict = {}
 
     def __str__(self):
         return self.name
@@ -108,6 +109,15 @@ class HanZiNode:
     @property
     def tag(self) -> CharacterInfo.CharacterInfo:
         return self.__tag
+
+    def getSubStructure(self, index: int = 0) -> HanZiStructure:
+        if index in self.__subStructureDict:
+            return self.__subStructureDict[index]
+
+        structureInfo = WrapperStructureInfo(self.nodeStructure, index)
+        structure = HanZiStructure(structureInfo)
+        self.__subStructureDict[index] = structure
+        return structure
 
 
 class HanZiWorkspace:

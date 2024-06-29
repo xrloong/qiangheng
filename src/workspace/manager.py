@@ -4,7 +4,7 @@ from typing import Optional
 
 from .workspace import HanZiStructure, HanZiNode
 from .workspace import HanZiWorkspace
-from .workspace import UnitStructureInfo, WrapperStructureInfo, CompoundStructureInfo
+from .workspace import UnitStructureInfo, CompoundStructureInfo
 
 from coding.Base import CodeInfo
 from element.operator import Operator
@@ -64,15 +64,9 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         return self.__genCompoundStructure(operator, structures)
 
     def getWrapperStructure(self, reference: (str, int)) -> HanZiStructure:
-        if reference in self.__wrapperExpressionDict:
-            return self.__wrapperExpressionDict[reference]
-
         (name, subIndex) = reference
         referenceNode = self.touchNode(name)
-        structure = self.__genWrapperStructure(referenceNode, subIndex)
-
-        self.__wrapperExpressionDict[reference] = structure
-        return structure
+        return referenceNode.getSubStructure(subIndex)
 
     def __genUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
         structureInfo = self.__generateUnitStructureInfo(radixCodeInfo)
@@ -84,10 +78,6 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         structureInfo = self.__generateCompoundStructureInfo(operator, structures)
         return HanZiStructure(structureInfo)
 
-    def __genWrapperStructure(self, node: HanZiNode, index: int = 0) -> HanZiStructure:
-        structureInfo = self.__generateWrapperStructureInfo(node, index)
-        return HanZiStructure(structureInfo)
-
     def __generateUnitStructureInfo(self, radixCodeInfo: CodeInfo) -> UnitStructureInfo:
         return UnitStructureInfo(radixCodeInfo)
 
@@ -95,11 +85,6 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         self, operator: Operator, structures: tuple[HanZiStructure]
     ) -> CompoundStructureInfo:
         return CompoundStructureInfo(operator, structures)
-
-    def __generateWrapperStructureInfo(
-        self, node: HanZiNode, index: int
-    ) -> WrapperStructureInfo:
-        return WrapperStructureInfo(node.nodeStructure, index)
 
     def addStructureIntoNode(
         self,
