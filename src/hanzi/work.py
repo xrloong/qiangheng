@@ -162,9 +162,9 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
         nodeStructure = node.nodeStructure
         assert nodeStructure.isNode()
 
-        self.expandNodeStructure(nodeStructure)
+        self.__expandNodeStructure(nodeStructure)
 
-    def expandNodeStructure(self, nodeStructure: HanZiStructure):
+    def __expandNodeStructure(self, nodeStructure: HanZiStructure):
         assert nodeStructure.isNode()
 
         workspaceManager = self.__workspaceManager
@@ -222,7 +222,7 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
         nodeStructure = node.nodeStructure
         assert nodeStructure.isNode()
 
-        self.expandNodeStructure(nodeStructure)
+        self.__expandNodeStructure(nodeStructure)
 
         self.__appendCodes(character)
 
