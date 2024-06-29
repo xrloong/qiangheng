@@ -137,9 +137,7 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
             self.structuringWork = structuringWork
 
         def prepare(self, structure):
-            if structure.isWrapper():
-                character = structure.referencedNodeName
-                self.structuringWork.constructCharacter(character)
+            pass
 
     @inject
     def __init__(
@@ -248,7 +246,7 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
         return structure
 
     def onCreateNode(self, character: str):
-        pass
+        self.constructCharacter(character)
 
 
 class CharacterCodeAppendingWork:
