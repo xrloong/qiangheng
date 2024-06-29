@@ -49,8 +49,6 @@ class MainManager:
             if characterInfo:
                 characterInfos.append(characterInfo)
 
-        structuringWork.resetOnCreateNodeListener()
-
         return characterInfos
 
     def __write(self, characterInfos):

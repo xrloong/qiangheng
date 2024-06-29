@@ -1,4 +1,5 @@
 import abc
+import weakref
 from typing import Optional
 
 from .workspace import HanZiStructure, HanZiNode
@@ -17,25 +18,21 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         def onCreateNode(self, character: str):
             pass
 
-    class DummyOnCreateNodeListener(OnCreateNodeListener):
-        def onCreateNode(self, character: str):
-            pass
-
     def __init__(self):
         self.reset()
-        self.__onCreateNodeListener = HanZiWorkspaceManager.DummyOnCreateNodeListener()
+        self.__onCreateNodeListener = None
 
     @property
     def addedCharacters(self) -> tuple[str]:
         return tuple(self.__addedCharacters)
 
-    def setOnCreateNodeListener(
-        self, listener: OnCreateNodeListener = DummyOnCreateNodeListener()
-    ):
-        self.__onCreateNodeListener = listener
+    def setOnCreateNodeListener(self, listener: OnCreateNodeListener):
+        self.__onCreateNodeListener = weakref.proxy(listener)
 
     def __notifyOnCreateNode(self, character: str):
-        self.__onCreateNodeListener.onCreateNode(character)
+        listener = self.__onCreateNodeListener
+        if listener:
+            self.__onCreateNodeListener.onCreateNode(character)
 
     def isNodeExpanded(self, name: str) -> bool:
         return self.__workspace.isNodeExpanded(name)

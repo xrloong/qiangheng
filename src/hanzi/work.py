@@ -156,9 +156,6 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
     def setupOnCreateNodeListener(self):
         self.__workspaceManager.setOnCreateNodeListener(self)
 
-    def resetOnCreateNodeListener(self):
-        self.__workspaceManager.setOnCreateNodeListener()
-
     def constructCharacter(self, character: str):
         node = self.__workspaceManager.touchNode(character)
         nodeStructure = node.nodeStructure
