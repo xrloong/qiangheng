@@ -227,22 +227,19 @@ class CharacterStructuringWork:
             reference = structDesc.reference
             structure = self.treeNodeGenerator.generateLeafNode(reference=reference)
         else:
-            structure = self.generateLink(structDesc)
+            operator = structDesc.operator
+
+            childDescs = self.structureManager.queryChildren(structDesc)
+            childStructures = tuple(
+                self.recursivelyConvertDescriptionToStructure(childDesc)
+                for childDesc in childDescs
+            )
+
+            structure = self.treeNodeGenerator.generateNode(
+                operator=operator, children=childStructures
+            )
 
         return structure
-
-    def generateLink(self, structDesc: StructureDescription) -> HanZiStructure:
-        operator = structDesc.operator
-
-        childDescs = self.structureManager.queryChildren(structDesc)
-        childStructures = tuple(
-            self.recursivelyConvertDescriptionToStructure(childDesc)
-            for childDesc in childDescs
-        )
-
-        return self.treeNodeGenerator.generateNode(
-            operator=operator, children=childStructures
-        )
 
 
 class CharacterCodeAppendingWork:
