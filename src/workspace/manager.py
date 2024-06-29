@@ -24,7 +24,7 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         return self.__workspace.isNodeExpanded(name)
 
     def reset(self):
-        self.__workspace.reset()
+        self.__workspace = HanZiWorkspace()
 
     def resetAddedCharacters(self):
         self.__addedCharacters = []
