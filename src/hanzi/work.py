@@ -1,5 +1,3 @@
-import abc
-
 from typing import Optional
 from injector import inject
 
@@ -25,9 +23,6 @@ from .manager import StructureManager
 
 
 class SubstituteHelper:
-    class RearrangeCallback(object, metaclass=abc.ABCMeta):
-        pass
-
     def __init__(
         self,
         rules: tuple[SubstituteRule],
@@ -50,12 +45,10 @@ class SubstituteHelper:
 
         self.__opToRuleDict = opToRuleDict
 
-    def recursivelyRearrangeStructure(
-        self, structure, rearrangeCallback: RearrangeCallback
-    ):
+    def recursivelyRearrangeStructure(self, structure):
         self.__rearrangeStructure(structure)
         for childStructure in structure.getStructureList():
-            self.recursivelyRearrangeStructure(childStructure, rearrangeCallback)
+            self.recursivelyRearrangeStructure(childStructure)
 
     def __findMatchedRule(self, structure) -> Optional[SubstituteRule]:
         treInterpreter = self.treInterpreter
@@ -125,13 +118,6 @@ class CharacterStructuringWork:
 
 
 class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
-    class RearrangeCallback(SubstituteHelper.RearrangeCallback):
-        def __init__(
-            self,
-            structuringWork: CharacterStructuringWork,
-        ):
-            self.structuringWork = structuringWork
-
     @inject
     def __init__(
         self,
@@ -145,10 +131,6 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
         self.structureManager = structureManager
 
         self.__workspaceManager = workspaceManager
-
-        self.rearrangeCallback = CharacterStructuringWork.RearrangeCallback(
-            structuringWork=self,
-        )
 
         rules = structureManager.templateManager.substituteRules
         self.__templateHelper = SubstituteHelper(
@@ -208,12 +190,8 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
     def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
         structure = self.recursivelyConvertDescriptionToStructure(structDesc)
 
-        self.__templateHelper.recursivelyRearrangeStructure(
-            structure, self.rearrangeCallback
-        )
-        self.__substituteHelper.recursivelyRearrangeStructure(
-            structure, self.rearrangeCallback
-        )
+        self.__templateHelper.recursivelyRearrangeStructure(structure)
+        self.__substituteHelper.recursivelyRearrangeStructure(structure)
 
         return structure
 
