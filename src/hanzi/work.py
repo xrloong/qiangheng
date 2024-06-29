@@ -213,8 +213,11 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
 
         return structure
 
-    def onCreateNode(self, character: str):
-        self.constructCharacter(character)
+    def onCreateNode(self, character: str, node: HanZiNode):
+        nodeStructure = node.nodeStructure
+        assert nodeStructure.isNode()
+
+        self.expandNodeStructure(nodeStructure)
 
 
 class CharacterCodeAppendingWork:

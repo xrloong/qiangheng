@@ -15,7 +15,7 @@ from hanzi.tree import TreeNodeGenerator
 class HanZiWorkspaceManager(TreeNodeGenerator):
     class OnCreateNodeListener(object, metaclass=abc.ABCMeta):
         @abc.abstractmethod
-        def onCreateNode(self, character: str):
+        def onCreateNode(self, character: str, node: HanZiNode):
             pass
 
     def __init__(self):
@@ -29,10 +29,10 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
     def setOnCreateNodeListener(self, listener: OnCreateNodeListener):
         self.__onCreateNodeListener = weakref.proxy(listener)
 
-    def __notifyOnCreateNode(self, character: str):
+    def __notifyOnCreateNode(self, character: str, node: HanZiNode):
         listener = self.__onCreateNodeListener
         if listener:
-            self.__onCreateNodeListener.onCreateNode(character)
+            self.__onCreateNodeListener.onCreateNode(character, node)
 
     def isNodeExpanded(self, name: str) -> bool:
         return self.__workspace.isNodeExpanded(name)
@@ -48,8 +48,7 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
     def touchNode(self, character: str) -> HanZiNode:
         (node, added) = self.__workspace.touchNode(character)
         if added:
-            self.__notifyOnCreateNode(character)
-            self.__addedCharacters.append(character)
+            self.__notifyOnCreateNode(character, node)
         return node
 
     def appendCharacterCodes(
