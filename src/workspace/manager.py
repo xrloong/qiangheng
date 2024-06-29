@@ -70,11 +70,8 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         return referenceNode.getSubStructure(subIndex)
 
     def __genUnitStructure(self, radixCodeInfo: CodeInfo) -> HanZiStructure:
-        structureInfo = self.__generateUnitStructureInfo(radixCodeInfo)
+        structureInfo = UnitStructureInfo(radixCodeInfo)
         return HanZiStructure(structureInfo)
-
-    def __generateUnitStructureInfo(self, radixCodeInfo: CodeInfo) -> UnitStructureInfo:
-        return UnitStructureInfo(radixCodeInfo)
 
     def addStructureIntoNode(
         self,
