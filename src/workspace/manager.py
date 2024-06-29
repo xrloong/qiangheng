@@ -22,10 +22,6 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         self.reset()
         self.__onCreateNodeListener = None
 
-    @property
-    def addedCharacters(self) -> tuple[str]:
-        return tuple(self.__addedCharacters)
-
     def setOnCreateNodeListener(self, listener: OnCreateNodeListener):
         self.__onCreateNodeListener = weakref.proxy(listener)
 
@@ -40,10 +36,6 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
     def reset(self):
         self.__workspace = HanZiWorkspace()
         self.__wrapperExpressionDict = {}
-        self.__addedCharacters = []
-
-    def resetAddedCharacters(self):
-        self.__addedCharacters = []
 
     def touchNode(self, character: str) -> HanZiNode:
         (node, added) = self.__workspace.touchNode(character)
