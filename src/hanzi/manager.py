@@ -130,14 +130,6 @@ class StructureManager:
         return self.__qhDM.compositionManager
 
     @property
-    def templateManager(self) -> SubstituteManager:
-        return self.__qhDM.templateManager
-
-    @property
-    def substituteManager(self) -> SubstituteManager:
-        return self.__qhDM.substituteManager
-
-    @property
     def radixManager(self) -> RadixManager:
         return self.__qhDM.radixManager
 
@@ -161,7 +153,8 @@ class StructureManager:
         self,
         treeNodeGenerator: TreeNodeGenerator,
     ) -> SubstituteHelper:
-        rules = self.templateManager.substituteRules
+        templateManager = self.__qhDM.templateManager
+        rules = templateManager.substituteRules
         return SubstituteHelper(
             rules=rules,
             treeNodeGenerator=treeNodeGenerator,
@@ -172,7 +165,8 @@ class StructureManager:
         self,
         treeNodeGenerator: TreeNodeGenerator,
     ) -> SubstituteHelper:
-        rules = self.substituteManager.substituteRules
+        substituteManager = self.__qhDM.substituteManager
+        rules = substituteManager.substituteRules
         return SubstituteHelper(
             rules=rules,
             treeNodeGenerator=treeNodeGenerator,
