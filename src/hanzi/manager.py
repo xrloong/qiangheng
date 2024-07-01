@@ -65,12 +65,12 @@ class SubstituteHelper:
         while True:
             rule = self.__findMatchedRule(structure)
             if rule:
-                tmpStructure = self.replace(rule=rule)
+                tmpStructure = self.__replace(rule=rule)
                 structure.changeToStructure(tmpStructure)
             else:
                 break
 
-    def replace(self, rule: SubstituteRule):
+    def __replace(self, rule: SubstituteRule):
         treeNodeGenerator = self.treeNodeGenerator
 
         def convertNodeToStructure(node: TreeExpression, allComps):
