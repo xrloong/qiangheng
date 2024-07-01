@@ -112,7 +112,7 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
         characterCodes = self.__radicalManager.queryCharacterCodes(character)
         self.__workspaceManager.appendCharacterCodes(node, characterCodes)
 
-    def onCreateNode(self, character: str, node: HanZiNode):
+    def onCreateNode(self, node: HanZiNode):
         self.__expand(node)
         self.__appendCodes(node)
 
