@@ -2,9 +2,9 @@ import abc
 import weakref
 from typing import Optional
 
+from .info import UnitStructureInfo, CompoundStructureInfo
 from .workspace import HanZiStructure, HanZiNode
 from .workspace import HanZiWorkspace
-from .workspace import UnitStructureInfo, CompoundStructureInfo
 
 from coding.Base import CodeInfo
 from element.operator import Operator
