@@ -9,7 +9,6 @@ from model.helper import StructureConverter
 from model.helper import OperatorManager
 
 from model.manager import CompositionManager
-from model.manager import SubstituteManager
 from model.manager import RadixManager
 
 from model.datamanager import QHDataManager

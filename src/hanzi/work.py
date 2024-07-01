@@ -37,8 +37,10 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
             treeNodeGenerator=self.treeNodeGenerator,
         )
 
-        self.__substituteHelper = structureManager.generateSubstituteHelperForSubstitute(
-            treeNodeGenerator=self.treeNodeGenerator,
+        self.__substituteHelper = (
+            structureManager.generateSubstituteHelperForSubstitute(
+                treeNodeGenerator=self.treeNodeGenerator,
+            )
         )
 
     @property
@@ -57,7 +59,6 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
 
     def __expand(self, node: HanZiNode):
         nodeStructure = node.nodeStructure
-        assert nodeStructure.isNode()
 
         workspaceManager = self.__workspaceManager
 
@@ -128,7 +129,6 @@ class CharacterCodeComputingWork:
     def computeCharacter(self, character: str) -> Optional[CharacterInfo]:
         node = self.__workspaceManager.touchNode(character)
         nodeStructure = node.nodeStructure
-        assert nodeStructure.isNode()
 
         self.__recursivelyComputeCodeInfosOfStructureTree(nodeStructure)
 
@@ -157,7 +157,6 @@ class CharacterCodeComputingWork:
 
     def __getNodeCharacterInfo(self, hanziNode: HanZiNode) -> CharacterInfo:
         nodeStructure = hanziNode.nodeStructure
-        assert nodeStructure.isNode()
         nodeStructureInfo = nodeStructure.structureInfo
 
         structureList = nodeStructureInfo.childStructures

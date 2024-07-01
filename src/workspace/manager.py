@@ -2,9 +2,9 @@ import abc
 import weakref
 from typing import Optional
 
+from .info import UnitStructureInfo, CompoundStructureInfo
 from .workspace import HanZiStructure, HanZiNode
 from .workspace import HanZiWorkspace
-from .workspace import UnitStructureInfo, CompoundStructureInfo
 
 from coding.Base import CodeInfo
 from element.operator import Operator
@@ -54,7 +54,7 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         radicalCodeInfos, fastCodeInfo = characterCodes
         for radixCodeInfo in radicalCodeInfos:
             structure = self.__genUnitStructure(radixCodeInfo)
-            self.addStructureIntoNode(structure, nodeStructure)
+            nodeStructure.addUnitStructure(structure)
         if fastCodeInfo:
             nodeStructure.fastCodeInfo = fastCodeInfo
 
@@ -77,13 +77,10 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         self,
         structure: HanZiStructure,
         nodeStructure: HanZiStructure,
-        isMainStructure: bool = False,
+        isMainStructure: bool,
     ):
-        assert nodeStructure.isNode()
-
-        nodeStructure.structureInfo.addStructure(
-            structure, isMainStructure=isMainStructure
-        )
+        if isMainStructure:
+            nodeStructure.structureInfo.setMainStructure(structure)
 
     def generateLeafNode(self, reference: (str, int)) -> HanZiStructure:
         return self.getWrapperStructure(reference=reference)

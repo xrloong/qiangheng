@@ -2,9 +2,7 @@ from model.element import CharacterInfo
 
 from .info import (
     StructureInfo,
-    UnitStructureInfo,
     WrapperStructureInfo,
-    CompoundStructureInfo,
     NodeStructureInfo,
 )
 
@@ -42,18 +40,6 @@ class HanZiStructure:
     def getComputedCodeInfos(self):
         return self.structureInfo.getComputedCodeInfos()
 
-    def isUnit(self) -> bool:
-        return isinstance(self.structureInfo, UnitStructureInfo)
-
-    def isWrapper(self) -> bool:
-        return isinstance(self.structureInfo, WrapperStructureInfo)
-
-    def isCompound(self) -> bool:
-        return isinstance(self.structureInfo, CompoundStructureInfo)
-
-    def isNode(self) -> bool:
-        return isinstance(self.structureInfo, NodeStructureInfo)
-
     def hasMainStructure(self) -> bool:
         return self.structureInfo.hasMainStructure()
 
@@ -69,6 +55,9 @@ class HanZiStructure:
             isMatch &= operatorName == self.structureInfo.getExpandedOperatorName()
 
         return isMatch
+
+    def addUnitStructure(self, structure: HanZiStructure):
+        self.structureInfo.addUnitStructure(structure)
 
     def getStructureList(self) -> tuple[StructureInfo]:
         return self.structureInfo.getStructureList()

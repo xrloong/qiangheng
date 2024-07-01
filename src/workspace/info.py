@@ -207,7 +207,7 @@ class NodeStructureInfo(StructureInfo):
 
     @property
     def childStructures(self):
-        return self.getStructureList(True)
+        return self.getStructureList(isWithUnit=True)
 
     @property
     def codeInfos(self):
@@ -219,11 +219,11 @@ class NodeStructureInfo(StructureInfo):
     def hasMainStructure(self) -> bool:
         return bool(self.mainStructure)
 
-    def addStructure(self, structure, isMainStructure: bool):
-        if structure.isUnit():
-            self.__unitStructureList.append(structure)
-        if isMainStructure:
-            self.__mainStructure = structure
+    def addUnitStructure(self, structure):
+        self.__unitStructureList.append(structure)
+
+    def setMainStructure(self, structure):
+        self.__mainStructure = structure
 
     def getStructureList(self, isWithUnit=False):
         structureList = []
@@ -249,5 +249,5 @@ class NodeStructureInfo(StructureInfo):
             structure = self.getSubStructure(subIndex - 1)
             structureList = [structure]
         else:
-            structureList = self.getStructureList(True)
+            structureList = self.getStructureList(isWithUnit=True)
         return structureList
