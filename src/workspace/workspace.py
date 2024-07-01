@@ -40,9 +40,6 @@ class HanZiStructure:
     def getComputedCodeInfos(self):
         return self.structureInfo.getComputedCodeInfos()
 
-    def hasMainStructure(self) -> bool:
-        return self.structureInfo.hasMainStructure()
-
     def isCodeInfoGenerated(self):
         return self.structureInfo.isCodeInfoGenerated()
 
@@ -84,6 +81,8 @@ class HanZiNode:
         self.__nodeStructure = HanZiStructure(nodeStructureInfo)
         self.__subStructureDict = {}
 
+        self.__expanded = False
+
     def __str__(self):
         return self.name
 
@@ -98,6 +97,13 @@ class HanZiNode:
     @property
     def tag(self) -> CharacterInfo.CharacterInfo:
         return self.__tag
+
+    @property
+    def expanded(self) -> bool:
+        return self.__expanded
+
+    def setExpanded(self):
+        self.__expanded = True
 
     def getSubStructure(self, index: int = 0) -> HanZiStructure:
         if index in self.__subStructureDict:
@@ -135,8 +141,3 @@ class HanZiWorkspace:
             node = self.__findNode(character)
             added = False
         return (node, added)
-
-    def isNodeExpanded(self, name):
-        node = self.__findNode(name)
-        nodeStructure = node.nodeStructure
-        return nodeStructure.hasMainStructure()

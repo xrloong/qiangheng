@@ -57,14 +57,12 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
         self.__workspaceManager.touchNode(character)
 
     def __expand(self, node: HanZiNode):
-        nodeStructure = node.nodeStructure
+        if node.expanded:
+            return
 
         workspaceManager = self.__workspaceManager
 
-        character = nodeStructure.name
-        if workspaceManager.isNodeExpanded(character):
-            return
-
+        character = node.name
         structures = self.structureManager.queryStructures(character)
         for structDesc in structures:
             if structDesc.isEmpty():
@@ -74,8 +72,10 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
             structure = self.__convertToStructure(structDesc)
 
             workspaceManager.addStructureIntoNode(
-                structure, nodeStructure, isMainStructure=isMainStructure
+                structure, node, isMainStructure=isMainStructure
             )
+
+        node.setExpanded()
 
     def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:
         structure = self.recursivelyConvertDescriptionToStructure(structDesc)
