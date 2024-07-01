@@ -15,7 +15,7 @@ from hanzi.tree import TreeNodeGenerator
 class HanZiWorkspaceManager(TreeNodeGenerator):
     class OnCreateNodeListener(object, metaclass=abc.ABCMeta):
         @abc.abstractmethod
-        def onCreateNode(self, character: str, node: HanZiNode):
+        def onCreateNode(self, node: HanZiNode):
             pass
 
     def __init__(self):
@@ -25,10 +25,10 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
     def setOnCreateNodeListener(self, listener: OnCreateNodeListener):
         self.__onCreateNodeListener = weakref.proxy(listener)
 
-    def __notifyOnCreateNode(self, character: str, node: HanZiNode):
+    def __notifyOnCreateNode(self, node: HanZiNode):
         listener = self.__onCreateNodeListener
         if listener:
-            self.__onCreateNodeListener.onCreateNode(character, node)
+            self.__onCreateNodeListener.onCreateNode(node)
 
     def isNodeExpanded(self, name: str) -> bool:
         return self.__workspace.isNodeExpanded(name)
@@ -40,15 +40,14 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
     def touchNode(self, character: str) -> HanZiNode:
         (node, added) = self.__workspace.touchNode(character)
         if added:
-            self.__notifyOnCreateNode(character, node)
+            self.__notifyOnCreateNode(node)
         return node
 
     def appendCharacterCodes(
         self,
-        character: str,
+        node: HanZiNode,
         characterCodes: (tuple[CodeInfo], Optional[CodeInfo]),
     ):
-        node = self.touchNode(character)
         nodeStructure = node.nodeStructure
 
         radicalCodeInfos, fastCodeInfo = characterCodes

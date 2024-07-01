@@ -107,13 +107,14 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
 
         return structure
 
-    def __appendCodes(self, character):
+    def __appendCodes(self, node: HanZiNode):
+        character = node.name
         characterCodes = self.__radicalManager.queryCharacterCodes(character)
-        self.__workspaceManager.appendCharacterCodes(character, characterCodes)
+        self.__workspaceManager.appendCharacterCodes(node, characterCodes)
 
-    def onCreateNode(self, character: str, node: HanZiNode):
+    def onCreateNode(self, node: HanZiNode):
         self.__expand(node)
-        self.__appendCodes(character)
+        self.__appendCodes(node)
 
 
 class CharacterCodeComputingWork:
