@@ -216,9 +216,6 @@ class NodeStructureInfo(StructureInfo):
     def getName(self):
         return self.__name
 
-    def hasMainStructure(self) -> bool:
-        return bool(self.mainStructure)
-
     def addUnitStructure(self, structure):
         self.__unitStructureList.append(structure)
 

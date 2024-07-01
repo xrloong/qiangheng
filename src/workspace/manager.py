@@ -30,9 +30,6 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         if listener:
             self.__onCreateNodeListener.onCreateNode(node)
 
-    def isNodeExpanded(self, name: str) -> bool:
-        return self.__workspace.isNodeExpanded(name)
-
     def reset(self):
         self.__workspace = HanZiWorkspace()
         self.__wrapperExpressionDict = {}
