@@ -37,8 +37,10 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
             treeNodeGenerator=self.treeNodeGenerator,
         )
 
-        self.__substituteHelper = structureManager.generateSubstituteHelperForSubstitute(
-            treeNodeGenerator=self.treeNodeGenerator,
+        self.__substituteHelper = (
+            structureManager.generateSubstituteHelperForSubstitute(
+                treeNodeGenerator=self.treeNodeGenerator,
+            )
         )
 
     @property
