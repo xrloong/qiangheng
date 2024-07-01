@@ -45,10 +45,9 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
 
     def appendCharacterCodes(
         self,
-        character: str,
+        node: HanZiNode,
         characterCodes: (tuple[CodeInfo], Optional[CodeInfo]),
     ):
-        node = self.touchNode(character)
         nodeStructure = node.nodeStructure
 
         radicalCodeInfos, fastCodeInfo = characterCodes
