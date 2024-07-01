@@ -54,7 +54,7 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         radicalCodeInfos, fastCodeInfo = characterCodes
         for radixCodeInfo in radicalCodeInfos:
             structure = self.__genUnitStructure(radixCodeInfo)
-            self.addStructureIntoNode(structure, nodeStructure)
+            nodeStructure.addUnitStructure(structure)
         if fastCodeInfo:
             nodeStructure.fastCodeInfo = fastCodeInfo
 

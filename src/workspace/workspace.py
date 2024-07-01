@@ -70,6 +70,9 @@ class HanZiStructure:
 
         return isMatch
 
+    def addUnitStructure(self, structure: HanZiStructure):
+        self.structureInfo.addUnitStructure(structure)
+
     def getStructureList(self) -> tuple[StructureInfo]:
         return self.structureInfo.getStructureList()
 
