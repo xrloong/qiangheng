@@ -79,8 +79,6 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         nodeStructure: HanZiStructure,
         isMainStructure: bool,
     ):
-        assert nodeStructure.isNode()
-
         if isMainStructure:
             nodeStructure.structureInfo.setMainStructure(structure)
 
