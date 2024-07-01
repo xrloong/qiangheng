@@ -62,13 +62,14 @@ class SubstituteHelper:
         return rule
 
     def __rearrangeStructure(self, structure):
+        tmpStructure = structure
         while True:
-            rule = self.__findMatchedRule(structure)
+            rule = self.__findMatchedRule(tmpStructure)
             if rule:
                 tmpStructure = self.__replace(rule=rule)
-                structure.changeToStructure(tmpStructure)
             else:
                 break
+        structure.changeToStructure(tmpStructure)
 
     def __replace(self, rule: SubstituteRule):
         treeNodeGenerator = self.treeNodeGenerator
