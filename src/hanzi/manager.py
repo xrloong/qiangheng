@@ -62,16 +62,18 @@ class SubstituteHelper:
         return rule
 
     def __rearrangeStructure(self, structure):
+        tmpStructure = structure
         while True:
-            rule = self.__findMatchedRule(structure)
+            rule = self.__findMatchedRule(tmpStructure)
             if rule:
-                tmpStructure = self.replace(rule=rule)
-                structure.changeToStructure(tmpStructure)
+                tmpStructure = self.__replace(rule=rule)
             else:
                 break
+        structure.changeToStructure(tmpStructure)
 
-    def replace(self, rule: SubstituteRule):
+    def __replace(self, rule: SubstituteRule):
         treeNodeGenerator = self.treeNodeGenerator
+        operatorManager = self.__operatorManager
 
         def convertNodeToStructure(node: TreeExpression, allComps):
             operatorName = node.prop["運算"]
@@ -103,7 +105,7 @@ class SubstituteHelper:
                 else:
                     comp = convertNodeToStructure(childNode, allComps)
                     compList.append(comp)
-            operator = self.__operatorManager.generateOperator(operatorName)
+            operator = operatorManager.generateOperator(operatorName)
             structDesc = treeNodeGenerator.generateNode(operator, compList)
             return structDesc
 
