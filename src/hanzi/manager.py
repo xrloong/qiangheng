@@ -73,6 +73,7 @@ class SubstituteHelper:
 
     def __replace(self, rule: SubstituteRule):
         treeNodeGenerator = self.treeNodeGenerator
+        operatorManager = self.__operatorManager
 
         def convertNodeToStructure(node: TreeExpression, allComps):
             operatorName = node.prop["運算"]
@@ -104,7 +105,7 @@ class SubstituteHelper:
                 else:
                     comp = convertNodeToStructure(childNode, allComps)
                     compList.append(comp)
-            operator = self.__operatorManager.generateOperator(operatorName)
+            operator = operatorManager.generateOperator(operatorName)
             structDesc = treeNodeGenerator.generateNode(operator, compList)
             return structDesc
 
