@@ -77,13 +77,12 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
         self,
         structure: HanZiStructure,
         nodeStructure: HanZiStructure,
-        isMainStructure: bool = False,
+        isMainStructure: bool,
     ):
         assert nodeStructure.isNode()
 
-        nodeStructure.structureInfo.addStructure(
-            structure, isMainStructure=isMainStructure
-        )
+        if isMainStructure:
+            nodeStructure.structureInfo.setMainStructure(structure)
 
     def generateLeafNode(self, reference: (str, int)) -> HanZiStructure:
         return self.getWrapperStructure(reference=reference)
