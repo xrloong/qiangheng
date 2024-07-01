@@ -57,14 +57,12 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
         self.__workspaceManager.touchNode(character)
 
     def __expand(self, node: HanZiNode):
-        nodeStructure = node.nodeStructure
-
-        workspaceManager = self.__workspaceManager
-
-        character = nodeStructure.name
         if node.expanded:
             return
 
+        workspaceManager = self.__workspaceManager
+
+        character = node.name
         structures = self.structureManager.queryStructures(character)
         for structDesc in structures:
             if structDesc.isEmpty():
