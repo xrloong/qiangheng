@@ -74,7 +74,7 @@ class CharacterStructuringWork(HanZiWorkspaceManager.OnCreateNodeListener):
             structure = self.__convertToStructure(structDesc)
 
             workspaceManager.addStructureIntoNode(
-                structure, nodeStructure, isMainStructure=isMainStructure
+                structure, node, isMainStructure=isMainStructure
             )
 
     def __convertToStructure(self, structDesc: StructureDescription) -> HanZiStructure:

@@ -75,10 +75,11 @@ class HanZiWorkspaceManager(TreeNodeGenerator):
     def addStructureIntoNode(
         self,
         structure: HanZiStructure,
-        nodeStructure: HanZiStructure,
+        node: HanZiNode,
         isMainStructure: bool,
     ):
         if isMainStructure:
+            nodeStructure = node.nodeStructure
             nodeStructure.structureInfo.setMainStructure(structure)
 
     def generateLeafNode(self, reference: (str, int)) -> HanZiStructure:
