@@ -4,7 +4,6 @@ DMLIST	=	dc
 CMLIST	=	$(IMLIST) $(DMLIST)
 
 SHELL	=	/bin/bash
-PIP	=	pip3
 UNAME	:=	$(shell uname)
 INSTALL_DIR	:=	$(shell pwd)
 
@@ -60,22 +59,24 @@ setup-Linux-environment:
 	sudo make setup-$(shell lsb_release -si)-environment
 
 setup-Ubuntu-environment:
+	apt-get install uv
 	apt-get install python3 python3-pip
 	apt-get install xsltproc libxml2-utils
 	apt-get install fontforge
 
 setup-FreeBSD-environment:
+	pkg install uv
 	pkg install python37 py37-pip
 	pkg install py37-lxml
 	pkg install fontforge
 
 setup-Darwin-environment:
+	brew install uv
 	brew install python3
 	brew install fontforge	# To provide python extension of fontforge
 
 setup-python-environment:
-	$(PIP) install lxml ruamel.yaml injector ply
-	$(PIP) install https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl
+	uv sync
 
 prepare-main:
 	mkdir -p $(GEN_QHDATA_MAIN_PATH) $(GEN_QHDATA_MAIN_COMP_PATH)

@@ -4,4 +4,15 @@ version = "0.40"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11.9"
-dependencies = []
+dependencies = [
+    "injector>=0.22.0",
+    "lxml>=6.0.0",
+    "numpy>=2.3.1",
+    "ply>=3.11",
+    "pydantic>=2.11.7",
+    "ruamel-yaml>=0.18.14",
+    "xie",
+]
+
+[tool.uv.sources]
+xie = { url = "https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl" }
