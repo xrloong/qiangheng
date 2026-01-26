@@ -4,7 +4,7 @@ DMLIST	=	dc
 CMLIST	=	$(IMLIST) $(DMLIST)
 
 SHELL	=	/bin/bash
-PIP	=	pip3
+UV	=	uv
 UNAME	:=	$(shell uname)
 INSTALL_DIR	:=	$(shell pwd)
 
@@ -74,8 +74,7 @@ setup-Darwin-environment:
 	brew install fontforge	# To provide python extension of fontforge
 
 setup-python-environment:
-	$(PIP) install lxml ruamel.yaml injector ply
-	$(PIP) install https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl
+	$(UV) sync
 
 prepare-main:
 	mkdir -p $(GEN_QHDATA_MAIN_PATH) $(GEN_QHDATA_MAIN_COMP_PATH)
