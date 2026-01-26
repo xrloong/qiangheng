@@ -5,6 +5,7 @@ CMLIST	=	$(IMLIST) $(DMLIST)
 
 SHELL	=	/bin/bash
 UV	=	uv
+PYTHON	=	$(UV) run python3
 UNAME	:=	$(shell uname)
 INSTALL_DIR	:=	$(shell pwd)
 
@@ -74,7 +75,7 @@ setup-Darwin-environment:
 	brew install fontforge	# To provide python extension of fontforge
 
 setup-python-environment:
-	$(UV) sync
+	$(UV) sync --all-extras
 
 prepare-main:
 	mkdir -p $(GEN_QHDATA_MAIN_PATH) $(GEN_QHDATA_MAIN_COMP_PATH)
@@ -84,8 +85,8 @@ prepare-main:
 	xsltproc -o $(GEN_QHDATA_MAIN_COMP_PATH)/CJK-A.yaml xslt/xml2yaml.xslt $(QHDATA_MAIN_COMP_PATH)/CJK-A.xml
 	xsltproc -o $(GEN_QHDATA_MAIN_PATH)/style.yaml xslt/xml2yaml.xslt $(QHDATA_STYLE_FILE)
 	cp $(QHDATA_MAIN_PATH)/template.yaml $(GEN_QHDATA_MAIN_PATH)/template.yaml
-	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK.xml $(GEN_QHDATA_PATH)/ _CJK.xml
-	python3 scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK-A.xml $(GEN_QHDATA_PATH)/ _CJK-A.xml
+	$(PYTHON) scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK.xml $(GEN_QHDATA_PATH)/ _CJK.xml
+	$(PYTHON) scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK-A.xml $(GEN_QHDATA_PATH)/ _CJK-A.xml
 
 prepare-im:
 	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/radix/
@@ -161,7 +162,7 @@ yaml:
 		package=`echo $$packageConfig | cut -d" " -f1`;\
 		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
 		echo $$cm $$package $$packageDir;\
-		PYTHONPATH="src:libs:$$packageDir" time src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
+		PYTHONPATH="src:libs:$$packageDir" time $(PYTHON) src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
 	done
 
 puretable:
@@ -181,13 +182,13 @@ $(YAML_PATH)/qh%.yaml: $(YAML_PATH)
 	package=`echo $$packageConfig | cut -d" " -f1`;\
 	packageDir=`echo $$packageConfig | cut -d" " -f2`;\
 	echo $$cm $$package $$packageDir;\
-	PYTHONPATH="src:libs:$$packageDir" time src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
+	PYTHONPATH="src:libs:$$packageDir" time $(PYTHON) src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
 
 $(XML_PATH)/qh%.xml: $(XML_PATH) $(YAML_PATH)/qh%.yaml
 	filename=$$(basename $@); \
 	cm=$${filename:2:2}; \
 	echo $$cm; \
-	python3 scripts/convert_cm_to_xml.py tables/yaml/qh$$cm.yaml gen/qhdata/$$cm/info.yaml |\
+	$(PYTHON) scripts/convert_cm_to_xml.py tables/yaml/qh$$cm.yaml gen/qhdata/$$cm/info.yaml |\
 		XMLLINT_INDENT="    " xmllint --encode UTF-8 -o $(XML_PATH)/qh$$cm.xml --format -; \
 
 $(PURETABLE_PATH)/qh%.txt: $(PURETABLE_PATH) $(YAML_PATH)/qh%.yaml
@@ -195,7 +196,7 @@ $(PURETABLE_PATH)/qh%.txt: $(PURETABLE_PATH) $(YAML_PATH)/qh%.yaml
 	cm=$${filename:2:2}; \
 	for type in $(RELEASE_TYPE_LIST);\
 	do\
-		scripts/extract_mapping.py -t $$type $(YAML_PATH)/qh$$cm.yaml > $(PURETABLE_PATH)/qh$$cm-$$type.txt; \
+		$(PYTHON) scripts/extract_mapping.py -t $$type $(YAML_PATH)/qh$$cm.yaml > $(PURETABLE_PATH)/qh$$cm-$$type.txt; \
 	done
 
 profile:
@@ -207,7 +208,7 @@ profile:
 		package=`echo $$packageConfig | cut -d" " -f1`;\
 		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
 		echo $$cm $$package $$packageDir;\
-		PYTHONPATH="src:libs:$$packageDir" src/profiler.py -q -p $$package > $(PROFILE_PATH)/$$cm.txt;\
+		PYTHONPATH="src:libs:$$packageDir" $(PYTHON) src/profiler.py -q -p $$package > $(PROFILE_PATH)/$$cm.txt;\
 	done
 
 dc:
@@ -216,10 +217,10 @@ dc:
 FORCE:
 
 test: FORCE
-	pytest -c tests/pytest-libs.ini --rootdir=.; \
+	$(UV) run pytest -c tests/pytest-libs.ini --rootdir=.; \
 	for cm in $(CMLIST);\
 	do\
-		pytest -c tests/pytest-$$cm.ini --rootdir=.; \
+		$(UV) run pytest -c tests/pytest-$$cm.ini --rootdir=.; \
 	done
 
 imtables: scim ibus gcin ovim msim
@@ -281,7 +282,7 @@ $(MSIM_PATH): $(XML_PATH)
 svg: $(SVG_PATH)
 $(SVG_PATH): $(XML_PATH)
 	mkdir -p $(SVG_PATH)
-	tools/gensvg.py
+	$(PYTHON) tools/gensvg.py
 
 pdf: doc/qiangheng.pdf
 
