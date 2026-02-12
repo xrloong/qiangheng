@@ -91,7 +91,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
         return ZMCodeInfo.generateDefaultCodeInfo(rtlist)
 
     def isAvailableOperation(self, codeInfoList):
-        isAllWithCode = codeInfoList and all(map(lambda x: x.getRtList(), codeInfoList))
+        isAllWithCode = codeInfoList and all(x.getRtList() for x in codeInfoList)
         return isAllWithCode
 
     def __computeRadicalsCodes(self, codeInfos):

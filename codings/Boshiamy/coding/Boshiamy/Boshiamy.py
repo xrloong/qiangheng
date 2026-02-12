@@ -91,7 +91,7 @@ class BSCodeInfo(CodeInfo):
         if codeSequence is None:
             return None
         else:
-            code = "".join(map(lambda x: BSCodeInfo.radixToCodeDict[x], codeSequence))
+            code = "".join(BSCodeInfo.radixToCodeDict[x] for x in codeSequence)
             if len(code) < 3:
                 if self.ignoreSupplement:
                     # 根據嘸蝦米規則，如果是一到十等數目的字，則不用加補碼
@@ -126,13 +126,13 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
         return BSCodeInfo.generateDefaultCodeInfo(codeList, supplementCode)
 
     def isAvailableOperation(self, codeInfoList):
-        isAllWithCode = all(map(lambda x: x.codeSequence, codeInfoList))
+        isAllWithCode = all(x.codeSequence for x in codeInfoList)
         return isAllWithCode
 
     def encodeAsLoong(self, codeInfoList):
         """運算 "龍" """
 
-        bslist = list(map(lambda c: c.codeSequence, codeInfoList))
+        bslist = [c.codeSequence for c in codeInfoList]
         bs_code_list = BSCodeInfoEncoder.computeBoshiamyCode(bslist)
         bs_spcode = codeInfoList[-1].supplementCode
 

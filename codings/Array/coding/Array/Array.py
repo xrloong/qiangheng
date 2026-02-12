@@ -84,7 +84,7 @@ class ARCodeInfo(CodeInfo):
     def code(self):
         mainRadixList = self.getMainCodeList()
         mainCodeList = tuple(
-            map(lambda x: ARCodeInfo.radixToCodeDict[x], mainRadixList)
+            ARCodeInfo.radixToCodeDict[x] for x in mainRadixList
         )
         code = "".join(mainCodeList)
         return code[:3] + code[-1] if len(code) > 4 else code
@@ -98,13 +98,13 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
         return ARCodeInfo.generateDefaultCodeInfo(codeList)
 
     def isAvailableOperation(self, codeInfoList):
-        isAllWithCode = all(map(lambda x: x.getMainCodeList(), codeInfoList))
+        isAllWithCode = all(x.getMainCodeList() for x in codeInfoList)
         return isAllWithCode
 
     def encodeAsLoong(self, codeInfoList):
         """運算 "龍" """
 
-        arCodeList = list(map(lambda c: c.getMainCodeList(), codeInfoList))
+        arCodeList = [c.getMainCodeList() for c in codeInfoList]
         tmpArCodeList = arCodeList
         arCode = ARCodeInfoEncoder.computeArrayCodeByCodeList(tmpArCodeList)
         codeInfo = self.generateDefaultCodeInfo(arCode)

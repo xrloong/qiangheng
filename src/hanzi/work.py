@@ -160,7 +160,7 @@ class CharacterCodeComputingWork:
         nodeStructureInfo = nodeStructure.structureInfo
 
         structureList = nodeStructureInfo.childStructures
-        codeInfoList = sum(map(lambda s: s.getComputedCodeInfos(), structureList), ())
+        codeInfoList = sum((s.getComputedCodeInfos() for s in structureList), ())
 
         fastCodeInfo = nodeStructure.fastCodeInfo
         if fastCodeInfo:

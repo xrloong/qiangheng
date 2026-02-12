@@ -119,7 +119,7 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
         return DCCodeInfo.generateDefaultCodeInfo(components, panes)
 
     def isAvailableOperation(self, codeInfoList):
-        isAllWithCode = all(map(lambda x: x.getStrokeCount() > 0, codeInfoList))
+        isAllWithCode = all(x.getStrokeCount() > 0 for x in codeInfoList)
         return isAllWithCode
 
     def encodeAsEqual(self, codeInfoList):
@@ -133,13 +133,13 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
         return codeInfo
 
     def encodeAsSilkworm(self, codeInfos):
-        weights = list(map(lambda x: x.getStrokeCount(), codeInfos))
+        weights = [x.getStrokeCount() for x in codeInfos]
         layoutSpec = LayoutSpec(JointOperator.Silkworm, weights=weights)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsGoose(self, codeInfos):
-        weights = list(map(lambda x: x.getStrokeCount(), codeInfos))
+        weights = [x.getStrokeCount() for x in codeInfos]
         layoutSpec = LayoutSpec(JointOperator.Goose, weights=weights)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo

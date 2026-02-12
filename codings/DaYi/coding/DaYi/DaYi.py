@@ -102,7 +102,7 @@ class DYCodeInfo(CodeInfo):
     def code(self):
         mainRadixList = self.getMainCodeList()
         mainCodeList = tuple(
-            map(lambda x: DYCodeInfo.radixToCodeDict[x], mainRadixList)
+            DYCodeInfo.radixToCodeDict[x] for x in mainRadixList
         )
         code = "".join(mainCodeList)
         return code[:3] + code[-1:] if len(code) > 4 else code
@@ -116,13 +116,13 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
         return DYCodeInfo.generateDefaultCodeInfo(codeList)
 
     def isAvailableOperation(self, codeInfoList):
-        isAllWithCode = all(map(lambda x: x.getMainCodeList(), codeInfoList))
+        isAllWithCode = all(x.getMainCodeList() for x in codeInfoList)
         return isAllWithCode
 
     def encodeAsLoong(self, codeInfoList):
         """運算 "龍" """
 
-        dyCodeList = list(map(lambda c: c.getMainCodeList(), codeInfoList))
+        dyCodeList = [c.getMainCodeList() for c in codeInfoList]
         dyCode = DYCodeInfoEncoder.computeDaYiCodeByCodeList(dyCodeList)
         codeInfo = self.generateDefaultCodeInfo(dyCode)
         return codeInfo

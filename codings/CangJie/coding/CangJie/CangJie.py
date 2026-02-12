@@ -98,7 +98,7 @@ class CJLump:
         [frontCode, containerCode, interiorCode] = lastCJLump.getXCode()
         lastCJLump.isBodyContainer = False
 
-        tmpFrontCode = "".join(map(lambda x: x.getCodeAsHead(), cjLumpList[:-1]))
+        tmpFrontCode = "".join(x.getCodeAsHead() for x in cjLumpList[:-1])
 
         tmpCJLump = CJLump.generate(
             tmpFrontCode + frontCode, containerCode, interiorCode
@@ -113,7 +113,7 @@ class CJLump:
         [frontCode, containerCode, interiorCode] = lastCJLump.getXCode()
         lastCJLump.isBodyContainer = False
 
-        tmpFrontCode = "".join(map(lambda x: x.getCodeAsBody(), cjLumpList[:-1]))
+        tmpFrontCode = "".join(x.getCodeAsBody() for x in cjLumpList[:-1])
 
         tmpCJLump = CJLump.generate(
             tmpFrontCode + frontCode, containerCode, interiorCode
