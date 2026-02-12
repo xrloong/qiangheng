@@ -122,8 +122,9 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
 
     def encodeAsInvalidate(self, codeInfoList):
         """不合法的運算"""
-        assert False
-        return None
+        raise NotImplementedError(
+            f"{type(self).__name__} does not support this encoding operation"
+        )
 
     def encodeAsTurtle(self, codeInfoList):
         """運算 "龜" """
