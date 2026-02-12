@@ -2,6 +2,7 @@
 
 
 from typing import Optional
+from itertools import chain
 from injector import inject
 
 from parser.QHParser import QHParser
@@ -30,13 +31,10 @@ class SubstituteManager:
         return self.__substituteRules
 
     def loadSubstituteRules(self, substituteFiles):
-        substituteRuleSets = map(
-            lambda filename: self.__loadSubstituteRuleSet(filename), substituteFiles
-        )
-        rulesTuple = map(
-            lambda substituteRuleSet: substituteRuleSet.rules, substituteRuleSets
-        )
-        totalSubstituteRules = sum(rulesTuple, ())
+        totalSubstituteRules = tuple(chain.from_iterable(
+            self.__loadSubstituteRuleSet(filename).rules
+            for filename in substituteFiles
+        ))
         self.__substituteRules = totalSubstituteRules
 
     def __loadSubstituteRuleSet(self, filename: str) -> SubstituteRuleSet:

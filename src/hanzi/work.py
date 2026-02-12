@@ -1,4 +1,5 @@
 from typing import Optional
+from itertools import chain
 from injector import inject
 
 from element.enum import FontVariance
@@ -160,7 +161,9 @@ class CharacterCodeComputingWork:
         nodeStructureInfo = nodeStructure.structureInfo
 
         structureList = nodeStructureInfo.childStructures
-        codeInfoList = sum((s.getComputedCodeInfos() for s in structureList), ())
+        codeInfoList = tuple(chain.from_iterable(
+            s.getComputedCodeInfos() for s in structureList
+        ))
 
         fastCodeInfo = nodeStructure.fastCodeInfo
         if fastCodeInfo:

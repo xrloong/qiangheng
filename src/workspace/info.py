@@ -1,4 +1,5 @@
 import abc
+from itertools import chain
 
 
 class StructureInfo(object, metaclass=abc.ABCMeta):
@@ -128,7 +129,9 @@ class WrapperStructureInfo(StructureInfo):
         index = self.__index
 
         structureList = nodeStructureInfo.getSubStructureList(index)
-        codeInfosList = sum((s.getComputedCodeInfos() for s in structureList), ())
+        codeInfosList = tuple(chain.from_iterable(
+            s.getComputedCodeInfos() for s in structureList
+        ))
         return tuple((codeInfos,) for codeInfos in codeInfosList)
 
     @property

@@ -190,7 +190,7 @@ class DYCodeInfoEncoder(CodeInfoEncoder):
 
     @staticmethod
     def computeDaYiCodeByCodeList(dyCodeList):
-        cat = sum(dyCodeList, [])
+        cat = [item for sublist in dyCodeList for item in sublist]
         dyCode = truncateCode(cat)
         return dyCode
 

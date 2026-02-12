@@ -219,7 +219,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
 
     @staticmethod
     def computeArrayCodeByCodeList(arCodeList):
-        cat = sum(arCodeList, [])
+        cat = [item for sublist in arCodeList for item in sublist]
         arCode = truncateCode(cat)
         return arCode
 

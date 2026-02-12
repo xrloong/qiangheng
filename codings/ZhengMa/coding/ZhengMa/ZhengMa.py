@@ -1,3 +1,4 @@
+from itertools import chain
 from coding.Input import CodeInfo
 from coding.Input import CodeInfoEncoder
 from coding.Input import CodingRadixParser
@@ -96,7 +97,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
         return isAllWithCode
 
     def __computeRadicalsCodes(self, codeInfos):
-        codes = sum(map(lambda c: c.getRtList(), codeInfos), ())
+        codes = tuple(chain.from_iterable(c.getRtList() for c in codeInfos))
         codes = truncateCode(codes, max_len=4, head_len=2)
         return codes
 

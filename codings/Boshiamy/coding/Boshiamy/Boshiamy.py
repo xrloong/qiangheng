@@ -170,7 +170,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
 
     @staticmethod
     def computeBoshiamyCode(bsCodeList):
-        bslist = list(sum(bsCodeList, []))
+        bslist = [item for sublist in bsCodeList for item in sublist]
         bs_code_list = truncateCode(bslist)
         return bs_code_list
 
