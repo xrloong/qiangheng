@@ -166,16 +166,10 @@ class CJCodeHelper:
         return self.getHeadCode(headCount) + self.getTailCode(tailCount)
 
     def getHeadCode(self, headCount):
-        head = ""
-        for i in range(headCount):
-            head += self.getH()
-        return head
+        return "".join(self.getH() for _ in range(headCount))
 
     def getTailCode(self, tailCount):
-        tail = ""
-        for i in range(tailCount):
-            tail = tail + self.getT()
-        return tail
+        return "".join(self.getT() for _ in range(tailCount))
 
     def getH(self):
         if self.frontCode:
