@@ -1,4 +1,5 @@
 from typing import Optional
+from collections import defaultdict
 from injector import inject
 
 from model.element.CharacterDescription import CharacterDescription
@@ -32,17 +33,13 @@ class SubstituteHelper:
         self.treeNodeGenerator = treeNodeGenerator
         self.__operatorManager = operatorManager
 
-        opToRuleDict = {}
+        opToRuleDict = defaultdict(list)
         for rule in rules:
             tre = rule.tre
             opName = tre.prop["運算"]
+            opToRuleDict[opName].append(rule)
 
-            opRules = opToRuleDict.get(opName, ())
-            opRules = opRules + (rule,)
-
-            opToRuleDict[opName] = opRules
-
-        self.__opToRuleDict = opToRuleDict
+        self.__opToRuleDict = {k: tuple(v) for k, v in opToRuleDict.items()}
 
     def recursivelyRearrangeStructure(self, structure):
         self.__rearrangeStructure(structure)
