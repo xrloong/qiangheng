@@ -46,17 +46,17 @@ class SubstituteHelper:
         for childStructure in structure.getStructureList():
             self.recursivelyRearrangeStructure(childStructure)
 
+    def __match(self, rule: SubstituteRule, structure) -> bool:
+        matchResult: MatchResult = self.treInterpreter.match(rule.tre, structure)
+        return matchResult.isMatched()
+
     def __findMatchedRule(self, structure) -> Optional[SubstituteRule]:
-        treInterpreter = self.treInterpreter
-
-        def match(rule, structure):
-            matchResult: MatchResult = treInterpreter.match(rule.tre, structure)
-            return matchResult.isMatched()
-
         opName = structure.getExpandedOperatorName()
         rules = self.__opToRuleDict.get(opName, ())
-        rule = next((rule for rule in rules if match(rule, structure)), None)
-        return rule
+        for rule in rules:
+            if self.__match(rule, structure):
+                return rule
+        return None
 
     def __rearrangeStructure(self, structure):
         tmpStructure = structure
