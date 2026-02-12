@@ -50,13 +50,11 @@ class OperatorManager:
 
     def generateOperator(self, operatorName):
         if operatorName in self.builtinOperatorDict:
-            operator = self.builtinOperatorDict.get(operatorName)
-        else:
-            if operatorName not in self.templateOperatorDict:
-                operator = Operator(operatorName)
-                self.templateOperatorDict[operatorName] = operator
-            operator = self.templateOperatorDict.get(operatorName)
-        return operator
+            return self.builtinOperatorDict[operatorName]
+
+        if operatorName not in self.templateOperatorDict:
+            self.templateOperatorDict[operatorName] = Operator(operatorName)
+        return self.templateOperatorDict[operatorName]
 
 
 class StructureConverter:
