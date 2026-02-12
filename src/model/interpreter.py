@@ -14,12 +14,9 @@ class CodeInfoInterpreter:
     def computeAllCodeInfos(
         self, operator: Operator, codeInfosCollection: list[list[CodeInfo]]
     ) -> tuple[CodeInfo]:
-        computedCodeInfoList = (
-            self.__computeCodeInfo(operator, codeInfos)
-            for codeInfos in codeInfosCollection
-        )
         allCodeInfos = tuple(
-            filter(lambda codeInfo: codeInfo is not None, computedCodeInfoList)
+            codeInfo for codeInfos in codeInfosCollection
+            if (codeInfo := self.__computeCodeInfo(operator, codeInfos)) is not None
         )
         return allCodeInfos
 
