@@ -1,5 +1,6 @@
 import ruamel.yaml
 import sys
+from itertools import chain
 
 from coding.Base import CodeMappingInfoInterpreter
 
@@ -20,10 +21,9 @@ class BaseWriter:
         pass
 
     def genIMMapping(self, characterInfoList):
-        table = []
-        for characterInfo in characterInfoList:
-            table.extend(characterInfo.codeMappingInfos)
-        return table
+        return list(chain.from_iterable(
+            characterInfo.codeMappingInfos for characterInfo in characterInfoList
+        ))
 
 
 # quiet writer
@@ -49,10 +49,10 @@ class CmYamlWriter(BaseWriter):
     ):
         codingTypeName = codeMappingInfoInterpreter.getCodingTypeName()
 
-        nodeCodeMaps = []
-        for codeMappingInfo in codeMappingInfoList:
-            info = codeMappingInfoInterpreter.interpretCodeMappingInfo(codeMappingInfo)
-            nodeCodeMaps.append(info)
+        nodeCodeMaps = [
+            codeMappingInfoInterpreter.interpretCodeMappingInfo(codeMappingInfo)
+            for codeMappingInfo in codeMappingInfoList
+        ]
 
         codeMappingSet = {"編碼類型": codingTypeName, "編碼集": nodeCodeMaps}
 
