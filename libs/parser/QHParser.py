@@ -10,13 +10,16 @@ class QHParser:
         self.yaml = yaml
 
     def loadSubstituteRuleSet(self, filename) -> SubstituteRuleSetModel:
-        node = self.yaml.load(open(filename))
+        with open(filename) as f:
+            node = self.yaml.load(f)
         return SubstituteRuleSetModel(**node)
 
     def loadRadicalSet(self, filename) -> RadicalSetModel:
-        node = self.yaml.load(open(filename))
+        with open(filename) as f:
+            node = self.yaml.load(f)
         return RadicalSetModel(**node)
 
     def loadCharacterDecompositionSet(self, filename) -> CharacterDecompositionSetModel:
-        node = self.yaml.load(open(filename))
+        with open(filename) as f:
+            node = self.yaml.load(f)
         return CharacterDecompositionSetModel(**node)
