@@ -8,7 +8,7 @@ class CodingConfig:
 
         try:
             specificFastFile = package.CodingFastFile
-        except:
+        except AttributeError:
             specificFastFile = None
         self.specificFastFile = specificFastFile
 
