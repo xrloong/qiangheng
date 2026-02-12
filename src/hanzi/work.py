@@ -167,7 +167,7 @@ class CharacterCodeComputingWork:
 
         fastCodeInfo = nodeStructure.fastCodeInfo
         if fastCodeInfo:
-            codeInfoList = codeInfoList + (fastCodeInfo,)
+            codeInfoList = tuple(chain(codeInfoList, (fastCodeInfo,)))
 
         codeList = self.__codeInfoInterpreter.interpretCodeInfoList(codeInfoList)
 
