@@ -7,6 +7,14 @@ from element.enum import CodeVariance
 from .interface import IfCodeInfo, IfCodeInfoEncoder, IfCodingRadixParser
 
 
+def truncateCode(seq, max_len=4, head_len=3):
+    """Truncate code sequence: keep first head_len and last (max_len - head_len) elements."""
+    if len(seq) > max_len:
+        tail_len = max_len - head_len
+        return seq[:head_len] + seq[-tail_len:]
+    return seq
+
+
 class CodeInfo(IfCodeInfo):
     def __init__(self):
         self.codeVariance = CodeVariance.STANDARD

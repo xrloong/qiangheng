@@ -1,6 +1,7 @@
 from coding.Input import CodeInfo
 from coding.Input import CodeInfoEncoder
 from coding.Input import CodingRadixParser
+from coding.Base import truncateCode
 
 
 class ARCodeInfo(CodeInfo):
@@ -87,7 +88,7 @@ class ARCodeInfo(CodeInfo):
             ARCodeInfo.radixToCodeDict[x] for x in mainRadixList
         )
         code = "".join(mainCodeList)
-        return code[:3] + code[-1] if len(code) > 4 else code
+        return "".join(truncateCode(code))
 
     def getMainCodeList(self):
         return self.codes
@@ -219,7 +220,7 @@ class ARCodeInfoEncoder(CodeInfoEncoder):
     @staticmethod
     def computeArrayCodeByCodeList(arCodeList):
         cat = sum(arCodeList, [])
-        arCode = cat[:3] + cat[-1:] if len(cat) > 4 else cat
+        arCode = truncateCode(cat)
         return arCode
 
 

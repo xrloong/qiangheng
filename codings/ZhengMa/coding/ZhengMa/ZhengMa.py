@@ -1,6 +1,7 @@
 from coding.Input import CodeInfo
 from coding.Input import CodeInfoEncoder
 from coding.Input import CodingRadixParser
+from coding.Base import truncateCode
 
 
 class ZMCodeInfo(CodeInfo):
@@ -96,7 +97,7 @@ class ZMCodeInfoEncoder(CodeInfoEncoder):
 
     def __computeRadicalsCodes(self, codeInfos):
         codes = sum(map(lambda c: c.getRtList(), codeInfos), ())
-        codes = codes if len(codes) <= 4 else codes[:2] + codes[-2:]
+        codes = truncateCode(codes, max_len=4, head_len=2)
         return codes
 
     def encodeAsLoong(self, codeInfoList):

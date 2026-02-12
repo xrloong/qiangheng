@@ -1,6 +1,7 @@
 from coding.Input import CodeInfo
 from coding.Input import CodeInfoEncoder
 from coding.Input import CodingRadixParser
+from coding.Base import truncateCode
 
 
 class BSCodeInfo(CodeInfo):
@@ -102,7 +103,7 @@ class BSCodeInfo(CodeInfo):
                         return None
                     return code + supplementCode
             elif len(code) > 4:
-                return code[:3] + code[-1:]
+                return "".join(truncateCode(code))
             else:
                 return code
 
@@ -170,7 +171,7 @@ class BSCodeInfoEncoder(CodeInfoEncoder):
     @staticmethod
     def computeBoshiamyCode(bsCodeList):
         bslist = list(sum(bsCodeList, []))
-        bs_code_list = (bslist[:3] + bslist[-1:]) if len(bslist) > 4 else bslist
+        bs_code_list = truncateCode(bslist)
         return bs_code_list
 
 
