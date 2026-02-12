@@ -34,8 +34,6 @@ class MainManager:
 
         structuringWork.setupOnCreateNodeListener()
 
-        characters = sorted(characters)
-
         characterInfos = []
         for character in characters:
             if separateComputing:

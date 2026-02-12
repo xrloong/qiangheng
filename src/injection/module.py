@@ -145,8 +145,8 @@ class CharacterModule(Module):
 
     def __getCharacters(self) -> itertools.chain:
         return itertools.chain(
-            CharacterModule.__rangeCJK__implemented,
             CharacterModule.__rangeCJKextA__implemented,
+            CharacterModule.__rangeCJK__implemented,
         )
 
     @provider
