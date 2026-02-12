@@ -2,6 +2,9 @@
 tables/
 gen/
 
+# Fontforge extentions
+/fontforge/
+
 # Python virtual environments
 env/
 .venv
