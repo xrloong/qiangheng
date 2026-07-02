@@ -7,81 +7,71 @@ class TreeRegExpInterpreter:
     def __init__(self, proxy: BasicTreeProxy):
         self.proxy = proxy
 
-    def match(self, tre: TreeRegExp, node):
-        return self.matchTree(tre, node)
-
-    def matchTree(self, tre: TreeRegExp, node):
+    def match(self, tre: TreeRegExp, node) -> MatchResult:
         result = MatchResult()
-        result1 = self.matchNode(tre, node)
-        if result1:
-            result2 = self.matchChildren(tre, node)
-            if result2.isMatched():
-                tre.setMatched([node])
-                result.setTrue()
-            else:
-                tre.setMatched([])
-                result.setFalse()
+        if self.matchTree(tre, node):
+            result.setTrue()
         else:
-            tre.setMatched([])
             result.setFalse()
         return result
 
-    def matchNode(self, tre: TreeRegExp, node):
-        return self.proxy.matchSingle(tre, node)
+    def matchTree(self, tre: TreeRegExp, node) -> bool:
+        if self.proxy.matchSingle(tre, node) and self.matchChildren(tre, node):
+            tre.setMatched([node])
+            return True
+        tre.setMatched([])
+        return False
 
-    def matchChildren(self, tre: TreeRegExp, node):
-        re_list = tre.children
-        node_list = self.proxy.getChildren(node)
+    def matchChildren(self, tre: TreeRegExp, node) -> bool:
+        treList = tre.children
+        if not treList:
+            return True
+        return self.matchList(treList, 0, self.proxy.getChildren(node), 0)
 
-        if len(re_list) == 0:
-            result = MatchResult()
-            result.setTrue()
-            return result
+    def matchList(
+        self, treList: list[TreeRegExp], treIndex: int, nodeList: list, nodeIndex: int
+    ) -> bool:
+        treCount = len(treList)
+        nodeCount = len(nodeList)
+        while True:
+            if treIndex == treCount:
+                return nodeIndex == nodeCount
 
-        return self.matchList(re_list, node_list)
+            tre = treList[treIndex]
+            if tre.isWithStar():
+                return self.matchStar(
+                    treList, treIndex + 1, nodeList, nodeIndex, tre
+                )
 
-    def matchList(self, treList: list[TreeRegExp], nodeList: list):
-        if len(treList) == 0 and len(nodeList) == 0:
-            result = MatchResult()
-            result.setTrue()
-            return result
+            if nodeIndex == nodeCount:
+                return False
 
-        if len(treList) > 0 and treList[0].isWithStar():
-            targetTre = treList[0]
-            return self.matchStar(treList[1:], nodeList, targetTre)
-
-        if len(treList) > 0 and len(nodeList) > 0:
-            r = treList[0]
-            n = nodeList[0]
-            result = self.matchTree(r, n)
-            if r.isDot() or result.isMatched():
-                r.setMatched([n])
-                return self.matchList(treList[1:], nodeList[1:])
-        result = MatchResult()
-        result.setFalse()
-        return result
+            node = nodeList[nodeIndex]
+            isMatched = self.matchTree(tre, node)
+            if tre.isDot() or isMatched:
+                tre.setMatched([node])
+                treIndex += 1
+                nodeIndex += 1
+            else:
+                return False
 
     def matchStar(
-        self, treList: list[TreeRegExp], nodeList: list, targetTre: TreeRegExp
-    ):
-        index = 0
-        while index < len(nodeList):
-            node = nodeList[index]
-            if self.matchTree(targetTre, node):
-                pass
-            else:
-                break
-            index += 1
+        self,
+        treList: list[TreeRegExp],
+        treIndex: int,
+        nodeList: list,
+        nodeIndex: int,
+        targetTre: TreeRegExp,
+    ) -> bool:
+        # 保留原行為：星號樣式先走訪所有剩餘節點（不過濾，僅留下
+        # setMatched 副作用），再從最長前綴往回嘗試比對其餘樣式
+        for index in range(nodeIndex, len(nodeList)):
+            self.matchTree(targetTre, nodeList[index])
 
-        while index >= 0:
-            result = self.matchList(treList, nodeList[index:])
-            if result.isMatched():
-                result = MatchResult()
-                targetTre.setMatched(list(nodeList[:index]))
-                result.setTrue()
-                return result
+        index = len(nodeList)
+        while index >= nodeIndex:
+            if self.matchList(treList, treIndex, nodeList, index):
+                targetTre.setMatched(list(nodeList[nodeIndex:index]))
+                return True
             index -= 1
-
-        result = MatchResult()
-        result.setFalse()
-        return result
+        return False
