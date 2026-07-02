@@ -105,7 +105,7 @@ class GlyphTags(object):
 class GlyphParser(object):
     def __init__(self):
         super().__init__()
-        self.yaml = ruamel.yaml.YAML()
+        self.yaml = ruamel.yaml.YAML(typ="safe")
 
     def load(self, filename):
         rootNode = self.yaml.load(open(filename))
