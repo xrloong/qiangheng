@@ -3,6 +3,8 @@ import sys
 from itertools import chain
 
 from coding.Base import CodeMappingInfoInterpreter
+from fastyaml import FastYamlDumper
+from fastyaml import FallbackNeeded
 
 
 # base writer
@@ -57,5 +59,8 @@ class CmYamlWriter(BaseWriter):
         codeMappingSet = {"編碼類型": codingTypeName, "編碼集": nodeCodeMaps}
 
         output = sys.stdout
-        self.yaml.dump(codeMappingSet, output)
+        try:
+            output.write(FastYamlDumper().dumps(codeMappingSet))
+        except FallbackNeeded:
+            self.yaml.dump(codeMappingSet, output)
         print(file=output)
