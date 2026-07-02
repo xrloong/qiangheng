@@ -11,13 +11,16 @@ def main():
 if __name__ == "__main__":
     profFileName = "profiles/prof.bin"
 
-    import profile
+    import cProfile
 
-    profile.run("main()", profFileName)
+    cProfile.run("main()", profFileName)
 
-    import objgraph
+    try:
+        import objgraph
 
-    objgraph.show_most_common_types()
+        objgraph.show_most_common_types()
+    except ImportError:
+        pass
 
     import pstats
 
