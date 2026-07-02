@@ -88,21 +88,24 @@ class IOModule(Module):
     @provider
     def provideYaml(self) -> ruamel.yaml.YAML:
         yaml = ruamel.yaml.YAML(typ="safe")
-        yaml.explicit_start = True
-        yaml.explicit_end = True
-        yaml.allow_unicode = True
-        yaml.default_flow_style = False
         return yaml
 
     @provider
-    def provideWriter(self, yaml: ruamel.yaml.YAML) -> Writer:
-        writer = self.computeWriter(self.quiet, yaml)
+    def provideWriter(self) -> Writer:
+        writer = self.computeWriter(self.quiet)
         return writer
 
-    def computeWriter(self, quiet: Quiet, yaml: ruamel.yaml.YAML) -> Writer:
+    def computeWriter(self, quiet: Quiet) -> Writer:
         if not quiet:
             from writer import CmYamlWriter
 
+            # 輸出一律用純 Python 實作；C emitter 的長字串換行行為不同，
+            # 輸出格式不能隨 ruamel.yaml.clib 是否安裝而改變
+            yaml = ruamel.yaml.YAML(typ="safe", pure=True)
+            yaml.explicit_start = True
+            yaml.explicit_end = True
+            yaml.allow_unicode = True
+            yaml.default_flow_style = False
             writer = CmYamlWriter(yaml)
         else:
             # 不輸出結果

@@ -28,6 +28,7 @@ dependencies = [
     "numpy",
     "pydantic",
     "Xie @ https://github.com/xrloong/Xie/releases/download/v0.1.5/Xie-0.1.5-py3-none-any.whl",
+    "ruamel-yaml-clib>=0.2.12 ; python_full_version >= '3.9'",
 ]
 
 [project.optional-dependencies]
