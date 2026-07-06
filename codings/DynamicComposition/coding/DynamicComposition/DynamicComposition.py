@@ -23,16 +23,14 @@ except ImportError:
     sys.exit(1)
 
 from xie.graphics import Pane
-from xie.graphics import BaseTextCanvasController
-from xie.graphics import DrawingSystem
 from xie.graphics import Component
-from xie.graphics import Character
 
 from xie.graphics import StrokeSpec
 
 from xie.graphics import StrokeFactory
 from xie.graphics import ComponentFactory
 
+from .fastdraw import StrokeRenderer
 from .layout import JointOperator
 from .layout import LayoutFactory
 from .layout import LayoutSpec
@@ -430,45 +428,23 @@ class TemplateManager:
         return strokes
 
 
-class DataStructureCanvasController(BaseTextCanvasController):
-    def __init__(self):
-        super().__init__()
-        self.strokes = []
-
-    def getStrokes(self):
-        return self.strokes
-
-    def onPreDrawCharacter(self, character):
-        self.strokes = []
-
-    def onPreDrawStroke(self, stroke):
-        self.clearStrokeExpression()
-
-    def onPostDrawStroke(self, stroke):
-        e = self.getStrokeExpression()
-        if e:
-            attrib = {
-                "名稱": stroke.getName(),
-                "描繪": e,
-            }
-            self.strokes.append(attrib)
-
-
 # code mapping for drawing methods
 class DCCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):
+    def __init__(self):
+        super().__init__()
+        self.strokeRenderer = StrokeRenderer()
+
     def interpretCodeMappingInfo(self, codeMappingInfo):
         charName = codeMappingInfo.getName()
         dcComponent = codeMappingInfo.getCode()
         variance = codeMappingInfo.getVariance()
 
-        component = dcComponent.getComponent()
-        character = Character(charName, component)
+        renderStroke = self.strokeRenderer.renderStroke
 
-        controller = DataStructureCanvasController()
-        ds = DrawingSystem(controller)
-
-        ds.draw(character)
-
-        code = controller.getStrokes()
+        code = []
+        for stroke in dcComponent.getComponent().getStrokeList():
+            e = renderStroke(stroke)
+            if e:
+                code.append({"名稱": stroke.getName(), "描繪": e})
 
         return {"字符": charName, "類型": variance, "字圖": code}
