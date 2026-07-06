@@ -101,29 +101,10 @@ prepare-im-general:
 	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml xslt/xml2yaml-radix.xslt $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml
 	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml xslt/xml2yaml-radix.xslt $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml
 
-prepare-ar:
-	mkdir -p $(GEN_QHDATA_PATH)/ar
-	make prepare-im prepare-im-general IM=ar
-
-prepare-bs:
-	mkdir -p $(GEN_QHDATA_PATH)/bs
-	make prepare-im prepare-im-general IM=bs
-
-prepare-cj:
-	mkdir -p $(GEN_QHDATA_PATH)/cj
-	make prepare-im prepare-im-general IM=cj
-
-prepare-dy:
-	mkdir -p $(GEN_QHDATA_PATH)/dy
-	make prepare-im prepare-im-general IM=dy
-
-prepare-fc:
-	mkdir -p $(GEN_QHDATA_PATH)/fc
-	make prepare-im prepare-im-general IM=fc
-
-prepare-zm:
-	mkdir -p $(GEN_QHDATA_PATH)/zm
-	make prepare-im prepare-im-general IM=zm
+# prepare-ar / prepare-bs / prepare-cj / prepare-dy / prepare-fc / prepare-zm
+prepare-%:
+	mkdir -p $(GEN_QHDATA_PATH)/$*
+	make prepare-im prepare-im-general IM=$*
 
 prepare-dc:
 	mkdir -p $(GEN_QHDATA_PATH)/dc
@@ -162,7 +143,7 @@ yaml:
 		package=`echo $$packageConfig | cut -d" " -f1`;\
 		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
 		echo $$cm $$package $$packageDir;\
-		PYTHONPATH="src:libs:$$packageDir" time $(PYTHON) src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
+		PYTHONPATH="src:libs:$$packageDir" time $(PYTHON) src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml || exit 1; \
 	done
 
 puretable:
@@ -217,10 +198,10 @@ dc:
 FORCE:
 
 test: FORCE
-	$(UV) run pytest -c tests/pytest-libs.ini --rootdir=.; \
+	$(UV) run pytest -c tests/pytest-libs.ini --rootdir=. || exit 1; \
 	for cm in $(CMLIST);\
 	do\
-		$(UV) run pytest -c tests/pytest-$$cm.ini --rootdir=.; \
+		$(UV) run pytest -c tests/pytest-$$cm.ini --rootdir=. || exit 1; \
 	done
 
 imtables: scim ibus gcin ovim msim
