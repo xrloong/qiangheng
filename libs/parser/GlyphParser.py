@@ -108,7 +108,8 @@ class GlyphParser(object):
         self.yaml = ruamel.yaml.YAML(typ="safe")
 
     def load(self, filename):
-        rootNode = self.yaml.load(open(filename))
+        with open(filename) as f:
+            rootNode = self.yaml.load(f)
         dataSet = self.parseAllDataSet(rootNode)
         return dataSet
 
