@@ -321,7 +321,11 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
     def retrieveStrokesOfComponentIntoPosition(
         self, referencedComponent: Component, order: [int], position
     ):
-        strokes = list((referencedComponent.getStroke(index) for index in order))
+        # 順序可省略，代表依序使用全部筆劃
+        if order is None:
+            strokes = list(referencedComponent.getStrokeList())
+        else:
+            strokes = list((referencedComponent.getStroke(index) for index in order))
         component = self.componentFactory.generateComponentByStrokes(strokes)
 
         component = self.applyComponentWithTransformation(component, position)
