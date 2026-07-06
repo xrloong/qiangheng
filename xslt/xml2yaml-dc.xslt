@@ -74,9 +74,11 @@
                 <xsl:text>"</xsl:text>
                 <xsl:value-of select="@引用名稱"/> 
                 <xsl:text>"</xsl:text>
-                <xsl:text>, </xsl:text>
-                <xsl:text>順序: </xsl:text>
-                <xsl:value-of select="@順序"/> 
+                <xsl:if test="@順序">
+                  <xsl:text>, </xsl:text>
+                  <xsl:text>順序: </xsl:text>
+                  <xsl:value-of select="@順序"/>
+                </xsl:if>
 
                 <xsl:if test="@定位">
                   <xsl:text>, </xsl:text>
