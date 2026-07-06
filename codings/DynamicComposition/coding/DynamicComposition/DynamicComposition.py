@@ -31,6 +31,7 @@ from xie.graphics import StrokeFactory
 from xie.graphics import ComponentFactory
 
 from .fastdraw import StrokeRenderer
+from .fastdraw import fastGenerateComponentByComponentPanePairs
 from .layout import JointOperator
 from .layout import LayoutFactory
 from .layout import LayoutSpec
@@ -60,14 +61,11 @@ class DCComponent:
         assert len(components) == len(panes)
         dcComponentPanePairList = zip(components, panes)
 
-        componentFactory = DCComponent.componentFactory
         componentPanePairs = [
             (dcComponent.getComponent(), pane)
             for dcComponent, pane in dcComponentPanePairList
         ]
-        component = componentFactory.generateComponentByComponentPanePairs(
-            componentPanePairs
-        )
+        component = fastGenerateComponentByComponentPanePairs(componentPanePairs)
         dcComponent = DCComponent(component)
         return dcComponent
 

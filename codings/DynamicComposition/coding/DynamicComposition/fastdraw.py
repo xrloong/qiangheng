@@ -13,7 +13,75 @@ translate/scale 配置新陣列。但其矩陣恆為
 
 筆劃的描繪表達式只由 (筆劃路徑, 起始點, 佔位 pane) 決定，且
 Stroke.transform 產生的複本共享同一個路徑物件，故可跨字元記憶化。
+
+元件組合（ComponentFactory.generateComponentByComponentPanePairs）同理：
+xie 對每個點重算 pane 的中心與縮放比，這裡每個 (元件, pane) 只算一次，
+運算順序與 xie 相同，結果位元一致。
 """
+
+from xie.graphics.component import Component
+from xie.graphics.component import ComponentInfo
+from xie.graphics.shape import Pane
+from xie.graphics.shape import mergePanes
+from xie.graphics.stroke import Stroke
+from xie.graphics.stroke import StrokePosition
+
+
+def _transformedStrokes(component, targetPane):
+    """等價於 xie 的 [s.transform(fromPane, targetPane) for s in strokes]，
+    但 pane 幾何只計算一次；運算順序對應 shape.py 的
+    transformRelativePointByTargetPane。"""
+    fromPane = component.getStatePane()
+    fl, ft, fr, fb = fromPane.boundary
+    fw = fr - fl
+    fh = fb - ft
+    fcx = fl + fw / 2
+    fcy = ft + fh / 2
+
+    tl, tt, tr, tb = targetPane.boundary
+    tw = tr - tl
+    th = tb - tt
+    tcx = tl + tw / 2
+    tcy = tt + th / 2
+
+    scaleX = tw / fw if fw != 0 else None
+    scaleY = th / fh if fh != 0 else None
+
+    def transformPoint(x, y):
+        newX = x - fcx
+        newY = y - fcy
+        if scaleX is not None:
+            newX *= scaleX
+        if scaleY is not None:
+            newY *= scaleY
+        return (newX + tcx, newY + tcy)
+
+    strokes = []
+    for stroke in component.getStrokeList():
+        startPoint = stroke.getStartPoint()
+        statePane = stroke.getStatePane()
+        left, top = transformPoint(statePane.left, statePane.top)
+        right, bottom = transformPoint(statePane.right, statePane.bottom)
+        strokes.append(
+            Stroke(
+                stroke.getTypeName(),
+                stroke.getStrokePath(),
+                StrokePosition(
+                    transformPoint(startPoint[0], startPoint[1]),
+                    Pane(left, top, right, bottom),
+                ),
+            )
+        )
+    return strokes
+
+
+def fastGenerateComponentByComponentPanePairs(componentPanePairs):
+    strokes = []
+    for component, pane in componentPanePairs:
+        strokes.extend(_transformedStrokes(component, pane))
+
+    panes = [stroke.getStatePane() for stroke in strokes]
+    return Component(ComponentInfo(strokes), mergePanes(panes))
 
 
 class StrokeExpressionCollector:

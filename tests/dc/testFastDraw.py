@@ -8,6 +8,7 @@ from xie.graphics.factory import StrokeSpec
 from xie.graphics.shape import Pane
 
 from coding.DynamicComposition.fastdraw import StrokeRenderer
+from coding.DynamicComposition.fastdraw import fastGenerateComponentByComponentPanePairs
 
 
 strokeFactory = StrokeFactory()
@@ -120,6 +121,51 @@ class FastDrawTestCase(unittest.TestCase):
         for stroke in copyB.getStrokeList():
             self.renderer.renderStroke(stroke)
         self.assertEqual(len(self.renderer.cache), cacheSize)
+
+
+class FastComposeTestCase(unittest.TestCase):
+    def testMatchesXieFactory(self):
+        # 涵蓋：一般組件、已轉換過的組件、零寬目標 pane、
+        # 零寬來源組件（單一豎筆劃）
+        base = componentFactory.generateComponentByStrokes(generateBaseStrokes())
+        transformed = componentFactory.generateComponentByComponentPane(
+            base, Pane(-20, 30.25, 97, 141)
+        )
+        vertical = componentFactory.generateComponentByStrokes(
+            [generateStroke("豎", [[[0, 216]]], (96, 17))]
+        )
+        pairs = [
+            (base, Pane(8, 8, 247, 127.5)),
+            (transformed, Pane(0, 0, 33, 251)),
+            (base, Pane(16, 8, 16, 251)),
+            (vertical, Pane(30, 40, 130, 90)),
+        ]
+
+        expected = componentFactory.generateComponentByComponentPanePairs(pairs)
+        actual = fastGenerateComponentByComponentPanePairs(pairs)
+
+        # 需要與 xie 完全相等（含浮點位元），下游快取與描繪才不受影響
+        self.assertEqual(
+            actual.getStatePane().boundary, expected.getStatePane().boundary
+        )
+        self.assertEqual(actual.getCount(), expected.getCount())
+        for actualStroke, expectedStroke in zip(
+            actual.getStrokeList(), expected.getStrokeList()
+        ):
+            self.assertEqual(
+                actualStroke.getTypeName(), expectedStroke.getTypeName()
+            )
+            self.assertIs(
+                actualStroke.getStrokePath(), expectedStroke.getStrokePath()
+            )
+            self.assertEqual(
+                tuple(actualStroke.getStartPoint()),
+                tuple(expectedStroke.getStartPoint()),
+            )
+            self.assertEqual(
+                actualStroke.getStatePane().boundary,
+                expectedStroke.getStatePane().boundary,
+            )
 
 
 if __name__ == "__main__":
