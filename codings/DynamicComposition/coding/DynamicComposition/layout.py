@@ -21,7 +21,7 @@ class JointOperator(Enum):
 
 
 class LayoutSpec:
-    def __init__(self, operator, weights=[int]):
+    def __init__(self, operator, weights=None):
         self.operator = operator
         self.weights = weights
 

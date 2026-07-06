@@ -53,9 +53,6 @@ class DCComponent:
         componentFactory = DCComponent.componentFactory
         return componentFactory.generateComponentByComponentPane(self.component, pane)
 
-    def getComponentPane(self):
-        return self.component.getStatePane()
-
     @staticmethod
     def generateDefaultComponent(components, panes):
         assert len(components) == len(panes)
@@ -95,9 +92,6 @@ class DCCodeInfo(CodeInfo):
 
     def getComponent(self):
         return self.component
-
-    def getComponentPane(self):
-        return self.component.getComponentPane()
 
     def getStrokeCount(self):
         return self.getComponent().getCount()
@@ -188,23 +182,9 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
 
 
 class DCRadixParser(CodingRadixParser):
-    TAG_STROKE_GROUP = "筆劃組"
     TAG_STROKE = "筆劃"
-    TAG_GEOMETRY = "幾何"
-    TAG_SCOPE = "範圍"
-    TAG_STROKE = "筆劃"
-    TAG_NAME = "名稱"
-    TAG_TYPE = "類型"
-    TAG_START_POINT = "起始點"
-    TAG_PARAMETER = "參數"
-    TAG_BBOX = "字面框"
 
     ATTRIB_CODE_EXPRESSION = "資訊表示式"
-
-    TAG_CHARACTER_SET = "字符集"
-    TAG_CHARACTER = "字符"
-
-    TAG_NAME = "名稱"
 
     def __init__(self):
         self.glyphParser = GlyphParser()
@@ -226,19 +206,6 @@ class DCRadixParser(CodingRadixParser):
         codeInfo = DCCodeInfo(component)
         return codeInfo
 
-    def parseRadixInfo(self, rootNode):
-        characterSetNode = rootNode.get(DCRadixParser.TAG_CHARACTER_SET)
-        for characterNode in characterSetNode:
-            charName = characterNode.get(DCRadixParser.TAG_NAME)
-            radixDescription = self.parseRadixDescription(characterNode)
-
-            self.radixDescriptionManager.addDescription(charName, radixDescription)
-
-    def parseGeometry(self, geometryNode):
-        descriptionRegion = geometryNode.get(DCRadixParser.TAG_SCOPE)
-        pane = self.parsePane(descriptionRegion)
-        return pane
-
     def parseComponent(self, componentNode):
         strokeNode = componentNode.get(DCRadixParser.TAG_STROKE)
         strokes = self.parseStrokes(strokeNode)
@@ -256,13 +223,6 @@ class DCRadixParser(CodingRadixParser):
             strokes.extend(tempStrokes)
         return strokes
 
-    def parsePane(self, descriptionRegion):
-        left = int(descriptionRegion[0:2], 16)
-        top = int(descriptionRegion[2:4], 16)
-        right = int(descriptionRegion[4:6], 16)
-        bottom = int(descriptionRegion[6:8], 16)
-        return Pane(left, top, right, bottom)
-
 
 class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
     def __init__(self):
@@ -272,10 +232,6 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 
         self.anchors = {}
         self.templates = {}
-
-    def getStroke(self, name, index):
-        component = self.templates.get(name)
-        return component.getStrokeList()[index]
 
     def applyComponentWithTransformation(self, component, position):
         if position is not None:
