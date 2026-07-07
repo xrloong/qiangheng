@@ -1,3 +1,4 @@
+import functools
 from dataclasses import dataclass
 
 from element.enum import FontVariance
@@ -38,8 +39,8 @@ class DrawingPlugin:
         return self.encoder_class
 
     @property
-    def CodingRadixParser(self) -> type:
-        return self.radix_parser_class
+    def CodingRadixParser(self):
+        return functools.partial(self.radix_parser_class, self.CodingTemplateFile)
 
     @property
     def fontVariance(self) -> FontVariance:

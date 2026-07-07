@@ -186,9 +186,9 @@ class DCRadixParser(CodingRadixParser):
 
     ATTRIB_CODE_EXPRESSION = "資訊表示式"
 
-    def __init__(self):
+    def __init__(self, template_file: str):
         self.glyphParser = GlyphParser()
-        self.templateManager = TemplateManager()
+        self.templateManager = TemplateManager(template_file)
 
     # 多型
     def convertRadixDescToCodeInfo(self, radixDesc):
@@ -350,8 +350,9 @@ class GlyphDescriptionInterpreter(IfGlyphDescriptionInterpreter):
 
 
 class TemplateManager:
-    def __init__(self):
+    def __init__(self, template_file: str):
         super().__init__()
+        self.template_file = template_file
         self.interpreter = GlyphDescriptionInterpreter()
         self.templates = {}
         self.load()
@@ -364,12 +365,8 @@ class TemplateManager:
         return self.templates.get(name)
 
     def load(self):
-        from . import CodingTemplateFile
-
-        filename = CodingTemplateFile
-
         glyphParser = GlyphParser()
-        glyphDataSet = glyphParser.load(filename)
+        glyphDataSet = glyphParser.load(self.template_file)
 
         dataSet = self.interpreter.interpretDataSet(glyphDataSet)
         self.templates.update(dataSet)
