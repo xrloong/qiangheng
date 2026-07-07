@@ -134,167 +134,165 @@ class CodeInfoEncoder(IfCodeInfoEncoder):
             f"{type(self).__name__} does not support this encoding operation"
         )
 
-    def encodeAsTurtle(self, codeInfoList):
-        """運算 "龜" """
-        return self.encodeAsInvalidate(codeInfoList)
+    # ── 第一層：原始空間操作 ────────────────────────────────────────────────
+    #
+    # 代表字元結構中不同的空間關係。插件應 override 此層的方法。
+    #
+    # 必須 override：
+    #   encodeAsLoong — 所有序列型操作的基礎，幾乎所有輸入法都需要實作。
+    #
+    # 可選 override（若你的輸入法區分這些空間關係）：
+    #   encodeAsSilkworm — 上下排列（蚕），預設 → encodeAsLoong
+    #   encodeAsGoose    — 左右排列（鴻），預設 → encodeAsLoong
+    #   encodeAsLoop     — 外框包圍（回），預設 → encodeAsLoong
+    #   encodeAsQi       — 右上缺角（起），預設 → encodeAsLoong
+    #   encodeAsLiao     — 右下缺角（廖），預設 → encodeAsLoong
+    #   encodeAsZai      — 左下缺角（載），預設 → encodeAsLoong
+    #   encodeAsDou      — 左上缺角（斗），預設 → encodeAsLoong
+    #   encodeAsMu       — 田字格（畞），預設 → encodeAsLoong
+    #   encodeAsZuo      — 㘴型（參數順序特殊），預設 → encodeAsLoong
+    #   encodeAsYou      — 幽型（三部件），預設 → encodeAsLoong
+    #   encodeAsLiang    — 㒳型，預設 → encodeAsLoong
+    #   encodeAsJia      — 夾型，預設 → encodeAsLoong
+    #   encodeAsEqual    — 單部件直接沿用，預設 → encodeAsLoong
+    #   encodeAsSparrow  — 獨體字特殊處理（雀），預設 → encodeAsInvalidate
+    #   encodeAsTurtle   — 龜型，預設 → encodeAsInvalidate
 
     def encodeAsLoong(self, codeInfoList):
-        """運算 "龍" """
+        """運算 "龍"：一般序列組合，插件必須 override。"""
         return self.encodeAsInvalidate(codeInfoList)
-
-    def encodeAsSparrow(self, codeInfoList):
-        """運算 "雀" """
-        return self.encodeAsInvalidate(codeInfoList)
-
-    def encodeAsEqual(self, codeInfoList):
-        """運算 "爲" """
-        assert len(codeInfoList) == 1
-        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsSilkworm(self, codeInfoList):
-        """運算 "蚕" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "蚕"：上下排列。預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsGoose(self, codeInfoList):
-        """運算 "鴻" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "鴻"：左右排列。預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsLoop(self, codeInfoList):
-        """運算 "回" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "回"：外框包圍。預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsQi(self, codeInfoList):
-        """運算 "起" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
-
-    def encodeAsZhe(self, codeInfoList):
-        """運算 "這" """
-        codeInfo = self.encodeAsQi(codeInfoList)
-        return codeInfo
+        """運算 "起"：右上缺角。預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsLiao(self, codeInfoList):
-        """運算 "廖" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "廖"：右下缺角。預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsZai(self, codeInfoList):
-        """運算 "載" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "載"：左下缺角。預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsDou(self, codeInfoList):
-        """運算 "斗" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
-
-    def encodeAsTong(self, codeInfoList):
-        """運算 "同" """
-        codeInfo = self.encodeAsLoop(codeInfoList)
-        return codeInfo
-
-    def encodeAsQu(self, codeInfoList):
-        """運算 "區" """
-        codeInfo = self.encodeAsLoop(codeInfoList)
-        return codeInfo
-
-    def encodeAsHan(self, codeInfoList):
-        """運算 "函" """
-        codeInfo = self.encodeAsLoop(codeInfoList)
-        return codeInfo
-
-    def encodeAsLeft(self, codeInfoList):
-        """運算 "左" """
-        codeInfo = self.encodeAsLoop(codeInfoList)
-        return codeInfo
+        """運算 "斗"：左上缺角。預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsMu(self, codeInfoList):
-        """運算 "畞" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "畞"：田字格型。預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def convertCodeInfoListOfZuoOrder(self, codeInfoList):
         # 㘴的參數順序為：土、口、人（大部分到小部件）。
         # 但大部分的輸入法順序為：口、人、土。
-
-        tmpCodeInfoList = codeInfoList[1:] + codeInfoList[:1]
-        return tmpCodeInfoList
+        return codeInfoList[1:] + codeInfoList[:1]
 
     def encodeAsZuo(self, codeInfoList):
-        """運算 "㘴" """
-        codeInfoList = self.convertCodeInfoListOfZuoOrder(codeInfoList)
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "㘴"：參數順序為土、口、人，轉換後同 encodeAsLoong。"""
+        return self.encodeAsLoong(self.convertCodeInfoListOfZuoOrder(codeInfoList))
 
     def encodeAsYou(self, codeInfoList):
-        """運算 "幽" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "幽"：三部件型。預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsLiang(self, codeInfoList):
-        """運算 "㒳" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "㒳"：預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
 
     def encodeAsJia(self, codeInfoList):
-        """運算 "夾" """
-        codeInfo = self.encodeAsLoong(codeInfoList)
-        return codeInfo
+        """運算 "夾"：預設同 encodeAsLoong。"""
+        return self.encodeAsLoong(codeInfoList)
+
+    def encodeAsEqual(self, codeInfoList):
+        """運算 "爲"：單部件直接沿用，預設同 encodeAsLoong。"""
+        assert len(codeInfoList) == 1
+        return self.encodeAsLoong(codeInfoList)
+
+    def encodeAsSparrow(self, codeInfoList):
+        """運算 "雀"：獨體字特殊處理。預設不支援。"""
+        return self.encodeAsInvalidate(codeInfoList)
+
+    def encodeAsTurtle(self, codeInfoList):
+        """運算 "龜"。預設不支援。"""
+        return self.encodeAsInvalidate(codeInfoList)
+
+    # ── 第二層：語意別名 ────────────────────────────────────────────────────
+    #
+    # 這些運算子在語意上與某個第一層操作對應，預設直接委派。
+    # 若你的輸入法對這類結構有特殊的參數選取或順序邏輯，可以 override。
+    #
+    #   encodeAsZhe  → encodeAsQi   （這 ≈ 起，右上缺角變體）
+    #   encodeAsHan  → encodeAsLoop （函，部分輸入法對調內外順序）
+    #   encodeAsTong → encodeAsLoop （同 ≈ 回）
+    #   encodeAsQu   → encodeAsLoop （區 ≈ 回）
+    #   encodeAsLeft → encodeAsLoop （左 ≈ 回）
+
+    def encodeAsZhe(self, codeInfoList):
+        """運算 "這"：右上缺角變體，預設同 encodeAsQi。"""
+        return self.encodeAsQi(codeInfoList)
+
+    def encodeAsHan(self, codeInfoList):
+        """運算 "函"：包圍型，預設同 encodeAsLoop。"""
+        return self.encodeAsLoop(codeInfoList)
+
+    def encodeAsTong(self, codeInfoList):
+        """運算 "同"：包圍型，預設同 encodeAsLoop。"""
+        return self.encodeAsLoop(codeInfoList)
+
+    def encodeAsQu(self, codeInfoList):
+        """運算 "區"：包圍型，預設同 encodeAsLoop。"""
+        return self.encodeAsLoop(codeInfoList)
+
+    def encodeAsLeft(self, codeInfoList):
+        """運算 "左"：包圍型，預設同 encodeAsLoop。"""
+        return self.encodeAsLoop(codeInfoList)
+
+    # ── 第三層：複合運算子 ──────────────────────────────────────────────────
+    #
+    # 由第一層原始操作組合而成，插件不需要也不應該 override。
+    # 若你 override 了 encodeAsGoose 或 encodeAsSilkworm，
+    # 這些複合運算子會自動採用你的實作。
 
     def encodeAsLuan(self, codeInfoList):
-        """運算 "䜌" """
-        firstCodeInfo = codeInfoList[0]
-        secondCodeInfo = codeInfoList[1]
-        codeInfo = self.encodeAsGoose([secondCodeInfo, firstCodeInfo, secondCodeInfo])
-        return codeInfo
+        """運算 "䜌"：encodeAsGoose(B, A, B)"""
+        a, b = codeInfoList[0], codeInfoList[1]
+        return self.encodeAsGoose([b, a, b])
 
     def encodeAsBan(self, codeInfoList):
-        """運算 "辦" """
-        firstCodeInfo = codeInfoList[0]
-        secondCodeInfo = codeInfoList[1]
-        codeInfo = self.encodeAsGoose([firstCodeInfo, secondCodeInfo, firstCodeInfo])
-        return codeInfo
+        """運算 "辦"：encodeAsGoose(A, B, A)"""
+        a, b = codeInfoList[0], codeInfoList[1]
+        return self.encodeAsGoose([a, b, a])
 
     def encodeAsLin(self, codeInfoList):
-        """運算 "粦" """
-        firstCodeInfo = codeInfoList[0]
-        secondCodeInfo = codeInfoList[1]
-        thirdCodeInfo = codeInfoList[2]
-
-        topCodeInfo = firstCodeInfo
-        bottomCodeInfo = self.encodeAsGoose([secondCodeInfo, thirdCodeInfo])
-
-        codeInfo = self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
-        return codeInfo
+        """運算 "粦"：encodeAsSilkworm(A, encodeAsGoose(B, C))"""
+        a, b, c = codeInfoList[0], codeInfoList[1], codeInfoList[2]
+        return self.encodeAsSilkworm([a, self.encodeAsGoose([b, c])])
 
     def encodeAsLi(self, codeInfoList):
-        """運算 "瓥" """
-        firstCodeInfo = codeInfoList[0]
-        secondCodeInfo = codeInfoList[1]
-        thirdCodeInfo = codeInfoList[2]
-        fourthCodeInfo = codeInfoList[3]
-
-        topCodeInfo = self.encodeAsGoose([firstCodeInfo, secondCodeInfo])
-        bottomCodeInfo = self.encodeAsGoose([thirdCodeInfo, fourthCodeInfo])
-
-        codeInfo = self.encodeAsSilkworm([topCodeInfo, bottomCodeInfo])
-        return codeInfo
+        """運算 "瓥"：encodeAsSilkworm(encodeAsGoose(A,B), encodeAsGoose(C,D))"""
+        a, b = codeInfoList[0], codeInfoList[1]
+        c, d = codeInfoList[2], codeInfoList[3]
+        return self.encodeAsSilkworm([
+            self.encodeAsGoose([a, b]),
+            self.encodeAsGoose([c, d]),
+        ])
 
     def encodeAsYi(self, codeInfoList):
-        """運算 "燚" """
-        firstCodeInfo = codeInfoList[0]
-
-        return self.encodeAsLi(
-            [
-                firstCodeInfo,
-                firstCodeInfo,
-                firstCodeInfo,
-                firstCodeInfo,
-            ]
-        )
+        """運算 "燚"：encodeAsLi(A, A, A, A)"""
+        a = codeInfoList[0]
+        return self.encodeAsLi([a, a, a, a])
 
 
 class CodingRadixParser(IfCodingRadixParser):
