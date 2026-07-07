@@ -2,6 +2,7 @@ from ..Base import CodeInfo
 from ..Base import CodeInfoEncoder
 from ..Base import CodingRadixParser
 from .Input import CodeMappingInfoInterpreter
+from .plugin import InputPlugin
 
 from element.enum import FontVariance
 
