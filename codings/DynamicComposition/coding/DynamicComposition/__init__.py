@@ -11,11 +11,3 @@ plugin = DrawingPlugin(
     interpreter=DCCodeMappingInfoInterpreter(),
     font_variance=FontVariance.Traditional,
 )
-
-CodeInfoEncoder = plugin.CodeInfoEncoder
-CodingRadixParser = plugin.CodingRadixParser
-fontVariance = plugin.fontVariance
-codeMappingInfoInterpreter = plugin.codeMappingInfoInterpreter
-CodingSubstituteFileList = plugin.CodingSubstituteFileList
-CodingRadixFileList = plugin.CodingRadixFileList
-CodingAdjustFileList = plugin.CodingAdjustFileList

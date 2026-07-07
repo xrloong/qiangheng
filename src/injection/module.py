@@ -29,7 +29,7 @@ from .key import Package
 
 class PackageModule(Module):
     def __init__(self, codingPackage: Package):
-        self.codingPackage = codingPackage
+        self.codingPackage = codingPackage.plugin
 
     @provider
     def provideCodingPackage(self) -> Package:

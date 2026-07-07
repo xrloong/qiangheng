@@ -1,7 +1,6 @@
 from coding.Input import InputPlugin, FontVariance
 
-from .ZhengMa import ZMCodeInfoEncoder
-from .ZhengMa import ZMRadixParser
+from .ZhengMa import ZMCodeInfoEncoder, ZMRadixParser
 
 plugin = InputPlugin(
     method_name="zm",
@@ -10,12 +9,3 @@ plugin = InputPlugin(
     font_variance=FontVariance.Simplified,
     has_fast_file=True,
 )
-
-CodeInfoEncoder = plugin.CodeInfoEncoder
-CodingRadixParser = plugin.CodingRadixParser
-fontVariance = plugin.fontVariance
-codeMappingInfoInterpreter = plugin.codeMappingInfoInterpreter
-CodingSubstituteFileList = plugin.CodingSubstituteFileList
-CodingRadixFileList = plugin.CodingRadixFileList
-CodingAdjustFileList = plugin.CodingAdjustFileList
-CodingFastFile = plugin.CodingFastFile
