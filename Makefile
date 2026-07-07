@@ -199,6 +199,7 @@ FORCE:
 
 test: FORCE
 	$(UV) run pytest -c tests/pytest-libs.ini --rootdir=. || exit 1; \
+	$(UV) run pytest -c tests/pytest-src.ini --rootdir=. || exit 1; \
 	for cm in $(CMLIST);\
 	do\
 		$(UV) run pytest -c tests/pytest-$$cm.ini --rootdir=. || exit 1; \
