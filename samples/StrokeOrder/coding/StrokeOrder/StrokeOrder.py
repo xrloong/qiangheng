@@ -31,8 +31,8 @@ class SOCodeInfoEncoder(DCCodeInfoEncoder):
 
 
 class SORadixParser(DCRadixParser):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, template_file: str):
+        super().__init__(template_file)
 
 
 class SOCodeMappingInfoInterpreter(CodeMappingInfoInterpreter):

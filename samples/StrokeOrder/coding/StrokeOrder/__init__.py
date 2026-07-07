@@ -1,20 +1,13 @@
-from coding.Input import FontVariance
+from coding.Drawing import DrawingPlugin, FontVariance
 
-from .StrokeOrder import SOCodeInfoEncoder as CodeInfoEncoder
-from .StrokeOrder import SORadixParser as CodingRadixParser
+from .StrokeOrder import SOCodeInfoEncoder
+from .StrokeOrder import SORadixParser
 from .StrokeOrder import SOCodeMappingInfoInterpreter
 
-fontVariance = FontVariance.Traditional
-codeMappingInfoInterpreter = SOCodeMappingInfoInterpreter()
-
-codingMethodName = "dc"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingSubstituteFileList = [
-    codingMethodDir + "substitute.yaml",
-]
-CodingRadixFileList = [
-    codingMethodDir + "radix/CJK.yaml",
-    codingMethodDir + "radix/CJK-A.yaml",
-]
-CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]
-CodingTemplateFile = codingMethodDir + "radix/template.yaml"
+plugin = DrawingPlugin(
+    method_name="dc",
+    encoder_class=SOCodeInfoEncoder,
+    radix_parser_class=SORadixParser,
+    interpreter=SOCodeMappingInfoInterpreter(),
+    font_variance=FontVariance.Traditional,
+)
