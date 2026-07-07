@@ -19,4 +19,3 @@ codeMappingInfoInterpreter = plugin.codeMappingInfoInterpreter
 CodingSubstituteFileList = plugin.CodingSubstituteFileList
 CodingRadixFileList = plugin.CodingRadixFileList
 CodingAdjustFileList = plugin.CodingAdjustFileList
-CodingTemplateFile = plugin.CodingTemplateFile
