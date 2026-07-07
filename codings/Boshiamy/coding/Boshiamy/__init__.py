@@ -1,20 +1,21 @@
-from coding.Input import FontVariance
-from coding.Input import CodeMappingInfoInterpreter
+from coding.Input import InputPlugin, FontVariance
 
-from .Boshiamy import BSCodeInfoEncoder as CodeInfoEncoder
-from .Boshiamy import BSRadixParser as CodingRadixParser
+from .Boshiamy import BSCodeInfoEncoder
+from .Boshiamy import BSRadixParser
 
-fontVariance = FontVariance.Traditional
-codeMappingInfoInterpreter = CodeMappingInfoInterpreter()
+plugin = InputPlugin(
+    method_name="bs",
+    encoder_class=BSCodeInfoEncoder,
+    radix_parser_class=BSRadixParser,
+    font_variance=FontVariance.Traditional,
+    has_fast_file=True,
+)
 
-codingMethodName = "bs"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingSubstituteFileList = [
-    codingMethodDir + "substitute.yaml",
-]
-CodingRadixFileList = [
-    codingMethodDir + "radix/CJK.yaml",
-    codingMethodDir + "radix/CJK-A.yaml",
-]
-CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]
-CodingFastFile = codingMethodDir + "fast.yaml"
+CodeInfoEncoder = plugin.CodeInfoEncoder
+CodingRadixParser = plugin.CodingRadixParser
+fontVariance = plugin.fontVariance
+codeMappingInfoInterpreter = plugin.codeMappingInfoInterpreter
+CodingSubstituteFileList = plugin.CodingSubstituteFileList
+CodingRadixFileList = plugin.CodingRadixFileList
+CodingAdjustFileList = plugin.CodingAdjustFileList
+CodingFastFile = plugin.CodingFastFile

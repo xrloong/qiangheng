@@ -1,20 +1,22 @@
-from coding.Drawing import FontVariance
+from coding.Drawing import DrawingPlugin, FontVariance
 
-from .DynamicComposition import DCCodeInfoEncoder as CodeInfoEncoder
-from .DynamicComposition import DCRadixParser as CodingRadixParser
+from .DynamicComposition import DCCodeInfoEncoder
+from .DynamicComposition import DCRadixParser
 from .DynamicComposition import DCCodeMappingInfoInterpreter
 
-fontVariance = FontVariance.Traditional
-codeMappingInfoInterpreter = DCCodeMappingInfoInterpreter()
+plugin = DrawingPlugin(
+    method_name="dc",
+    encoder_class=DCCodeInfoEncoder,
+    radix_parser_class=DCRadixParser,
+    interpreter=DCCodeMappingInfoInterpreter(),
+    font_variance=FontVariance.Traditional,
+)
 
-codingMethodName = "dc"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingSubstituteFileList = [
-    codingMethodDir + "substitute.yaml",
-]
-CodingRadixFileList = [
-    codingMethodDir + "radix/CJK.yaml",
-    codingMethodDir + "radix/CJK-A.yaml",
-]
-CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]
-CodingTemplateFile = codingMethodDir + "radix/template.yaml"
+CodeInfoEncoder = plugin.CodeInfoEncoder
+CodingRadixParser = plugin.CodingRadixParser
+fontVariance = plugin.fontVariance
+codeMappingInfoInterpreter = plugin.codeMappingInfoInterpreter
+CodingSubstituteFileList = plugin.CodingSubstituteFileList
+CodingRadixFileList = plugin.CodingRadixFileList
+CodingAdjustFileList = plugin.CodingAdjustFileList
+CodingTemplateFile = plugin.CodingTemplateFile

@@ -1,19 +1,19 @@
-from coding.Input import FontVariance
-from coding.Input import CodeMappingInfoInterpreter
+from coding.Input import InputPlugin, FontVariance
 
-from .DaYi import DYCodeInfoEncoder as CodeInfoEncoder
-from .DaYi import DYRadixParser as CodingRadixParser
+from .DaYi import DYCodeInfoEncoder
+from .DaYi import DYRadixParser
 
-fontVariance = FontVariance.Traditional
-codeMappingInfoInterpreter = CodeMappingInfoInterpreter()
+plugin = InputPlugin(
+    method_name="dy",
+    encoder_class=DYCodeInfoEncoder,
+    radix_parser_class=DYRadixParser,
+    font_variance=FontVariance.Traditional,
+)
 
-codingMethodName = "dy"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingSubstituteFileList = [
-    codingMethodDir + "substitute.yaml",
-]
-CodingRadixFileList = [
-    codingMethodDir + "radix/CJK.yaml",
-    codingMethodDir + "radix/CJK-A.yaml",
-]
-CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]
+CodeInfoEncoder = plugin.CodeInfoEncoder
+CodingRadixParser = plugin.CodingRadixParser
+fontVariance = plugin.fontVariance
+codeMappingInfoInterpreter = plugin.codeMappingInfoInterpreter
+CodingSubstituteFileList = plugin.CodingSubstituteFileList
+CodingRadixFileList = plugin.CodingRadixFileList
+CodingAdjustFileList = plugin.CodingAdjustFileList

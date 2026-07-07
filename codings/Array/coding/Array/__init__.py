@@ -1,21 +1,19 @@
-from coding.Input import FontVariance
-from coding.Input import CodeMappingInfoInterpreter
+from coding.Input import InputPlugin, FontVariance
 
-from .Array import ARCodeInfoEncoder as CodeInfoEncoder
-from .Array import ARRadixParser as CodingRadixParser
+from .Array import ARCodeInfoEncoder
+from .Array import ARRadixParser
 
-fontVariance = FontVariance.Traditional
-codeMappingInfoInterpreter = CodeMappingInfoInterpreter()
+plugin = InputPlugin(
+    method_name="ar",
+    encoder_class=ARCodeInfoEncoder,
+    radix_parser_class=ARRadixParser,
+    font_variance=FontVariance.Traditional,
+)
 
-codingMethodName = "ar"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingSubstituteFileList = [
-    codingMethodDir + "substitute.yaml",
-]
-CodingRadixFileList = [
-    codingMethodDir + "radix/CJK.yaml",
-    codingMethodDir + "radix/CJK-A.yaml",
-]
-CodingAdjustFileList = [
-    codingMethodDir + "adjust.yaml",
-]
+CodeInfoEncoder = plugin.CodeInfoEncoder
+CodingRadixParser = plugin.CodingRadixParser
+fontVariance = plugin.fontVariance
+codeMappingInfoInterpreter = plugin.codeMappingInfoInterpreter
+CodingSubstituteFileList = plugin.CodingSubstituteFileList
+CodingRadixFileList = plugin.CodingRadixFileList
+CodingAdjustFileList = plugin.CodingAdjustFileList

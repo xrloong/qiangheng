@@ -1,20 +1,21 @@
-from coding.Input import FontVariance
-from coding.Input import CodeMappingInfoInterpreter
+from coding.Input import InputPlugin, FontVariance
 
-from .ZhengMa import ZMCodeInfoEncoder as CodeInfoEncoder
-from .ZhengMa import ZMRadixParser as CodingRadixParser
+from .ZhengMa import ZMCodeInfoEncoder
+from .ZhengMa import ZMRadixParser
 
-fontVariance = FontVariance.Simplified
-codeMappingInfoInterpreter = CodeMappingInfoInterpreter()
+plugin = InputPlugin(
+    method_name="zm",
+    encoder_class=ZMCodeInfoEncoder,
+    radix_parser_class=ZMRadixParser,
+    font_variance=FontVariance.Simplified,
+    has_fast_file=True,
+)
 
-codingMethodName = "zm"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingSubstituteFileList = [
-    codingMethodDir + "substitute.yaml",
-]
-CodingRadixFileList = [
-    codingMethodDir + "radix/CJK.yaml",
-    codingMethodDir + "radix/CJK-A.yaml",
-]
-CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]
-CodingFastFile = codingMethodDir + "fast.yaml"
+CodeInfoEncoder = plugin.CodeInfoEncoder
+CodingRadixParser = plugin.CodingRadixParser
+fontVariance = plugin.fontVariance
+codeMappingInfoInterpreter = plugin.codeMappingInfoInterpreter
+CodingSubstituteFileList = plugin.CodingSubstituteFileList
+CodingRadixFileList = plugin.CodingRadixFileList
+CodingAdjustFileList = plugin.CodingAdjustFileList
+CodingFastFile = plugin.CodingFastFile

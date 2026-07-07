@@ -1,19 +1,19 @@
-from coding.Input import FontVariance
-from coding.Input import CodeMappingInfoInterpreter
+from coding.Input import InputPlugin, FontVariance
 
-from .FourCorner import FCCodeInfoEncoder as CodeInfoEncoder
-from .FourCorner import FCRadixParser as CodingRadixParser
+from .FourCorner import FCCodeInfoEncoder
+from .FourCorner import FCRadixParser
 
-fontVariance = FontVariance.Traditional
-codeMappingInfoInterpreter = CodeMappingInfoInterpreter()
+plugin = InputPlugin(
+    method_name="fc",
+    encoder_class=FCCodeInfoEncoder,
+    radix_parser_class=FCRadixParser,
+    font_variance=FontVariance.Traditional,
+)
 
-codingMethodName = "fc"
-codingMethodDir = "gen/qhdata/{method}/".format(method=codingMethodName)
-CodingSubstituteFileList = [
-    codingMethodDir + "substitute.yaml",
-]
-CodingRadixFileList = [
-    codingMethodDir + "radix/CJK.yaml",
-    codingMethodDir + "radix/CJK-A.yaml",
-]
-CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]
+CodeInfoEncoder = plugin.CodeInfoEncoder
+CodingRadixParser = plugin.CodingRadixParser
+fontVariance = plugin.fontVariance
+codeMappingInfoInterpreter = plugin.codeMappingInfoInterpreter
+CodingSubstituteFileList = plugin.CodingSubstituteFileList
+CodingRadixFileList = plugin.CodingRadixFileList
+CodingAdjustFileList = plugin.CodingAdjustFileList
