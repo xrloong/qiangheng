@@ -307,10 +307,13 @@ python-fontforge: fontforge/CMakeLists.txt
 	cd fontforge; ( \
 		mkdir build; \
 		cd build; \
-		cmake -GNinja .. -DPython3_EXECUTABLE=`which python3`; \
+		cmake -GNinja .. \
+			-DENABLE_GUI=OFF \
+			-DPython3_EXECUTABLE=`uv python find` \
+			-DPYHOOK_INSTALL_DIR=`uv run python3 -c "import sysconfig; print(sysconfig.get_path('platlib', vars={'platbase': '', 'base': ''}))"` ; \
 		ninja; \
 		)
-	cd tools; ln -s ../fontforge/build/lib/fontforge.so .
+	cd tools; ln -s ../fontforge/build/lib/fontforge.so fontforge.so
 
 fontforge/CMakeLists.txt:
 	git clone -b 20230101 https://github.com/fontforge/fontforge.git
