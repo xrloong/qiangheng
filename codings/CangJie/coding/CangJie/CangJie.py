@@ -21,9 +21,6 @@ class CJLump:
         self.containerCode = containerCode
         self.interiorCode = interiorCode
 
-        self.isBodyContainer = False
-        self.isDirtySingleton = False
-
     def __str__(self):
         return "%s" % self.getXCode()
 
@@ -36,7 +33,7 @@ class CJLump:
     def getInteriorCode(self):
         return self.interiorCode
 
-    def getXCode(self):
+    def getXCode(self, as_body_container=False):
         return [self.frontCode, self.containerCode, self.interiorCode]
 
     def getHelper(self):
@@ -77,7 +74,6 @@ class CJLump:
     def computeBodyCode(cjLumpList):
         code = ""
         if len(cjLumpList) == 1:
-            cjLumpList[0].isBodyContainer = False
             code = cjLumpList[0].getCodeAsBody()
         elif len(cjLumpList) > 1:
             code = cjLumpList[0].getCodeAsHead()
@@ -103,32 +99,16 @@ class CJLump:
     @staticmethod
     def generateBody(cjLumpList):
         lastCJLump = cjLumpList[-1]
-
-        lastCJLump.isBodyContainer = True
-        [frontCode, containerCode, interiorCode] = lastCJLump.getXCode()
-        lastCJLump.isBodyContainer = False
-
+        [frontCode, containerCode, interiorCode] = lastCJLump.getXCode(as_body_container=True)
         tmpFrontCode = "".join(x.getCodeAsHead() for x in cjLumpList[:-1])
-
-        tmpCJLump = CJLump.generate(
-            tmpFrontCode + frontCode, containerCode, interiorCode
-        )
-        return tmpCJLump
+        return CJLump.generate(tmpFrontCode + frontCode, containerCode, interiorCode)
 
     @staticmethod
     def generateSingleton(cjLumpList):
         lastCJLump = cjLumpList[-1]
-
-        lastCJLump.isBodyContainer = True
-        [frontCode, containerCode, interiorCode] = lastCJLump.getXCode()
-        lastCJLump.isBodyContainer = False
-
+        [frontCode, containerCode, interiorCode] = lastCJLump.getXCode(as_body_container=True)
         tmpFrontCode = "".join(x.getCodeAsBody() for x in cjLumpList[:-1])
-
-        tmpCJLump = CJLump.generate(
-            tmpFrontCode + frontCode, containerCode, interiorCode
-        )
-        return tmpCJLump
+        return CJLump.generate(tmpFrontCode + frontCode, containerCode, interiorCode)
 
     @staticmethod
     def generateContainer(cjLumpList):
@@ -144,7 +124,6 @@ class ContainerCJLump(CJLump):
     def __init__(self, outerLump, innerLump):
         self.outerLump = outerLump
         self.innerLump = innerLump
-        self.isBodyContainer = False
 
     def getHelper(self):
         return ContainerCJCodeHelper(self.outerLump, self.innerLump)
@@ -157,10 +136,9 @@ class ContainerCJLump(CJLump):
             code += self.innerLump.getCodeAsTail()
         return code
 
-    def getXCode(self):
+    def getXCode(self, as_body_container=False):
         [outerFront, outerContainer, outerInterior] = self.outerLump.getXCode()
-        [innerFront, innerContainer, innerInterior] = self.innerLump.getXCode()
-        if self.isBodyContainer:
+        if as_body_container:
             return [outerFront, outerContainer, self.innerLump.getCodeAsTail()]
         else:
             return [outerFront, outerContainer, self.innerLump.getCodeAsBody()]
