@@ -1,12 +1,12 @@
 import functools
-from dataclasses import dataclass
+
+from pydantic import BaseModel, ConfigDict
 
 from element.enum import FontVariance
 from .Drawing import CodeMappingInfoInterpreter
 
 
-@dataclass
-class DrawingPlugin:
+class DrawingPlugin(BaseModel):
     """描繪法插件的合約與預設設定。
 
     與 InputPlugin 的主要差異：
@@ -21,6 +21,8 @@ class DrawingPlugin:
             interpreter=DCCodeMappingInfoInterpreter(),
         )
     """
+
+    model_config = ConfigDict(frozen=True, arbitrary_types_allowed=True)
 
     method_name: str
     encoder_class: type
