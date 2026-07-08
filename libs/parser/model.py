@@ -15,12 +15,11 @@ class RadixCodeInfoModel(
     extra="allow",
 ):
     variance: CodeVariance = Field(
-        alias="類型", frozen=True, strict=False, default=CodeVariance.STANDARD
+        alias="類型", strict=False, default=CodeVariance.STANDARD
     )
     supportCharacterCode: Optional[str] = Field(
         alias="字符碼",
         pattern="是",
-        frozen=True,
         default=None,
     )
 
@@ -45,9 +44,9 @@ class RadicalModel(
     strict=True,
     frozen=True,
 ):
-    name: str = Field(alias="名稱", frozen=True)
-    comment: str = Field(alias="註記", frozen=True)
-    codings: list[RadixCodeInfoModel] = Field(alias="編碼資訊", frozen=True)
+    name: str = Field(alias="名稱")
+    comment: str = Field(alias="註記")
+    codings: list[RadixCodeInfoModel] = Field(alias="編碼資訊")
 
 
 class RadicalSetModel(
@@ -55,7 +54,7 @@ class RadicalSetModel(
     strict=True,
     frozen=True,
 ):
-    radicals: list[RadicalModel] = Field(alias="字符集", frozen=True)
+    radicals: list[RadicalModel] = Field(alias="字符集")
 
 
 class SubstituteRuleMatchingModel(
@@ -63,8 +62,8 @@ class SubstituteRuleMatchingModel(
     strict=True,
     frozen=True,
 ):
-    operator: str = Field(alias="運算", frozen=True, default=None)
-    operandCount: int = Field(alias="參數個數", frozen=True)
+    operator: Optional[str] = Field(alias="運算", default=None)
+    operandCount: int = Field(alias="參數個數")
 
 
 class SubstituteRuleModel(
@@ -72,13 +71,13 @@ class SubstituteRuleModel(
     strict=True,
     frozen=True,
 ):
-    matching: str | SubstituteRuleMatchingModel = Field(
-        alias="比對", frozen=True, default=None
+    matching: str | SubstituteRuleMatchingModel | None = Field(
+        alias="比對", default=None
     )
-    replacement: str = Field(alias="替換", frozen=True)
+    replacement: str = Field(alias="替換")
 
-    templateName: Optional[str] = Field(alias="範本名稱", frozen=True, default=None)
-    parameterCount: Optional[int] = Field(alias="參數個數", frozen=True, default=None)
+    templateName: Optional[str] = Field(alias="範本名稱", default=None)
+    parameterCount: Optional[int] = Field(alias="參數個數", default=None)
 
 
 class SubstituteRuleSetModel(
@@ -86,7 +85,7 @@ class SubstituteRuleSetModel(
     strict=True,
     frozen=True,
 ):
-    rules: list[SubstituteRuleModel] = Field(alias="規則集", frozen=True)
+    rules: list[SubstituteRuleModel] = Field(alias="規則集")
 
 
 class StructureModel(
@@ -94,9 +93,9 @@ class StructureModel(
     strict=True,
     frozen=True,
 ):
-    expression: str = Field(alias="結構", frozen=True)
+    expression: str = Field(alias="結構")
     font: FontVariance = Field(
-        alias="字體", frozen=True, strict=False, default=FontVariance.All
+        alias="字體", strict=False, default=FontVariance.All
     )
 
     @field_validator("font")
@@ -112,9 +111,9 @@ class CharacterDecompositionModel(
     strict=True,
     frozen=True,
 ):
-    name: str = Field(alias="名稱", frozen=True)
-    comment: str = Field(alias="註記", frozen=True)
-    structureSet: list[StructureModel] = Field(alias="結構集", frozen=True)
+    name: str = Field(alias="名稱")
+    comment: str = Field(alias="註記")
+    structureSet: list[StructureModel] = Field(alias="結構集")
 
 
 class CharacterDecompositionSetModel(
@@ -123,5 +122,5 @@ class CharacterDecompositionSetModel(
     frozen=True,
 ):
     decompositionSet: list[CharacterDecompositionModel] = Field(
-        alias="字符集", frozen=True
+        alias="字符集"
     )
