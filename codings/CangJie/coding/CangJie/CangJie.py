@@ -289,7 +289,6 @@ class CJCodeInfo(CodeInfo):
         direction = self.getDirection()
 
         if self.cjLumpListSingleton:
-            rtlist = self.cjLumpList
             rtlist = self.cjLumpListSingleton
             return CJLump.computeTotalCode(rtlist)
         else:
