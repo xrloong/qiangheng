@@ -9,7 +9,7 @@ PYTHON	=	$(UV) run python3
 UNAME	:=	$(shell uname)
 INSTALL_DIR	:=	$(shell pwd)
 
-FONTFORGE_VERSION	=	20230101
+FONTFORGE_VERSION	=	20251009
 
 define coding_lookup
 case $$cm in \
