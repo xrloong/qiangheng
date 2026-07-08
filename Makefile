@@ -9,6 +9,8 @@ PYTHON	=	$(UV) run python3
 UNAME	:=	$(shell uname)
 INSTALL_DIR	:=	$(shell pwd)
 
+FONTFORGE_VERSION	=	20230101
+
 define coding_lookup
 case $$cm in \
     ar) package=coding.Array;                packageDir=codings/Array ;; \
@@ -316,7 +318,7 @@ python-fontforge: fontforge/CMakeLists.txt
 	cd tools; ln -s ../fontforge/build/lib/fontforge.so fontforge.so
 
 fontforge/CMakeLists.txt:
-	git clone -b 20230101 https://github.com/fontforge/fontforge.git
+	git clone -b $(FONTFORGE_VERSION) https://github.com/fontforge/fontforge.git
 
 clean:
 	rm -rf $(ICON_PLATFORM_PATH)
