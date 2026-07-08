@@ -1,80 +1,8 @@
-import ruamel.yaml
 import abc
+from typing import Any, Optional
 
-
-class GlyphElementDescription:
-    def __init__(self, method):
-        self.method = method
-
-    @property
-    def isAnchor(self):
-        return self.method == GlyphTags.METHOD__ANCHOR
-
-    @property
-    def isReference(self):
-        return self.method == GlyphTags.METHOD__REFERENCE
-
-    @property
-    def isDefinition(self):
-        return self.method == GlyphTags.METHOD__DEFINITION
-
-
-class GlyphDefinitionElementDescription(GlyphElementDescription):
-    def __init__(
-        self, strokeType, startPoint, position, params=None, splinePointsList=None
-    ):
-        super().__init__(GlyphTags.METHOD__DEFINITION)
-
-        self.strokeType = strokeType
-        self.params = params
-        self.splinePointsList = splinePointsList
-
-        self.startPoint = startPoint
-        self.position = position
-
-
-class GlyphAnchorElementDescription(GlyphElementDescription):
-    def __init__(self, name, referenceName, position):
-        super().__init__(GlyphTags.METHOD__ANCHOR)
-
-        self.name = name
-        self.referenceName = referenceName
-        self.position = position
-
-
-class GlyphReferenceElementDescription(GlyphElementDescription):
-    def __init__(self, referenceName, order, position):
-        super().__init__(GlyphTags.METHOD__REFERENCE)
-
-        self.referenceName = referenceName
-        self.order = order
-        self.position = position
-
-
-class GlyphStrokeDescription:
-    def __init__(self, name, comment=None):
-        self.name = name
-        self.comment = comment
-        self.stroke = None
-
-
-class GlyphComponentDescription:
-    def __init__(self, name, comment=None):
-        self.name = name
-        self.comment = comment
-        self.elements = None
-
-
-class GlyphDataSetDescription:
-    def __init__(
-        self,
-        strokes: [GlyphStrokeDescription],
-        parts: [GlyphComponentDescription],
-        components: [GlyphComponentDescription],
-    ):
-        self.strokes = strokes
-        self.parts = parts
-        self.components = components
+import ruamel.yaml
+from pydantic import BaseModel
 
 
 class GlyphTags(object):
@@ -102,6 +30,63 @@ class GlyphTags(object):
     POSITION = "定位"
 
 
+class GlyphElementDescription(BaseModel, frozen=True):
+    method: str
+
+    @property
+    def isAnchor(self) -> bool:
+        return self.method == GlyphTags.METHOD__ANCHOR
+
+    @property
+    def isReference(self) -> bool:
+        return self.method == GlyphTags.METHOD__REFERENCE
+
+    @property
+    def isDefinition(self) -> bool:
+        return self.method == GlyphTags.METHOD__DEFINITION
+
+
+class GlyphDefinitionElementDescription(GlyphElementDescription, frozen=True):
+    method: str = GlyphTags.METHOD__DEFINITION
+    strokeType: str
+    startPoint: Optional[list[Any]] = None
+    position: Optional[list[Any]] = None
+    params: Optional[Any] = None
+    splinePointsList: Optional[list[Any]] = None
+
+
+class GlyphAnchorElementDescription(GlyphElementDescription, frozen=True):
+    method: str = GlyphTags.METHOD__ANCHOR
+    name: str
+    referenceName: str
+    position: Optional[list[Any]] = None
+
+
+class GlyphReferenceElementDescription(GlyphElementDescription, frozen=True):
+    method: str = GlyphTags.METHOD__REFERENCE
+    referenceName: str
+    order: Optional[list[int]] = None
+    position: Optional[list[Any]] = None
+
+
+class GlyphStrokeDescription(BaseModel, frozen=True):
+    name: str
+    comment: Optional[str] = None
+    element: GlyphElementDescription
+
+
+class GlyphComponentDescription(BaseModel, frozen=True):
+    name: str
+    comment: Optional[str] = None
+    elements: list[GlyphElementDescription]
+
+
+class GlyphDataSetDescription(BaseModel, frozen=True):
+    strokes: list[GlyphStrokeDescription]
+    parts: list[GlyphComponentDescription]
+    components: list[GlyphComponentDescription]
+
+
 class GlyphParser(object):
     def __init__(self):
         super().__init__()
@@ -113,94 +98,69 @@ class GlyphParser(object):
         dataSet = self.parseAllDataSet(rootNode)
         return dataSet
 
-    def parseDefinitionElement(self, elementNode):
-        strokeType = elementNode.get(GlyphTags.TYPE)
-        params = elementNode.get(GlyphTags.PARAMETER)
-        startPoint = elementNode.get(GlyphTags.START_POINT)
-        position = elementNode.get(GlyphTags.POSITION)
-        splinePointsList = elementNode.get(GlyphTags.SPLINE_POINTS_LIST)
+    def parseDefinitionElement(self, elementNode) -> GlyphDefinitionElementDescription:
         return GlyphDefinitionElementDescription(
-            strokeType,
-            params=params,
-            splinePointsList=splinePointsList,
-            startPoint=startPoint,
-            position=position,
+            strokeType=elementNode.get(GlyphTags.TYPE),
+            params=elementNode.get(GlyphTags.PARAMETER),
+            splinePointsList=elementNode.get(GlyphTags.SPLINE_POINTS_LIST),
+            startPoint=elementNode.get(GlyphTags.START_POINT),
+            position=elementNode.get(GlyphTags.POSITION),
         )
 
-    def parseAnchorElement(self, elementNode):
-        name = elementNode.get(GlyphTags.NAME)
-        referenceName = elementNode.get(GlyphTags.REFRENCE_NAME)
-        position = elementNode.get(GlyphTags.POSITION)
-        return GlyphAnchorElementDescription(name, referenceName, position)
+    def parseAnchorElement(self, elementNode) -> GlyphAnchorElementDescription:
+        return GlyphAnchorElementDescription(
+            name=elementNode.get(GlyphTags.NAME),
+            referenceName=elementNode.get(GlyphTags.REFRENCE_NAME),
+            position=elementNode.get(GlyphTags.POSITION),
+        )
 
-    def parseReferenceElement(self, elementNode):
-        referenceName = elementNode.get(GlyphTags.REFRENCE_NAME)
-        order = elementNode.get(GlyphTags.ORDER)
-        position = elementNode.get(GlyphTags.POSITION)
-        return GlyphReferenceElementDescription(referenceName, order, position)
+    def parseReferenceElement(self, elementNode) -> GlyphReferenceElementDescription:
+        return GlyphReferenceElementDescription(
+            referenceName=elementNode.get(GlyphTags.REFRENCE_NAME),
+            order=elementNode.get(GlyphTags.ORDER),
+            position=elementNode.get(GlyphTags.POSITION),
+        )
 
-    def parseElement(self, elementNode):
+    def parseElement(self, elementNode) -> GlyphElementDescription:
         method = elementNode.get(GlyphTags.METHOD)
-        element = GlyphElementDescription(method)
 
         if method == GlyphTags.METHOD__DEFINITION:
-            element = self.parseDefinitionElement(elementNode)
+            return self.parseDefinitionElement(elementNode)
         elif method == GlyphTags.METHOD__ANCHOR:
-            element = self.parseAnchorElement(elementNode)
+            return self.parseAnchorElement(elementNode)
         elif method == GlyphTags.METHOD__REFERENCE:
-            element = self.parseReferenceElement(elementNode)
+            return self.parseReferenceElement(elementNode)
 
-        return element
+        return GlyphElementDescription(method=method)
 
-    def parseStroke(self, strokeNode):
-        strokeName = strokeNode.get(GlyphTags.NAME)
-        strokeComment = strokeNode.get(GlyphTags.COMMENT)
-
-        stroke = GlyphStrokeDescription(strokeName, strokeComment)
-
+    def parseStroke(self, strokeNode) -> GlyphStrokeDescription:
         elementNode = strokeNode.get(GlyphTags.STROKE)
-        element = self.parseElement(elementNode)
+        return GlyphStrokeDescription(
+            name=strokeNode.get(GlyphTags.NAME),
+            comment=strokeNode.get(GlyphTags.COMMENT),
+            element=self.parseElement(elementNode),
+        )
 
-        stroke.element = element
-        return stroke
+    def parseComponent(self, componentNode) -> GlyphComponentDescription:
+        elements = [
+            self.parseElement(en) for en in componentNode.get(GlyphTags.STROKE)
+        ]
+        return GlyphComponentDescription(
+            name=componentNode.get(GlyphTags.NAME),
+            comment=componentNode.get(GlyphTags.COMMENT),
+            elements=elements,
+        )
 
-    def parseComponent(self, componentNode):
-        componentName = componentNode.get(GlyphTags.NAME)
-        componentComment = componentNode.get(GlyphTags.COMMENT)
+    def parseDataSet(self, dataSetNode) -> list[GlyphComponentDescription]:
+        return [self.parseComponent(n) for n in dataSetNode]
 
-        component = GlyphComponentDescription(componentName, componentComment)
-
-        elements = []
-        for elementNode in componentNode.get(GlyphTags.STROKE):
-            element = self.parseElement(elementNode)
-            elements.append(element)
-
-        component.elements = elements
-        return component
-
-    def parseDataSet(self, dataSetNode):
-        components = []
-        for componentNode in dataSetNode:
-            component = self.parseComponent(componentNode)
-            components.append(component)
-
-        return components
-
-    def parseAllDataSet(self, rootNode):
-        strokeSetNode = rootNode.get(GlyphTags.STROKE_SET)
-        strokes = []
-        for strokeNode in strokeSetNode:
-            stroke = self.parseStroke(strokeNode)
-            strokes.append(stroke)
-
-        partSetNode = rootNode.get(GlyphTags.PART_SET)
-        parts = self.parseDataSet(partSetNode)
-
-        componentSetNode = rootNode.get(GlyphTags.COMPONENT_SET)
-        components = self.parseDataSet(componentSetNode)
-
-        dataSet = GlyphDataSetDescription(strokes, parts, components)
-        return dataSet
+    def parseAllDataSet(self, rootNode) -> GlyphDataSetDescription:
+        strokes = [
+            self.parseStroke(n) for n in rootNode.get(GlyphTags.STROKE_SET)
+        ]
+        parts = self.parseDataSet(rootNode.get(GlyphTags.PART_SET))
+        components = self.parseDataSet(rootNode.get(GlyphTags.COMPONENT_SET))
+        return GlyphDataSetDescription(strokes=strokes, parts=parts, components=components)
 
 
 class IfGlyphDescriptionInterpreter(object, metaclass=abc.ABCMeta):

@@ -33,7 +33,7 @@ class GlyphElementParsingTestCase(unittest.TestCase):
 
     def testParseReferenceElement(self):
         element = self.parser.parseElement(
-            {"方式": "引用", "引用名稱": "~點", "順序": 0, "定位": [93, 91, 153, 164]}
+            {"方式": "引用", "引用名稱": "~點", "順序": [0], "定位": [93, 91, 153, 164]}
         )
 
         self.assertTrue(element.isReference)
@@ -41,7 +41,7 @@ class GlyphElementParsingTestCase(unittest.TestCase):
         self.assertFalse(element.isAnchor)
 
         self.assertEqual(element.referenceName, "~點")
-        self.assertEqual(element.order, 0)
+        self.assertEqual(element.order, [0])
         self.assertEqual(element.position, [93, 91, 153, 164])
 
     def testParseReferenceElementWithoutOrder(self):
