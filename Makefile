@@ -58,7 +58,7 @@ all: xml
 setup-environment: setup-$(UNAME)-environment setup-python-environment
 
 setup-Linux-environment:
-	sudo make setup-$(shell lsb_release -si)-environment
+	sudo $(MAKE) setup-$(shell lsb_release -si)-environment
 
 setup-Ubuntu-environment:
 	apt-get install python3 python3-pip
@@ -104,11 +104,11 @@ prepare-im-general:
 # prepare-ar / prepare-bs / prepare-cj / prepare-dy / prepare-fc / prepare-zm
 prepare-%:
 	mkdir -p $(GEN_QHDATA_PATH)/$*
-	make prepare-im prepare-im-general IM=$*
+	$(MAKE) prepare-im prepare-im-general IM=$*
 
 prepare-dc:
 	mkdir -p $(GEN_QHDATA_PATH)/dc
-	make prepare-im IM=dc
+	$(MAKE) prepare-im IM=dc
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK-A.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml
 	xsltproc -o $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml xslt/xml2yaml-dc.xslt $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
@@ -116,8 +116,8 @@ prepare-dc:
 	cp $(QHDATA_PATH)/dc/radix/template.yaml $(GEN_QHDATA_PATH)/dc/radix/template.yaml
 
 prepare:
-	make prepare-main
-	make prepare-ar prepare-bs prepare-cj prepare-dy prepare-fc prepare-zm prepare-dc
+	$(MAKE) prepare-main
+	$(MAKE) prepare-ar prepare-bs prepare-cj prepare-dy prepare-fc prepare-zm prepare-dc
 
 $(XML_PATH):
 	mkdir -p $(XML_PATH)
@@ -131,7 +131,7 @@ $(PURETABLE_PATH):
 xml:
 	for cm in $(CMLIST);\
 	do\
-		make $(XML_PATH)/qh$$cm.xml; \
+		$(MAKE) $(XML_PATH)/qh$$cm.xml; \
 	done
 
 yaml:
@@ -149,7 +149,7 @@ yaml:
 puretable:
 	for cm in $(CMLIST);\
 	do\
-		make $(PURETABLE_PATH)/qh$$cm.txt; \
+		$(MAKE) $(PURETABLE_PATH)/qh$$cm.txt; \
 	done
 
 .PRECIOUS: $(YAML_PATH)/qh%.yaml
@@ -193,7 +193,7 @@ profile:
 	done
 
 dc:
-	make yaml CMLIST=dc
+	$(MAKE) yaml CMLIST=dc
 
 FORCE:
 
@@ -283,16 +283,16 @@ all-icons:
 	convert -resize 64x64 $(ICON_ORIGIN_PATH)/qiangheng.svg $(ICON_PLATFORM_PATH)/qiangheng.png;
 
 tarballs: pre-tarballs pdf tarball-src
-	make tarball-src VERSION=$(VERSION)
-	make prepare
-	make xml yaml imtables
-	make imtables
-	make svg
-	make tarballs-platform VERSION=$(VERSION)
-	make tarball-all VERSION=$(VERSION)
+	$(MAKE) tarball-src VERSION=$(VERSION)
+	$(MAKE) prepare
+	$(MAKE) xml yaml imtables
+	$(MAKE) imtables
+	$(MAKE) svg
+	$(MAKE) tarballs-platform VERSION=$(VERSION)
+	$(MAKE) tarball-all VERSION=$(VERSION)
 
 pre-tarballs:
-	make clean
+	$(MAKE) clean
 	mkdir -p $(TARBALLS_PATH)
 
 tarball-src:
