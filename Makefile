@@ -9,14 +9,16 @@ PYTHON	=	$(UV) run python3
 UNAME	:=	$(shell uname)
 INSTALL_DIR	:=	$(shell pwd)
 
-define setup_codings
-package_ar="coding.Array codings/Array" \
-package_bs="coding.Boshiamy codings/Boshiamy" \
-package_cj="coding.CangJie codings/CangJie" \
-package_dy="coding.DaYi codings/DaYi" \
-package_fc="coding.FourCorner codings/FourCorner" \
-package_zm="coding.ZhengMa codings/ZhengMa" \
-package_dc="coding.DynamicComposition codings/DynamicComposition"
+define coding_lookup
+case $$cm in \
+    ar) package=coding.Array;                packageDir=codings/Array ;; \
+    bs) package=coding.Boshiamy;             packageDir=codings/Boshiamy ;; \
+    cj) package=coding.CangJie;              packageDir=codings/CangJie ;; \
+    dy) package=coding.DaYi;                 packageDir=codings/DaYi ;; \
+    fc) package=coding.FourCorner;           packageDir=codings/FourCorner ;; \
+    zm) package=coding.ZhengMa;              packageDir=codings/ZhengMa ;; \
+    dc) package=coding.DynamicComposition;   packageDir=codings/DynamicComposition ;; \
+esac
 endef
 
 TABLES_PATH	=	tables
@@ -133,13 +135,9 @@ xml:
 
 yaml:
 	mkdir -p $(YAML_PATH)
-	for cm in $(CMLIST);\
-	do\
-		$(call setup_codings);\
-		packageConfig=`eval echo '$$package_'$$cm`; \
-		package=`echo $$packageConfig | cut -d" " -f1`;\
-		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
-		echo $$cm $$package $$packageDir;\
+	for cm in $(CMLIST); do \
+		$(coding_lookup); \
+		echo $$cm $$package $$packageDir; \
 		PYTHONPATH="src:libs:$$packageDir" time $(PYTHON) src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml || exit 1; \
 	done
 
@@ -153,14 +151,10 @@ puretable:
 
 $(YAML_PATH)/qh%.yaml: $(YAML_PATH)
 	mkdir -p $(YAML_PATH)
-	filename=$$(basename $@); \
-	cm=$${filename:2:2}; \
-	$(call setup_codings);\
-	packageConfig=`eval echo '$$package_'$$cm`; \
-	package=`echo $$packageConfig | cut -d" " -f1`;\
-	packageDir=`echo $$packageConfig | cut -d" " -f2`;\
-	echo $$cm $$package $$packageDir;\
-	PYTHONPATH="src:libs:$$packageDir" time $(PYTHON) src/qiangheng.py -p $$package > $(YAML_PATH)/qh$$cm.yaml; \
+	cm=$*; \
+	$(coding_lookup); \
+	echo $$cm $$package $$packageDir; \
+	PYTHONPATH="src:libs:$$packageDir" time $(PYTHON) src/qiangheng.py -p $$package > $@; \
 
 $(XML_PATH)/qh%.xml: $(XML_PATH) $(YAML_PATH)/qh%.yaml
 	filename=$$(basename $@); \
@@ -179,14 +173,10 @@ $(PURETABLE_PATH)/qh%.txt: $(PURETABLE_PATH) $(YAML_PATH)/qh%.yaml
 
 profile:
 	mkdir -p $(PROFILE_PATH)
-	for cm in $(CMLIST);\
-	do\
-		$(call setup_codings);\
-		packageConfig=`eval echo '$$package_'$$cm`; \
-		package=`echo $$packageConfig | cut -d" " -f1`;\
-		packageDir=`echo $$packageConfig | cut -d" " -f2`;\
-		echo $$cm $$package $$packageDir;\
-		PYTHONPATH="src:libs:$$packageDir" $(PYTHON) src/profiler.py -q -p $$package > $(PROFILE_PATH)/$$cm.txt;\
+	for cm in $(CMLIST); do \
+		$(coding_lookup); \
+		echo $$cm $$package $$packageDir; \
+		PYTHONPATH="src:libs:$$packageDir" $(PYTHON) src/profiler.py -q -p $$package > $(PROFILE_PATH)/$$cm.txt; \
 	done
 
 dc:

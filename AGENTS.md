@@ -42,6 +42,14 @@ uv run pytest tests/libs/testTreeParser.py
 make profile
 ```
 
+### Makefile 架構說明
+
+- **`coding_lookup`**（`define` 區塊）— `case` 語句，依輸入法代號（`$cm`）設定 `package` 與 `packageDir` shell 變數，供 `yaml`、`$(YAML_PATH)/qh%.yaml`、`profile` 三個目標使用
+- **`prepare-main`** — 將主字元結構 XML 轉為 YAML，並依各輸入法拆分字根檔
+- **`prepare-%`**（模式規則）— 處理 `ar/bs/cj/dy/fc/zm`：複製設定檔、格式化 XML、轉為 YAML
+- **`prepare-dc`**（具名規則）— 同上但使用 `xslt/xml2yaml-dc.xslt`（dc 專用轉換）
+- **平台目標**（`scim`、`ibus`、`gcin`、`ovim`、`msim`）— 將 XML 對照表轉換為各輸入平台格式，需對應平台工具（`scim-make-table`、`ibus-table-createdb`、`gcin2tab` 等）
+
 ## 架構
 
 ### 三階段處理流程
