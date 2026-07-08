@@ -88,27 +88,24 @@ prepare-main:
 	$(PYTHON) scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK.xml $(GEN_QHDATA_PATH)/ _CJK.xml
 	$(PYTHON) scripts/split.py $(QHDATA_MAIN_RADIX_PATH)/CJK-A.xml $(GEN_QHDATA_PATH)/ _CJK-A.xml
 
-prepare-im:
-	mkdir -p $(GEN_QHDATA_PATH)/$(IM)/radix/
-	cp -f $(QHDATA_PATH)/$(IM)/info.yaml $(GEN_QHDATA_PATH)/$(IM)/info.yaml
-	cp -f $(QHDATA_PATH)/$(IM)/substitute.yaml $(GEN_QHDATA_PATH)/$(IM)/substitute.yaml
-	cp -f $(QHDATA_PATH)/$(IM)/adjust.yaml $(GEN_QHDATA_PATH)/$(IM)/adjust.yaml
-	cp -f $(QHDATA_PATH)/$(IM)/fast.yaml $(GEN_QHDATA_PATH)/$(IM)/fast.yaml
-
-prepare-im-general:
-	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml
-	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/$(IM)/radix/_CJK-A.xml -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml
-	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.yaml xslt/xml2yaml-radix.xslt $(GEN_QHDATA_PATH)/$(IM)/radix/CJK.xml
-	xsltproc -o $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.yaml xslt/xml2yaml-radix.xslt $(GEN_QHDATA_PATH)/$(IM)/radix/CJK-A.xml
-
 # prepare-ar / prepare-bs / prepare-cj / prepare-dy / prepare-fc / prepare-zm
 prepare-%:
-	mkdir -p $(GEN_QHDATA_PATH)/$*
-	$(MAKE) prepare-im prepare-im-general IM=$*
+	mkdir -p $(GEN_QHDATA_PATH)/$*/radix/
+	cp -f $(QHDATA_PATH)/$*/info.yaml $(GEN_QHDATA_PATH)/$*/info.yaml
+	cp -f $(QHDATA_PATH)/$*/substitute.yaml $(GEN_QHDATA_PATH)/$*/substitute.yaml
+	cp -f $(QHDATA_PATH)/$*/adjust.yaml $(GEN_QHDATA_PATH)/$*/adjust.yaml
+	cp -f $(QHDATA_PATH)/$*/fast.yaml $(GEN_QHDATA_PATH)/$*/fast.yaml
+	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/$*/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/$*/radix/CJK.xml
+	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/$*/radix/_CJK-A.xml -o $(GEN_QHDATA_PATH)/$*/radix/CJK-A.xml
+	xsltproc -o $(GEN_QHDATA_PATH)/$*/radix/CJK.yaml xslt/xml2yaml-radix.xslt $(GEN_QHDATA_PATH)/$*/radix/CJK.xml
+	xsltproc -o $(GEN_QHDATA_PATH)/$*/radix/CJK-A.yaml xslt/xml2yaml-radix.xslt $(GEN_QHDATA_PATH)/$*/radix/CJK-A.xml
 
 prepare-dc:
-	mkdir -p $(GEN_QHDATA_PATH)/dc
-	$(MAKE) prepare-im IM=dc
+	mkdir -p $(GEN_QHDATA_PATH)/dc/radix/
+	cp -f $(QHDATA_PATH)/dc/info.yaml $(GEN_QHDATA_PATH)/dc/info.yaml
+	cp -f $(QHDATA_PATH)/dc/substitute.yaml $(GEN_QHDATA_PATH)/dc/substitute.yaml
+	cp -f $(QHDATA_PATH)/dc/adjust.yaml $(GEN_QHDATA_PATH)/dc/adjust.yaml
+	cp -f $(QHDATA_PATH)/dc/fast.yaml $(GEN_QHDATA_PATH)/dc/fast.yaml
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
 	XMLLINT_INDENT="    " xmllint --encode UTF-8 --format $(GEN_QHDATA_PATH)/dc/radix/_CJK-A.xml -o $(GEN_QHDATA_PATH)/dc/radix/CJK-A.xml
 	xsltproc -o $(GEN_QHDATA_PATH)/dc/radix/CJK.yaml xslt/xml2yaml-dc.xslt $(GEN_QHDATA_PATH)/dc/radix/CJK.xml
