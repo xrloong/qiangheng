@@ -7,7 +7,7 @@ class RadixCodeInfoDescription:
     def __init__(self, model: RadixCodeInfoModel):
         self.__codeVariance = model.variance
         self.__isSupportRadixCode = model.isSupportRadixCode
-        self.__codeElementCodeInfo = model.dict()
+        self.__codeElementCodeInfo = model.model_dump()
 
     @property
     def codeVariance(self):
@@ -36,7 +36,7 @@ class RadixDescription:
         return self.radixCodeInfoList
 
     def getRadixCodeInfoDescription(self, index):
-        if index in range(leng(self.radixCodeInfoList)):
+        if index in range(len(self.radixCodeInfoList)):
             return self.radixCodeInfoList[index]
 
 
