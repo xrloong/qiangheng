@@ -118,65 +118,65 @@ class DCCodeInfoEncoder(CodeInfoEncoder):
         return firstCodeInfo
 
     def encodeAsLoop(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.Loop)
+        layoutSpec = LayoutSpec(operator=JointOperator.Loop)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsSilkworm(self, codeInfos):
         weights = [x.getStrokeCount() for x in codeInfos]
-        layoutSpec = LayoutSpec(JointOperator.Silkworm, weights=weights)
+        layoutSpec = LayoutSpec(operator=JointOperator.Silkworm, weights=weights)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsGoose(self, codeInfos):
         weights = [x.getStrokeCount() for x in codeInfos]
-        layoutSpec = LayoutSpec(JointOperator.Goose, weights=weights)
+        layoutSpec = LayoutSpec(operator=JointOperator.Goose, weights=weights)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsQi(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.Qi)
+        layoutSpec = LayoutSpec(operator=JointOperator.Qi)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsLiao(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.Liao)
+        layoutSpec = LayoutSpec(operator=JointOperator.Liao)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
 
         return codeInfo
 
     def encodeAsZai(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.Zai)
+        layoutSpec = LayoutSpec(operator=JointOperator.Zai)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsDou(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.Dou)
+        layoutSpec = LayoutSpec(operator=JointOperator.Dou)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsMu(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.Mu)
+        layoutSpec = LayoutSpec(operator=JointOperator.Mu)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsZuo(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.Zuo)
+        layoutSpec = LayoutSpec(operator=JointOperator.Zuo)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsYou(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.You)
+        layoutSpec = LayoutSpec(operator=JointOperator.You)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsLiang(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.Liang)
+        layoutSpec = LayoutSpec(operator=JointOperator.Liang)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 
     def encodeAsJia(self, codeInfos):
-        layoutSpec = LayoutSpec(JointOperator.Jia)
+        layoutSpec = LayoutSpec(operator=JointOperator.Jia)
         codeInfo = self.generateDefaultCodeInfo(codeInfos, layoutSpec)
         return codeInfo
 

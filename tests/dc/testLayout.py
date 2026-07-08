@@ -58,7 +58,7 @@ class LayoutGenerationTestCase(unittest.TestCase):
         pass
 
     def test_layout_Silkworm(self):
-        layoutSpec = LayoutSpec(JointOperator.Silkworm, weights=[1, 2, 3])
+        layoutSpec = LayoutSpec(operator=JointOperator.Silkworm, weights=[1, 2, 3])
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,
@@ -69,7 +69,7 @@ class LayoutGenerationTestCase(unittest.TestCase):
             ],
         )
 
-        layoutSpec = LayoutSpec(JointOperator.Silkworm, weights=[3, 2])
+        layoutSpec = LayoutSpec(operator=JointOperator.Silkworm, weights=[3, 2])
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,
@@ -80,7 +80,7 @@ class LayoutGenerationTestCase(unittest.TestCase):
         )
 
     def test_layout_Goose(self):
-        layoutSpec = LayoutSpec(JointOperator.Goose, weights=[1, 2, 3])
+        layoutSpec = LayoutSpec(operator=JointOperator.Goose, weights=[1, 2, 3])
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,
@@ -91,7 +91,7 @@ class LayoutGenerationTestCase(unittest.TestCase):
             ],
         )
 
-        layoutSpec = LayoutSpec(JointOperator.Goose, weights=[3, 2])
+        layoutSpec = LayoutSpec(operator=JointOperator.Goose, weights=[3, 2])
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,
@@ -102,7 +102,7 @@ class LayoutGenerationTestCase(unittest.TestCase):
         )
 
     def test_layout_Loop(self):
-        layoutSpec = LayoutSpec(JointOperator.Loop)
+        layoutSpec = LayoutSpec(operator=JointOperator.Loop)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,
@@ -110,27 +110,27 @@ class LayoutGenerationTestCase(unittest.TestCase):
         )
 
     def test_layout_Qi(self):
-        layoutSpec = LayoutSpec(JointOperator.Qi)
+        layoutSpec = LayoutSpec(operator=JointOperator.Qi)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(panes, [Pane(8, 8, 247, 247), Pane(127.5, 8, 247, 127.5)])
 
     def test_layout_Liao(self):
-        layoutSpec = LayoutSpec(JointOperator.Liao)
+        layoutSpec = LayoutSpec(operator=JointOperator.Liao)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(panes, [Pane(8, 8, 247, 247), Pane(127.5, 127.5, 247, 247)])
 
     def test_layout_Zai(self):
-        layoutSpec = LayoutSpec(JointOperator.Zai)
+        layoutSpec = LayoutSpec(operator=JointOperator.Zai)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(panes, [Pane(8, 8, 247, 247), Pane(8, 127.5, 127.5, 247)])
 
     def test_layout_Dou(self):
-        layoutSpec = LayoutSpec(JointOperator.Dou)
+        layoutSpec = LayoutSpec(operator=JointOperator.Dou)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(panes, [Pane(8, 8, 247, 247), Pane(8, 8, 127.5, 127.5)])
 
     def test_layout_Mu(self):
-        layoutSpec = LayoutSpec(JointOperator.Mu)
+        layoutSpec = LayoutSpec(operator=JointOperator.Mu)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,
@@ -142,7 +142,7 @@ class LayoutGenerationTestCase(unittest.TestCase):
         )
 
     def test_layout_Zuo(self):
-        layoutSpec = LayoutSpec(JointOperator.Zuo)
+        layoutSpec = LayoutSpec(operator=JointOperator.Zuo)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,
@@ -154,7 +154,7 @@ class LayoutGenerationTestCase(unittest.TestCase):
         )
 
     def test_layout_You(self):
-        layoutSpec = LayoutSpec(JointOperator.You)
+        layoutSpec = LayoutSpec(operator=JointOperator.You)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,
@@ -166,7 +166,7 @@ class LayoutGenerationTestCase(unittest.TestCase):
         )
 
     def test_layout_Liang(self):
-        layoutSpec = LayoutSpec(JointOperator.Liang)
+        layoutSpec = LayoutSpec(operator=JointOperator.Liang)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,
@@ -178,7 +178,7 @@ class LayoutGenerationTestCase(unittest.TestCase):
         )
 
     def test_layout_Jia(self):
-        layoutSpec = LayoutSpec(JointOperator.Jia)
+        layoutSpec = LayoutSpec(operator=JointOperator.Jia)
         panes = self.shapeFactory.generateLayouts(layoutSpec)
         self.assertEqual(
             panes,

@@ -1,5 +1,7 @@
 from enum import Enum
+from typing import Optional
 
+from pydantic import BaseModel
 from xie.graphics.shape import Pane
 
 
@@ -20,10 +22,9 @@ class JointOperator(Enum):
     Jia = "夾"
 
 
-class LayoutSpec:
-    def __init__(self, operator, weights=None):
-        self.operator = operator
-        self.weights = weights
+class LayoutSpec(BaseModel, frozen=True):
+    operator: JointOperator
+    weights: Optional[list[float]] = None
 
 
 def _splitLengthToList(length, weightList):
