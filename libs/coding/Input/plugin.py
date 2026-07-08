@@ -1,11 +1,10 @@
-from dataclasses import dataclass
+from pydantic import BaseModel, ConfigDict
 
 from element.enum import FontVariance
 from .Input import CodeMappingInfoInterpreter
 
 
-@dataclass
-class InputPlugin:
+class InputPlugin(BaseModel):
     """輸入法插件的合約與預設設定。
 
     框架所需的屬性（CodeInfoEncoder、CodingRadixParser、fontVariance、
@@ -20,6 +19,8 @@ class InputPlugin:
             font_variance=FontVariance.Traditional,
         )
     """
+
+    model_config = ConfigDict(frozen=True, arbitrary_types_allowed=True)
 
     method_name: str
     encoder_class: type
