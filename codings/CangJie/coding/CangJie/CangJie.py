@@ -2,7 +2,17 @@ from coding.Input import CodeInfo
 from coding.Input import CodeInfoEncoder
 from coding.Input import CodingRadixParser
 
+from enum import Enum
 import re
+
+
+class Direction(str, Enum):
+    LOONG    = "*"
+    SPARROW  = "$"
+    SILKWORM = "|"
+    GOOSE    = "-"
+    LOOP     = "@"
+    GRID     = "+"
 
 
 class CJLump:
@@ -293,7 +303,7 @@ class CJCodeInfo(CodeInfo):
             return CJLump.computeTotalCode(rtlist)
         else:
             rtlist = self.cjLumpList
-            if direction == "$":
+            if direction == Direction.SPARROW:
                 return CJLump.computeSingletonCode(rtlist)
             else:
                 return CJLump.computeTotalCode(rtlist)
@@ -317,7 +327,7 @@ class GridCJCodeInfo(CJCodeInfo):
         return self.codeInfoV.code
 
     def getDirection(self):
-        return "+"
+        return Direction.GRID
 
     def getLumpList(self):
         return self.codeInfoV.getLumpList()
@@ -338,7 +348,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
     def encodeAsLoong(self, codeInfoList):
         """運算 "龍" """
-        direction = "*"
+        direction = Direction.LOONG
         cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(
             direction, codeInfoList
         )
@@ -347,7 +357,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
 
     def encodeAsSparrow(self, codeInfoList):
         """運算 "雀" """
-        direction = "$"
+        direction = Direction.SPARROW
         cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(
             direction, codeInfoList
         )
@@ -355,7 +365,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
         return codeInfo
 
     def encodeAsSilkworm(self, codeInfoList):
-        direction = "|"
+        direction = Direction.SILKWORM
         cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(
             direction, codeInfoList
         )
@@ -363,7 +373,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
         return codeInfo
 
     def encodeAsGoose(self, codeInfoList):
-        direction = "-"
+        direction = Direction.GOOSE
         cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(
             direction, codeInfoList
         )
@@ -371,7 +381,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
         return codeInfo
 
     def encodeAsLoop(self, codeInfoList):
-        direction = "@"
+        direction = Direction.LOOP
         cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(
             direction, codeInfoList
         )
@@ -379,7 +389,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
         return codeInfo
 
     def encodeAsMu(self, codeInfoList):
-        direction = "$"
+        direction = Direction.SPARROW
         cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(
             direction, codeInfoList
         )
@@ -387,7 +397,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
         return codeInfo
 
     def encodeAsZuo(self, codeInfoList):
-        direction = "$"
+        direction = Direction.SPARROW
         codeInfoList = self.convertCodeInfoListOfZuoOrder(codeInfoList)
         cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(
             direction, codeInfoList
@@ -396,7 +406,7 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
         return codeInfo
 
     def encodeAsJia(self, codeInfoList):
-        direction = "$"
+        direction = Direction.SPARROW
         cjLumpList = CJCodeInfoEncoder.convertCodeInfoListToRadixList(
             direction, codeInfoList
         )
@@ -433,21 +443,21 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
     def computeLumpListInDirection(direction, codeInfo):
         tmpDirCode = codeInfo.getDirection()
 
-        if direction == "$":
+        if direction == Direction.SPARROW:
             lumpList = codeInfo.getLumpList()
-        elif tmpDirCode in ["@"]:
+        elif tmpDirCode in [Direction.LOOP]:
             tmpRadixList = codeInfo.getLumpList()
             tmpCJLump = CJLump.generateContainer(tmpRadixList)
             lumpList = [tmpCJLump]
-        elif tmpDirCode in ["*"]:
+        elif tmpDirCode in [Direction.LOONG]:
             tmpRadixList = codeInfo.getLumpList()
             tmpCJLump = CJLump.generateBody(tmpRadixList)
             lumpList = [tmpCJLump]
-        elif tmpDirCode in ["+"] and isinstance(codeInfo, GridCJCodeInfo):
-            if direction == "-":
+        elif tmpDirCode in [Direction.GRID] and isinstance(codeInfo, GridCJCodeInfo):
+            if direction == Direction.GOOSE:
                 newCodeInfo = codeInfo.getCodeInfoH()
                 lumpList = newCodeInfo.getLumpList()
-            elif direction == "|":
+            elif direction == Direction.SILKWORM:
                 newCodeInfo = codeInfo.getCodeInfoV()
                 lumpList = newCodeInfo.getLumpList()
             else:
@@ -456,10 +466,8 @@ class CJCodeInfoEncoder(CodeInfoEncoder):
                 lumpList = [tmpCJLump]
         else:
             if tmpDirCode == direction:
-                # 同向
                 lumpList = codeInfo.getLumpList()
             else:
-                # 不同向
                 tmpRadixList = codeInfo.getLumpList()
                 tmpCJLump = CJLump.generateBody(tmpRadixList)
                 lumpList = [tmpCJLump]
