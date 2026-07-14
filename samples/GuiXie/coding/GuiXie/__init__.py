@@ -1,19 +1,12 @@
-from coding.Input import FontVariance
-from coding.Input import CodeMappingInfoInterpreter
+from coding.Input import InputPlugin, FontVariance
 
-from .GuiXie import GXCodeInfoEncoder as CodeInfoEncoder
-from .GuiXie import GXRadixParser as CodingRadixParser
+from .GuiXie import GXCodeInfoEncoder
+from .GuiXie import GXRadixParser
 
-fontVariance = FontVariance.Traditional
-codeMappingInfoInterpreter = CodeMappingInfoInterpreter()
-
-codingMethodName = "gx"
-codingMethodDir = "samples/GuiXie/qhdata/"
-CodingSubstituteFileList = [
-    codingMethodDir + "substitute.yaml",
-]
-CodingRadixFileList = [
-    codingMethodDir + "radix/CJK.yaml",
-    codingMethodDir + "radix/CJK-A.yaml",
-]
-CodingAdjustFileList = [codingMethodDir + "adjust.yaml"]
+plugin = InputPlugin(
+    method_name="gx",
+    encoder_class=GXCodeInfoEncoder,
+    radix_parser_class=GXRadixParser,
+    font_variance=FontVariance.Traditional,
+    method_dir="samples/GuiXie/qhdata/",
+)

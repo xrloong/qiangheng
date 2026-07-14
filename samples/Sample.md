@@ -26,15 +26,12 @@
       增加相關套件：
       * coding/GuiXie/__init__.py
 
-	包含編碼的一些資訊，有以下變數要定義：
-        * codingType
-        * fontVariance
-        * codeMappingInfoInterpreter
-
-        * codingMethodName
-        * codingMethodDir
-        * CodingSubstituteFileList
-        * CodingRadixFileList
+	定義 `plugin` 變數（`coding.Input.InputPlugin` 的實例），需提供：
+        * method_name：編碼法代號（如 "gx"）
+        * encoder_class：CodeInfoEncoder 子類別
+        * radix_parser_class：CodingRadixParser 子類別
+        * font_variance：字形變體（FontVariance）
+        * method_dir：資料目錄（資料不在 gen/qhdata/ 下時指定，如 "samples/GuiXie/qhdata/"）
       * coding/GuiXie/GuiXie.py
 
 	實作一些基本類別： CodeInfo、CodeInfoEncoder、CodingRadixParser

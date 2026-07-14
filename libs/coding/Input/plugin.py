@@ -9,7 +9,8 @@ class InputPlugin(BaseModel):
 
     框架所需的屬性（CodeInfoEncoder、CodingRadixParser、fontVariance、
     codeMappingInfoInterpreter、CodingSubstituteFileList、CodingRadixFileList、
-    CodingAdjustFileList）全部由此類別提供，路徑由 method_name 自動推導。
+    CodingAdjustFileList）全部由此類別提供，路徑由 method_name 自動推導；
+    資料不在 gen/qhdata/ 下的插件（如 samples/）可用 method_dir 指定目錄。
 
     用法：
         plugin = InputPlugin(
@@ -27,10 +28,11 @@ class InputPlugin(BaseModel):
     radix_parser_class: type
     font_variance: FontVariance = FontVariance.Traditional
     has_fast_file: bool = False
+    method_dir: str | None = None
 
     @property
     def _method_dir(self) -> str:
-        return f"gen/qhdata/{self.method_name}/"
+        return self.method_dir or f"gen/qhdata/{self.method_name}/"
 
     # ── 框架所需屬性 ────────────────────────────────────────────────────────
 

@@ -117,6 +117,30 @@ class InputPluginTestCase(unittest.TestCase):
         )
         self.assertEqual(plugin.CodingFastFile, "gen/qhdata/bs/fast.yaml")
 
+    def testCustomMethodDirOverridesDerivedPaths(self):
+        plugin = InputPlugin(
+            method_name="gx",
+            encoder_class=StubEncoder,
+            radix_parser_class=StubParser,
+            method_dir="samples/GuiXie/qhdata/",
+        )
+        self.assertEqual(plugin._method_dir, "samples/GuiXie/qhdata/")
+        self.assertEqual(
+            plugin.CodingSubstituteFileList,
+            ["samples/GuiXie/qhdata/substitute.yaml"],
+        )
+        self.assertEqual(
+            plugin.CodingRadixFileList,
+            [
+                "samples/GuiXie/qhdata/radix/CJK.yaml",
+                "samples/GuiXie/qhdata/radix/CJK-A.yaml",
+            ],
+        )
+        self.assertEqual(
+            plugin.CodingAdjustFileList,
+            ["samples/GuiXie/qhdata/adjust.yaml"],
+        )
+
     def testSimplifiedFontVariance(self):
         plugin = InputPlugin(
             method_name="zm",
