@@ -31,6 +31,7 @@ make test
 
 # 執行特定範圍的測試
 uv run pytest -c tests/pytest-libs.ini --rootdir=.    # 函式庫測試
+uv run pytest -c tests/pytest-src.ini --rootdir=.     # src/ 測試
 uv run pytest -c tests/pytest-cj.ini --rootdir=.      # 倉頡測試
 uv run pytest -c tests/pytest-ar.ini --rootdir=.      # 行列測試
 # 命名模式：tests/pytest-{ar|bs|cj|dy|fc|zm|dc}.ini
@@ -76,13 +77,19 @@ make profile
 
 每種輸入法位於 `codings/<Name>/coding/<Name>/`，並且必須提供：
 
-- **`__init__.py`** — 匯出：`CodeInfoEncoder`、`CodingRadixParser`、`fontVariance`、`codeMappingInfoInterpreter`、`codingMethodName`、`codingMethodDir`、`CodingRadixFileList`、`CodingSubstituteFileList`、`CodingAdjustFileList`
+- **`__init__.py`** — 只需定義模組層級變數 `plugin`：
+  - 輸入法用 `coding.Input.InputPlugin(method_name=..., encoder_class=..., radix_parser_class=..., font_variance=...)`（`libs/coding/Input/plugin.py`）
+  - 描繪法（dc）用 `coding.Drawing.DrawingPlugin`（`libs/coding/Drawing/plugin.py`），另需傳入 `interpreter`，並固定讀取 `radix/template.yaml`
+  - 框架所需屬性（`CodeInfoEncoder`、`CodingRadixParser`、`fontVariance`、`codeMappingInfoInterpreter`、`CodingRadixFileList`、`CodingSubstituteFileList`、`CodingAdjustFileList`）皆由插件依 `method_name` 推導出 `gen/qhdata/<method_name>/` 下的路徑；資料不在該處時（如 `samples/GuiXie`）以 `method_dir` 指定
+  - `src/injection/module.py` 的 `PackageModule` 透過 `-p` 匯入的套件取 `.plugin` 並據此繫結
 - **`<Name>.py`** — 實作三個類別，繼承自 `libs/coding/Base/` 的基底類別：
   - `CodeInfo` — 表示一個字元的編碼（字根碼、位置）
   - `CodeInfoEncoder` — 依組字運算子（龜、龍、雀、蚕、鴻、回等）對字元編碼
   - `CodingRadixParser` — 從 YAML 解析輸入法專屬的字根定義
 
 輸入法代號：`ar`（行列）、`bs`（嘸蝦米）、`cj`（倉頡）、`dy`（大易）、`zm`（鄭碼）、`fc`（四角號碼）、`dc`（動態組字）
+
+新增輸入法的完整範例見 `samples/Sample.md`（`samples/GuiXie`，以 `method_dir` 指向 `samples/GuiXie/qhdata/`）。
 
 ### 依賴注入
 
@@ -98,8 +105,16 @@ make profile
 qhdata/*.xml  →  xsltproc  →  gen/qhdata/*.yaml  →  Python 處理  →  tables/
 ```
 
-任何對照表產生前都必須先執行 `make prepare`。它使用 `xsltproc` 與 `xmllint` 將 XML 來源資料轉換為 YAML 中間檔。字元結構資料以中文撰寫（XML 標籤如 `<字符>`、`<字根>`、`<組字/>`）。
+- `qhdata/main/`：主字元結構（`CJK.xml`、`CJK-A.xml`、`component/`）與共用 `template.yaml`
+- `qhdata/main/radix/*.xml`：所有輸入法的字根合併在同一檔，由 `scripts/split.py` 拆成 `gen/qhdata/<cm>/radix/` 下各輸入法專屬檔
+- `qhdata/<cm>/`：各輸入法的 `info.yaml`（名稱、最大長度、按鍵對應）、`substitute.yaml`、`adjust.yaml`、`fast.yaml`，直接複製到 `gen/`
+
+任何對照表產生前都必須先執行 `make prepare`；修改 `qhdata/` 後也要重跑，否則程式讀到的是舊的 `gen/`。它使用 `xsltproc` 與 `xmllint` 將 XML 來源資料轉換為 YAML 中間檔。字元結構資料以中文撰寫（XML 標籤如 `<字符>`、`<字根>`、`<組字/>`）。
 
 ### 組字運算子
 
 字元結構以動物／概念命名的運算子描述（定義於 `libs/element/operator.py`）：龜、龍、雀、蚕、鴻、回等。這些運算子表示部件之間的空間關係（上下、左右、包圍等）。`CodeInfoEncoder.setByComps()` 方法透過 match/case 分派至各運算子專屬的編碼邏輯。
+
+### 重構驗證
+
+單元測試覆蓋有限；改動結構展開或編碼邏輯時，應於改動前後各跑一次 `make yaml`，以 `diff` 比對 `tables/yaml/qh*.yaml` 確認輸出不變（行為變更除外）。
